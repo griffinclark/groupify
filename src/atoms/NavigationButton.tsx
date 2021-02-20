@@ -7,15 +7,17 @@ import { LIGHT } from './../res/styles/Colors';
 interface Props {
   destination: string;
   navigation: any; // not sure what type this is supposed to be
+  title: string;
 }
 
-export default function NavigationButton({ navigation, destination }: Props) {
+export default function NavigationButton({ navigation, destination, title }: Props) {
   return (
     <TouchableOpacity
       style={styles.button}
-      onPress={() => navigation.navigate(destination)}
+      // onPress={() => navigation.navigate(destination)}
+      onPress={()=>{console.log("hello world")}}
     >
-      <Text>{destination}</Text>
+      <Text>{title}</Text>
     </TouchableOpacity>
   );
 }
