@@ -3,6 +3,7 @@ import * as ImagePicker from "expo-image-picker";
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Button, Image } from "react-native";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
+import { SECONDARY } from "../res/styles/Colors";
 
 interface Props {
   imageURI: string;
@@ -16,13 +17,15 @@ export default function ImageSelector({ imageURI, setImageURI }: Props) {
   useEffect(() => {
     if (imageURI) {
       setLocalImageURI(imageURI);
+    } else {
+      setLocalImageURI("https://thumbs-prod.si-cdn.com/GQOrNeGTZKiIO-yl2XzJwSUMmUQ=/800x600/filters:no_upscale()/https://public-media.si-cdn.com/filer/49/38/4938f123-986a-478c-8402-4c538201ebc4/gettyimages-1150889841.jpg")
     }
   });
 
   let selectPhoto = async () => {
     await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
     const { uri } = await ImagePicker.launchImageLibraryAsync({
-      aspect: [125, 100],
+      aspect: [1, 1],
       allowsEditing: true,
     });
     if (!selectPhoto.cancelled) {
@@ -33,53 +36,25 @@ export default function ImageSelector({ imageURI, setImageURI }: Props) {
 
   return (
     <View style={styles.rootContainer}>
+      {/* IMAGE */}
       <View style={styles.imagePreviewContainer}>
-        {/* <Image
-          style={styles.imagePreview}
-          source={{
-            uri: localImageURI,
-          }}
-        /> */}
         <CircularImageDisplay imageURI={localImageURI} />
       </View>
+      {/* BUTTON */}
       <View style={styles.chooseImageButtonContainer}>
-        <Button title={"Select Photo"} color="#F3AD33" onPress={selectPhoto} />
+        <Button title={"Select Photo"} color={SECONDARY} onPress={selectPhoto} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    height: 305,
-    width: 305,
-  },
-  imagePreview: {
-    height: "95%",
-    width: "95%",
-    alignSelf: "center",
-    marginTop: "auto",
-    marginBottom: "auto",
-  },
+ 
   imagePreviewContainer: {
-    height: 305,
-    width: 305,
-    backgroundColor: "#fff",
-    alignSelf: "center",
-    marginTop: 50,
-    borderRadius: 5,
-  },
-  topContainer: {
-    position: "absolute",
-    top: 5,
-    backgroundColor: "#fff",
-    width: "20%",
-    alignSelf: "flex-end",
+    height: 200,
+    width: 200,
   },
   chooseImageButtonContainer: {
-    width: "50%",
-    alignSelf: "center",
     marginTop: 10,
   },
 });

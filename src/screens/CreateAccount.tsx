@@ -62,7 +62,7 @@ export default function CreateAccount({ navigation }: Props) {
       
                   <View style={globalStyles.megaSpacer} />
       
-                  <NavigationButton title="Continue" onNavButtonPressed={()=>{props.handleSubmit}} destination={"Welcome"} navigation={navigation} />
+                  <NavigationButton title="Continue" onNavButtonPressed={()=>{props.handleSubmit}} destination={"MyProfile"} navigation={navigation} />
                 </View>
         )}
       </Formik>
