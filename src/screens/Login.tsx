@@ -23,7 +23,7 @@ export default function Login({ navigation }: Props) {
       >
         {(props) => (
           <View>
-              <View style={globalStyles.miniSpacer} />
+            <View style={globalStyles.miniSpacer} />
             <SingleLineTextInput
               inputText={props.values.phoneNumber}
               placeholder={"Phone number"}
@@ -31,16 +31,13 @@ export default function Login({ navigation }: Props) {
             />
             <View style={globalStyles.miniSpacer} />
             <SingleLineTextInput
-              inputText={props.values.phoneNumber}
+              inputText={props.values.password}
               placeholder={"Password"}
               setText={props.handleChange("password")}
             />
-                        <View style={globalStyles.megaSpacer} />
+            <View style={globalStyles.megaSpacer} />
 
-            <Button title="submit" 
-            onPress={props.handleSubmit}> 
-
-            </Button>
+            <Button title="Continue" onPress={props.handleSubmit}></Button>
           </View>
         )}
       </Formik>
