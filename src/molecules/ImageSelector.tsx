@@ -15,7 +15,6 @@ export default function ImageSelector({ imageURI, setImageURI }: Props) {
 
   useEffect(() => {
     if (imageURI) {
-      // console.log("ImageSelector Recieved: ", imageURI);
       setLocalImageURI(imageURI);
     }
   });
