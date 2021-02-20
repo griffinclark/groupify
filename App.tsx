@@ -27,7 +27,7 @@ export default function App() {
   return (
     <View style={globalStyles.defaultRootContainer}>
       <View style={{ alignSelf: "center", paddingTop: 100 }}>
-        <UserDisplayTile />
+        <UserDisplayTile imageURI="" username="" isCheckbox={false} />
       </View>
 
       <StatusBar style="auto" />

@@ -18,7 +18,7 @@ export default function UserDisplayTile({imageURI, username, isCheckbox}: Props)
                 <View style={styles.rowContainer} >
                     <Text> Hello world</Text>
                 </View>
-                {isCheckbox? }
+                {isCheckbox}
             </View>
         </View>
     )
