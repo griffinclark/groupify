@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import UserDisplayTile from "./src/molecules/UserDisplayTile";
-import firebase from "firebase/app";
 import { globalStyles } from "./src/res/styles/GlobalStyles";
 import Welcome from "./src/screens/Welcome";
 import RootNavigation from "./src/res/root-navigation";

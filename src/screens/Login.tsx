@@ -10,6 +10,7 @@ interface Props {
   navigation: any;
 }
 
+// FIXME: @Griffin get your typed ducks in a row!
 export default function Login({ navigation }: Props) {
   return (
     <SafeAreaView style={globalStyles.defaultRootContainer}>
