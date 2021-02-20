@@ -36,6 +36,10 @@ export const globalStyles = StyleSheet.create({
         height: 75,
         // backgroundColor: "#f0f"
     },
+    megaSpacer: {
+        height: 250,
+        // backgroundColor: "#f0f"
+    },
     miniSpacer: {
         height:25
     }

@@ -10,7 +10,7 @@ interface Props {
     placeholder: string,
 }
 
-export default function SingleLineTextInput({inputText, setText, placeholder}: Props){
+export default function SingleLineTextInput({inputText, placeholder, setText}: Props){
     return(
         <View >
             <TextInput 
