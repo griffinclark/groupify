@@ -86,7 +86,7 @@ export default function CreateAccount({ navigation, lastScreen }: Props) {
                     onNavButtonPressed={() => {
                       props.handleSubmit;
                     }}
-                    destination={"Welcome"}
+                    destination={"AddFriends"}
                     navigation={navigation}
                   />
                 </View>

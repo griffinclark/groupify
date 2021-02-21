@@ -13,6 +13,7 @@ interface Props {
 export default function Welcome({ navigation }: Props) {
   return (
     <SafeAreaView style={globalStyles.defaultRootContainer}>
+      <View style={globalStyles.spacer} />
       <Text style={styles.title}>Are You Ready To Get Meeped?</Text>
 
       <View style={globalStyles.megaSpacer} />
