@@ -26,7 +26,8 @@
     "react-native-reanimated": "~1.13.0",
     "react-native-screens": "~2.15.0",
     "react-native-unimodules": "~0.12.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "unirest": "^0.6.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

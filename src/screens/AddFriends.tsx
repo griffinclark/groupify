@@ -22,21 +22,45 @@ export default function AddFriends({ navigation }: any) {
         });
 
         if (data.length > 0) {
-          await setContacts(data);
-          console.log("successfully grabbed contacts");
+        console.log("data", data.length)
+        let keyValue = 0
+        data.forEach((dataPoint) => {
+                console.log("dataPoint", dataPoint)
+                dataPoint.key = keyValue;
+                setContacts(contacts => [...contacts, dataPoint])
+                console.log("contacts ", contacts);
+                keyValue += 1
+            
+           
+        })
         } else {
           console.log("no contacts were found");
         }
       }
-    })().then();
+    })();
   }, []);
+
+  const addUser = (key: number) => {
+    setFriends((friends) => [...friends, contacts[key]]);
+  };
+
+  const removeUser = (key: number) => {};
+  // TODO sort friends list
+  // TODO add search bar
+  // TODO add continue button
+  // TODO remove undefined undefined contacts
 
   return (
     <SafeAreaView>
       <View style={globalStyles.spacer} />
       <Text style={globalStyles.title}>Your Contacts</Text>
       <View style={globalStyles.miniSpacer} />
-      <UserDisplay userList={contacts} displayType={"androidContact"}  />
+      <UserDisplay
+        userList={contacts}
+        displayType={"androidContact"}
+        addUser={addUser}
+        removeUser={removeUser}
+      />
     </SafeAreaView>
   );
 }
