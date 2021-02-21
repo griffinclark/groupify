@@ -37,8 +37,6 @@ export default function CreateAccount({ navigation }: Props) {
   let [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
 
   const createAccountTrigger = async (form: AccountForm) => {
-    console.log("createAccountTrigger");
-
     if (form.password != form.repeatPassword) {
       setPasswordsDontMatch(true)
       return;

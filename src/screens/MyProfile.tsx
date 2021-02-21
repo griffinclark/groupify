@@ -58,7 +58,8 @@ async function createProfile(
     username: username,
     bio: bio,
     imageURI: imageURI,
-    phone: phone
+    phone: phone,
+    version: 0
   });
 
   console.log("Created Profile!");
