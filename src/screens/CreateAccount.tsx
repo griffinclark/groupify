@@ -43,7 +43,7 @@ export default function CreateAccount({ navigation }: Props) {
       return;
     }
 
-    navigation.navigate("MyProfile");
+    navigation.navigate("MyProfile", form.phoneNumber);
   };
 
   return (
@@ -63,48 +63,48 @@ export default function CreateAccount({ navigation }: Props) {
             <Text style={globalStyles.title}>Become a Meepster!</Text>
             <View style={globalStyles.miniSpacer} />
            
-              {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
-              <Text>Phone Number:</Text>
+            {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
+            <Text>Phone Number:</Text>
 
-              <SingleLineTextInput
-                inputText={props.values.phoneNumber}
-                placeholder={"Phone Number"}
-                setText={props.handleChange("phoneNumber")}
-              />
-    
-              <View style={globalStyles.miniSpacer} />
-              <Text>Email:</Text>
-
-              <SingleLineTextInput
-                inputText={props.values.email}
-                placeholder={"Email"}
-                setText={props.handleChange("email")}
-              />
+            <SingleLineTextInput
+              inputText={props.values.phoneNumber}
+              placeholder={"Phone Number"}
+              setText={props.handleChange("phoneNumber")}
+            />
   
-              <View style={globalStyles.miniSpacer} />
-              <Text>Password:</Text>
+            <View style={globalStyles.miniSpacer} />
+            <Text>Email:</Text>
 
-              <SingleLineTextInput
-                inputText={props.values.password}
-                placeholder={"Password"}
-                setText={props.handleChange("password")}
-              />
-  
-              <View style={globalStyles.miniSpacer} />
-              <Text>Repeat Password:</Text>
+            <SingleLineTextInput
+              inputText={props.values.email}
+              placeholder={"Email"}
+              setText={props.handleChange("email")}
+            />
 
-              <SingleLineTextInput
-                inputText={props.values.repeatPassword}
-                placeholder={"Repeat Password"}
-                setText={props.handleChange("repeatPassword")}
-              />
-  
-              <View style={globalStyles.miniSpacer} />
-              {passwordsDontMatch ? (
+            <View style={globalStyles.miniSpacer} />
+            <Text>Password:</Text>
+
+            <SingleLineTextInput
+              inputText={props.values.password}
+              placeholder={"Password"}
+              setText={props.handleChange("password")}
+            />
+
+            <View style={globalStyles.miniSpacer} />
+            <Text>Repeat Password:</Text>
+
+            <SingleLineTextInput
+              inputText={props.values.repeatPassword}
+              placeholder={"Repeat Password"}
+              setText={props.handleChange("repeatPassword")}
+            />
+
+            <View style={globalStyles.miniSpacer} />
+            {passwordsDontMatch ? (
               <Text style={globalStyles.errorMessage}>Error: your passwords don't match!</Text>
             ) : (<View />)}
-              <Button title="Continue" onPress={props.handleSubmit}/>
-            </View>
+            <Button title="Continue" onPress={props.handleSubmit}/>
+          </View>
         )}
       </Formik>
     </SafeAreaView>

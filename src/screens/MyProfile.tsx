@@ -21,9 +21,11 @@ import { firestore, auth } from "../res/services/firebase";
 
 // TODO @David add data here into FB
 
+// TODO: type these
 interface Props {
   navigation: any;
   lastScreen: any; // This screen can be accessed form multiple places. We want the user to return to where they came from when they're done
+  route: any;
 }
 
 interface ProfileForm {
@@ -33,7 +35,7 @@ interface ProfileForm {
   imageURI: "",
 }
 
-export default function MyProfile({ navigation, lastScreen }: Props) {
+export default function MyProfile({ navigation, lastScreen, route }: Props) {
   const profileTrigger = async (values: ProfileForm) => {
     // TODO don't let users leave this screen until all profile information is filled in
     if (!auth.currentUser) {
@@ -48,6 +50,7 @@ export default function MyProfile({ navigation, lastScreen }: Props) {
       username: values.username,
       bio: values.bio,
       imageURI: values.imageURI,
+      phone: route.params
     });
 
     console.log("Created Profile!");
@@ -55,61 +58,62 @@ export default function MyProfile({ navigation, lastScreen }: Props) {
 
   return (
       <SafeAreaView style={globalStyles.defaultRootContainer}>
-          <View style={{ padding: 24 }}>
-            <Formik
-              initialValues={{
-                name: "", // TODO split into first and last name
-                username: "",
-                bio: "",
-                imageURI: "",
-              }}
-              onSubmit={profileTrigger}
-            >
-              {(props) => (
+        <View style={{ padding: 24 }}>
+          <Formik
+            // TODO split first / last name (localization: first/last is a bit western, works differently elsewhere)
+            initialValues={{
+              name: "", 
+              username: "",
+              bio: "",
+              imageURI: "",
+            }}
+            onSubmit={profileTrigger}
+          >
+            {(props) => (
+              <View>
+                <View style={globalStyles.miniSpacer} />
+                {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
+                <Text style={globalStyles.title}>My Profile</Text>
+                <View style={globalStyles.miniSpacer} />
                 <View>
-                  <View style={globalStyles.miniSpacer} />
-                  {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
-                  <Text style={globalStyles.title}>My Profile</Text>
-                  <View style={globalStyles.miniSpacer} />
-                  <View>
                   <Text>First and last name:</Text>
 
-                    <SingleLineTextInput
-                      inputText={props.values.name}
-                      placeholder={"Whinnie the Pooh"}
-                      setText={props.handleChange("name")}
-                    />
+                  <SingleLineTextInput
+                    inputText={props.values.name}
+                    placeholder={"Whinnie the Pooh"}
+                    setText={props.handleChange("name")}
+                  />
 
-                    <View style={globalStyles.miniSpacer} />
-                    <Text>Username:</Text>
-                    <SingleLineTextInput
-                      inputText={props.values.username}
-                      placeholder={"Whinnie4Lyfe"}
-                      setText={props.handleChange("username")}
-                    />
-
-                    <View style={globalStyles.miniSpacer} />
-                    <Text>Bio:</Text>
-                    <MultiLineTextInput
-                      inputText={props.values.bio}
-                      placeholder={"Things I like: \n1. 🍯 \n2. Hunting endangered animals and taking their 🍯"}
-                      setText={props.handleChange("bio")}
-                    />
-                  </View>
-
-                  <View style={styles.profileImageContainer}>
-                    <View style={globalStyles.miniSpacer} />
-                    <ImageSelector
-                      imageURI={props.values.imageURI}
-                      setImageURI={props.handleChange("imageURI")}
-                    />
-                  </View>
                   <View style={globalStyles.miniSpacer} />
-                  <Button title="Click me!" onPress={() => props.handleSubmit()} />
+                  <Text>Username:</Text>
+                  <SingleLineTextInput
+                    inputText={props.values.username}
+                    placeholder={"Whinnie4Lyfe"}
+                    setText={props.handleChange("username")}
+                  />
+
+                  <View style={globalStyles.miniSpacer} />
+                  <Text>Bio:</Text>
+                  <MultiLineTextInput
+                    inputText={props.values.bio}
+                    placeholder={"Things I like: \n1. 🍯 \n2. Hunting endangered animals and taking their 🍯"}
+                    setText={props.handleChange("bio")}
+                  />
                 </View>
-              )}
-            </Formik>
-          </View>
+
+                <View style={styles.profileImageContainer}>
+                  <View style={globalStyles.miniSpacer} />
+                  <ImageSelector
+                    imageURI={props.values.imageURI}
+                    setImageURI={props.handleChange("imageURI")}
+                  />
+                </View>
+                <View style={globalStyles.miniSpacer} />
+                <Button title="Click me!" onPress={() => props.handleSubmit()} />
+              </View>
+            )}
+          </Formik>
+        </View>
       </SafeAreaView>
   );
 }

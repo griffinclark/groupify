@@ -27,7 +27,7 @@ export default function Welcome({ navigation }: Props) {
       <NavigationButton
         navigation={navigation}
         title={"Create Account (skip)"}
-        destination={"MyProfile"}
+        destination={"CreateAccount"}
       />
       <View style={globalStyles.miniSpacer} />
       <Button title="Click me, father" onPress={async () => {
