@@ -19,31 +19,37 @@ interface AccountForm {
   repeatPassword: string
 }
 
+async function createAccountAuth(email: string, passwd: string): Promise<boolean> {
+  try {
+    await auth.createUserWithEmailAndPassword(email, passwd)
+      .then(() => console.log("Created user successfully!"));
+  }
+  catch(err) {
+    console.log(err);
+    // TODO: report error to user in friendly way
+    return false;
+  }
+
+  return true;
+}
+
 export default function CreateAccount({ navigation }: Props) {
-  let [passwordsDontMatch, setPasswordsDontMatch] = useState(false)
+  let [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
 
   const createAccountTrigger = async (form: AccountForm) => {
     console.log("createAccountTrigger");
 
     if (form.password != form.repeatPassword) {
-     setPasswordsDontMatch(true)
+      setPasswordsDontMatch(true)
       return;
     } else {
       setPasswordsDontMatch(false)
     }
 
     // TODO: sanity-check password
-    try {
-      await auth.createUserWithEmailAndPassword(form.email.trim(), form.password)
-        .then((creds) => console.log("Created user successfully!"));
+    if (await createAccountAuth(form.email.trim(), form.password)) {
+      navigation.navigate("MyProfile", form.phoneNumber);
     }
-    catch(err) {
-      console.log(err);
-      // TODO: report error to user in friendly way
-      return;
-    }
-
-    navigation.navigate("MyProfile", form.phoneNumber);
   };
 
   return (

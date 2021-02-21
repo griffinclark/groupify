@@ -18,6 +18,7 @@ import { TEST_HIGH_CONTRAST } from "./../res/styles/Colors";
 import MultiLineTextInput from "./../atoms/MultiLineTextInput";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { firestore, auth } from "../res/services/firebase";
+import { PhoneNumber } from "expo-contacts";
 
 // TODO @David add data here into FB
 
@@ -29,92 +30,107 @@ interface Props {
 }
 
 interface ProfileForm {
-  name: "", // TODO split into first and last name
-  username: "",
-  bio: "",
-  imageURI: "",
+  // TODO split first / last name (localization: first/last is a bit western, works differently elsewhere)
+  name: string,
+  username: string,
+  bio: string,
+  imageURI: string,
+}
+
+// TODO: number canonicalization
+async function createProfile(
+  name: string,
+  username: string,
+  bio: string,
+  imageURI: string,
+  phone: string
+): Promise<boolean> {
+  // TODO don't let users leave this screen until all profile information is filled in
+  if (!auth.currentUser) {
+    console.log("How did we get here? Tried to submit profile for no user!");
+    return false;
+    // TODO: ??? What do we do here? (fatal: never happens in expected flow)
+  }
+
+  const ref = firestore.collection("profiles").doc(auth.currentUser.uid);
+  await ref.set({
+    name: name,
+    username: username,
+    bio: bio,
+    imageURI: imageURI,
+    phone: phone
+  });
+
+  console.log("Created Profile!");
+
+  return true;
 }
 
 export default function MyProfile({ navigation, lastScreen, route }: Props) {
-  const profileTrigger = async (values: ProfileForm) => {
-    // TODO don't let users leave this screen until all profile information is filled in
-    if (!auth.currentUser) {
-      console.log("How did we get here? Tried to submit profile for no user!");
-      return;
-      // TODO: ??? What do we do here?
+  const profileTrigger = async ({ name, username, bio, imageURI }: ProfileForm) => {
+    if (await createProfile(name, username, bio, imageURI, route.params)) {
+      navigation.navigate("Welcome");
     }
-
-    const ref = firestore.collection("profiles").doc(auth.currentUser.uid);
-    await ref.set({
-      name: values.name,
-      username: values.username,
-      bio: values.bio,
-      imageURI: values.imageURI,
-      phone: route.params
-    });
-
-    console.log("Created Profile!");
   }
 
   return (
-      <SafeAreaView style={globalStyles.defaultRootContainer}>
-        <View style={{ padding: 24 }}>
-          <Formik
-            // TODO split first / last name (localization: first/last is a bit western, works differently elsewhere)
-            initialValues={{
-              name: "", 
-              username: "",
-              bio: "",
-              imageURI: "",
-            }}
-            onSubmit={profileTrigger}
-          >
-            {(props) => (
+    <SafeAreaView style={globalStyles.defaultRootContainer}>
+      <View style={{ padding: 24 }}>
+        <Formik
+          initialValues={{
+            name: "",
+            username: "",
+            bio: "",
+            imageURI: "",
+          }}
+          onSubmit={profileTrigger}
+        >
+          {(props) => (
+            <View>
+              <View style={globalStyles.miniSpacer} />
+              {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
+              <Text style={globalStyles.title}>My Profile</Text>
+              <View style={globalStyles.miniSpacer} />
               <View>
+                <Text>First and last name:</Text>
+
+                <SingleLineTextInput
+                  inputText={props.values.name}
+                  placeholder={"Whinnie the Pooh"}
+                  setText={props.handleChange("name")}
+                />
+
                 <View style={globalStyles.miniSpacer} />
-                {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
-                <Text style={globalStyles.title}>My Profile</Text>
+                <Text>Username:</Text>
+                <SingleLineTextInput
+                  inputText={props.values.username}
+                  placeholder={"Whinnie4Lyfe"}
+                  setText={props.handleChange("username")}
+                />
+
                 <View style={globalStyles.miniSpacer} />
-                <View>
-                  <Text>First and last name:</Text>
-
-                  <SingleLineTextInput
-                    inputText={props.values.name}
-                    placeholder={"Whinnie the Pooh"}
-                    setText={props.handleChange("name")}
-                  />
-
-                  <View style={globalStyles.miniSpacer} />
-                  <Text>Username:</Text>
-                  <SingleLineTextInput
-                    inputText={props.values.username}
-                    placeholder={"Whinnie4Lyfe"}
-                    setText={props.handleChange("username")}
-                  />
-
-                  <View style={globalStyles.miniSpacer} />
-                  <Text>Bio:</Text>
-                  <MultiLineTextInput
-                    inputText={props.values.bio}
-                    placeholder={"Things I like: \n1. 🍯 \n2. Hunting endangered animals and taking their 🍯"}
-                    setText={props.handleChange("bio")}
-                  />
-                </View>
-
-                <View style={styles.profileImageContainer}>
-                  <View style={globalStyles.miniSpacer} />
-                  <ImageSelector
-                    imageURI={props.values.imageURI}
-                    setImageURI={props.handleChange("imageURI")}
-                  />
-                </View>
-                <View style={globalStyles.miniSpacer} />
-                <Button title="Click me!" onPress={() => props.handleSubmit()} />
+                <Text>Bio:</Text>
+                <MultiLineTextInput
+                  inputText={props.values.bio}
+                  placeholder={"Things I like: \n1. 🍯 \n2. Hunting endangered animals and taking their 🍯"}
+                  setText={props.handleChange("bio")}
+                />
               </View>
-            )}
-          </Formik>
-        </View>
-      </SafeAreaView>
+
+              <View style={styles.profileImageContainer}>
+                <View style={globalStyles.miniSpacer} />
+                <ImageSelector
+                  imageURI={props.values.imageURI}
+                  setImageURI={props.handleChange("imageURI")}
+                />
+              </View>
+              <View style={globalStyles.miniSpacer} />
+              <Button title="Click me!" onPress={() => props.handleSubmit()} />
+            </View>
+          )}
+        </Formik>
+      </View>
+    </SafeAreaView>
   );
 }
 
