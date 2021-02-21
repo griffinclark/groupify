@@ -13,10 +13,9 @@ interface Props {
 export default function Welcome({ navigation }: Props) {
   return (
     <SafeAreaView style={globalStyles.defaultRootContainer}>
-      <Text style={styles.title}>Welcome to Meep</Text>
+      <Text style={styles.title}>Are You Ready To Get Meeped?</Text>
 
       <View style={globalStyles.megaSpacer} />
-      <UserTile username="joe nobody" imageURL="https://static01.nyt.com/images/2019/04/02/science/28SCI-ZIMMER1/28SCI-ZIMMER1-superJumbo.jpg"/>
       <NavigationButton
         navigation={navigation}
         title={"Log In"}
@@ -34,7 +33,7 @@ export default function Welcome({ navigation }: Props) {
 
 let styles = StyleSheet.create({
   title: {
-    fontSize: 50,
+    fontSize: 45,
     color: PRIMARY,
     textAlign: 'center',
     fontWeight: "bold"

@@ -81,7 +81,6 @@ export default function CreateAccount({ navigation, lastScreen }: Props) {
                     />
                   </View>
                   <View style={globalStyles.miniSpacer} />
-                  <View style={globalStyles.miniSpacer} />
                   <NavigationButton
                     title="Continue"
                     onNavButtonPressed={() => {

@@ -45,7 +45,9 @@ export default function CreateAccount({ navigation }: Props) {
       >
         {(props: any) => (
           <View>
-            <View style={globalStyles.megaSpacer} />
+            <View style={globalStyles.spacer} />
+            <Text style={globalStyles.title}>Become a Meepster!</Text>
+            <View style={globalStyles.miniSpacer} />
                   {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
                   <Text>Phone Number:</Text>
 

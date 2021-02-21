@@ -20,7 +20,7 @@ export default function UserTile({ username, imageURL, addUser }: Props) {
       <View style={styles.profileImageContainer}>
           <CircularImageDisplay imageURI={imageURL} />
       </View>
-      <View style={styles.textContainer}>
+      <View>
         <Text style= {globalStyles.title}> {username} </Text>
       </View>
       { addUser? (
