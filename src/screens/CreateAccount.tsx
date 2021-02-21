@@ -82,7 +82,7 @@ export default function CreateAccount({ navigation }: Props) {
                     setText={props.handleChange("repeatPassword")}
                   />
       
-                  <View style={globalStyles.megaSpacer} />
+                  <View style={globalStyles.miniSpacer} />
       
                   <NavigationButton title="Continue" onNavButtonPressed={()=>{props.handleSubmit}} destination={"MyProfile"} navigation={navigation} />
                 </View>
