@@ -6,6 +6,7 @@ import Welcome from "../screens/Welcome";
 import Login from "../screens/Login";
 import CreateAccount from './../screens/CreateAccount';
 import MyProfile from './../screens/MyProfile';
+import AddFriends from './../screens/AddFriends';
 
 const Stack = createStackNavigator();
 
@@ -14,10 +15,12 @@ export default function RootNavigation() {
     <NavigationContainer>
       {/* TODO the default screen needs to change based on whether a user is logged in or not */}
       <Stack.Navigator initialRouteName="Welcome"> 
-        <Stack.Screen name="Welcome" component={Welcome}/>
+        <Stack.Screen name="Welcome" component={Welcome}  options={{ headerShown: false }}/>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
         <Stack.Screen name="CreateAccount" component={CreateAccount}  options={{ headerShown: false }}/>
         <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerShown: false }}/>
+        <Stack.Screen name="AddFriends" component={AddFriends} options={{ headerShown: false }}/>
+
 
       </Stack.Navigator>
     </NavigationContainer>

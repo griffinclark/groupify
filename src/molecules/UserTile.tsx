@@ -38,7 +38,7 @@ export default function UserTile({
                 addUser(username);
                 console.log("added")
               } else {
-                removeUser(checked);
+                removeUser(checked); // TODO fix
                 console.log("removed")
               }
             }}
