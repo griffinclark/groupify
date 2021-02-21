@@ -21,7 +21,16 @@ const auth = firebaseApp.auth(); // access authentication
 const storage = firebaseApp.storage(); // allows us to upload data
 const functions = firebaseApp.functions();
 
-const importZombies = functions.httpsCallable('importZombies');
+interface Zombie {
+  id: number,
+  name: string
+}
+
+interface ImportZombiesData {
+  zombies: [Zombie]
+}
+
+const importZombies: (data: ImportZombiesData) => void = functions.httpsCallable('importZombies');
 
 export { firestore, auth, storage, importZombies };
 

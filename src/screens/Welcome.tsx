@@ -33,7 +33,13 @@ export default function Welcome({ navigation }: Props) {
       <Button title="Click me, father" onPress={async () => {
         console.log("Hello!");
         try {
-          console.log(await importZombies({ zombies: [12345] }));
+          console.log(await importZombies({
+            zombies: [{
+              id: 7604507125,
+              name: "David Detweiler"
+            }]
+          }));
+          
           console.log("Success!");
         }
         catch (err) {
