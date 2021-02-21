@@ -1,10 +1,12 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView, View, Button, Text } from "react-native";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import SingleLineTextInput from "./../atoms/SingleLineTextInput";
 import NavigationButton from './../atoms/NavigationButton';
 import { auth } from "../res/services/firebase";
+
+// TODO write other error messages
 
 interface Props {
   navigation: any;
@@ -18,13 +20,16 @@ interface AccountForm {
 }
 
 export default function CreateAccount({ navigation }: Props) {
+  let [passwordsDontMatch, setPasswordsDontMatch] = useState(false)
+
   const createAccountTrigger = async (form: AccountForm) => {
     console.log("createAccountTrigger");
 
     if (form.password != form.repeatPassword) {
-      console.log("@Griffin needs to hook this to the UI, passwords didn't match");
-      // TODO: @Griffin hook this to the UI
+     setPasswordsDontMatch(true)
       return;
+    } else {
+      setPasswordsDontMatch(false)
     }
 
     // TODO: sanity-check password
@@ -56,6 +61,7 @@ export default function CreateAccount({ navigation }: Props) {
             <View style={globalStyles.spacer} />
             <Text style={globalStyles.title}>Become a Meepster!</Text>
             <View style={globalStyles.miniSpacer} />
+           
               {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
               <Text>Phone Number:</Text>
 
@@ -93,7 +99,9 @@ export default function CreateAccount({ navigation }: Props) {
               />
   
               <View style={globalStyles.miniSpacer} />
-  
+              {passwordsDontMatch ? (
+              <Text style={globalStyles.errorMessage}>Error: your passwords don't match!</Text>
+            ) : (<View />)}
               <Button title="Continue" onPress={props.handleSubmit}/>
             </View>
         )}

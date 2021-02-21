@@ -3,6 +3,7 @@ import * as Contacts from "expo-contacts";
 import { SafeAreaView, Text, View } from "react-native";
 import UserDisplay from "../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
+import NavigationButton from "../atoms/NavigationButton";
 
 interface Props {
   navigation: any;
@@ -22,17 +23,14 @@ export default function AddFriends({ navigation }: any) {
         });
 
         if (data.length > 0) {
-        console.log("data", data.length)
-        let keyValue = 0
-        data.forEach((dataPoint) => {
-                console.log("dataPoint", dataPoint)
-                dataPoint.key = keyValue;
-                setContacts(contacts => [...contacts, dataPoint])
-                console.log("contacts ", contacts);
-                keyValue += 1
-            
-           
-        })
+          let keyValue = 0;
+          data.forEach((dataPoint) => {
+            dataPoint.key = keyValue;
+
+            // TODO figure out why some contacts are loading in as "undefined undefined"
+            setContacts((contacts) => [...contacts, dataPoint]);
+            keyValue += 1;
+          });
         } else {
           console.log("no contacts were found");
         }
@@ -40,11 +38,23 @@ export default function AddFriends({ navigation }: any) {
     })();
   }, []);
 
-  const addUser = (key: number) => {
+  const addFriend = (key: number) => {
     setFriends((friends) => [...friends, contacts[key]]);
   };
 
-  const removeUser = (key: number) => {};
+  const removeFriend = (key: number) => {
+    let localFriends = friends;
+    // This is a terrible way to do this. I was pressed for time, don't judge me too hard
+    let index = 0;
+    localFriends.forEach((friend) => {
+      if ((friend.key = key)) {
+        localFriends.splice(index, index + 1);
+        setFriends(localFriends);
+        return;
+      }
+      index++;
+    });
+  };
   // TODO sort friends list
   // TODO add search bar
   // TODO add continue button
@@ -55,12 +65,19 @@ export default function AddFriends({ navigation }: any) {
       <View style={globalStyles.spacer} />
       <Text style={globalStyles.title}>Your Contacts</Text>
       <View style={globalStyles.miniSpacer} />
-      <UserDisplay
-        userList={contacts}
-        displayType={"androidContact"}
-        addUser={addUser}
-        removeUser={removeUser}
-      />
+      {contacts.length > 0 ? (
+        <View style={{height: "75%"}}>
+            <UserDisplay
+              userList={contacts}
+              displayType={"androidContact"}
+              addUser={addFriend}
+              removeUser={removeFriend}
+            />
+        </View>
+      ) : (
+        <Text> Loading...</Text>
+      )}
+      <NavigationButton title="Done" />
     </SafeAreaView>
   );
 }

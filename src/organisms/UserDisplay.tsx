@@ -15,20 +15,21 @@ interface userTileInterface {
   username: string;
   imageURL: string;
 }
-
+let key =0
 export default function UserDisplay({ addUser, removeUser, userList, displayType }: Props) {
   return (
     <SafeAreaView>
       <FlatList
         data={userList}
         renderItem={({ item }) => {
-
             switch ( displayType) {
                 case "androidContact": {
                     return ( <AndroidContactTile
                         firstName={item.firstName }
                         lastName ={item.lastName + " " + item.key}
-                        key={item.key} //FIXME this isn't grabbing a unique value
+                        UID={item.key} 
+                        addUser={addUser}
+                        removeUser={removeUser}
                       />)
                     }
                    case "iOSContact": {
@@ -49,7 +50,7 @@ export default function UserDisplay({ addUser, removeUser, userList, displayType
                         imageURL={item.imageURL}
                         addUser={addUser}
                         removeUser={removeUser}
-                        key={username}
+                        key={key}
                       />)
                    }
                    default: {
@@ -59,7 +60,7 @@ export default function UserDisplay({ addUser, removeUser, userList, displayType
             }
           
         }}
-        keyExtractor={(user) => user.username}
+        keyExtractor={(item, index) => item.key} // FIXME sometimes these keys aren't unique. 
       />
     </SafeAreaView>
   );
