@@ -1,10 +1,11 @@
 import React from "react";
-import { Text, View, StyleSheet, SafeAreaView } from "react-native";
+import { Text, View, StyleSheet, SafeAreaView, Button } from "react-native";
 import NavigationButton from "../atoms/NavigationButton";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { PRIMARY } from "./../res/styles/Colors";
 import UserTile from "../molecules/UserTile";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
+import { importZombies } from "../res/services/firebase";
 
 interface Props {
   navigation: any;
@@ -28,6 +29,19 @@ export default function Welcome({ navigation }: Props) {
         title={"Create Account"}
         destination={"AddFriends"}
       />
+
+      <Button title="Click me, father" onPress={async () => {
+        console.log("Hello!");
+        try {
+          console.log(await importZombies({ zombies: [12345] }));
+          console.log("Success!");
+        }
+        catch (err) {
+          console.log("Error!");
+          console.log(err);
+        }
+      }}>
+      </Button>
     </SafeAreaView>
   );
 }
