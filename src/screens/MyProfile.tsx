@@ -17,6 +17,7 @@ import ImageSelector from "../molecules/ImageSelector";
 import { TEST_HIGH_CONTRAST } from "./../res/styles/Colors";
 import MultiLineTextInput from "./../atoms/MultiLineTextInput";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { firestore, auth } from "../res/services/firebase";
 
 // TODO @David add data here into FB
 
@@ -25,7 +26,34 @@ interface Props {
   lastScreen: any; // This screen can be accessed form multiple places. We want the user to return to where they came from when they're done
 }
 
+interface ProfileForm {
+  name: "", // TODO split into first and last name
+  username: "",
+  bio: "",
+  imageURI: "",
+}
+
+// FIXME: How the bloody hell is this aliased as MyProfile, @Griffin!?
 export default function CreateAccount({ navigation, lastScreen }: Props) {
+  const profileTrigger = async (values: ProfileForm) => {
+    // TODO don't let users leave this screen until all profile information is filled in
+    if (!auth.currentUser) {
+      console.log("How did we get here? Tried to submit profile for no user!");
+      return;
+      // TODO: ??? What do we do here?
+    }
+
+    const ref = firestore.collection("profiles").doc(auth.currentUser.uid);
+    await ref.set({
+      name: values.name,
+      username: values.username,
+      bio: values.bio,
+      imageURI: values.imageURI,
+    });
+
+    console.log("Created Profile!");
+  }
+
   return (
       <SafeAreaView style={globalStyles.defaultRootContainer}>
           <View style={{ padding: 24 }}>
@@ -36,12 +64,7 @@ export default function CreateAccount({ navigation, lastScreen }: Props) {
                 bio: "",
                 imageURI: "",
               }}
-              onSubmit={(values) => {
-                // TODO don't let users leave this screen until all profile information is filled in
-                console.log(
-                  "@David is going to handle adding profile information any day now...."
-                );
-              }}
+              onSubmit={profileTrigger}
             >
               {(props) => (
                 <View>
@@ -83,14 +106,7 @@ export default function CreateAccount({ navigation, lastScreen }: Props) {
                     />
                   </View>
                   <View style={globalStyles.miniSpacer} />
-                  <NavigationButton
-                    title="Continue"
-                    onNavButtonPressed={() => {
-                      props.handleSubmit;
-                    }}
-                    destination={"AddFriends"}
-                    navigation={navigation}
-                  />
+                  <Button title="Click me!" onPress={() => props.handleSubmit()} />
                 </View>
               )}
             </Formik>

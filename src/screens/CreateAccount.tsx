@@ -39,6 +39,7 @@ export default function CreateAccount({ navigation }: Props) {
     }
     catch(err) {
       console.log(err);
+      // TODO: report error to user in friendly way
       return;
     }
 
