@@ -33,8 +33,7 @@ interface ProfileForm {
   imageURI: "",
 }
 
-// FIXME: How the bloody hell is this aliased as MyProfile, @Griffin!?
-export default function CreateAccount({ navigation, lastScreen }: Props) {
+export default function MyProfile({ navigation, lastScreen }: Props) {
   const profileTrigger = async (values: ProfileForm) => {
     // TODO don't let users leave this screen until all profile information is filled in
     if (!auth.currentUser) {
