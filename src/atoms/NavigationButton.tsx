@@ -23,6 +23,7 @@ export default function NavigationButton({
         style={styles.button}
         // onPress={() => onNavButtonPressed().then(navigation.navigate(destination))}
         onPress={() => {
+          // FIXME: how do we cancel navigation if we fail?
           // if a function was passed in, run it before navigating
           if (onNavButtonPressed) {
             onNavButtonPressed();
