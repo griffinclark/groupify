@@ -5,7 +5,7 @@ import { globalStyles } from "./../res/styles/GlobalStyles";
 import { PRIMARY } from "./../res/styles/Colors";
 import UserTile from "../molecules/UserTile";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
-import { importZombies } from "../res/services/firebase";
+import { auth, importZombies } from "../res/services/firebase";
 
 interface Props {
   navigation: any;
@@ -51,6 +51,8 @@ export default function Welcome({ navigation }: Props) {
         }
       }}>
       </Button>
+      <View style={globalStyles.miniSpacer} />
+      <Button title="Sign Out" onPress={async () => await auth.signOut()} />
     </SafeAreaView>
   );
 }
