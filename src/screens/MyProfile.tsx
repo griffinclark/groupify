@@ -1,4 +1,4 @@
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import React from "react";
 import {
   SafeAreaView,
@@ -25,7 +25,6 @@ import { PhoneNumber } from "expo-contacts";
 // TODO: type these
 interface Props {
   navigation: any;
-  lastScreen: any; // This screen can be accessed form multiple places. We want the user to return to where they came from when they're done
   route: any;
 }
 
@@ -38,12 +37,12 @@ interface ProfileForm {
 }
 
 // TODO: number canonicalization
-async function createProfile(
+async function updateProfile(
   name: string,
   username: string,
   bio: string,
   imageURI: string,
-  phone: string
+  phone: string | undefined
 ): Promise<boolean> {
   // TODO don't let users leave this screen until all profile information is filled in
   if (!auth.currentUser) {
@@ -53,82 +52,118 @@ async function createProfile(
   }
 
   const ref = firestore.collection("profiles").doc(auth.currentUser.uid);
-  await ref.set({
+  let doc = {
     name: name,
     username: username,
     bio: bio,
     imageURI: imageURI,
-    phone: phone,
     version: 0
-  });
+  };
+
+  if (phone) {
+    await ref.set({...doc, phone});
+  }
+  else {
+    await ref.set(doc);
+  }
 
   console.log("Created Profile!");
 
   return true;
 }
 
-export default function MyProfile({ navigation, lastScreen, route }: Props) {
-  const profileTrigger = async ({ name, username, bio, imageURI }: ProfileForm) => {
-    if (await createProfile(name, username, bio, imageURI, route.params)) {
-      navigation.navigate("Welcome");
+async function loadProfile(props: FormikProps<ProfileForm>): Promise<void> {
+  try {
+    console.log("Attempting load");
+    if (auth.currentUser) {
+      const ref = firestore.collection("profiles").doc(auth.currentUser.uid);
+      const data = (await ref.get()).data();
+      if (!data) {
+        console.log("No profile existed");
+        return;
+      };
+
+      console.log(data);
+      props.handleChange("name")(data.name);
+      props.handleChange("username")(data.username);
+      props.handleChange("bio")(data.bio);
+      props.handleChange("imageURI")(data.imageURI);
+      console.log("Loaded profile data");
     }
   }
+  catch (err) {
+    console.log("Load faile");
+    console.log(err);
+  }
+};
+
+export default function MyProfile({ navigation, route }: Props) {
+  const profileTrigger = async ({ name, username, bio, imageURI }: ProfileForm) => {
+    if (await updateProfile(name, username, bio, imageURI, route.params)) {
+      navigation.goBack();
+    }
+  }
+
+  let init: ProfileForm = {
+    name: "",
+    username: "",
+    bio: "",
+    imageURI: "",
+  };
 
   return (
     <SafeAreaView style={globalStyles.defaultRootContainer}>
       <View style={{ padding: 24 }}>
         <Formik
-          initialValues={{
-            name: "",
-            username: "",
-            bio: "",
-            imageURI: "",
-          }}
+          initialValues={init}
           onSubmit={profileTrigger}
         >
-          {(props) => (
-            <View>
-              <View style={globalStyles.miniSpacer} />
-              {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
-              <Text style={globalStyles.title}>My Profile</Text>
-              <View style={globalStyles.miniSpacer} />
+          {(props) => {
+            return (
               <View>
-                <Text>First and last name:</Text>
-
-                <SingleLineTextInput
-                  inputText={props.values.name}
-                  placeholder={"Whinnie the Pooh"}
-                  setText={props.handleChange("name")}
-                />
-
                 <View style={globalStyles.miniSpacer} />
-                <Text>Username:</Text>
-                <SingleLineTextInput
-                  inputText={props.values.username}
-                  placeholder={"Whinnie4Lyfe"}
-                  setText={props.handleChange("username")}
-                />
-
+                {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
+                <Text style={globalStyles.title}>My Profile</Text>
                 <View style={globalStyles.miniSpacer} />
-                <Text>Bio:</Text>
-                <MultiLineTextInput
-                  inputText={props.values.bio}
-                  placeholder={"Things I like: \n1. 🍯 \n2. Hunting endangered animals and taking their 🍯"}
-                  setText={props.handleChange("bio")}
-                />
+                <View>
+                  <Text>First and last name:</Text>
+
+                  <SingleLineTextInput
+                    inputText={props.values.name}
+                    placeholder={"Whinnie the Pooh"}
+                    setText={props.handleChange("name")}
+                  />
+
+                  <View style={globalStyles.miniSpacer} />
+                  <Text>Username:</Text>
+                  <SingleLineTextInput
+                    inputText={props.values.username}
+                    placeholder={"Whinnie4Lyfe"}
+                    setText={props.handleChange("username")}
+                  />
+
+                  <View style={globalStyles.miniSpacer} />
+                  <Text>Bio:</Text>
+                  <MultiLineTextInput
+                    inputText={props.values.bio}
+                    placeholder={"Things I like: \n1. 🍯 \n2. Hunting endangered animals and taking their 🍯"}
+                    setText={props.handleChange("bio")}
+                  />
+                </View>
+
+                <View style={styles.profileImageContainer}>
+                  <View style={globalStyles.miniSpacer} />
+                  <ImageSelector
+                    imageURI={props.values.imageURI}
+                    setImageURI={props.handleChange("imageURI")}
+                  />
+                </View>
+                <View style={globalStyles.miniSpacer} />
+                <Button title="Click me!" onPress={() => props.handleSubmit()} />
+                <Button title="Load!" onPress={() => loadProfile(props)} />
               </View>
-
-              <View style={styles.profileImageContainer}>
-                <View style={globalStyles.miniSpacer} />
-                <ImageSelector
-                  imageURI={props.values.imageURI}
-                  setImageURI={props.handleChange("imageURI")}
-                />
-              </View>
-              <View style={globalStyles.miniSpacer} />
-              <Button title="Click me!" onPress={() => props.handleSubmit()} />
-            </View>
-          )}
+            );
+          }}
         </Formik>
       </View>
     </SafeAreaView>
