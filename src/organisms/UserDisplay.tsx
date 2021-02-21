@@ -17,20 +17,18 @@ interface userTileInterface {
 }
 
 export default function UserDisplay({ addUser, removeUser, userList, displayType }: Props) {
-    let key = 0
   return (
     <SafeAreaView>
       <FlatList
         data={userList}
         renderItem={({ item }) => {
-            key += 1
+
             switch ( displayType) {
                 case "androidContact": {
                     return ( <AndroidContactTile
                         firstName={item.firstName }
-                        lastName ={item.lastName}
-                        imageURL={"https://avatars.dicebear.com/4.5/api/bottts/" + "p" + ".svg"}
-                        key={item.id} //FIXME this isn't grabbing a unique value
+                        lastName ={item.lastName + " " + item.key}
+                        key={item.key} //FIXME this isn't grabbing a unique value
                       />)
                     }
                    case "iOSContact": {
@@ -40,7 +38,7 @@ export default function UserDisplay({ addUser, removeUser, userList, displayType
                         imageURL={item.imageURL}
                         addUser={addUser}
                         removeUser={removeUser}
-                        key={username}
+                        key={key}
                       />)
                    }
 
