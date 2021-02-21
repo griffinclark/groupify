@@ -26,7 +26,7 @@ export default function Welcome({ navigation }: Props) {
       <NavigationButton
         navigation={navigation}
         title={"Create Account"}
-        destination={"CreateAccount"}
+        destination={"AddFriends"}
       />
     </SafeAreaView>
   );
