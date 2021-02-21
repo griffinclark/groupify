@@ -27,10 +27,9 @@ export default function CreateAccount({ navigation }: Props) {
       return;
     }
 
-    auth.createUserWithEmailAndPassword(form.email, form.password)
-      .then((creds) => console.log("Created user successfully!", creds));
-    
-    // TODO: @Griffin navigate elesewhere?
+    // TODO: sanity-check password
+    auth.createUserWithEmailAndPassword(form.email.trim(), form.password)
+      .then((creds) => console.log("Created user successfully!"));
   };
 
   return (
@@ -81,7 +80,7 @@ export default function CreateAccount({ navigation }: Props) {
             <View style={globalStyles.megaSpacer} />
 
             {/* FIXME: button doesn't fire the form submit event */}
-            <NavigationButton title="Continue" onNavButtonPressed={() => { props.handleSubmit }} destination={"Welcome"} navigation={navigation} />
+            <NavigationButton title="Continue" onNavButtonPressed={props.handleSubmit} destination={"Welcome"} navigation={navigation} />
           </View>
         )}
       </Formik>
