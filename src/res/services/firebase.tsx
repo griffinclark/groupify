@@ -27,7 +27,7 @@ interface Zombie {
 }
 
 interface ImportZombiesData {
-  zombies: [Zombie]
+  zombies: Zombie[]
 }
 
 const importZombies: (data: ImportZombiesData) => void = functions.httpsCallable('importZombies');

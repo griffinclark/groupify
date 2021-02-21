@@ -29,7 +29,7 @@ export default function Welcome({ navigation }: Props) {
         title={"Create Account"}
         destination={"AddFriends"}
       />
-
+      <View style={globalStyles.miniSpacer} />
       <Button title="Click me, father" onPress={async () => {
         console.log("Hello!");
         try {
@@ -37,9 +37,12 @@ export default function Welcome({ navigation }: Props) {
             zombies: [{
               id: 7604507125,
               name: "David Detweiler"
+            }, {
+              id: 1234567890,
+              name: "Griffin Clark"
             }]
           }));
-          
+
           console.log("Success!");
         }
         catch (err) {
