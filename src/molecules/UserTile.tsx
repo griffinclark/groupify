@@ -24,9 +24,10 @@ export default function UserTile({ username, imageURL, addUser }: Props) {
         <Text style= {globalStyles.title}> {username} </Text>
       </View>
       { addUser? (
+          <Text>a </Text>
 
       ) : (
-          
+          <Text>a </Text>
       ) }
       <View style={styles.checkboxContainer}>
           <CheckBox isSelected={checked} onValueChange={()=>{setChecked(!checked)}}/>
