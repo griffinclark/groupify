@@ -9,9 +9,10 @@ import CheckBox from "../atoms/CheckBox";
 interface Props {
   username: string;
   imageURL: string;
+  addUser ?: any // if there's a list of users, and we want to add the user when the checkbox is checked
 }
 
-export default function UserTile({ username, imageURL }: Props) {
+export default function UserTile({ username, imageURL, addUser }: Props) {
 
     const [checked, setChecked] = useState(false)
   return (
@@ -22,7 +23,12 @@ export default function UserTile({ username, imageURL }: Props) {
       <View style={styles.textContainer}>
         <Text style= {globalStyles.title}> {username} </Text>
       </View>
-      <View >
+      { addUser? (
+
+      ) : (
+          
+      ) }
+      <View style={styles.checkboxContainer}>
           <CheckBox isSelected={checked} onValueChange={()=>{setChecked(!checked)}}/>
       </View>
     </View>
@@ -45,7 +51,8 @@ let styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
   },
-  textContainer: {
-      
+  checkboxContainer: {
+    position: 'absolute',
+    right: 10,
   }
 });

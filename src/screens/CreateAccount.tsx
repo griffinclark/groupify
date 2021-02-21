@@ -59,7 +59,7 @@ export default function CreateAccount({ navigation }: Props) {
                   <Text>Email:</Text>
 
                   <SingleLineTextInput
-                    inputText={props.values.phoneNumber}
+                    inputText={props.values.email}
                     placeholder={"Email"}
                     setText={props.handleChange("email")}
                   />
@@ -68,7 +68,7 @@ export default function CreateAccount({ navigation }: Props) {
                   <Text>Password:</Text>
 
                   <SingleLineTextInput
-                    inputText={props.values.phoneNumber}
+                    inputText={props.values.password}
                     placeholder={"Password"}
                     setText={props.handleChange("password")}
                   />
@@ -77,7 +77,7 @@ export default function CreateAccount({ navigation }: Props) {
                   <Text>Repeat Password:</Text>
 
                   <SingleLineTextInput
-                    inputText={props.values.phoneNumber}
+                    inputText={props.values.repeatPassword}
                     placeholder={"Repeat Password"}
                     setText={props.handleChange("repeatPassword")}
                   />
