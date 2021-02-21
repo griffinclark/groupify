@@ -18,7 +18,7 @@ export default function ImageSelector({ imageURI, setImageURI }: Props) {
     if (imageURI) {
       setLocalImageURI(imageURI);
     } else {
-      setLocalImageURI("https://thumbs-prod.si-cdn.com/GQOrNeGTZKiIO-yl2XzJwSUMmUQ=/800x600/filters:no_upscale()/https://public-media.si-cdn.com/filer/49/38/4938f123-986a-478c-8402-4c538201ebc4/gettyimages-1150889841.jpg")
+      setLocalImageURI("https://static.wikia.nocookie.net/disney/images/0/03/Profile_-_Winnie_the_Pooh.png/revision/latest?cb=20200510194837")
     }
   });
 
@@ -35,7 +35,7 @@ export default function ImageSelector({ imageURI, setImageURI }: Props) {
   };
 
   return (
-    <View style={styles.rootContainer}>
+    <View >
       {/* IMAGE */}
       <View style={styles.imagePreviewContainer}>
         <CircularImageDisplay imageURI={localImageURI} />

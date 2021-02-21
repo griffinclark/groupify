@@ -45,43 +45,47 @@ export default function CreateAccount({ navigation }: Props) {
       >
         {(props: any) => (
           <View>
-            <View style={globalStyles.miniSpacer} />
-            {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
-            <SingleLineTextInput
-              inputText={props.values.phoneNumer}
-              placeholder={"Phone Number"}
-              setText={props.handleChange("phoneNumber")}
-            />
-
-            <View style={globalStyles.miniSpacer} />
-
-            <SingleLineTextInput
-              inputText={props.values.email}
-              placeholder={"Email"}
-              setText={props.handleChange("email")}
-            />
-
-            <View style={globalStyles.miniSpacer} />
-
-            <SingleLineTextInput
-              inputText={props.values.password}
-              placeholder={"Password"}
-              setText={props.handleChange("password")}
-            />
-
-            <View style={globalStyles.miniSpacer} />
-
-            <SingleLineTextInput
-              inputText={props.values.repeatPassword}
-              placeholder={"Repeat Password"}
-              setText={props.handleChange("repeatPassword")}
-            />
-
             <View style={globalStyles.megaSpacer} />
+                  {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
+                  <Text>Phone Number:</Text>
 
-            {/* FIXME: button doesn't fire the form submit event */}
-            <NavigationButton title="Continue" onNavButtonPressed={props.handleSubmit} destination={"Welcome"} navigation={navigation} />
-          </View>
+                <SingleLineTextInput
+                    inputText={props.values.phoneNumber}
+                    placeholder={"Phone Number"}
+                    setText={props.handleChange("phoneNumber")}
+                  />
+      
+                  <View style={globalStyles.miniSpacer} />
+                  <Text>Email:</Text>
+
+                  <SingleLineTextInput
+                    inputText={props.values.phoneNumber}
+                    placeholder={"Email"}
+                    setText={props.handleChange("email")}
+                  />
+      
+                  <View style={globalStyles.miniSpacer} />
+                  <Text>Password:</Text>
+
+                  <SingleLineTextInput
+                    inputText={props.values.phoneNumber}
+                    placeholder={"Password"}
+                    setText={props.handleChange("password")}
+                  />
+      
+                  <View style={globalStyles.miniSpacer} />
+                  <Text>Repeat Password:</Text>
+
+                  <SingleLineTextInput
+                    inputText={props.values.phoneNumber}
+                    placeholder={"Repeat Password"}
+                    setText={props.handleChange("repeatPassword")}
+                  />
+      
+                  <View style={globalStyles.megaSpacer} />
+      
+                  <NavigationButton title="Continue" onNavButtonPressed={()=>{props.handleSubmit}} destination={"MyProfile"} navigation={navigation} />
+                </View>
         )}
       </Formik>
     </SafeAreaView>

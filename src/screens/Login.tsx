@@ -31,13 +31,17 @@ export default function Login({ navigation }: Props) {
       >
         {(props) => (
           <View>
-            <View style={globalStyles.miniSpacer} />
+            <View style={globalStyles.megaSpacer} />
+            <Text>Username:</Text>
+
             <SingleLineTextInput
               inputText={props.values.email}
               placeholder={"Email"}
               setText={props.handleChange("email")}
             />
             <View style={globalStyles.miniSpacer} />
+            <Text>Password:</Text>
+
             <SingleLineTextInput
               inputText={props.values.password}
               placeholder={"Password"}

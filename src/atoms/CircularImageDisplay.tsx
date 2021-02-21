@@ -5,9 +5,10 @@ import { Image, StyleSheet } from "react-native";
 
 interface Props {
     imageURI: string;
-  }
+    size ?: number
+  }0
 
-  export default function CircularImageDisplay({imageURI}: Props) {
+  export default function CircularImageDisplay({imageURI, size}: Props) {
       return(
           <Image
           style={styles.imagePreviewContainer}

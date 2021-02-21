@@ -8,7 +8,7 @@ interface Props {
   destination: string;
   navigation: any; // not sure what type this is supposed to be
   title: string;
-  onNavButtonPressed: any; // do you want to do anything when this button is pressed before navigating?
+  onNavButtonPressed ?: any; // do you want to do anything when this button is pressed before navigating?
 }
 
 export default function NavigationButton({

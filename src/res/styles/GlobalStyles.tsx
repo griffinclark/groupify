@@ -23,10 +23,12 @@ export const globalStyles = StyleSheet.create({
     },
     defaultRowContainer:{
         display: "flex",
+        flex:1,
         flexDirection: "row"
     },
     defaultColumnContainer:{
         display: "flex",
+        flex:1,
         flexDirection: "column",
     },
     centerViewContainer:{
