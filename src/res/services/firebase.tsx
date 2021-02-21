@@ -3,6 +3,7 @@ import firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import "firebase/functions";
 
 const firebaseApp = firebase.initializeApp({
   apiKey: "AIzaSyCAnV-1BdHUGv3VwSZf-AoTVKsnZuaZK1w",
@@ -18,8 +19,11 @@ const firebaseApp = firebase.initializeApp({
 const firestore = firebaseApp.firestore(); // access database
 const auth = firebaseApp.auth(); // access authentication
 const storage = firebaseApp.storage(); // allows us to upload data
+const functions = firebaseApp.functions();
 
-export { firestore, auth, storage };
+const importZombies = functions.httpsCallable('importZombies');
+
+export { firestore, auth, storage, importZombies };
 
 // DAVID'S OLD CODE (delete if we don't need it anymore)
 /*
