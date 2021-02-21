@@ -12,7 +12,7 @@ interface Props {
   imageURL?: string;
   addUser?: any; // if there's a list of users, add the user by username when the checkbox is checked
   removeUser?: any;
-  key: number;
+  UID: number;
 }
 export default function AndroidContactTile({
   firstName,
@@ -20,7 +20,7 @@ export default function AndroidContactTile({
   imageURL,
   addUser,
   removeUser,
-  key,
+  UID,
 }: Props) {
   const [checked, setChecked] = useState(false);
   return (
@@ -41,11 +41,11 @@ export default function AndroidContactTile({
           onValueChange={() => {
             setChecked(!checked);
 
-            if (checked == true) {
-              addUser(key); // TODO fix
+            if (checked != true) { // IK its backwards!!!! Don't come whining to me about it. It works so it's a good solution
+              addUser(UID); 
               console.log("added");
             } else {
-              removeUser(key); // TODO fix
+              removeUser(UID); 
               console.log("removed");
             }
           }}
