@@ -4,6 +4,8 @@ import { SafeAreaView, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import AndroidContactTile from './../molecules/AndroidContactTile';
 
+// TODO handle names being too long
+
 interface Props {
   addUser?: any;
   removeUser?: any;
@@ -15,7 +17,7 @@ interface userTileInterface {
   username: string;
   imageURL: string;
 }
-let key =0
+let listKey =0
 export default function UserDisplay({ addUser, removeUser, userList, displayType }: Props) {
   return (
     <SafeAreaView>
@@ -26,7 +28,7 @@ export default function UserDisplay({ addUser, removeUser, userList, displayType
                 case "androidContact": {
                     return ( <AndroidContactTile
                         firstName={item.firstName }
-                        lastName ={item.lastName + " " + item.key}
+                        lastName ={item.lastName}
                         UID={item.key} 
                         addUser={addUser}
                         removeUser={removeUser}
@@ -60,7 +62,7 @@ export default function UserDisplay({ addUser, removeUser, userList, displayType
             }
           
         }}
-        keyExtractor={(item, index) => item.key} // FIXME sometimes these keys aren't unique. 
+        keyExtractor={(item)=> item.id.toString()} // FIXME sometimes these keys aren't unique. 
       />
     </SafeAreaView>
   );

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import * as Contacts from "expo-contacts";
-import { SafeAreaView, Text, View } from "react-native";
+import { SafeAreaView, Text, View, Button } from "react-native";
 import UserDisplay from "../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import NavigationButton from "../atoms/NavigationButton";
+import 
 
 interface Props {
   navigation: any;
@@ -38,6 +39,13 @@ export default function AddFriends({ navigation }: any) {
     })();
   }, []);
 
+  // export all accounts for zombie creation
+  const exportZombies = () => {
+    // TODO what happens if I add an actual user instead of a zombie?
+    
+
+  };
+
   const addFriend = (key: number) => {
     setFriends((friends) => [...friends, contacts[key]]);
   };
@@ -66,18 +74,25 @@ export default function AddFriends({ navigation }: any) {
       <Text style={globalStyles.title}>Your Contacts</Text>
       <View style={globalStyles.miniSpacer} />
       {contacts.length > 0 ? (
-        <View style={{height: "75%"}}>
-            <UserDisplay
-              userList={contacts}
-              displayType={"androidContact"}
-              addUser={addFriend}
-              removeUser={removeFriend}
-            />
+        <View style={{ height: "75%" }}>
+          <UserDisplay
+            userList={contacts}
+            displayType={"androidContact"}
+            addUser={addFriend}
+            removeUser={removeFriend}
+          />
         </View>
       ) : (
         <Text> Loading...</Text>
       )}
-      <NavigationButton title="Done" />
+      {/* TODO @David what do we want to do with the friend list when a user submits? */}
+      <Button
+        title="Done"
+        onPress={() => {
+          exportZombies();
+          navigation.navigate("Welcome");
+        }}
+      />
     </SafeAreaView>
   );
 }

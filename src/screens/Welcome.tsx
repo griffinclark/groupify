@@ -18,16 +18,18 @@ export default function Welcome({ navigation }: Props) {
       <Text style={styles.title}>Are You Ready To Get Meeped?</Text>
 
       <View style={globalStyles.megaSpacer} />
-      <NavigationButton
-        navigation={navigation}
+      <Button
+        onPress={()=>{
+          console.log("boop!")
+          navigation.navigate("Login")}}
         title={"Log In"}
-        destination={"Login"}
       />
       <View style={globalStyles.miniSpacer} />
-      <NavigationButton
-        navigation={navigation}
-        title={"Create Account (skip)"}
-        destination={"MyProfile"}
+      <Button
+        onPress={()=>{
+          console.log("boop!")
+          navigation.navigate("AddFriends")}}
+        title={"Create Account"}
       />
       <View style={globalStyles.miniSpacer} />
       <Button title="Click me, father" onPress={async () => {
