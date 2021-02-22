@@ -21,12 +21,15 @@ const auth = firebaseApp.auth(); // access authentication
 const storage = firebaseApp.storage(); // allows us to upload data
 const functions = firebaseApp.functions();
 
-interface Zombie {
-  id: number,
-  name: string
+export interface Zombie {
+  id: number, // user's phone number
+  name: string,
+  phoneNumber: number,
+  // email: string,
+  // profilePhoto ?: string // URL of profile photo
 }
 
-interface ImportZombiesData {
+export interface ImportZombiesData {
   zombies: Zombie[]
 }
 

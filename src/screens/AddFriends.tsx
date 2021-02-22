@@ -4,7 +4,7 @@ import { SafeAreaView, Text, View, Button } from "react-native";
 import UserDisplay from "../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import NavigationButton from "../atoms/NavigationButton";
-import 
+import {importZombies, Zombie, ImportZombiesData} from "../res/services/firebase"
 
 interface Props {
   navigation: any;
@@ -39,11 +39,31 @@ export default function AddFriends({ navigation }: any) {
     })();
   }, []);
 
-  // export all accounts for zombie creation
-  const exportZombies = () => {
-    // TODO what happens if I add an actual user instead of a zombie?
-    
+  // add new zombie accounts to FB
+  const herdZombies = () => {
+    // TODO @David what happens if I add an actual user instead of a zombie?
+    let listOfZombies: Zombie[] = []
+    let i = 0
+    friends.forEach((friend)=>{
+      contacts.forEach((contact)=>{
+        console.log("contact: ", contact.phoneNumbers	 )
+        return
+      })
+      i++
+      let zombie: Zombie = {
+        id: i,
+        name: friend.firstName + " " + friend.lastName,
+        phoneNumber: friend.phoneNumber
+      }
+      listOfZombies.push(zombie)
+    })
+    console.log("DEBUG: ", listOfZombies)
 
+    let zombiesToImport: ImportZombiesData = {
+      zombies: listOfZombies
+    }
+
+    importZombies(zombiesToImport)
   };
 
   const addFriend = (key: number) => {
@@ -89,7 +109,7 @@ export default function AddFriends({ navigation }: any) {
       <Button
         title="Done"
         onPress={() => {
-          exportZombies();
+          herdZombies();
           navigation.navigate("Welcome");
         }}
       />
