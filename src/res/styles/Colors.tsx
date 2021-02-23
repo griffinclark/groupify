@@ -21,3 +21,5 @@ export const GRAY_DARK = '#8a8a8a';
 // DEBUG
 export const TEST_HIGH_CONTRAST = "#F0f"
 export const TEST_IMAGE_URL ="https://thumbs-prod.si-cdn.com/GQOrNeGTZKiIO-yl2XzJwSUMmUQ=/800x600/filters:no_upscale()/https://public-media.si-cdn.com/filer/49/38/4938f123-986a-478c-8402-4c538201ebc4/gettyimages-1150889841.jpg "
+
+export const POST_SPACING = 15

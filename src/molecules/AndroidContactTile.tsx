@@ -3,7 +3,7 @@ import { globalStyles } from "./../res/styles/GlobalStyles";
 import { View, Text } from "react-native";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { StyleSheet } from "react-native";
-import { TEST_HIGH_CONTRAST, TEST_IMAGE_URL } from "./../res/styles/Colors";
+import { TEST_HIGH_CONTRAST, TEST_IMAGE_URL } from "../res/styles/Colors";
 import CheckBox from "../atoms/CheckBox";
 
 interface Props {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, View, Button, SafeAreaView } from "react-native";
 import NavigationButton from "../atoms/NavigationButton";
 import { globalStyles } from "./../res/styles/GlobalStyles";
-import { PRIMARY } from "./../res/styles/Colors";
+import { PRIMARY } from "../res/styles/Colors";
 import { Formik } from "formik";
 import SingleLineTextInput from "../atoms/SingleLineTextInput";
 import { auth } from "../res/services/firebase";

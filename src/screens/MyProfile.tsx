@@ -14,7 +14,7 @@ import { globalStyles } from "./../res/styles/GlobalStyles";
 import SingleLineTextInput from "./../atoms/SingleLineTextInput";
 import NavigationButton from "./../atoms/NavigationButton";
 import ImageSelector from "../molecules/ImageSelector";
-import { TEST_HIGH_CONTRAST } from "./../res/styles/Colors";
+import { TEST_HIGH_CONTRAST } from "../res/styles/Colors";
 import MultiLineTextInput from "./../atoms/MultiLineTextInput";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { firestore, auth } from "../res/services/firebase";

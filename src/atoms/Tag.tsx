@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import { View, StyleSheet, TextInput, Button } from 'react-native';
 import { DARK, SECONDARY } from "../res/styles/Colors";
 import { globalStyles } from './../res/styles/GlobalStyles';
-import { LIGHT, PRIMARY } from './../res/styles/Colors';
+import { LIGHT, PRIMARY } from '../res/styles/Colors';
 
 interface Props {
     title: string,

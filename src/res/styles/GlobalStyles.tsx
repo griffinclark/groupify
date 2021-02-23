@@ -50,5 +50,6 @@ export const globalStyles = StyleSheet.create({
     errorMessage:{
         color: 'red',
         fontWeight: 'bold'
-    }
+    },
+    
 })

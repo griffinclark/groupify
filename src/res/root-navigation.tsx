@@ -26,9 +26,6 @@ export default function RootNavigation() {
         <Stack.Screen name="Test" component={Test} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
 
-
-
-
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, StyleSheet, SafeAreaView, Button } from "react-native";
 import NavigationButton from "../atoms/NavigationButton";
 import { globalStyles } from "./../res/styles/GlobalStyles";
-import { PRIMARY } from "./../res/styles/Colors";
+import { PRIMARY } from "../res/styles/Colors";
 import UserTile from "../molecules/UserTile";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { auth, importZombies } from "../res/services/firebase";

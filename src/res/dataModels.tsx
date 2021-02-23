@@ -10,6 +10,7 @@ export interface User {
     lastName ?: string // some zombie accounts might not be made using a last name
     username ?: string // zombie accounts won't have usernames
     profileImageURL: string // zombie accounts won't have profile photos
+    type: string // this is a hack
 
 }
 
@@ -21,6 +22,7 @@ export interface Event {
     endpointUID: string
     creatorUID: string
     startTime: string // does Typescript give us a dateTime object to use here?
+    type: string // this is a hack
 
 }
 

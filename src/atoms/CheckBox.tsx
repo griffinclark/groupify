@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput } from 'react-native';
 import {CheckBox as RNCheckBox} from 'react-native'  // Technically this is depreciated but... like... do I have to care?
 import { DARK } from "../res/styles/Colors";
 import { globalStyles } from './../res/styles/GlobalStyles';
-import { LIGHT } from './../res/styles/Colors';
+import { LIGHT } from '../res/styles/Colors';
 
 interface Props{
     isSelected: boolean,
