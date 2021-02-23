@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import * as Contacts from "expo-contacts";
+import * as Contacts from "expo-contacts"; //FIXME find a different way to import contacts so we can get the phone numbers we need
 import { SafeAreaView, Text, View, Button } from "react-native";
 import UserDisplay from "../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
-import NavigationButton from "../atoms/NavigationButton";
 import {importZombies, Zombie, ImportZombiesData} from "../res/services/firebase"
 
 interface Props {
@@ -83,9 +82,8 @@ export default function AddFriends({ navigation }: any) {
       index++;
     });
   };
-  // TODO sort friends list
+  // TODO sort friends list alphabetically before desplaying
   // TODO add search bar
-  // TODO add continue button
   // TODO remove undefined undefined contacts
 
   return (
@@ -97,7 +95,7 @@ export default function AddFriends({ navigation }: any) {
         <View style={{ height: "75%" }}>
           <UserDisplay
             userList={contacts}
-            displayType={"androidContact"}
+            displayType={"androidContact"} // TODO does this change for iOS?
             addUser={addFriend}
             removeUser={removeFriend}
           />
@@ -110,7 +108,7 @@ export default function AddFriends({ navigation }: any) {
         title="Done"
         onPress={() => {
           herdZombies();
-          navigation.navigate("Welcome");
+          navigation.navigate("Home");
         }}
       />
     </SafeAreaView>

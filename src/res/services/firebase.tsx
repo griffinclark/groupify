@@ -22,19 +22,21 @@ const storage = firebaseApp.storage(); // allows us to upload data
 const functions = firebaseApp.functions();
 
 export interface Zombie {
-  id: number, // user's phone number
-  name: string,
-  phoneNumber: number,
+  id: number; // user's phone number
+  name: string;
+  phoneNumber: number;
   // email: string,
   // profilePhoto ?: string // URL of profile photo
 }
 
 export interface ImportZombiesData {
-  zombies: Zombie[]
+  zombies: Zombie[];
 }
 
-type ImportZombies = (data: ImportZombiesData) => Promise<firebase.functions.HttpsCallableResult>;
+type ImportZombies = (
+  data: ImportZombiesData
+) => Promise<firebase.functions.HttpsCallableResult>;
 
-const importZombies: ImportZombies = functions.httpsCallable('importZombies');
+const importZombies: ImportZombies = functions.httpsCallable("importZombies");
 
 export { firestore, auth, storage, importZombies };

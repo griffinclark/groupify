@@ -8,6 +8,7 @@ import CreateAccount from './../screens/CreateAccount';
 import MyProfile from './../screens/MyProfile';
 import AddFriends from './../screens/AddFriends';
 import Test from './../screens/Test';
+import Home from "../screens/Home";
 
 
 const Stack = createStackNavigator();
@@ -23,6 +24,8 @@ export default function RootNavigation() {
         <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="AddFriends" component={AddFriends} options={{ headerShown: false }}/>
         <Stack.Screen name="Test" component={Test} options={{ headerShown: false }}/>
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
+
 
 
 

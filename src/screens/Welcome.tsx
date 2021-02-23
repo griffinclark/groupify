@@ -20,15 +20,13 @@ export default function Welcome({ navigation }: Props) {
       <View style={globalStyles.megaSpacer} />
       <Button
         onPress={()=>{
-          console.log("boop!")
           navigation.navigate("Login")}}
         title={"Log In"}
       />
       <View style={globalStyles.miniSpacer} />
       <Button
         onPress={()=>{
-          console.log("boop!")
-          navigation.navigate("AddFriends")}}
+          navigation.navigate("Home")}}
         title={"Create Account"}
       />
       <View style={globalStyles.miniSpacer} />
