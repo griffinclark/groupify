@@ -60,7 +60,7 @@ let styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    backgroundColor: TEST_HIGH_CONTRAST,
+    // backgroundColor: TEST_HIGH_CONTRAST,
     alignItems: "center",
     marginTop: POST_SPACING,
     justifyContent: "space-between",

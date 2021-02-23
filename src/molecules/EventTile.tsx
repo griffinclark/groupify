@@ -56,7 +56,7 @@ let styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderBottomWidth: 0.5,
-    backgroundColor: "green",
+    // backgroundColor: "green",
     marginTop: POST_SPACING
 
   },
