@@ -57,7 +57,6 @@ export default function Home({ navigation }: Props) {
     };
 
     setTestData([testEvent, testUser, testEvent2]);
-    console.log(testData);
   }, []);
 
   return (

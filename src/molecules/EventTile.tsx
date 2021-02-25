@@ -23,7 +23,6 @@ export default function EventTile({
   creatorUID,
   startTime,
 }: Props) {
-  console.log(startTime)
   return (
     <View style={styles.rootContainer}>
       <View style={styles.rowConatiner}>

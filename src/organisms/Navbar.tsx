@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { TEST_HIGH_CONTRAST } from './../res/styles/Colors';
 
 interface Props {
   navigation: any;
@@ -10,17 +11,17 @@ export default function Navbar({ navigation }: any) {
     <View style={styles.rootContainer}>
       <TouchableOpacity
         onPress={() => {
-          console.log("pressed");
+          navigation.navigate("Home")
         }}
       >
-        <Text>Hello world</Text>
+        <Text>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          console.log("pressed");
+          navigation.navigate("BuildEvent");
         }}
       >
-        <Text>Hello world</Text>
+        <Text>Build Event</Text>
       </TouchableOpacity>
     </View>
   );
@@ -29,12 +30,13 @@ export default function Navbar({ navigation }: any) {
 let styles = StyleSheet.create({
   rootContainer: {
     height: 75,
+    backgroundColor: TEST_HIGH_CONTRAST,
     display: "flex",
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "space-between",
-    marginRight: 20,
-    marginLeft: 20 ,
-    marginBottom: 10 
+    paddingRight: 20,
+    paddingLeft: 20 ,
+    paddingBottom: 10 
   },
 });
