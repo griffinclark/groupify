@@ -1,52 +1,43 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { View, StyleSheet,Button } from "react-native";
+import { View, StyleSheet, Button, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Tag from "../atoms/Tag";
+import { globalStyles } from "./../res/styles/GlobalStyles";
 
 interface Props {
   tags: string[];
+  selectedTags: string[]
+  setSelectedTags: any
 }
-export default function TagSelector({ tags }: Props) {
-  const [selectedTags, setSelectedTags] = useState([]);
+export default function TagSelector({ tags, selectedTags, setSelectedTags }: Props) {
 
-  const addTag = (tag: string) => {
-    setSelectedTags((tag) => [...selectedTags, tag]);
-  };
 
-  const tagList = (titles: string[]) => {
-    let tags: any[] = [];
-    titles.forEach((title: string) => {
-      tags.push(<Tag title={title} setSelectedTags={setSelectedTags} />);
-    });
-    return tags;
-  };
 
-  // TODO @David where are we storing the list of possible tags?
-  let titles = ["Squirrel", "Elephant", "Hydra"];
-  tagList(titles);
 
   return (
     <View>
+      <View style={globalStyles.miniSpacer} />
+      <Text style={globalStyles.title}>What sounds interesting?</Text>
+      <View style={globalStyles.miniSpacer} />
       <FlatList
-        data={titles}
+        data={tags}
         renderItem={({ item }) => {
           return (
             <View style={styles.tagContainer}>
-              <Tag title={item} setSelectedTags={setSelectedTags} />
+              <Tag title={item} setSelectedTags={setSelectedTags} selectedTags={selectedTags}/>
             </View>
           );
         }}
         keyExtractor={(item) => item}
       />
-      <Button title={"Continer"} />
     </View>
   );
 }
 
 let styles = StyleSheet.create({
-    tagContainer: {
-        padding: 5
-    }
-})
+  tagContainer: {
+    padding: 5,
+  },
+});

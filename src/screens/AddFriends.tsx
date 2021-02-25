@@ -72,21 +72,24 @@ export default function AddFriends({ navigation }: any) {
 
   const removeFriend = (key: number) => {
     let localFriends = friends;
-    // This is a terrible way to do this. I was pressed for time, don't judge me too hard
-    let index = 0;
-    localFriends.forEach((friend) => {
-      if ((friend.key = key)) {
-        localFriends.splice(index, index + 1);
-        setFriends(localFriends);
-        return;
-      }
-      index++;
-    });
+    // // This is a terrible way to do this. I was pressed for time, don't judge me too hard
+    // let index = 0;
+    // localFriends.forEach((friend) => {
+    //   if ((friend.key = key)) {
+    //     localFriends.splice(index, index + 1);
+    //     setFriends(localFriends);
+    //     return;
+    //   }
+    //   index++;
+    // });
+    localFriends.splice(key, 1)
+    setFriends(localFriends)
+    // TODO double check that this works
   };
   // TODO sort friends list alphabetically before desplaying
   // TODO add search bar
   // TODO remove undefined undefined contacts
-
+ 
   return (
     <SafeAreaView>
       <View style={globalStyles.spacer} />

@@ -1,23 +1,33 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import { globalStyles } from './../res/styles/GlobalStyles';
-import Navbar from './../organisms/Navbar';
-import TagSelector from '../organisms/TagSelector';
+import React, { useState } from "react";
+import { View, StyleSheet, Button } from "react-native";
+import { globalStyles } from "./../res/styles/GlobalStyles";
+import Navbar from "./../organisms/Navbar";
+import TagSelector from "../organisms/TagSelector";
 
 interface Props {
-    navigation: any
+  navigation: any;
 }
-export default function BuildEvent({navigation}: any){
-    return(
-        <View style={globalStyles.defaultRootContainer}>
-            <Navbar />
-            <View>
-                <TagSelector  tags={null}/>
-            </View>
-        </View>
-    )
+// TODO @David where are we storing the list of possible tags?
+let testTags = ["Squirrel", "Elephant", "Hydra"];
+export default function BuildEvent({ navigation }: any) {
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  return (
+    <View style={globalStyles.defaultRootContainer}>
+      <Navbar navigation={navigation} />
+      <TagSelector
+        tags={testTags}
+        selectedTags={selectedTags}
+        setSelectedTags={setSelectedTags}
+      />
+      <Button
+        title={"Continue"}
+        onPress={() => {
+          console.log(selectedTags);
+        }}
+      />
+    </View>
+  );
 }
 
-let styles = StyleSheet.create({
-    
-})
+let styles = StyleSheet.create({});

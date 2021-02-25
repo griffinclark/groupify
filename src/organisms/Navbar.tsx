@@ -11,6 +11,13 @@ export default function Navbar({ navigation }: any) {
     <View style={styles.rootContainer}>
       <TouchableOpacity
         onPress={() => {
+          navigation.goBack()
+        }}
+      >
+        <Text>Go Back</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
           navigation.navigate("Home")
         }}
       >
