@@ -6,6 +6,7 @@ import { firestore } from "../res/services/firebase";
 import firebase from "firebase";
 import { FlatList } from "react-native-gesture-handler";
 import HomescreenDisplay from "../organisms/HomescreenDisplay";
+import Navbar from "../organisms/Navbar";
 
 interface Props {
   navigation: any;
@@ -13,7 +14,7 @@ interface Props {
 
 export default function Home({ navigation }: Props) {
   const [feedData, setFeedData] = useState([]);
-  const [testData, setTestData] = useState([])
+  const [testData, setTestData] = useState([]);
 
   // Used to grab dummy data from FB
   useEffect(() => {
@@ -56,14 +57,12 @@ export default function Home({ navigation }: Props) {
     };
 
     setTestData([testEvent, testUser, testEvent2]);
-    console.log(testData)
+    console.log(testData);
   }, []);
 
   return (
     <SafeAreaView>
-      <View style={styles.navbarContainer}>
-        <Text>Navbar!</Text>
-      </View>
+      <Navbar navigation={navigation}/>
       <View style={styles.feedContainer}>
         {/* TODO when data is passed in we have to note what type it is */}
         <HomescreenDisplay data={testData} />

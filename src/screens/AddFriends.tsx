@@ -41,6 +41,7 @@ export default function AddFriends({ navigation }: any) {
   // add new zombie accounts to FB
   const herdZombies = () => {
     // TODO @David what happens if I add an actual user instead of a zombie?
+    // TODO @David new zombie data model 
     let listOfZombies: Zombie[] = []
     let i = 0
     friends.forEach((friend)=>{

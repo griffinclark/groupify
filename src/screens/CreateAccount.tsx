@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { SafeAreaView, View, Button, Text } from "react-native";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import SingleLineTextInput from "./../atoms/SingleLineTextInput";
-import NavigationButton from './../atoms/NavigationButton';
+import NavigationButton from "./../atoms/NavigationButton";
 import { auth } from "../res/services/firebase";
 
 // TODO write other error messages
@@ -13,18 +13,22 @@ interface Props {
 }
 
 interface AccountForm {
-  phoneNumber: string,
-  email: string,
-  password: string,
-  repeatPassword: string
+  phoneNumber: string;
+  email: string;
+  password: string;
+  repeatPassword: string;
+  name: string;
 }
 
-async function createAccountAuth(email: string, passwd: string): Promise<boolean> {
+async function createAccountAuth(
+  email: string,
+  passwd: string
+): Promise<boolean> {
   try {
-    await auth.createUserWithEmailAndPassword(email, passwd)
+    await auth
+      .createUserWithEmailAndPassword(email, passwd)
       .then(() => console.log("Created user successfully!"));
-  }
-  catch(err) {
+  } catch (err) {
     console.log(err);
     // TODO: report error to user in friendly way
     return false;
@@ -38,10 +42,10 @@ export default function CreateAccount({ navigation }: Props) {
 
   const createAccountTrigger = async (form: AccountForm) => {
     if (form.password != form.repeatPassword) {
-      setPasswordsDontMatch(true)
+      setPasswordsDontMatch(true);
       return;
     } else {
-      setPasswordsDontMatch(false)
+      setPasswordsDontMatch(false);
     }
 
     // TODO: sanity-check password
@@ -58,6 +62,7 @@ export default function CreateAccount({ navigation }: Props) {
           email: "",
           password: "",
           repeatPassword: "",
+          name: "",
         }}
         onSubmit={createAccountTrigger}
       >
@@ -66,8 +71,19 @@ export default function CreateAccount({ navigation }: Props) {
             <View style={globalStyles.spacer} />
             <Text style={globalStyles.title}>Become a Meepster!</Text>
             <View style={globalStyles.miniSpacer} />
-           
+
             {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
+
+// not sure if we need the Preferred Name field, but it felt weird going through this without having it ask for my name
+            <Text>Full Name</Text>
+
+            <SingleLineTextInput
+              inputText={props.values.phoneNumber}
+              placeholder={"Full Name"}
+              setText={props.handleChange("name")}
+            />
+            <View style={globalStyles.miniSpacer} />
+
             <Text>Phone Number:</Text>
 
             <SingleLineTextInput
@@ -75,7 +91,7 @@ export default function CreateAccount({ navigation }: Props) {
               placeholder={"Phone Number"}
               setText={props.handleChange("phoneNumber")}
             />
-  
+
             <View style={globalStyles.miniSpacer} />
             <Text>Email:</Text>
 
@@ -105,9 +121,13 @@ export default function CreateAccount({ navigation }: Props) {
 
             <View style={globalStyles.miniSpacer} />
             {passwordsDontMatch ? (
-              <Text style={globalStyles.errorMessage}>Error: your passwords don't match!</Text>
-            ) : (<View />)}
-            <Button title="Continue" onPress={props.handleSubmit}/>
+              <Text style={globalStyles.errorMessage}>
+                Error: your passwords don't match!
+              </Text>
+            ) : (
+              <View />
+            )}
+            <Button title="Continue" onPress={props.handleSubmit} />
           </View>
         )}
       </Formik>

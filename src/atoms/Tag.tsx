@@ -6,16 +6,16 @@ import { LIGHT, PRIMARY } from '../res/styles/Colors';
 
 interface Props {
     title: string,
-    onPress: any // callback to parent
+    setSelectedTags: any // callback to parent
 }
 
-export default function Tag({title, onPress}:Props) {
+export default function Tag({title, setSelectedTags}:Props) {
     const [pressed, setPressed] = useState(false)
 
     const tagPressed = ()=>{
         // TODO test to make sure this works as intended
         setPressed(!pressed)
-        onPress()
+        setSelectedTags(title)
     }
 
     const getColor = ()=>{

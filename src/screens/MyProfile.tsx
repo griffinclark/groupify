@@ -126,7 +126,7 @@ export default function MyProfile({ navigation, route }: Props) {
                 <Text style={globalStyles.title}>My Profile</Text>
                 <View style={globalStyles.miniSpacer} />
                 <View>
-                  <Text>First and last name:</Text>
+                  <Text>Name/Nickname</Text>
 
                   <SingleLineTextInput
                     inputText={props.values.name}

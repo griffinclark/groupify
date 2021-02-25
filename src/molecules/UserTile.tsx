@@ -65,7 +65,9 @@ let styles = StyleSheet.create({
     marginTop: POST_SPACING,
     justifyContent: "space-between",
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
+    borderBottomWidth: 1
+
   },
   profileImageContainer: {
     display: "flex",
