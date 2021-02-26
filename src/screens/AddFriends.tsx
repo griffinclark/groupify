@@ -5,15 +5,21 @@ import UserDisplay from "../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import {importZombies, Zombie, ImportZombiesData} from "../res/services/firebase"
 import Navbar from "../organisms/Navbar";
+import * as models from "../res/dataModels";
 
 interface Props {
   navigation: any
   zombies ? : boolean
 }
 
+
+
 export default function AddFriends({ navigation, zombies }: Props) {
-  const [contacts, setContacts] = useState([]); // this is the list of contacts imported from a user's phone
-  const [friends, setFriends] = useState([]); // this is the list of friends a user will be importing into the app
+  // this is the list of contacts imported from a user's phone
+  const [contacts, setContacts] = useState<Contacts.Contact[]>([]);
+  
+  // this is the list of friends a user will be importing into the app
+  const [friends, setFriends] = useState<models.User[]>([]);
 
   // Grab the user's contacts list
   useEffect(() => {
@@ -27,7 +33,7 @@ export default function AddFriends({ navigation, zombies }: Props) {
         if (data.length > 0) {
           let keyValue = 0;
           data.forEach((dataPoint) => {
-            dataPoint.key = keyValue;
+            dataPoint.key = keyValue; // TODO: @Griffin this field isn't in the type
 
             // TODO figure out why some contacts are loading in as "undefined undefined"
             setContacts((contacts) => [...contacts, dataPoint]);
