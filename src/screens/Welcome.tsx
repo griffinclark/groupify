@@ -15,8 +15,7 @@ export default function Welcome({ navigation }: Props) {
     <SafeAreaView style={globalStyles.defaultRootContainer}>
       <View style={globalStyles.spacer} />
       <Text style={styles.title}>Are You Ready To Get Meeped?</Text>
-
-      <View style={globalStyles.megaSpacer} />
+      <View style={globalStyles.miniSpacer} />
       <Button
         onPress={()=>{
           navigation.navigate("Login")}}
@@ -31,6 +30,11 @@ export default function Welcome({ navigation }: Props) {
       <Button
         onPress={()=>{navigation.navigate("CreateAccount")}}
         title={"Create Account"}
+      />
+      <View style={globalStyles.miniSpacer} />
+      <Button
+        onPress={()=>{navigation.navigate("MyProfile")}}
+        title={"My Profile"}
       />
       <View style={globalStyles.miniSpacer} />
       <Button title="Click me, father" onPress={async () => {

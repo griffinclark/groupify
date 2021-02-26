@@ -1,7 +1,7 @@
 import {firestore} from "firebase";
 
 export interface User {
-    dateCreated: string
+    dateCreated: firestore.Timestamp
     version: number
     UID: string
     activated: boolean
@@ -12,7 +12,7 @@ export interface User {
     username ?: string // zombie accounts won't have usernames
     profileImageURL: string // zombie accounts won't have profile photos
     type: string // this is a hack
-    
+
 }
 
 export interface Event {
