@@ -4,6 +4,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import "firebase/functions";
+import * as models from "../dataModels";
 
 const firebaseApp = firebase.initializeApp({
   apiKey: "AIzaSyCAnV-1BdHUGv3VwSZf-AoTVKsnZuaZK1w",
@@ -34,8 +35,9 @@ export interface ImportZombiesData {
 
 type ImportZombies = (
   data: ImportZombiesData
-) => Promise<firebase.functions.HttpsCallableResult>;
+) => Promise<{}>;
 
 const importZombies: ImportZombies = functions.httpsCallable("importZombies");
+const getUser: (uid: string) => Promise<{data: models.User}> = functions.httpsCallable("getUser");
 
-export { firestore, auth, storage, importZombies };
+export { firestore, auth, storage, importZombies, getUser };

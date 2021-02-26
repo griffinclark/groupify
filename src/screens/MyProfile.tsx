@@ -12,12 +12,11 @@ import {
 } from "react-native";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import SingleLineTextInput from "./../atoms/SingleLineTextInput";
-import NavigationButton from "./../atoms/NavigationButton";
 import ImageSelector from "../molecules/ImageSelector";
 import { TEST_HIGH_CONTRAST } from "../res/styles/Colors";
 import MultiLineTextInput from "./../atoms/MultiLineTextInput";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { firestore, auth } from "../res/services/firebase";
+import { getUser, auth } from "../res/services/firebase";
 import { PhoneNumber } from "expo-contacts";
 
 // TODO @David add data here into FB
@@ -51,23 +50,7 @@ async function updateProfile(
     // TODO: ??? What do we do here? (fatal: never happens in expected flow)
   }
 
-  const ref = firestore.collection("profiles").doc(auth.currentUser.uid);
-  let doc = {
-    name: name,
-    username: username,
-    bio: bio,
-    imageURI: imageURI,
-    version: 0
-  };
-
-  if (phone) {
-    await ref.set({...doc, phone});
-  }
-  else {
-    await ref.set(doc);
-  }
-
-  console.log("Created Profile!");
+  console.log("TODO David Profile");
 
   return true;
 }
@@ -76,23 +59,17 @@ async function loadProfile(props: FormikProps<ProfileForm>): Promise<void> {
   try {
     console.log("Attempting load");
     if (auth.currentUser) {
-      const ref = firestore.collection("profiles").doc(auth.currentUser.uid);
-      const data = (await ref.get()).data();
-      if (!data) {
-        console.log("No profile existed");
-        return;
-      };
-
+      const data = (await getUser(auth.currentUser.uid)).data;
       console.log(data);
-      props.handleChange("name")(data.name);
-      props.handleChange("username")(data.username);
-      props.handleChange("bio")(data.bio);
-      props.handleChange("imageURI")(data.imageURI);
+      props.handleChange("name")(`${data.firstName}${data.lastName ? " " + data.lastName : ""}`);
+      props.handleChange("username")(`${data.username ? data.username : ""}`);
+      props.handleChange("bio")("TODO ME");
+      props.handleChange("imageURI")(data.profileImageURL);
       console.log("Loaded profile data");
     }
   }
   catch (err) {
-    console.log("Load faile");
+    console.log("Load failed");
     console.log(err);
   }
 };

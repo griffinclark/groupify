@@ -72,8 +72,7 @@ export default function CreateAccount({ navigation }: Props) {
             <View style={globalStyles.miniSpacer} />
 
             {/* TODO See how we had to copy and paste SingleLineTextInput four times? We should have a factory/generator  */}
-
-// not sure if we need the Preferred Name field, but it felt weird going through this without having it ask for my name
+            
             <Text>Full Name</Text>
 
             <SingleLineTextInput
