@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { SafeAreaView, View, Button, Text } from "react-native";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import SingleLineTextInput from "./../atoms/SingleLineTextInput";
-import { auth } from "../res/services/firebase";
+import { auth, waitForUser } from "../res/services/firebase";
 import { firestore } from "firebase";
 
 // TODO write other error messages
@@ -50,19 +50,8 @@ export default function CreateAccount({ navigation }: Props) {
 
     // TODO: sanity-check password
     if (await createAccountAuth(form.email.trim(), form.password)) {
-      const ref = firestore().collection("users").doc(auth.currentUser?.uid);
-      const unsubscribe = ref.onSnapshot({
-        next: (snapshot) => {
-          unsubscribe();
-          navigation.navigate("MyProfile", form.phoneNumber);          
-        },
-        error: (err) => {
-          unsubscribe();
-          console.log("Something went wrong");
-          console.log(err);
-          // TODO: @Griffin
-        }
-      })
+      console.log((await waitForUser({})).data);
+      navigation.navigate("MyProfile", form.phoneNumber);
     }
   };
 

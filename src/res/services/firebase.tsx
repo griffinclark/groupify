@@ -39,5 +39,6 @@ type ImportZombies = (
 
 const importZombies: ImportZombies = functions.httpsCallable("importZombies");
 const getUser: (uid: string) => Promise<{data: models.User}> = functions.httpsCallable("getUser");
+const waitForUser: (foo: {}) => Promise<{data: {hi: string}}> = functions.httpsCallable("waitForAccount");
 
-export { firestore, auth, storage, importZombies, getUser };
+export { firestore, auth, storage, importZombies, getUser, waitForUser };
