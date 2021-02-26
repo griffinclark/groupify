@@ -24,7 +24,6 @@ const functions = firebaseApp.functions();
 export interface Zombie {
   id: number; // user's phone number
   name: string;
-  phoneNumber: number;
   // email: string,
   // profilePhoto ?: string // URL of profile photo
 }

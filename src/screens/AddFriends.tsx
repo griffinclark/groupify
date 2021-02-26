@@ -59,9 +59,8 @@ export default function AddFriends({ navigation, zombies }: Props) {
       })
       i++
       let zombie: Zombie = {
-        id: i,
-        name: friend.firstName + " " + friend.lastName,
-        phoneNumber: friend.phoneNumber
+        id: friend.phoneNumber,
+        name: friend.firstName + " " + friend.lastName
       }
       listOfZombies.push(zombie)
     })

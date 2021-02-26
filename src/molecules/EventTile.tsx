@@ -29,6 +29,7 @@ export default function EventTile({
   startTime,
   onPress: pressFunction,
 }: Props) {
+  // @Griffin: you'll get a cloud function to retrieve an endpoint by UID, and one to retrieve a user by UID
   const getImage = (endpointUID: string) => {
     // TODO @David return the image for an endpoint given its UID
     return TEST_IMAGE_URL;
@@ -56,7 +57,7 @@ export default function EventTile({
               Creator /*TODO @David get name by ID*/: {getName(creatorUID)}
             </Text>
             <Text>Start time: {startTime.Bf}</Text>
-            {/* TODO @David can't get a server timestamp from Firebase */}
+            {/* TODO @David can't get a server timestamp from Firebase (Event start time) */}
             <View style={globalStyles.miniSpacer} />
           </View>
 

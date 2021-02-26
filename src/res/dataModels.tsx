@@ -1,3 +1,4 @@
+import {firestore} from "firebase";
 
 export interface User {
     dateCreated: string
@@ -5,7 +6,7 @@ export interface User {
     UID: string
     activated: boolean
     email ?: string
-    phoneNumber: string
+    phoneNumber: string // @Griffin This needs to be canonicalized format, not just a rando string
     firstName: string
     lastName ?: string // some zombie accounts might not be made using a last name
     username ?: string // zombie accounts won't have usernames
@@ -21,7 +22,7 @@ export interface Event {
     title: string
     endpointUID: string
     creatorUID: string
-    startTime: string // does Typescript give us a dateTime object to use here?
+    startTime: firestore.Timestamp // does Typescript give us a dateTime object to use here?
     type: string // this is a hack
 
 }

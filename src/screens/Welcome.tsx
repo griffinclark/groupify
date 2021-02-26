@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, View, StyleSheet, SafeAreaView, Button } from "react-native";
-import NavigationButton from "../atoms/NavigationButton";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { PRIMARY } from "../res/styles/Colors";
 import UserTile from "../molecules/UserTile";
@@ -25,8 +24,12 @@ export default function Welcome({ navigation }: Props) {
       />
       <View style={globalStyles.miniSpacer} />
       <Button
-        onPress={()=>{
-          navigation.navigate("Home")}}
+        onPress={()=>{navigation.navigate("Home")}}
+        title={"Home"}
+      />
+      <View style={globalStyles.miniSpacer} />
+      <Button
+        onPress={()=>{navigation.navigate("CreateAccount")}}
         title={"Create Account"}
       />
       <View style={globalStyles.miniSpacer} />
