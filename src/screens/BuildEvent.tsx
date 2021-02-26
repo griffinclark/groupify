@@ -24,6 +24,8 @@ export default function BuildEvent({ navigation }: any) {
         title={"Continue"}
         onPress={() => {
           console.log(selectedTags);
+          navigation.navigate("SelectFriends")
+          // TODO @David how do we carry selected tags over?
         }}
       />
     </View>

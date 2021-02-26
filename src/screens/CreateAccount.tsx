@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { SafeAreaView, View, Button, Text } from "react-native";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import SingleLineTextInput from "./../atoms/SingleLineTextInput";
-import NavigationButton from "./../atoms/NavigationButton";
 import { auth } from "../res/services/firebase";
 
 // TODO write other error messages

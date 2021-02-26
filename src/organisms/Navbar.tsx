@@ -25,6 +25,13 @@ export default function Navbar({ navigation }: any) {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
+          navigation.navigate("AddFriends")
+        }}
+      >
+        <Text>Add Friends</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
           navigation.navigate("BuildEvent");
         }}
       >

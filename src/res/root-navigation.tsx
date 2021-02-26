@@ -10,6 +10,8 @@ import AddFriends from './../screens/AddFriends';
 import Test from './../screens/Test';
 import Home from "../screens/Home";
 import BuildEvent from './../screens/BuildEvent';
+import SelectFriends from './../screens/SelectFriends';
+import EventResults from './../screens/EventResults';
 
 
 const Stack = createStackNavigator();
@@ -27,6 +29,9 @@ export default function RootNavigation() {
         <Stack.Screen name="Test" component={Test} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
         <Stack.Screen name="BuildEvent" component={BuildEvent} options={{ headerShown: false }}/>
+        <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }}/>
+        <Stack.Screen name="EventResults" component={EventResults} options={{ headerShown: false }}/>
+
 
       </Stack.Navigator>
     </NavigationContainer>

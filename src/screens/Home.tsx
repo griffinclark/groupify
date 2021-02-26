@@ -5,7 +5,7 @@ import { TEST_HIGH_CONTRAST } from "../res/styles/Colors";
 import { firestore } from "../res/services/firebase";
 import firebase from "firebase";
 import { FlatList } from "react-native-gesture-handler";
-import HomescreenDisplay from "../organisms/HomescreenDisplay";
+import DataDisplay from "../organisms/DataDisplay";
 import Navbar from "../organisms/Navbar";
 
 interface Props {
@@ -64,7 +64,7 @@ export default function Home({ navigation }: Props) {
       <Navbar navigation={navigation}/>
       <View style={styles.feedContainer}>
         {/* TODO when data is passed in we have to note what type it is */}
-        <HomescreenDisplay data={testData} />
+        <DataDisplay data={testData} />
       </View>
     </SafeAreaView>
   );

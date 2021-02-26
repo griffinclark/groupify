@@ -4,12 +4,14 @@ import { SafeAreaView, Text, View, Button } from "react-native";
 import UserDisplay from "../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import {importZombies, Zombie, ImportZombiesData} from "../res/services/firebase"
+import Navbar from "../organisms/Navbar";
 
 interface Props {
-  navigation: any;
+  navigation: any
+  zombies ? : boolean
 }
 
-export default function AddFriends({ navigation }: any) {
+export default function AddFriends({ navigation, zombies }: Props) {
   const [contacts, setContacts] = useState([]); // this is the list of contacts imported from a user's phone
   const [friends, setFriends] = useState([]); // this is the list of friends a user will be importing into the app
 
@@ -92,6 +94,7 @@ export default function AddFriends({ navigation }: any) {
  
   return (
     <SafeAreaView>
+      <Navbar />
       <View style={globalStyles.spacer} />
       <Text style={globalStyles.title}>Your Contacts</Text>
       <View style={globalStyles.miniSpacer} />
@@ -111,8 +114,11 @@ export default function AddFriends({ navigation }: any) {
       <Button
         title="Done"
         onPress={() => {
-          herdZombies();
-          navigation.navigate("Home");
+          if(zombies == true) {
+            console.log("Herding zombies...")
+            herdZombies();
+          }
+          navigation.navigate("EventResults");
         }}
       />
     </SafeAreaView>

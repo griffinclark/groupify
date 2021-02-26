@@ -12,21 +12,15 @@ import CheckBox from "../atoms/CheckBox";
 import SquareImageDisplay from "./../atoms/SquareImageDisplay";
 
 interface Props {
-  dateCreated: string;
   UID: string;
   title: string;
   endpointUID: string;
-  creatorUID: string;
-  startTime: string;
   onPress: any;
 }
-export default function EventTile({
-  dateCreated,
+export default function EndpointTile({
   UID,
   title,
   endpointUID,
-  creatorUID,
-  startTime,
   onPress: pressFunction,
 }: Props) {
   const getImage = (endpointUID: string) => {
@@ -50,20 +44,13 @@ export default function EventTile({
       <View style={globalStyles.miniSpacer} />
       <View style={styles.rowConatiner}>
         <View style={globalStyles.defaultColumnContainer}>
-          <Text style={globalStyles.title}> {title} </Text>
-          <View>
-            <Text>
-              Creator /*TODO @David get name by ID*/: {getName(creatorUID)}
-            </Text>
-            <Text>Start time: {startTime.Bf}</Text>
-            {/* TODO @David can't get a server timestamp from Firebase */}
-            <View style={globalStyles.miniSpacer} />
-          </View>
+          <View style={globalStyles.miniSpacer} />
 
+          <Text style={globalStyles.title}> {title} </Text>
           <Button
-            title={"More Details"}
+            title={"Create This Event"}
             onPress={() => {
-              pressFunction({ UID, endpointUID, creatorUID });
+              pressFunction({ endpointUID });
             }}
           ></Button>
         </View>
@@ -74,14 +61,14 @@ export default function EventTile({
 
 let styles = StyleSheet.create({
   rootContainer: {
-    height: 400,
+    height: 350,
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     borderBottomWidth: 0.5,
     // backgroundColor: "green",
-    marginTop: POST_SPACING,
+    marginTop: 5,
   },
   profileImageContainer: {
     height: 200,
