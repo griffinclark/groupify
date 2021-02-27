@@ -78,7 +78,7 @@ export default function CreateAccount({ navigation }: Props) {
             <Text>Full Name</Text>
 
             <SingleLineTextInput
-              inputText={props.values.phoneNumber}
+              inputText={props.values.name}
               placeholder={"Full Name"}
               setText={props.handleChange("name")}
             />

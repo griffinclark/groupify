@@ -8,9 +8,10 @@ import EndpointTile from "./../molecules/EndpointTile";
 
 interface Props {
   data: object[];
+  navigation: any
 }
 
-export default function DataDisplay({ data }: Props) {
+export default function DataDisplay({ data, navigation }: Props) {
   return (
     <View>
       <FlatList
@@ -26,7 +27,8 @@ export default function DataDisplay({ data }: Props) {
                 creatorUID={item.creatorUID}
                 startTime={item.startTime}
                 onPress={() => {
-                  console.log("TODO write onPress function");
+                    console.log("TODO write onPress function");
+
                 }}
               />
             );
@@ -36,9 +38,8 @@ export default function DataDisplay({ data }: Props) {
                 title={item.title}
                 endpointUID={item.endpointUID}
                 UID={item.UID}
-                onPress={() => {
-                  console.log("TODO write onPress function");
-                }}
+                navigation={navigation}
+            
               />
             );
           } else if (item.type == "user") {

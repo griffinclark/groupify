@@ -46,7 +46,6 @@ export default function UserDisplay({ addUser, removeUser, userList, displayType
                    }
 
                    case "user":{
-                       // TODO finish and test
                     return ( <UserTile
                         username={item.username}
                         imageURL={item.imageURL}

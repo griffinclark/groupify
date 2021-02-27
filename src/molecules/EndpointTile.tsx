@@ -15,13 +15,13 @@ interface Props {
   UID: string;
   title: string;
   endpointUID: string;
-  onPress: any;
+  navigation: any;
 }
 export default function EndpointTile({
   UID,
   title,
   endpointUID,
-  onPress: pressFunction,
+  navigation,
 }: Props) {
   const getImage = (endpointUID: string) => {
     // TODO @David return the image for an endpoint given its UID
@@ -31,6 +31,10 @@ export default function EndpointTile({
   const getName = (UID: string) => {
     // TODO @David return a user's name given their UID
     return "David help!!!";
+  };
+
+  const createEvent = () => {
+    // TODO @David create a new event
   };
 
   return (
@@ -49,8 +53,9 @@ export default function EndpointTile({
           <Text style={globalStyles.title}> {title} </Text>
           <Button
             title={"Create This Event"}
-            onPress={() => {
-              pressFunction({ endpointUID });
+            onPress={async () => {
+              await createEvent(); // event needs to be created before we navigate
+              navigation.navigate("ConfirmEvent");
             }}
           ></Button>
         </View>

@@ -18,7 +18,6 @@ interface Props {
   endpointUID: string;
   creatorUID: string;
   startTime: string;
-  onPress: any;
 }
 export default function EventTile({
   dateCreated,
@@ -27,7 +26,6 @@ export default function EventTile({
   endpointUID,
   creatorUID,
   startTime,
-  onPress: pressFunction,
 }: Props) {
   // @Griffin: you'll get a cloud function to retrieve an endpoint by UID, and one to retrieve a user by UID
   const getImage = (endpointUID: string) => {
@@ -56,7 +54,7 @@ export default function EventTile({
             <Text>
               Creator /*TODO @David get name by ID*/: {getName(creatorUID)}
             </Text>
-            <Text>Start time: {startTime.Bf}</Text>
+            <Text>Start time: {"@David display start time"}</Text>
             {/* TODO @David can't get a server timestamp from Firebase (Event start time) */}
             <View style={globalStyles.miniSpacer} />
           </View>
@@ -64,7 +62,9 @@ export default function EventTile({
           <Button
             title={"More Details"}
             onPress={() => {
-              pressFunction({ UID, endpointUID, creatorUID });
+              // TODO @Griffin replace this with a navigation to endpoint display
+          
+              console.log("@Griffin fix")
             }}
           ></Button>
         </View>

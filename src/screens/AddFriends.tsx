@@ -10,11 +10,12 @@ import * as models from "../res/dataModels";
 interface Props {
   navigation: any
   zombies ? : boolean
+  nextScreen: string
 }
 
 
 
-export default function AddFriends({ navigation, zombies }: Props) {
+export default function AddFriends({ navigation, zombies, nextScreen }: Props) {
   // this is the list of contacts imported from a user's phone
   const [contacts, setContacts] = useState<Contacts.Contact[]>([]);
   
@@ -100,7 +101,7 @@ export default function AddFriends({ navigation, zombies }: Props) {
   return (
     <SafeAreaView>
       <Navbar />
-      <View style={globalStyles.spacer} />
+      <View style={globalStyles.miniSpacer} />
       <Text style={globalStyles.title}>Your Contacts</Text>
       <View style={globalStyles.miniSpacer} />
       {contacts.length > 0 ? (
@@ -123,7 +124,7 @@ export default function AddFriends({ navigation, zombies }: Props) {
             console.log("Herding zombies...")
             herdZombies();
           }
-          navigation.navigate("EventResults");
+          navigation.navigate(nextScreen);
         }}
       />
     </SafeAreaView>

@@ -34,9 +34,9 @@ export default function Tag({title, setSelectedTags, selectedTags}:Props) {
 
     const getColor = ()=>{
         if(pressed){
-            return 'purple'
+            return 'green'
         } else {
-            return 'darkgreen'
+            return 'gray'
         }
     }
 

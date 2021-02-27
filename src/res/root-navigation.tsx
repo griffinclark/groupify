@@ -12,6 +12,8 @@ import Home from "../screens/Home";
 import BuildEvent from './../screens/BuildEvent';
 import SelectFriends from './../screens/SelectFriends';
 import EventResults from './../screens/EventResults';
+import ConfirmEvent from './../screens/ConfirmEvent';
+import ChangeInvitedFriends from './../screens/ChangeInvitedFriends';
 
 
 const Stack = createStackNavigator();
@@ -31,6 +33,8 @@ export default function RootNavigation() {
         <Stack.Screen name="BuildEvent" component={BuildEvent} options={{ headerShown: false }}/>
         <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }}/>
         <Stack.Screen name="EventResults" component={EventResults} options={{ headerShown: false }}/>
+        <Stack.Screen name="ConfirmEvent" component={ConfirmEvent} options={{ headerShown: false }}/>
+        <Stack.Screen name="ChangeInvitedFriends" component={ChangeInvitedFriends} options={{ headerShown: false }}/>
 
 
       </Stack.Navigator>

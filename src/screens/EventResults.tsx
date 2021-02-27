@@ -46,8 +46,7 @@ export default function EventResults({ navigation }: Props) {
         <Navbar navigation={navigation}/>
         <Text style={globalStyles.title}>Suggested Events</Text>
         <View style={styles.feedContainer}>
-        <DataDisplay data={endpoints}/>
-
+        <DataDisplay data={endpoints} navigation={navigation}/>
         </View>
     </SafeAreaView>
   );
