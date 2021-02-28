@@ -1,10 +1,6 @@
 import {firestore} from "firebase";
 
-export interface User {
-    dateCreated: firestore.Timestamp
-    version: number
-    UID: string
-    activated: boolean
+export interface Profile {
     email ?: string
     phoneNumber: string // @Griffin This needs to be canonicalized format, not just a rando string
     firstName: string
@@ -12,7 +8,15 @@ export interface User {
     username ?: string // zombie accounts won't have usernames
     profileImageURL: string // zombie accounts won't have profile photos
     type: string // this is a hack
+}
 
+// TODO: Share!!!
+export interface User {
+    dateCreated: firestore.Timestamp | firestore.FieldValue
+    version: number
+    UID: string
+    activated: boolean
+    profile: Profile
 }
 
 export interface Event {
@@ -24,15 +28,12 @@ export interface Event {
     creatorUID: string
     startTime: firestore.Timestamp // does Typescript give us a dateTime object to use here?
     type: string // this is a hack
-
 }
 
 export interface FriendRecord {
-    dateCreated: string
+    targetUID: string
+    dateCreated: firestore.Timestamp | firestore.FieldValue
     version: number
-    UID: string
-    targetUID: string // user who the record is pointing at
-    ownerUID: string // user who created the record
 }
 
 export interface EventInviteRecord {
