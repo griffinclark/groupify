@@ -95,9 +95,8 @@ export default function AddFriends({ navigation, zombies, nextScreen }: Props) {
     setFriends(localFriends)
     // TODO double check that this works
   };
-  // TODO sort friends list alphabetically before desplaying
+  // TODO sort friends list alphabetically before displaying
   // TODO add search bar
-  // TODO remove undefined undefined contacts
  
   return (
     <SafeAreaView>
