@@ -3,7 +3,7 @@ import * as Contacts from "expo-contacts"; //FIXME find a different way to impor
 import { SafeAreaView, Text, View, Button } from "react-native";
 import UserDisplay from "../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
-import {importZombies, Zombie, ImportZombiesData} from "../res/services/firebase"
+import {importZombies, Zombie, ImportZombiesData, addFriendRecord} from "../res/services/firebase"
 import Navbar from "../organisms/Navbar";
 import * as models from "../res/dataModels";
 
@@ -48,9 +48,9 @@ export default function AddFriends({ navigation, zombies, nextScreen }: Props) {
   }, []);
 
   // add new zombie accounts to FB
-  const herdZombies = () => {
+  const herdZombies = async () => {
     // TODO @David what happens if I add an actual user instead of a zombie?
-    // TODO @David new zombie data model 
+    // TODO @David return [UID...] of each user passed to importZombies
     let listOfZombies: Zombie[] = []
     let i = 0
     friends.forEach((friend)=>{
@@ -71,7 +71,8 @@ export default function AddFriends({ navigation, zombies, nextScreen }: Props) {
       zombies: listOfZombies
     }
 
-    importZombies(zombiesToImport)
+    let UIDs: string[] = await importZombies(zombiesToImport)
+    return UIDs
   };
 
   const addFriend = (key: number) => {
@@ -122,7 +123,11 @@ export default function AddFriends({ navigation, zombies, nextScreen }: Props) {
         onPress={() => {
           if(zombies == true) {
             console.log("Herding zombies...")
-            herdZombies();
+            let newFriends: string[] = herdZombies(); // array of UIDs
+            newFriends.forEach((uid)=>{
+              // TODO test
+              addFriendRecord(uid)
+            })
           }
           navigation.navigate(nextScreen);
         }}

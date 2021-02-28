@@ -59,14 +59,14 @@ export default function EventTile({
             <View style={globalStyles.miniSpacer} />
           </View>
 
-          <Button
+          {/* <Button
             title={"More Details"}
             onPress={() => {
               // TODO @Griffin replace this with a navigation to endpoint display
           
               console.log("@Griffin fix")
             }}
-          ></Button>
+          ></Button> */}
         </View>
       </View>
     </View>
