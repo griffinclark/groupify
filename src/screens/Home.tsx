@@ -60,13 +60,13 @@ export default function Home({ navigation }: Props) {
   }, []);
 
   return (
-    <SafeAreaView>
+    <View>
       <Navbar navigation={navigation}/>
       <View style={styles.feedContainer}>
         {/* TODO when data is passed in we have to note what type it is */}
         <DataDisplay data={testData} />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

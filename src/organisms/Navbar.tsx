@@ -9,13 +9,13 @@ interface Props {
 export default function Navbar({ navigation }: any) {
   return (
     <View style={styles.rootContainer}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {
           navigation.goBack()
         }}
       >
         <Text>Go Back</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         onPress={() => {
           navigation.navigate("Home")
@@ -44,7 +44,6 @@ export default function Navbar({ navigation }: any) {
 let styles = StyleSheet.create({
   rootContainer: {
     height: 75,
-    backgroundColor: TEST_HIGH_CONTRAST,
     display: "flex",
     flexDirection: "row",
     alignItems: "flex-end",
