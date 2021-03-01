@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import * as Contacts from "expo-contacts"; //FIXME find a different way to import contacts so we can get the phone numbers we need
+// import * as Contacts from "expo-contacts"; 
+import { PermissionsAndroid } from 'react-native';
+
+import Contacts from 'react-native-contacts'
 import { SafeAreaView, Text, View, Button } from "react-native";
 import UserDisplay from "../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
@@ -22,30 +25,49 @@ export default function AddFriends({ navigation, zombies, nextScreen }: Props) {
   // this is the list of friends a user will be importing into the app
   const [friends, setFriends] = useState<models.User[]>([]);
 
-  // Grab the user's contacts list
-  useEffect(() => {
-    (async () => {
-      const { status } = await Contacts.requestPermissionsAsync();
-      if (status === "granted") {
-        const { data } = await Contacts.getContactsAsync({
-          fields: [Contacts.Fields.Emails], // not sure what this is
-        });
+  // OLD Grab the user's contacts list
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Contacts.requestPermissionsAsync();
+  //     if (status === "granted") {
+  //       const { data } = await Contacts.getContactsAsync({
+  //         fields: [Contacts.Fields.Emails], // not sure what this is
+  //       });
 
-        if (data.length > 0) {
-          let keyValue = 0;
-          data.forEach((dataPoint) => {
-            dataPoint.key = keyValue; // TODO: @Griffin this field isn't in the type
+  //       if (data.length > 0) {
+  //         let keyValue = 0;
+  //         data.forEach((dataPoint) => {
+  //           dataPoint.key = keyValue; // TODO: @Griffin this field isn't in the type
 
-            // TODO figure out why some contacts are loading in as "undefined undefined"
-            setContacts((contacts) => [...contacts, dataPoint]);
-            keyValue += 1;
-          });
-        } else {
-          console.log("no contacts were found");
-        }
+  //           // TODO figure out why some contacts are loading in as "undefined undefined"
+  //           setContacts((contacts) => [...contacts, dataPoint]);
+  //           keyValue += 1;
+  //         });
+  //       } else {
+  //         console.log("no contacts were found");
+  //       }
+  //     }
+  //   })();
+  // }, []);
+
+  useEffect(()=>{
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+      {
+        'title': 'Contacts',
+        'message': 'This app would like to view your contacts.',
+        'buttonPositive': 'Please accept bare mortal'
       }
-    })();
-  }, []);
+    )
+    .then(Contacts.getAll((err, contacts)=>{
+      if (err === 'denied'){
+        // error
+      } else {
+        // contacts returned in Array
+        console.log(contacts);
+      }
+    }))
+  }, [])
 
   // add new zombie accounts to FB
   const herdZombies = async () => {
