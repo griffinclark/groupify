@@ -38,8 +38,9 @@ type ImportZombies = (
 ) => Promise<{}>;
 
 const importZombies: ImportZombies = functions.httpsCallable("importZombies");
-const getUser: (uid: string) => Promise<{data: models.User}> = functions.httpsCallable("getUser");
+const getProfile: (uid: string) => Promise<{data: models.Profile}> = functions.httpsCallable("getProfile");
 const waitForUser: (foo: {}) => Promise<{data: {hi: string}}> = functions.httpsCallable("waitForAccount");
 const addFriendRecord: (uid: string) => Promise<{}> = functions.httpsCallable("addFriendRecord")
+const putProfile: (info: models.Profile) => Promise<{}> = functions.httpsCallable("putProfile");
 
-export { firestore, auth, storage, importZombies, getUser, waitForUser, addFriendRecord };
+export { firestore, auth, storage, importZombies, getProfile as getUser, waitForUser, putProfile as putUser };

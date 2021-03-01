@@ -16,7 +16,7 @@ import ImageSelector from "../molecules/ImageSelector";
 import { TEST_HIGH_CONTRAST } from "../res/styles/Colors";
 import MultiLineTextInput from "./../atoms/MultiLineTextInput";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { getUser, auth } from "../res/services/firebase";
+import { getUser, auth, putUser } from "../res/services/firebase";
 import { PhoneNumber } from "expo-contacts";
 
 // TODO @David add data here into FB
@@ -50,7 +50,16 @@ async function updateProfile(
     // TODO: ??? What do we do here? (fatal: never happens in expected flow)
   }
 
-  console.log("TODO David Profile");
+  let data = (await getUser(auth.currentUser.uid)).data;
+  data.firstName = name;
+  data.username = username;
+  data.profileImageURL = imageURI;
+  if (phone) {
+    // TODO: the fact that this check exists is bad
+    data.phoneNumber = phone;
+  }
+
+  await putUser(data);
 
   return true;
 }
