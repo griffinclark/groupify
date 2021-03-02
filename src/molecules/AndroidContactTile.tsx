@@ -8,19 +8,16 @@ import CheckBox from "../atoms/CheckBox";
 
 interface Props {
   firstName: string;
-  lastName: string;
+  lastName ?: string;
   imageURL?: string;
   addUser?: any; // if there's a list of users, add the user by username when the checkbox is checked
   removeUser?: any;
-  UID: number;
 }
 export default function AndroidContactTile({
   firstName,
-  lastName,
   imageURL,
   addUser,
   removeUser,
-  UID,
 }: Props) {
   const [checked, setChecked] = useState(false);
   return (
@@ -33,7 +30,7 @@ export default function AndroidContactTile({
         )}
       </View>
       <View>
-        <Text style={globalStyles.title}> {firstName + " " + lastName} </Text>
+        <Text style={globalStyles.title}> {firstName } </Text>
       </View>
       <View style={styles.checkboxContainer}>
         <CheckBox
@@ -42,10 +39,18 @@ export default function AndroidContactTile({
             setChecked(!checked);
 
             if (checked != true) { // IK its backwards!!!! Don't come whining to me about it. It works so it's a good solution
-              addUser(UID); 
+              try{
+                addUser(firstName);
+              } catch (e) {
+                console.log(e)
+              } 
               console.log("added");
             } else {
-              removeUser(UID); 
+              try{
+                removeUser(firstName);
+              } catch (e) {
+                console.log(e)
+              } 
               console.log("removed");
             }
           }}

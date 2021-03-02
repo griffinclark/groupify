@@ -33,9 +33,8 @@ export default function DataDisplay({ data, navigation, onSelect, displayButton 
             />
           );
         }}
-        keyExtractor={(item) => {
-          item.title;
-        }} // this keyExtractor only works for the demo version
+        keyExtractor={(item) => item.title}
+
       />
     </View>
   );
