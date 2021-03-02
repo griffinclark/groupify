@@ -2,6 +2,8 @@
 // Init date: 1/21/2021
 // Last updated: 1/21/2021
 
+// FIXME @Griffin implement subtitles
+
 import { StyleSheet } from 'react-native';
 import { PRIMARY, DARK, LIGHT } from './Colors'
 
@@ -45,7 +47,9 @@ export const globalStyles = StyleSheet.create({
     },
     title:{
         fontWeight: 'bold',
-        fontSize: 20
+        fontSize: 20,
+        textAlign: 'center', // <-- the magic
+
     },
     errorMessage:{
         color: 'red',

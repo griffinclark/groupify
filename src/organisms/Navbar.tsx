@@ -23,13 +23,7 @@ export default function Navbar({ navigation }: any) {
       >
         <Text>Home</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("AddFriends")
-        }}
-      >
-        <Text>Add Friends</Text>
-      </TouchableOpacity>
+     
       <TouchableOpacity
         onPress={() => {
           navigation.navigate("BuildEvent");

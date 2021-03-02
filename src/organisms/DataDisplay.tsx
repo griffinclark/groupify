@@ -8,51 +8,34 @@ import EndpointTile from "./../molecules/EndpointTile";
 
 interface Props {
   data: object[];
-  navigation: any
+  navigation: any;
+  onSelect?: any;
+  displayButton: boolean
 }
 
-export default function DataDisplay({ data, navigation }: Props) {
+export default function DataDisplay({ data, navigation, onSelect, displayButton }: Props) {
   return (
     <View>
       <FlatList
         data={data}
         renderItem={({ item }) => {
-          if (item.type == "event") {
-            return (
-              <EventTile
-                dateCreated={item.dateCreated}
-                UID={item.UID}
-                title={item.title}
-                endpointUID={item.endpointUID}
-                creatorUID={item.creatorUID}
-                startTime={item.startTime}
-                onPress={() => {
-                    console.log("TODO write onPress function");
-
-                }}
-              />
-            );
-          } else if (item.type == "endpoint") {
-            return (
-              <EndpointTile
-                title={item.title}
-                endpointUID={item.endpointUID}
-                UID={item.UID}
-                navigation={navigation}
-            
-              />
-            );
-          } else if (item.type == "user") {
-            return (
-              <UserTile
-                username={item.username}
-                imageURL={item.profileImageURL}
-                createEvent={true}
-              />
-            );
-          } else return <Text>Error tile type not defined properly</Text>;
+          return (
+            <EventTile
+              title={item.title}
+              imageURL={item.imageURL}
+              description={item.description}
+              tags={item.tags}
+              onSelect={() => {
+                onSelect();
+              }}
+              displayButton={displayButton}
+              navigation={navigation}
+            />
+          );
         }}
-        keyExtractor={(item) => item.UID}
+        keyExtractor={(item) => {
+          item.title;
+        }} // this keyExtractor only works for the demo version
       />
     </View>
   );

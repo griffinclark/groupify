@@ -12,7 +12,7 @@ export default function SelectFriends({ navigation }: Props) {
   const [friendsList, setFriendsList] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
 
-  // TODO @David load a user's friends
+  // FIXME @Griffin add in "User x likes coffee" to each user when a search is done
   useEffect(() => {
     setFriendsList([]);
   }, []);
@@ -29,15 +29,15 @@ export default function SelectFriends({ navigation }: Props) {
 
   return(
       <SafeAreaView>
-        <Navbar />
-          <View style={globalStyles.spacer} />
+        <Navbar navigation={navigation} />
+          <View style={globalStyles.miniSpacer} />
       <Text style={globalStyles.title}>Your Friends</Text>
       <View style={globalStyles.miniSpacer} />
       {friendsList.length > 0 ? (
         <View style={{ height: "75%" }}>
           <UserDisplay
             userList={friendsList}
-            displayType={"androidContact"} // TODO does this change for iOS?
+            displayType={"androidContact"} 
             addUser={addSelectedFriend}
             removeUser={removeSelectedFriend}
           />
@@ -49,8 +49,7 @@ export default function SelectFriends({ navigation }: Props) {
       <Button
         title="Continue"
         onPress={() => {
-          navigation.navigate("EventResults");
-          // TODO @David how do we carry over selected data?
+          navigation.navigate("Home");
         }}
       />
       </SafeAreaView>

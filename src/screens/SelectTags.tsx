@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Button } from "react-native";
-import { globalStyles } from "./../res/styles/GlobalStyles";
-import Navbar from "./../organisms/Navbar";
+import { globalStyles } from "../res/styles/GlobalStyles";
+import Navbar from "../organisms/Navbar";
 import TagSelector from "../organisms/TagSelector";
+import { tagList } from './../res/cannedData';
 
 interface Props {
   navigation: any;
 }
 // TODO @David where are we storing the list of possible tags?
-let testTags = ["Squirrel", "Elephant", "Hydra"];
-export default function BuildEvent({ navigation }: any) {
+export default function SelectTags({ navigation }: any) {
   const [selectedTags, setSelectedTags] = useState([]);
 
   return (
     <View style={globalStyles.defaultRootContainer}>
       <Navbar navigation={navigation} />
       <TagSelector
-        tags={testTags}
+        tags={tagList}
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
       />
@@ -24,7 +24,7 @@ export default function BuildEvent({ navigation }: any) {
         title={"Continue"}
         onPress={() => {
           console.log(selectedTags);
-          navigation.navigate("SelectFriends")
+          navigation.navigate("SuggestedEvents")
           // TODO @David how do we carry selected tags over?
         }}
       />

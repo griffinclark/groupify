@@ -44,6 +44,34 @@ export const cannedEvents: CannedEvent[] = [
     description: "Coffee Coffee is right by the old Surfy Surfy which is now Bing Surfboards.  They took over the lease and still have a lot of Surfy Surfy stuff. ",
     tags: ["Coffee"],
   },
+  {
+    title: "Haggo’s Organic Taco",
+    imageURL:
+      "https://diningonthe101.files.wordpress.com/2019/05/img_3485.jpg?w=768",
+    description: "Haggo’s menu is fantastic with grass-fed steak, free-range chicken, whole wheat tortillas and a menu that is almost entirely organic.",
+    tags: ["Mexican", "Healthy"],
+  },
+  {
+    title: "Blue Ribbon Artisan Pizzeria",
+    imageURL:
+      "https://diningonthe101.files.wordpress.com/2018/10/blue-ribbon-patio.jpg?w=768",
+    description: "Blue Ribbon Pizza is in a prime location in the Lumberyard right in the middle of the 101 hustle and bustle.  The small restaurant has expanded with two patios which is perfect for San Diego outdoor dining.",
+    tags: ["Pizza"],
+  },
+  {
+    title: "Ironsmith Coffee Roasters",
+    imageURL:
+      "https://diningonthe101.files.wordpress.com/2017/09/img_2168.jpg?w=768",
+    description: "Ironsmith generally carries Prager Brothers breads (local and organic), but on Sunday mornings, Wayfarer Bread sets up a pop-up bakery.",
+    tags: ["Coffee"],
+  },
+  {
+    title: "The Roxy Encinitas",
+    imageURL:
+      "https://diningonthe101.files.wordpress.com/2019/02/img_3345.jpg?w=768",
+    description: "Notorious for their live music, the roxy (in normal times) is a weekend hot spot with a mixed crowd, great bar and live music. I also love the Roxy for brunch (hello bottomless mimosas).",
+    tags: ["Healthy"],
+  },
 ];
 
-let tagList = ["Healthy", "Mexican", "Coffee"];
+export const tagList = ["Healthy", "Mexican", "Coffee", "Pizza"];
