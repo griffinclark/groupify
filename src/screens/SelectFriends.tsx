@@ -12,10 +12,18 @@ interface Props {
   route: any
 }
 
+enum State {
+  Empty,
+  Loading,
+  Done
+}
+
 export default function SelectFriends({ navigation, route }: Props) {
   const [friendsList, setFriendsList] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [query, setQuery] = useState("");
+  const [name, setName] = useState<string>("");
+  const [state, setState] = useState<State>(State.Empty);
 
   // FIXME @Griffin add in "User x likes coffee" to each user when a search is done
   useEffect(() => {
@@ -33,6 +41,40 @@ export default function SelectFriends({ navigation, route }: Props) {
     setSelectedFriends(localFriends);
   };
 
+  const [timeout, setTimer] = useState<NodeJS.Timeout | null>(null);
+  const fakeSearch = async (text: string) => {
+    setQuery(text);
+    if (timeout) {
+      setState(State.Loading);
+      clearTimeout(timeout);
+    }
+
+    setTimer(setTimeout(() => {
+      console.log("delayed: ", text);
+      text = text.trim();
+      setName(text);
+      setState(text == "" ? State.Empty : State.Done);
+    }, 750));
+  };
+
+  const fakeTile = () => {
+    switch (state) {
+    case State.Done:
+      return (<AndroidContactTile
+        firstName={name}
+        imageURL={
+          "https://media-exp1.licdn.com/dms/image/C5603AQEJs0Wm-qqwhA/profile-displayphoto-shrink_200_200/0/1612680577055?e=1620259200&v=beta&t=rL6dxBxfm-q6KAe-aJvD-isPD94NzXuuZVKkSe-Mp_U"
+        }
+        addUser={(user)=>{ setFriendsList((friendsList: string[]) => [...friendsList, user + '\n']) }}
+      />)
+    
+    case State.Loading:
+      return (
+        <Text>Loading...</Text>
+      );
+    }
+  };
+
   return (
     <SafeAreaView>
       <View style={globalStyles.spacer} />
@@ -40,20 +82,13 @@ export default function SelectFriends({ navigation, route }: Props) {
       <View style={globalStyles.miniSpacer} />
       <SearchBar
         placeholder="Search for friends"
-        onChangeText={setQuery}
+        onChangeText={fakeSearch}
         value={query}
         lightTheme={true}
       />
       <View style={globalStyles.miniSpacer} />
       <View style={{ height: "67%" }}>
-        <AndroidContactTile
-          firstName={query}
-          imageURL={
-            "https://media-exp1.licdn.com/dms/image/C5603AQEJs0Wm-qqwhA/profile-displayphoto-shrink_200_200/0/1612680577055?e=1620259200&v=beta&t=rL6dxBxfm-q6KAe-aJvD-isPD94NzXuuZVKkSe-Mp_U"
-          }
-          addUser={(user)=>{ setFriendsList((friendsList: string[]) => [...friendsList, user + '\n']) }}
-
-        ></AndroidContactTile>
+        {fakeTile()}
       </View>
 
       {/* TODO @David what do we want to do with the friend list when a user submits? */}
