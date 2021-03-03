@@ -11,10 +11,10 @@ interface Props {
   navigation: any;
   onSelect?: any;
   displayButton: boolean
-  tagData: object
+  selectedTags: object
 }
 
-export default function DataDisplay({ data, navigation, tagData, onSelect, displayButton }: Props) {
+export default function DataDisplay({ data, navigation, selectedTags, onSelect, displayButton }: Props) {
   return (
     <View>
       <FlatList
@@ -25,8 +25,9 @@ export default function DataDisplay({ data, navigation, tagData, onSelect, displ
               title={item.title}
               imageURL={item.imageURL}
               description={item.description}
-              tagData={tagData}
+              tagData={selectedTags}
               tags={item.tags}
+              friends={item.friends}
               displayButton={displayButton}
               navigation={navigation}
             />

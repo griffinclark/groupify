@@ -1,36 +1,58 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import DataDisplay from "../organisms/DataDisplay";
-import Navbar from '../organisms/Navbar';
+import Navbar from "../organisms/Navbar";
 import { cannedEvents } from "../res/cannedData";
-import { globalStyles } from '../res/styles/GlobalStyles';
+import { globalStyles } from "../res/styles/GlobalStyles";
 
 interface Props {
   navigation: any;
-  selectedTags: string[] 
-  route: any
+  selectedTags: string[];
+  route: any;
 }
 
-export default function SuggestedEvents({ navigation, selectedTags, route }: Props) {
-  let [endpoints, setEndpoints] = useState([{}]);
+export default function SuggestedEvents({
+  navigation,
+  selectedTags,
+  route,
+}: Props) {
+  let [endpoints, setEndpoints] = useState<Event[]>();
   useEffect(() => {
-    console.log(route.params.data.selectedTags)
-    setEndpoints(cannedEvents)
-}, []);
+
+    let goodEndpoints: Event[] = [];
+    cannedEvents.forEach((endpoint) => {
+      route.params.data.tags.forEach((tag: string) => {
+        if (endpoint.tags.includes(tag)) {
+          if (!goodEndpoints.includes(endpoint)) {
+            goodEndpoints.push(endpoint);
+          }
+        }
+      });
+    });
+    setEndpoints(goodEndpoints);
+  }, []);
 
   return (
-    <SafeAreaView >
-        <Navbar navigation={navigation}/>
-        <Text style={globalStyles.title}>Suggested Events</Text>
-        <View style={styles.feedContainer}>
-        <DataDisplay data={endpoints} tagData={route.params.data} displayButton={true} navigation={navigation} onSelect={()=>{console.log("Boop!")}}/>
-        </View>
+    <SafeAreaView>
+      <Navbar navigation={navigation} />
+      <Text style={globalStyles.title}>Suggested Events</Text>
+      <View style={styles.feedContainer}>
+        <DataDisplay
+          data={endpoints}
+          tagData={route.params.data}
+          displayButton={true}
+          navigation={navigation}
+          onSelect={() => {
+            console.log("Boop!");
+          }}
+        />
+      </View>
     </SafeAreaView>
   );
 }
 
 let styles = StyleSheet.create({
-    feedContainer: {
-        height: "90%"
-    }
-})
+  feedContainer: {
+    height: "90%",
+  },
+});

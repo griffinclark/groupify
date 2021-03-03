@@ -19,7 +19,7 @@ export default function RootNavigation() {
   return (
     <NavigationContainer>
       {/* TODO the default screen needs to change based on whether a user is logged in or not */}
-      <Stack.Navigator initialRouteName="Welcome"> 
+      <Stack.Navigator initialRouteName="Home"> 
         <Stack.Screen name="Welcome" component={Welcome}  options={{ headerShown: false }}/>
         <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Test" component={Test} options={{ headerShown: false }}/>

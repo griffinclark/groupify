@@ -21,18 +21,18 @@ interface Props {
 export default function Home({ navigation, route }: Props) {
   const [feedData, setFeedData] = useState<Event[]>([]);
 
-  // FIXME figure out how to call this when the form is submitted
-  const addEvent = ()=>{
-    let createdEvent: Event = route.params.data.eventData
-    const newData: Event = {
-      title: createdEvent.title,
-      description: createdEvent.description,
-      tags: createdEvent.tags,
-      imageURL: createdEvent.imageURL
-    }
-    setFeedData((feedData: Event[]) =>[...feedData, newData])
-  }
+  useEffect(()=>{
+    try{
+      console.log(route.params.data)
+      let event: Event = route.params.data.eventData
+      event.friends= route.params.data.friendList
+      console.log(event)
+      setFeedData(feedData => [...feedData, event])
 
+    } catch {
+      console.log("NOPE")
+    }
+  }, [route.params])
 
   return (
     <View>
@@ -58,7 +58,7 @@ export default function Home({ navigation, route }: Props) {
         title={"Create event"}
         color="green"
         onPress={() => {
-          navigation.navigate("BuildEvent", {setFeedData: setFeedData}); // setFeedData is set here for convenience
+          navigation.navigate("BuildEvent"); 
         }}
       />
     </View>

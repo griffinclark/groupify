@@ -8,7 +8,6 @@ import { tagList } from './../res/cannedData';
 interface Props {
   navigation: any;
 }
-// TODO @David where are we storing the list of possible tags?
 export default function SelectTags({ navigation }: any) {
   const [selectedTags, setSelectedTags] = useState([]);
 
@@ -20,13 +19,13 @@ export default function SelectTags({ navigation }: any) {
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
       />
-      <Button
+      {selectedTags.length > 0 && <Button
         title={"Continue"}
         onPress={() => {
           let item = "a"
           navigation.navigate("SuggestedEvents", {data: {selectedTags: selectedTags}})
         }}
-      />
+      />}
     </View>
   );
 }

@@ -51,7 +51,7 @@ export default function SelectFriends({ navigation, route }: Props) {
           imageURL={
             "https://media-exp1.licdn.com/dms/image/C5603AQEJs0Wm-qqwhA/profile-displayphoto-shrink_200_200/0/1612680577055?e=1620259200&v=beta&t=rL6dxBxfm-q6KAe-aJvD-isPD94NzXuuZVKkSe-Mp_U"
           }
-          addUser={(user)=>{ setFriendsList((friendsList) => [...friendsList, user]) }}
+          addUser={(user)=>{ setFriendsList((friendsList: string[]) => [...friendsList, user + '\n']) }}
 
         ></AndroidContactTile>
       </View>

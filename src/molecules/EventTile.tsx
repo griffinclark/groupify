@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { View, Text, Button } from "react-native";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
@@ -21,6 +21,7 @@ interface Props {
   displayButton: boolean,
   navigation: any
   tagData: object
+  friends: string[]
 }
 
 export default function EventTile({
@@ -32,8 +33,11 @@ export default function EventTile({
   createdBy,
   startTime,
   displayButton,
+  friends,
   navigation
 }: Props) {
+
+
   return (
     <View style={styles.rootContainer}>
       <Text style={globalStyles.title}> {title} </Text>
@@ -48,8 +52,9 @@ export default function EventTile({
           <View>
             <Text>{description}</Text>
             <View style={globalStyles.miniSpacer} />
-            <Text>Created by: </Text>
-            <Text>Start time:</Text>
+            {friends != null && (<Text style={{fontWeight: "bold"}}>Invited Friends: </Text>
+)}
+            <Text>{friends}</Text>
             {displayButton == true && (<Button title={"select"} onPress={()=>{navigation.navigate("SelectFriends", {data: {tagData: tagData, eventData: {
               title: title,
               imageURL: imageURL,

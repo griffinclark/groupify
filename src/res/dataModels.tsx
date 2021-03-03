@@ -24,6 +24,7 @@ export interface Event {
     imageURL: string
     description: string
     tags: string[]
+    friends: string[]
 }
 
 export interface FriendRecord {
