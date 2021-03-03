@@ -21,7 +21,8 @@ export default function SuggestedEvents({
 
     let goodEndpoints: Event[] = [];
     cannedEvents.forEach((endpoint) => {
-      route.params.data.tags.forEach((tag: string) => {
+      console.log(route.params.data)
+      route.params.data.selectedTags.forEach((tag: string) => {
         if (endpoint.tags.includes(tag)) {
           if (!goodEndpoints.includes(endpoint)) {
             goodEndpoints.push(endpoint);
