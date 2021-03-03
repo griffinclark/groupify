@@ -20,14 +20,10 @@ export interface User {
 }
 
 export interface Event {
-    dateCreated: string
-    version: number
-    UID: string
     title: string
-    endpointUID: string
-    creatorUID: string
-    startTime: firestore.Timestamp // does Typescript give us a dateTime object to use here?
-    type: string // this is a hack
+    imageURL: string
+    description: string
+    tags: string[]
 }
 
 export interface FriendRecord {

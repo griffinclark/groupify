@@ -9,17 +9,31 @@ import DataDisplay from "../organisms/DataDisplay";
 import Navbar from "../organisms/Navbar";
 import { cannedEvents } from "../res/cannedData";
 import { globalStyles } from "./../res/styles/GlobalStyles";
+import { Event } from "../res/dataModels";
 
 interface Props {
   navigation: any;
+  route: any
 }
 
-export default function Home({ navigation }: Props) {
-  const [feedData, setFeedData] = useState([]);
 
-  // TODO @David how are we going to add data to this feed without a db?
 
-  useEffect(() => {}, []);
+export default function Home({ navigation, route }: Props) {
+  const [feedData, setFeedData] = useState<Event[]>([]);
+
+  // FIXME figure out how to call this when the form is submitted
+  const addEvent = ()=>{
+    let createdEvent: Event = route.params.data.eventData
+    const newData: Event = {
+      title: createdEvent.title,
+      description: createdEvent.description,
+      tags: createdEvent.tags,
+      imageURL: createdEvent.imageURL
+    }
+    setFeedData((feedData: Event[]) =>[...feedData, newData])
+  }
+
+
   return (
     <View>
       <Navbar navigation={navigation} />
@@ -44,7 +58,7 @@ export default function Home({ navigation }: Props) {
         title={"Create event"}
         color="green"
         onPress={() => {
-          navigation.navigate("BuildEvent");
+          navigation.navigate("BuildEvent", {setFeedData: setFeedData}); // setFeedData is set here for convenience
         }}
       />
     </View>

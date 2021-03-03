@@ -5,18 +5,21 @@ import UserDisplay from "./../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { SearchBar } from "react-native-elements";
 import AndroidContactTile from "./../molecules/AndroidContactTile";
+import { addEvent } from "./Home";
 
 interface Props {
   navigation: any;
+  route: any
 }
 
-export default function SelectFriends({ navigation }: Props) {
+export default function SelectFriends({ navigation, route }: Props) {
   const [friendsList, setFriendsList] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [query, setQuery] = useState("");
 
   // FIXME @Griffin add in "User x likes coffee" to each user when a search is done
   useEffect(() => {
+    console.log(route.params.data)
     setFriendsList([]);
   }, []);
 
@@ -29,11 +32,6 @@ export default function SelectFriends({ navigation }: Props) {
     localFriends.splice(key, 1);
     setSelectedFriends(localFriends);
   };
-
-  // update search results
-  useEffect(() => {
-    console.log("Your query: ", query);
-  }, [query]);
 
   return (
     <SafeAreaView>
@@ -53,6 +51,8 @@ export default function SelectFriends({ navigation }: Props) {
           imageURL={
             "https://media-exp1.licdn.com/dms/image/C5603AQEJs0Wm-qqwhA/profile-displayphoto-shrink_200_200/0/1612680577055?e=1620259200&v=beta&t=rL6dxBxfm-q6KAe-aJvD-isPD94NzXuuZVKkSe-Mp_U"
           }
+          addUser={(user)=>{ setFriendsList((friendsList) => [...friendsList, user]) }}
+
         ></AndroidContactTile>
       </View>
 
@@ -60,7 +60,11 @@ export default function SelectFriends({ navigation }: Props) {
       <Button
         title="Create Event"
         onPress={() => {
-          navigation.navigate("Home");
+          navigation.navigate("Home",{data: {
+            tagData: route.params.data.tagData,
+            eventData: route.params.data.eventData,
+            friendList: friendsList
+          }});
         }}
       />
     </SafeAreaView>

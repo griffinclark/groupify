@@ -23,9 +23,8 @@ export default function SelectTags({ navigation }: any) {
       <Button
         title={"Continue"}
         onPress={() => {
-          console.log(selectedTags);
-          navigation.navigate("SuggestedEvents")
-          // TODO @David how do we carry selected tags over?
+          let item = "a"
+          navigation.navigate("SuggestedEvents", {data: {selectedTags: selectedTags}})
         }}
       />
     </View>

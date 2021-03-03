@@ -18,19 +18,19 @@ interface Props {
   tags: string[];
   createdBy?: string;
   startTime?: string;
-  onSelect?: any;
   displayButton: boolean,
   navigation: any
+  tagData: object
 }
 
 export default function EventTile({
   title,
   imageURL,
+  tagData,
   description,
   tags,
   createdBy,
   startTime,
-  onSelect,
   displayButton,
   navigation
 }: Props) {
@@ -50,7 +50,12 @@ export default function EventTile({
             <View style={globalStyles.miniSpacer} />
             <Text>Created by: </Text>
             <Text>Start time:</Text>
-            {displayButton == true && (<Button title={"select"} onPress={()=>{navigation.navigate("SelectFriends")}} />)}
+            {displayButton == true && (<Button title={"select"} onPress={()=>{navigation.navigate("SelectFriends", {data: {tagData: tagData, eventData: {
+              title: title,
+              imageURL: imageURL,
+              description: description,
+              tags: tags
+            }}})}} />)}
             
           </View>
         </View>

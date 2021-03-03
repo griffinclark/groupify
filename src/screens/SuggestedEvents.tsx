@@ -7,20 +7,23 @@ import { globalStyles } from '../res/styles/GlobalStyles';
 
 interface Props {
   navigation: any;
+  selectedTags: string[] 
+  route: any
 }
 
-export default function SuggestedEvents({ navigation }: Props) {
+export default function SuggestedEvents({ navigation, selectedTags, route }: Props) {
   let [endpoints, setEndpoints] = useState([{}]);
   useEffect(() => {
-
+    console.log(route.params.data.selectedTags)
     setEndpoints(cannedEvents)
 }, []);
+
   return (
     <SafeAreaView >
         <Navbar navigation={navigation}/>
         <Text style={globalStyles.title}>Suggested Events</Text>
         <View style={styles.feedContainer}>
-        <DataDisplay data={endpoints} displayButton={true} navigation={navigation} onSelect={()=>{console.log("Boop!")}}/>
+        <DataDisplay data={endpoints} tagData={route.params.data} displayButton={true} navigation={navigation} onSelect={()=>{console.log("Boop!")}}/>
         </View>
     </SafeAreaView>
   );
