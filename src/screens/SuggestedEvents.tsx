@@ -15,17 +15,17 @@ export default function SuggestedEvents({
   navigation,
   selectedTags,
   route,
-}: Props) {
-  let [endpoints, setEndpoints] = useState<Event[]>();
-  useEffect(() => {
-
-    let goodEndpoints: Event[] = [];
-    cannedEvents.forEach((endpoint) => {
-      console.log(route.params.data)
-      route.params.data.selectedTags.forEach((tag: string) => {
-        if (endpoint.tags.includes(tag)) {
-          if (!goodEndpoints.includes(endpoint)) {
-            goodEndpoints.push(endpoint);
+}: Props) {    
+  let [endpoints, setEndpoints] = useState<Event[]>();    
+  useEffect(() => {    
+    
+    let goodEndpoints: Event[] = [];    
+    cannedEvents.forEach((endpoint) => {    
+      console.log(route.params.data)    
+      route.params.data.selectedTags.forEach((tag: string) => {    
+        if (endpoint.tags.includes(tag)) {    
+          if (!goodEndpoints.includes(endpoint)) {    
+            goodEndpoints.push(endpoint);    
           }
         }
       });
