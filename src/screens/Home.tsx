@@ -47,7 +47,7 @@ export default function Home({ navigation, route }: Props) {
         ) : (
           <View>
             <View style={globalStyles.megaSpacer} />
-            <Text style={globalStyles.title}>
+            <Text style={globalStyles.superTitle}>
               When you create an event, it will show up here
             </Text>
           </View>

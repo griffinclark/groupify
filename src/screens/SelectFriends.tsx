@@ -63,7 +63,7 @@ export default function SelectFriends({ navigation, route }: Props) {
       return (<AndroidContactTile
         firstName={name}
         imageURL={
-          "https://media-exp1.licdn.com/dms/image/C5603AQEJs0Wm-qqwhA/profile-displayphoto-shrink_200_200/0/1612680577055?e=1620259200&v=beta&t=rL6dxBxfm-q6KAe-aJvD-isPD94NzXuuZVKkSe-Mp_U"
+          "https://racemph.com/wp-content/uploads/2016/09/profile-image-placeholder.png"
         }
         addUser={(user)=>{ setFriendsList((friendsList: string[]) => [...friendsList, user + '\n']) }}
       />)
@@ -78,7 +78,7 @@ export default function SelectFriends({ navigation, route }: Props) {
   return (
     <SafeAreaView>
       <View style={globalStyles.spacer} />
-      <Text style={globalStyles.title}>Your Friends</Text>
+      <Text style={globalStyles.superTitle}>Search for your friends</Text>
       <View style={globalStyles.miniSpacer} />
       <SearchBar
         placeholder="Search for friends"

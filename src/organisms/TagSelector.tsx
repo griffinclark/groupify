@@ -19,7 +19,7 @@ export default function TagSelector({ tags, selectedTags, setSelectedTags }: Pro
   return (
     <View>
       <View style={globalStyles.miniSpacer} />
-      <Text style={globalStyles.title}>What sounds interesting?</Text>
+      <Text style={globalStyles.superTitle}>Where would you like to go? Select one or more options</Text>
       <View style={globalStyles.miniSpacer} />
       <FlatList
         data={tags}

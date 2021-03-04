@@ -48,8 +48,13 @@ export const globalStyles = StyleSheet.create({
     title:{
         fontWeight: 'bold',
         fontSize: 20,
-        textAlign: 'center', // <-- the magic
 
+
+    },
+    superTitle:{
+        fontWeight: 'bold',
+        fontSize: 30,
+        textAlign: 'center'
     },
     errorMessage:{
         color: 'red',
