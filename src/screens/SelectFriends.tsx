@@ -42,6 +42,7 @@ export default function SelectFriends({ navigation, route }: Props) {
   };
 
   const [timeout, setTimer] = useState<NodeJS.Timeout | null>(null);
+  let delayTime: number = 2000
   const fakeSearch = async (text: string) => {
     setQuery(text);
     if (timeout) {
@@ -54,7 +55,7 @@ export default function SelectFriends({ navigation, route }: Props) {
       text = text.trim();
       setName(text);
       setState(text == "" ? State.Empty : State.Done);
-    }, 750));
+    }, delayTime));
   };
 
   const fakeTile = () => {
@@ -79,6 +80,7 @@ export default function SelectFriends({ navigation, route }: Props) {
     <SafeAreaView>
       <View style={globalStyles.spacer} />
       <Text style={globalStyles.superTitle}>Search for your friends</Text>
+      <Text>Pres the checkbox to select a friend</Text>
       <View style={globalStyles.miniSpacer} />
       <SearchBar
         placeholder="Search for friends"
@@ -87,7 +89,7 @@ export default function SelectFriends({ navigation, route }: Props) {
         lightTheme={true}
       />
       <View style={globalStyles.miniSpacer} />
-      <View style={{ height: "67%" }}>
+      <View style={{ height: "50%" }}>
         {fakeTile()}
       </View>
 

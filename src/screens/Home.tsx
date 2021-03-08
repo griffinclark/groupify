@@ -23,7 +23,6 @@ export default function Home({ navigation, route }: Props) {
 
   useEffect(()=>{
     try{
-      console.log(route.params.data)
       let event: Event = route.params.data.eventData
       event.friends= route.params.data.friendList
       console.log(event)

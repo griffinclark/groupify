@@ -20,7 +20,7 @@ export interface User {
 }
 
 export interface Event {
-    title: string
+    title: string 
     imageURL: string
     description: string
     tags: string[]
