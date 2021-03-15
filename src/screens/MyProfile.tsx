@@ -16,7 +16,6 @@ import ImageSelector from "../molecules/ImageSelector";
 import { TEST_HIGH_CONTRAST } from "../res/styles/Colors";
 import MultiLineTextInput from "./../atoms/MultiLineTextInput";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { getUser, auth, putUser } from "../res/services/firebase";
 import { PhoneNumber } from "expo-contacts";
 
 // TODO @David add data here into FB
@@ -35,61 +34,7 @@ interface ProfileForm {
   imageURI: string,
 }
 
-// TODO: number canonicalization
-async function updateProfile(
-  name: string,
-  username: string,
-  bio: string,
-  imageURI: string,
-  phone: string | undefined
-): Promise<boolean> {
-  // TODO don't let users leave this screen until all profile information is filled in
-  if (!auth.currentUser) {
-    console.log("How did we get here? Tried to submit profile for no user!");
-    return false;
-    // TODO: ??? What do we do here? (fatal: never happens in expected flow)
-  }
-
-  let data = (await getUser(auth.currentUser.uid)).data;
-  data.firstName = name;
-  data.username = username;
-  data.profileImageURL = imageURI;
-  if (phone) {
-    // TODO: the fact that this check exists is bad
-    data.phoneNumber = phone;
-  }
-
-  await putUser(data);
-
-  return true;
-}
-
-async function loadProfile(props: FormikProps<ProfileForm>): Promise<void> {
-  try {
-    console.log("Attempting load");
-    if (auth.currentUser) {
-      const data = (await getUser(auth.currentUser.uid)).data;
-      console.log(data);
-      props.handleChange("name")(`${data.firstName}${data.lastName ? " " + data.lastName : ""}`);
-      props.handleChange("username")(`${data.username ? data.username : ""}`);
-      props.handleChange("bio")("TODO ME");
-      props.handleChange("imageURI")(data.profileImageURL);
-      console.log("Loaded profile data");
-    }
-  }
-  catch (err) {
-    console.log("Load failed");
-    console.log(err);
-  }
-};
-
 export default function MyProfile({ navigation, route }: Props) {
-  const profileTrigger = async ({ name, username, bio, imageURI }: ProfileForm) => {
-    if (await updateProfile(name, username, bio, imageURI, route.params)) {
-      navigation.goBack();
-    }
-  }
-
   let init: ProfileForm = {
     name: "",
     username: "",
@@ -102,7 +47,7 @@ export default function MyProfile({ navigation, route }: Props) {
       <View style={{ padding: 24 }}>
         <Formik
           initialValues={init}
-          onSubmit={profileTrigger}
+          onSubmit={() => console.log("not implemented")}
         >
           {(props) => {
             return (
@@ -146,7 +91,6 @@ export default function MyProfile({ navigation, route }: Props) {
                 </View>
                 <View style={globalStyles.miniSpacer} />
                 <Button title="Click me!" onPress={() => props.handleSubmit()} />
-                <Button title="Load!" onPress={() => loadProfile(props)} />
               </View>
             );
           }}
