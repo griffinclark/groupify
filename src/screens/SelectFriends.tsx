@@ -42,10 +42,8 @@ export default function SelectFriends({ navigation, route }: Props) {
   };
 
   const removeSelectedFriend = (friend: String) => {
-    // let localFriends = selectedFriends;
-    // localFriends.splice(key, 1);
-    // setSelectedFriends(localFriends);
-    // let index = selectedFriends.indexOf(friend);
+    let index = selectedFriends.indexOf(friend);
+    selectedFriends.splice(index, 1);
   };
 
   // Request permission to access contacts and load them.
@@ -84,7 +82,7 @@ export default function SelectFriends({ navigation, route }: Props) {
         "https://racemph.com/wp-content/uploads/2016/09/profile-image-placeholder.png"
       }
       addUser={addSelectedFriend}
-      // removeUser={removeSelectedFriend}
+      removeUser={removeSelectedFriend}
     />
   );
 
