@@ -36,7 +36,7 @@ export default function SuggestedEvents({
   return (
     <SafeAreaView>
       <Navbar navigation={navigation} />
-      <Text style={globalStyles.superTitle}>Select a restaurant</Text>
+      <Text style={globalStyles.superTitle}>Select a place to go!</Text>
       <View style={styles.feedContainer}>
         <DataDisplay
           data={endpoints}
