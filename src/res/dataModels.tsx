@@ -49,3 +49,8 @@ export interface Endpoint {
     title: string
     description: string
 }
+
+export interface Contact {
+    id: string;
+    name: string;
+}
