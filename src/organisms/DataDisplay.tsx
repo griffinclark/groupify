@@ -14,6 +14,13 @@ interface Props {
   selectedTags: object
 }
 
+// Adds a newline at the end of each friend in the array
+const formatFriends = (friends) => {
+  if (friends !== undefined) {
+    return friends.map(friend => friend + "\n");
+  }
+}
+
 export default function DataDisplay({ data, navigation, selectedTags, onSelect, displayButton }: Props) {
   return (
     <View>
@@ -27,7 +34,7 @@ export default function DataDisplay({ data, navigation, selectedTags, onSelect, 
               description={item.description}
               tagData={selectedTags}
               tags={item.tags}
-              friends={item.friends}
+              friends={formatFriends(item.friends)}
               displayButton={displayButton}
               navigation={navigation}
             />
