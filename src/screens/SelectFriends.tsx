@@ -9,6 +9,7 @@ import { addEvent } from "./Home";
 import * as Contacts from "expo-contacts";
 import { Contact } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
+import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
 
 interface Props {
   navigation: any;
@@ -26,7 +27,7 @@ export default function SelectFriends({ navigation, route }: Props) {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
-  const [query, setQuery] = useState<String>("");
+  const [query, setQuery] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [state, setState] = useState<State>(State.Empty);
 
@@ -36,12 +37,12 @@ export default function SelectFriends({ navigation, route }: Props) {
     loadContacts(); // Load contacts only once
   }, []);
 
-  const addSelectedFriend = (friend: String) => {
+  const addSelectedFriend = (friend: string) => {
     // setSelectedFriends((selectedFriends) => [...selectedFriends, friend]);
     selectedFriends.push(friend); // how does this differ from line above?
   };
 
-  const removeSelectedFriend = (friend: String) => {
+  const removeSelectedFriend = (friend: string) => {
     let index = selectedFriends.indexOf(friend);
     selectedFriends.splice(index, 1);
   };
@@ -53,7 +54,8 @@ export default function SelectFriends({ navigation, route }: Props) {
       const { data } = await Contacts.getContactsAsync({});
       setContacts(data.map(contact => ({
         id: contact.id,
-        name: contact.name
+        name: contact.name,
+        image: contact.image,
       })));
       // console.log(contacts);
     }
@@ -71,16 +73,14 @@ export default function SelectFriends({ navigation, route }: Props) {
         }
       )
     );
-    // console.log(filteredContacts);
+    console.log(contacts);
   }
 
   // Renders each contact as AndroidContactTile
   const renderContact = ({ item }) => (
     <AndroidContactTile
       firstName={item.name}
-      imageURL={
-        "https://racemph.com/wp-content/uploads/2016/09/profile-image-placeholder.png"
-      }
+      imageURL={item.image ? item.image.uri : DEFAULT_CONTACT_IMAGE}
       addUser={addSelectedFriend}
       removeUser={removeSelectedFriend}
     />
