@@ -6,7 +6,7 @@ import Welcome from "../screens/Welcome";
 import MyProfile from './../screens/MyProfile';
 import Test from './../screens/Test';
 import Home from "../screens/Home";
-import BuildEvent from '../screens/SelectTags';
+import SelectTags from '../screens/SelectTags';
 import SelectFriends from './../screens/SelectFriends';
 import EventResults from '../screens/SuggestedEvents';
 import ConfirmEvent from './../screens/ConfirmEvent';
@@ -24,7 +24,7 @@ export default function RootNavigation() {
         <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Test" component={Test} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
-        <Stack.Screen name="BuildEvent" component={BuildEvent} options={{ headerShown: false }}/>
+        <Stack.Screen name="SelectTags" component={SelectTags} options={{ headerShown: false }}/>
         <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }}/>
         <Stack.Screen name="EventResults" component={EventResults} options={{ headerShown: false }}/>
         <Stack.Screen name="ConfirmEvent" component={ConfirmEvent} options={{ headerShown: false }}/>

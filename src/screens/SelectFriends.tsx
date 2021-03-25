@@ -56,6 +56,7 @@ export default function SelectFriends({ navigation, route }: Props) {
         id: contact.id,
         name: contact.name,
         image: contact.image,
+        phoneNumber: contact.phoneNumbers[0].number,
       })));
       // console.log(contacts);
     }

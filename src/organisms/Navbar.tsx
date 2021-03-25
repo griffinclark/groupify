@@ -26,7 +26,7 @@ export default function Navbar({ navigation }: any) {
      
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("BuildEvent");
+          navigation.navigate("SelectTags");
         }}
       >
         <Text>Build Event</Text>

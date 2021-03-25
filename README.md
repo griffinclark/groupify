@@ -34,7 +34,7 @@ This app is structured using the atomic design philosophy, if you are unfamiliar
 1. These screens are re-usable:
     - SelectFriends
     - Home
-    - BuildEvent
+    - SelectTags
     - SelectFriends
     - EventResults
 

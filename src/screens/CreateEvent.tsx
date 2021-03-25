@@ -21,7 +21,7 @@ export default function CreateEvent({ navigation }: Props) {
   useEffect(() => {
     // TODO @David grab the endpoint using endpointUID
     setEndpoint("I'm an endpoint!");
-  });
+  }, []);
 
   const onFormSubmit = () => {};
   return (
