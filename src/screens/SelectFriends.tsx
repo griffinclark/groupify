@@ -35,16 +35,17 @@ export default function SelectFriends({ navigation, route }: Props) {
   useEffect(() => {
     // console.log(route.params.data)
     loadContacts(); // Load contacts only once
+    // console.log(contacts);
   }, []);
 
   const addSelectedFriend = (friend: string) => {
-    // setSelectedFriends((selectedFriends) => [...selectedFriends, friend]);
-    selectedFriends.push(friend); // how does this differ from line above?
+    setSelectedFriends((selectedFriends) => [...selectedFriends, friend]);
   };
 
   const removeSelectedFriend = (friend: string) => {
     let index = selectedFriends.indexOf(friend);
     selectedFriends.splice(index, 1);
+    setSelectedFriends(selectedFriends.slice(0));
   };
 
   // Request permission to access contacts and load them.
@@ -74,7 +75,7 @@ export default function SelectFriends({ navigation, route }: Props) {
         }
       )
     );
-    console.log(contacts);
+    // console.log(contacts);
   }
 
   // Renders each contact as AndroidContactTile
@@ -100,7 +101,7 @@ export default function SelectFriends({ navigation, route }: Props) {
         lightTheme={true}
       />
       <View style={globalStyles.miniSpacer} />
-      <View style={{ height: "50%" }}>
+      <View style={styles.flatListContainer}>
         <FlatList
           data={filteredContacts}
           renderItem={renderContact}
@@ -111,6 +112,11 @@ export default function SelectFriends({ navigation, route }: Props) {
           )}
         />
       </View>
+
+      <View style={{height: 10}} />
+      <Text style={globalStyles.title}>Selected friends:</Text>
+      <Text>{selectedFriends.map(friend => friend + " | ")}</Text>
+      <View style={globalStyles.miniSpacer} />
 
       {/* TODO @David what do we want to do with the friend list when a user submits? */}
       <Button
@@ -123,6 +129,7 @@ export default function SelectFriends({ navigation, route }: Props) {
           }});
         }}
       />
+
     </SafeAreaView>
   );
 }
@@ -139,4 +146,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 26
   },
+  flatListContainer: {
+    height: "45%",
+    borderBottomColor: "gray",
+    borderBottomWidth: 1
+  }
 });
