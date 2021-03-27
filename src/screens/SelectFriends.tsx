@@ -35,7 +35,6 @@ export default function SelectFriends({ navigation, route }: Props) {
   useEffect(() => {
     // console.log(route.params.data)
     loadContacts(); // Load contacts only once
-    // console.log(contacts);
   }, []);
 
   const addSelectedFriend = (friend: string) => {
@@ -57,7 +56,7 @@ export default function SelectFriends({ navigation, route }: Props) {
         id: contact.id,
         name: contact.name,
         image: contact.image,
-        phoneNumber: contact.phoneNumbers[0].number,
+        phoneNumber: (contact.phoneNumbers ? contact.phoneNumbers[0].number : null),
       })));
       // console.log(contacts);
     }
