@@ -1,0 +1,15 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-meep-staging-171906-authRole",
+      "UnauthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-staging-171906-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-staging-171906-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-meep-staging-171906-deployment",
+      "UnauthRoleName": "amplify-meep-staging-171906-unauthRole",
+      "StackName": "amplify-meep-staging-171906",
+      "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-meep-staging-171906/ddedf4f0-90b2-11eb-b525-0ac403330061",
+      "AmplifyAppId": "dto2kcprsz7l"
+    }
+  }
+}
