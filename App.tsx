@@ -5,7 +5,7 @@ import { globalStyles } from "./src/res/styles/GlobalStyles";
 import Welcome from "./src/screens/Welcome";
 import RootNavigation from "./src/res/root-navigation";
 import awsconfig from "./src/aws-exports";
-import Amplify from "aws-amplify";
+import Amplify, {Auth} from "aws-amplify";
 
 Amplify.configure(awsconfig);
 

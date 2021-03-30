@@ -1,0 +1,39 @@
+{
+    "paths": [
+        {
+            "name": "/broadcasts",
+            "lambdaFunction": "broadcastInvite",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/PUT",
+                    "/PATCH"
+                ]
+            },
+            "policyResourceName": "/broadcasts"
+        }
+    ],
+    "resourceName": "invitesApi",
+    "apiName": "invitesApi",
+    "functionArns": [
+        {
+            "lambdaFunction": "broadcastInvite"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "amplify-meep-staging-171906-authRole",
+        "unAuthRoleName": "amplify-meep-staging-171906-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "broadcastInvite",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}
