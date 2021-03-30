@@ -10,6 +10,14 @@
       "StackName": "amplify-meep-staging-171906",
       "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-meep-staging-171906/ddedf4f0-90b2-11eb-b525-0ac403330061",
       "AmplifyAppId": "dto2kcprsz7l"
+    },
+    "categories": {
+      "function": {
+        "pushBroadcast": {
+          "deploymentBucketName": "amplify-meep-staging-171906-deployment",
+          "s3Key": "amplify-builds/pushBroadcast-6246704f514630724d4d-build.zip"
+        }
+      }
     }
   }
 }
