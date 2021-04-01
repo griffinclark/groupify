@@ -80,7 +80,14 @@ export default function SelectFriends({ navigation, route }: Props) {
     setFilteredContacts(
       contacts.filter(
         contact => {
-          let contactLowercase = contact.name.toLowerCase();
+          let contactLowercase = "";
+          try {
+            contactLowercase = contact.name.toLowerCase();
+          }
+          catch {
+            console.log("error filtering a contact")
+          }
+          // let contactLowercase = contact.name.toLowerCase();
           let textLowercase = text.toLowerCase();
           return contactLowercase.indexOf(textLowercase) > -1;
         }
