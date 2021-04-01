@@ -66,6 +66,7 @@ export default function SelectFriends({ navigation, route }: Props) {
         image: contact.image,
         phoneNumber: (contact.phoneNumbers ? contact.phoneNumbers[0].number : null),
       }));
+      contacts.sort((c1, c2) => (c1.name < c2.name) ? -1 : 1);
       setContacts(contacts);
       setFilteredContacts(contacts); // show all contacts when screen loads
       // console.log(contacts);
