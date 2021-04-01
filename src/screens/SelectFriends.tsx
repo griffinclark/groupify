@@ -6,6 +6,7 @@ import {
   SafeAreaView, 
   Text, 
   View,
+  ActivityIndicator,
  } from "react-native";
 import Navbar from "../organisms/Navbar";
 import UserDisplay from "./../organisms/UserDisplay";
@@ -40,6 +41,7 @@ export default function SelectFriends({ navigation, route }: Props) {
   // FIXME @Griffin add in "User x likes coffee" to each user when a search is done
   useEffect(() => {
     // console.log(route.params.data)
+    setState(State.Loading);
     loadContacts(); // Load contacts only once
   }, []);
 
@@ -68,6 +70,7 @@ export default function SelectFriends({ navigation, route }: Props) {
       setFilteredContacts(contacts); // show all contacts when screen loads
       // console.log(contacts);
     }
+    setState(State.Done);
   }
 
   // Filters contacts (only contacts containing <text> appear)
@@ -109,6 +112,11 @@ export default function SelectFriends({ navigation, route }: Props) {
       />
       <View style={globalStyles.miniSpacer} />
       <View style={styles.flatListContainer}>
+        {state === State.Loading ? (
+          <View>
+            <ActivityIndicator size="large" color="#bad555" />
+          </View>
+        ) : null}
         <FlatList
           data={filteredContacts}
           renderItem={renderContact}
