@@ -160,6 +160,13 @@
                   }
                 ]
               }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "secretsmanager:GetSecretValue"
+              ],
+              "Resource": "arn:aws:secretsmanager:us-west-2:645463423180:secret:twilio-api-WVP0dV"
             }
           ]
         }
