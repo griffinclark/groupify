@@ -4,7 +4,10 @@
             "name": "/broadcasts",
             "lambdaFunction": "pushBroadcast",
             "privacy": {
-                "open": true
+                "private": true,
+                "auth": [
+                    "/POST"
+                ]
             },
             "policyResourceName": "/broadcasts"
         }
@@ -17,7 +20,7 @@
         }
     ],
     "privacy": {
-        "auth": 0,
+        "auth": 1,
         "unauth": 0,
         "authRoleName": "amplify-meep-staging-171906-authRole",
         "unAuthRoleName": "amplify-meep-staging-171906-unauthRole"
@@ -31,5 +34,6 @@
                 "Arn"
             ]
         }
-    ]
+    ],
+    "uuid": "823df4e6"
 }

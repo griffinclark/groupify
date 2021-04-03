@@ -41,6 +41,102 @@
     },
     "Resources": {
         
+        "PolicyAPIGWbroadcastsApiauth": {
+            "DependsOn": [
+              "broadcastsApi"
+            ],
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+              "PolicyName": "PolicyAPIGWbroadcastsApiauth",
+              "Roles": [
+                {"Ref": "authRoleName"}
+              ],
+              "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "execute-api:Invoke"
+                    ],
+                    "Resource": [
+                    
+                    
+                    
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "broadcastsApi"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/POST",
+                            "/broadcasts/*"
+                          ]
+                        ]
+                      },
+                                            {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:aws:execute-api:",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                              "Ref": "broadcastsApi"
+                            },
+                            "/",
+                            {
+                              "Fn::If": [
+                                "ShouldNotCreateEnvResources",
+                                "Prod", 
+                                {
+                                  "Ref": "env"
+                                } 
+                              ]
+                            },
+                              "/POST",
+                            "/broadcasts"
+                          ]
+                        ]
+                      }
+                    
+                    
+                    
+                    
+                    
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+        
         
         
         
@@ -157,6 +253,12 @@
                       }
                     }
                   },
+                          
+                    "security": [
+                        {
+                          "sigv4": []
+                        }
+                      ],
                   
                   "x-amazon-apigateway-integration": {
                     "responses": {
@@ -256,6 +358,12 @@
                       }
                     }
                   },
+                          
+                    "security": [
+                        {
+                          "sigv4": []
+                        }
+                      ],
                   
                   "x-amazon-apigateway-integration": {
                     "responses": {
@@ -367,7 +475,7 @@
         
         
         
-      "DeploymentAPIGWbroadcastsApi": {
+      "DeploymentAPIGWbroadcastsApi823df4e6": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",
