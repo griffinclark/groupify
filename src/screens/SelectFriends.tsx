@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Button, PermissionsAndroid, SafeAreaView, Text, View } from "react-native";
+import { 
+  StyleSheet,
+  Button, 
+  PermissionsAndroid, 
+  SafeAreaView, 
+  Text, 
+  View,
+  ActivityIndicator,
+ } from "react-native";
 import Navbar from "../organisms/Navbar";
 import UserDisplay from "./../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
@@ -28,12 +36,12 @@ export default function SelectFriends({ navigation, route }: Props) {
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [query, setQuery] = useState<string>("");
-  const [name, setName] = useState<string>("");
   const [state, setState] = useState<State>(State.Empty);
 
   // FIXME @Griffin add in "User x likes coffee" to each user when a search is done
   useEffect(() => {
     // console.log(route.params.data)
+    setState(State.Loading);
     loadContacts(); // Load contacts only once
   }, []);
 
@@ -52,23 +60,34 @@ export default function SelectFriends({ navigation, route }: Props) {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === "granted") {
       const { data } = await Contacts.getContactsAsync({});
-      setContacts(data.map(contact => ({
+      let contacts = data.map(contact => ({
         id: contact.id,
         name: contact.name,
         image: contact.image,
         phoneNumber: (contact.phoneNumbers ? contact.phoneNumbers[0].number : null),
-      })));
+      }));
+      contacts.sort((c1, c2) => (c1.name < c2.name) ? -1 : 1);
+      setContacts(contacts);
+      setFilteredContacts(contacts); // show all contacts when screen loads
       // console.log(contacts);
     }
+    setState(State.Done);
   }
 
-  // Filters contacts based on the search
+  // Filters contacts (only contacts containing <text> appear)
   const searchContacts = (text: string) => {
     setQuery(text);
     setFilteredContacts(
       contacts.filter(
         contact => {
-          let contactLowercase = contact.name.toLowerCase();
+          let contactLowercase = "";
+          try {
+            contactLowercase = contact.name.toLowerCase();
+          }
+          catch {
+            console.log("error filtering a contact")
+          }
+          // let contactLowercase = contact.name.toLowerCase();
           let textLowercase = text.toLowerCase();
           return contactLowercase.indexOf(textLowercase) > -1;
         }
@@ -101,6 +120,11 @@ export default function SelectFriends({ navigation, route }: Props) {
       />
       <View style={globalStyles.miniSpacer} />
       <View style={styles.flatListContainer}>
+        {state === State.Loading ? (
+          <View>
+            <ActivityIndicator size="large" color="#bad555" />
+          </View>
+        ) : null}
         <FlatList
           data={filteredContacts}
           renderItem={renderContact}

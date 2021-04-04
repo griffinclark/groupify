@@ -1,6 +1,7 @@
 import React from "react"
 import { View, StyleSheet, TextInput } from 'react-native';
-import {CheckBox as RNCheckBox} from 'react-native'  // Technically this is depreciated but... like... do I have to care?
+// import {CheckBox as RNCheckBox} from 'react-native'  // Technically this is depreciated but... like... do I have to care?
+import RNCheckBox from "react-native-check-box";
 import { DARK } from "../res/styles/Colors";
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { LIGHT } from '../res/styles/Colors';
@@ -13,9 +14,9 @@ interface Props{
 export default function CheckBox({isSelected, onValueChange}: Props){
     return(
         <View>
-            <RNCheckBox 
-            value={isSelected}
-            onValueChange={onValueChange}
+            <RNCheckBox
+            isChecked={isSelected}
+            onClick={onValueChange}
             style={styles.checkbox}
             />
         </View>
@@ -24,7 +25,8 @@ export default function CheckBox({isSelected, onValueChange}: Props){
 
 let styles = StyleSheet.create({
     checkbox: {
-        alignSelf: "center"
+        flex: 1,
+        padding: 10
         // TODO style
     }
 })
