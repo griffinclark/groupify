@@ -18,6 +18,10 @@ If you have an android:
 - log in with the same account you made during the register step
 - scan the QR code with the Expo Go app
 
+## Expo and package compatibility
+
+When installing a new package, it's important to always use `expo install` instead of the equivalent npm or yarn commands. Until we switch to an Expo bare build, this command will ensure we use a version of each package made available to us in the Expo client.
+
 ## Troubleshooting
 ### On Windows
 - if you're getting errors trying to run `expo ...` commands
