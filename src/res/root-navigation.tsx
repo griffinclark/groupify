@@ -8,7 +8,6 @@ import Test from './../screens/Test';
 import Home from "../screens/Home";
 import SelectTags from '../screens/SelectTags';
 import SelectFriends from './../screens/SelectFriends';
-import EventResults from '../screens/SuggestedEvents';
 import ConfirmEvent from './../screens/ConfirmEvent';
 import SuggestedEvents from './../screens/SuggestedEvents';
 
@@ -26,7 +25,6 @@ export default function RootNavigation() {
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
         <Stack.Screen name="SelectTags" component={SelectTags} options={{ headerShown: false }}/>
         <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }}/>
-        <Stack.Screen name="EventResults" component={EventResults} options={{ headerShown: false }}/>
         <Stack.Screen name="ConfirmEvent" component={ConfirmEvent} options={{ headerShown: false }}/>
         <Stack.Screen name="SuggestedEvents" component={SuggestedEvents} options={{ headerShown: false }}/>
 
