@@ -38,6 +38,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
             date: values.eventDate,
             time: values.eventTime,
             location: values.eventLocation,
+            description: values.eventDescription,
           }
         }
       }
@@ -55,6 +56,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
           eventDate: "",
           eventTime: "",
           eventLocation: "",
+          eventDescription: "",
         }}
         onSubmit={onFormSubmit}
       >
@@ -88,10 +90,18 @@ export default function CreateCustomEvent({ navigation }: Props) {
             <TextInput
               style={styles.textInputBody}
               onChangeText={handleChange("eventLocation")}
-              placeholder={"e.g.  5499 Eagle Rock View Dr, Los Angeles, CA 90041"}
+              placeholder={"e.g. 5499 Eagle Rock View Dr, Los Angeles, CA 90041"}
               value={values.eventLocation}
             />
             <View style={globalStyles.miniSpacer} />
+            <Text style={globalStyles.title}>Description/Notes</Text>
+            <TextInput
+              style={styles.textInputBody}
+              onChangeText={handleChange("eventDescription")}
+              placeholder={"e.g. Meet at the parking lot near the inn."}
+              value={values.eventDescription}
+            />
+            <View style={{height: 275}} />
             <Button style={styles.button} title="Invite Friends" onPress={handleSubmit} />
           </View>
         )}

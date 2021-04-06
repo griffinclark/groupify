@@ -57,7 +57,7 @@ export default function EventTile({
       <View style={styles.rowConatiner}>
         <View style={globalStyles.defaultColumnContainer}>
           <View>
-            <Text><Text style={{fontWeight: "bold"}}>Description: </Text>{description}</Text>
+            <Text><Text style={{fontWeight: "bold"}}>Description/Notes: </Text>{description}</Text>
             <View style={globalStyles.miniSpacer} />
             <Text><Text style={{fontWeight: "bold"}}>Date: </Text>{date}</Text>
             <Text><Text style={{fontWeight: "bold"}}>Time: </Text>{time}</Text>
