@@ -57,7 +57,7 @@ export default function Home({ navigation, route }: Props) {
         title={"Create event"}
         color="green"
         onPress={() => {
-          navigation.navigate("SelectTags"); 
+          navigation.navigate("CreateCustomEvent"); 
         }}
       />
     </View>
