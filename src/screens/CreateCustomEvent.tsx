@@ -6,7 +6,9 @@ import EventTile from "../molecules/EventTile";
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { Event } from "./../res/dataModels";
 import { LIGHT } from '../res/styles/Colors';
+import { useIsFocused } from "@react-navigation/core";
 // import DateTimePicker from "@react-native-community/datetimepicker";
+import uuid from 'uuid';
 
 
 interface Props {
@@ -30,11 +32,11 @@ export default function CreateCustomEvent({ navigation }: Props) {
       {data:
         {eventData:
           {
-            // id: 
-            title: values.title,
-            date: values.date,
-            time: values.time,
-            location: values.location,
+            // id: uuid.v4(),
+            title: values.eventName,
+            date: values.eventDate,
+            time: values.eventTime,
+            location: values.eventLocation,
           }
         }
       }
