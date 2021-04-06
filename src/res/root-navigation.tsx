@@ -10,6 +10,7 @@ import SelectTags from '../screens/SelectTags';
 import SelectFriends from './../screens/SelectFriends';
 import ConfirmEvent from './../screens/ConfirmEvent';
 import SuggestedEvents from './../screens/SuggestedEvents';
+import CreateCustomEvent from "./../screens/CreateCustomEvent";
 
 
 const Stack = createStackNavigator();
@@ -18,7 +19,7 @@ export default function RootNavigation() {
   return (
     <NavigationContainer>
       {/* TODO the default screen needs to change based on whether a user is logged in or not */}
-      <Stack.Navigator initialRouteName="Home"> 
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Welcome" component={Welcome}  options={{ headerShown: false }}/>
         <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Test" component={Test} options={{ headerShown: false }}/>
@@ -27,8 +28,7 @@ export default function RootNavigation() {
         <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }}/>
         <Stack.Screen name="ConfirmEvent" component={ConfirmEvent} options={{ headerShown: false }}/>
         <Stack.Screen name="SuggestedEvents" component={SuggestedEvents} options={{ headerShown: false }}/>
-
-
+        <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

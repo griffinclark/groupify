@@ -26,10 +26,10 @@ export default function Navbar({ navigation }: any) {
      
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("SelectTags");
+          navigation.navigate("CreateCustomEvent");
         }}
       >
-        <Text>Build Event</Text>
+        <Text>Create Event</Text>
       </TouchableOpacity>
     </View>
   );
