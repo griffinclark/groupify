@@ -44,7 +44,7 @@ export default function DataDisplay({ data, navigation, selectedTags, onSelect, 
             />
           );
         }}
-        keyExtractor={(item) => item.title} // FIXME: Two events with the same title will crash the app
+        keyExtractor={(item) => item.uuid} // FIXME: Two events with the same title will crash the app
 
       />
     </View>
