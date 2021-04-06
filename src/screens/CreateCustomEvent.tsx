@@ -6,6 +6,7 @@ import EventTile from "../molecules/EventTile";
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { Event } from "./../res/dataModels";
 import { LIGHT } from '../res/styles/Colors';
+// import DateTimePicker from "@react-native-community/datetimepicker";
 
 
 interface Props {
@@ -26,14 +27,14 @@ export default function CreateCustomEvent({ navigation }: Props) {
   const onFormSubmit = (values) => {
     console.log(values)
     navigation.navigate("SelectFriends", 
-      {data: 
+      {data:
         {eventData:
           {
-            title: "Example Title",
-            date: "03/04/2021",
-            time: "3:00 pm",
-            location: "1000 Park Place",
-            description: "hello",
+            // id: 
+            title: values.title,
+            date: values.date,
+            time: values.time,
+            location: values.location,
           }
         }
       }
@@ -60,7 +61,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
             <TextInput
               style={styles.textInputBody}
               onChangeText={handleChange("eventName")}
-              placeholder={"e.g. Huntington Beach"}
+              placeholder={"e.g. Hiking at Eagle Rock"}
               value={values.eventName}
             />
             <View style={globalStyles.miniSpacer} />
@@ -72,7 +73,23 @@ export default function CreateCustomEvent({ navigation }: Props) {
               value={values.eventDate}
             />
             <View style={globalStyles.miniSpacer} />
-            <Button title="Invite Friends" onPress={handleSubmit} />
+            <Text style={globalStyles.title}>Event Time</Text>
+            <TextInput
+              style={styles.textInputBody}
+              onChangeText={handleChange("eventTime")}
+              placeholder={"e.g. 3:45 PM"}
+              value={values.eventTime}
+            />
+            <View style={globalStyles.miniSpacer} />
+            <Text style={globalStyles.title}>Event Location</Text>
+            <TextInput
+              style={styles.textInputBody}
+              onChangeText={handleChange("eventLocation")}
+              placeholder={"e.g.  5499 Eagle Rock View Dr, Los Angeles, CA 90041"}
+              value={values.eventLocation}
+            />
+            <View style={globalStyles.miniSpacer} />
+            <Button style={styles.button} title="Invite Friends" onPress={handleSubmit} />
           </View>
         )}
       </Formik>
@@ -85,5 +102,9 @@ let styles = StyleSheet.create({
     fontSize: 20,
     backgroundColor: LIGHT,
     borderBottomWidth: 1,
-  }
+  },
+  button: {
+    position: "absolute",
+    bottom: 0,
+  },
 })
