@@ -30,6 +30,7 @@ export default function DataDisplay({ data, navigation, selectedTags, onSelect, 
           return (
             <EventTile
               title={item.title}
+              showImage={item.showImage}
               imageURL={item.imageURL}
               description={item.description}
               tagData={selectedTags}
@@ -39,6 +40,7 @@ export default function DataDisplay({ data, navigation, selectedTags, onSelect, 
               navigation={navigation}
               date={item.date}
               time={item.time}
+              location={item.location}
             />
           );
         }}

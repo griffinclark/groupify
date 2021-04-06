@@ -33,6 +33,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
         {eventData:
           {
             // id: uuid.v4(),
+            showImage: false,
             title: values.eventName,
             date: values.eventDate,
             time: values.eventTime,

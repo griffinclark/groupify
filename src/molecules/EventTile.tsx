@@ -14,12 +14,14 @@ import { template } from "@babel/core";
 
 interface Props {
   title: string;
+  showImage: boolean;
   imageURL: string;
   description: string;
   tags: string[];
   createdBy?: string;
   date: string;
   time: string;
+  location: string;
   displayButton: boolean,
   navigation: any
   tagData: object
@@ -28,6 +30,7 @@ interface Props {
 
 export default function EventTile({
   title,
+  showImage = true,
   imageURL,
   tagData,
   description,
@@ -35,6 +38,7 @@ export default function EventTile({
   createdBy,
   date,
   time,
+  location,
   displayButton,
   friends,
   navigation
@@ -57,6 +61,7 @@ export default function EventTile({
             <View style={globalStyles.miniSpacer} />
             <Text><Text style={{fontWeight: "bold"}}>Date: </Text>{date}</Text>
             <Text><Text style={{fontWeight: "bold"}}>Time: </Text>{time}</Text>
+            <Text><Text style={{fontWeight: "bold"}}>Location: </Text>{location}</Text>
             <View style={globalStyles.miniSpacer} />
             {friends != null && (<Text style={{fontWeight: "bold"}}>Invited Friends: </Text>
 )}
