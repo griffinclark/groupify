@@ -37,6 +37,8 @@ export default function DataDisplay({ data, navigation, selectedTags, onSelect, 
               friends={formatFriends(item.friends)}
               displayButton={displayButton}
               navigation={navigation}
+              date={item.date}
+              time={item.time}
             />
           );
         }}

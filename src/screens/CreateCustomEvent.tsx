@@ -33,6 +33,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
             date: "03/04/2021",
             time: "3:00 pm",
             location: "1000 Park Place",
+            description: "hello",
           }
         }
       }

@@ -25,6 +25,8 @@ export interface Event {
     description: string
     tags: string[]
     friends: string[]
+    date: string
+    time: string
 }
 
 export interface FriendRecord {

@@ -10,6 +10,7 @@ import {
 } from "../res/styles/Colors";
 import CheckBox from "../atoms/CheckBox";
 import SquareImageDisplay from "./../atoms/SquareImageDisplay";
+import { template } from "@babel/core";
 
 interface Props {
   title: string;
@@ -17,7 +18,8 @@ interface Props {
   description: string;
   tags: string[];
   createdBy?: string;
-  startTime?: string;
+  date: string;
+  time: string;
   displayButton: boolean,
   navigation: any
   tagData: object
@@ -31,7 +33,8 @@ export default function EventTile({
   description,
   tags,
   createdBy,
-  startTime,
+  date,
+  time,
   displayButton,
   friends,
   navigation
@@ -50,7 +53,10 @@ export default function EventTile({
       <View style={styles.rowConatiner}>
         <View style={globalStyles.defaultColumnContainer}>
           <View>
-            <Text>{description}</Text>
+            <Text><Text style={{fontWeight: "bold"}}>Description: </Text>{description}</Text>
+            <View style={globalStyles.miniSpacer} />
+            <Text><Text style={{fontWeight: "bold"}}>Date: </Text>{date}</Text>
+            <Text><Text style={{fontWeight: "bold"}}>Time: </Text>{time}</Text>
             <View style={globalStyles.miniSpacer} />
             {friends != null && (<Text style={{fontWeight: "bold"}}>Invited Friends: </Text>
 )}
