@@ -148,15 +148,10 @@ export default function SelectFriends({ navigation, route }: Props) {
       <Button
         title="Create Event"
         onPress={async () => {
-          // navigation.navigate("Home",{data: {
-          //   tagData: route.params.data.tagData,
-          //   eventData: route.params.data.eventData,
-          //   friendList: selectedFriends
-          // }});
           let event: Event = route.params.data.eventData;
           event.friends = selectedFriends;
           await storeUserEvent(event);
-          navigation.navigate("Home", {data: {eventUUID: route.params.data.eventData.uuid}});
+          navigation.navigate("Home", {data: {eventData: route.params.data.eventData}});
         }}
       />
 

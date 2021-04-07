@@ -18,23 +18,12 @@ interface Props {
 }
 
 
-
 export default function Home({ navigation, route }: Props) {
   const [feedData, setFeedData] = useState<Event[]>([]);
 
-  useEffect(()=>{
-    try {
-      // getAllKeys();
-      getUserEvents();
-      // let event: Event = route.params.data.eventData
-      // event.friends= route.params.data.friendList
-      // console.log(event)
-      // setFeedData(feedData => [...feedData, event])
-      // storeUserEvent(event);
-    } catch {
-      console.log("NOPE");
-    }
-    // getUserEvents();
+  useEffect(() => {
+    // clearAllEvents();
+    getUserEvents();
   }, [route.params]);
 
   const getUserEvents = async () => {
@@ -49,8 +38,7 @@ export default function Home({ navigation, route }: Props) {
     }
   }
 
-  const getAllKeys = async () => {
-    let keys = []
+  const clearAllEvents = async () => {
     try {
       await AsyncStorage.removeItem("user_events");
       keys = await AsyncStorage.getAllKeys();
@@ -59,7 +47,6 @@ export default function Home({ navigation, route }: Props) {
     }
     console.log(keys);
   }
-
 
   return (
     <View>
