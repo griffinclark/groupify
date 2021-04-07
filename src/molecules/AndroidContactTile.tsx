@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { globalStyles } from "./../res/styles/GlobalStyles";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { StyleSheet } from "react-native";
 import { TEST_HIGH_CONTRAST, TEST_IMAGE_URL } from "../res/styles/Colors";
@@ -19,44 +19,61 @@ export default function AndroidContactTile({
   addUser,
   removeUser,
 }: Props) {
-  const [checked, setChecked] = useState(false);
-  return (
-    <View style={styles.rootContainer}>
-      <View style={styles.profileImageContainer}>
-        {imageURL ? (
-          <CircularImageDisplay imageURI={imageURL} />
-        ) : (
-          <CircularImageDisplay imageURI={TEST_IMAGE_URL} />
-        )}
-      </View>
-      <View>
-        <Text style={globalStyles.title}> {firstName } </Text>
-      </View>
-      <View style={styles.checkboxContainer}>
-        <CheckBox
-          isSelected={checked}
-          onValueChange={() => {
-            setChecked(!checked);
 
-            if (checked != true) { // IK its backwards!!!! Don't come whining to me about it. It works so it's a good solution
-              try{
-                addUser(firstName);
-              } catch (e) {
-                console.log(e)
-              } 
-              console.log("added");
-            } else {
-              try{
-                removeUser(firstName);
-              } catch (e) {
-                console.log(e)
-              } 
-              console.log("removed");
-            }
-          }}
-        />
+  const [checked, setChecked] = useState(false);
+
+  const onPress = () => {
+    if (!checked) {
+      setChecked(true);
+      addUser(firstName);
+      console.log("add");
+    }
+    else {
+      setChecked(false);
+      removeUser(firstName);
+      console.log("remove");
+    }
+  }
+
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.rootContainer}>
+        <View style={styles.profileImageContainer}>
+          {imageURL ? (
+            <CircularImageDisplay imageURI={imageURL} />
+          ) : (
+            <CircularImageDisplay imageURI={TEST_IMAGE_URL} />
+          )}
+        </View>
+        <View>
+          <Text style={globalStyles.title}> {firstName } </Text>
+        </View>
+        <View style={styles.checkboxContainer}>
+          <CheckBox
+            isSelected={checked}
+            onValueChange={() => {
+              setChecked(!checked);
+
+              if (checked != true) { // IK its backwards!!!! Don't come whining to me about it. It works so it's a good solution
+                try{
+                  addUser(firstName);
+                } catch (e) {
+                  console.log(e)
+                } 
+                console.log("added");
+              } else {
+                try{
+                  removeUser(firstName);
+                } catch (e) {
+                  console.log(e)
+                } 
+                console.log("removed");
+              }
+            }}
+          />
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
