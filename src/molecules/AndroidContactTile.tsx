@@ -3,7 +3,7 @@ import { globalStyles } from "./../res/styles/GlobalStyles";
 import { View, Text, TouchableOpacity } from "react-native";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { StyleSheet } from "react-native";
-import { TEST_HIGH_CONTRAST, TEST_IMAGE_URL } from "../res/styles/Colors";
+import { TEST_HIGH_CONTRAST, TEST_IMAGE_URL, GRAY_DARK } from "../res/styles/Colors";
 import CheckBox from "../atoms/CheckBox";
 
 interface Props {
@@ -46,7 +46,7 @@ export default function AndroidContactTile({
           )}
         </View>
         <View>
-          <Text style={globalStyles.title}> {firstName } </Text>
+          <Text style={ checked ? styles.nameSelected : styles.nameNotSelected}> {firstName} </Text>
         </View>
         <View style={styles.checkboxContainer}>
           <CheckBox
@@ -100,5 +100,15 @@ let styles = StyleSheet.create({
   checkboxContainer: {
     position: "absolute",
     right: 10,
+  },
+  nameSelected: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: "mediumpurple",
+  },
+  nameNotSelected: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: GRAY_DARK,
   },
 });
