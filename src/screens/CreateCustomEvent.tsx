@@ -43,7 +43,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
 
   return (
     <SafeAreaView>
-      <View style={globalStyles.miniSpacer} />
+      <View style={globalStyles.spacer} />
       <Text style={globalStyles.superTitle}>New Custom Event</Text>
       <View style={globalStyles.miniSpacer} />
       <Formik
@@ -97,7 +97,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
               placeholder={"e.g. Meet at the parking lot near the inn."}
               value={values.eventDescription}
             />
-            <View style={{height: 275}} />
+            <View style={{height: 220}} />
             <Button style={styles.button} title="Invite Friends" onPress={handleSubmit} />
           </View>
         )}

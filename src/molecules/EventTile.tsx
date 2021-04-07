@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { globalStyles } from "./../res/styles/GlobalStyles";
-import { View, Text, Button, Pressable } from "react-native";
+import { View, Text, Button, TouchableOpacity } from "react-native";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { StyleSheet } from "react-native";
 import {
@@ -46,7 +46,7 @@ export default function EventTile({
 
 
   return (
-    <Pressable onLongPress={() => {console.log("pressed")}}>
+    <TouchableOpacity onLongPress={() => {console.log("pressed")}}>
       <View style={styles.rootContainer}>
         <Text style={globalStyles.title}> {title} </Text>
         {showImage === true &&
@@ -78,7 +78,7 @@ export default function EventTile({
           </View>
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 

@@ -7,6 +7,7 @@ import {
   Text, 
   View,
   ActivityIndicator,
+  ScrollView,
  } from "react-native";
 import Navbar from "../organisms/Navbar";
 import UserDisplay from "./../organisms/UserDisplay";
@@ -141,8 +142,10 @@ export default function SelectFriends({ navigation, route }: Props) {
 
       <View style={{height: 10}} />
       <Text style={globalStyles.title}>Selected friends:</Text>
-      <Text>{selectedFriends.map(friend => friend + " | ")}</Text>
-      <View style={globalStyles.miniSpacer} />
+      <ScrollView horizontal={true}>
+        <Text>{selectedFriends.map(friend => friend + " | ")}</Text>
+      </ScrollView>
+      <View style={globalStyles.spacer} />
 
       {/* TODO @David what do we want to do with the friend list when a user submits? */}
       <Button
