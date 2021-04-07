@@ -15,9 +15,12 @@ import { SearchBar } from "react-native-elements";
 import AndroidContactTile from "./../molecules/AndroidContactTile";
 import { addEvent } from "./Home";
 import * as Contacts from "expo-contacts";
-import { Contact } from "../res/dataModels";
+import { Contact, Event } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
 import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { storeUserEvent } from "./../res/storageFunctions";
+
 
 interface Props {
   navigation: any;
@@ -144,12 +147,16 @@ export default function SelectFriends({ navigation, route }: Props) {
       {/* TODO @David what do we want to do with the friend list when a user submits? */}
       <Button
         title="Create Event"
-        onPress={() => {
-          navigation.navigate("Home",{data: {
-            tagData: route.params.data.tagData,
-            eventData: route.params.data.eventData,
-            friendList: selectedFriends
-          }});
+        onPress={async () => {
+          // navigation.navigate("Home",{data: {
+          //   tagData: route.params.data.tagData,
+          //   eventData: route.params.data.eventData,
+          //   friendList: selectedFriends
+          // }});
+          let event: Event = route.params.data.eventData;
+          event.friends = selectedFriends;
+          await storeUserEvent(event);
+          navigation.navigate("Home", {data: {eventUUID: route.params.data.eventData.uuid}});
         }}
       />
 

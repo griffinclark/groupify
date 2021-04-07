@@ -24,25 +24,21 @@ interface CustomEvent {
 
 export default function CreateCustomEvent({ navigation }: Props) {
 
-  useEffect(() => {}, []);
-
   const onFormSubmit = (values) => {
-    console.log(values)
-    navigation.navigate("SelectFriends", 
-      {data:
-        {eventData:
-          {
-            uuid: uuid.v4(),
-            showImage: false,
-            title: values.eventName,
-            date: values.eventDate,
-            time: values.eventTime,
-            location: values.eventLocation,
-            description: values.eventDescription,
-          }
+    // console.log(values)
+    navigation.navigate("SelectFriends", {
+      data: {
+        eventData: {
+          uuid: uuid.v4(),
+          showImage: false,
+          title: values.eventName,
+          date: values.eventDate,
+          time: values.eventTime,
+          location: values.eventLocation,
+          description: values.eventDescription,
         }
       }
-    )
+    })
   };
 
   return (

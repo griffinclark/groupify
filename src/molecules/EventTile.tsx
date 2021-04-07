@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { globalStyles } from "./../res/styles/GlobalStyles";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, Pressable } from "react-native";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { StyleSheet } from "react-native";
 import {
@@ -46,36 +46,39 @@ export default function EventTile({
 
 
   return (
-    <View style={styles.rootContainer}>
-      <Text style={globalStyles.title}> {title} </Text>
-      {/* <View style={styles.rowConatiner}>
-        <View style={styles.profileImageContainer}>
-          <SquareImageDisplay imageURI={imageURL} />
+    <Pressable onLongPress={() => {console.log("pressed")}}>
+      <View style={styles.rootContainer}>
+        <Text style={globalStyles.title}> {title} </Text>
+        {showImage === true &&
+        <View style={styles.rowConatiner}>
+          <View style={styles.profileImageContainer}>
+            <SquareImageDisplay imageURI={imageURL} />
+          </View>
         </View>
-      </View> */}
-      <View style={globalStyles.miniSpacer} />
-      <View style={styles.rowConatiner}>
-        <View style={globalStyles.defaultColumnContainer}>
-          <View>
-            <Text><Text style={{fontWeight: "bold"}}>Description/Notes: </Text>{description}</Text>
-            <View style={globalStyles.miniSpacer} />
-            <Text><Text style={{fontWeight: "bold"}}>Date: </Text>{date}</Text>
-            <Text><Text style={{fontWeight: "bold"}}>Time: </Text>{time}</Text>
-            <Text><Text style={{fontWeight: "bold"}}>Location: </Text>{location}</Text>
-            <View style={globalStyles.miniSpacer} />
-            {friends != null && (<Text style={{fontWeight: "bold"}}>Invited Friends: </Text>)}
-            <Text>{friends}</Text>
-            {displayButton == true && (<Button title={"select"} onPress={()=>{navigation.navigate("SelectFriends", {data: {tagData: tagData, eventData: {
-              title: title,
-              imageURL: imageURL,
-              description: description,
-              tags: tags
-            }}})}} />)}
-            
+        }
+        <View style={globalStyles.miniSpacer} />
+        <View style={styles.rowConatiner}>
+          <View style={globalStyles.defaultColumnContainer}>
+            <View>
+              <Text><Text style={{fontWeight: "bold"}}>Description/Notes: </Text>{description}</Text>
+              <View style={globalStyles.miniSpacer} />
+              <Text><Text style={{fontWeight: "bold"}}>Date: </Text>{date}</Text>
+              <Text><Text style={{fontWeight: "bold"}}>Time: </Text>{time}</Text>
+              <Text><Text style={{fontWeight: "bold"}}>Location: </Text>{location}</Text>
+              <View style={globalStyles.miniSpacer} />
+              {friends != null && (<Text style={{fontWeight: "bold"}}>Invited Friends: </Text>)}
+              <Text>{friends}</Text>
+              {displayButton == true && (<Button title={"select"} onPress={()=>{navigation.navigate("SelectFriends", {data: {tagData: tagData, eventData: {
+                title: title,
+                imageURL: imageURL,
+                description: description,
+                tags: tags
+              }}})}} />)}
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

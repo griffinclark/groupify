@@ -11,7 +11,7 @@ interface Props {
   navigation: any;
   onSelect?: any;
   displayButton: boolean
-  selectedTags: object
+  selectedTags?: object
 }
 
 // Adds a newline at the end of each friend in the array
@@ -44,7 +44,7 @@ export default function DataDisplay({ data, navigation, selectedTags, onSelect, 
             />
           );
         }}
-        keyExtractor={(item) => item.uuid} // FIXME: Two events with the same title will crash the app
+        keyExtractor={(item) => item.uuid}
 
       />
     </View>

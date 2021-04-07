@@ -10,6 +10,7 @@ import Navbar from "../organisms/Navbar";
 import { cannedEvents } from "../res/cannedData";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { Event } from "../res/dataModels";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Props {
   navigation: any;
@@ -22,16 +23,43 @@ export default function Home({ navigation, route }: Props) {
   const [feedData, setFeedData] = useState<Event[]>([]);
 
   useEffect(()=>{
-    try{
-      let event: Event = route.params.data.eventData
-      event.friends= route.params.data.friendList
-      console.log(event)
-      setFeedData(feedData => [...feedData, event])
-
+    try {
+      // getAllKeys();
+      getUserEvents();
+      // let event: Event = route.params.data.eventData
+      // event.friends= route.params.data.friendList
+      // console.log(event)
+      // setFeedData(feedData => [...feedData, event])
+      // storeUserEvent(event);
     } catch {
-      console.log("NOPE")
+      console.log("NOPE");
     }
-  }, [route.params])
+    // getUserEvents();
+  }, [route.params]);
+
+  const getUserEvents = async () => {
+    try {
+      let userEvents = await AsyncStorage.getItem("user_events");
+      userEvents = userEvents !== null ? JSON.parse(userEvents) : [];
+      console.log(userEvents);
+      setFeedData(userEvents);
+    }
+    catch (e) {
+      console.log("Error getting user events");
+    }
+  }
+
+  const getAllKeys = async () => {
+    let keys = []
+    try {
+      await AsyncStorage.removeItem("user_events");
+      keys = await AsyncStorage.getAllKeys();
+    } catch (e) {
+      // read key error
+    }
+    console.log(keys);
+  }
+
 
   return (
     <View>
