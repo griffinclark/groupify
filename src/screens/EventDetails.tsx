@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text, Button } from "react-native";
+import { SafeAreaView, View, Text, Button, Alert } from "react-native";
 import EventTile from "./../molecules/EventTile";
 import { Event } from "./../res/dataModels";
 import { deleteUserEventFromUUID } from "./../res/storageFunctions";
@@ -45,6 +45,25 @@ export default function EventDetails({ navigation, route }: Props) {
     }
   }
 
+  const createTwoButtonAlert = () =>
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this event?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Delete", onPress: onPressDelete }
+      ]
+    );
+
+  const onPressDelete = async () => {
+    await deleteUserEventFromUUID(event.uuid);
+    navigation.navigate("Home", {data: {prevAction: "deleted event" + event.uuid}});
+  }
+
   return (
     <SafeAreaView >
       <View style={globalStyles.spacer} />
@@ -68,10 +87,7 @@ export default function EventDetails({ navigation, route }: Props) {
       <View style={{height: 650}} />
       <Button
         title="Delete Event"
-        onPress={async () => {
-          await deleteUserEventFromUUID(event.uuid);
-          navigation.navigate("Home", {data: {prevAction: "deleted event" + event.uuid}});
-        }}
+        onPress={createTwoButtonAlert}
       />
     </SafeAreaView>
   );
