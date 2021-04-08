@@ -39,6 +39,7 @@ export default function Home({ navigation, route }: Props) {
   }
 
   const clearAllEvents = async () => {
+    let keys = []
     try {
       await AsyncStorage.removeItem("user_events");
       keys = await AsyncStorage.getAllKeys();

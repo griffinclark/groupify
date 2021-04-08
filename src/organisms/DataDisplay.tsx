@@ -29,6 +29,7 @@ export default function DataDisplay({ data, navigation, selectedTags, onSelect, 
         renderItem={({ item }) => {
           return (
             <EventTile
+              uuid ={item.uuid}
               title={item.title}
               showImage={item.showImage}
               imageURL={item.imageURL}

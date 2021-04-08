@@ -20,6 +20,7 @@ export interface User {
 }
 
 export interface Event {
+    uuid: string
     title: string 
     imageURL: string
     description: string
@@ -27,6 +28,7 @@ export interface Event {
     friends: string[]
     date: string
     time: string
+    location: string
 }
 
 export interface FriendRecord {

@@ -11,6 +11,7 @@ import SelectFriends from './../screens/SelectFriends';
 import ConfirmEvent from './../screens/ConfirmEvent';
 import SuggestedEvents from './../screens/SuggestedEvents';
 import CreateCustomEvent from "./../screens/CreateCustomEvent";
+import EventDetails from "./../screens/EventDetails";
 
 
 const Stack = createStackNavigator();
@@ -29,6 +30,7 @@ export default function RootNavigation() {
         <Stack.Screen name="ConfirmEvent" component={ConfirmEvent} options={{ headerShown: false }}/>
         <Stack.Screen name="SuggestedEvents" component={SuggestedEvents} options={{ headerShown: false }}/>
         <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }}/>
+        <Stack.Screen name="EventDetails" component={EventDetails} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

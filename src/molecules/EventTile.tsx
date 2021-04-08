@@ -13,6 +13,7 @@ import SquareImageDisplay from "./../atoms/SquareImageDisplay";
 import { template } from "@babel/core";
 
 interface Props {
+  uuid: string;
   title: string;
   showImage: boolean;
   imageURL: string;
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export default function EventTile({
+  uuid,
   title,
   showImage = true,
   imageURL,
@@ -46,7 +48,10 @@ export default function EventTile({
 
 
   return (
-    <TouchableOpacity onLongPress={() => {console.log("pressed")}}>
+    <TouchableOpacity onPress={() => {
+      console.log("pressed");
+      navigation.navigate("EventDetails", {data: {eventUUID: uuid}});
+      }}>
       <View style={styles.rootContainer}>
         <Text style={globalStyles.title}> {title} </Text>
         {showImage === true &&

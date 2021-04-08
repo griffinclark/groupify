@@ -43,7 +43,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
 
   return (
     <SafeAreaView>
-      <View style={globalStyles.spacer} />
+      <View style={globalStyles.miniSpacer} />
       <Text style={globalStyles.superTitle}>New Custom Event</Text>
       <View style={globalStyles.miniSpacer} />
       <Formik
