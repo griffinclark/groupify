@@ -39,14 +39,14 @@ export default function Home({ navigation, route }: Props) {
   }
 
   const clearAllEvents = async () => {
-    let keys = []
+    let keys: string[] = []
     try {
       await AsyncStorage.removeItem("user_events");
       keys = await AsyncStorage.getAllKeys();
     } catch (e) {
       // read key error
     }
-    console.log(keys);
+    console.log("All keys cleared:", keys);
   }
 
   return (

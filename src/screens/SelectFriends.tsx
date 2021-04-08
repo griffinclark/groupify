@@ -154,7 +154,7 @@ export default function SelectFriends({ navigation, route }: Props) {
           let event: Event = route.params.data.eventData;
           event.friends = selectedFriends;
           await storeUserEvent(event);
-          navigation.navigate("Home", {data: {eventData: route.params.data.eventData}});
+          navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
         }}
       />
 

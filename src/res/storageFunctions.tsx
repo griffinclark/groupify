@@ -29,3 +29,21 @@ export const getUserEventFromUUID = async (uuid: string, func) => {
     console.log("Error getting an event");
   }
 }
+
+export const deleteUserEventFromUUID = async (uuid: string) => {
+  try {
+    let userEventsString = await AsyncStorage.getItem("user_events");
+    let userEvents: Event[] = userEventsString !== null ? JSON.parse(userEventsString) : [];
+    for (let i = 0; i < userEvents.length; i++) {
+      if (userEvents[i].uuid === uuid) {
+        userEvents.splice(i, 1);
+        await AsyncStorage.setItem("user_events", JSON.stringify(userEvents));
+        return;
+      }
+    }
+    console.log("there is no event with this uuid");
+  }
+  catch (e) {
+    console.log("Error deleting an event");
+  }
+}

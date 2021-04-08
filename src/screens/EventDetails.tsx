@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text } from "react-native";
+import { SafeAreaView, View, Text, Button } from "react-native";
 import EventTile from "./../molecules/EventTile";
 import { Event } from "./../res/dataModels";
-// import { getUserEventFromUUID } from "./../res/storageFunctions";
+import { deleteUserEventFromUUID } from "./../res/storageFunctions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 
@@ -46,7 +46,7 @@ export default function EventDetails({ navigation, route }: Props) {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView >
       <View style={globalStyles.spacer} />
       {console.log(event)}
       {event ? (
@@ -64,8 +64,15 @@ export default function EventDetails({ navigation, route }: Props) {
         time={event.time}
         location={event.location}
       />) : (<Text>Loading</Text>)
-    }
+      }
+      <View style={{height: 650}} />
+      <Button
+        title="Delete Event"
+        onPress={async () => {
+          await deleteUserEventFromUUID(event.uuid);
+          navigation.navigate("Home", {data: {prevAction: "deleted event" + event.uuid}});
+        }}
+      />
     </SafeAreaView>
-    
   );
 }
