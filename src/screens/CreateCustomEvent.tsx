@@ -16,10 +16,10 @@ interface Props {
   endpointUID: string;
 }
 
-interface CustomEvent {
+interface FormTextField {
+  variable: string;
   title: string;
-  startTime: string;
-  location: string;
+  placeholder: string;
 }
 
 export default function CreateCustomEvent({ navigation }: Props) {
@@ -41,6 +41,49 @@ export default function CreateCustomEvent({ navigation }: Props) {
     })
   };
 
+  const inputFields = {
+    "eventName":
+    {
+      "title": "Event Name",
+      "placeholder":"e.g. Hiking at Eagle Rock"
+    },
+    "eventDate":
+    {
+      "title": "Event Date",
+      "placeholder": "e.g. e.g. 03/21/2021"
+    },
+    "eventTime":
+    {
+      "title": "Event Time",
+      "placeholder": "e.g. 3:45 PM"
+    },
+    "eventLocation":
+    {
+      "title": "Event Location",
+      "placeholder": "e.g. 5499 Eagle Rock View Dr, Los Angeles, CA 90041"
+    },
+    "eventDescription":
+    {
+      "title": "Event Description",
+      "placeholder": "e.g. Meet at the parking lot near the inn."
+    },
+  };
+
+  const listInputField = (handleChange, values, input: string) => {
+    return (
+      <View>
+        <Text style={globalStyles.title}>{inputFields[input].title}</Text>
+        <TextInput
+          style={styles.textInputBody}
+          onChangeText={handleChange(input)}
+          placeholder={inputFields[input].placeholder}
+          value={values[input]}
+        />
+        <View style={globalStyles.miniSpacer} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView>
       <View style={globalStyles.miniSpacer} />
@@ -58,46 +101,12 @@ export default function CreateCustomEvent({ navigation }: Props) {
       >
         {({ handleChange, handleSubmit, values }) => (
           <View>
-            <Text style={globalStyles.title}>Event Name</Text>
-            <TextInput
-              style={styles.textInputBody}
-              onChangeText={handleChange("eventName")}
-              placeholder={"e.g. Hiking at Eagle Rock"}
-              value={values.eventName}
-            />
-            <View style={globalStyles.miniSpacer} />
-            <Text style={globalStyles.title}>Event Date</Text>
-            <TextInput
-              style={styles.textInputBody}
-              onChangeText={handleChange("eventDate")}
-              placeholder={"e.g. 03/21/2021"}
-              value={values.eventDate}
-            />
-            <View style={globalStyles.miniSpacer} />
-            <Text style={globalStyles.title}>Event Time</Text>
-            <TextInput
-              style={styles.textInputBody}
-              onChangeText={handleChange("eventTime")}
-              placeholder={"e.g. 3:45 PM"}
-              value={values.eventTime}
-            />
-            <View style={globalStyles.miniSpacer} />
-            <Text style={globalStyles.title}>Event Location</Text>
-            <TextInput
-              style={styles.textInputBody}
-              onChangeText={handleChange("eventLocation")}
-              placeholder={"e.g. 5499 Eagle Rock View Dr, Los Angeles, CA 90041"}
-              value={values.eventLocation}
-            />
-            <View style={globalStyles.miniSpacer} />
-            <Text style={globalStyles.title}>Description/Notes</Text>
-            <TextInput
-              style={styles.textInputBody}
-              onChangeText={handleChange("eventDescription")}
-              placeholder={"e.g. Meet at the parking lot near the inn."}
-              value={values.eventDescription}
-            />
-            <View style={{height: 275}} />
+            { listInputField(handleChange, values, "eventName") }
+            { listInputField(handleChange, values, "eventDate") }
+            { listInputField(handleChange, values, "eventTime") }
+            { listInputField(handleChange, values, "eventLocation") }
+            { listInputField(handleChange, values, "eventDescription") }
+            <View style={{height: 250}} />
             <Button style={styles.button} title="Invite Friends" onPress={handleSubmit} />
           </View>
         )}
