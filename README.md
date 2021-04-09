@@ -18,6 +18,14 @@ If you have an android:
 - log in with the same account you made during the register step
 - scan the QR code with the Expo Go app
 
+## Amplify and environments
+
+Currently two branches have AWS amplify integrated: `production` and `staging`. Checking out either is not enough for the repo to be in a buildable state; you must also run `amplify env checkout production/staging`. The first time you check out either branch, you must also run `amplify init` first from the repo root, and this will walk you through the setup for your credentials.
+
+## Expo and package compatibility
+
+When installing a new package, it's important to always use `expo install` instead of the equivalent npm or yarn commands. Until we switch to an Expo bare build, this command will ensure we use a version of each package made available to us in the Expo client.
+
 ## Troubleshooting
 ### On Windows
 - if you're getting errors trying to run `expo ...` commands
