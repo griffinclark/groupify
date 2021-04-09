@@ -14,7 +14,18 @@ export const storeUserEvent = async (event: Event) => {
   }
 }
 
-export const getUserEventFromUUID = async (uuid: string, func) => {
+export const getAllUserEvents = async () => {
+  try {
+    let userEventsString = await AsyncStorage.getItem("user_events");
+    let userEvents: Event[] = userEventsString !== null ? JSON.parse(userEventsString) : [];
+    return userEvents;
+  }
+  catch (e) {
+    console.log("Error getting events");
+  }
+}
+
+export const getUserEventFromUUID = async (uuid: string) => {
   try {
     let userEventsString = await AsyncStorage.getItem("user_events");
     let userEvents: Event[] = userEventsString !== null ? JSON.parse(userEventsString) : [];

@@ -11,6 +11,7 @@ import { cannedEvents } from "../res/cannedData";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { Event } from "../res/dataModels";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getAllUserEvents } from "./../res/storageFunctions";
 
 interface Props {
   navigation: any;
@@ -27,15 +28,8 @@ export default function Home({ navigation, route }: Props) {
   }, [route.params]);
 
   const getUserEvents = async () => {
-    try {
-      let userEvents = await AsyncStorage.getItem("user_events");
-      userEvents = userEvents !== null ? JSON.parse(userEvents) : [];
-      console.log("User Events:", userEvents);
-      setFeedData(userEvents);
-    }
-    catch (e) {
-      console.log("Error getting user events");
-    }
+    let events = await getAllUserEvents()
+    setFeedData(events);
   }
 
   const clearAllEvents = async () => {
