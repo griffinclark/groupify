@@ -30,7 +30,7 @@ export default function Home({ navigation, route }: Props) {
     try {
       let userEvents = await AsyncStorage.getItem("user_events");
       userEvents = userEvents !== null ? JSON.parse(userEvents) : [];
-      console.log(userEvents);
+      console.log("User Events:", userEvents);
       setFeedData(userEvents);
     }
     catch (e) {

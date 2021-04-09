@@ -29,7 +29,7 @@ export default function EventDetails({ navigation, route }: Props) {
 
   const getUserEventFromUUID = async (uuid: string) => {
     try {
-      console.log(uuid);
+      // console.log(uuid);
       let userEventsString = await AsyncStorage.getItem("user_events");
       let userEvents: Event[] = userEventsString !== null ? JSON.parse(userEventsString) : [];
       for (let e of userEvents) {
@@ -67,7 +67,7 @@ export default function EventDetails({ navigation, route }: Props) {
   return (
     <SafeAreaView >
       <View style={globalStyles.spacer} />
-      {console.log(event)}
+      {/* {console.log(event)} */}
       {event ? (
       <EventTile
         uuid ={event.uuid}
@@ -84,6 +84,7 @@ export default function EventDetails({ navigation, route }: Props) {
         location={event.location}
       />) : (<Text>Loading</Text>)
       }
+      {/* Possible feature: google maps location displayed here */}
       <View style={{height: 650}} />
       <Button
         title="Delete Event"

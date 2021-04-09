@@ -49,7 +49,7 @@ export default function EventTile({
 
   return (
     <TouchableOpacity onPress={() => {
-      console.log("pressed");
+      // console.log("pressed");
       navigation.navigate("EventDetails", {data: {eventUUID: uuid}});
       }}>
       <View style={styles.rootContainer}>
