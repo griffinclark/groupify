@@ -131,7 +131,7 @@ Parameters:
     Type: String
             
         
-  dependsOn:
+  authProviders:
     Type: CommaDelimitedList
       
 Conditions:
