@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { LogBox, StyleSheet, Text, View } from "react-native";
 import { globalStyles } from "./src/res/styles/GlobalStyles";
