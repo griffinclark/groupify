@@ -23,7 +23,15 @@ export default function Navbar({ navigation }: any) {
       >
         <Text>Home</Text>
       </TouchableOpacity>
-     
+    
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("ImportContacts")
+        }}
+      >
+        <Text>Import Contacts</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() => {
           navigation.navigate("CreateCustomEvent");

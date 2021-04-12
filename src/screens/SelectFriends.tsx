@@ -14,13 +14,11 @@ import UserDisplay from "./../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { SearchBar } from "react-native-elements";
 import AndroidContactTile from "./../molecules/AndroidContactTile";
-import { addEvent } from "./Home";
 import * as Contacts from "expo-contacts";
 import { Contact, Event } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
 import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { storeUserEvent } from "./../res/storageFunctions";
+import { getAllImportedContacts, storeUserEvent } from "./../res/storageFunctions";
 
 
 interface Props {
@@ -36,9 +34,9 @@ enum State {
 
 export default function SelectFriends({ navigation, route }: Props) {
   // const [friendsList, setFriendsList] = useState([]);
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
-  const [selectedFriends, setSelectedFriends] = useState([]);
+  const [friends, setFriends] = useState<Contact[]>([]);
+  const [filteredFriends, setFilteredFriends] = useState<Contact[]>([]);
+  const [selectedFriends, setSelectedFriends] = useState<Contact[]>([]);
   const [query, setQuery] = useState<string>("");
   const [state, setState] = useState<State>(State.Empty);
 
@@ -46,54 +44,51 @@ export default function SelectFriends({ navigation, route }: Props) {
   useEffect(() => {
     // console.log(route.params.data)
     setState(State.Loading);
-    loadContacts(); // Load contacts only once
+    loadFriends(); // Load contacts only once
   }, []);
 
-  const addSelectedFriend = (friend: string) => {
+  const addSelectedFriend = (friend: Contact) => {
     setSelectedFriends((selectedFriends) => [...selectedFriends, friend]);
   };
 
-  const removeSelectedFriend = (friend: string) => {
-    let index = selectedFriends.indexOf(friend);
+  const removeSelectedFriend = (friend: Contact) => {
+    // let index = selectedFriends.indexOf(friend);
+    let index: number = 0;
+    for (let i = 0; i < selectedFriends.length; i++) {
+      if (selectedFriends[i].id === friend.id) {
+        index = i;
+        break;
+      }
+    }
     selectedFriends.splice(index, 1);
     setSelectedFriends(selectedFriends.slice(0));
   };
 
   // Request permission to access contacts and load them.
-  const loadContacts = async() => {
-    const { status } = await Contacts.requestPermissionsAsync();
-    if (status === "granted") {
-      const { data } = await Contacts.getContactsAsync({});
-      let contacts = data.map(contact => ({
-        id: contact.id,
-        name: contact.name,
-        image: contact.image,
-        phoneNumber: (contact.phoneNumbers ? contact.phoneNumbers[0].number : null),
-      }));
-      contacts.sort((c1, c2) => (c1.name < c2.name) ? -1 : 1);
-      setContacts(contacts);
-      setFilteredContacts(contacts); // show all contacts when screen loads
-      // console.log(contacts);
-    }
+  const loadFriends = async() => {
+    let importedContacts = await getAllImportedContacts();
+    console.log("all imported contacts", importedContacts);
+    setFriends(importedContacts);
+    setFilteredFriends(importedContacts);
     setState(State.Done);
   }
 
   // Filters contacts (only contacts containing <text> appear)
-  const searchContacts = (text: string) => {
+  const searchFriends = (text: string) => {
     setQuery(text);
-    setFilteredContacts(
-      contacts.filter(
-        contact => {
-          let contactLowercase = "";
+    setFilteredFriends(
+      friends.filter(
+        friend => {
+          let friendLowercase = "";
           try {
-            contactLowercase = contact.name.toLowerCase();
+            friendLowercase = friend.name.toLowerCase();
           }
           catch {
             console.log("error filtering a contact")
           }
           // let contactLowercase = contact.name.toLowerCase();
           let textLowercase = text.toLowerCase();
-          return contactLowercase.indexOf(textLowercase) > -1;
+          return friendLowercase.indexOf(textLowercase) > -1;
         }
       )
     );
@@ -103,6 +98,7 @@ export default function SelectFriends({ navigation, route }: Props) {
   // Renders each contact as AndroidContactTile
   const renderContact = ({ item }) => (
     <AndroidContactTile
+      contact={item}
       firstName={item.name}
       imageURL={item.image ? item.image.uri : DEFAULT_CONTACT_IMAGE}
       addUser={addSelectedFriend}
@@ -118,7 +114,7 @@ export default function SelectFriends({ navigation, route }: Props) {
       <View style={globalStyles.miniSpacer} />
       <SearchBar
         placeholder="Search for friends"
-        onChangeText={searchContacts}
+        onChangeText={searchFriends}
         value={query}
         lightTheme={true}
       />
@@ -130,7 +126,7 @@ export default function SelectFriends({ navigation, route }: Props) {
           </View>
         ) : null}
         <FlatList
-          data={filteredContacts}
+          data={filteredFriends}
           renderItem={renderContact}
           ListEmptyComponent={() => (
             <View style={styles.listContainer}>
@@ -143,7 +139,7 @@ export default function SelectFriends({ navigation, route }: Props) {
       <View style={{height: 10}} />
       <Text style={globalStyles.title}>Selected friends:</Text>
       <ScrollView horizontal={true}>
-        <Text>{selectedFriends.map(friend => friend + " | ")}</Text>
+        <Text>{selectedFriends.map(friend => friend.name + " | ")}</Text>
       </ScrollView>
       <View style={globalStyles.spacer} />
 
@@ -153,6 +149,7 @@ export default function SelectFriends({ navigation, route }: Props) {
         onPress={async () => {
           let event: Event = route.params.data.eventData;
           event.friends = selectedFriends;
+          // console.log("selected friends on submit", selectedFriends);
           await storeUserEvent(event);
           navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
         }}

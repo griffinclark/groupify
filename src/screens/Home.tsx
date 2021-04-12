@@ -11,7 +11,7 @@ import { cannedEvents } from "../res/cannedData";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { Event } from "../res/dataModels";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getAllUserEvents } from "./../res/storageFunctions";
+import { getAllUserEvents, getAllImportedContacts } from "./../res/storageFunctions";
 
 interface Props {
   navigation: any;
@@ -28,7 +28,7 @@ export default function Home({ navigation, route }: Props) {
   }, [route.params]);
 
   const getUserEvents = async () => {
-    let events = await getAllUserEvents()
+    let events = await getAllUserEvents();
     setFeedData(events);
   }
 

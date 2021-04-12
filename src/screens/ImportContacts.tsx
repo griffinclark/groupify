@@ -1,0 +1,217 @@
+import React, { useEffect, useState } from "react";
+import { 
+  StyleSheet,
+  Button, 
+  PermissionsAndroid, 
+  SafeAreaView, 
+  Text, 
+  View,
+  ActivityIndicator,
+  ScrollView,
+ } from "react-native";
+import Navbar from "../organisms/Navbar";
+import UserDisplay from "../organisms/UserDisplay";
+import { globalStyles } from "../res/styles/GlobalStyles";
+import { SearchBar } from "react-native-elements";
+import AndroidContactTile from "../molecules/AndroidContactTile";
+import * as Contacts from "expo-contacts";
+import { Contact, Event } from "../res/dataModels";
+import { FlatList } from "react-native-gesture-handler";
+import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { deleteAllImportedContacts, getAllImportedContacts, storeImportedContact } from "../res/storageFunctions";
+import { forModalPresentationIOS } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/CardStyleInterpolators";
+
+
+interface Props {
+  navigation: any;
+  route: any
+}
+
+enum State {
+  Empty,
+  Loading,
+  Done
+}
+
+export default function ContactsImport({ navigation }: Props) {
+  // const [friendsList, setFriendsList] = useState([]);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
+  const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
+  const [query, setQuery] = useState<string>("");
+  const [state, setState] = useState<State>(State.Empty);
+
+  // FIXME @Griffin add in "User x likes coffee" to each user when a search is done
+  useEffect(() => {
+    // console.log(route.params.data)
+    setState(State.Loading);
+    loadContacts(); // Load contacts only once
+    loadImportedContacts();
+  }, []);
+
+  const addSelectedContact = (contact: Contact) => {
+    setSelectedContacts((selectedContacts) => [...selectedContacts, contact]);
+  };
+
+  const removeSelectedContact = (contact: Contact) => {
+    // let index = selectedContacts.indexOf(contact);
+    let index: number = 0;
+    for (let i = 0; i < selectedContacts.length; i++) {
+      if (selectedContacts[i].id === contact.id) {
+        index = i;
+        break;
+      }
+    }
+    selectedContacts.splice(index, 1);
+    setSelectedContacts(selectedContacts.slice(0));
+  };
+
+  // Request permission to access contacts and load them
+  const loadContacts = async() => {
+    const { status } = await Contacts.requestPermissionsAsync();
+    if (status === "granted") {
+      const { data } = await Contacts.getContactsAsync({});
+      let contacts = data.map(contact => ({
+        id: contact.id,
+        name: contact.name,
+        image: contact.image,
+        phoneNumber: (contact.phoneNumbers ? contact.phoneNumbers[0].number : null),
+      }));
+      contacts.sort((c1, c2) => (c1.name < c2.name) ? -1 : 1);
+      setContacts(contacts);
+      setFilteredContacts(contacts); // show all contacts when screen loads
+      // console.log(contacts);
+    }
+    setState(State.Done);
+  }
+
+  // Load contacts that are already imported
+  const loadImportedContacts = async () => {
+    let c = await getAllImportedContacts();
+    // console.log("all imported contacts", c);
+    setSelectedContacts(await getAllImportedContacts());
+  }
+
+  // Filters contacts (only contacts containing <text> appear)
+  const searchContacts = (text: string) => {
+    setQuery(text);
+    setFilteredContacts(
+      contacts.filter(
+        contact => {
+          let contactLowercase = "";
+          try {
+            contactLowercase = contact.name.toLowerCase();
+          }
+          catch {
+            console.log("error filtering a contact")
+          }
+          // let contactLowercase = contact.name.toLowerCase();
+          let textLowercase = text.toLowerCase();
+          return contactLowercase.indexOf(textLowercase) > -1;
+        }
+      )
+    );
+    // console.log(contacts);
+  }
+
+  // Renders each contact as AndroidContactTile
+  const renderContact = ({ item }) => (
+    <AndroidContactTile
+      contact={item}
+      firstName={item.name}
+      imageURL={item.image ? item.image.uri : DEFAULT_CONTACT_IMAGE}
+      addUser={addSelectedContact}
+      removeUser={removeSelectedContact}
+      isChecked={isContactSelected(item.id)}
+    />
+  );
+
+  // Stores all selected contacts into local storage
+  const storeSelectedContacts = async () => {
+    for (let contact of selectedContacts) {
+      await storeImportedContact(contact);
+    }
+  }
+
+  // Returns true if contact with given id is in selected contacts
+  const isContactSelected = (id: string) => {
+    for (let contact of selectedContacts) {
+      if (contact.id === id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  return (
+    <SafeAreaView>
+      <View style={globalStyles.spacer} />
+      <Text style={globalStyles.superTitle}>Select contacts to import</Text>
+      <Text>Press the checkbox to select a contact</Text>
+      <View style={globalStyles.miniSpacer} />
+      <SearchBar
+        placeholder="Search for contacts"
+        onChangeText={searchContacts}
+        value={query}
+        lightTheme={true}
+      />
+      <View style={globalStyles.miniSpacer} />
+      <View style={styles.flatListContainer}>
+        {state === State.Loading ? (
+          <View>
+            <ActivityIndicator size="large" color="#bad555" />
+          </View>
+        ) : null}
+        <FlatList
+          data={filteredContacts}
+          renderItem={renderContact}
+          ListEmptyComponent={() => (
+            <View style={styles.listContainer}>
+              <Text>No Contacts Found</Text>
+            </View>
+          )}
+        />
+      </View>
+
+      <View style={{height: 10}} />
+      <Text style={globalStyles.title}>Imported contacts:</Text>
+      <ScrollView horizontal={true}>
+        <Text>{selectedContacts.map(contact => contact.name + " | ")}</Text>
+      </ScrollView>
+      <View style={globalStyles.spacer} />
+
+      {/* TODO @David what do we want to do with the friend list when a user submits? */}
+      <Button
+        title="Import Contacts"
+        onPress={async () => {
+          // console.log("selected contacts", selectedContacts);
+          await deleteAllImportedContacts();
+          await storeSelectedContacts();
+          navigation.navigate("Home");
+        }}
+      />
+
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  listContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 50
+  },
+  contactContainer: {
+    color: 'purple',
+    fontWeight: 'bold',
+    fontSize: 26
+  },
+  flatListContainer: {
+    height: "45%",
+    borderBottomColor: "gray",
+    borderBottomWidth: 1
+  }
+});
