@@ -10,10 +10,12 @@ export const LogIn = ({navigation} : Props) => {
 
     const logIn = async () => {
         try {
-            await Auth.signIn(email, password)
-            console.log('successfully signed in')
+            await Auth.signIn(email, password);
+            console.log('successfully signed in');
+            navigation.navigate("Home");
           } catch (err) {
-            console.log('error signing in...', err)
+            console.log('error signing in...', err);
+            //handle no validation 
           }
     }
     

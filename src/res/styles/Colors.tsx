@@ -1,7 +1,21 @@
 // Author: Griffin Clark
 // Init date: 1/21/2021
-// Last updated: 1/21/2021
+// Last updated: 4/11/2021
 
+//CURRENT COLORS
+export const LT_PURPLE = '#B543E0';
+export const DK_PURPLE = '#56176D';
+export const WHITE = '#ffffff';
+export const BLACK = '#000000';
+export const GREY_1 = '#333333';
+export const GREY_2 = '#4F4F4F';
+export const GREY_3 = '#828282';
+export const GREY_4 = '#BDBDBD';
+export const GREY_5 = '#E0E0E0';
+export const GREY_6 = '#F2F2F2';
+export const RED = '#E71717';
+
+//OLD COLORS: WILL BE DEPRECIATED
 // COLORS
 export const PRIMARY = '#1779ba';
 export const SECONDARY = '#F3AD33';
