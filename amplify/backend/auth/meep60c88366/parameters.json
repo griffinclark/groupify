@@ -52,6 +52,5 @@
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "dependsOn": [],
-    "authProviders": []
+    "dependsOn": []
 }
