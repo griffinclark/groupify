@@ -7,6 +7,7 @@ import { globalStyles } from './../res/styles/GlobalStyles';
 import { Event } from "./../res/dataModels";
 import { LIGHT } from '../res/styles/Colors';
 import { useIsFocused } from "@react-navigation/core";
+import Navbar from "../organisms/Navbar";
 // import DateTimePicker from "@react-native-community/datetimepicker";
 import uuid from 'uuid';
 
@@ -86,6 +87,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
 
   return (
     <SafeAreaView>
+      <Navbar navigation={navigation} />
       <View style={globalStyles.miniSpacer} />
       <Text style={globalStyles.superTitle}>New Custom Event</Text>
       <View style={globalStyles.miniSpacer} />
@@ -106,7 +108,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
             { listInputField(handleChange, values, "eventTime") }
             { listInputField(handleChange, values, "eventLocation") }
             { listInputField(handleChange, values, "eventDescription") }
-            <View style={{height: 250}} />
+            <View style={{height: 175}} />
             <Button style={styles.button} title="Invite Friends" onPress={handleSubmit} />
           </View>
         )}

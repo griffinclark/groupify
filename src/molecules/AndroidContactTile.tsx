@@ -26,12 +26,12 @@ export default function AndroidContactTile({
     if (!checked) {
       setChecked(true);
       addUser(firstName);
-      console.log("add");
+      // console.log("add");
     }
     else {
       setChecked(false);
       removeUser(firstName);
-      console.log("remove");
+      // console.log("remove");
     }
   }
 

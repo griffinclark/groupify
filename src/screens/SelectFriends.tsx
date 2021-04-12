@@ -112,7 +112,7 @@ export default function SelectFriends({ navigation, route }: Props) {
 
   return (
     <SafeAreaView>
-      <View style={globalStyles.spacer} />
+      <Navbar navigation={navigation} />
       <Text style={globalStyles.superTitle}>Search for your friends</Text>
       <Text>Press the checkbox to select a friend</Text>
       <View style={globalStyles.miniSpacer} />
@@ -134,7 +134,7 @@ export default function SelectFriends({ navigation, route }: Props) {
           renderItem={renderContact}
           ListEmptyComponent={() => (
             <View style={styles.listContainer}>
-              <Text>No Contacts Found</Text>
+              <Text>No Friends Found</Text>
             </View>
           )}
         />
