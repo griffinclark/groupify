@@ -80,7 +80,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
           placeholder={inputFields[input].placeholder}
           value={values[input]}
         />
-        <View style={globalStyles.miniSpacer} />
+        <View style={{height: 15}} />
       </View>
     );
   }
@@ -88,7 +88,6 @@ export default function CreateCustomEvent({ navigation }: Props) {
   return (
     <SafeAreaView>
       <Navbar navigation={navigation} />
-      <View style={globalStyles.miniSpacer} />
       <Text style={globalStyles.superTitle}>New Custom Event</Text>
       <View style={globalStyles.miniSpacer} />
       <Formik
@@ -108,7 +107,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
             { listInputField(handleChange, values, "eventTime") }
             { listInputField(handleChange, values, "eventLocation") }
             { listInputField(handleChange, values, "eventDescription") }
-            <View style={{height: 175}} />
+            <View style={{height: 250}} />
             <Button style={styles.button} title="Invite Friends" onPress={handleSubmit} />
           </View>
         )}

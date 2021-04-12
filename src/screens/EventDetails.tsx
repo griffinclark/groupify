@@ -12,12 +12,6 @@ interface Props {
   route: any;
 }
 
-// Adds a newline at the end of each friend in the array
-const formatFriends = (friends) => {
-  if (friends !== undefined) {
-    return friends.map(friend => friend + "\n");
-  }
-}
 
 export default function EventDetails({ navigation, route }: Props) {
   const [event, setEvent] = useState<Event>();
@@ -63,7 +57,7 @@ export default function EventDetails({ navigation, route }: Props) {
         imageURL={event.imageURL}
         description={event.description}
         tags={event.tags}
-        friends={formatFriends(event.friends)}
+        friends={event.friends}
         displayButton={false}
         navigation={navigation}
         date={event.date}
