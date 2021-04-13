@@ -67,7 +67,7 @@ export default function SelectFriends({ navigation, route }: Props) {
   // Request permission to access contacts and load them.
   const loadFriends = async() => {
     let importedContacts = await getAllImportedContacts();
-    console.log("all imported contacts", importedContacts);
+    // console.log("all imported contacts", importedContacts);
     setFriends(importedContacts);
     setFilteredFriends(importedContacts);
     setState(State.Done);

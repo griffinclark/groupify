@@ -88,9 +88,9 @@ export default function ContactsImport({ navigation }: Props) {
 
   // Load contacts that are already imported
   const loadImportedContacts = async () => {
-    let c = await getAllImportedContacts();
-    // console.log("all imported contacts", c);
-    setSelectedContacts(await getAllImportedContacts());
+    let importedContacts = await getAllImportedContacts();
+    // console.log("all imported contacts", importedContacts);
+    setSelectedContacts(importedContacts);
   }
 
   // Filters contacts (only contacts containing <text> appear)
@@ -165,7 +165,7 @@ export default function ContactsImport({ navigation }: Props) {
           </View>
         ) : null}
         <FlatList
-          data={filteredContacts}
+          data={filteredContacts}  // Large lists (>200) may slow performance
           renderItem={renderContact}
           ListEmptyComponent={() => (
             <View style={styles.listContainer}>

@@ -65,7 +65,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
     },
     "eventDescription":
     {
-      "title": "Event Description",
+      "title": "Event Description / Notes",
       "placeholder": "e.g. Meet at the parking lot near the inn."
     },
   };
