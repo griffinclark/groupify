@@ -36,14 +36,14 @@
       "AmplifyAppId": "dto2kcprsz7l"
     },
     "categories": {
-      "auth": {
-        "Meep": {}
-      },
       "function": {
         "pushBroadcast": {
           "deploymentBucketName": "amplify-meep-production-142445-deployment",
           "s3Key": "amplify-builds/pushBroadcast-6c6d6d6e2b55544a354b-build.zip"
         }
+      },
+      "auth": {
+        "meep60c88366": {}
       }
     }
   }
