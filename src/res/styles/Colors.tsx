@@ -3,8 +3,8 @@
 // Last updated: 4/11/2021
 
 //CURRENT COLORS
-export const LT_PURPLE = '#B543E0';
-export const DK_PURPLE = '#56176D';
+export const LT_PURPLE = '#9062cc';
+export const DK_PURPLE = '#3c2061';
 export const WHITE = '#ffffff';
 export const BLACK = '#000000';
 export const GREY_1 = '#333333';

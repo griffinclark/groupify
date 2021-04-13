@@ -6,6 +6,8 @@ import { PRIMARY } from "../res/styles/Colors";
 // import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { Auth } from "aws-amplify"
 import { Button } from "../atoms/Button";
+import { Screen } from "../atoms/Screen";
+import { Title } from "../atoms/Title";
 
 interface Props {
   navigation: any;
@@ -13,10 +15,10 @@ interface Props {
 
 export default function Welcome({ navigation }: Props) {
   return (
-    <SafeAreaView style={globalStyles.defaultRootContainer}>
-      <Text style={styles.title}>Welcome to Meep</Text>
+    <Screen>
+      <Title>Welcome to Meep</Title>
       <Button
-        onPress={()=>{navigation.navigate("CreateAccount")}}
+        onPress={()=>{navigation.navigate("CreateAccount", {step: 'create'})}}
         title={"Create Account"}
       />
       <Button
@@ -24,23 +26,6 @@ export default function Welcome({ navigation }: Props) {
           navigation.navigate("Login")}}
         title={"Log In"}
       />
-      <Button
-        onPress={() => {
-          console.log("opps pressed");
-        }}
-        title={"unpressable"}
-        disabled={true}
-      />
-
-    </SafeAreaView>
+    </Screen>
   );
 }
-
-let styles = StyleSheet.create({
-  title: {
-    fontSize: 45,
-    color: PRIMARY,
-    textAlign: 'center',
-    fontWeight: "bold"
-  },
-});

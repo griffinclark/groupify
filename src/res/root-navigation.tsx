@@ -15,7 +15,7 @@ import EventDetails from "./../screens/EventDetails";
 import { CreateAccount } from "../screens/CreateAccount";
 import { LogIn } from "../screens/LogIn";
 
-export interface Props { //TODO: interfaces should never have any WTF is the point of typescript otherwise???
+export interface StackProps { //TODO: interfaces should never have any WTF is the point of typescript otherwise???
   navigation: any;
   route: any;
 }

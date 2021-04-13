@@ -48,8 +48,6 @@ export const globalStyles = StyleSheet.create({
     title:{
         fontWeight: 'bold',
         fontSize: 20,
-
-
     },
     superTitle:{
         fontWeight: 'bold',
