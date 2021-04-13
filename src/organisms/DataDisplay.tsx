@@ -11,7 +11,7 @@ interface Props {
   navigation: any;
   onSelect?: any;
   displayButton: boolean
-  selectedTags: object
+  selectedTags?: object
 }
 
 // Adds a newline at the end of each friend in the array
@@ -29,7 +29,9 @@ export default function DataDisplay({ data, navigation, selectedTags, onSelect, 
         renderItem={({ item }) => {
           return (
             <EventTile
+              uuid ={item.uuid}
               title={item.title}
+              showImage={item.showImage}
               imageURL={item.imageURL}
               description={item.description}
               tagData={selectedTags}
@@ -37,10 +39,13 @@ export default function DataDisplay({ data, navigation, selectedTags, onSelect, 
               friends={formatFriends(item.friends)}
               displayButton={displayButton}
               navigation={navigation}
+              date={item.date}
+              time={item.time}
+              location={item.location}
             />
           );
         }}
-        keyExtractor={(item) => item.title}
+        keyExtractor={(item) => item.uuid}
 
       />
     </View>
