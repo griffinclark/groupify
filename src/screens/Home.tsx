@@ -10,6 +10,7 @@ import Navbar from "../organisms/Navbar";
 import { cannedEvents } from "../res/cannedData";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { Event } from "../res/dataModels";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Props {
   navigation: any;
@@ -17,21 +18,36 @@ interface Props {
 }
 
 
-
 export default function Home({ navigation, route }: Props) {
   const [feedData, setFeedData] = useState<Event[]>([]);
 
-  useEffect(()=>{
-    try{
-      let event: Event = route.params.data.eventData
-      event.friends= route.params.data.friendList
-      console.log(event)
-      setFeedData(feedData => [...feedData, event])
+  useEffect(() => {
+    // clearAllEvents();
+    getUserEvents();
+  }, [route.params]);
 
-    } catch {
-      console.log("NOPE")
+  const getUserEvents = async () => {
+    try {
+      let userEvents = await AsyncStorage.getItem("user_events");
+      userEvents = userEvents !== null ? JSON.parse(userEvents) : [];
+      console.log("User Events:", userEvents);
+      setFeedData(userEvents);
     }
-  }, [route.params])
+    catch (e) {
+      console.log("Error getting user events");
+    }
+  }
+
+  const clearAllEvents = async () => {
+    let keys: string[] = []
+    try {
+      await AsyncStorage.removeItem("user_events");
+      keys = await AsyncStorage.getAllKeys();
+    } catch (e) {
+      // read key error
+    }
+    console.log("All keys cleared:", keys);
+  }
 
   return (
     <View>
@@ -57,7 +73,7 @@ export default function Home({ navigation, route }: Props) {
         title={"Create event"}
         color="green"
         onPress={() => {
-          navigation.navigate("SelectTags"); 
+          navigation.navigate("CreateCustomEvent"); 
         }}
       />
     </View>
