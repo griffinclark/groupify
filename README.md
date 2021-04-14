@@ -20,7 +20,9 @@ If you have an android:
 
 ## Amplify and environments
 
-Currently two branches have AWS amplify integrated: `production` and `staging`. Checking out either is not enough for the repo to be in a buildable state; you must also run `amplify env checkout production/staging`. The first time you check out either branch, you must also run `amplify init` first from the repo root, and this will walk you through the setup for your credentials.
+Currently two branches have AWS amplify integrated: `production` and `staging`. Checking out either is not enough for the repo to be in a buildable state; you must also run `amplify env checkout production/staging`.
+
+The first time you check out either branch, you must also run `amplify init` first from the repo root, and this will walk you through the setup for your credentials. Our AWS region is `us-west-2`, and make sure to elect to use an existing environment (`staging` or `production`, in the respective branches). The CLI will ask you to authenticate, do so via a new profile, and use an existing user. Contact ddetweiler@munchkinlabs.us for your AWS CLI credentials.
 
 ## Expo and package compatibility
 
