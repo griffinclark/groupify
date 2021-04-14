@@ -57,25 +57,7 @@ export default function AndroidContactTile({
         <View style={styles.checkboxContainer}>
           <CheckBox
             isSelected={checked}
-            onValueChange={() => {
-              setChecked(!checked);
-
-              if (checked != true) { // IK its backwards!!!! Don't come whining to me about it. It works so it's a good solution
-                try{
-                  addUser(firstName);
-                } catch (e) {
-                  console.log(e)
-                } 
-                // console.log("added");
-              } else {
-                try{
-                  removeUser(firstName);
-                } catch (e) {
-                  console.log(e)
-                } 
-                // console.log("removed");
-              }
-            }}
+            onValueChange={onPress}
           />
         </View>
       </View>
