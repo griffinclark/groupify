@@ -63,7 +63,7 @@ export const deleteUserEventFromUUID = async (uuid: string) => {
 export const getAllImportedContacts = async () => {
   try {
     let userFriendsString = await AsyncStorage.getItem("user_friends");
-    let userFriends: Contact[] = userFriendsString !== null ? JSON.parse(userFriendsString) : [];
+    let userFriends: Contact[] = userFriendsString ? JSON.parse(userFriendsString) : [];
     return userFriends;
   }
   catch (e) {
@@ -73,8 +73,7 @@ export const getAllImportedContacts = async () => {
 
 export const storeImportedContact = async (contact: Contact) => {
   try {
-    let userFriendsString = await AsyncStorage.getItem("user_friends");
-    let userFriends: Contact[] = userFriendsString !== null ? JSON.parse(userFriendsString) : [];
+    let userFriends: Contact[] = await getAllImportedContacts();
     userFriends.push(contact);
     // console.log("contact successfully stored");
     await AsyncStorage.setItem("user_friends", JSON.stringify(userFriends));
@@ -90,7 +89,7 @@ export const deleteImportedContactFromID = async (id: string) => {
     for (let i = 0; i < userFriends.length; i++) {
       if (userFriends[i].id === id) {
         userFriends.splice(i, 1);
-        await AsyncStorage.setItem("user_events", JSON.stringify(userFriends));
+        await AsyncStorage.setItem("user_friends", JSON.stringify(userFriends));
         // console.log("imported contact deleted");
         return;
       }
