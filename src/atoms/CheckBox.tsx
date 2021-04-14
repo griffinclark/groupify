@@ -7,26 +7,26 @@ import { globalStyles } from './../res/styles/GlobalStyles';
 import { LIGHT } from '../res/styles/Colors';
 
 interface Props{
-    isSelected: boolean,
-    onValueChange: any
+  isSelected: boolean,
+  onValueChange: any
 }
 
 export default function CheckBox({isSelected, onValueChange}: Props){
-    return(
-        <View>
-            <RNCheckBox
-            isChecked={isSelected}
-            onClick={onValueChange}
-            style={styles.checkbox}
-            />
-        </View>
-    )
+  return(
+    <View>
+      <RNCheckBox
+      isChecked={isSelected}
+      onClick={onValueChange}
+      style={styles.checkbox}
+      />
+    </View>
+  )
 }
 
 let styles = StyleSheet.create({
-    checkbox: {
-        flex: 1,
-        padding: 10
-        // TODO style
-    }
+  checkbox: {
+    flex: 1,
+    padding: 10
+    // TODO style
+  }
 })

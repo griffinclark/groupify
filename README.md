@@ -46,5 +46,5 @@ This app is structured using the atomic design philosophy, if you are unfamiliar
     - Home
     - SelectTags
     - SelectFriends
-    - EventResults
+    - SuggestedEvents
 
