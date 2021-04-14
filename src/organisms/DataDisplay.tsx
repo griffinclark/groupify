@@ -5,6 +5,7 @@ import EventTile from "../molecules/EventTile";
 import { FlatList } from "react-native-gesture-handler";
 import { Endpoint } from "./../res/dataModels";
 import EndpointTile from "./../molecules/EndpointTile";
+import { Contact } from "./../res/dataModels";
 
 interface Props {
   data: object[];
@@ -15,7 +16,7 @@ interface Props {
 }
 
 // Adds a newline at the end of each friend in the array
-const formatFriends = (friends) => {
+const formatFriends = (friends: Contact[]) => {
   if (friends !== undefined) {
     return friends.map(friend => friend + "\n");
   }
@@ -36,7 +37,7 @@ export default function DataDisplay({ data, navigation, selectedTags, onSelect, 
               description={item.description}
               tagData={selectedTags}
               tags={item.tags}
-              friends={formatFriends(item.friends)}
+              friends={item.friends}
               displayButton={displayButton}
               navigation={navigation}
               date={item.date}

@@ -11,6 +11,8 @@ import {
 import CheckBox from "../atoms/CheckBox";
 import SquareImageDisplay from "./../atoms/SquareImageDisplay";
 import { template } from "@babel/core";
+import { Contact } from "./../res/dataModels";
+
 
 interface Props {
   uuid: string;
@@ -26,7 +28,7 @@ interface Props {
   displayButton: boolean,
   navigation: any
   tagData: object
-  friends: string[]
+  friends: Contact[]
 }
 
 export default function EventTile({
@@ -46,6 +48,13 @@ export default function EventTile({
   navigation
 }: Props) {
 
+  const formatFriends = (friends: Contact[]) => {
+    if (friends !== undefined) {
+      // console.log(friends);
+      return friends.map(friend => friend.name + "\n");
+    }
+    return [];
+  }
 
   return (
     <TouchableOpacity onPress={() => {
@@ -72,7 +81,7 @@ export default function EventTile({
               <Text><Text style={{fontWeight: "bold"}}>Location: </Text>{location}</Text>
               <View style={globalStyles.miniSpacer} />
               {friends != null && (<Text style={{fontWeight: "bold"}}>Invited Friends: </Text>)}
-              <Text>{friends}</Text>
+              <Text>{formatFriends(friends)}</Text>
               {displayButton == true && (<Button title={"select"} onPress={()=>{navigation.navigate("SelectFriends", {data: {tagData: tagData, eventData: {
                 title: title,
                 imageURL: imageURL,

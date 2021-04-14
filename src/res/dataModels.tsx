@@ -25,7 +25,7 @@ export interface Event {
     imageURL: string
     description: string
     tags: string[]
-    friends: string[]
+    friends: Contact[]
     date: string
     time: string
     location: string
