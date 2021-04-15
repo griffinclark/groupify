@@ -11,38 +11,44 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
     const [email, setEmail] = useState(route.params.email ? route.params.email : '');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
+    // const [phone, setPhone] = useState('');
     const [validationCode, setCode] = useState('');
     const [disabled, setDisabled] = useState(true);
     const [error, setError] = useState<string | undefined>();
     const [success, setSuccess] = useState<string | undefined>();
     useEffect(() => {
         if(
-            route.params.step =='create' && 
-            email && 
-            password && 
-            name && 
-            phone
+            route.params.step =='create' 
+            && email 
+            && password 
+            && name 
+            // && phone
         ) {
             setDisabled(false);
         } else if(
-            route.params.step == 'validate' &&
-            email &&
-            validationCode
+            route.params.step == 'validate' 
+            && email 
+            && validationCode
         ) {
             setDisabled(false);
         }
         else {
             setDisabled(true);
         }
-    }, [email, password, name, phone, validationCode]);
+    }, [
+        email, 
+        password, 
+        name, 
+        // phone, 
+        validationCode]);
 
     const invalidInput = () => {
-        const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
-        if(!phoneRegex.test(phone)) {
-            setError('Invalid phone number');
-            return true
-        } else if (password.includes(' ')) {
+        // const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
+        // if(!phoneRegex.test(phone)) {
+        //     setError('Invalid phone number');
+        //     return true
+        // } else 
+        if (password.includes(' ')) {
             setError('Password cannot contain spaces');
             return true
         } else {
@@ -56,12 +62,11 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
             return
         }
         try {
-            //TODO: save phone
             await Auth.signUp({ 
                 username: email, 
                 password, 
                 attributes: {
-                    // phone: phone,
+                    // phone_number: phone,
                     name: name
                 }
             });
@@ -113,10 +118,10 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
                     onChangeText={setPassword}
                     secureTextEntry={true}
                 />
-                <FormInput
+                {/* <FormInput
                     label='Phone Number'
                     onChangeText={(value) => {setPhone(value.trim())}}
-                />
+                /> */}
                 {error && <Alert status='error' message={error}/>}
                 <Button 
                     title='Next'
