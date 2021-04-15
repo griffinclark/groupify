@@ -14,6 +14,7 @@ import CreateCustomEvent from "./../screens/CreateCustomEvent";
 import EventDetails from "./../screens/EventDetails";
 import { CreateAccount } from "../screens/CreateAccount";
 import { LogIn } from "../screens/LogIn";
+import ImportContacts from "../screens/ImportContacts";
 
 export interface StackProps { //TODO: interfaces should never have any WTF is the point of typescript otherwise???
   navigation: any;
@@ -24,7 +25,6 @@ interface RootProps {
 }
 
 const Stack = createStackNavigator();
-
 export const RootNavigation = ({initialRoute}: RootProps) => {
   console.log("Initial route: " + initialRoute);
   return (
@@ -43,6 +43,7 @@ export const RootNavigation = ({initialRoute}: RootProps) => {
         <Stack.Screen name="SuggestedEvents" component={SuggestedEvents} options={{ headerShown: false }}/>
         <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }}/>
         <Stack.Screen name="EventDetails" component={EventDetails} options={{ headerShown: false }}/>
+        <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

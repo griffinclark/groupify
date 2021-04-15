@@ -5,33 +5,39 @@ import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { StyleSheet } from "react-native";
 import { TEST_HIGH_CONTRAST, TEST_IMAGE_URL, GRAY_DARK } from "../res/styles/Colors";
 import CheckBox from "../atoms/CheckBox";
+import { Contact } from "../res/dataModels";
 
 interface Props {
-  firstName: string;
+  contact?: Contact;
+  firstName?: string;
   lastName ?: string;
   imageURL?: string;
   addUser?: any; // if there's a list of users, add the user by username when the checkbox is checked
   removeUser?: any;
+  isChecked? : boolean;
 }
 export default function AndroidContactTile({
+  // TODO: add id parameter and add by id instead of by firstName
+  contact,
   firstName,
   imageURL,
   addUser,
   removeUser,
+  isChecked = false,
 }: Props) {
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(isChecked);
 
   const onPress = () => {
     if (!checked) {
       setChecked(true);
-      addUser(firstName);
-      console.log("add");
+      addUser(contact);
+      // console.log("add");
     }
     else {
       setChecked(false);
-      removeUser(firstName);
-      console.log("remove");
+      removeUser(contact);
+      // console.log("remove");
     }
   }
 
@@ -51,25 +57,7 @@ export default function AndroidContactTile({
         <View style={styles.checkboxContainer}>
           <CheckBox
             isSelected={checked}
-            onValueChange={() => {
-              setChecked(!checked);
-
-              if (checked != true) { // IK its backwards!!!! Don't come whining to me about it. It works so it's a good solution
-                try{
-                  addUser(firstName);
-                } catch (e) {
-                  console.log(e)
-                } 
-                console.log("added");
-              } else {
-                try{
-                  removeUser(firstName);
-                } catch (e) {
-                  console.log(e)
-                } 
-                console.log("removed");
-              }
-            }}
+            onValueChange={onPress}
           />
         </View>
       </View>
