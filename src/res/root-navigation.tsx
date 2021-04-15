@@ -12,17 +12,28 @@ import ConfirmEvent from './../screens/ConfirmEvent';
 import SuggestedEvents from './../screens/SuggestedEvents';
 import CreateCustomEvent from "./../screens/CreateCustomEvent";
 import EventDetails from "./../screens/EventDetails";
+import { CreateAccount } from "../screens/CreateAccount";
+import { LogIn } from "../screens/LogIn";
 import ImportContacts from "../screens/ImportContacts";
 
+export interface StackProps { //TODO: interfaces should never have any WTF is the point of typescript otherwise???
+  navigation: any;
+  route: any;
+}
+interface RootProps {
+  initialRoute: string
+}
 
 const Stack = createStackNavigator();
-
-export default function RootNavigation() {
+export const RootNavigation = ({initialRoute}: RootProps) => {
+  console.log("Initial route: " + initialRoute);
   return (
     <NavigationContainer>
       {/* TODO the default screen needs to change based on whether a user is logged in or not */}
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName={initialRoute}> 
         <Stack.Screen name="Welcome" component={Welcome}  options={{ headerShown: false }}/>
+        <Stack.Screen name="CreateAccount" component={CreateAccount} initialParams={{ step: 'create' }} options={{ headerShown: false }}/>
+        <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }}/>
         <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Test" component={Test} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>

@@ -1,9 +1,13 @@
 import React from "react";
-import { Text, View, StyleSheet, SafeAreaView, Button } from "react-native";
+import { Text, View, StyleSheet, SafeAreaView } from "react-native";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { PRIMARY } from "../res/styles/Colors";
-import UserTile from "../molecules/UserTile";
-import CircularImageDisplay from "../atoms/CircularImageDisplay";
+// import UserTile from "../molecules/UserTile";
+// import CircularImageDisplay from "../atoms/CircularImageDisplay";
+import { Auth } from "aws-amplify"
+import { Button } from "../atoms/Button";
+import { Screen } from "../atoms/Screen";
+import { Title } from "../atoms/Title";
 
 interface Props {
   navigation: any;
@@ -11,41 +15,17 @@ interface Props {
 
 export default function Welcome({ navigation }: Props) {
   return (
-    <SafeAreaView style={globalStyles.defaultRootContainer}>
-      <View style={globalStyles.spacer} />
-      <Text style={styles.title}>Are You Ready To Get Meeped?</Text>
-      <View style={globalStyles.miniSpacer} />
+    <Screen>
+      <Title>Welcome to Meep</Title>
+      <Button
+        onPress={()=>{navigation.navigate("CreateAccount", {step: 'create'})}}
+        title={"Create Account"}
+      />
       <Button
         onPress={()=>{
           navigation.navigate("Login")}}
         title={"Log In"}
       />
-      <View style={globalStyles.miniSpacer} />
-      <Button
-        onPress={()=>{navigation.navigate("Home")}}
-        title={"Home"}
-      />
-      <View style={globalStyles.miniSpacer} />
-      <Button
-        onPress={()=>{navigation.navigate("CreateAccount")}}
-        title={"Create Account"}
-      />
-      <View style={globalStyles.miniSpacer} />
-      <Button
-        onPress={()=>{navigation.navigate("MyProfile")}}
-        title={"My Profile"}
-      />
-      <View style={globalStyles.miniSpacer} />
-      <View style={globalStyles.miniSpacer} />
-    </SafeAreaView>
+    </Screen>
   );
 }
-
-let styles = StyleSheet.create({
-  title: {
-    fontSize: 45,
-    color: PRIMARY,
-    textAlign: 'center',
-    fontWeight: "bold"
-  },
-});

@@ -1,3 +1,4 @@
+import Auth from "@aws-amplify/auth";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -17,11 +18,17 @@ export default function Navbar({ navigation }: any) {
         <Text>Go Back</Text>
       </TouchableOpacity> */}
       <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("Home")
+        onPress={async () => {
+          try {
+            await Auth.signOut();
+            console.log('successfully signed out');
+            navigation.navigate("Welcome");
+          } catch (err) {
+            console.log('error signing out...', err);
+          }
         }}
       >
-        <Text>Home</Text>
+        <Text>Log Out</Text>
       </TouchableOpacity>
     
       <TouchableOpacity
