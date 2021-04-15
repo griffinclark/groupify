@@ -56,14 +56,14 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
             return
         }
         try {
-            //TODO: save phone and name
+            //TODO: save phone
             await Auth.signUp({ 
                 username: email, 
                 password, 
-                // attributes: {
-                //     phone: phone,
-                //     name: name
-                // }
+                attributes: {
+                    // phone: phone,
+                    name: name
+                }
             });
             console.log('user successfully created');
             setError(undefined); //clear error
