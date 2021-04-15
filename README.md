@@ -27,6 +27,7 @@ Currently two branches have AWS amplify integrated: `production` and `staging`. 
 When installing a new package, it's important to always use `expo install` instead of the equivalent npm or yarn commands. Until we switch to an Expo bare build, this command will ensure we use a version of each package made available to us in the Expo client.
 
 ## Troubleshooting
+- if you dont have yarn installed you can do that with `npm install -g yarn`
 ### On Windows
 - if you're getting errors trying to run `expo ...` commands
     - open Powershell as an administrator 

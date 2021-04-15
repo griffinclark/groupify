@@ -19,16 +19,16 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
     useEffect(() => {
         if(
             route.params.step =='create' && 
-            email.trim() && 
-            password.trim() && 
-            name.trim() && 
-            phone.trim()
+            email && 
+            password && 
+            name && 
+            phone
         ) {
             setDisabled(false);
         } else if(
             route.params.step == 'validate' &&
-            email.trim() &&
-            validationCode.trim()
+            email &&
+            validationCode
         ) {
             setDisabled(false);
         }
@@ -37,22 +37,22 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
         }
     }, [email, password, name, phone, validationCode]);
 
-    const invalidPhone = () => {
+    const invalidInput = () => {
         const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
-        if(phoneRegex.test(phone)) {
-            return false
-        } else {
+        if(!phoneRegex.test(phone)) {
             setError('Invalid phone number');
             return true
+        } else if (password.includes(' ')) {
+            setError('Password cannot contain spaces');
+            return true
+        } else {
+            return false
         }
     }
-
-    
       
     // sign the user up
     const signUp = async () => {
-        console.log(email, password);
-        if(invalidPhone()) {
+        if(invalidInput()) {
             return
         }
         try {
@@ -102,11 +102,11 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
             {route.params.step === 'create' && <>
                 <FormInput
                     label='Name'
-                    onChangeText={setName}
+                    onChangeText={(value) => {setName(value.trim())}}
                 />
                 <FormInput
                     label='Email'
-                    onChangeText={setEmail}
+                    onChangeText={(value) => {setEmail(value.trim())}}
                 />
                 <FormInput
                     label='Password'
@@ -115,7 +115,7 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
                 />
                 <FormInput
                     label='Phone Number'
-                    onChangeText={setPhone}
+                    onChangeText={(value) => {setPhone(value.trim())}}
                 />
                 {error && <Alert status='error' message={error}/>}
                 <Button 
@@ -129,11 +129,11 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
                 {email == '' &&
                 <FormInput
                     label='Email'
-                    onChangeText={setEmail}
+                    onChangeText={(value) => {setEmail(value.trim())}}
                 />}
                 <FormInput
                     label='Verification Code'
-                    onChangeText={setCode}
+                    onChangeText={(value) => {setCode(value.trim())}}
                     secureTextEntry={true}
                 />
                 {error && <Alert status='error' message={error}/>}
@@ -149,7 +149,7 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
                             setError(err.message);
                         }
                     }}
-                    disabled={!email.trim()}
+                    disabled={!email}
                 />
                 <Button
                     title='Confirm Email'

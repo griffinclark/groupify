@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { GREY_5 } from '../res/styles/Colors';
 
 interface FormProps {
-    onChangeText: React.Dispatch<React.SetStateAction<string>>;
+    onChangeText: React.Dispatch<string>;
     label?: string;
     placeholder?: string;
     secureTextEntry?: boolean
