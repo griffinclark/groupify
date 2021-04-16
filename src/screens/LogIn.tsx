@@ -6,7 +6,7 @@ import { Auth } from "aws-amplify";
 import { FormInput } from "../atoms/FormInput";
 import { Alert } from "../atoms/AlertModal";
 import { getAllImportedContacts } from "./../res/storageFunctions";
-import { Contact } from "./../res/dataModels"
+import { Contact } from "./../res/dataModels";
 
 export const LogIn: React.FC<StackProps> = ({navigation}) => {
     const [email, setEmail] = useState('');
