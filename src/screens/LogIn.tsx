@@ -5,6 +5,8 @@ import { Button } from '../atoms/Button';
 import { Auth } from "aws-amplify";
 import { FormInput } from "../atoms/FormInput";
 import { Alert } from "../atoms/AlertModal";
+import { getAllImportedContacts } from "./../res/storageFunctions";
+import { Contact } from "./../res/dataModels";
 
 export const LogIn: React.FC<StackProps> = ({navigation}) => {
     const [email, setEmail] = useState('');
@@ -17,8 +19,14 @@ export const LogIn: React.FC<StackProps> = ({navigation}) => {
         try {
             await Auth.signIn(email, password);
             console.log('successfully signed in');
-            navigation.navigate("Home");
-          } catch (err) {
+            let contacts: Contact[] = await getAllImportedContacts();
+            if (contacts.length === 0) {
+                navigation.navigate("ImportContacts");
+            }
+            else {
+                navigation.navigate("Home");
+            }
+        } catch (err) {
             console.log('error signing in...', err);
             if(err.code == 'UserNotConfirmedException') {
                 navigation.navigate("CreateAccount", {step: 'validate', email: email});
@@ -30,7 +38,7 @@ export const LogIn: React.FC<StackProps> = ({navigation}) => {
             } else {
                 setError(err.message);
             }
-          }
+        }
     }
 
     useEffect(() => {
