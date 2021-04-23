@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text, Button, Alert } from "react-native";
+import Navbar from "../organisms/Navbar";
 import EventTile from "./../molecules/EventTile";
 import { Event } from "./../res/dataModels";
 import { deleteUserEventFromUUID, getUserEventFromUUID } from "./../res/storageFunctions";
@@ -43,7 +44,8 @@ export default function EventDetails({ navigation, route }: Props) {
 
   return (
     <SafeAreaView >
-      <View style={globalStyles.spacer} />
+      <Navbar navigation={navigation} />
+      <View style={{height: 50}} />
       {/* {console.log(event)} */}
       {event ? (
       <EventTile
@@ -59,10 +61,10 @@ export default function EventDetails({ navigation, route }: Props) {
         date={event.date}
         time={event.time}
         location={event.location}
-      />) : (<Text>Loading</Text>)
+      />) : (<Text>Loading event details...</Text>)
       }
       {/* Possible feature: google maps location displayed here */}
-      <View style={{height: 650}} />
+      <View style={{height: 600}} />
       <Button
         title="Delete Event"
         onPress={createTwoButtonAlert}
