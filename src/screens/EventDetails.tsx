@@ -5,6 +5,7 @@ import { Event } from "./../res/dataModels";
 import { deleteUserEventFromUUID, getUserEventFromUUID } from "./../res/storageFunctions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { globalStyles } from "./../res/styles/GlobalStyles";
+import { TwoButtonAlert } from "./../atoms/TwoButtonAlert";
 
 
 interface Props {
@@ -27,18 +28,13 @@ export default function EventDetails({ navigation, route }: Props) {
   }
 
   const createTwoButtonAlert = () =>
-    Alert.alert(
-      "Confirm Deletion",
-      "Are you sure you want to delete this event?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "Delete", onPress: onPressDelete }
-      ]
-    );
+    TwoButtonAlert({
+      title: "Confirm Deletion", 
+      message: "Are you sure you want to delete this event?",
+      button1Text: "Cancel",
+      button2Text: "Delete",
+      button2OnPress: onPressDelete,
+    });
 
   const onPressDelete = async () => {
     await deleteUserEventFromUUID(event.uuid);
