@@ -21,7 +21,6 @@ export default function App() {
       try {
         await Auth.currentAuthenticatedUser();
         console.log('user is signed in');
-        // setInitialScreen('Home');
         let contacts: Contact[] = await getAllImportedContacts();
         if (contacts.length === 0) {
           setInitialScreen('ImportContacts');
