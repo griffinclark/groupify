@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text } from "react-native";
+import React, { useState } from "react";
+import { View, Text } from "react-native";
 import { Button } from "./../atoms/Button";
 import { Screen } from "../atoms/Screen";
-import { Title } from "../atoms/Title";
 import Navbar from "../organisms/Navbar";
 import { Event } from "./../res/dataModels";
 import { storeUserEvent } from "./../res/storageFunctions";
 import MultiLineTextInput from "./../atoms/MultiLineTextInput";
 import { globalStyles } from "./../res/styles/GlobalStyles";
+import { TwoButtonAlert } from "./../atoms/TwoButtonAlert";
 
 
 interface Props {
@@ -27,6 +27,15 @@ at ${event.location ? event.location : "[location not specified]"}. \
 Hope to see you there!`;
   const [message, setMessage] = useState<string>(initialMessage);
 
+  const createTwoButtonAlert = () =>
+    TwoButtonAlert({
+      title: "Send and Create Event",
+      message: "Are you sure you want to send this message to all invited friends and create this event?",
+      button1Text: "Cancel",
+      button2Text: "Send & Create",
+      button2OnPress: onPressSend,
+    })
+
   const onPressSend = async () => {
     // console.log(message);
     let event: Event = route.params.data.eventData;
@@ -39,22 +48,22 @@ Hope to see you there!`;
       <Navbar navigation={navigation} />
 
       <Text style={globalStyles.superTitle}>Send Message</Text>
-      <View style={globalStyles.spacer} />
-      <View style={globalStyles.spacer} />
+      <View style={{height: 150}} />
 
       <Text style={globalStyles.title}>Message:</Text>
+      
       <MultiLineTextInput 
         inputText={message} 
         setText={setMessage} 
         placeholder={""}>
       </MultiLineTextInput>
+      <Text>Tap message to edit</Text>
 
-      <View style={globalStyles.miniSpacer} />
       <View style={globalStyles.miniSpacer} />
 
       <Button
         title="Send & Create Event"
-        onPress={onPressSend}
+        onPress={createTwoButtonAlert}
       />
     </Screen>
   );
