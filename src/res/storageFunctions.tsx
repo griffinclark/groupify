@@ -2,6 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Event, Contact } from "../res/dataModels";
 
 
+// Functions for storing user events
+
 export const storeUserEvent = async (event: Event) => {
   try {
       let userEventsString = await AsyncStorage.getItem("user_events");
@@ -60,6 +62,9 @@ export const deleteUserEventFromUUID = async (uuid: string) => {
   }
 }
 
+
+// Functions for storing user imported contacts
+
 export const getAllImportedContacts = async () => {
   try {
     let userFriendsString = await AsyncStorage.getItem("user_friends");
@@ -108,4 +113,18 @@ export const deleteAllImportedContacts = async () => {
   catch (e) {
     console.log("error deleting all imported contacts");
   }
+}
+
+
+// Miscellaneous functions
+
+export const clearAllEvents = async () => {
+  let keys: string[] = []
+  try {
+    await AsyncStorage.removeItem("user_events");
+    keys = await AsyncStorage.getAllKeys();
+  } catch (e) {
+    // read key error
+  }
+  console.log("All events cleared:", keys);
 }
