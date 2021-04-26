@@ -19,12 +19,13 @@ interface Props {
 export default function SendMessage({ navigation, route }: Props) {
   const event: Event = route.params.data.eventData;
   const initialMessage = 
-`Hey, <user's name> is inviting you \
+`Hey, <user> is inviting you \
 to "${event.title ? event.title : "[event title not specified]"}" \
 at ${event.time ? event.time : "[time not specified]"} \
 on ${event.date ? event.date : "[date not specified]"} \
 at ${event.location ? event.location : "[location not specified]"}. \
-Hope to see you there!`;
+${event.description} \
+\nHope to see you there!`;
   const [message, setMessage] = useState<string>(initialMessage);
 
   const createTwoButtonAlert = () =>
