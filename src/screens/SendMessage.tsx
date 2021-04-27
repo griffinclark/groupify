@@ -18,9 +18,10 @@ interface Props {
 
 async function pushEvent(event: Event): Promise<void> {
   const util = PhoneNumberUtil.getInstance();
-  const num = util.parseAndKeepRawInput(event.friends[0].phoneNumbers);
-  const obj = {attendees: util.format(num, PhoneNumberFormat.E164), content: event.description};
-  API.post('broadcastApi', '/broadcasts', obj);
+  const num = util.parseAndKeepRawInput(event.friends[0].phoneNumber, 'US');
+  const obj = {attendees: [util.format(num, PhoneNumberFormat.E164)], content: event.description};
+  console.log(obj);
+  console.log(await API.post('broadcastsApi', '/broadcasts', {body: obj}));
 }
 
 export default function SendMessage({ navigation, route }: Props) {
@@ -46,10 +47,14 @@ ${event.description} \
 
   const onPressSend = async () => {
     // console.log(message);
-    let event: Event = route.params.data.eventData;
-    await storeUserEvent(event);
-    await pushEvent(event);
-    navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
+    try {
+      let event: Event = route.params.data.eventData;
+      await storeUserEvent(event);
+      await pushEvent(event);
+      navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
+    } catch (err) {
+      console.log(err, event.friends);
+    }
   }
 
   return (
