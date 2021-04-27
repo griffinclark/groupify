@@ -19,8 +19,6 @@ import { Contact, Event } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
 import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
 import { getAllImportedContacts, storeUserEvent } from "./../res/storageFunctions";
-import { API } from "aws-amplify";
-import { PhoneNumberFormat, PhoneNumberUtil } from "google-libphonenumber";
 
 interface Props {
   navigation: any;
@@ -31,13 +29,6 @@ enum State {
   Empty,
   Loading,
   Done
-}
-
-async function pushEvent(event: Event): Promise<void> {
-  const util = PhoneNumberUtil.getInstance();
-  const num = util.parseAndKeepRawInput(event.friends[0].phoneNumbers);
-  const obj = {attendees: util.format(num, PhoneNumberFormat.E164), content: event.description};
-  API.post('broadcastApi', '/broadcasts', obj);
 }
 
 export default function SelectFriends({ navigation, route }: Props) {
@@ -152,14 +143,16 @@ export default function SelectFriends({ navigation, route }: Props) {
       <View style={globalStyles.spacer} />
 
       <Button
-        title="Create Event"
+        title="Send Message"
         onPress={async () => {
-          let event: Event = route.params.data.eventData;
-          event.friends = selectedFriends;
+          // let event: Event = route.params.data.eventData;
+          // event.friends = selectedFriends;
+          // console.log(route.params.data.eventData)
+          route.params.data.eventData.friends = selectedFriends;
           // console.log("selected friends on submit", selectedFriends);
-          await storeUserEvent(event);
-          await pushEvent(event);
-          navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
+          // await storeUserEvent(event);
+          // navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
+          navigation.navigate("SendMessage", route.params);
         }}
       />
 

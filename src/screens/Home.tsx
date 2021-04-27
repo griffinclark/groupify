@@ -23,25 +23,15 @@ export default function Home({ navigation, route }: Props) {
   const [feedData, setFeedData] = useState<Event[]>([]);
 
   useEffect(() => {
-    // clearAllEvents();
     getUserEvents();
-  }, [route.params]);
+  }, [route.params]); // only runs when route.params changes, need to change this in the future
 
   const getUserEvents = async () => {
+    // console.log(await getAllUserEvents());
     let events = await getAllUserEvents();
     setFeedData(events);
   }
 
-  const clearAllEvents = async () => {
-    let keys: string[] = []
-    try {
-      await AsyncStorage.removeItem("user_events");
-      keys = await AsyncStorage.getAllKeys();
-    } catch (e) {
-      // read key error
-    }
-    console.log("All keys cleared:", keys);
-  }
 
   return (
     <View>

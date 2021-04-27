@@ -6,6 +6,8 @@ import Welcome from "./src/screens/Welcome";
 import { RootNavigation } from "./src/res/root-navigation";
 import awsconfig from "./src/aws-exports";
 import Amplify, { Auth } from "aws-amplify";
+import { getAllImportedContacts } from "./src/res/storageFunctions";
+import { Contact } from "./src/res/dataModels";
 
 Amplify.configure(awsconfig);
 
@@ -19,7 +21,13 @@ export default function App() {
       try {
         await Auth.currentAuthenticatedUser();
         console.log('user is signed in');
-        setInitialScreen('Home');
+        let contacts: Contact[] = await getAllImportedContacts();
+        if (contacts.length === 0) {
+          setInitialScreen('ImportContacts');
+        }
+        else {
+          setInitialScreen('Home');
+        }
       } catch (err) {
         console.log('user not signed in');
         console.log(err);
