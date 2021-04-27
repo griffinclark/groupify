@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text, Button, Alert } from "react-native";
+import Navbar from "../organisms/Navbar";
 import EventTile from "./../molecules/EventTile";
 import { Event } from "./../res/dataModels";
 import { deleteUserEventFromUUID, getUserEventFromUUID } from "./../res/storageFunctions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { globalStyles } from "./../res/styles/GlobalStyles";
+import { TwoButtonAlert } from "./../atoms/TwoButtonAlert";
 
 
 interface Props {
@@ -27,18 +29,13 @@ export default function EventDetails({ navigation, route }: Props) {
   }
 
   const createTwoButtonAlert = () =>
-    Alert.alert(
-      "Confirm Deletion",
-      "Are you sure you want to delete this event?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "Delete", onPress: onPressDelete }
-      ]
-    );
+    TwoButtonAlert({
+      title: "Confirm Deletion", 
+      message: "Are you sure you want to delete this event?",
+      button1Text: "Cancel",
+      button2Text: "Delete",
+      button2OnPress: onPressDelete,
+    });
 
   const onPressDelete = async () => {
     await deleteUserEventFromUUID(event.uuid);
@@ -47,7 +44,8 @@ export default function EventDetails({ navigation, route }: Props) {
 
   return (
     <SafeAreaView >
-      <View style={globalStyles.spacer} />
+      <Navbar navigation={navigation} />
+      <View style={{height: 50}} />
       {/* {console.log(event)} */}
       {event ? (
       <EventTile
@@ -63,10 +61,10 @@ export default function EventDetails({ navigation, route }: Props) {
         date={event.date}
         time={event.time}
         location={event.location}
-      />) : (<Text>Loading</Text>)
+      />) : (<Text>Loading event details...</Text>)
       }
       {/* Possible feature: google maps location displayed here */}
-      <View style={{height: 650}} />
+      <View style={{height: 600}} />
       <Button
         title="Delete Event"
         onPress={createTwoButtonAlert}

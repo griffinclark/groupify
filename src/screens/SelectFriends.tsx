@@ -145,13 +145,16 @@ export default function SelectFriends({ navigation, route }: Props) {
 
       {/* TODO @David what do we want to do with the friend list when a user submits? */}
       <Button
-        title="Create Event"
+        title="Send Message"
         onPress={async () => {
-          let event: Event = route.params.data.eventData;
-          event.friends = selectedFriends;
+          // let event: Event = route.params.data.eventData;
+          // event.friends = selectedFriends;
+          // console.log(route.params.data.eventData)
+          route.params.data.eventData.friends = selectedFriends;
           // console.log("selected friends on submit", selectedFriends);
-          await storeUserEvent(event);
-          navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
+          // await storeUserEvent(event);
+          // navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
+          navigation.navigate("SendMessage", route.params);
         }}
       />
 
