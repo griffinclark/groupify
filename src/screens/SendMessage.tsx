@@ -18,8 +18,13 @@ interface Props {
 
 async function pushEvent(event: Event): Promise<void> {
   const util = PhoneNumberUtil.getInstance();
-  const num = util.parseAndKeepRawInput(event.friends[0].phoneNumber, 'US');
-  const obj = {attendees: [util.format(num, PhoneNumberFormat.E164)], content: event.description};
+  const attendees = event.friends.map((friend, index, array) => {
+    // NOTE: it's a justifiable assumption that we're dealing with US numbers here
+    const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+    return util.format(num, PhoneNumberFormat.E164);
+  });
+  
+  const obj = {attendees: attendees, content: event.description};
   console.log(obj);
   console.log(await API.post('broadcastsApi', '/broadcasts', {body: obj}));
 }
