@@ -47,21 +47,22 @@ export default function EventDetails({ navigation, route }: Props) {
       <Navbar navigation={navigation} />
       <View style={{height: 50}} />
       {/* {console.log(event)} */}
-      {event ? (
-      <EventTile
-        uuid ={event.uuid}
-        title={event.title}
-        showImage={event.showImage}
-        imageURL={event.imageURL}
-        description={event.description}
-        tags={event.tags}
-        friends={event.friends}
-        displayButton={false}
-        navigation={navigation}
-        date={event.date}
-        time={event.time}
-        location={event.location}
-      />) : (<Text>Loading event details...</Text>)
+      {event ?
+        (<EventTile
+          uuid ={event.uuid}
+          title={event.title}
+          showImage={event.showImage}
+          imageURL={event.imageURL}
+          description={event.description}
+          tags={event.tags}
+          friends={event.friends}
+          displayButton={false}
+          navigation={navigation}
+          date={event.date}
+          time={event.time}
+          location={event.location}
+        />) :
+        (<Text>Loading event details...</Text>)
       }
       {/* Possible feature: google maps location displayed here */}
       <View style={{height: 600}} />
