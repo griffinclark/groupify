@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { 
   StyleSheet,
-  Button, 
-  PermissionsAndroid, 
+  Button,
   SafeAreaView, 
   Text, 
   View,
@@ -10,16 +9,13 @@ import {
   ScrollView,
  } from "react-native";
 import Navbar from "../organisms/Navbar";
-import UserDisplay from "./../organisms/UserDisplay";
-import { globalStyles } from "./../res/styles/GlobalStyles";
+import { globalStyles } from "../res/styles/GlobalStyles";
 import { SearchBar } from "react-native-elements";
-import AndroidContactTile from "./../molecules/AndroidContactTile";
-import * as Contacts from "expo-contacts";
+import AndroidContactTile from "../molecules/AndroidContactTile";
 import { Contact, Event } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
 import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
-import { getAllImportedContacts, storeUserEvent } from "./../res/storageFunctions";
-
+import { getAllImportedContacts } from "../res/storageFunctions";
 
 interface Props {
   navigation: any;
@@ -33,16 +29,13 @@ enum State {
 }
 
 export default function SelectFriends({ navigation, route }: Props) {
-  // const [friendsList, setFriendsList] = useState([]);
   const [friends, setFriends] = useState<Contact[]>([]);
   const [filteredFriends, setFilteredFriends] = useState<Contact[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<Contact[]>([]);
   const [query, setQuery] = useState<string>("");
   const [state, setState] = useState<State>(State.Empty);
 
-  // FIXME @Griffin add in "User x likes coffee" to each user when a search is done
   useEffect(() => {
-    // console.log(route.params.data)
     setState(State.Loading);
     loadFriends(); // Load contacts only once
   }, []);
@@ -52,22 +45,14 @@ export default function SelectFriends({ navigation, route }: Props) {
   };
 
   const removeSelectedFriend = (friend: Contact) => {
-    // let index = selectedFriends.indexOf(friend);
-    let index: number = 0;
-    for (let i = 0; i < selectedFriends.length; i++) {
-      if (selectedFriends[i].id === friend.id) {
-        index = i;
-        break;
-      }
-    }
+    const index = selectedFriends.findIndex((value) => value.id === friend.id);
     selectedFriends.splice(index, 1);
     setSelectedFriends(selectedFriends.slice(0));
   };
 
   // Request permission to access contacts and load them.
   const loadFriends = async() => {
-    let importedContacts = await getAllImportedContacts();
-    // console.log("all imported contacts", importedContacts);
+    let importedContacts = (await getAllImportedContacts())!;
     setFriends(importedContacts);
     setFilteredFriends(importedContacts);
     setState(State.Done);
@@ -96,7 +81,7 @@ export default function SelectFriends({ navigation, route }: Props) {
   }
 
   // Renders each contact as AndroidContactTile
-  const renderContact = ({ item }) => (
+  const renderContact = ({item}: {item: Contact}) => (
     <AndroidContactTile
       contact={item}
       firstName={item.name}
@@ -143,17 +128,10 @@ export default function SelectFriends({ navigation, route }: Props) {
       </ScrollView>
       <View style={globalStyles.spacer} />
 
-      {/* TODO @David what do we want to do with the friend list when a user submits? */}
       <Button
         title="Send Message"
         onPress={async () => {
-          // let event: Event = route.params.data.eventData;
-          // event.friends = selectedFriends;
-          // console.log(route.params.data.eventData)
           route.params.data.eventData.friends = selectedFriends;
-          // console.log("selected friends on submit", selectedFriends);
-          // await storeUserEvent(event);
-          // navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
           navigation.navigate("SendMessage", route.params);
         }}
       />

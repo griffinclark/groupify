@@ -24,7 +24,6 @@ interface FormTextField {
 }
 
 export default function CreateCustomEvent({ navigation }: Props) {
-
   const onFormSubmit = (values) => {
     // console.log(values)
     navigation.navigate("SelectFriends", {

@@ -15,11 +15,11 @@ export const LogIn: React.FC<StackProps> = ({navigation}) => {
     const [error, setError] = useState<string | undefined>();
 
     const logIn = async () => {
-        setError(undefined); //clear error modal
+        setError(undefined); // clear error modal
         try {
             await Auth.signIn(email, password);
             console.log('successfully signed in');
-            let contacts: Contact[] = await getAllImportedContacts();
+            let contacts = (await getAllImportedContacts())!;
             if (contacts.length === 0) {
                 navigation.navigate("ImportContacts");
             }

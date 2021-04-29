@@ -24,11 +24,10 @@ export default function Home({ navigation, route }: Props) {
 
   useEffect(() => {
     getUserEvents();
-  }, [route.params]); // only runs when route.params changes, need to change this in the future
+  }, [route.params]); // TODO: only runs when route.params changes, need to change this in the future
 
   const getUserEvents = async () => {
-    // console.log(await getAllUserEvents());
-    let events = await getAllUserEvents();
+    let events = (await getAllUserEvents())!;
     setFeedData(events);
   }
 

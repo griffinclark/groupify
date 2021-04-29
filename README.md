@@ -38,7 +38,3 @@ When installing a new package, it's important to always use `expo install` inste
     - open Powershell as an administrator 
     - run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned` 
     - run the expo command again
-
-## Atomic Design 0
-
-This app is structured using the atomic design philosophy, if you are unfamiliar with that you can read more about it [here](https://bradfrost.com/blog/post/atomic-web-design/)
