@@ -20,7 +20,6 @@ import { FlatList } from "react-native-gesture-handler";
 import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
 import { getAllImportedContacts, storeUserEvent } from "./../res/storageFunctions";
 
-
 interface Props {
   navigation: any;
   route: any
@@ -143,7 +142,6 @@ export default function SelectFriends({ navigation, route }: Props) {
       </ScrollView>
       <View style={globalStyles.spacer} />
 
-      {/* TODO @David what do we want to do with the friend list when a user submits? */}
       <Button
         title="Send Message"
         onPress={async () => {

@@ -35,13 +35,8 @@ export const RootNavigation = ({initialRoute}: RootProps) => {
         <Stack.Screen name="Welcome" component={Welcome}  options={{ headerShown: false }}/>
         <Stack.Screen name="CreateAccount" component={CreateAccount} initialParams={{ step: 'create' }} options={{ headerShown: false }}/>
         <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }}/>
-        <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerShown: false }}/>
-        <Stack.Screen name="Test" component={Test} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
-        <Stack.Screen name="SelectTags" component={SelectTags} options={{ headerShown: false }}/>
         <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }}/>
-        <Stack.Screen name="ConfirmEvent" component={ConfirmEvent} options={{ headerShown: false }}/>
-        <Stack.Screen name="SuggestedEvents" component={SuggestedEvents} options={{ headerShown: false }}/>
         <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }}/>
         <Stack.Screen name="EventDetails" component={EventDetails} options={{ headerShown: false }}/>
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }}/>

@@ -1,5 +1,3 @@
-import {firestore} from "firebase";
-
 export interface Profile {
     email ?: string
     phoneNumber: string // @Griffin This needs to be canonicalized format, not just a rando string
@@ -58,5 +56,5 @@ export interface Contact {
     id: string;
     name: string;
     image: string;
-    phoneNumbers: string;
+    phoneNumber: string;
 }

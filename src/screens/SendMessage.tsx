@@ -3,18 +3,30 @@ import { View, Text } from "react-native";
 import { Button } from "./../atoms/Button";
 import { Screen } from "../atoms/Screen";
 import Navbar from "../organisms/Navbar";
-import { Event } from "./../res/dataModels";
+import { Event, Contact } from "./../res/dataModels";
 import { storeUserEvent } from "./../res/storageFunctions";
 import MultiLineTextInput from "./../atoms/MultiLineTextInput";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { TwoButtonAlert } from "./../atoms/TwoButtonAlert";
-
+import { API } from "aws-amplify";
+import { PhoneNumberFormat, PhoneNumberUtil } from "google-libphonenumber";
 
 interface Props {
   navigation: any;
   route: any
 }
 
+async function pushEvent(friends: Contact[], message: string): Promise<void> {
+  const util = PhoneNumberUtil.getInstance();
+  const attendees = friends.map((friend, index, array) => {
+    // NOTE: it's a justifiable assumption that we're dealing with US numbers here
+    const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+    return util.format(num, PhoneNumberFormat.E164);
+  });
+
+  const obj = {attendees: attendees, content: message};
+  console.log(await API.post('broadcastsApi', '/broadcasts', {body: obj}));
+}
 
 export default function SendMessage({ navigation, route }: Props) {
   const event: Event = route.params.data.eventData;
@@ -37,11 +49,17 @@ ${event.description} \
       button2OnPress: onPressSend,
     })
 
+  // FIXME: sane way of dealing with an exception in this function? in any function?
   const onPressSend = async () => {
     // console.log(message);
-    let event: Event = route.params.data.eventData;
-    await storeUserEvent(event);
-    navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
+    try {
+      let event: Event = route.params.data.eventData;
+      await storeUserEvent(event);
+      await pushEvent(event.friends, message);
+      navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
+    } catch (err) {
+      console.log(err, event.friends);
+    }
   }
 
   return (
