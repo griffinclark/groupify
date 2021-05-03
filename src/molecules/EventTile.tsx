@@ -4,95 +4,52 @@ import { View, Text, Button, TouchableOpacity } from "react-native";
 import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { StyleSheet } from "react-native";
 import {
+  DK_PURPLE,
+  GREY_3,
+  GREY_5,
   POST_SPACING,
   TEST_HIGH_CONTRAST,
   TEST_IMAGE_URL,
+  WHITE,
 } from "../res/styles/Colors";
 import CheckBox from "../atoms/CheckBox";
 import SquareImageDisplay from "./../atoms/SquareImageDisplay";
 import { template } from "@babel/core";
-import { Contact } from "./../res/dataModels";
+import { Contact, Event } from "./../res/dataModels";
+// import { styles } from "../atoms/Screen";
+import { Title } from "../atoms/Title";
+import { FriendList } from "./FriendList";
 
 
-interface Props {
-  uuid: string;
-  title: string;
-  showImage: boolean;
-  imageURL: string;
-  description: string;
-  tags: string[];
-  createdBy?: string;
-  date: string;
-  time: string;
-  location: string;
+interface EventTileProps {
+  event: Event,
   displayButton: boolean,
   navigation: any
-  tagData: object
-  friends: Contact[]
 }
 
 export default function EventTile({
-  uuid,
-  title,
-  showImage = true,
-  imageURL,
-  tagData,
-  description,
-  tags,
-  createdBy,
-  date,
-  time,
-  location,
+  event,
   displayButton,
-  friends,
   navigation
-}: Props) {
-
-  const formatFriends = (friends: Contact[]) => {
-    if (friends !== undefined) {
-      // console.log(friends);
-      return friends.map(friend => friend.name + "\n");
-    }
-    return [];
-  }
+}: EventTileProps) {
 
   return (
-    <TouchableOpacity onPress={() => {
-      // console.log("pressed");
-      navigation.navigate("EventDetails", {data: {eventUUID: uuid}});
-      }}>
-      <View style={styles.rootContainer}>
-        <Text style={globalStyles.title}> {title} </Text>
-        {showImage === true &&
-        <View style={styles.rowConatiner}>
-          <View style={styles.profileImageContainer}>
-            <SquareImageDisplay imageURI={imageURL} />
-          </View>
+    <View style={styles.rootContainer}>
+      <Text style={styles.title}>{event.title}</Text>
+      <Text>{event.description}</Text>
+      <View style={styles.infoContainer}>
+        <View style={styles.infoItem}>
+        <Text style={styles.label}>When</Text>
+        <Text>{event.date}</Text>
+        <Text>{event.time}</Text>
         </View>
-        }
-        <View style={globalStyles.miniSpacer} />
-        <View style={styles.rowConatiner}>
-          <View style={globalStyles.defaultColumnContainer}>
-            <View>
-              <Text><Text style={{fontWeight: "bold"}}>Description/Notes: </Text>{description}</Text>
-              <View style={globalStyles.miniSpacer} />
-              <Text><Text style={{fontWeight: "bold"}}>Date: </Text>{date}</Text>
-              <Text><Text style={{fontWeight: "bold"}}>Time: </Text>{time}</Text>
-              <Text><Text style={{fontWeight: "bold"}}>Location: </Text>{location}</Text>
-              <View style={globalStyles.miniSpacer} />
-              {friends != null && (<Text style={{fontWeight: "bold"}}>Invited Friends: </Text>)}
-              <Text>{formatFriends(friends)}</Text>
-              {displayButton == true && (<Button title={"select"} onPress={()=>{navigation.navigate("SelectFriends", {data: {tagData: tagData, eventData: {
-                title: title,
-                imageURL: imageURL,
-                description: description,
-                tags: tags
-              }}})}} />)}
-            </View>
-          </View>
+        <View style={styles.infoItem}>
+        <Text style={styles.label}>Where</Text>
+        <Text>{event.location}</Text>
         </View>
       </View>
-    </TouchableOpacity>
+      <FriendList title="Invited Friends" friends={event.friends}/>
+    </View>
   );
 }
 
@@ -103,20 +60,33 @@ let styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    borderBottomWidth: 0.5,
-    // backgroundColor: "green",
+    backgroundColor: GREY_5,
+    borderRadius: 10,
     marginTop: POST_SPACING,
+    marginHorizontal: POST_SPACING,
+    padding: 15,
   },
-  profileImageContainer: {
-    height: 200,
-    width: 300,
-    alignSelf: "flex-start",
-  },
-  rowConatiner: {
-    display: "flex",
+  infoContainer: {
     flex: 1,
     flexDirection: "row",
-    // backgroundColor: TEST_HIGH_CONTRAST,
-    margin: 15,
+    justifyContent: "space-between",
+    width: '100%',
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  infoItem: {
+    margin: 5
+  },
+  title: {
+    fontSize: 25,
+    color: DK_PURPLE,
+    fontWeight: 'bold',
+    marginVertical: 10
+  },
+  label: {
+    fontWeight: 'bold',
+    marginBottom: 3,
+    fontSize: 16,
+    color: DK_PURPLE,
   },
 });

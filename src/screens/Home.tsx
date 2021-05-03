@@ -32,7 +32,7 @@ export default function Home({ navigation, route }: Props) {
 
   const getUserEvents = async () => {
     // console.log(await getAllUserEvents());
-    let events = await getAllUserEvents();
+    const events = await getAllUserEvents();
     setFeedData(events);
   }
 

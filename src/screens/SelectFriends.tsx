@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { 
-  StyleSheet,
-  Button, 
+  StyleSheet, 
   PermissionsAndroid, 
   SafeAreaView, 
   Text, 
@@ -19,6 +18,10 @@ import { Contact, Event } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
 import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
 import { getAllImportedContacts, storeUserEvent } from "./../res/storageFunctions";
+import { NavButton } from "../atoms/NavButton";
+import { Button } from "../atoms/Button";
+import { Title } from "../atoms/Title";
+import { FriendList } from "../molecules/FriendList";
 
 interface Props {
   navigation: any;
@@ -65,7 +68,7 @@ export default function SelectFriends({ navigation, route }: Props) {
 
   // Request permission to access contacts and load them.
   const loadFriends = async() => {
-    let importedContacts = await getAllImportedContacts();
+    const importedContacts = await getAllImportedContacts();
     // console.log("all imported contacts", importedContacts);
     setFriends(importedContacts);
     setFilteredFriends(importedContacts);
@@ -95,7 +98,7 @@ export default function SelectFriends({ navigation, route }: Props) {
   }
 
   // Renders each contact as AndroidContactTile
-  const renderContact = ({ item }) => (
+  const renderContact = ({ item }: any) => (
     <AndroidContactTile
       contact={item}
       firstName={item.name}
@@ -107,17 +110,19 @@ export default function SelectFriends({ navigation, route }: Props) {
 
   return (
     <SafeAreaView>
-      <Navbar navigation={navigation} />
-      <Text style={globalStyles.superTitle}>Search for your friends</Text>
-      <Text>Press the checkbox to select a friend</Text>
-      <View style={globalStyles.miniSpacer} />
+      <Navbar>
+      <NavButton
+          onPress={() => navigation.navigate("CreateCustomEvent")}
+          title='Back'
+        />
+      </Navbar>
+      <Title style={globalStyles.superTitle}>SelectFriends</Title>
       <SearchBar
         placeholder="Search for friends"
         onChangeText={searchFriends}
         value={query}
         lightTheme={true}
       />
-      <View style={globalStyles.miniSpacer} />
       <View style={styles.flatListContainer}>
         {state === State.Loading ? (
           <View>
@@ -134,24 +139,18 @@ export default function SelectFriends({ navigation, route }: Props) {
           )}
         />
       </View>
-
-      <View style={{height: 10}} />
-      <Text style={globalStyles.title}>Selected friends:</Text>
-      <ScrollView horizontal={true}>
-        <Text>{selectedFriends.map(friend => friend.name + " | ")}</Text>
-      </ScrollView>
-      <View style={globalStyles.spacer} />
+      {/* <View>
+        <Text style={globalStyles.title}>Selected friends:</Text>
+        <View>
+          {selectedFriends.map(friend => friend.name + " | ")}
+        </View>
+      </View> */}
+      <FriendList title="Selected friends" friends={selectedFriends}/>
 
       <Button
         title="Send Message"
         onPress={async () => {
-          // let event: Event = route.params.data.eventData;
-          // event.friends = selectedFriends;
-          // console.log(route.params.data.eventData)
           route.params.data.eventData.friends = selectedFriends;
-          // console.log("selected friends on submit", selectedFriends);
-          // await storeUserEvent(event);
-          // navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
           navigation.navigate("SendMessage", route.params);
         }}
       />

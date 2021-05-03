@@ -2,9 +2,12 @@ import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { DK_PURPLE } from '../res/styles/Colors';
 
-export const Title: React.FC = (props) => {
+interface TitleProps {
+    style?: object
+}
+export const Title: React.FC<TitleProps> = (props) => {
     return (
-        <Text style={styles.title}>
+        <Text style={[styles.title, props.style]}>
             {props.children}
         </Text>
     )

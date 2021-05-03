@@ -18,12 +18,12 @@ export const NavButton: React.FC<NavProps> = ({onPress, title}) => {
     )
 };
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
     button: {
       backgroundColor: LT_PURPLE,
       borderRadius: 20,
-      padding: 10,
-      // margin: 10
+      paddingHorizontal: 15,
+      paddingVertical: 10,
     },
     text: {
       fontWeight: 'bold',
