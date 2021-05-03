@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   ScrollView,
  } from "react-native";
-import Navbar from "../organisms/Navbar";
+import {Navbar} from "../organisms/Navbar";
 import UserDisplay from "./../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { SearchBar } from "react-native-elements";

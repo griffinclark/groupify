@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Button, SafeAreaView } from "react-native";
+// import { Button, SafeAreaView } from "react-native";
 import { StyleSheet, View, Text } from "react-native";
 import { TEST_HIGH_CONTRAST } from "../res/styles/Colors";
 // import { firestore } from "../res/services/firebase";
 // import firebase from "firebase";
 import { FlatList } from "react-native-gesture-handler";
 import DataDisplay from "../organisms/DataDisplay";
-import Navbar from "../organisms/Navbar";
+import { Navbar } from "../organisms/Navbar";
 import { cannedEvents } from "../res/cannedData";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { Event } from "../res/dataModels";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getAllUserEvents, getAllImportedContacts } from "./../res/storageFunctions";
+import { Button } from "../atoms/Button";
+import { Screen } from '../atoms/Screen';
+import { NavButton } from "../atoms/NavButton";
+import { Auth } from "aws-amplify";
 
 interface Props {
   navigation: any;
@@ -34,8 +38,27 @@ export default function Home({ navigation, route }: Props) {
 
 
   return (
-    <View>
-      <Navbar navigation={navigation} />
+    <Screen>
+      <Navbar>
+        <NavButton
+          onPress={async () => {
+            try {
+              await Auth.signOut();
+              console.log('successfully signed out');
+              navigation.navigate("Welcome");
+            } catch (err) {
+              console.log('error signing out...', err);
+            }
+          }}
+          title='Log Out'
+        />
+        <NavButton
+          onPress={() => {
+            navigation.navigate("ImportContacts")
+          }}
+          title='Edit Contacts'
+        />
+      </Navbar>
       <View style={styles.feedContainer}>
         {feedData.length > 0 ? (
           <DataDisplay
@@ -54,13 +77,12 @@ export default function Home({ navigation, route }: Props) {
       </View>
       <View style={globalStyles.miniSpacer} />
       <Button
-        title={"Create event"}
-        color="green"
+        title="Create event"
         onPress={() => {
           navigation.navigate("CreateCustomEvent"); 
         }}
       />
-    </View>
+    </Screen>
   );
 }
 
@@ -69,7 +91,6 @@ let styles = StyleSheet.create({
     height: "10%",
     backgroundColor: TEST_HIGH_CONTRAST,
   },
-
   feedContainer: {
     height: "82%",
   },

@@ -7,9 +7,10 @@ import { globalStyles } from './../res/styles/GlobalStyles';
 import { Event } from "./../res/dataModels";
 import { LIGHT } from '../res/styles/Colors';
 import { useIsFocused } from "@react-navigation/core";
-import Navbar from "../organisms/Navbar";
+import { Navbar } from "../organisms/Navbar";
 // import DateTimePicker from "@react-native-community/datetimepicker";
 import uuid from 'uuid';
+import { NavButton } from "../atoms/NavButton";
 
 
 interface Props {
@@ -87,7 +88,12 @@ export default function CreateCustomEvent({ navigation }: Props) {
 
   return (
     <SafeAreaView>
-      <Navbar navigation={navigation} />
+      <Navbar>
+        <NavButton
+          onPress={() => navigation.navigate("home")}
+          title='back'
+        />
+      </Navbar>
       <Text style={globalStyles.superTitle}>New Custom Event</Text>
       <View style={globalStyles.miniSpacer} />
       <Formik

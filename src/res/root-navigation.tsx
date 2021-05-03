@@ -18,8 +18,8 @@ import ImportContacts from "../screens/ImportContacts";
 import SendMessage from "./../screens/SendMessage";
 
 export interface StackProps { //TODO: interfaces should never have any WTF is the point of typescript otherwise???
-  navigation: any;
-  route: any;
+  navigation?: any;
+  route?: any;
 }
 interface RootProps {
   initialRoute: string
