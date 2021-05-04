@@ -7,6 +7,8 @@ import { FormInput } from "../atoms/FormInput";
 import { Alert } from "../atoms/AlertModal";
 import { getAllImportedContacts } from "./../res/storageFunctions";
 import { Contact } from "./../res/dataModels";
+import { Navbar } from "../organisms/Navbar";
+import { NavButton } from "../atoms/NavButton";
 
 export const LogIn: React.FC<StackProps> = ({navigation}) => {
     const [email, setEmail] = useState('');
@@ -51,6 +53,12 @@ export const LogIn: React.FC<StackProps> = ({navigation}) => {
     
     return (
         <Screen>
+            <Navbar>
+                <NavButton
+                    onPress={() => navigation.navigate("Welcome")}
+                    title='Back'
+                    />
+            </Navbar>
             <FormInput
                 label='Email'
                 onChangeText={setEmail}

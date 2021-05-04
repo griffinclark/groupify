@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { Button } from "./../atoms/Button";
 import { Screen } from "../atoms/Screen";
-import Navbar from "../organisms/Navbar";
+import { Navbar } from "../organisms/Navbar";
+import { NavButton } from "../atoms/NavButton";
 import { Event, Contact } from "./../res/dataModels";
 import { storeUserEvent } from "./../res/storageFunctions";
 import MultiLineTextInput from "./../atoms/MultiLineTextInput";
@@ -76,7 +77,12 @@ ${event.description} \
 
   return (
     <Screen>
-      <Navbar navigation={navigation} />
+      <Navbar>
+        <NavButton
+            onPress={() => navigation.navigate("SelectFriends")}
+            title='Back'
+          />
+      </Navbar>
 
       <Text style={globalStyles.superTitle}>Send Message</Text>
       <View style={{height: 150}} />

@@ -6,6 +6,8 @@ import { Button } from "../atoms/Button";
 import { FormInput } from "../atoms/FormInput";
 import { Screen } from "../atoms/Screen";
 import { Alert } from "../atoms/AlertModal";
+import { Navbar } from "../organisms/Navbar";
+import { NavButton } from "../atoms/NavButton";
 
 export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
     const [email, setEmail] = useState(route.params.email ? route.params.email : '');
@@ -104,6 +106,12 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
 
     return (
         <Screen>
+            <Navbar>
+                <NavButton
+                    onPress={() => navigation.navigate("Welcome")}
+                    title='Back'
+                    />
+            </Navbar>
             {route.params.step === 'create' && <>
                 <FormInput
                     label='Name'
