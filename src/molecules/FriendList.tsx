@@ -13,8 +13,8 @@ export const FriendList: React.FC<FriendProps> = ({friends, title, style}) => {
         { title &&
             <Text style={styles.friendTitle}>{title}</Text>}
         <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.friendContainer}>
-            {friends.map(friend => (<View style={styles.friend}>
-                <Text style={styles.friendText} key={friend.name}>{friend.name}</Text>
+            {friends.map(friend => (<View style={styles.friend} key={friend.id}>
+                <Text style={styles.friendText}>{friend.name}</Text>
                 </View>)
             )}
         </ScrollView>
