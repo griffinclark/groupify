@@ -15,10 +15,12 @@ export const Title: React.FC<TitleProps> = (props) => {
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 45,
+        fontSize: 30, 
+        margin: 15,
+        // fontSize: 45,
+        // margin: 40,
         color: DK_PURPLE,
         textAlign: 'center',
         fontWeight: 'bold',
-        margin: 40
     }
 })

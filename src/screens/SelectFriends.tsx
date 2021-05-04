@@ -16,11 +16,12 @@ import AndroidContactTile from "./../molecules/AndroidContactTile";
 import * as Contacts from "expo-contacts";
 import { Contact, Event } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
-import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
+import { DEFAULT_CONTACT_IMAGE, GREY_5, GREY_6 } from "../res/styles/Colors";
 import { getAllImportedContacts, storeUserEvent } from "./../res/storageFunctions";
 import { NavButton } from "../atoms/NavButton";
 import { Button } from "../atoms/Button";
 import { Title } from "../atoms/Title";
+import { Screen } from "../atoms/Screen";
 import { FriendList } from "../molecules/FriendList";
 
 interface Props {
@@ -109,14 +110,14 @@ export default function SelectFriends({ navigation, route }: Props) {
   );
 
   return (
-    <SafeAreaView>
+    <Screen>
       <Navbar>
       <NavButton
           onPress={() => navigation.navigate("CreateCustomEvent")}
           title='Back'
         />
       </Navbar>
-      <Title style={globalStyles.superTitle}>SelectFriends</Title>
+      <Title style={globalStyles.superTitle}>Select Friends</Title>
       <SearchBar
         placeholder="Search for friends"
         onChangeText={searchFriends}
@@ -139,23 +140,18 @@ export default function SelectFriends({ navigation, route }: Props) {
           )}
         />
       </View>
-      {/* <View>
-        <Text style={globalStyles.title}>Selected friends:</Text>
-        <View>
-          {selectedFriends.map(friend => friend.name + " | ")}
-        </View>
-      </View> */}
-      <FriendList title="Selected friends" friends={selectedFriends}/>
+      <View style={styles.footer}>
+        <FriendList style={styles.friendContainer} title="Selected friends" friends={selectedFriends}/>
 
-      <Button
-        title="Send Message"
-        onPress={async () => {
-          route.params.data.eventData.friends = selectedFriends;
-          navigation.navigate("SendMessage", route.params);
-        }}
-      />
-
-    </SafeAreaView>
+        <Button
+          title="Send Message"
+          onPress={async () => {
+            route.params.data.eventData.friends = selectedFriends;
+            navigation.navigate("SendMessage", route.params);
+          }}
+        />
+      </View>
+    </Screen>
   );
 }
 
@@ -172,8 +168,24 @@ const styles = StyleSheet.create({
     fontSize: 26
   },
   flatListContainer: {
-    height: "45%",
-    borderBottomColor: "gray",
-    borderBottomWidth: 1
+    flexGrow: 1,
+    flex: 1,
+    // borderBottomColor: "gray",
+    // borderBottomWidth: 1
+  },
+  friendContainer: {
+    backgroundColor: GREY_5, 
+    borderRadius: 10, 
+    padding: 10
+  },
+  footer: {
+    // position: "absolute",
+    // bottom: 0,
+    flex: .5,
+    height: "25%",
+    // borderWidth: 1,
+    display: "flex",
+    justifyContent: "space-between",
+    // justifySelf: "flex-end"
   }
 });

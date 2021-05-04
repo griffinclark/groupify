@@ -102,7 +102,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
     <Screen>
       <Navbar>
         <NavButton
-          onPress={() => navigation.navigate("home")}
+          onPress={() => navigation.navigate("Home")}
           title='Back'
         />
       </Navbar>
@@ -119,7 +119,7 @@ export default function CreateCustomEvent({ navigation }: Props) {
         {({ handleChange, handleSubmit, values }) => (
           <>
           <View style={styles.formContainer}>
-            <Title style={{fontSize: 30, margin: 15}}>New Event</Title>
+            <Title>New Event</Title>
             { listInputField(handleChange, values, "eventName") }
             { listInputField(handleChange, values, "eventDate") }
             { listInputField(handleChange, values, "eventTime") }

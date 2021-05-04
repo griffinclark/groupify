@@ -1,34 +1,44 @@
 import React from "react"
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet, ScrollView } from "react-native"
 import { Contact } from "../res/dataModels"
 import { DK_PURPLE, GREY_3, WHITE } from "../res/styles/Colors";
 
 interface FriendProps {
     friends: Contact[],
-    title?: string
+    title?: string,
+    style?: object
 }
-export const FriendList: React.FC<FriendProps> = ({friends, title}) => {
-    return (<View style={styles.outer}>
+export const FriendList: React.FC<FriendProps> = ({friends, title, style}) => {
+    return (<View style={[styles.outer, style]}>
         { title &&
             <Text style={styles.friendTitle}>{title}</Text>}
-        <View style={styles.friendContainer}>
+        <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.friendContainer}>
             {friends.map(friend => (<View style={styles.friend}>
                 <Text style={styles.friendText} key={friend.name}>{friend.name}</Text>
                 </View>)
             )}
-        </View>
+        </ScrollView>
     </View>)
 };
 
 const styles = StyleSheet.create({
     outer: {
         width: "100%",
+        margin: 10,
+        // borderWidth: 1,
+        flexGrow: 1, 
+        flex: 1,  
+    },
+    scrollContainer: {
+       flex: 1
     },
     friendContainer: {
         display: "flex",
         flexDirection: "row",
+        flexWrap: "wrap",
         alignItems: "flex-start",
         width: "100%",
+        // borderWidth: 1,
       },
       friend: {
         backgroundColor: GREY_3,

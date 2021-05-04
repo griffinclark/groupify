@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { 
   StyleSheet,
-  Button, 
   PermissionsAndroid, 
   SafeAreaView, 
   Text, 
@@ -9,18 +8,23 @@ import {
   ActivityIndicator,
   ScrollView,
  } from "react-native";
-import Navbar from "../organisms/Navbar";
+import {Navbar} from "../organisms/Navbar";
 import UserDisplay from "../organisms/UserDisplay";
 import { globalStyles } from "../res/styles/GlobalStyles";
 import { SearchBar } from "react-native-elements";
 import AndroidContactTile from "../molecules/AndroidContactTile";
+import {Screen } from "../atoms/Screen";
 import * as Contacts from "expo-contacts";
 import { Contact, Event } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
-import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
+import { DEFAULT_CONTACT_IMAGE, GREY_5 } from "../res/styles/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteAllImportedContacts, getAllImportedContacts, storeImportedContact } from "../res/storageFunctions";
 import { forModalPresentationIOS } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/CardStyleInterpolators";
+import { NavButton } from "../atoms/NavButton";
+import { Title } from "../atoms/Title";
+import { Button } from "../atoms/Button";
+import { FriendList } from "../molecules/FriendList";
 
 
 interface Props {
@@ -146,18 +150,20 @@ export default function ContactsImport({ navigation }: Props) {
 
 
   return (
-    <SafeAreaView>
-      <View style={globalStyles.spacer} />
-      <Text style={globalStyles.superTitle}>Select contacts to import</Text>
-      <Text>Press the checkbox to select a contact</Text>
-      <View style={globalStyles.miniSpacer} />
+    <Screen>
+      <Navbar>
+        <NavButton
+            onPress={() => navigation.navigate("Home")}
+            title='Back'
+          />
+      </Navbar>
+      <Title>Edit Contact List</Title>
       <SearchBar
         placeholder="Search for contacts"
         onChangeText={searchContacts}
         value={query}
         lightTheme={true}
       />
-      <View style={globalStyles.miniSpacer} />
       <View style={styles.flatListContainer}>
         {state === State.Loading ? (
           <View>
@@ -175,25 +181,20 @@ export default function ContactsImport({ navigation }: Props) {
         />
       </View>
 
-      <View style={{height: 10}} />
-      <Text style={globalStyles.title}>Imported contacts:</Text>
-      <ScrollView horizontal={true}>
-        <Text>{selectedContacts.map(contact => contact.name + " | ")}</Text>
-      </ScrollView>
-      <View style={globalStyles.spacer} />
-
-      {/* TODO @David what do we want to do with the friend list when a user submits? */}
-      <Button
-        title="Import Contacts"
-        onPress={async () => {
-          // console.log("selected contacts", selectedContacts);
-          await deleteAllImportedContacts();
-          await storeSelectedContacts();
-          navigation.navigate("Home");
-        }}
-      />
-
-    </SafeAreaView>
+      <View style={styles.footer}>
+        <FriendList style={styles.friendContainer} title="Contact List" friends={selectedContacts}/>
+        {/* TODO @David what do we want to do with the friend list when a user submits? */}
+        <Button
+          title="Save Contacts"
+          onPress={async () => {
+            // console.log("selected contacts", selectedContacts);
+            await deleteAllImportedContacts();
+            await storeSelectedContacts();
+            navigation.navigate("Home");
+          }}
+        />
+      </View>
+    </Screen>
   );
 }
 
@@ -210,8 +211,18 @@ const styles = StyleSheet.create({
     fontSize: 26
   },
   flatListContainer: {
-    height: "45%",
-    borderBottomColor: "gray",
-    borderBottomWidth: 1
+    flexGrow: 1,
+    flex: 1,
+  },
+  friendContainer: {
+    backgroundColor: GREY_5, 
+    borderRadius: 10, 
+    padding: 10
+  },
+  footer: {
+    flex: .5,
+    height: "25%",
+    display: "flex",
+    justifyContent: "space-between",
   }
 });

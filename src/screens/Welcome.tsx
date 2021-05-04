@@ -16,7 +16,7 @@ interface Props {
 export default function Welcome({ navigation }: Props) {
   return (
     <Screen>
-      <Title>Welcome to Meep</Title>
+      <Title style={{fontSize: 45, margin: 40}}>Welcome to Meep</Title>
       <Button
         onPress={()=>{navigation.navigate("CreateAccount", {step: 'create'})}}
         title={"Create Account"}
