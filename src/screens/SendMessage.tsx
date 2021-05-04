@@ -54,11 +54,23 @@ ${event.description} \
     // console.log(message);
     try {
       let event: Event = route.params.data.eventData;
-      await storeUserEvent(event);
       await pushEvent(event.friends, message);
+      await storeUserEvent(event);
       navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
     } catch (err) {
       console.log(err, event.friends);
+      if (err.message === "The string supplied did not seem to be a phone number") {
+        TwoButtonAlert({
+          title: "Error Sending",
+          message: "At least one of the friends you invited does not have a phone number.",
+          button1Text: "Go back",
+          button2Text: "Create Event Anyways",
+          button2OnPress: async () => {
+            await storeUserEvent(event);
+            navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
+          },
+        })
+      }
     }
   }
 
