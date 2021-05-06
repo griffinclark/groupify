@@ -24,6 +24,8 @@ export const getAllUserEvents = async () => {
   }
   catch (e) {
     console.log("Error getting events");
+    //we dont want to return undefined 
+    return [];
   }
 }
 
@@ -73,6 +75,7 @@ export const getAllImportedContacts = async () => {
   }
   catch (e) {
     console.log("Error getting user's friends");
+    return [];
   }
 }
 

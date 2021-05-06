@@ -6,6 +6,9 @@ import { Button } from "../atoms/Button";
 import { FormInput } from "../atoms/FormInput";
 import { Screen } from "../atoms/Screen";
 import { Alert } from "../atoms/AlertModal";
+import { Navbar } from "../organisms/Navbar";
+import { NavButton } from "../atoms/NavButton";
+import { Title } from "../atoms/Title";
 
 export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
     const [email, setEmail] = useState(route.params.email ? route.params.email : '');
@@ -104,7 +107,14 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
 
     return (
         <Screen>
+            <Navbar>
+                <NavButton
+                    onPress={() => navigation.navigate("Welcome")}
+                    title='Back'
+                    />
+            </Navbar>
             {route.params.step === 'create' && <>
+                <Title>Create Account</Title>
                 <FormInput
                     label='Name'
                     onChangeText={(value) => {setName(value.trim())}}
@@ -130,6 +140,7 @@ export const CreateAccount: React.FC<StackProps> = ({navigation, route}) => {
                 />
             </>}
             {route.params.step === 'validate' && <>
+                <Title>Validate Email</Title>
                 <Text style={{margin: 20, fontWeight: 'bold'}}>Please enter the verification code from your email</Text>
                 {email == '' &&
                 <FormInput

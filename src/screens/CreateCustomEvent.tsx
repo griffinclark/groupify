@@ -1,15 +1,19 @@
 import { Formik, validateYupSchema } from "formik";
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View, TextInput, Button } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
 import SingleLineTextInput from "../atoms/SingleLineTextInput";
 import EventTile from "../molecules/EventTile";
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { Event } from "./../res/dataModels";
-import { LIGHT } from '../res/styles/Colors';
+import { DK_PURPLE, GREY_5, LIGHT, WHITE } from '../res/styles/Colors';
 import { useIsFocused } from "@react-navigation/core";
-import Navbar from "../organisms/Navbar";
+import { Navbar } from "../organisms/Navbar";
 // import DateTimePicker from "@react-native-community/datetimepicker";
 import uuid from 'uuid';
+import { NavButton } from "../atoms/NavButton";
+import { Screen } from "../atoms/Screen";
+import { Title } from "../atoms/Title";
+import { Button } from "../atoms/Button";
 
 
 interface Props {
@@ -25,7 +29,7 @@ interface FormTextField {
 
 export default function CreateCustomEvent({ navigation }: Props) {
 
-  const onFormSubmit = (values) => {
+  const onFormSubmit = (values: any) => {
     // console.log(values)
     navigation.navigate("SelectFriends", {
       data: {
@@ -46,34 +50,43 @@ export default function CreateCustomEvent({ navigation }: Props) {
     "eventName":
     {
       "title": "Event Name",
-      "placeholder":"e.g. Hiking at Eagle Rock"
+      "placeholder":""
     },
     "eventDate":
     {
       "title": "Event Date",
-      "placeholder": "e.g. e.g. 03/21/2021"
+      "placeholder": "MM/DD/YYYY"
     },
     "eventTime":
     {
       "title": "Event Time",
-      "placeholder": "e.g. 3:45 PM"
+      "placeholder": "H:MM PM"
     },
     "eventLocation":
     {
       "title": "Event Location",
-      "placeholder": "e.g. 5499 Eagle Rock View Dr, Los Angeles, CA 90041"
+      "placeholder": "address"
     },
     "eventDescription":
     {
-      "title": "Event Description / Notes",
-      "placeholder": "e.g. Meet at the parking lot near the inn."
+      "title": "Event Description",
+      "placeholder": ""
     },
   };
 
-  const listInputField = (handleChange, values, input: string) => {
+  interface listInputProps {
+    handleChange: {
+      (e: React.ChangeEvent<any>): void;
+      <T = string | React.ChangeEvent<any>>(field: T): T extends React.ChangeEvent<any> ? void : (e: string | React.ChangeEvent<any>) => void;
+    }, 
+    values: any,
+    input: string
+  }
+
+  const listInputField = (handleChange: listInputProps["handleChange"], values: listInputProps["values"], input: listInputProps["input"]) => {
     return (
       <View>
-        <Text style={globalStyles.title}>{inputFields[input].title}</Text>
+        <Text style={[globalStyles.title, {color: DK_PURPLE}]}>{inputFields[input].title}</Text>
         <TextInput
           style={styles.textInputBody}
           onChangeText={handleChange(input)}
@@ -86,10 +99,13 @@ export default function CreateCustomEvent({ navigation }: Props) {
   }
 
   return (
-    <SafeAreaView>
-      <Navbar navigation={navigation} />
-      <Text style={globalStyles.superTitle}>New Custom Event</Text>
-      <View style={globalStyles.miniSpacer} />
+    <Screen>
+      <Navbar>
+        <NavButton
+          onPress={() => navigation.navigate("Home")}
+          title='Back'
+        />
+      </Navbar>
       <Formik
         initialValues={{
           eventName: "",
@@ -101,29 +117,36 @@ export default function CreateCustomEvent({ navigation }: Props) {
         onSubmit={onFormSubmit}
       >
         {({ handleChange, handleSubmit, values }) => (
-          <View>
+          <>
+          <View style={styles.formContainer}>
+            <Title>New Event</Title>
             { listInputField(handleChange, values, "eventName") }
             { listInputField(handleChange, values, "eventDate") }
             { listInputField(handleChange, values, "eventTime") }
             { listInputField(handleChange, values, "eventLocation") }
             { listInputField(handleChange, values, "eventDescription") }
-            <View style={{height: 250}} />
-            <Button style={styles.button} title="Invite Friends" onPress={handleSubmit} />
+            {/*idk how to fix this freaking onPress type error but it works so whatever */}
           </View>
+          <Button title="Invite Friends" onPress={handleSubmit} />
+          </>
         )}
       </Formik>
-    </SafeAreaView>
+    </Screen>
   );
 }
 
 let styles = StyleSheet.create({
   textInputBody: {
-    fontSize: 20,
-    backgroundColor: LIGHT,
-    borderBottomWidth: 1,
+    fontSize: 16,
+    backgroundColor: WHITE,
+    borderRadius: 10,
+    padding: 7,
+    marginTop: 5
   },
-  button: {
-    position: "absolute",
-    bottom: 0,
-  },
+  formContainer: {
+    backgroundColor: GREY_5,
+    borderRadius: 10,
+    margin: 10,
+    padding: 20,
+  }
 })

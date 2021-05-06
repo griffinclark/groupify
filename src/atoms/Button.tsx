@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { 
     Button as ReactButton,
     NativeSyntheticEvent, 
@@ -17,23 +17,22 @@ interface ButtonProps {
 }
 export const Button = ({onPress, title, disabled = false}: ButtonProps) => {
     return (
-        <View style={styles.container}>
+        <View style={buttonStyles.container}>
             <TouchableOpacity
                 onPress={onPress}
                 disabled={disabled}
-                style={[styles.button, 
-                    disabled ? styles.disabledButton: styles.enabledButton]}
+                style={[buttonStyles.button, 
+                    disabled ? buttonStyles.disabledButton: buttonStyles.enabledButton]}
             >
-                <Text style={[styles.text, 
-                disabled ? styles.disabledButton : styles.enabledButton]}>{title}</Text>
+                <Text style={[buttonStyles.text, 
+                disabled ? buttonStyles.disabledButton : buttonStyles.enabledButton]}>{title}</Text>
             </TouchableOpacity>
         </View>
     )
 };
 
-const disabledStyles = StyleSheet.create({
-});
-const styles = StyleSheet.create({
+
+export const buttonStyles = StyleSheet.create({
     container: {
         alignItems: 'center',
         width: '100%',
@@ -43,14 +42,16 @@ const styles = StyleSheet.create({
     },
     button: {
         borderRadius: 20,
-        padding: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
         marginVertical: 10,
         marginHorizontal: 'auto',
-        width: 150,
+        minWidth: 150,
         alignItems: 'center'
     },
     text: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: 16,
     },
     enabledButton: {
         backgroundColor: LT_PURPLE,

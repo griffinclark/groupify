@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { 
-  StyleSheet,
-  Button, 
+  StyleSheet, 
   PermissionsAndroid, 
   SafeAreaView, 
   Text, 
@@ -9,7 +8,7 @@ import {
   ActivityIndicator,
   ScrollView,
  } from "react-native";
-import Navbar from "../organisms/Navbar";
+import {Navbar} from "../organisms/Navbar";
 import UserDisplay from "./../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { SearchBar } from "react-native-elements";
@@ -17,8 +16,13 @@ import AndroidContactTile from "./../molecules/AndroidContactTile";
 import * as Contacts from "expo-contacts";
 import { Contact, Event } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
-import { DEFAULT_CONTACT_IMAGE } from "../res/styles/Colors";
+import { DEFAULT_CONTACT_IMAGE, GREY_5, GREY_6 } from "../res/styles/Colors";
 import { getAllImportedContacts, storeUserEvent } from "./../res/storageFunctions";
+import { NavButton } from "../atoms/NavButton";
+import { Button } from "../atoms/Button";
+import { Title } from "../atoms/Title";
+import { Screen } from "../atoms/Screen";
+import { FriendList } from "../molecules/FriendList";
 
 interface Props {
   navigation: any;
@@ -65,7 +69,7 @@ export default function SelectFriends({ navigation, route }: Props) {
 
   // Request permission to access contacts and load them.
   const loadFriends = async() => {
-    let importedContacts = await getAllImportedContacts();
+    const importedContacts = await getAllImportedContacts();
     // console.log("all imported contacts", importedContacts);
     setFriends(importedContacts);
     setFilteredFriends(importedContacts);
@@ -95,7 +99,7 @@ export default function SelectFriends({ navigation, route }: Props) {
   }
 
   // Renders each contact as AndroidContactTile
-  const renderContact = ({ item }) => (
+  const renderContact = ({ item }: any) => (
     <AndroidContactTile
       contact={item}
       firstName={item.name}
@@ -106,18 +110,20 @@ export default function SelectFriends({ navigation, route }: Props) {
   );
 
   return (
-    <SafeAreaView>
-      <Navbar navigation={navigation} />
-      <Text style={globalStyles.superTitle}>Search for your friends</Text>
-      <Text>Press the checkbox to select a friend</Text>
-      <View style={globalStyles.miniSpacer} />
+    <Screen>
+      <Navbar>
+      <NavButton
+          onPress={() => navigation.navigate("CreateCustomEvent")}
+          title='Back'
+        />
+      </Navbar>
+      <Title style={globalStyles.superTitle}>Select Friends</Title>
       <SearchBar
         placeholder="Search for friends"
         onChangeText={searchFriends}
         value={query}
         lightTheme={true}
       />
-      <View style={globalStyles.miniSpacer} />
       <View style={styles.flatListContainer}>
         {state === State.Loading ? (
           <View>
@@ -134,29 +140,18 @@ export default function SelectFriends({ navigation, route }: Props) {
           )}
         />
       </View>
+      <View style={styles.footer}>
+        <FriendList style={styles.friendContainer} title="Selected friends" friends={selectedFriends}/>
 
-      <View style={{height: 10}} />
-      <Text style={globalStyles.title}>Selected friends:</Text>
-      <ScrollView horizontal={true}>
-        <Text>{selectedFriends.map(friend => friend.name + " | ")}</Text>
-      </ScrollView>
-      <View style={globalStyles.spacer} />
-
-      <Button
-        title="Send Message"
-        onPress={async () => {
-          // let event: Event = route.params.data.eventData;
-          // event.friends = selectedFriends;
-          // console.log(route.params.data.eventData)
-          route.params.data.eventData.friends = selectedFriends;
-          // console.log("selected friends on submit", selectedFriends);
-          // await storeUserEvent(event);
-          // navigation.navigate("Home", {data: {prevAction: "created event" + event.uuid}});
-          navigation.navigate("SendMessage", route.params);
-        }}
-      />
-
-    </SafeAreaView>
+        <Button
+          title="Send Message"
+          onPress={async () => {
+            route.params.data.eventData.friends = selectedFriends;
+            navigation.navigate("SendMessage", route.params);
+          }}
+        />
+      </View>
+    </Screen>
   );
 }
 
@@ -173,8 +168,24 @@ const styles = StyleSheet.create({
     fontSize: 26
   },
   flatListContainer: {
-    height: "45%",
-    borderBottomColor: "gray",
-    borderBottomWidth: 1
+    flexGrow: 1,
+    flex: 1,
+    // borderBottomColor: "gray",
+    // borderBottomWidth: 1
+  },
+  friendContainer: {
+    backgroundColor: GREY_5, 
+    borderRadius: 10, 
+    padding: 10
+  },
+  footer: {
+    // position: "absolute",
+    // bottom: 0,
+    flex: .5,
+    height: "25%",
+    // borderWidth: 1,
+    display: "flex",
+    justifyContent: "space-between",
+    // justifySelf: "flex-end"
   }
 });
