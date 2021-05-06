@@ -12,7 +12,11 @@ export const FriendList: React.FC<FriendProps> = ({friends, title, style}) => {
     return (<View style={[styles.outer, style]}>
         { title &&
             <Text style={styles.friendTitle}>{title}</Text>}
-        <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.friendContainer}>
+        <ScrollView 
+            style={styles.scrollContainer} 
+            contentContainerStyle={styles.friendContainer}
+            persistentScrollbar={true}
+        >
             {friends.map(friend => (<View style={styles.friend} key={friend.id}>
                 <Text style={styles.friendText}>{friend.name}</Text>
                 </View>)

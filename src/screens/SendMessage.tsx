@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Button } from "./../atoms/Button";
 import { Screen } from "../atoms/Screen";
 import { Navbar } from "../organisms/Navbar";
 import { NavButton } from "../atoms/NavButton";
 import { Event, Contact } from "./../res/dataModels";
 import { storeUserEvent } from "./../res/storageFunctions";
-import MultiLineTextInput from "./../atoms/MultiLineTextInput";
+import { MultiLineTextInput } from "./../atoms/MultiLineTextInput";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { TwoButtonAlert } from "./../atoms/TwoButtonAlert";
 import { API, formSection } from "aws-amplify";
 import { PhoneNumberFormat, PhoneNumberUtil } from "google-libphonenumber";
 import { Auth } from "aws-amplify";
+import { DK_PURPLE } from "../res/styles/Colors";
+import { FriendList } from "../molecules/FriendList";
+import { Title } from "../atoms/Title";
 
 interface Props {
   navigation: any;
@@ -104,25 +107,40 @@ ${event.description} \
             title='Back'
           />
       </Navbar>
-
-      <Text style={globalStyles.superTitle}>Send Message</Text>
-      <View style={{height: 150}} />
-
-      <Text style={globalStyles.title}>Message:</Text>
+      <Title>Send Message</Title>
+      <FriendList friends={event.friends}/>
+      <View style={styles.message}>
+        <MultiLineTextInput 
+          inputText={message} 
+          setText={setMessage} 
+          placeholder={""}
+          style={styles.text}
+        />
       
-      <MultiLineTextInput 
-        inputText={message} 
-        setText={setMessage} 
-        placeholder={""}>
-      </MultiLineTextInput>
-      <Text>Tap message to edit</Text>
+      <Text style={{textAlign: "center"}}>Tap message to edit</Text>
+      </View>
 
-      <View style={globalStyles.miniSpacer} />
-
+    <View style={styles.footer}>
       <Button
         title="Send & Create Event"
         onPress={createConfirmAlert}
       />
+    </View>
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  message: {
+    flex: 4,
+    // borderWidth: 1,
+  },
+  footer: {
+    flex: 2
+  },
+  text: {
+    backgroundColor: DK_PURPLE,
+    fontWeight: "bold",
+    color: "white",
+  }
+})

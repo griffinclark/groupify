@@ -9,6 +9,7 @@ import { getAllImportedContacts } from "./../res/storageFunctions";
 import { Contact } from "./../res/dataModels";
 import { Navbar } from "../organisms/Navbar";
 import { NavButton } from "../atoms/NavButton";
+import { Title } from "../atoms/Title";
 
 export const LogIn: React.FC<StackProps> = ({navigation}) => {
     const [email, setEmail] = useState('');
@@ -59,6 +60,7 @@ export const LogIn: React.FC<StackProps> = ({navigation}) => {
                     title='Back'
                     />
             </Navbar>
+            <Title>Log In</Title>
             <FormInput
                 label='Email'
                 onChangeText={setEmail}
