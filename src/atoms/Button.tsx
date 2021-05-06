@@ -46,7 +46,7 @@ export const buttonStyles = StyleSheet.create({
         paddingHorizontal: 15,
         marginVertical: 10,
         marginHorizontal: 'auto',
-        width: 150,
+        minWidth: 150,
         alignItems: 'center'
     },
     text: {
