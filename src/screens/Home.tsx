@@ -39,26 +39,28 @@ export default function Home({ navigation, route }: Props) {
 
   return (
     <Screen>
-      <Navbar>
-        <NavButton
-          onPress={async () => {
-            try {
-              await Auth.signOut();
-              console.log('successfully signed out');
-              navigation.navigate("Welcome");
-            } catch (err) {
-              console.log('error signing out...', err);
-            }
-          }}
-          title='Log Out'
-        />
-        <NavButton
-          onPress={() => {
-            navigation.navigate("ImportContacts")
-          }}
-          title='Edit Contacts'
-        />
-      </Navbar>
+      <View style={styles.navbar}>
+        <Navbar>
+          <NavButton
+            onPress={async () => {
+              try {
+                await Auth.signOut();
+                console.log('successfully signed out');
+                navigation.navigate("Welcome");
+              } catch (err) {
+                console.log('error signing out...', err);
+              }
+            }}
+            title='Log Out'
+          />
+          <NavButton
+            onPress={() => {
+              navigation.navigate("ImportContacts")
+            }}
+            title='Edit Contacts'
+          />
+        </Navbar>
+      </View>
       <View style={styles.feedContainer}>
         {feedData.length > 0 ? (
           <DataDisplay
@@ -67,31 +69,42 @@ export default function Home({ navigation, route }: Props) {
             displayButton={false}
           />
         ) : (
-          <View>
-            <View style={globalStyles.megaSpacer} />
+          <View style={styles.title}>
+            {/* <View style={globalStyles.megaSpacer} /> */}
             <Text style={globalStyles.superTitle}>
               When you create an event, it will show up here
             </Text>
           </View>
         )}
       </View>
-      <View style={globalStyles.miniSpacer} />
-      <Button
-        title="Create event"
-        onPress={() => {
-          navigation.navigate("CreateCustomEvent"); 
-        }}
-      />
+      {/* <View style={globalStyles.miniSpacer} /> */}
+      <View style={styles.button}>
+        <Button
+          title="Create event"
+          onPress={() => {
+            navigation.navigate("CreateCustomEvent"); 
+          }}
+        />
+      </View>
     </Screen>
   );
 }
 
 let styles = StyleSheet.create({
-  navbarContainer: {
-    height: "10%",
-    backgroundColor: TEST_HIGH_CONTRAST,
+  navbar: {
+    flex: 1.5,
+    justifyContent: 'center'
   },
   feedContainer: {
-    height: "82%",
+    flex: 10
   },
+  title: {
+    flex: 1,
+    justifyContent: 'center'
+
+  },
+  button: {
+    flex: 1.5,
+    justifyContent: 'center'
+  }
 });
