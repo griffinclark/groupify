@@ -70,14 +70,12 @@ export default function Home({ navigation, route }: Props) {
           />
         ) : (
           <View style={styles.title}>
-            {/* <View style={globalStyles.megaSpacer} /> */}
             <Text style={globalStyles.superTitle}>
               When you create an event, it will show up here
             </Text>
           </View>
         )}
       </View>
-      {/* <View style={globalStyles.miniSpacer} /> */}
       <View style={styles.button}>
         <Button
           title="Create event"
