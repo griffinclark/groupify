@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { View, StyleSheet, Button, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Tag from "../atoms/Tag";
-import { globalStyles } from "./../res/styles/GlobalStyles";
+import { globalStyles } from "../res/styles/GlobalStyles";
 
 interface Props {
   tags: string[];

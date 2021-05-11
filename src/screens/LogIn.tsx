@@ -7,7 +7,7 @@ import { FormInput } from "../atoms/FormInput";
 import { Alert } from "../atoms/AlertModal";
 import { getAllImportedContacts } from "./../res/storageFunctions";
 import { Contact } from "./../res/dataModels";
-import { Navbar } from "../organisms/Navbar";
+import { Navbar } from "../molecules/Navbar";
 import { NavButton } from "../atoms/NavButton";
 import { Title } from "../atoms/Title";
 

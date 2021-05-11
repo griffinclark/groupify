@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   ScrollView,
  } from "react-native";
-import {Navbar} from "../organisms/Navbar";
+import {Navbar} from "../molecules/Navbar";
 import UserDisplay from "./../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { SearchBar } from "react-native-elements";
@@ -22,7 +22,7 @@ import { NavButton } from "../atoms/NavButton";
 import { Button } from "../atoms/Button";
 import { Title } from "../atoms/Title";
 import { Screen } from "../atoms/Screen";
-import { FriendList } from "../molecules/FriendList";
+import { FriendList } from "../organisms/FriendList";
 
 interface Props {
   navigation: any;

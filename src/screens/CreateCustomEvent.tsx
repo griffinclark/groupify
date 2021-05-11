@@ -7,7 +7,7 @@ import { globalStyles } from './../res/styles/GlobalStyles';
 import { Event } from "./../res/dataModels";
 import { DK_PURPLE, GREY_5, LIGHT, WHITE } from '../res/styles/Colors';
 import { useIsFocused } from "@react-navigation/core";
-import { Navbar } from "../organisms/Navbar";
+import { Navbar } from "../molecules/Navbar";
 // import DateTimePicker from "@react-native-community/datetimepicker";
 import uuid from 'uuid';
 import { NavButton } from "../atoms/NavButton";

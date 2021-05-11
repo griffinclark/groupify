@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text, Button, Alert } from "react-native";
-import Navbar from "../organisms/Navbar";
+import Navbar from "../molecules/Navbar";
 import EventTile from "./../molecules/EventTile";
 import { Event } from "./../res/dataModels";
 import { deleteUserEventFromUUID, getUserEventFromUUID } from "./../res/storageFunctions";

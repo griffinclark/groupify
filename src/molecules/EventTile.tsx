@@ -18,7 +18,7 @@ import { template } from "@babel/core";
 import { Contact, Event } from "./../res/dataModels";
 // import { styles } from "../atoms/Screen";
 import { Title } from "../atoms/Title";
-import { FriendList } from "./FriendList";
+import { FriendList } from "../organisms/FriendList";
 
 
 interface EventTileProps {

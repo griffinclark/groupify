@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { NavButton } from "../atoms/NavButton";
 import { StackProps } from "../res/root-navigation";
-import { LT_PURPLE, TEST_HIGH_CONTRAST, WHITE } from './../res/styles/Colors';
+import { LT_PURPLE, TEST_HIGH_CONTRAST, WHITE } from '../res/styles/Colors';
 
 export const Navbar: React.FC = (props) => {
   return (

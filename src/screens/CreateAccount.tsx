@@ -6,7 +6,7 @@ import { Button } from "../atoms/Button";
 import { FormInput } from "../atoms/FormInput";
 import { Screen } from "../atoms/Screen";
 import { Alert } from "../atoms/AlertModal";
-import { Navbar } from "../organisms/Navbar";
+import { Navbar } from "../molecules/Navbar";
 import { NavButton } from "../atoms/NavButton";
 import { Title } from "../atoms/Title";
 

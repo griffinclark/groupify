@@ -6,7 +6,7 @@ import { TEST_HIGH_CONTRAST } from "../res/styles/Colors";
 // import firebase from "firebase";
 import { FlatList } from "react-native-gesture-handler";
 import DataDisplay from "../organisms/DataDisplay";
-import { Navbar } from "../organisms/Navbar";
+import { Navbar } from "../molecules/Navbar";
 import { cannedEvents } from "../res/cannedData";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { Event } from "../res/dataModels";
