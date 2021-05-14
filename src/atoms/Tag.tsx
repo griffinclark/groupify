@@ -10,7 +10,7 @@ interface Props {
     selectedTags: string[]
 }
 
-export default function Tag({title, setSelectedTags, selectedTags}:Props) {
+export function Tag({title, setSelectedTags, selectedTags}:Props) {
     const [pressed, setPressed] = useState(false)
 
     const tagPressed = ()=>{

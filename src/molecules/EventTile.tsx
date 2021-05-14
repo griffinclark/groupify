@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { globalStyles } from "./../res/styles/GlobalStyles";
 import { View, Text, Button, TouchableOpacity } from "react-native";
-import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { StyleSheet } from "react-native";
 import {
   DK_PURPLE,
@@ -12,8 +10,6 @@ import {
   TEST_IMAGE_URL,
   WHITE,
 } from "../res/styles/Colors";
-import CheckBox from "../atoms/CheckBox";
-import SquareImageDisplay from "./../atoms/SquareImageDisplay";
 import { template } from "@babel/core";
 import { Contact, Event } from "./../res/dataModels";
 // import { styles } from "../atoms/Screen";
@@ -27,7 +23,7 @@ interface EventTileProps {
   navigation: any
 }
 
-export default function EventTile({
+export function EventTile({
   event,
   displayButton,
   navigation

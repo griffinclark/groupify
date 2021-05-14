@@ -1,9 +1,7 @@
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { View, StyleSheet, Button, Text } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import Tag from "../atoms/Tag";
+import {Tag} from "../atoms/AtomsExports";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 
 interface Props {
@@ -11,7 +9,7 @@ interface Props {
   selectedTags: string[]
   setSelectedTags: any
 }
-export default function TagSelector({ tags, selectedTags, setSelectedTags }: Props) {
+export function TagSelector({ tags, selectedTags, setSelectedTags }: Props) {
 
 
 

@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { 
   StyleSheet, 
-  PermissionsAndroid, 
-  SafeAreaView, 
   Text, 
   View,
   ActivityIndicator,
-  ScrollView,
  } from "react-native";
-import {Navbar} from "../organisms/Navbar";
-import UserDisplay from "./../organisms/UserDisplay";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { SearchBar } from "react-native-elements";
-import AndroidContactTile from "./../molecules/AndroidContactTile";
 import * as Contacts from "expo-contacts";
 import { Contact, Event } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
-import { DEFAULT_CONTACT_IMAGE, GREY_5, GREY_6 } from "../res/styles/Colors";
+import { DEFAULT_CONTACT_IMAGE, GREY_5 } from "../res/styles/Colors";
 import { getAllImportedContacts, storeUserEvent } from "./../res/storageFunctions";
-import { NavButton } from "../atoms/NavButton";
-import { Button } from "../atoms/Button";
-import { Title } from "../atoms/Title";
-import { Screen } from "../atoms/Screen";
-import { FriendList } from "../molecules/FriendList";
+import { FriendList, AndroidContactTile } from "../molecules/MoleculesExports";
+import { NavButton, Button, Title, Screen } from '../atoms/AtomsExports'
+import { Navbar } from '../organisms/OrganismsExports'
 
 interface Props {
   navigation: any;

@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { View, Text, Button } from "react-native";
-import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { StyleSheet } from "react-native";
 import {
-  POST_SPACING,
-  TEST_HIGH_CONTRAST,
   TEST_IMAGE_URL,
 } from "../res/styles/Colors";
-import CheckBox from "../atoms/CheckBox";
-import SquareImageDisplay from "./../atoms/SquareImageDisplay";
+import {SquareImageDisplay} from "./../atoms/AtomsExports";
 
 interface Props {
   UID: string;
@@ -17,7 +13,7 @@ interface Props {
   endpointUID: string;
   navigation: any;
 }
-export default function EndpointTile({
+export function EndpointTile({
   UID,
   title,
   endpointUID,

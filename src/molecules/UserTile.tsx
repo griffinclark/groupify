@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { View, Text, Button } from "react-native";
-import CircularImageDisplay from "../atoms/CircularImageDisplay";
 import { StyleSheet } from "react-native";
 import { POST_SPACING, TEST_HIGH_CONTRAST } from "../res/styles/Colors";
-import CheckBox from "../atoms/CheckBox";
+import {CheckBox, CircularImageDisplay} from "../atoms/AtomsExports";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface Props {
@@ -14,7 +13,7 @@ interface Props {
   removeUser?: any;
   createEvent?: boolean;
 }
-export default function UserTile({
+export function UserTile({
   username,
   imageURL,
   addUser,

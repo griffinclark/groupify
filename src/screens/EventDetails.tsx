@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text, Button, Alert } from "react-native";
-import Navbar from "../organisms/Navbar";
-import EventTile from "./../molecules/EventTile";
+import { SafeAreaView, View, Text, Button } from "react-native";
 import { Event } from "./../res/dataModels";
 import { deleteUserEventFromUUID, getUserEventFromUUID } from "./../res/storageFunctions";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { globalStyles } from "./../res/styles/GlobalStyles";
-import { TwoButtonAlert } from "./../atoms/TwoButtonAlert";
+import { TwoButtonAlert } from '../atoms/AtomsExports'
+import { EventTile } from '../molecules/MoleculesExports'
+import { Navbar } from '../organisms/OrganismsExports'
 
 
 interface Props {

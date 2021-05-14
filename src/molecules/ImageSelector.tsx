@@ -2,7 +2,7 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Button, Image } from "react-native";
-import CircularImageDisplay from "../atoms/CircularImageDisplay";
+import {CircularImageDisplay} from "../atoms/AtomsExports";
 import { SECONDARY } from "../res/styles/Colors";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   setImageURI: any;
 }
 
-export default function ImageSelector({ imageURI, setImageURI }: Props) {
+export function ImageSelector({ imageURI, setImageURI }: Props) {
   // TODO rebuild this to use atomic design
   const [localImageURI, setLocalImageURI] = useState("");
 

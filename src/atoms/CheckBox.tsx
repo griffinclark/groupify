@@ -11,7 +11,7 @@ interface Props{
   onValueChange: any
 }
 
-export default function CheckBox({isSelected, onValueChange}: Props){
+export function CheckBox({isSelected, onValueChange}: Props){
   return(
     <View>
       <RNCheckBox
