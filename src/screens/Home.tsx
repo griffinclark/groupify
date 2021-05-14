@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
-// import { Button, SafeAreaView } from "react-native";
 import { StyleSheet, View, Text } from "react-native";
-import { TEST_HIGH_CONTRAST } from "../res/styles/Colors";
-// import { firestore } from "../res/services/firebase";
-// import firebase from "firebase";
-import { FlatList } from "react-native-gesture-handler";
-import DataDisplay from "../organisms/DataDisplay";
-import { Navbar } from "../organisms/Navbar";
-import { cannedEvents } from "../res/cannedData";
 import { globalStyles } from "./../res/styles/GlobalStyles";
 import { Event } from "../res/dataModels";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getAllUserEvents, getAllImportedContacts } from "./../res/storageFunctions";
-import { Button } from "../atoms/Button";
-import { Screen } from '../atoms/Screen';
-import { NavButton } from "../atoms/NavButton";
+import { getAllUserEvents } from "./../res/storageFunctions";
 import { Auth } from "aws-amplify";
+import { Screen, Button, NavButton } from '../atoms/AtomsExports'
+import { DataDisplay } from '../organisms/OrganismsExports'
+import {Navbar} from '../molecules/MoleculesExports'
 
 interface Props {
   navigation: any;

@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Button } from "./../atoms/Button";
-import { Screen } from "../atoms/Screen";
-import { Navbar } from "../organisms/Navbar";
-import { NavButton } from "../atoms/NavButton";
 import { Event, Contact } from "./../res/dataModels";
 import { storeUserEvent } from "./../res/storageFunctions";
-import { MultiLineTextInput } from "./../atoms/MultiLineTextInput";
-import { globalStyles } from "./../res/styles/GlobalStyles";
-import { TwoButtonAlert } from "./../atoms/TwoButtonAlert";
-import { API, formSection } from "aws-amplify";
+import { API } from "aws-amplify";
 import { PhoneNumberFormat, PhoneNumberUtil } from "google-libphonenumber";
 import { Auth } from "aws-amplify";
 import { DK_PURPLE } from "../res/styles/Colors";
-import { FriendList } from "../molecules/FriendList";
-import { Title } from "../atoms/Title";
+import { Navbar } from "../molecules/MoleculesExports";
+import { FriendList } from "../organisms/OrganismsExports";
+import { Title, NavButton, Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports'
 
 interface Props {
   navigation: any;

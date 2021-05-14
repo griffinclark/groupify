@@ -1,8 +1,5 @@
 import React, {useState} from "react"
-import { View, StyleSheet, TextInput, Button } from 'react-native';
-import { DARK, SECONDARY } from "../res/styles/Colors";
-import { globalStyles } from './../res/styles/GlobalStyles';
-import { LIGHT, PRIMARY } from '../res/styles/Colors';
+import { View, Button } from 'react-native';
 
 interface Props {
     title: string,
@@ -10,7 +7,7 @@ interface Props {
     selectedTags: string[]
 }
 
-export default function Tag({title, setSelectedTags, selectedTags}:Props) {
+export function Tag({title, setSelectedTags, selectedTags}:Props) {
     const [pressed, setPressed] = useState(false)
 
     const tagPressed = ()=>{

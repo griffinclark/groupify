@@ -1,30 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { 
   StyleSheet,
-  PermissionsAndroid, 
-  SafeAreaView, 
   Text, 
   View,
   ActivityIndicator,
-  ScrollView,
  } from "react-native";
-import {Navbar} from "../organisms/Navbar";
-import UserDisplay from "../organisms/UserDisplay";
-import { globalStyles } from "../res/styles/GlobalStyles";
 import { SearchBar } from "react-native-elements";
-import AndroidContactTile from "../molecules/AndroidContactTile";
-import {Screen } from "../atoms/Screen";
 import * as Contacts from "expo-contacts";
 import { Contact, Event } from "../res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
 import { DEFAULT_CONTACT_IMAGE, GREY_5 } from "../res/styles/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteAllImportedContacts, getAllImportedContacts, storeImportedContact } from "../res/storageFunctions";
-import { forModalPresentationIOS } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/CardStyleInterpolators";
-import { NavButton } from "../atoms/NavButton";
-import { Title } from "../atoms/Title";
-import { Button } from "../atoms/Button";
-import { FriendList } from "../molecules/FriendList";
+import { Button, Title, NavButton, Screen } from '../atoms/AtomsExports'
+import { FriendList } from '../organisms/OrganismsExports'
+import { AndroidContactTile, Navbar } from '../molecules/MoleculesExports'
 
 
 interface Props {
