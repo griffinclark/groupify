@@ -1,7 +1,5 @@
 import React from "react"
 import { View, StyleSheet, TextInput } from 'react-native';
-import { DARK } from "../res/styles/Colors";
-import { globalStyles } from './../res/styles/GlobalStyles';
 import { LIGHT } from '../res/styles/Colors';
 
 interface Props {
@@ -10,7 +8,7 @@ interface Props {
     placeholder: string,
 }
 
-export default function SingleLineTextInput({inputText, placeholder, setText}: Props){
+export function SingleLineTextInput({inputText, placeholder, setText}: Props){
     return(
         <View >
             <TextInput 

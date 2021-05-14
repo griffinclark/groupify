@@ -1,19 +1,11 @@
-import { Formik, validateYupSchema } from "formik";
-import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
-import SingleLineTextInput from "../atoms/SingleLineTextInput";
-import EventTile from "../molecules/EventTile";
+import { Formik } from "formik";
+import React from "react";
+import { StyleSheet, Text, View, TextInput } from "react-native";
 import { globalStyles } from './../res/styles/GlobalStyles';
-import { Event } from "./../res/dataModels";
-import { DK_PURPLE, GREY_5, LIGHT, WHITE } from '../res/styles/Colors';
-import { useIsFocused } from "@react-navigation/core";
-import { Navbar } from "../organisms/Navbar";
-// import DateTimePicker from "@react-native-community/datetimepicker";
+import { DK_PURPLE, GREY_5, WHITE } from '../res/styles/Colors';
 import uuid from 'uuid';
-import { NavButton } from "../atoms/NavButton";
-import { Screen } from "../atoms/Screen";
-import { Title } from "../atoms/Title";
-import { Button } from "../atoms/Button";
+import { Button, Title, Screen, NavButton } from '../atoms/AtomsExports'
+import { Navbar } from '../molecules/MoleculesExports'
 
 
 interface Props {

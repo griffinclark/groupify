@@ -1,10 +1,5 @@
-import Auth from "@aws-amplify/auth";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { NavButton } from "../atoms/NavButton";
-import { StackProps } from "../res/root-navigation";
-import { LT_PURPLE, TEST_HIGH_CONTRAST, WHITE } from './../res/styles/Colors';
+import { StyleSheet, View } from "react-native";
 
 export const Navbar: React.FC = (props) => {
   return (

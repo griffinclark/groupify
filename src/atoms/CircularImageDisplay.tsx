@@ -8,7 +8,7 @@ interface Props {
     size ?: number
   }0
 
-  export default function CircularImageDisplay({imageURI, size}: Props) {
+  export function CircularImageDisplay({imageURI, size}: Props) {
       return(
           <Image
           style={styles.imagePreviewContainer}

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { globalStyles } from "./../res/styles/GlobalStyles";
 import { View, Text, TouchableOpacity } from "react-native";
-import CircularImageDisplay from "../atoms/CircularImageDisplay";
+import {CircularImageDisplay, CheckBox} from "../atoms/AtomsExports";
 import { StyleSheet } from "react-native";
-import { TEST_HIGH_CONTRAST, TEST_IMAGE_URL, GRAY_DARK } from "../res/styles/Colors";
-import CheckBox from "../atoms/CheckBox";
+import { TEST_IMAGE_URL, GRAY_DARK } from "../res/styles/Colors";
 import { Contact } from "../res/dataModels";
 
 interface Props {
@@ -16,7 +14,7 @@ interface Props {
   removeUser?: any;
   isChecked? : boolean;
 }
-export default function AndroidContactTile({
+export function AndroidContactTile({
   // TODO: add id parameter and add by id instead of by firstName
   contact,
   firstName,
