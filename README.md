@@ -42,17 +42,21 @@ When installing a new package, it's important to always use `expo install` inste
 ## To build app for release
 [expo docs](https://docs.expo.io/distribution/building-standalone-apps/)
 
-check that you are in the amplify production environemnt and all backend resourses are up to date. 
+check that you are in the amplify production environment and all backend resourses are up to date. 
 - run `amplify status` 
 - env should be `production`
 - all resources should say no change
-
-incriment app.js build number for both ios and android 
+- make sure you've pulled recently
 
 ### for ios
+- in app.json go to ios > buildNumber and incriment that number
 - run `expo build:ios -t archive`
 - after the build has built, download it from the url provided 
 - upload build to transporter and hit deliver
+
+### for android 
+- in app.json go to android > versionCode and incriment that number
+- run `expo build:android -t app-bundle` 
 
 ## Atomic Design 0
 
