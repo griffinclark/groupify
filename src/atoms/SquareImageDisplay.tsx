@@ -8,7 +8,7 @@ interface Props {
     size ?: number
   }0
 
-  export default function SquareImageDisplay({imageURI, size}: Props) {
+  export function SquareImageDisplay({imageURI, size}: Props) {
       return(
           <Image
           style={styles.imagePreviewContainer}

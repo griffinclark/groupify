@@ -40,12 +40,11 @@
       "function": {
         "pushBroadcast": {
           "deploymentBucketName": "amplify-meep-production-142445-deployment",
-          "s3Key": "amplify-builds/pushBroadcast-6c6d6d6e2b55544a354b-build.zip"
+          "s3Key": "amplify-builds/pushBroadcast-7a3470566e7a75465851-build.zip"
         }
       },
       "auth": {
-        "meep60c88366": {},
-        "Meep": {}
+        "meep60c88366": {}
       }
     }
   }

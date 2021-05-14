@@ -1,8 +1,8 @@
 import React from "react";
-import UserTile from "../molecules/UserTile";
+import {UserTile} from "../molecules/MoleculesExports";
 import { SafeAreaView, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import AndroidContactTile from './../molecules/AndroidContactTile';
+import {AndroidContactTile} from './../molecules/MoleculesExports';
 
 // TODO handle names being too long
 
@@ -18,7 +18,7 @@ interface userTileInterface {
   imageURL: string;
 }
 let listKey =0
-export default function UserDisplay({ addUser, removeUser, userList, displayType }: Props) {
+export function UserDisplay({ addUser, removeUser, userList, displayType }: Props) {
   return (
     <SafeAreaView>
       <FlatList

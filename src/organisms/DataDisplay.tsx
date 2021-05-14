@@ -1,10 +1,7 @@
 import React from "react";
-import UserTile from "../molecules/UserTile";
-import { SafeAreaView, Text, View } from "react-native";
-import EventTile from "../molecules/EventTile";
+import { View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { Endpoint } from "./../res/dataModels";
-import EndpointTile from "./../molecules/EndpointTile";
+import {EventTile} from "./../molecules/MoleculesExports";
 import { Contact, Event } from "./../res/dataModels";
 
 interface Props {
@@ -22,7 +19,7 @@ const formatFriends = (friends: Contact[]) => {
   }
 }
 
-export default function DataDisplay({ data, navigation, displayButton }: Props) {
+export function DataDisplay({ data, navigation, displayButton }: Props) {
   return (
     <View>
       <FlatList
