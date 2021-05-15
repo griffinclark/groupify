@@ -1,0 +1,19 @@
+# this workflow runs eslint 
+
+name: Eslint 
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install modules
+      run: yarn
+    - name: Run ESLint
+      run: eslint . --ext .js,.jsk,.ts,.tsx
