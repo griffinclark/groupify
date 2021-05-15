@@ -24,7 +24,6 @@ module.exports = {
     quotes: ['error', 'single'],
     'import/no-default-export': 'error',
     'import/first': 'error',
-    'import/exports-last': 'error',
     'func-style': ['error', 'expression'],
     'unused-imports/no-unused-imports-ts': 'error',
     'no-trailing-spaces': 'error',

@@ -17,5 +17,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: install modules
       run: yarn
-    - name: Run ESLint
-      run: yarn run eslint . --ext .js,.jsk,.ts,.tsx
+    - name: Run eslint on changed files
+      uses: tj-actions/eslint-changed-files@v6
