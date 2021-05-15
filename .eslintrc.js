@@ -15,7 +15,6 @@ module.exports = {
     extends: [
     "plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react
     "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
-    "prettier/@typescript-eslint", // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
     "plugin:prettier/recommended", // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
     ],
     plugins: [
@@ -26,11 +25,11 @@ module.exports = {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
     "quotes": ["error", "double"],
-    "no-default-export": "error",
-    "first": "error",
-    "exports-last": "error",
+    "import/no-default-export": "error",
+    "import/first": "error",
+    "import/exports-last": "error",
     "func-style": ["error", "expression"],
-    "unused-imports/no-unused-imports-ts": "on",
+    "unused-imports/no-unused-imports-ts": "error",
     "no-trailing-spaces": "error",
     },
 };
