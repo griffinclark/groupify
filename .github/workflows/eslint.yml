@@ -3,6 +3,8 @@
 name: Eslint 
 
 on:
+  push:
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -16,4 +18,4 @@ jobs:
     - name: install modules
       run: yarn
     - name: Run ESLint
-      run: eslint . --ext .js,.jsk,.ts,.tsx
+      run: yarn run eslint . --ext .js,.jsk,.ts,.tsx
