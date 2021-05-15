@@ -1,35 +1,32 @@
 module.exports = {
-    parser: "@typescript-eslint/parser", // Specifies the ESLint parser
-    parserOptions: {
+  parser: '@typescript-eslint/parser', // Specifies the ESLint parser
+  parserOptions: {
     ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
-    sourceType: "module", // Allows for the use of imports
+    sourceType: 'module', // Allows for the use of imports
     ecmaFeatures: {
-    jsx: true // Allows for the parsing of JSX
-    }
+      jsx: true, // Allows for the parsing of JSX
     },
-    settings: {
+  },
+  settings: {
     react: {
-    version: "detect" // Tells eslint-plugin-react to automatically detect the version of React to use
-    }
-},
-    extends: [
-    "plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react
-    "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
-    "plugin:prettier/recommended", // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
-    ],
-    plugins: [
-        "eslint-plugin-import",
-        "unused-imports",
-    ],
-    rules: {
+      version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
+    },
+  },
+  extends: [
+    'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
+    'plugin:@typescript-eslint/recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
+    'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+  ],
+  plugins: ['eslint-plugin-import', 'unused-imports'],
+  rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-    "quotes": ["error", "double"],
-    "import/no-default-export": "error",
-    "import/first": "error",
-    "import/exports-last": "error",
-    "func-style": ["error", "expression"],
-    "unused-imports/no-unused-imports-ts": "error",
-    "no-trailing-spaces": "error",
-    },
+    quotes: ['error', 'single'],
+    'import/no-default-export': 'error',
+    'import/first': 'error',
+    'import/exports-last': 'error',
+    'func-style': ['error', 'expression'],
+    'unused-imports/no-unused-imports-ts': 'error',
+    'no-trailing-spaces': 'error',
+  },
 };

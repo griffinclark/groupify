@@ -14,16 +14,6 @@
       "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "eslint --fix"
-    ]
-  },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.2",
     "@react-native-community/checkbox": "^0.5.7",
@@ -70,6 +60,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-unused-imports": "^1.1.1",
+    "husky": "^6.0.0",
     "jest-expo": "^40.0.2",
     "prettier": "^2.3.0",
     "react-test-renderer": "^17.0.2",
