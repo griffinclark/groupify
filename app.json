@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "meep",
+    "icon": "./assets/Icon1024.png",
     "slug": "meep",
     "sdkVersion": "40.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,14 +22,12 @@
       "bundleIdentifier": "com.munchkinlabs.meep",
       "infoPlist": {
         "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create"
-      }
+      },
+      "buildNumber": "1.0.1"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.munchkinlabs.meep"
+      "package": "com.munchkinlabs.meep",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

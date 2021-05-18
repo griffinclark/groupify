@@ -1,0 +1,23 @@
+# this workflow runs eslint 
+
+name: Eslint 
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install modules
+      run: yarn
+    - name: Run eslint on changed files
+      uses: tj-actions/eslint-changed-files@v6
+      with:
+        config_path: './.eslintrc.js'
