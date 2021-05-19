@@ -9,7 +9,7 @@ interface Props {
   UID: string;
   title: string;
   endpointUID: string;
-  navigation: any;
+  navigation: NavigationAction;
 }
 export const EndpointTile: React.FC<Props> = ({ title, endpointUID, navigation }: Props) => {
   const getImage = (endpointUID: string) => {

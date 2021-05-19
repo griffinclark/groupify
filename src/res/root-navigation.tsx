@@ -1,28 +1,28 @@
 // https://devlinduldulao.pro/react-native-typescript-and-react-navigation-v5-setup/
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
-import React from "react";
-import Welcome from "../screens/Welcome";
-import Home from "../screens/Home";
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
+import Welcome from '../screens/Welcome';
+import Home from '../screens/Home';
 import SelectFriends from './../screens/SelectFriends';
-import CreateCustomEvent from "./../screens/CreateCustomEvent";
-import EventDetails from "./../screens/EventDetails";
-import { CreateAccount } from "../screens/CreateAccount";
-import { LogIn } from "../screens/LogIn";
-import ImportContacts from "../screens/ImportContacts";
-import SendMessage from "./../screens/SendMessage";
+import CreateCustomEvent from './../screens/CreateCustomEvent';
+import EventDetails from './../screens/EventDetails';
+import { CreateAccount } from '../screens/CreateAccount';
+import { LogIn } from '../screens/LogIn';
+import ImportContacts from '../screens/ImportContacts';
+import SendMessage from './../screens/SendMessage';
 
 export interface StackProps {
   //TODO: interfaces should never have any WTF is the point of typescript otherwise???
-  navigation?: any;
-  route?: any;
+  navigation?: NavigationType;
+  route?: NavigationType;
 }
 interface RootProps {
   initialRoute: string;
 }
 
 const Stack = createStackNavigator();
-export const RootNavigation = ({ initialRoute }: RootProps) => {
+export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps) => {
   console.log('Initial route: ' + initialRoute);
   return (
     <NavigationContainer>

@@ -10,8 +10,8 @@ interface Props {
   firstName?: string;
   lastName?: string;
   imageURL?: string;
-  addUser?: any; // if there's a list of users, add the user by username when the checkbox is checked
-  removeUser?: any;
+  addUser: (ev: Contact | undefined) => void; // if there's a list of users, add the user by username when the checkbox is checked
+  removeUser: (ev: Contact | undefined) => void;
   isChecked?: boolean;
 }
 export const AndroidContactTile: React.FC<Props> = ({
