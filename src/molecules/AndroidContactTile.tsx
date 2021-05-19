@@ -1,29 +1,27 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import {CircularImageDisplay, CheckBox} from "../atoms/AtomsExports";
-import { StyleSheet } from "react-native";
-import { TEST_IMAGE_URL, GRAY_DARK } from "../res/styles/Colors";
-import { Contact } from "../res/dataModels";
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { CircularImageDisplay, CheckBox } from '../atoms/AtomsExports';
+import { StyleSheet } from 'react-native';
+import { TEST_IMAGE_URL, GRAY_DARK } from '../res/styles/Colors';
+import { Contact } from '../res/dataModels';
 
 interface Props {
   contact?: Contact;
   firstName?: string;
-  lastName ?: string;
+  lastName?: string;
   imageURL?: string;
   addUser?: any; // if there's a list of users, add the user by username when the checkbox is checked
   removeUser?: any;
-  isChecked? : boolean;
+  isChecked?: boolean;
 }
-export function AndroidContactTile({
-  // TODO: add id parameter and add by id instead of by firstName
+export const AndroidContactTile: React.FC<Props> = ({
   contact,
   firstName,
   imageURL,
   addUser,
   removeUser,
   isChecked = false,
-}: Props) {
-
+}: Props) => {
   const [checked, setChecked] = useState(isChecked);
 
   const onPress = () => {
@@ -31,66 +29,55 @@ export function AndroidContactTile({
       setChecked(true);
       addUser(contact);
       // console.log("add");
-    }
-    else {
+    } else {
       setChecked(false);
       removeUser(contact);
       // console.log("remove");
     }
-  }
+  };
 
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.rootContainer}>
         <View style={styles.profileImageContainer}>
-          {imageURL ? (
-            <CircularImageDisplay imageURI={imageURL} />
-          ) : (
-            <CircularImageDisplay imageURI={TEST_IMAGE_URL} />
-          )}
+          {imageURL ? <CircularImageDisplay imageURI={imageURL} /> : <CircularImageDisplay imageURI={TEST_IMAGE_URL} />}
         </View>
         <View>
-          <Text style={ checked ? styles.nameSelected : styles.nameNotSelected}> {firstName} </Text>
+          <Text style={checked ? styles.nameSelected : styles.nameNotSelected}> {firstName} </Text>
         </View>
         <View style={styles.checkboxContainer}>
-          <CheckBox
-            isSelected={checked}
-            onValueChange={onPress}
-          />
+          <CheckBox isSelected={checked} onValueChange={onPress} />
         </View>
       </View>
     </TouchableOpacity>
   );
-}
+};
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   rootContainer: {
     height: 50,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderBottomWidth: 0.5,
-    // borderTopWidth: 1,
-    // borderRightWidth: 1,
-    // borderLeftWidth: 1,
     margin: 5,
   },
   profileImageContainer: {
-    display: "flex",
+    display: 'flex',
     height: 30,
     width: 30,
     // This isn't the best way to get the image where we need it, but...
-    position: "absolute",
+    position: 'absolute',
     left: 10,
   },
   checkboxContainer: {
-    position: "absolute",
+    position: 'absolute',
     right: 10,
   },
   nameSelected: {
     fontWeight: 'bold',
     fontSize: 20,
-    color: "mediumpurple",
+    color: 'mediumpurple',
   },
   nameNotSelected: {
     fontWeight: 'bold',
