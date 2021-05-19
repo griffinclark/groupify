@@ -20,6 +20,9 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.munchkinlabs.meep",
+      "infoPlist": {
+        "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create"
+      },
       "buildNumber": "1.0.1"
     },
     "android": {
