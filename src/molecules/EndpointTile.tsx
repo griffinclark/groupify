@@ -4,16 +4,18 @@ import { View, Text, Button } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { TEST_IMAGE_URL } from '../res/styles/Colors';
 import { SquareImageDisplay } from './../atoms/AtomsExports';
+import { NavigationProp, ParamListBase } from '@react-navigation/core';
 
 interface Props {
   UID: string;
   title: string;
   endpointUID: string;
-  navigation: NavigationAction;
+  navigation: NavigationProp<ParamListBase>;
 }
 export const EndpointTile: React.FC<Props> = ({ title, endpointUID, navigation }: Props) => {
   const getImage = (endpointUID: string) => {
     // TODO @David return the image for an endpoint given its UID
+    console.log(endpointUID); //Not sure what we are doing with this
     return TEST_IMAGE_URL;
   };
 

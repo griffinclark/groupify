@@ -1,17 +1,17 @@
 export interface Profile {
-    email ?: string
-    phoneNumber: string // @Griffin This needs to be canonicalized format, not just a rando string
-    firstName: string
-    lastName ?: string // some zombie accounts might not be made using a last name
-    username ?: string // zombie accounts won't have usernames
-    profileImageURL: string // zombie accounts won't have profile photos
-    type: string // this is a hack
+  email?: string;
+  phoneNumber: string; // @Griffin This needs to be canonicalized format, not just a rando string
+  firstName: string;
+  lastName?: string; // some zombie accounts might not be made using a last name
+  username?: string; // zombie accounts won't have usernames
+  profileImageURL: string; // zombie accounts won't have profile photos
+  type: string; // this is a hack
 }
 
 // TODO: Share!!!
 export interface User {
-    dateCreated: firestore.Timestamp | firestore.FieldValue
-    version: number
+  dateCreated: firestore.Timestamp | firestore.FieldValue;
+  version: number;
     UID: string
     activated: boolean
     profile: Profile
