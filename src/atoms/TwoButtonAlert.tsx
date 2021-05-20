@@ -1,4 +1,3 @@
-import React from 'react';
 import { Alert } from 'react-native';
 
 interface TwoButtonAlertProps {
@@ -14,16 +13,13 @@ export const TwoButtonAlert = ({
   title,
   message,
   button1Text,
-  button1OnPress=()=>{},
+  button1OnPress = () => {},
   button2Text,
-  button2OnPress=()=>{},
-  }: TwoButtonAlertProps) => {
-    return Alert.alert(
-    title,
-    message,
-    [
-      { text: button1Text, onPress: button1OnPress },
-      { text: button2Text, onPress: button2OnPress }
-    ]
-  );
-}
+  button2OnPress = () => {},
+}: TwoButtonAlertProps) => {
+  Alert.alert(title, message,
+  [
+    { text: button1Text, onPress: button1OnPress },
+    { text: button2Text, onPress: button2OnPress },
+  ]);
+};
