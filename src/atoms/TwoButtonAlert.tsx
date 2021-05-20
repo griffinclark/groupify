@@ -9,7 +9,7 @@ interface TwoButtonAlertProps {
   button2OnPress: () => void;
 }
 
-const defaultFunction = () => {}
+const defaultFunction = () => void(0);
 
 export const TwoButtonAlert: (props: TwoButtonAlertProps) => void = ({
   title,
