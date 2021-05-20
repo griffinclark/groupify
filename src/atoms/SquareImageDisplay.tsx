@@ -8,9 +8,7 @@ interface Props {
 }
 
 export const SquareImageDisplay: React.FC<Props> = ({ imageURI }: Props) => {
-  return (
-    <Image style={styles.imagePreviewContainer} source={{ uri: imageURI }} />
-  );
+  return <Image style={styles.imagePreviewContainer} source={{ uri: imageURI }} />;
 };
 
 const styles = StyleSheet.create({
