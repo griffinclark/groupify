@@ -21,7 +21,7 @@ export const TagSelector: React.FC<TagSelectorProps> = ({ tags, selectedTags, se
         renderItem={({ item }) => {
           return (
             <View style={styles.tagContainer}>
-              <Tag title={item} setSelectedTags={setSelectedTags} selectedTags={selectedTags}/>
+              <Tag title={item} setSelectedTags={setSelectedTags} selectedTags={selectedTags} />
             </View>
           );
         }}
@@ -29,7 +29,7 @@ export const TagSelector: React.FC<TagSelectorProps> = ({ tags, selectedTags, se
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   tagContainer: {
