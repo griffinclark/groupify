@@ -9,16 +9,17 @@ interface TwoButtonAlertProps {
   button2OnPress: () => void;
 }
 
-export const TwoButtonAlert = ({
+const defaultFunction = () => {}
+
+export const TwoButtonAlert: (props: TwoButtonAlertProps) => void = ({
   title,
   message,
   button1Text,
-  button1OnPress = () => {},
+  button1OnPress = defaultFunction,
   button2Text,
-  button2OnPress = () => {},
+  button2OnPress = defaultFunction,
 }: TwoButtonAlertProps) => {
-  Alert.alert(title, message,
-  [
+  Alert.alert(title, message, [
     { text: button1Text, onPress: button1OnPress },
     { text: button2Text, onPress: button2OnPress },
   ]);
