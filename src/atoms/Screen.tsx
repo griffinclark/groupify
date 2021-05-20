@@ -6,8 +6,8 @@ interface ScreenProps {
   style?: Record<string, unknown>; //TODO: more specific type?
 }
 
-export const Screen: React.FC<ScreenProps> = (props) => {
-  return <SafeAreaView style={[styles.screen, props.style]}>{props.children}</SafeAreaView>
+export const Screen: React.FC<ScreenProps> = (props: React.PropsWithChildren<ScreenProps>) => {
+  return <SafeAreaView style={[styles.screen, props.style]}>{props.children}</SafeAreaView>;
 };
 
 export const styles = StyleSheet.create({
