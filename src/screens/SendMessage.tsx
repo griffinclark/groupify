@@ -54,6 +54,7 @@ ${event.description} \
   }
 
   const createConfirmAlert = () => {
+    getUserName();
     TwoButtonAlert({
       title: "Send and Create Event",
       message: "Are you sure you want to send this message to all invited friends and create this event?",
