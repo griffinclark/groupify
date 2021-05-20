@@ -1,6 +1,6 @@
 // https://devlinduldulao.pro/react-native-typescript-and-react-navigation-v5-setup/
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
+import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import React from 'react';
 import Welcome from '../screens/Welcome';
 import Home from '../screens/Home';
@@ -13,9 +13,8 @@ import ImportContacts from '../screens/ImportContacts';
 import SendMessage from './../screens/SendMessage';
 
 export interface StackProps {
-  //TODO: interfaces should never have any WTF is the point of typescript otherwise???
-  navigation?: NavigationType;
-  route?: NavigationType;
+  navigation?: StackNavigationProp<ParamListBase>;
+  route?: ParamListBase;
 }
 interface RootProps {
   initialRoute: string;

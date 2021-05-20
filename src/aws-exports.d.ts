@@ -1,2 +1,1 @@
-const awsmobile: any;
-export default awsmobile;
+export const awsmobile: any;

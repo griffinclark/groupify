@@ -78,81 +78,81 @@ export interface CannedEvent {
 
 export const cannedEvents: CannedEvent[] = [
   {
-    title: "Ocean Beach Volleyball Court",
-    imageURL: "https://www.californiabeaches.com/wp-content/uploads/2016/08/IMG_1227-Large-650x433.jpg",
-    description: "",
-    tags: ["Volleyball"]
+    title: 'Ocean Beach Volleyball Court',
+    imageURL: 'https://www.californiabeaches.com/wp-content/uploads/2016/08/IMG_1227-Large-650x433.jpg',
+    description: '',
+    tags: ['Volleyball'],
   },
   {
-    title: "Moonlight Beach Volleyball Court",
-    imageURL: "https://live.staticflickr.com/3611/5771336505_966cd68b42_b.jpg",
-    description: "Easy to find pickup games",
-    tags: ["Volleyball"]
+    title: 'Moonlight Beach Volleyball Court',
+    imageURL: 'https://live.staticflickr.com/3611/5771336505_966cd68b42_b.jpg',
+    description: 'Easy to find pickup games',
+    tags: ['Volleyball'],
   },
   {
-    title: "Mission Beach Volleyball Court",
-    imageURL: "https://www.govavi.com/wp-content/uploads/2015/12/beachvb4-1140x641.jpg",
-    description: "Make sure to get here early",
-    tags: ["Volleyball"]
+    title: 'Mission Beach Volleyball Court',
+    imageURL: 'https://www.govavi.com/wp-content/uploads/2015/12/beachvb4-1140x641.jpg',
+    description: 'Make sure to get here early',
+    tags: ['Volleyball'],
   },
   {
-    title: "Suzuki Strength", 
-    imageURL: "https://pbs.twimg.com/media/DojxfbOVsAAwGWx.jpg",
-    description: "You're gonna get your butt kicked!",
-    tags: ["Gym"]
+    title: 'Suzuki Strength',
+    imageURL: 'https://pbs.twimg.com/media/DojxfbOVsAAwGWx.jpg',
+    description: 'You\'re gonna get your butt kicked!',
+    tags: ['Gym'],
   },
   {
-    title: "Orange Theory Fitness Encinitas",  
-    imageURL: "https://thebrownandwhite.com/wp-content/uploads/2019/04/190423_ORANGETHEORY_BRAMAN-_059.jpg",
-    description: "Fun high-tech group workout",
-    tags: ["Gym"]
+    title: 'Orange Theory Fitness Encinitas',
+    imageURL: 'https://thebrownandwhite.com/wp-content/uploads/2019/04/190423_ORANGETHEORY_BRAMAN-_059.jpg',
+    description: 'Fun high-tech group workout',
+    tags: ['Gym'],
   },
   {
-    title: "Crossfit Counter Culture Carlsbad",
-    imageURL: "https://s3-media0.fl.yelpcdn.com/bphoto/6z0luEDbtL9_ImdFGUQ6Eg/l.jpg",
-    description: "Nice, light workout. 45 minutes of hard work plus 15 minutes of stretching",
-    tags: ["Gym"]
+    title: 'Crossfit Counter Culture Carlsbad',
+    imageURL: 'https://s3-media0.fl.yelpcdn.com/bphoto/6z0luEDbtL9_ImdFGUQ6Eg/l.jpg',
+    description: 'Nice, light workout. 45 minutes of hard work plus 15 minutes of stretching',
+    tags: ['Gym'],
   },
   {
-    title: "South Ponto Beach",
-    imageURL: "https://patch.com/img/cdn/users/1001678/2011/12/raw/ec95e4c23fddcefeec92812eb76d9b81.jpg",
-    description: "Nice break. Make sure not to piss off the locals.",
-    tags: ["Surfing"]
+    title: 'South Ponto Beach',
+    imageURL: 'https://patch.com/img/cdn/users/1001678/2011/12/raw/ec95e4c23fddcefeec92812eb76d9b81.jpg',
+    description: 'Nice break. Make sure not to piss off the locals.',
+    tags: ['Surfing'],
   },
   {
-    title: "Swami's Beach",
-    imageURL: "https://www.californiabeaches.com/wp-content/uploads/2014/09/IMG_9316-Large1-1000x599.jpg",
-    description: "Make sure you're good to walk up and down some stairs",
-    tags: ["Surfing"]
+    title: 'Swami\'s Beach',
+    imageURL: 'https://www.californiabeaches.com/wp-content/uploads/2014/09/IMG_9316-Large1-1000x599.jpg',
+    description: 'Make sure you\'re good to walk up and down some stairs',
+    tags: ['Surfing'],
   },
   {
-    title: "Carlsbad State Beach",
-    imageURL: "https://www.californiabeaches.com/wp-content/uploads/2014/09/IMG_9173-Large1-1000x667.jpg",
-    description: "",
-    tags: ["Surfing"]
+    title: 'Carlsbad State Beach',
+    imageURL: 'https://www.californiabeaches.com/wp-content/uploads/2014/09/IMG_9173-Large1-1000x667.jpg',
+    description: '',
+    tags: ['Surfing'],
   },
   {
-    title: "Batiquitos Lagoon",
-    imageURL: "https://upload.wikimedia.org/wikipedia/commons/5/53/Lagoonb.jpg",
-    description: "Long, gentle walk",
-    tags: ["Hiking"]
+    title: 'Batiquitos Lagoon',
+    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/5/53/Lagoonb.jpg',
+    description: 'Long, gentle walk',
+    tags: ['Hiking'],
   },
   {
-    title: "Blue Sky Ecological Reserve",
-    imageURL: "https://cdn-assets.alltrails.com/uploads/photo/image/11158446/large_3bfa84275bc4632700b84d76ecac18d0.jpg",
-    description: "Really cool trail network with lots of wildlife",
-    tags: ["Hiking"]
+    title: 'Blue Sky Ecological Reserve',
+    imageURL:
+      'https://cdn-assets.alltrails.com/uploads/photo/image/11158446/large_3bfa84275bc4632700b84d76ecac18d0.jpg',
+    description: 'Really cool trail network with lots of wildlife',
+    tags: ['Hiking'],
   },
   {
-    title: "Torrey Pines State Reserve",
-    imageURL: "https://content.tripster.com/travelguide/wp-content/uploads/2015/07/IMG_5541.jpg",
-    description: "Nifty trail near the beach. Make sure to bring plenty of water",
-    tags: ["Hiking"]
+    title: 'Torrey Pines State Reserve',
+    imageURL: 'https://content.tripster.com/travelguide/wp-content/uploads/2015/07/IMG_5541.jpg',
+    description: 'Nifty trail near the beach. Make sure to bring plenty of water',
+    tags: ['Hiking'],
   },
+];
 
-]
-
-export const tagList=["Volleyball", "Gym", "Surfing", "Hiking"]
+export const tagList = ['Volleyball', 'Gym', 'Surfing', 'Hiking'];
 
 //   {
 //     title: "Modern Times Far West Lounge & Gelato 101",

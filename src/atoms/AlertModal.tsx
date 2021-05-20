@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
-import { GREY_2, RED, WHITE } from '../res/styles/Colors';
+import { GREY_2, RED, WHITE } from 'res/styles/Colors';
 
 interface AlertProps {
   status: 'error' | 'success';

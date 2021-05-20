@@ -1,12 +1,12 @@
-import { Formik } from "formik";
-import React from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { Formik } from 'formik';
+import React from 'react';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { DK_PURPLE, GREY_5, WHITE } from '../res/styles/Colors';
 import uuid from 'uuid';
-import { Button, Title, Screen, NavButton } from '../atoms/AtomsExports'
-import { Navbar } from '../molecules/MoleculesExports'
-
+import { Button, Title, Screen, NavButton } from '../atoms/AtomsExports';
+import { Navbar } from '../molecules/MoleculesExports';
+import { StackProps } from '../res/root-navigation';
 
 interface Props {
   navigation: any;
@@ -19,11 +19,10 @@ interface FormTextField {
   placeholder: string;
 }
 
-export default function CreateCustomEvent({ navigation }: Props) {
-
+export const CreateCustomEvent: React.FC<StackProps> = ({ navigation }: StackProps) => {
   const onFormSubmit = (values: any) => {
     // console.log(values)
-    navigation.navigate("SelectFriends", {
+    navigation?.navigate('SelectFriends', {
       data: {
         eventData: {
           uuid: uuid.v4(),
@@ -33,99 +32,97 @@ export default function CreateCustomEvent({ navigation }: Props) {
           time: values.eventTime,
           location: values.eventLocation,
           description: values.eventDescription,
-        }
-      }
-    })
+        },
+      },
+    });
   };
 
   const inputFields = {
-    "eventName":
-    {
-      "title": "Event Name",
-      "placeholder":""
+    eventName: {
+      title: 'Event Name',
+      placeholder: '',
     },
-    "eventDate":
-    {
-      "title": "Event Date",
-      "placeholder": "MM/DD/YYYY"
+    eventDate: {
+      title: 'Event Date',
+      placeholder: 'MM/DD/YYYY',
     },
-    "eventTime":
-    {
-      "title": "Event Time",
-      "placeholder": "H:MM PM"
+    eventTime: {
+      title: 'Event Time',
+      placeholder: 'H:MM PM',
     },
-    "eventLocation":
-    {
-      "title": "Event Location",
-      "placeholder": "address"
+    eventLocation: {
+      title: 'Event Location',
+      placeholder: 'address',
     },
-    "eventDescription":
-    {
-      "title": "Event Description",
-      "placeholder": ""
+    eventDescription: {
+      title: 'Event Description',
+      placeholder: '',
     },
   };
 
   interface listInputProps {
     handleChange: {
       (e: React.ChangeEvent<any>): void;
-      <T = string | React.ChangeEvent<any>>(field: T): T extends React.ChangeEvent<any> ? void : (e: string | React.ChangeEvent<any>) => void;
-    }, 
-    values: any,
-    input: string
+      <T = string | React.ChangeEvent<any>>(field: T): T extends React.ChangeEvent<any>
+        ? void
+        : (e: string | React.ChangeEvent<any>) => void;
+    };
+    values: any;
+    input: string;
   }
 
-  const listInputField = (handleChange: listInputProps["handleChange"], values: listInputProps["values"], input: listInputProps["input"]) => {
+  const listInputField = (
+    handleChange: listInputProps['handleChange'],
+    values: listInputProps['values'],
+    input: listInputProps['input'],
+  ) => {
     return (
       <View>
-        <Text style={[globalStyles.title, {color: DK_PURPLE}]}>{inputFields[input].title}</Text>
+        <Text style={[globalStyles.title, { color: DK_PURPLE }]}>{inputFields[input].title}</Text>
         <TextInput
           style={styles.textInputBody}
           onChangeText={handleChange(input)}
           placeholder={inputFields[input].placeholder}
           value={values[input]}
         />
-        <View style={{height: 15}} />
+        <View style={{ height: 15 }} />
       </View>
     );
-  }
+  };
 
   return (
     <Screen>
       <Navbar>
-        <NavButton
-          onPress={() => navigation.navigate("Home")}
-          title='Back'
-        />
+        <NavButton onPress={() => navigation.navigate('Home')} title="Back" />
       </Navbar>
       <Formik
         initialValues={{
-          eventName: "",
-          eventDate: "",
-          eventTime: "",
-          eventLocation: "",
-          eventDescription: "",
+          eventName: '',
+          eventDate: '',
+          eventTime: '',
+          eventLocation: '',
+          eventDescription: '',
         }}
         onSubmit={onFormSubmit}
       >
         {({ handleChange, handleSubmit, values }) => (
           <>
-          <View style={styles.formContainer}>
-            <Title>New Event</Title>
-            { listInputField(handleChange, values, "eventName") }
-            { listInputField(handleChange, values, "eventDate") }
-            { listInputField(handleChange, values, "eventTime") }
-            { listInputField(handleChange, values, "eventLocation") }
-            { listInputField(handleChange, values, "eventDescription") }
-            {/*idk how to fix this freaking onPress type error but it works so whatever */}
-          </View>
-          <Button title="Invite Friends" onPress={handleSubmit} />
+            <View style={styles.formContainer}>
+              <Title>New Event</Title>
+              {listInputField(handleChange, values, 'eventName')}
+              {listInputField(handleChange, values, 'eventDate')}
+              {listInputField(handleChange, values, 'eventTime')}
+              {listInputField(handleChange, values, 'eventLocation')}
+              {listInputField(handleChange, values, 'eventDescription')}
+              {/*idk how to fix this freaking onPress type error but it works so whatever */}
+            </View>
+            <Button title="Invite Friends" onPress={handleSubmit} />
           </>
         )}
       </Formik>
     </Screen>
   );
-}
+};
 
 let styles = StyleSheet.create({
   textInputBody: {
@@ -133,12 +130,12 @@ let styles = StyleSheet.create({
     backgroundColor: WHITE,
     borderRadius: 10,
     padding: 7,
-    marginTop: 5
+    marginTop: 5,
   },
   formContainer: {
     backgroundColor: GREY_5,
     borderRadius: 10,
     margin: 10,
     padding: 20,
-  }
-})
+  },
+});

@@ -12,49 +12,49 @@ export interface Profile {
 export interface User {
   dateCreated: firestore.Timestamp | firestore.FieldValue;
   version: number;
-    UID: string
-    activated: boolean
-    profile: Profile
+  UID: string;
+  activated: boolean;
+  profile: Profile;
 }
 
 export interface Event {
-    uuid: string
-    title: string 
-    imageURL: string
-    description: string
-    tags: string[]
-    friends: Contact[]
-    date: string
-    time: string
-    location: string
+  uuid: string;
+  title: string;
+  imageURL: string;
+  description: string;
+  tags: string[];
+  friends: Contact[];
+  date: string;
+  time: string;
+  location: string;
 }
 
 export interface FriendRecord {
-    targetUID: string
-    dateCreated: firestore.Timestamp | firestore.FieldValue
-    version: number
+  targetUID: string;
+  dateCreated: firestore.Timestamp | firestore.FieldValue;
+  version: number;
 }
 
 export interface EventInviteRecord {
-    dateCreated: string
-    version: number
-    UID: string
-    targetUID: string
-    ownerUID: string
-    eventUID: string
+  dateCreated: string;
+  version: number;
+  UID: string;
+  targetUID: string;
+  ownerUID: string;
+  eventUID: string;
 }
 
 export interface Endpoint {
-    tags: string[]
-    image: string
-    location: string // google maps link
-    title: string
-    description: string
+  tags: string[];
+  image: string;
+  location: string; // google maps link
+  title: string;
+  description: string;
 }
 
 export interface Contact {
-    id: string;
-    name: string;
-    image: string;
-    phoneNumber: string;
+  id: string;
+  name: string;
+  image: string;
+  phoneNumber: string;
 }
