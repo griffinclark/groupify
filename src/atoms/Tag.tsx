@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, ColorPropType } from 'react-native';
+import { View, Button } from 'react-native';
 
 interface Props {
   title: string;
