@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { View, Button } from 'react-native';
 
-interface Props {
+interface TagProps {
   title: string;
   setSelectedTags: (parentFunc: (selectedTags: string[]) => string[]) => void; // callback to parent
   selectedTags: string[];
 }
 
-export const Tag: React.FC<Props> = ({ title, setSelectedTags, selectedTags }: Props) => {
+export const Tag: React.FC<TagProps> = ({ title, setSelectedTags, selectedTags }: TagProps) => {
   const [pressed, setPressed] = useState(false);
 
   const tagPressed = () => {
