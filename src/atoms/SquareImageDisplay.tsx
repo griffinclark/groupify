@@ -3,11 +3,11 @@ import { Image, StyleSheet } from 'react-native';
 
 // XXX should this be a TouchableOpacity?
 
-interface Props {
+interface SquareImageDisplayProps {
   imageURI: string;
 }
 
-export const SquareImageDisplay: React.FC<Props> = ({ imageURI }: Props) => {
+export const SquareImageDisplay: React.FC<SquareImageDisplayProps> = ({ imageURI }: SquareImageDisplayProps) => {
   return <Image style={styles.imagePreviewContainer} source={{ uri: imageURI }} />;
 };
 
