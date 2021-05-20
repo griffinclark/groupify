@@ -10,7 +10,7 @@ export const Screen: React.FC<ScreenProps> = (props: React.PropsWithChildren<Scr
   return <SafeAreaView style={[styles.screen, props.style]}>{props.children}</SafeAreaView>;
 };
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   screen: {
     display: 'flex',
     height: '100%',
