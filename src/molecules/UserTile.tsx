@@ -52,7 +52,8 @@ export const UserTile: React.FC<UserTileProps> = ({
           style={styles.createEventButton}
           onPress={() => {
             console.log('Event!');
-            }}>
+          }}
+        >
           <Text>Create Event</Text>
         </TouchableOpacity>
       )}
