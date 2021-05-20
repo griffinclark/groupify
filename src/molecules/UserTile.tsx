@@ -48,7 +48,11 @@ export const UserTile: React.FC<UserTileProps> = ({
         </View>
       )}
       {createEvent && (
-        <TouchableOpacity style={styles.createEventButton} onPress={()=>{console.log('Event!')}}>
+        <TouchableOpacity
+          style={styles.createEventButton}
+          onPress={() => {
+            console.log('Event!');
+            }}>
           <Text>Create Event</Text>
         </TouchableOpacity>
       )}
@@ -83,6 +87,6 @@ const styles = StyleSheet.create({
     right: 10,
   },
   createEventButton: {
-    alignSelf:'flex-end',
+    alignSelf: 'flex-end',
   },
 });
