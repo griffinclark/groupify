@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 export const Navbar: React.FC = (props) => {
   return <View style={styles.nav}>{props.children}</View>;
-}
+};
 
 const styles = StyleSheet.create({
   nav: {
