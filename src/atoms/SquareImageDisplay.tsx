@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, StyleSheet } from "react-native";
+import React from 'react';
+import { Image, StyleSheet } from 'react-native';
 
 // XXX should this be a TouchableOpacity?
 
@@ -9,10 +9,7 @@ interface Props {
 
 export const SquareImageDisplay: React.FC<Props> = ({ imageURI }: Props) => {
   return (
-    <Image
-      style={ styles.imagePreviewContainer }
-      source={{ uri: imageURI }}
-    />
+    <Image style={styles.imagePreviewContainer} source={{ uri: imageURI }} />
   );
 };
 
