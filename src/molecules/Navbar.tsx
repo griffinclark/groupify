@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 interface NavbarProps {
-  style?: object;
+  style?: Record<string, unknown>;
 }
 
 export const Navbar: React.FC<NavbarProps> = (props: React.PropsWithChildren<NavbarProps>) => {
