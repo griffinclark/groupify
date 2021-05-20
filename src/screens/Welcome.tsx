@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Title, Screen } from '../atoms/AtomsExports'
+import { Button, Title, Screen } from 'atoms/AtomsExports'
 
 interface Props {
   navigation: any;

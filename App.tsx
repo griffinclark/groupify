@@ -1,13 +1,12 @@
 // import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { LogBox, StyleSheet, Text, View } from "react-native";
-import { globalStyles } from "./src/res/styles/GlobalStyles";
-import Welcome from "./src/screens/Welcome";
-import { RootNavigation } from "./src/res/root-navigation";
-import awsconfig from "./src/aws-exports";
+import { globalStyles } from "res/styles/GlobalStyles";
+import { RootNavigation } from "res/root-navigation";
+import awsconfig from "aws-exports";
 import Amplify, { Auth } from "aws-amplify";
-import { getAllImportedContacts } from "./src/res/storageFunctions";
-import { Contact } from "./src/res/dataModels";
+import { getAllImportedContacts } from "res/storageFunctions";
+import { Contact } from "res/dataModels";
 
 Amplify.configure(awsconfig);
 

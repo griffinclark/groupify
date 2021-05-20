@@ -1,9 +1,9 @@
 import React from 'react';
-import { globalStyles } from './../res/styles/GlobalStyles';
+import { globalStyles } from 'res/styles/GlobalStyles';
 import { View, Text, Button } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { TEST_IMAGE_URL } from '../res/styles/Colors';
-import { SquareImageDisplay } from './../atoms/AtomsExports';
+import { TEST_IMAGE_URL } from 'res/styles/Colors';
+import { SquareImageDisplay } from 'atoms/AtomsExports';
 import { NavigationProp, ParamListBase } from '@react-navigation/core';
 
 interface Props {

@@ -2,8 +2,8 @@ import { StackProps } from '../res/root-navigation';
 import { Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { Title, NavButton, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
-import { Navbar } from '../molecules/MoleculesExports';
+import { Title, NavButton, Screen, FormInput, Button, Alert } from 'atoms/AtomsExports';
+import { Navbar } from 'molecules/MoleculesExports';
 
 export const CreateAccount: React.FC<StackProps> = ({ navigation, route }: StackProps) => {
   const [email, setEmail] = useState(route?.params?.email ? route.params.email : '');

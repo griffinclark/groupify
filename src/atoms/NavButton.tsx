@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Text, StyleSheet, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
-import { LT_PURPLE, WHITE } from '../res/styles/Colors';
+import { LT_PURPLE, WHITE } from 'res/styles/Colors';
 
 interface NavProps {
   onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;

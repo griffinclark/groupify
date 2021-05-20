@@ -1,8 +1,8 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import {Tag} from "../atoms/Tag";
-import { globalStyles } from "../res/styles/GlobalStyles";
+import {Tag} from "atoms/Tag";
+import { globalStyles } from "res/styles/GlobalStyles";
 
 interface Props {
   tags: string[];

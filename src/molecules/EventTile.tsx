@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { DK_PURPLE, GREY_5, POST_SPACING } from '../res/styles/Colors';
-import { Event } from './../res/dataModels';
-import { FriendList } from '../organisms/FriendList';
+import { DK_PURPLE, GREY_5, POST_SPACING } from 'res/styles/Colors';
+import { Event } from 'res/dataModels';
+import { FriendList } from 'organisms/FriendList';
 
 interface EventTileProps {
   event: Event;

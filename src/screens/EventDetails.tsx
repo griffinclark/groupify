@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, Button } from 'react-native';
-import { Event } from './../res/dataModels';
-import { deleteUserEventFromUUID, getUserEventFromUUID } from './../res/storageFunctions';
-import { TwoButtonAlert } from '../atoms/AtomsExports';
-import { EventTile } from '../molecules/MoleculesExports';
-import { Navbar } from '../molecules/MoleculesExports';
+import { Event } from 'res/dataModels';
+import { deleteUserEventFromUUID, getUserEventFromUUID } from 'res/storageFunctions';
+import { TwoButtonAlert } from 'atoms/AtomsExports';
+import { EventTile } from 'molecules/MoleculesExports';
+import { Navbar } from 'molecules/MoleculesExports';
 
 interface Props {
   navigation: any;

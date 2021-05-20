@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaView, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import {AndroidContactTile, UserTile} from './../molecules/MoleculesExports';
+import {AndroidContactTile, UserTile} from 'molecules/MoleculesExports';
 
 // TODO handle names being too long
 

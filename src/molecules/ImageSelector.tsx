@@ -2,8 +2,8 @@ import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button } from 'react-native';
-import { CircularImageDisplay } from '../atoms/AtomsExports';
-import { SECONDARY } from '../res/styles/Colors';
+import { CircularImageDisplay } from 'atoms/AtomsExports';
+import { SECONDARY } from 'res/styles/Colors';
 
 interface Props {
   imageURI: string;

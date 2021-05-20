@@ -5,16 +5,15 @@ import {
   View,
   ActivityIndicator,
  } from "react-native";
-import { globalStyles } from "./../res/styles/GlobalStyles";
+import { globalStyles } from "res/styles/GlobalStyles";
 import { SearchBar } from "react-native-elements";
-import * as Contacts from "expo-contacts";
-import { Contact, Event } from "../res/dataModels";
+import { Contact, Event } from "res/dataModels";
 import { FlatList } from "react-native-gesture-handler";
-import { DEFAULT_CONTACT_IMAGE, GREY_5 } from "../res/styles/Colors";
-import { getAllImportedContacts, storeUserEvent } from "./../res/storageFunctions";
-import { Navbar, AndroidContactTile } from "../molecules/MoleculesExports";
-import { NavButton, Button, Title, Screen } from '../atoms/AtomsExports'
-import { FriendList } from '../organisms/OrganismsExports'
+import { DEFAULT_CONTACT_IMAGE, GREY_5 } from "res/styles/Colors";
+import { getAllImportedContacts, storeUserEvent } from "res/storageFunctions";
+import { Navbar, AndroidContactTile } from "molecules/MoleculesExports";
+import { NavButton, Button, Title, Screen } from 'atoms/AtomsExports'
+import { FriendList } from 'organisms/OrganismsExports'
 
 interface Props {
   navigation: any;

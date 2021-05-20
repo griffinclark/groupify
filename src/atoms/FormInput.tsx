@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { GREY_5 } from '../res/styles/Colors';
+import { GREY_5 } from 'res/styles/Colors';
 
 interface FormProps {
   onChangeText: React.Dispatch<string>;

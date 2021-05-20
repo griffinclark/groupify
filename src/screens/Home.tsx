@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { globalStyles } from './../res/styles/GlobalStyles';
-import { Event } from '../res/dataModels';
-import { getAllUserEvents } from '../res/storageFunctions';
+import { globalStyles } from 'res/styles/GlobalStyles';
+import { Event } from 'res/dataModels';
+import { getAllUserEvents } from 'res/storageFunctions';
 import { Auth } from 'aws-amplify';
-import { Screen, Button, NavButton } from '../atoms/AtomsExports';
-import { DataDisplay } from '../organisms/OrganismsExports';
-import { Navbar } from '../molecules/MoleculesExports';
+import { Screen, Button, NavButton } from 'atoms/AtomsExports';
+import { DataDisplay } from 'organisms/OrganismsExports';
+import { Navbar } from 'molecules/MoleculesExports';
 
 interface Props {
   navigation: any;

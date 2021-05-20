@@ -1,7 +1,7 @@
 import React from 'react';
 import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { GREY_3, GREY_4, LT_PURPLE, WHITE } from '../res/styles/Colors';
+import { GREY_3, GREY_4, LT_PURPLE, WHITE } from 'res/styles/Colors';
 
 interface ButtonProps {
   onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;

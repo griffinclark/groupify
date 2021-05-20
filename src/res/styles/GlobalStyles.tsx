@@ -5,7 +5,7 @@
 // FIXME @Griffin implement subtitles
 
 import { StyleSheet } from 'react-native';
-import { LIGHT } from './Colors';
+import { LIGHT } from 'res/styles/Colors';
 
 export const globalStyles = StyleSheet.create({
   defaultRootContainer: {

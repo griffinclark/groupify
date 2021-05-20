@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from "react-native"
-import { WHITE } from "../res/styles/Colors";
+import { WHITE } from "res/styles/Colors";
 
 interface ScreenProps {
     style?: object //TODO: more specific type?

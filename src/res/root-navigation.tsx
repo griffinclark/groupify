@@ -7,10 +7,10 @@ import Home from '../screens/Home';
 import SelectFriends from './../screens/SelectFriends';
 import CreateCustomEvent from './../screens/CreateCustomEvent';
 import EventDetails from './../screens/EventDetails';
-import { CreateAccount } from '../screens/CreateAccount';
-import { LogIn } from '../screens/LogIn';
-import ImportContacts from '../screens/ImportContacts';
-import SendMessage from './../screens/SendMessage';
+import { CreateAccount } from 'screens/CreateAccount';
+import { LogIn } from 'screens/LogIn';
+import ImportContacts from 'screens/ImportContacts';
+import SendMessage from 'screens/SendMessage';
 
 export interface StackProps {
   navigation?: StackNavigationProp<ParamListBase>;

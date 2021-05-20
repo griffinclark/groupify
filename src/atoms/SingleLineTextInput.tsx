@@ -1,6 +1,6 @@
 import React from "react"
 import { View, StyleSheet, TextInput } from 'react-native';
-import { LIGHT } from '../res/styles/Colors';
+import { LIGHT } from 'res/styles/Colors';
 
 interface Props {
     inputText: string, // this is a reference to where the data is being stored in the parent function

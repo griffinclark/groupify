@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { CircularImageDisplay, CheckBox } from '../atoms/AtomsExports';
+import { CircularImageDisplay, CheckBox } from 'atoms/AtomsExports';
 import { StyleSheet } from 'react-native';
-import { TEST_IMAGE_URL, GRAY_DARK } from '../res/styles/Colors';
+import { TEST_IMAGE_URL, GRAY_DARK } from 'res/styles/Colors';
 import { Contact } from 'res/dataModels';
 
 interface Props {

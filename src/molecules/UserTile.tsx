@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { globalStyles } from "./../res/styles/GlobalStyles";
+import { globalStyles } from "res/styles/GlobalStyles";
 import { View, Text } from "react-native";
 import { StyleSheet } from "react-native";
-import { POST_SPACING } from "../res/styles/Colors";
-import {CheckBox, CircularImageDisplay} from "../atoms/AtomsExports";
+import { POST_SPACING } from "res/styles/Colors";
+import {CheckBox, CircularImageDisplay} from "atoms/AtomsExports";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface Props {

@@ -1,10 +1,10 @@
-import { StackProps } from "../res/root-navigation";
+import { StackProps } from "res/root-navigation";
 import React, { useEffect, useState } from "react";
 import { Auth } from "aws-amplify";
-import { getAllImportedContacts } from "./../res/storageFunctions";
-import { Contact } from "./../res/dataModels";
-import { Navbar } from "../molecules/MoleculesExports";
-import { Title, NavButton, Alert, FormInput, Button, Screen } from '../atoms/AtomsExports'
+import { getAllImportedContacts } from "res/storageFunctions";
+import { Contact } from "res/dataModels";
+import { Navbar } from "molecules/MoleculesExports";
+import { Title, NavButton, Alert, FormInput, Button, Screen } from 'atoms/AtomsExports'
 
 export const LogIn: React.FC<StackProps> = ({navigation}) => {
     const [email, setEmail] = useState('');

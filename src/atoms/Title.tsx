@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { DK_PURPLE } from '../res/styles/Colors';
+import { DK_PURPLE } from 'res/styles/Colors';
 
 interface TitleProps {
     style?: object

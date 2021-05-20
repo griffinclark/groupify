@@ -1,12 +1,12 @@
 import { Formik } from 'formik';
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
-import { globalStyles } from './../res/styles/GlobalStyles';
-import { DK_PURPLE, GREY_5, WHITE } from '../res/styles/Colors';
+import { globalStyles } from 'res/styles/GlobalStyles';
+import { DK_PURPLE, GREY_5, WHITE } from 'res/styles/Colors';
 import uuid from 'uuid';
-import { Button, Title, Screen, NavButton } from '../atoms/AtomsExports';
-import { Navbar } from '../molecules/MoleculesExports';
-import { StackProps } from '../res/root-navigation';
+import { Button, Title, Screen, NavButton } from 'atoms/AtomsExports';
+import { Navbar } from 'molecules/MoleculesExports';
+import { StackProps } from 'res/root-navigation';
 
 interface Props {
   navigation: any;

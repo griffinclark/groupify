@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Event, Contact } from "./../res/dataModels";
-import { storeUserEvent } from "./../res/storageFunctions";
+import { Event, Contact } from "res/dataModels";
+import { storeUserEvent } from "res/storageFunctions";
 import { API } from "aws-amplify";
 import { PhoneNumberFormat, PhoneNumberUtil } from "google-libphonenumber";
 import { Auth } from "aws-amplify";
-import { DK_PURPLE } from "../res/styles/Colors";
-import { Navbar } from "../molecules/MoleculesExports";
-import { FriendList } from "../organisms/OrganismsExports";
-import { Title, NavButton, Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports'
+import { DK_PURPLE } from "res/styles/Colors";
+import { Navbar } from "molecules/MoleculesExports";
+import { FriendList } from "organisms/OrganismsExports";
+import { Title, NavButton, Screen, Button, TwoButtonAlert, MultiLineTextInput } from 'atoms/AtomsExports'
 
 interface Props {
   navigation: any;
