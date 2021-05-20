@@ -2,14 +2,10 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 
 export const Navbar: React.FC = (props) => {
-  return (
-    <View style={styles.nav}>
-      {props.children}
-    </View>
-  );
+  return <View style={styles.nav}>{props.children}</View>;
 }
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   nav: {
     height: 50,
     display: "flex",
