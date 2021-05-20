@@ -1,19 +1,16 @@
-import React from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import {Tag} from "../atoms/Tag";
-import { globalStyles } from "../res/styles/GlobalStyles";
+import React from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { Tag } from '../atoms/Tag';
+import { globalStyles } from '../res/styles/GlobalStyles';
 
-interface Props {
+interface TagSelectorProps {
   tags: string[];
-  selectedTags: string[]
-  setSelectedTags: any
+  selectedTags: string[];
+  setSelectedTags: (parentFunc: (selectedTags: string[]) => string[]) => void;
 }
-export function TagSelector({ tags, selectedTags, setSelectedTags }: Props) {
 
-
-
-
+export const TagSelector: React.FC<TagSelectorProps> = ({ tags, selectedTags, setSelectedTags }: TagSelectorProps) => {
   return (
     <View>
       <View style={globalStyles.miniSpacer} />
@@ -34,7 +31,7 @@ export function TagSelector({ tags, selectedTags, setSelectedTags }: Props) {
   );
 }
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   tagContainer: {
     padding: 5,
   },
