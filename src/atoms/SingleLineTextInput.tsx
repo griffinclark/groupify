@@ -8,14 +8,14 @@ interface Props {
   placeholder: string;
 }
 
-export const SingleLineTextInput: React.FC<Props> = ({inputText, setText, placeholder}: Props) => {
+export const SingleLineTextInput: React.FC<Props> = ({ inputText, setText, placeholder }: Props) => {
   return (
-    <View >
+    <View>
       <TextInput
-      style={styles.textInput}
-      placeholder={placeholder}
-      onChangeText={text => setText(text)}
-      value={inputText}
+        style={styles.textInput}
+        placeholder={placeholder}
+        onChangeText={(text) => setText(text)}
+        value={inputText}
       />
     </View>
   );
