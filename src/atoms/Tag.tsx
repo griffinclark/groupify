@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, ColorPropType } from 'react-native';
 
 interface Props {
   title: string;
@@ -15,13 +15,13 @@ export const Tag: React.FC<Props> = ({ title, setSelectedTags, selectedTags }: P
     setPressed(!pressed); // change whether the tag is pressed or not
     if (!pressed) {
       // add to array
-      setSelectedTags((selectedTags: string[]) => [...selectedTags, title]);
+      setSelectedTags((selectedTags) => [...selectedTags, title]);
     } else {
       // remove from array
       selectedTags.filter((item, pos) => {
         if (item == title) {
           selectedTags.splice(pos, 1);
-          setSelectedTags(selectedTags);
+          setSelectedTags((selectedTags) => [...selectedTags]);
         }
       });
     }
