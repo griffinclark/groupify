@@ -58,14 +58,14 @@ export const SelectFriends: React.FC<StackProps> = ({ navigation, route }: Stack
     setQuery(text);
     setFilteredFriends(
       friends.filter((friend) => {
-      let friendLowercase = '';
-      try {
-        friendLowercase = friend.name.toLowerCase();
-      } catch {
-        console.log('error filtering a contact');
-      }
-      const textLowercase = text.toLowerCase();
-      return friendLowercase.indexOf(textLowercase) > -1;
+        let friendLowercase = '';
+        try {
+          friendLowercase = friend.name.toLowerCase();
+        } catch {
+          console.log('error filtering a contact');
+        }
+        const textLowercase = text.toLowerCase();
+        return friendLowercase.indexOf(textLowercase) > -1;
       }),
     );
   };
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   friendContainer: {
     backgroundColor: GREY_5,
-    borderRadius: 10, 
+    borderRadius: 10,
     padding: 10,
   },
   footer: {
