@@ -7,7 +7,7 @@ import MyProfile from './../screens/MyProfile';
 import Test from './../screens/Test';
 import Home from "../screens/Home";
 import SelectTags from '../screens/SelectTags';
-import SelectFriends from './../screens/SelectFriends';
+import { SelectFriends } from './../screens/SelectFriends';
 import ConfirmEvent from './../screens/ConfirmEvent';
 import SuggestedEvents from './../screens/SuggestedEvents';
 import CreateCustomEvent from "./../screens/CreateCustomEvent";
