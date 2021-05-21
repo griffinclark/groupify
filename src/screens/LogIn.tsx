@@ -6,7 +6,7 @@ import { Contact } from '../res/dataModels';
 import { Navbar } from '../molecules/MoleculesExports';
 import { Title, NavButton, Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
 
-export const LogIn: React.FC<StackProps> = ({navigation}) => {
+export const LogIn: React.FC<StackProps> = ({ navigation }: StackProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(true);
@@ -17,7 +17,7 @@ export const LogIn: React.FC<StackProps> = ({navigation}) => {
     try {
       await Auth.signIn(email, password);
       console.log('successfully signed in');
-      let contacts: Contact[] = await getAllImportedContacts();
+      const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
         navigation.navigate('ImportContacts');
       }
@@ -28,10 +28,7 @@ export const LogIn: React.FC<StackProps> = ({navigation}) => {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {
         navigation.navigate('CreateAccount', {step: 'validate', email: email});
-      } else if (
-        err.code == 'InvalidParameterException' &&
-        err.message.includes('Incorrect username or password.')
-      ) {
+      } else if (err.code == 'InvalidParameterException' && err.message.includes('Incorrect·username·or·password.')) {
         setError('Incorrect username or password.');
       } else {
         setError(err.message);
@@ -46,32 +43,17 @@ export const LogIn: React.FC<StackProps> = ({navigation}) => {
       setDisabled(true);
     }
   }, [email, password]);
-  
+
   return (
     <Screen>
       <Navbar>
-        <NavButton
-          onPress={() => navigation.navigate("Welcome")}
-          title='Back'
-          />
+        <NavButton onPress={() => navigation.navigate('Welcome')} title='Back' />
       </Navbar>
       <Title>Log In</Title>
-      <FormInput
-        label='Email'
-        onChangeText={setEmail}
-        placeholder='example@email.com'
-      />
-      <FormInput
-        label='Password'
-        onChangeText={setPassword}
-        secureTextEntry={true}
-      />
-      {error && <Alert status='error' message={error}/>}
-      <Button 
-        title='Sign In'
-        onPress={logIn}
-        disabled={disabled}
-      />
+      <FormInput label='Email' onChangeText={setEmail} placeholder='example@email.com' />
+      <FormInput label='Password' onChangeText={setPassword} secureTextEntry={true} />
+      {error && <Alert status='error' message={error} />}
+      <Button title='Sign In' onPress={logIn} disabled={disabled} />
     </Screen>
   );
 };
