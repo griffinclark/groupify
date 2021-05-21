@@ -40,7 +40,7 @@ export const LogIn: React.FC<StackProps> = ({navigation}) => {
   };
 
   useEffect(() => {
-    if(email.trim() && password.trim()) {
+    if (email.trim() && password.trim()) {
       setDisabled(false);
     } else {
       setDisabled(true);
