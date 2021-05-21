@@ -49,7 +49,7 @@ export const LogIn: React.FC<StackProps> = ({ navigation }: StackProps) => {
         <NavButton onPress={() => navigation.navigate('Welcome')} title="Back" />
       </Navbar>
       <Title>Log In</Title>
-      <FormInput label="Email" onChangeText={setEmail} placeholder='example@email.com' />
+      <FormInput label="Email" onChangeText={setEmail} placeholder="example@email.com" />
       <FormInput label="Password" onChangeText={setPassword} secureTextEntry={true} />
       {error && <Alert status="error" message={error} />}
       <Button title="Sign In" onPress={logIn} disabled={disabled} />
