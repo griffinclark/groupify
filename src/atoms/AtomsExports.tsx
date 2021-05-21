@@ -23,5 +23,5 @@ export {
   SingleLineTextInput,
   SquareImageDisplay,
   Title,
-  TwoButtonAlert
+  TwoButtonAlert,
 };
