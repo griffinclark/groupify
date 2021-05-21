@@ -29,7 +29,12 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps)
       {/* TODO the default screen needs to change based on whether a user is logged in or not */}
       <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
-        <Stack.Screen name="CreateAccount" component={CreateAccount} initialParams={{ step: 'create' }} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="CreateAccount"
+          component={CreateAccount}
+          initialParams={{ step: 'create' }}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }} />
