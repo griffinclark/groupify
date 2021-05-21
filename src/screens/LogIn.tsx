@@ -20,14 +20,13 @@ export const LogIn: React.FC<StackProps> = ({ navigation }: StackProps) => {
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
         navigation.navigate('ImportContacts');
-      }
-      else {
+      } else {
         navigation.navigate('Home');
       }
     } catch (err) {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {
-        navigation.navigate('CreateAccount', {step: 'validate', email: email});
+        navigation.navigate('CreateAccount', { step: 'validate', email: email });
       } else if (err.code == 'InvalidParameterException' && err.message.includes('Incorrect·username·or·password.')) {
         setError('Incorrect username or password.');
       } else {
@@ -47,13 +46,13 @@ export const LogIn: React.FC<StackProps> = ({ navigation }: StackProps) => {
   return (
     <Screen>
       <Navbar>
-        <NavButton onPress={() => navigation.navigate('Welcome')} title='Back' />
+        <NavButton onPress={() => navigation.navigate('Welcome')} title="Back" />
       </Navbar>
       <Title>Log In</Title>
-      <FormInput label='Email' onChangeText={setEmail} placeholder='example@email.com' />
-      <FormInput label='Password' onChangeText={setPassword} secureTextEntry={true} />
-      {error && <Alert status='error' message={error} />}
-      <Button title='Sign In' onPress={logIn} disabled={disabled} />
+      <FormInput label="Email" onChangeText={setEmail} placeholder='example@email.com' />
+      <FormInput label="Password" onChangeText={setPassword} secureTextEntry={true} />
+      {error && <Alert status="error" message={error} />}
+      <Button title="Sign In" onPress={logIn} disabled={disabled} />
     </Screen>
   );
 };
