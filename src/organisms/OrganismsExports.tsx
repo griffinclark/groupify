@@ -1,7 +1,4 @@
-import {DataDisplay} from './DataDisplay'
-import {FriendList} from './FriendList'
+import { DataDisplay } from './DataDisplay';
+import { FriendList } from './FriendList';
 
-export {
-    DataDisplay,
-    FriendList,
-}
+export { DataDisplay, FriendList };
