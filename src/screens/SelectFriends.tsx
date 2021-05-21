@@ -1,43 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { 
-  StyleSheet, 
-  Text, 
-  View,
-  ActivityIndicator,
- } from "react-native";
-import { globalStyles } from "./../res/styles/GlobalStyles";
-import { SearchBar } from "react-native-elements";
-import * as Contacts from "expo-contacts";
-import { Contact, Event } from "../res/dataModels";
-import { FlatList } from "react-native-gesture-handler";
-import { DEFAULT_CONTACT_IMAGE, GREY_5 } from "../res/styles/Colors";
-import { getAllImportedContacts, storeUserEvent } from "./../res/storageFunctions";
-import { Navbar, AndroidContactTile } from "../molecules/MoleculesExports";
-import { NavButton, Button, Title, Screen } from '../atoms/AtomsExports'
-import { FriendList } from '../organisms/OrganismsExports'
-
-interface Props {
-  navigation: any;
-  route: any
-}
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import { FlatList } from 'react-native-gesture-handler';
+import { StackProps } from '../res/root-navigation';
+import { globalStyles } from '../res/styles/GlobalStyles';
+import { Contact } from '../res/dataModels';
+import { DEFAULT_CONTACT_IMAGE, GREY_5 } from '../res/styles/Colors';
+import { getAllImportedContacts } from '../res/storageFunctions';
+import { Navbar, AndroidContactTile } from '../molecules/MoleculesExports';
+import { NavButton, Button, Title, Screen } from '../atoms/AtomsExports';
+import { FriendList } from '../organisms/OrganismsExports';
 
 enum State {
   Empty,
   Loading,
-  Done
-}
+  Done,
+};
 
-export default function SelectFriends({ navigation, route }: Props) {
-  // const [friendsList, setFriendsList] = useState([]);
+export const SelectFriends = ({ navigation, route }: StackProps) => {
   const [friends, setFriends] = useState<Contact[]>([]);
   const [filteredFriends, setFilteredFriends] = useState<Contact[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<Contact[]>([]);
-  const [query, setQuery] = useState<string>("");
+  const [query, setQuery] = useState<string>('');
   const [state, setState] = useState<State>(State.Empty);
 
-  // FIXME @Griffin add in "User x likes coffee" to each user when a search is done
   useEffect(() => {
-    // console.log(route.params.data)
     setState(State.Loading);
     loadFriends(); // Load contacts only once
   }, []);
@@ -47,7 +34,6 @@ export default function SelectFriends({ navigation, route }: Props) {
   };
 
   const removeSelectedFriend = (friend: Contact) => {
-    // let index = selectedFriends.indexOf(friend);
     let index: number = 0;
     for (let i = 0; i < selectedFriends.length; i++) {
       if (selectedFriends[i].id === friend.id) {
@@ -62,11 +48,10 @@ export default function SelectFriends({ navigation, route }: Props) {
   // Request permission to access contacts and load them.
   const loadFriends = async() => {
     const importedContacts = await getAllImportedContacts();
-    // console.log("all imported contacts", importedContacts);
     setFriends(importedContacts);
     setFilteredFriends(importedContacts);
     setState(State.Done);
-  }
+  };
 
   // Filters contacts (only contacts containing <text> appear)
   const searchFriends = (text: string) => {
@@ -77,21 +62,18 @@ export default function SelectFriends({ navigation, route }: Props) {
           let friendLowercase = "";
           try {
             friendLowercase = friend.name.toLowerCase();
-          }
-          catch {
+          } catch {
             console.log("error filtering a contact")
           }
-          // let contactLowercase = contact.name.toLowerCase();
-          let textLowercase = text.toLowerCase();
+          const textLowercase = text.toLowerCase();
           return friendLowercase.indexOf(textLowercase) > -1;
         }
       )
     );
-    // console.log(contacts);
-  }
+  };
 
   // Renders each contact as AndroidContactTile
-  const renderContact = ({ item }: any) => (
+  const renderContact = ({ item }: Record<string, Contact>) => (
     <AndroidContactTile
       contact={item}
       firstName={item.name}
@@ -104,10 +86,7 @@ export default function SelectFriends({ navigation, route }: Props) {
   return (
     <Screen>
       <Navbar>
-      <NavButton
-          onPress={() => navigation.navigate("CreateCustomEvent")}
-          title='Back'
-        />
+        <NavButton onPress={() => navigation.navigate('CreateCustomEvent')} title="Back" />
       </Navbar>
       <Title style={globalStyles.superTitle}>Select Friends</Title>
       <SearchBar
@@ -133,19 +112,18 @@ export default function SelectFriends({ navigation, route }: Props) {
         />
       </View>
       <View style={styles.footer}>
-        <FriendList style={styles.friendContainer} title="Selected friends" friends={selectedFriends}/>
-
+        <FriendList style={styles.friendContainer} title="Selected friends" friends={selectedFriends} />
         <Button
           title="Send Message"
           onPress={async () => {
             route.params.data.eventData.friends = selectedFriends;
-            navigation.navigate("SendMessage", route.params);
+            navigation.navigate('SendMessage', route.params);
           }}
         />
       </View>
     </Screen>
   );
-}
+};
 
 const styles = StyleSheet.create({
   listContainer: {
