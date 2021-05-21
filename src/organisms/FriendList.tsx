@@ -9,7 +9,7 @@ interface FriendProps {
   style?: Record<string, unknown>;
 }
 
-export const FriendList: React.FC<FriendProps> = ({ friends, title, style }) => {
+export const FriendList: React.FC<FriendProps> = ({ friends, title, style }: FriendProps) => {
   return (<View style={[styles.outer, style]}>
     { title &&
       <Text style={styles.friendTitle}>{title}</Text>}
