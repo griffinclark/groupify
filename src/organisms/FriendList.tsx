@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
   outer: {
     width: '100%',
     margin: 10,
-    // borderWidth: 1,
     flexGrow: 1,
     flex: 1,
   },
@@ -45,7 +44,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     width: '100%',
-    // borderWidth: 1,
   },
   friend: {
     backgroundColor: GREY_3,
