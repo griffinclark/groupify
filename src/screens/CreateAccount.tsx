@@ -1,12 +1,17 @@
-import { StackProps } from '../res/root-navigation';
+import { RootStackParamList, RoutePropParams } from 'res/root-navigation';
 import { Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Title, NavButton, Screen, FormInput, Button, Alert } from 'atoms/AtomsExports';
 import { Navbar } from 'molecules/MoleculesExports';
 
-export const CreateAccount: React.FC<StackProps> = ({ navigation, route }: StackProps) => {
-  const [email, setEmail] = useState(route?.params?.email ? route.params.email : '');
+interface Props {
+  navigation: RootStackParamList;
+  route: RoutePropParams;
+}
+
+export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => {
+  const [email, setEmail] = useState(route.params.email ? route.params.email : '');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   // const [phone, setPhone] = useState('');
@@ -16,14 +21,14 @@ export const CreateAccount: React.FC<StackProps> = ({ navigation, route }: Stack
   const [success, setSuccess] = useState<string | undefined>();
   useEffect(() => {
     if (
-      route?.params?.step == 'create' &&
+      route.params.step == 'create' &&
       email &&
       password &&
       name
       // && phone
     ) {
       setDisabled(false);
-    } else if (route?.params.step == 'validate' && email && validationCode) {
+    } else if (route.params.step == 'validate' && email && validationCode) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -66,7 +71,7 @@ export const CreateAccount: React.FC<StackProps> = ({ navigation, route }: Stack
       });
       console.log('user successfully created');
       setError(undefined); //clear error
-      navigation?.push('CreateAccount', { step: 'validate', email: email });
+      navigation.push('CreateAccount', { step: 'validate', email: email });
     } catch (err) {
       console.log('Error: ', err);
       if (err.code == 'InvalidParameterException') {
@@ -89,7 +94,7 @@ export const CreateAccount: React.FC<StackProps> = ({ navigation, route }: Stack
     try {
       console.log(email, validationCode);
       await Auth.confirmSignUp(email, validationCode);
-      navigation?.navigate('Login');
+      navigation.navigate('Login');
     } catch (err) {
       console.log('Error: ', err);
       setError(err.message);
@@ -99,7 +104,7 @@ export const CreateAccount: React.FC<StackProps> = ({ navigation, route }: Stack
   return (
     <Screen>
       <Navbar>
-        <NavButton onPress={() => navigation?.navigate('Welcome')} title="Back" />
+        <NavButton onPress={() => navigation.navigate('Welcome')} title="Back" />
       </Navbar>
       {route.params.step === 'create' && (
         <>

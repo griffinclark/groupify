@@ -21,7 +21,7 @@ enum State {
   Done,
 }
 
-export const ContactsImport: React.FC<Props> = ({ navigation }: Props) => {
+export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   // const [friendsList, setFriendsList] = useState([]);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);

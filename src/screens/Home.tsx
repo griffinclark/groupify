@@ -7,10 +7,11 @@ import { Auth } from 'aws-amplify';
 import { Screen, Button, NavButton } from 'atoms/AtomsExports';
 import { DataDisplay } from 'organisms/OrganismsExports';
 import { Navbar } from 'molecules/MoleculesExports';
+import { RootStackParamList, RoutePropParams } from 'res/root-navigation';
 
 interface Props {
-  navigation: any;
-  route: any;
+  navigation: RootStackParamList;
+  route: RoutePropParams;
 }
 
 export const Home: React.FC<Props> = ({ navigation, route }: Props) => {

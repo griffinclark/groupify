@@ -1,4 +1,4 @@
-import { Formik } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { globalStyles } from 'res/styles/GlobalStyles';
@@ -6,22 +6,16 @@ import { DK_PURPLE, GREY_5, WHITE } from 'res/styles/Colors';
 import uuid from 'uuid';
 import { Button, Title, Screen, NavButton } from 'atoms/AtomsExports';
 import { Navbar } from 'molecules/MoleculesExports';
-import { StackProps } from 'res/root-navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { ParamListBase } from '@react-navigation/routers';
 
 interface Props {
-  navigation: any;
+  navigation: StackNavigationProp<ParamListBase, 'CreateCustomEvent'>;
   endpointUID: string;
 }
 
-interface FormTextField {
-  variable: string;
-  title: string;
-  placeholder: string;
-}
-
-export const CreateCustomEvent: React.FC<StackProps> = ({ navigation }: StackProps) => {
-  const onFormSubmit = (values: any) => {
-    // console.log(values)
+export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
+  const onFormSubmit = (values: listInputProps['values']) => {
     navigation?.navigate('SelectFriends', {
       data: {
         eventData: {
@@ -37,7 +31,7 @@ export const CreateCustomEvent: React.FC<StackProps> = ({ navigation }: StackPro
     });
   };
 
-  const inputFields = {
+  const inputFields: { [input: string]: { title: string; placeholder: string } } = {
     eventName: {
       title: 'Event Name',
       placeholder: '',
@@ -62,12 +56,12 @@ export const CreateCustomEvent: React.FC<StackProps> = ({ navigation }: StackPro
 
   interface listInputProps {
     handleChange: {
-      (e: React.ChangeEvent<any>): void;
-      <T = string | React.ChangeEvent<any>>(field: T): T extends React.ChangeEvent<any>
+      (e: React.ChangeEvent<string>): void;
+      <T = string | React.ChangeEvent<string>>(field: T): T extends React.ChangeEvent<string>
         ? void
-        : (e: string | React.ChangeEvent<any>) => void;
+        : (e: string | React.ChangeEvent<string>) => void;
     };
-    values: any;
+    values: FormikValues;
     input: string;
   }
 
@@ -124,7 +118,7 @@ export const CreateCustomEvent: React.FC<StackProps> = ({ navigation }: StackPro
   );
 };
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   textInputBody: {
     fontSize: 16,
     backgroundColor: WHITE,
