@@ -15,9 +15,9 @@ enum State {
   Empty,
   Loading,
   Done,
-};
+}
 
-export const SelectFriends = ({ navigation, route }: StackProps) => {
+export const SelectFriends: React.FC<StackProps> = ({ navigation, route }: StackProps) => {
   const [friends, setFriends] = useState<Contact[]>([]);
   const [filteredFriends, setFilteredFriends] = useState<Contact[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<Contact[]>([]);
@@ -34,7 +34,7 @@ export const SelectFriends = ({ navigation, route }: StackProps) => {
   };
 
   const removeSelectedFriend = (friend: Contact) => {
-    let index: number = 0;
+    let index = 0;
     for (let i = 0; i < selectedFriends.length; i++) {
       if (selectedFriends[i].id === friend.id) {
         index = i;
@@ -46,7 +46,7 @@ export const SelectFriends = ({ navigation, route }: StackProps) => {
   };
 
   // Request permission to access contacts and load them.
-  const loadFriends = async() => {
+  const loadFriends = async () => {
     const importedContacts = await getAllImportedContacts();
     setFriends(importedContacts);
     setFilteredFriends(importedContacts);
@@ -57,18 +57,16 @@ export const SelectFriends = ({ navigation, route }: StackProps) => {
   const searchFriends = (text: string) => {
     setQuery(text);
     setFilteredFriends(
-      friends.filter(
-        friend => {
-          let friendLowercase = "";
-          try {
-            friendLowercase = friend.name.toLowerCase();
-          } catch {
-            console.log("error filtering a contact")
-          }
-          const textLowercase = text.toLowerCase();
-          return friendLowercase.indexOf(textLowercase) > -1;
-        }
-      )
+      friends.filter((friend) => {
+      let friendLowercase = '';
+      try {
+        friendLowercase = friend.name.toLowerCase();
+      } catch {
+        console.log('error filtering a contact');
+      }
+      const textLowercase = text.toLowerCase();
+      return friendLowercase.indexOf(textLowercase) > -1;
+      }),
     );
   };
 
@@ -89,12 +87,7 @@ export const SelectFriends = ({ navigation, route }: StackProps) => {
         <NavButton onPress={() => navigation.navigate('CreateCustomEvent')} title="Back" />
       </Navbar>
       <Title style={globalStyles.superTitle}>Select Friends</Title>
-      <SearchBar
-        placeholder="Search for friends"
-        onChangeText={searchFriends}
-        value={query}
-        lightTheme={true}
-      />
+      <SearchBar placeholder="Search for friends" onChangeText={searchFriends} value={query} lightTheme={true} />
       <View style={styles.flatListContainer}>
         {state === State.Loading ? (
           <View>
@@ -130,12 +123,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50
+    marginTop: 50,
   },
   contactContainer: {
     color: 'purple',
     fontWeight: 'bold',
-    fontSize: 26
+    fontSize: 26,
   },
   flatListContainer: {
     flexGrow: 1,
@@ -144,18 +137,18 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 1
   },
   friendContainer: {
-    backgroundColor: GREY_5, 
+    backgroundColor: GREY_5,
     borderRadius: 10, 
-    padding: 10
+    padding: 10,
   },
   footer: {
     // position: "absolute",
     // bottom: 0,
-    flex: .5,
-    height: "25%",
+    flex: 0.5,
+    height: '25%',
     // borderWidth: 1,
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
     // justifySelf: "flex-end"
-  }
+  },
 });
