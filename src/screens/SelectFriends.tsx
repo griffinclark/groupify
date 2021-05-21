@@ -133,8 +133,6 @@ const styles = StyleSheet.create({
   flatListContainer: {
     flexGrow: 1,
     flex: 1,
-    // borderBottomColor: "gray",
-    // borderBottomWidth: 1
   },
   friendContainer: {
     backgroundColor: GREY_5,
@@ -142,13 +140,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   footer: {
-    // position: "absolute",
-    // bottom: 0,
     flex: 0.5,
     height: '25%',
-    // borderWidth: 1,
     display: 'flex',
     justifyContent: 'space-between',
-    // justifySelf: "flex-end"
   },
 });
