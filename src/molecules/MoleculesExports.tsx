@@ -4,10 +4,4 @@ import { EventTile } from './EventTile';
 import { Navbar } from './Navbar';
 import { ImageSelector } from './ImageSelector';
 
-export {
-    AndroidContactTile,
-    EndpointTile,
-    EventTile,
-    Navbar,
-    ImageSelector,
-}
+export { AndroidContactTile, EndpointTile, EventTile, Navbar, ImageSelector };
