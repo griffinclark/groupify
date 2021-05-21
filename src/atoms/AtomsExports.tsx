@@ -12,16 +12,16 @@ import { Title } from './Title';
 import { TwoButtonAlert } from './TwoButtonAlert';
 
 export {
-    Alert,
-    Button,
-    CheckBox,
-    CircularImageDisplay,
-    FormInput,
-    MultiLineTextInput,
-    NavButton,
-    Screen,
-    SingleLineTextInput,
-    SquareImageDisplay,
-    Title,
-    TwoButtonAlert
+  Alert,
+  Button,
+  CheckBox,
+  CircularImageDisplay,
+  FormInput,
+  MultiLineTextInput,
+  NavButton,
+  Screen,
+  SingleLineTextInput,
+  SquareImageDisplay,
+  Title,
+  TwoButtonAlert
 };
