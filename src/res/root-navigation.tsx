@@ -2,6 +2,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import { Event } from '../res/dataModels';
 import Welcome from '../screens/Welcome';
 import Home from '../screens/Home';
 import { SelectFriends } from '../screens/SelectFriends';
@@ -28,6 +29,9 @@ export type RoutePropParams = {
   params: {
     email: string;
     step: string;
+    data: {
+      eventData: Event;
+    }
   };
 };
 
