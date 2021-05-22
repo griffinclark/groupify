@@ -89,7 +89,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
   const onPressSend = async () => {
     route.params.data.eventData.friends = selectedFriends;
     navigation.navigate('SendMessage', route.params);
-  }
+  };
 
   return (
     <Screen>
@@ -116,10 +116,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
       </View>
       <View style={styles.footer}>
         <FriendList style={styles.friendContainer} title="Selected friends" friends={selectedFriends} />
-        <Button
-          title="Send Message"
-          onPress={onPressSend}
-        />
+        <Button title="Send Message" onPress={onPressSend} />
       </View>
     </Screen>
   );
