@@ -31,7 +31,7 @@ export type RoutePropParams = {
     step: string;
     data: {
       eventData: Event;
-    }
+    };
   };
 };
 
