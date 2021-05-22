@@ -68,12 +68,12 @@ ${event.description} \
     TwoButtonAlert({
       title: 'Notice',
       message:
-        "At least one of the friends you invited does not have a phone number. That friend won\'t receive a text.",
+        'At least one of the friends you invited does not have a phone number. That friend won\'t receive a text.',
       button1Text: 'Go back',
       button2Text: 'Create Event Anyways',
       button2OnPress: async () => {
         await storeUserEvent(event);
-        navigation.navigate('Home', {data: {prevAction: 'created event' + event.uuid}});
+        navigation.navigate('Home', { data: {prevAction: 'created event' + event.uuid }});
       },
     });
   };
