@@ -73,7 +73,7 @@ ${event.description} \
       button2Text: 'Create Event Anyways',
       button2OnPress: async () => {
         await storeUserEvent(event);
-        navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid }});
+        navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
       },
     });
   };
