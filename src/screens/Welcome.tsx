@@ -7,16 +7,24 @@ interface Props {
 }
 
 export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
+
+  const onPressCreateAccount = (): void => {
+    navigation.navigate('CreateAccount', { step: 'create' });
+  };
+
+  const onPressLogIn = (): void => {
+    navigation.navigate('Login');
+  };
+
   return (
     <Screen>
-      <Title style={{fontSize: 45, margin: 40}}>Welcome to Meep</Title>
+      <Title style={{ fontSize: 45, margin: 40 }}>Welcome to Meep</Title>
       <Button
-        onPress={()=>{navigation.navigate('CreateAccount', {step: 'create'})}}
+        onPress={onPressCreateAccount}
         title={'Create Account'}
       />
       <Button
-        onPress={()=>{
-          navigation.navigate('Login')}}
+        onPress={onPressLogIn}
         title={'Log In'}
       />
     </Screen>
