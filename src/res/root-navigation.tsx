@@ -2,7 +2,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
-import Welcome from "../screens/Welcome";
+import { Welcome } from "../screens/Welcome";
 import MyProfile from './../screens/MyProfile';
 import Test from './../screens/Test';
 import Home from "../screens/Home";
@@ -16,6 +16,28 @@ import { CreateAccount } from "../screens/CreateAccount";
 import { LogIn } from "../screens/LogIn";
 import ImportContacts from "../screens/ImportContacts";
 import SendMessage from "./../screens/SendMessage";
+
+export type RootStackParamList = {
+  CreateAccount: {
+    step: string;
+    email: string;
+  };
+  params: {
+    Login: string;
+  };
+  navigate: (ev: string) => void;
+  push: (ev: string, e: { email: string; step: string }) => void;
+};
+
+export type RoutePropParams = {
+  params: {
+    email: string;
+    step: string;
+    data: {
+      eventData: Event;
+    };
+  };
+};
 
 export interface StackProps { //TODO: interfaces should never have any WTF is the point of typescript otherwise???
   navigation?: any;
