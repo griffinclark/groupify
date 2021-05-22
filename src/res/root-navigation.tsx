@@ -12,6 +12,25 @@ import { LogIn } from '../screens/LogIn';
 import ImportContacts from '../screens/ImportContacts';
 import SendMessage from '../screens/SendMessage';
 
+export type RootStackParamList = {
+  CreateAccount: {
+    step: string;
+    email: string;
+  };
+  params: {
+    Login: string;
+  };
+  navigate: (ev: string) => void;
+  push: (ev: string, e: { email: string; step: string }) => void;
+};
+
+export type RoutePropParams = {
+  params: {
+    email: string;
+    step: string;
+  };
+};
+
 export interface StackProps {
   navigation?: Record<string, unknown>;
   route?: Record<string, unknown>;

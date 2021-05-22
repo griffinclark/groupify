@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
-import { StackProps } from '../res/root-navigation';
+import { RootStackParamList, RoutePropParams } from '../res/root-navigation';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { Contact } from '../res/dataModels';
 import { DEFAULT_CONTACT_IMAGE, GREY_5 } from '../res/styles/Colors';
@@ -11,13 +11,18 @@ import { Navbar, AndroidContactTile } from '../molecules/MoleculesExports';
 import { NavButton, Button, Title, Screen } from '../atoms/AtomsExports';
 import { FriendList } from '../organisms/OrganismsExports';
 
+interface Props {
+  navigation: RootStackParamList;
+  route: RoutePropParams;
+}
+
 enum State {
   Empty,
   Loading,
   Done,
 }
 
-export const SelectFriends: React.FC<StackProps> = ({ navigation, route }: StackProps) => {
+export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => {
   const [friends, setFriends] = useState<Contact[]>([]);
   const [filteredFriends, setFilteredFriends] = useState<Contact[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<Contact[]>([]);
@@ -81,6 +86,11 @@ export const SelectFriends: React.FC<StackProps> = ({ navigation, route }: Stack
     />
   );
 
+  const onPressSend = async () => {
+    route.params.data.eventData.friends = selectedFriends;
+    navigation.navigate('SendMessage', route.params);
+  }
+
   return (
     <Screen>
       <Navbar>
@@ -108,10 +118,7 @@ export const SelectFriends: React.FC<StackProps> = ({ navigation, route }: Stack
         <FriendList style={styles.friendContainer} title="Selected friends" friends={selectedFriends} />
         <Button
           title="Send Message"
-          onPress={async () => {
-            route.params.data.eventData.friends = selectedFriends;
-            navigation.navigate('SendMessage', route.params);
-          }}
+          onPress={onPressSend}
         />
       </View>
     </Screen>
