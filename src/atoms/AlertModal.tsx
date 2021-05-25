@@ -1,32 +1,32 @@
 import React from 'react';
-import {Text, StyleSheet, View} from 'react-native';
-import { GREY_2, RED, WHITE } from '../res/styles/Colors';
+import { Text, StyleSheet, View } from 'react-native';
+import { GREY_2, RED, WHITE } from 'res/styles/Colors';
 
 interface AlertProps {
-    status: 'error' | 'success';
-    message: string;
+  status: 'error' | 'success';
+  message: string;
 }
-export const Alert: React.FC<AlertProps> = ({status, message}) => {
-    return (
-        <View style={[styles.container, styles[status]]}>
-            <Text style={styles.text}>{message}</Text>
-        </View>
-    )
-}
+export const Alert: React.FC<AlertProps> = ({ status, message }: AlertProps) => {
+  return (
+    <View style={[styles.container, styles[status]]}>
+      <Text style={styles.text}>{message}</Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    error: {
-        backgroundColor: RED,
-    },
-    success: {
-        backgroundColor: GREY_2
-    },
-    container: {     
-        padding: 10,
-        borderRadius: 5,
-        margin: 20
-    },
-    text: {
-        color: WHITE
-    }
-})
+  error: {
+    backgroundColor: RED,
+  },
+  success: {
+    backgroundColor: GREY_2,
+  },
+  container: {
+    padding: 10,
+    borderRadius: 5,
+    margin: 20,
+  },
+  text: {
+    color: WHITE,
+  },
+});
