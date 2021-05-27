@@ -28,9 +28,6 @@ export const buttonStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
     width: '100%',
-    // borderColor: 'red',
-    // borderWidth: 2,
-    // borderStyle: 'solid'
   },
   button: {
     borderRadius: 20,
