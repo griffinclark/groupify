@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { DK_PURPLE, GREY_5, WHITE } from '../res/styles/Colors';
 import uuid from 'uuid';
-import { Button, Title, Screen, NavButton } from '../atoms/AtomsExports';
+import { Title, Screen, NavButton, FormButton } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ParamListBase } from '@react-navigation/routers';
@@ -109,7 +109,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
               {listInputField(handleChange, values, 'eventLocation')}
               {listInputField(handleChange, values, 'eventDescription')}
             </View>
-            <Button title="Invite Friends" onPress={handleSubmit} />
+            <FormButton title="Invite Friends" onPress={handleSubmit} />
           </>
         )}
       </Formik>
