@@ -108,7 +108,6 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
               {listInputField(handleChange, values, 'eventTime')}
               {listInputField(handleChange, values, 'eventLocation')}
               {listInputField(handleChange, values, 'eventDescription')}
-              {/*idk how to fix this freaking onPress type error but it works so whatever */}
             </View>
             <Button title="Invite Friends" onPress={handleSubmit} />
           </>
