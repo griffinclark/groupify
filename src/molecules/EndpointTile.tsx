@@ -1,32 +1,22 @@
-import React from "react";
-import { globalStyles } from "./../res/styles/GlobalStyles";
-import { View, Text, Button } from "react-native";
-import { StyleSheet } from "react-native";
-import {
-  TEST_IMAGE_URL,
-} from "../res/styles/Colors";
-import {SquareImageDisplay} from "./../atoms/AtomsExports";
+import React from 'react';
+import { globalStyles } from '../res/styles/GlobalStyles';
+import { View, Text, Button } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { TEST_IMAGE_URL } from '../res/styles/Colors';
+import { SquareImageDisplay } from '../atoms/AtomsExports';
+import { NavigationProp, ParamListBase } from '@react-navigation/core';
 
 interface Props {
   UID: string;
   title: string;
   endpointUID: string;
-  navigation: any;
+  navigation: NavigationProp<ParamListBase>;
 }
-export function EndpointTile({
-  UID,
-  title,
-  endpointUID,
-  navigation,
-}: Props) {
+export const EndpointTile: React.FC<Props> = ({ title, endpointUID, navigation }: Props) => {
   const getImage = (endpointUID: string) => {
     // TODO @David return the image for an endpoint given its UID
+    console.log(endpointUID); //Not sure what we are doing with this
     return TEST_IMAGE_URL;
-  };
-
-  const getName = (UID: string) => {
-    // TODO @David return a user's name given their UID
-    return "David help!!!";
   };
 
   const createEvent = () => {
@@ -48,39 +38,37 @@ export function EndpointTile({
 
           <Text style={globalStyles.title}> {title} </Text>
           <Button
-            title={"Create This Event"}
+            title={'Create This Event'}
             onPress={async () => {
               await createEvent(); // event needs to be created before we navigate
-              navigation.navigate("ConfirmEvent");
+              navigation.navigate('ConfirmEvent');
             }}
           ></Button>
         </View>
       </View>
     </View>
   );
-}
+};
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   rootContainer: {
     height: 350,
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderBottomWidth: 0.5,
-    // backgroundColor: "green",
     marginTop: 5,
   },
   profileImageContainer: {
     height: 200,
     width: 300,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
   },
   rowConatiner: {
-    display: "flex",
+    display: 'flex',
     flex: 1,
-    flexDirection: "row",
-    // backgroundColor: TEST_HIGH_CONTRAST,
+    flexDirection: 'row',
     margin: 15,
   },
 });
