@@ -1,15 +1,15 @@
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
-import React from 'react';
-import Welcome from '../screens/Welcome';
+import React, { ReactNode } from 'react';
+import { Welcome } from '../screens/Welcome';
 import { Home } from '../screens/Home';
-import SelectFriends from '../screens/SelectFriends';
+import { SelectFriends } from '../screens/SelectFriends';
 import { CreateCustomEvent } from '../screens/CreateCustomEvent';
 import { EventDetails } from '../screens/EventDetails';
 import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
-import SendMessage from '../screens/SendMessage';
+import { SendMessage } from '../screens/SendMessage';
 
 export type RootStackParamList = {
   CreateAccount: {
@@ -19,7 +19,7 @@ export type RootStackParamList = {
   params: {
     Login: string;
   };
-  navigate: (ev: string) => void;
+  navigate: (ev: string, e: { data: { prevAction: string } }) => void;
   push: (ev: string, e: { email: string; step: string }) => void;
 };
 
@@ -27,6 +27,9 @@ export type RoutePropParams = {
   params: {
     email: string;
     step: string;
+    data: {
+      eventUUID: string;
+    };
   };
 };
 
