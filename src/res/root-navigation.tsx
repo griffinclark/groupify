@@ -1,4 +1,3 @@
-// https://devlinduldulao.pro/react-native-typescript-and-react-navigation-v5-setup/
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import React from 'react';
@@ -44,7 +43,6 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps)
   console.log('Initial route: ' + initialRoute);
   return (
     <NavigationContainer>
-      {/* TODO the default screen needs to change based on whether a user is logged in or not */}
       <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen
