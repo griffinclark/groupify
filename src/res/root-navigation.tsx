@@ -9,7 +9,7 @@ import { EventDetails } from '../screens/EventDetails';
 import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
-import SendMessage from '../screens/SendMessage';
+import { SendMessage } from '../screens/SendMessage';
 
 export type RootStackParamList = {
   CreateAccount: {
