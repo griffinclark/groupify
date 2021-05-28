@@ -1,16 +1,14 @@
-// https://devlinduldulao.pro/react-native-typescript-and-react-navigation-v5-setup/
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
+import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import React from 'react';
-import { Event } from '../res/dataModels';
-import { Welcome } from '../screens/Welcome';
-import Home from '../screens/Home';
+import Welcome from '../screens/Welcome';
+import { Home } from '../screens/Home';
 import SelectFriends from '../screens/SelectFriends';
-import CreateCustomEvent from '../screens/CreateCustomEvent';
-import EventDetails from '../screens/EventDetails';
+import { CreateCustomEvent } from '../screens/CreateCustomEvent';
+import { EventDetails } from '../screens/EventDetails';
 import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
-import ImportContacts from '../screens/ImportContacts';
+import { ImportContacts } from '../screens/ImportContacts';
 import SendMessage from '../screens/SendMessage';
 
 export type RootStackParamList = {
@@ -36,8 +34,8 @@ export type RoutePropParams = {
 };
 
 export interface StackProps {
-  navigation?: Record<string, unknown>;
-  route?: Record<string, unknown>;
+  navigation?: StackNavigationProp<ParamListBase>;
+  route?: ParamListBase;
 }
 
 interface RootProps {
@@ -49,7 +47,6 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps)
   console.log('Initial route: ' + initialRoute);
   return (
     <NavigationContainer>
-      {/* TODO the default screen needs to change based on whether a user is logged in or not */}
       <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen
