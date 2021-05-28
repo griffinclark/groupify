@@ -7,11 +7,7 @@ interface ScreenProps {
 }
 
 export const Screen: React.FC<ScreenProps> = (props: React.PropsWithChildren<ScreenProps>) => {
-  return (
-    <SafeAreaView style={[styles.screen, props.style]}>
-      {props.children}
-    </SafeAreaView>
-  );
+  return <SafeAreaView style={[styles.screen, props.style]}>{props.children}</SafeAreaView>;
 };
 
 const styles = StyleSheet.create({
