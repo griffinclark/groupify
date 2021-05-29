@@ -1,4 +1,4 @@
-import { Image } from "expo-contacts";
+import { Image } from 'expo-contacts';
 
 export interface Profile {
   email?: string;
