@@ -124,7 +124,7 @@ export const ContactsImport: React.FC<Props> = ({ navigation }: Props) => {
         <NavButton onPress={() => navigation.navigate('Home')} title="Back" />
       </Navbar>
       <Title>Edit Contact List</Title>
-      <SearchBar placeholder="Search for contacts" onChangeText={searchContacts} value={query} lightTheme={true} />
+      <SearchBar placeholder="Search for contacts" onChangeText={searchContacts} value={query} platform="default" />
       <View style={styles.flatListContainer}>
         {state === State.Loading ? (
           <View>
