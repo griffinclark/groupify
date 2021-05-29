@@ -21,6 +21,8 @@ export interface Event {
 export interface Contact {
   id: string;
   name: string;
-  image: string;
+  image: {
+    uri: string;
+  };
   phoneNumber: string;
 }
