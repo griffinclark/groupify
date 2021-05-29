@@ -10,7 +10,7 @@ interface Props {
   firstName?: string;
   lastName?: string;
   imageURL?: string;
-  addUser: (ev: Contact | undefined) => void; // if there's a list of users, add the user by username when the checkbox is checked
+  addUser: (ev: Contact | undefined) => void;
   removeUser: (ev: Contact | undefined) => void;
   isChecked?: boolean;
 }
@@ -28,11 +28,9 @@ export const AndroidContactTile: React.FC<Props> = ({
     if (!checked) {
       setChecked(true);
       addUser(contact);
-      // console.log("add");
     } else {
       setChecked(false);
       removeUser(contact);
-      // console.log("remove");
     }
   };
 
@@ -66,7 +64,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     height: 30,
     width: 30,
-    // This isn't the best way to get the image where we need it, but...
     position: 'absolute',
     left: 10,
   },
