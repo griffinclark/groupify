@@ -3,7 +3,7 @@ import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import React from 'react';
 import Welcome from '../screens/Welcome';
 import { Home } from '../screens/Home';
-import SelectFriends from '../screens/SelectFriends';
+import { SelectFriends } from '../screens/SelectFriends';
 import { CreateCustomEvent } from '../screens/CreateCustomEvent';
 import { EventDetails } from '../screens/EventDetails';
 import { CreateAccount } from '../screens/CreateAccount';
@@ -27,6 +27,9 @@ export type RoutePropParams = {
   params: {
     email: string;
     step: string;
+    data: {
+      eventData: Event;
+    };
   };
 };
 
@@ -34,6 +37,7 @@ export interface StackProps {
   navigation?: StackNavigationProp<ParamListBase>;
   route?: ParamListBase;
 }
+
 interface RootProps {
   initialRoute: string;
 }
