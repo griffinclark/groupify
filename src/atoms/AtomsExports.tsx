@@ -8,7 +8,6 @@ import {NavButton} from './NavButton'
 import {Screen} from './Screen'
 import {SingleLineTextInput} from './SingleLineTextInput'
 import {SquareImageDisplay} from './SquareImageDisplay'
-import {Tag} from './Tag'
 import {Title} from './Title'
 import {TwoButtonAlert} from './TwoButtonAlert'
 
@@ -23,7 +22,6 @@ export {
     Screen,
     SingleLineTextInput,
     SquareImageDisplay,
-    Tag,
     Title,
     TwoButtonAlert
 }
