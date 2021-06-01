@@ -1,8 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 
-// XXX should this be a TouchableOpacity?
-
 interface SquareImageDisplayProps {
   imageURI: string;
 }
