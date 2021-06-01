@@ -1,9 +1,3 @@
-// Author: Griffin Clark
-// Init date: 1/21/2021
-// Last updated: 1/21/2021
-
-// FIXME @Griffin implement subtitles
-
 import { StyleSheet } from 'react-native';
 import { LIGHT } from './Colors';
 
@@ -17,7 +11,6 @@ export const globalStyles = StyleSheet.create({
     padding: 5,
   },
   navbar_container: {
-    // whenever you create a navbar, put it one of these
     height: 80,
     width: '100%',
     position: 'absolute',
