@@ -1,32 +1,26 @@
-import React from "react";
-import { Alert } from "react-native";
-
+import { Alert } from 'react-native';
 
 interface TwoButtonAlertProps {
   title: string;
   message: string;
   button1Text: string;
-  button1OnPress?: any;
+  button1OnPress: () => void;
   button2Text: string;
-  button2OnPress?: any;
+  button2OnPress: () => void;
 }
 
+const defaultFunction = () => void 0;
 
-export const TwoButtonAlert = ({
+export const TwoButtonAlert: (props: TwoButtonAlertProps) => void = ({
   title,
   message,
   button1Text,
-  button1OnPress=()=>{},
+  button1OnPress = defaultFunction,
   button2Text,
-  button2OnPress=()=>{},
-  }: TwoButtonAlertProps) => {
-  
-    return Alert.alert(
-    title,
-    message,
-    [
-      { text: button1Text, onPress: button1OnPress },
-      { text: button2Text, onPress: button2OnPress }
-    ]
-  );
-}
+  button2OnPress = defaultFunction,
+}: TwoButtonAlertProps) => {
+  Alert.alert(title, message, [
+    { text: button1Text, onPress: button1OnPress },
+    { text: button2Text, onPress: button2OnPress },
+  ]);
+};
