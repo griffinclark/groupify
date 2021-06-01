@@ -6,8 +6,6 @@ import { Event } from '../res/dataModels';
 
 interface Props {
   data: Event[];
-  // onSelect?: any;
-  // selectedTags?: object;
 }
 
 export const DataDisplay: React.FC<Props> = ({ data }: Props) => {
