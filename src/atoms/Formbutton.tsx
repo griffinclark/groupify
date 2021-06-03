@@ -1,18 +1,22 @@
 import React from 'react';
-import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, LT_PURPLE, WHITE } from '../res/styles/Colors';
 
 interface ButtonProps {
-  onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;
+  onPress: (ev: React.FormEvent<HTMLFormElement>) => void;
   title: string;
   disabled?: boolean;
 }
-export const Button: React.FC<ButtonProps> = ({ onPress, title, disabled = false }: ButtonProps) => {
+export const FormButton: React.FC<ButtonProps> = ({ onPress, title, disabled = false }: ButtonProps) => {
+  const handlePress = () => {
+    onPress;
+  };
+
   return (
     <View style={buttonStyles.container}>
       <TouchableOpacity
-        onPress={onPress}
+        onPress={handlePress}
         disabled={disabled}
         style={[buttonStyles.button, disabled ? buttonStyles.disabledButton : buttonStyles.enabledButton]}
       >

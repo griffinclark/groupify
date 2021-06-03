@@ -1,3 +1,5 @@
+import { Image } from 'expo-contacts';
+
 export interface Profile {
   email?: string;
   phoneNumber: string; // @Griffin This needs to be canonicalized format, not just a rando string
@@ -22,6 +24,6 @@ export interface Event {
 export interface Contact {
   id: string;
   name: string;
-  image: string;
-  phoneNumber: string;
+  image: Image | undefined;
+  phoneNumber: string | null | undefined;
 }

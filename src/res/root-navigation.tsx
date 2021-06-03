@@ -27,7 +27,7 @@ export type RoutePropParams = {
     email: string;
     step: string;
     data: {
-      eventUUID: string;
+      eventData: Event;
     };
   };
 };
@@ -36,6 +36,7 @@ export interface StackProps {
   navigation?: StackNavigationProp<ParamListBase>;
   route?: ParamListBase;
 }
+
 interface RootProps {
   initialRoute: string;
 }
