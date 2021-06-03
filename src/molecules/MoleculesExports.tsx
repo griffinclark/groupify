@@ -1,7 +1,8 @@
-import { AndroidContactTile } from './AndroidContactTile';
-import { EndpointTile } from './EndpointTile';
-import { EventTile } from './EventTile';
-import { Navbar } from './Navbar';
-import { ImageSelector } from './ImageSelector';
+import { AndroidContactTile } from '../molecules/AndroidContactTile';
+import { EndpointTile } from '../molecules/EndpointTile';
+import { EventTile } from '../molecules/EventTile';
+import { Navbar } from '../molecules/Navbar';
+import { ImageSelector } from '../molecules/ImageSelector';
+import { UserTile } from '../molecules/UserTile';
 
-export { AndroidContactTile, EndpointTile, EventTile, Navbar, ImageSelector };
+export { AndroidContactTile, EndpointTile, EventTile, Navbar, ImageSelector, UserTile };
