@@ -18,7 +18,7 @@ export type RootStackParamList = {
   params: {
     Login: string;
   };
-  navigate: (ev: string, e: { data: { prevAction: string } }) => void;
+  navigate: (ev: string, e?: { data: { prevAction: string } }) => void;
   push: (ev: string, e: { email: string; step: string }) => void;
 };
 

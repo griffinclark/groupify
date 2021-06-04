@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { ReactChild } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 interface NavbarProps {
   style?: Record<string, unknown>;
-  children?: Record<string, unknown>;
+  children?: ReactChild;
 }
 
 export const Navbar: React.FC<NavbarProps> = (props: NavbarProps) => {

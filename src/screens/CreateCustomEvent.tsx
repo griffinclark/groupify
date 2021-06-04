@@ -16,7 +16,8 @@ interface Props {
 
 export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
   const onFormSubmit = (values: listInputProps['values']) => {
-    navigation?.navigate('SelectFriends', {
+    console.log('Submit');
+    navigation.navigate('SelectFriends', {
       data: {
         eventData: {
           uuid: uuid.v4(),
@@ -109,7 +110,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
               {listInputField(handleChange, values, 'eventLocation')}
               {listInputField(handleChange, values, 'eventDescription')}
             </View>
-            <FormButton title="Invite Friends" onPress={handleSubmit} />
+            <FormButton title="Invite Friends" onPress={onFormSubmit} />
           </>
         )}
       </Formik>

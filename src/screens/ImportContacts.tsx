@@ -22,7 +22,7 @@ enum State {
   Done,
 }
 
-export const ContactsImport: React.FC<Props> = ({ navigation }: Props) => {
+export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
@@ -54,6 +54,7 @@ export const ContactsImport: React.FC<Props> = ({ navigation }: Props) => {
   const loadContacts = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
+      console.log('Contacts permission granted');
       const { data } = await Contacts.getContactsAsync({});
       const contacts = data.map((contact) => ({
         id: contact.id,
@@ -124,7 +125,13 @@ export const ContactsImport: React.FC<Props> = ({ navigation }: Props) => {
         <NavButton onPress={() => navigation.navigate('Home')} title="Back" />
       </Navbar>
       <Title>Edit Contact List</Title>
-      <SearchBar placeholder="Search for contacts" onChangeText={searchContacts} value={query} platform="default" />
+      <SearchBar
+        lightTheme="true"
+        placeholder="Search for contacts"
+        onChangeText={searchContacts}
+        value={query}
+        platform="default"
+      />
       <View style={styles.flatListContainer}>
         {state === State.Loading ? (
           <View>
