@@ -34,7 +34,6 @@ export const AndroidContactTile: React.FC<Props> = ({
     }
   };
 
-  console.log('hey cutie');
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.rootContainer}>

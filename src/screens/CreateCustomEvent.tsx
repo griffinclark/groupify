@@ -110,7 +110,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
               {listInputField(handleChange, values, 'eventLocation')}
               {listInputField(handleChange, values, 'eventDescription')}
             </View>
-            <FormButton title="Invite Friends" onPress={onFormSubmit} />
+            <FormButton title="Invite Friends" onPress={handleSubmit} />
           </>
         )}
       </Formik>

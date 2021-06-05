@@ -139,7 +139,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
           </View>
         ) : null}
         <FlatList
-          data={filteredContacts}
+          data={contacts}
           renderItem={renderContact}
           ListEmptyComponent={() => (
             <View style={styles.listContainer}>
