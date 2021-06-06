@@ -9,6 +9,7 @@ import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
 import { SendMessage } from '../screens/SendMessage';
+import { Contact } from './dataModels';
 
 export type RootStackParamList = {
   CreateAccount: {
@@ -18,7 +19,7 @@ export type RootStackParamList = {
   params: {
     Login: string;
   };
-  navigate: (ev: string, e?: { data: { prevAction: string } }) => void;
+  navigate: (ev: string, a?: { step: string; email?: string }) => void;
   push: (ev: string, e: { email: string; step: string }) => void;
 };
 
@@ -27,7 +28,18 @@ export type RoutePropParams = {
     email: string;
     step: string;
     data: {
-      eventData: Event;
+      eventData: {
+        friends: Contact[];
+        uuid: string;
+        title: string;
+        imageURL: string;
+        description: string;
+        tags: string[];
+        date: string;
+        time: string;
+        location: string;
+        showImage: string;
+      };
     };
   };
 };

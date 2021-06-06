@@ -4,7 +4,7 @@ interface TwoButtonAlertProps {
   title: string;
   message: string;
   button1Text: string;
-  button1OnPress: () => void;
+  button1OnPress?: () => void;
   button2Text: string;
   button2OnPress: () => void;
 }

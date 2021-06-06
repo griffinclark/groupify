@@ -24,7 +24,6 @@ enum State {
 
 export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
   const [query, setQuery] = useState<string>('');
   const [state, setState] = useState<State>(State.Empty);
@@ -54,7 +53,6 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const loadContacts = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
-      console.log('Contacts permission granted');
       const { data } = await Contacts.getContactsAsync({});
       const contacts = data.map((contact) => ({
         id: contact.id,
@@ -75,7 +73,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
 
   const searchContacts = (text: string) => {
     setQuery(text);
-    setFilteredContacts(
+    setContacts(
       contacts.filter((contact) => {
         let contactLowercase = '';
         try {

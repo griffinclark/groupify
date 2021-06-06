@@ -10,7 +10,7 @@ interface ButtonProps {
 }
 export const FormButton: React.FC<ButtonProps> = ({ onPress, title, disabled = false }: ButtonProps) => {
   const handlePress = () => {
-    onPress();
+    onPress;
   };
 
   return (

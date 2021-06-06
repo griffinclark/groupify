@@ -52,7 +52,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       </View>
       <View style={styles.feedContainer}>
         {feedData.length > 0 ? (
-          <DataDisplay data={feedData} navigation={navigation} displayButton={false} />
+          <DataDisplay data={feedData} />
         ) : (
           <View style={styles.title}>
             <Text style={globalStyles.superTitle}>When you create an event, it will show up here</Text>

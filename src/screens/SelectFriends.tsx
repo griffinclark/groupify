@@ -31,7 +31,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
 
   useEffect(() => {
     setState(State.Loading);
-    loadFriends(); // Load contacts only once
+    loadFriends();
   }, []);
 
   const addSelectedFriend = (friend: Contact) => {
@@ -50,7 +50,6 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     setSelectedFriends(selectedFriends.slice(0));
   };
 
-  // Request permission to access contacts and load them.
   const loadFriends = async () => {
     const importedContacts = await getAllImportedContacts();
     setFriends(importedContacts);
@@ -58,7 +57,6 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     setState(State.Done);
   };
 
-  // Filters contacts (only contacts containing <text> appear)
   const searchFriends = (text: string) => {
     setQuery(text);
     setFilteredFriends(
@@ -75,8 +73,11 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     );
   };
 
-  // Renders each contact as AndroidContactTile
-  const renderContact = ({ item }: Record<string, Contact>) => (
+  interface renderContactProps {
+    item: Contact;
+  }
+
+  const renderContact = ({ item }: renderContactProps) => (
     <AndroidContactTile
       contact={item}
       firstName={item.name}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { RootStackParamList, RoutePropParams } from '../res/root-navigation';
-import { Event, Contact } from '../res/dataModels';
+import { Event, Friend } from '../res/dataModels';
 import { storeUserEvent } from '../res/storageFunctions';
 import { API } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
@@ -42,10 +42,9 @@ ${event.description} \
     );
   };
 
-  const pushEvent = async (friends: Contact[], message: string): Promise<void> => {
+  const pushEvent = async (friends: Friend[], message: string): Promise<void> => {
     const util = PhoneNumberUtil.getInstance();
     const attendees = friends.map((friend) => {
-      // NOTE: it's a justifiable assumption that we're dealing with US numbers here
       const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
       return util.format(num, PhoneNumberFormat.E164);
     });
@@ -68,8 +67,7 @@ ${event.description} \
     TwoButtonAlert({
       title: 'Notice',
       message:
-        // eslint-disable-next-line quotes
-        "At least one of the friends you invited does not have a phone number. That friend won't receive a text.",
+        'At least one of the friends you invited does not have a phone number. That friend will not receive a text.',
       button1Text: 'Go back',
       button2Text: 'Create Event Anyways',
       button2OnPress: async () => {
@@ -79,7 +77,6 @@ ${event.description} \
     });
   };
 
-  // FIXME: sane way of dealing with an exception in this function? in any function?
   const onPressSend = async (): Promise<void> => {
     try {
       const event: Event = route.params.data.eventData;
@@ -102,7 +99,7 @@ ${event.description} \
       <Title>Send Message</Title>
       <FriendList friends={event.friends} />
       <View style={styles.message}>
-        <MultiLineTextInput inputText={message} setText={setMessage} placeholder={''} style={styles.text} />
+        <MultiLineTextInput inputText={message} setText={setMessage} placeholder={''} />
         <Text style={{ textAlign: 'center' }}>Tap message to edit</Text>
       </View>
       <View style={styles.footer}>

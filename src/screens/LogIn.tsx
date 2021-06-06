@@ -1,4 +1,4 @@
-import { StackProps } from '../res/root-navigation';
+import { RootStackParamList } from '../res/root-navigation';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { getAllImportedContacts } from '../res/storageFunctions';
@@ -6,7 +6,11 @@ import { Contact } from '../res/dataModels';
 import { Navbar } from '../molecules/MoleculesExports';
 import { Title, NavButton, Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
 
-export const LogIn: React.FC<StackProps> = ({ navigation }: StackProps) => {
+interface Props {
+  navigation: RootStackParamList;
+}
+
+export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(true);

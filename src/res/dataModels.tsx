@@ -27,3 +27,10 @@ export interface Contact {
   image: Image | undefined;
   phoneNumber: string | null | undefined;
 }
+
+export interface Friend {
+  id: string;
+  name: string;
+  image: Image | undefined;
+  phoneNumber: string;
+}
