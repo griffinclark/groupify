@@ -91,6 +91,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     route.params.data.eventData.friends = selectedFriends;
     navigation.navigate('SendMessage', route.params);
   };
+  console.log(route.params);
 
   return (
     <Screen>
