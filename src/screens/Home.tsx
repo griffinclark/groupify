@@ -7,10 +7,22 @@ import { Auth } from 'aws-amplify';
 import { Screen, Button, NavButton } from '../atoms/AtomsExports';
 import { DataDisplay } from '../organisms/OrganismsExports';
 import { Navbar } from '../molecules/MoleculesExports';
-import { RootStackParamList, RoutePropParams } from '../res/root-navigation';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
-  navigation: RootStackParamList;
+  navigation: {
+    CreateAccount: {
+      step: string;
+      email: string;
+    };
+    params: {
+      Login: string;
+    };
+    navigate:
+      | ((ev: string, a?: { step?: string; email?: string }) => void)
+      | ((ev: string, a?: { data?: { prevAction?: string } }) => void);
+    push: (ev: string, e: { email: string; step: string }) => void;
+  };
   route: RoutePropParams;
 }
 

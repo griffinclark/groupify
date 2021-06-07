@@ -1,4 +1,3 @@
-import { RootStackParamList } from '../res/root-navigation';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { getAllImportedContacts } from '../res/storageFunctions';
@@ -7,7 +6,19 @@ import { Navbar } from '../molecules/MoleculesExports';
 import { Title, NavButton, Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
 
 interface Props {
-  navigation: RootStackParamList;
+  navigation: {
+    CreateAccount: {
+      step: string;
+      email: string;
+    };
+    params: {
+      Login: string;
+    };
+    navigate:
+      | ((ev: string, a?: { step?: string; email?: string }) => void)
+      | ((ev: string, a?: { data?: { prevAction?: string } }) => void);
+    push: (ev: string, e: { email: string; step: string }) => void;
+  };
 }
 
 export const LogIn: React.FC<Props> = ({ navigation }: Props) => {

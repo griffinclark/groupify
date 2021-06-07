@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { RootStackParamList, RoutePropParams } from '../res/root-navigation';
-import { Event, Friend } from '../res/dataModels';
+import { RoutePropParams } from '../res/root-navigation';
+import { Event, Contact } from '../res/dataModels';
 import { storeUserEvent } from '../res/storageFunctions';
 import { API } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
@@ -12,7 +12,9 @@ import { FriendList } from '../organisms/OrganismsExports';
 import { Title, NavButton, Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
 
 interface Props {
-  navigation: RootStackParamList;
+  navigation: {
+    navigate: (ev: string, a?: { data?: { prevAction?: string } }) => void;
+  };
   route: RoutePropParams;
 }
 
@@ -42,7 +44,7 @@ ${event.description} \
     );
   };
 
-  const pushEvent = async (friends: Friend[], message: string): Promise<void> => {
+  const pushEvent = async (friends: Contact[], message: string): Promise<void> => {
     const util = PhoneNumberUtil.getInstance();
     const attendees = friends.map((friend) => {
       const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
@@ -77,6 +79,7 @@ ${event.description} \
     });
   };
 
+  console.log(event.friends[0].phoneNumber);
   const onPressSend = async (): Promise<void> => {
     try {
       const event: Event = route.params.data.eventData;

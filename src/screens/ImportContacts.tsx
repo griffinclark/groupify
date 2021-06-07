@@ -9,10 +9,12 @@ import { deleteAllImportedContacts, getAllImportedContacts, storeImportedContact
 import { Button, Title, NavButton, Screen } from '../atoms/AtomsExports';
 import { FriendList } from '../organisms/OrganismsExports';
 import { AndroidContactTile, Navbar } from '../molecules/MoleculesExports';
-import { RootStackParamList, RoutePropParams } from '../res/root-navigation';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
-  navigation: RootStackParamList;
+  navigation: {
+    navigate: (ev: string) => void;
+  };
   route: RoutePropParams;
 }
 
@@ -58,10 +60,10 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
         id: contact.id,
         name: contact.name,
         image: contact.image,
-        phoneNumber: contact.phoneNumbers ? contact.phoneNumbers[0].number : null,
+        phoneNumber: contact.phoneNumbers && contact.phoneNumbers[0].number,
       }));
       contacts.sort((c1, c2) => (c1.name < c2.name ? -1 : 1));
-      setContacts(contacts);
+      contacts[0].phoneNumber && setContacts(contacts);
     }
     setState(State.Done);
   };

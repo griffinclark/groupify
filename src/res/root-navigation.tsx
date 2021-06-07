@@ -11,20 +11,19 @@ import { ImportContacts } from '../screens/ImportContacts';
 import { SendMessage } from '../screens/SendMessage';
 import { Contact } from './dataModels';
 
-export type RootStackParamList = {
-  CreateAccount: {
-    step: string;
-    email: string;
-  };
-  params: {
-    Login: string;
-  };
-  navigate:
-    | ((ev: string, a?: { step?: string; email?: string }) => void)
-    | ((ev: string, a?: { data?: { prevAction?: string } }) => void);
-  // | ((ev: string, a?: RoutePropParams) => void);
-  push: (ev: string, e: { email: string; step: string }) => void;
-};
+// export type RootStackParamList = {
+//   CreateAccount: {
+//     step: string;
+//     email: string;
+//   };
+//   params: {
+//     Login: string;
+//   };
+//   // navigate:
+//   //   | ((ev: string, a?: { step?: string; email?: string }) => void)
+//   //   | ((ev: string, a?: { data?: { prevAction?: string } }) => void);
+//   push: (ev: string, e: { email: string; step: string }) => void;
+// };
 
 export type RoutePropParams = {
   params: {

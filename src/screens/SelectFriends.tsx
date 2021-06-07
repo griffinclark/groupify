@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
-import { RootStackParamList, RoutePropParams } from '../res/root-navigation';
+import { RoutePropParams } from '../res/root-navigation';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { Contact } from '../res/dataModels';
 import { DEFAULT_CONTACT_IMAGE, GREY_5 } from '../res/styles/Colors';
@@ -12,7 +12,17 @@ import { NavButton, Button, Title, Screen } from '../atoms/AtomsExports';
 import { FriendList } from '../organisms/OrganismsExports';
 
 interface Props {
-  navigation: RootStackParamList;
+  navigation: {
+    CreateAccount: {
+      step: string;
+      email: string;
+    };
+    params: {
+      Login: string;
+    };
+    navigate: (ev: string, a?: { step?: string; email?: string }) => void;
+    push: (ev: string, e: { email: string; step: string }) => void;
+  };
   route: RoutePropParams;
 }
 

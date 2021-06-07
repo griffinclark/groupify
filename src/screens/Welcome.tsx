@@ -1,9 +1,10 @@
 import React from 'react';
-import { RootStackParamList } from '../res/root-navigation';
 import { Button, Title, Screen } from '../atoms/AtomsExports';
 
 interface Props {
-  navigation: RootStackParamList;
+  navigation: {
+    navigate: (ev: string, a?: { step?: string; email?: string }) => void;
+  };
 }
 
 export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
