@@ -99,9 +99,9 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
 
   const onPressSend = async () => {
     route.params.data.eventData.friends = selectedFriends;
+    console.log(route.params.data.eventData.friends);
     navigation.navigate('SendMessage', route.params);
   };
-  console.log(route.params);
 
   return (
     <Screen>

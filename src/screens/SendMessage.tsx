@@ -79,7 +79,6 @@ ${event.description} \
     });
   };
 
-  console.log(event.friends[0].phoneNumber);
   const onPressSend = async (): Promise<void> => {
     try {
       const event: Event = route.params.data.eventData;

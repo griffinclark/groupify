@@ -60,7 +60,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
         id: contact.id,
         name: contact.name,
         image: contact.image,
-        phoneNumber: contact.phoneNumbers && contact.phoneNumbers[0].number,
+        phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
       }));
       contacts.sort((c1, c2) => (c1.name < c2.name ? -1 : 1));
       contacts[0].phoneNumber && setContacts(contacts);
