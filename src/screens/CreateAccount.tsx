@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Title, NavButton, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
+import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 
 interface Props {
   navigation: {
@@ -17,40 +18,46 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const [email, setEmail] = useState(route.params.email ? route.params.email : '');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  // const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState('');
   const [validationCode, setCode] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   useEffect(() => {
-    if (
-      route.params.step == 'create' &&
-      email &&
-      password &&
-      name
-      // && phone
-    ) {
+    if (route.params.step == 'create' && email && password && name && phone) {
       setDisabled(false);
     } else if (route.params.step == 'validate' && email && validationCode) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [
-    email,
-    password,
-    name,
-    // phone,
-    validationCode,
-  ]);
+  }, [email, password, name, phone, validationCode]);
 
-  const invalidInput = () => {
-    // const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
-    // if(!phoneRegex.test(phone)) {
-    //     setError('Invalid phone number');
-    //     return true
-    // } else
-    if (password.includes(' ')) {
+  useEffect(() => {
+    const formatedPhone = formatPhoneNumber(phone);
+    setPhone(formatedPhone);
+  }, [phone]);
+
+  const formatPhoneNumber = (value: string) => {
+    if (!value) return value;
+    const phoneNumber = value.replace(/[^\d]/g, '');
+    const phoneNumberLength = phoneNumber.length;
+    if (phoneNumberLength < 4) return phoneNumber;
+    if (phoneNumberLength < 7) {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+    }
+    if (phoneNumberLength < 11) {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+    }
+    return phoneNumber;
+  };
+
+  const invalidInput = (phoneNumber: string) => {
+    const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+    if (!phoneRegex.test(phone) && phoneNumber.length > 10) {
+      setError('Invalid phone number');
+      return true;
+    } else if (password.includes(' ')) {
       setError('Password cannot contain spaces');
       return true;
     } else {
@@ -58,9 +65,17 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     }
   };
 
+  const amplifyPhoneFormat = (phone: string) => {
+    const util = PhoneNumberUtil.getInstance();
+    const num = util.parseAndKeepRawInput(phone, 'US');
+    return util.format(num, PhoneNumberFormat.E164);
+  };
+
   // sign the user up
   const signUp = async () => {
-    if (invalidInput()) {
+    const phoneNumber = amplifyPhoneFormat(phone);
+    console.log(phoneNumber);
+    if (invalidInput(phoneNumber)) {
       return;
     }
     try {
@@ -68,7 +83,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
         username: email,
         password,
         attributes: {
-          // phone_number: phone,
+          phone_number: phoneNumber,
           name: name,
         },
       });
@@ -125,10 +140,13 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             }}
           />
           <FormInput label="Password" onChangeText={setPassword} secureTextEntry={true} />
-          {/* <FormInput
-                    label='Phone Number'
-                    onChangeText={(value) => {setPhone(value.trim())}}
-                /> */}
+          <FormInput
+            value={phone}
+            label="Phone Number"
+            onChangeText={(value) => {
+              setPhone(value.trim());
+            }}
+          />
           {error && <Alert status="error" message={error} />}
           <Button title="Next" onPress={signUp} disabled={disabled} />
         </>
