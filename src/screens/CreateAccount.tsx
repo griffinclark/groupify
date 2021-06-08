@@ -1,4 +1,4 @@
-import { RootStackParamList, RoutePropParams } from '../res/root-navigation';
+import { RoutePropParams } from '../res/root-navigation';
 import { Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
@@ -6,7 +6,10 @@ import { Title, NavButton, Screen, FormInput, Button, Alert } from '../atoms/Ato
 import { Navbar } from '../molecules/MoleculesExports';
 
 interface Props {
-  navigation: RootStackParamList;
+  navigation: {
+    navigate: (ev: string) => void;
+    push: (ev: string, e: { email: string; step: string }) => void;
+  };
   route: RoutePropParams;
 }
 
@@ -70,7 +73,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
         },
       });
       console.log('user successfully created');
-      setError(undefined); //clear error
+      setError(undefined);
       navigation.push('CreateAccount', { step: 'validate', email: email });
     } catch (err) {
       console.log('Error: ', err);

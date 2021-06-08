@@ -6,17 +6,18 @@ import { DK_PURPLE, GREY_5, WHITE } from '../res/styles/Colors';
 import uuid from 'uuid';
 import { Title, Screen, NavButton, FormButton } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { ParamListBase } from '@react-navigation/routers';
 
 interface Props {
-  navigation: StackNavigationProp<ParamListBase, 'CreateCustomEvent'>;
+  navigation: {
+    navigate: (ev: string, {}) => void;
+  };
   endpointUID: string;
 }
 
 export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
   const onFormSubmit = (values: listInputProps['values']) => {
-    navigation?.navigate('SelectFriends', {
+    console.log('Submit');
+    navigation.navigate('SelectFriends', {
       data: {
         eventData: {
           uuid: uuid.v4(),
@@ -87,7 +88,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
   return (
     <Screen>
       <Navbar>
-        <NavButton onPress={() => navigation.navigate('Home')} title="Back" />
+        <NavButton onPress={() => navigation.navigate('Home', {})} title="Back" />
       </Navbar>
       <Formik
         initialValues={{

@@ -4,7 +4,7 @@ import { DK_PURPLE } from '../res/styles/Colors';
 
 interface TitleProps {
   style?: Record<string, unknown>;
-  children?: Record<string, unknown>;
+  children?: string;
 }
 
 export const Title: React.FC<TitleProps> = (props: TitleProps) => {

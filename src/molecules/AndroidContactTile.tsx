@@ -10,8 +10,8 @@ interface Props {
   firstName?: string;
   lastName?: string;
   imageURL?: string;
-  addUser: (ev: Contact | undefined) => void;
-  removeUser: (ev: Contact | undefined) => void;
+  addUser: (contact: Contact) => void;
+  removeUser: (contact: Contact) => void;
   isChecked?: boolean;
 }
 export const AndroidContactTile: React.FC<Props> = ({
@@ -25,10 +25,10 @@ export const AndroidContactTile: React.FC<Props> = ({
   const [checked, setChecked] = useState(isChecked);
 
   const onPress = () => {
-    if (!checked) {
+    if (!checked && contact) {
       setChecked(true);
       addUser(contact);
-    } else {
+    } else if (contact) {
       setChecked(false);
       removeUser(contact);
     }

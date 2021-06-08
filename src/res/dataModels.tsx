@@ -9,12 +9,12 @@ export interface Profile {
   profileImageURL: string; // zombie accounts won't have profile photos
 }
 export interface Event {
+  friends: Contact[];
   uuid: string;
   title: string;
   imageURL: string;
   description: string;
   tags: string[];
-  friends: Contact[];
   date: string;
   time: string;
   location: string;
@@ -25,5 +25,5 @@ export interface Contact {
   id: string;
   name: string;
   image: Image | undefined;
-  phoneNumber: string | null | undefined;
+  phoneNumber: string;
 }

@@ -4,13 +4,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, LT_PURPLE, WHITE } from '../res/styles/Colors';
 
 interface ButtonProps {
-  onPress: (ev: React.FormEvent<HTMLFormElement>) => void;
+  onPress: (ev?: React.FormEvent<HTMLFormElement>) => void;
   title: string;
   disabled?: boolean;
 }
 export const FormButton: React.FC<ButtonProps> = ({ onPress, title, disabled = false }: ButtonProps) => {
   const handlePress = () => {
-    onPress;
+    onPress();
+    console.log('hi');
   };
 
   return (

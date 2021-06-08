@@ -9,25 +9,39 @@ import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
 import { SendMessage } from '../screens/SendMessage';
+import { Contact } from './dataModels';
 
-export type RootStackParamList = {
-  CreateAccount: {
-    step: string;
-    email: string;
-  };
-  params: {
-    Login: string;
-  };
-  navigate: (ev: string, e: { data: { prevAction: string } }) => void;
-  push: (ev: string, e: { email: string; step: string }) => void;
-};
+// export type RootStackParamList = {
+//   CreateAccount: {
+//     step: string;
+//     email: string;
+//   };
+//   params: {
+//     Login: string;
+//   };
+//   // navigate:
+//   //   | ((ev: string, a?: { step?: string; email?: string }) => void)
+//   //   | ((ev: string, a?: { data?: { prevAction?: string } }) => void);
+//   push: (ev: string, e: { email: string; step: string }) => void;
+// };
 
 export type RoutePropParams = {
   params: {
     email: string;
     step: string;
     data: {
-      eventData: Event;
+      eventData: {
+        friends: Contact[];
+        uuid: string;
+        title: string;
+        imageURL: string;
+        description: string;
+        tags: string[];
+        date: string;
+        time: string;
+        location: string;
+        showImage: string;
+      };
     };
   };
 };

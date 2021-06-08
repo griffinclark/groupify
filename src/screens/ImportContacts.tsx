@@ -9,10 +9,12 @@ import { deleteAllImportedContacts, getAllImportedContacts, storeImportedContact
 import { Button, Title, NavButton, Screen } from '../atoms/AtomsExports';
 import { FriendList } from '../organisms/OrganismsExports';
 import { AndroidContactTile, Navbar } from '../molecules/MoleculesExports';
-import { RootStackParamList, RoutePropParams } from '../res/root-navigation';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
-  navigation: RootStackParamList;
+  navigation: {
+    navigate: (ev: string) => void;
+  };
   route: RoutePropParams;
 }
 
@@ -22,9 +24,8 @@ enum State {
   Done,
 }
 
-export const ContactsImport: React.FC<Props> = ({ navigation }: Props) => {
+export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
   const [query, setQuery] = useState<string>('');
   const [state, setState] = useState<State>(State.Empty);
@@ -59,10 +60,10 @@ export const ContactsImport: React.FC<Props> = ({ navigation }: Props) => {
         id: contact.id,
         name: contact.name,
         image: contact.image,
-        phoneNumber: contact.phoneNumbers ? contact.phoneNumbers[0].number : null,
+        phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
       }));
       contacts.sort((c1, c2) => (c1.name < c2.name ? -1 : 1));
-      setContacts(contacts);
+      contacts[0].phoneNumber && setContacts(contacts);
     }
     setState(State.Done);
   };
@@ -74,7 +75,7 @@ export const ContactsImport: React.FC<Props> = ({ navigation }: Props) => {
 
   const searchContacts = (text: string) => {
     setQuery(text);
-    setFilteredContacts(
+    setContacts(
       contacts.filter((contact) => {
         let contactLowercase = '';
         try {
@@ -124,7 +125,13 @@ export const ContactsImport: React.FC<Props> = ({ navigation }: Props) => {
         <NavButton onPress={() => navigation.navigate('Home')} title="Back" />
       </Navbar>
       <Title>Edit Contact List</Title>
-      <SearchBar placeholder="Search for contacts" onChangeText={searchContacts} value={query} platform="default" />
+      <SearchBar
+        lightTheme="true"
+        placeholder="Search for contacts"
+        onChangeText={searchContacts}
+        value={query}
+        platform="default"
+      />
       <View style={styles.flatListContainer}>
         {state === State.Loading ? (
           <View>
@@ -132,7 +139,7 @@ export const ContactsImport: React.FC<Props> = ({ navigation }: Props) => {
           </View>
         ) : null}
         <FlatList
-          data={filteredContacts}
+          data={contacts}
           renderItem={renderContact}
           ListEmptyComponent={() => (
             <View style={styles.listContainer}>

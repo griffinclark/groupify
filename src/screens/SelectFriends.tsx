@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
-import { RootStackParamList, RoutePropParams } from '../res/root-navigation';
+import { RoutePropParams } from '../res/root-navigation';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { Contact } from '../res/dataModels';
 import { DEFAULT_CONTACT_IMAGE, GREY_5 } from '../res/styles/Colors';
@@ -12,7 +12,17 @@ import { NavButton, Button, Title, Screen } from '../atoms/AtomsExports';
 import { FriendList } from '../organisms/OrganismsExports';
 
 interface Props {
-  navigation: RootStackParamList;
+  navigation: {
+    CreateAccount: {
+      step: string;
+      email: string;
+    };
+    params: {
+      Login: string;
+    };
+    navigate: (ev: string, a?: { step?: string; email?: string }) => void;
+    push: (ev: string, e: { email: string; step: string }) => void;
+  };
   route: RoutePropParams;
 }
 
@@ -31,7 +41,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
 
   useEffect(() => {
     setState(State.Loading);
-    loadFriends(); // Load contacts only once
+    loadFriends();
   }, []);
 
   const addSelectedFriend = (friend: Contact) => {
@@ -50,7 +60,6 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     setSelectedFriends(selectedFriends.slice(0));
   };
 
-  // Request permission to access contacts and load them.
   const loadFriends = async () => {
     const importedContacts = await getAllImportedContacts();
     setFriends(importedContacts);
@@ -58,7 +67,6 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     setState(State.Done);
   };
 
-  // Filters contacts (only contacts containing <text> appear)
   const searchFriends = (text: string) => {
     setQuery(text);
     setFilteredFriends(
@@ -75,8 +83,11 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     );
   };
 
-  // Renders each contact as AndroidContactTile
-  const renderContact = ({ item }: Record<string, Contact>) => (
+  interface renderContactProps {
+    item: Contact;
+  }
+
+  const renderContact = ({ item }: renderContactProps) => (
     <AndroidContactTile
       contact={item}
       firstName={item.name}
@@ -88,6 +99,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
 
   const onPressSend = async () => {
     route.params.data.eventData.friends = selectedFriends;
+    console.log(route.params.data.eventData.friends);
     navigation.navigate('SendMessage', route.params);
   };
 
