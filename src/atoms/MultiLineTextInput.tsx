@@ -6,13 +6,14 @@ interface Props {
   inputText: string;
   setText: (ev: string) => void;
   placeholder: string;
+  style?: Record<string, unknown>;
 }
 
-export const MultiLineTextInput: React.FC<Props> = ({ inputText, setText, placeholder }: Props) => {
+export const MultiLineTextInput: React.FC<Props> = ({ inputText, setText, placeholder, style }: Props) => {
   return (
     <View>
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, style]}
         placeholder={placeholder}
         multiline={true}
         onChangeText={(text) => setText(text)}
