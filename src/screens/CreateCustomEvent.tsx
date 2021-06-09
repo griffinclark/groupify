@@ -16,7 +16,6 @@ interface Props {
 
 export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
   const onFormSubmit = (values: listInputProps['values']) => {
-    console.log('Submit');
     navigation.navigate('SelectFriends', {
       data: {
         eventData: {
