@@ -7,14 +7,15 @@ interface ButtonProps {
   onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;
   title: string;
   disabled?: boolean;
+  style?: Record<string, unknown>;
 }
-export const Button: React.FC<ButtonProps> = ({ onPress, title, disabled = false }: ButtonProps) => {
+export const Button: React.FC<ButtonProps> = ({ onPress, title, disabled = false, style }: ButtonProps) => {
   return (
     <View style={buttonStyles.container}>
       <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
-        style={[buttonStyles.button, disabled ? buttonStyles.disabledButton : buttonStyles.enabledButton]}
+        style={[buttonStyles.button, disabled ? buttonStyles.disabledButton : buttonStyles.enabledButton, style]}
       >
         <Text style={[buttonStyles.text, disabled ? buttonStyles.disabledButton : buttonStyles.enabledButton]}>
           {title}
