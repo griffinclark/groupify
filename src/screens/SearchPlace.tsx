@@ -152,7 +152,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <Screen>
-      <Navbar style={styles.navBar}>
+      <Navbar>
         <NavButton onPress={() => navigation.navigate('Home', {})} title="Back" />
         <NavButton onPress={() => navigation.navigate('CreateCustomEvent', {})} title="Skip" />
       </Navbar>
@@ -189,9 +189,6 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  navBar: {
-    marginTop: 20,
-  },
   searchBarContainer: {
     position: 'absolute',
     marginTop: 85,
