@@ -75,7 +75,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         <Button
           title="Create event"
           onPress={() => {
-            navigation.navigate('CreateCustomEvent');
+            navigation.navigate('SearchPlace');
           }}
         />
       </View>

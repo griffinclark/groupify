@@ -21,7 +21,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.munchkinlabs.meep",
       "infoPlist": {
-        "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create"
+        "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
+        "NSLocationWhenInUseUsageDescription": "Your location is required to show places near you."
       },
       "buildNumber": "1.0.1"
     },
