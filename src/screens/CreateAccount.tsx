@@ -9,18 +9,17 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 interface Props {
   navigation: {
     navigate: (ev: string) => void;
-    push: (ev: string, e: { validateNumber: string; step: string }) => void;
+    push: (ev: string, e: { phone: string; step: string }) => void;
   };
   route: RoutePropParams;
 }
 
 export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => {
   const [email, setEmail] = useState(route.params.email ? route.params.email : '');
-  const [password, setPassword] = useState('empty');
-  const [name, setName] = useState('empty');
-  const [phone, setPhone] = useState('empty');
-  const [formatPhone, setFormatPhone] = useState('empty');
-  const [validateNumber, setValidateNumber] = useState('empty');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [formatPhone, setFormatPhone] = useState('');
   const [validationCode, setCode] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState<string | undefined>();
@@ -82,7 +81,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       return;
     }
     try {
-      setValidateNumber(formatPhone);
       await Auth.signUp({
         username: formatPhone,
         password,
@@ -94,7 +92,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       });
       console.log('user successfully created');
       setError(undefined);
-      navigation.push('CreateAccount', { step: 'validate', validateNumber: validateNumber });
+      navigation.push('CreateAccount', { step: 'validate', phone: formatPhone });
     } catch (err) {
       console.log('Error: ', err);
       if (err.code == 'InvalidParameterException') {
@@ -116,7 +114,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const validateUser = async () => {
     console.log();
     try {
-      await Auth.confirmSignUp(validateNumber, validationCode);
+      await Auth.confirmSignUp(route.params.phone, validationCode);
       navigation.navigate('Login');
     } catch (err) {
       console.log('Error: ', err);
@@ -173,8 +171,8 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             title="Send New Code"
             onPress={() => {
               try {
-                console.log(validateNumber);
-                Auth.resendSignUp(validateNumber);
+                console.log(route.params);
+                Auth.resendSignUp(route.params.phone);
                 setSuccess('Sent new verification code');
               } catch (err) {
                 console.log(err);
