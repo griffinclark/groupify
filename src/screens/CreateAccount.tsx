@@ -9,16 +9,18 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 interface Props {
   navigation: {
     navigate: (ev: string) => void;
-    push: (ev: string, e: { email: string; step: string }) => void;
+    push: (ev: string, e: { validateNumber: string; step: string }) => void;
   };
   route: RoutePropParams;
 }
 
 export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => {
   const [email, setEmail] = useState(route.params.email ? route.params.email : '');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('empty');
+  const [name, setName] = useState('empty');
+  const [phone, setPhone] = useState('empty');
+  const [formatPhone, setFormatPhone] = useState('empty');
+  const [validateNumber, setValidateNumber] = useState('empty');
   const [validationCode, setCode] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState<string | undefined>();
@@ -26,12 +28,13 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   useEffect(() => {
     if (route.params.step == 'create' && email && password && name && phone) {
       setDisabled(false);
-    } else if (route.params.step == 'validate' && email && validationCode) {
+    } else if (route.params.step == 'validate' && validationCode) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [email, password, name, phone, validationCode]);
+    setFormatPhone(amplifyPhoneFormat(phone));
+  }, [email, password, name, phone, formatPhone, validationCode]);
 
   useEffect(() => {
     const formatedPhone = formatPhoneNumber(phone);
@@ -66,30 +69,32 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   const amplifyPhoneFormat = (phone: string) => {
-    const util = PhoneNumberUtil.getInstance();
-    const num = util.parseAndKeepRawInput(phone, 'US');
-    return util.format(num, PhoneNumberFormat.E164);
+    if (phone.length > 10) {
+      const util = PhoneNumberUtil.getInstance();
+      const num = util.parseAndKeepRawInput(phone, 'US');
+      return util.format(num, PhoneNumberFormat.E164);
+    }
   };
 
   // sign the user up
   const signUp = async () => {
-    const phoneNumber = amplifyPhoneFormat(phone);
-    console.log(phoneNumber);
-    if (invalidInput(phoneNumber)) {
+    if (invalidInput(formatPhone)) {
       return;
     }
     try {
+      setValidateNumber(formatPhone);
       await Auth.signUp({
-        username: email,
+        username: formatPhone,
         password,
         attributes: {
-          phone_number: phoneNumber,
+          email: email,
+          phone_number: formatPhone,
           name: name,
         },
       });
       console.log('user successfully created');
       setError(undefined);
-      navigation.push('CreateAccount', { step: 'validate', email: email });
+      navigation.push('CreateAccount', { step: 'validate', validateNumber: validateNumber });
     } catch (err) {
       console.log('Error: ', err);
       if (err.code == 'InvalidParameterException') {
@@ -109,9 +114,9 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   const validateUser = async () => {
+    console.log();
     try {
-      console.log(email, validationCode);
-      await Auth.confirmSignUp(email, validationCode);
+      await Auth.confirmSignUp(validateNumber, validationCode);
       navigation.navigate('Login');
     } catch (err) {
       console.log('Error: ', err);
@@ -153,16 +158,8 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       )}
       {route.params.step === 'validate' && (
         <>
-          <Title>Validate Email</Title>
-          <Text style={{ margin: 20, fontWeight: 'bold' }}>Please enter the verification code from your email</Text>
-          {email == '' && (
-            <FormInput
-              label="Email"
-              onChangeText={(value) => {
-                setEmail(value.trim());
-              }}
-            />
-          )}
+          <Title>Validate Phone Number</Title>
+          <Text style={{ margin: 20, fontWeight: 'bold' }}>Please enter the verification code from your messages</Text>
           <FormInput
             label="Verification Code"
             onChangeText={(value) => {
@@ -176,16 +173,16 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             title="Send New Code"
             onPress={() => {
               try {
-                Auth.resendSignUp(email);
+                console.log(validateNumber);
+                Auth.resendSignUp(validateNumber);
                 setSuccess('Sent new verification code');
               } catch (err) {
                 console.log(err);
                 setError(err.message);
               }
             }}
-            disabled={!email}
           />
-          <Button title="Confirm Email" onPress={validateUser} disabled={disabled} />
+          <Button title="Confirm Number" onPress={validateUser} disabled={disabled} />
         </>
       )}
     </Screen>
