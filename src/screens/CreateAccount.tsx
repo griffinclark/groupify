@@ -137,19 +137,19 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             }}
           />
           <FormInput
-            label="Email"
-            onChangeText={(value) => {
-              setEmail(value.trim());
-            }}
-          />
-          <FormInput label="Password" onChangeText={setPassword} secureTextEntry={true} />
-          <FormInput
             value={phone}
             label="Phone Number"
             onChangeText={(value) => {
               setPhone(value.trim());
             }}
           />
+          <FormInput
+            label="Email"
+            onChangeText={(value) => {
+              setEmail(value.trim());
+            }}
+          />
+          <FormInput label="Password" onChangeText={setPassword} secureTextEntry={true} />
           {error && <Alert status="error" message={error} />}
           <Button title="Next" onPress={signUp} disabled={disabled} />
         </>
