@@ -15,11 +15,11 @@ interface Props {
 }
 
 export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => {
-  const [email, setEmail] = useState(route.params.email ? route.params.email : '');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [formatPhone, setFormatPhone] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [formatPhone, setFormatPhone] = useState<string>('');
   const [validationCode, setCode] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState<string | undefined>();
@@ -32,17 +32,16 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     } else {
       setDisabled(true);
     }
-    setFormatPhone(amplifyPhoneFormat(phone));
   }, [email, password, name, phone, formatPhone, validationCode]);
 
   useEffect(() => {
-    const formatedPhone = formatPhoneNumber(phone);
-    setPhone(formatedPhone);
+    setPhone(formatPhoneNumber(phone));
+    setFormatPhone(amplifyPhoneFormat(phone));
   }, [phone]);
 
-  const formatPhoneNumber = (value: string) => {
-    if (!value) return value;
-    const phoneNumber = value.replace(/[^\d]/g, '');
+  const formatPhoneNumber = (phone: string) => {
+    if (!phone) return phone;
+    const phoneNumber = phone.replace(/[^\d]/g, '');
     const phoneNumberLength = phoneNumber.length;
     if (phoneNumberLength < 4) return phoneNumber;
     if (phoneNumberLength < 7) {
@@ -73,6 +72,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       const num = util.parseAndKeepRawInput(phone, 'US');
       return util.format(num, PhoneNumberFormat.E164);
     }
+    return phone;
   };
 
   // sign the user up
@@ -140,7 +140,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             value={phone}
             label="Phone Number"
             onChangeText={(value) => {
-              setPhone(value.trim());
+              setPhone(formatPhoneNumber(value));
             }}
           />
           <FormInput
@@ -171,7 +171,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             title="Send New Code"
             onPress={() => {
               try {
-                console.log(route.params);
+                console.log(route.params.phone);
                 Auth.resendSignUp(route.params.phone);
                 setSuccess('Sent new verification code');
               } catch (err) {

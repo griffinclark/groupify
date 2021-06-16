@@ -39,6 +39,7 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
       const num = util.parseAndKeepRawInput(phone, 'US');
       return util.format(num, PhoneNumberFormat.E164);
     }
+    return phone;
   };
 
   const formatPhoneNumber = (value: string) => {
