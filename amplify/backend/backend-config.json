@@ -1,6 +1,6 @@
 {
   "auth": {
-    "meep60c88366": {
+    "Meep": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -33,6 +33,12 @@
   "storage": {
     "s383a7684a": {
       "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "analytics": {
+    "meep": {
+      "service": "Pinpoint",
       "providerPlugin": "awscloudformation"
     }
   }
