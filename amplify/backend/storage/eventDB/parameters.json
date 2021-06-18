@@ -1,0 +1,5 @@
+{
+    "tableName": "eventDB",
+    "partitionKeyName": "creator",
+    "partitionKeyType": "S"
+}

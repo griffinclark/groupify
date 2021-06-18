@@ -15,7 +15,11 @@
       "function": {
         "pushBroadcast": {
           "deploymentBucketName": "amplify-meep-staging-171906-deployment",
-          "s3Key": "amplify-builds/pushBroadcast-584c366867704b513143-build.zip"
+          "s3Key": "amplify-builds/pushBroadcast-48586e634135726d6379-build.zip"
+        },
+        "eventFunction": {
+          "deploymentBucketName": "amplify-meep-staging-171906-deployment",
+          "s3Key": "amplify-builds/eventFunction-475a53466e3239314331-build.zip"
         }
       },
       "auth": {

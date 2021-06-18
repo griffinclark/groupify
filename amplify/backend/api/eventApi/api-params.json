@@ -1,22 +1,26 @@
 {
   "paths": [
     {
-      "name": "/broadcasts",
-      "lambdaFunction": "pushBroadcast",
+      "name": "/events",
+      "lambdaFunction": "eventFunction",
       "privacy": {
         "private": true,
         "auth": [
-          "/POST"
+          "/POST",
+          "/GET",
+          "/PUT",
+          "/PATCH",
+          "/DELETE"
         ]
       },
-      "policyResourceName": "/broadcasts"
+      "policyResourceName": "/events"
     }
   ],
-  "resourceName": "broadcastsApi",
-  "apiName": "broadcastsApi",
+  "resourceName": "eventApi",
+  "apiName": "eventApi",
   "functionArns": [
     {
-      "lambdaFunction": "pushBroadcast"
+      "lambdaFunction": "eventFunction"
     }
   ],
   "privacy": {
@@ -28,12 +32,11 @@
   "dependsOn": [
     {
       "category": "function",
-      "resourceName": "pushBroadcast",
+      "resourceName": "eventFunction",
       "attributes": [
         "Name",
         "Arn"
       ]
     }
-  ],
-  "uuid": "823df4e6"
+  ]
 }
