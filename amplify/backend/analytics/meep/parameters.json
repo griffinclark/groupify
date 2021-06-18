@@ -1,0 +1,21 @@
+{
+    "appName": "meep",
+    "roleName": "pinpointLambdaRolea09170d5",
+    "cloudformationPolicyName": "cloudformationPolicya09170d5",
+    "cloudWatchPolicyName": "cloudWatchPolicya09170d5",
+    "pinpointPolicyName": "pinpointPolicya09170d5",
+    "authPolicyName": "pinpoint_amplify_a09170d5",
+    "unauthPolicyName": "pinpoint_amplify_a09170d5",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}
