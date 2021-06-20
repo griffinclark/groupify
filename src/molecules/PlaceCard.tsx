@@ -8,7 +8,8 @@ interface PlaceCardProps {
   style?: StyleProp<ViewStyle>;
   name: string;
   address: string;
-  distance: number; // miles
+  distance: string;
+  duration: string;
   rating?: number;
   userRatings?: number;
   priceLevel?: number;
@@ -80,7 +81,16 @@ export const PlaceCard: React.FC<PlaceCardProps> = (props: PlaceCardProps) => {
             ) : null}
             <Text style={styles.placeDetails}>
               {props.priceLevel ? `${'$'.repeat(props.priceLevel)}   |   ` : ''}
-              {`${props.distance} mi`}
+              {`${props.distance}`}
+            </Text>
+            <Text>
+              <Image
+                source={{
+                  uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Purple-car.svg/1221px-Purple-car.svg.png',
+                }}
+                style={{ height: 10, width: 14 }}
+              />
+              <Text> {props.duration}</Text>
             </Text>
             {props.openNow !== undefined ? (
               <Text>

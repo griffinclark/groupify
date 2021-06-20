@@ -43,7 +43,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
-  });
+  }); // defaults to Los Angeles if user location is not provided
   const [region, setRegion] = useState({
     latitude: 41.878,
     longitude: -93.0977,
@@ -66,7 +66,6 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
           if (location === null) {
             location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Low });
           }
-          // console.log(location);
           setUserLocation({
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -84,7 +83,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
     })();
   }, []);
 
-  const onResultPress = (data: GooglePlaceData, detail: GooglePlaceDetail | null) => {
+  const onResultPress = async (data: GooglePlaceData, detail: GooglePlaceDetail | null) => {
     // console.log(detail);
     const moreDetails = detail as GooglePlaceDetailExtended;
     setSessionToken(uuidv4());
@@ -118,6 +117,10 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
       } else {
         height = '20%';
       }
+      const distanceInfo = await getDistanceAndDuration(
+        `${userLocation.latitude},${userLocation.longitude}`,
+        detail.place_id,
+      );
       setPlaceCard(
         <PlaceCard
           style={{ height: height, ...styles.placeCard }}
@@ -126,7 +129,8 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
           rating={moreDetails.rating ? moreDetails.rating : undefined}
           userRatings={moreDetails.user_ratings_total ? moreDetails.user_ratings_total : undefined}
           priceLevel={moreDetails.price_level ? moreDetails.price_level : undefined}
-          distance={5} // Calculate distance, either by hand or with Google's API
+          distance={distanceInfo.distance}
+          duration={distanceInfo.duration}
           openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
@@ -134,6 +138,21 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
         />,
       );
     }
+  };
+
+  const getDistanceAndDuration = async (origin: string, destination: string) => {
+    const mode = 'driving';
+    const units = 'imperial';
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/distancematrix/json?
+origins=${origin}
+&destinations=place_id:${destination}
+&key=${GOOGLE_PLACES_API_KEY}
+&mode=${mode}
+&units=${units}`,
+    );
+    const json = await response.json();
+    return { distance: json.rows[0].elements[0].distance.text, duration: json.rows[0].elements[0].duration.text };
   };
 
   const onButtonPress = (title: string, address: string) => {
