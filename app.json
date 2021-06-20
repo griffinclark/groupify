@@ -24,11 +24,19 @@
         "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
         "NSLocationWhenInUseUsageDescription": "Your location is required to show places near you."
       },
-      "buildNumber": "1.0.1"
+      "buildNumber": "1.0.1",
+      "config": {
+        "googleMapsApiKey": "AIzaSyAV06lvUXnsUCgy1P9CPAH-Zi6FW7qqS80"
+      }
     },
     "android": {
       "package": "com.munchkinlabs.meep",
-      "versionCode": 1
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBMlUNco0OJ4GtGmGuF3GwFnuMsRogKFfM"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
