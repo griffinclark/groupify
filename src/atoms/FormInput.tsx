@@ -8,17 +8,20 @@ interface FormProps {
   label?: string;
   placeholder?: string;
   secureTextEntry?: boolean;
+  value?: string;
 }
 export const FormInput: React.FC<FormProps> = ({
   onChangeText,
   label,
   placeholder,
   secureTextEntry = false,
+  value,
 }: FormProps) => {
   return (
     <View style={styles.wrapper}>
       <Text>{label}</Text>
       <TextInput
+        value={value}
         style={styles.input}
         placeholder={placeholder}
         onChangeText={onChangeText}
