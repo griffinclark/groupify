@@ -39,10 +39,6 @@ interface POI {
   name: string;
 }
 
-interface marker {
-  marker: JSX.Element;
-}
-
 export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
@@ -66,7 +62,10 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
         console.log('Permission to access location was denied');
       } else {
         try {
-          const location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Low });
+          let location = await Location.getLastKnownPositionAsync();
+          if (location === null) {
+            location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Low });
+          }
           // console.log(location);
           setUserLocation({
             latitude: location.coords.latitude,
@@ -127,7 +126,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
           rating={moreDetails.rating ? moreDetails.rating : undefined}
           userRatings={moreDetails.user_ratings_total ? moreDetails.user_ratings_total : undefined}
           priceLevel={moreDetails.price_level ? moreDetails.price_level : undefined}
-          distance={5} // Calculate distance
+          distance={5} // Calculate distance, either by hand or with Google's API
           openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
@@ -139,6 +138,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
 
   const onButtonPress = (title: string, address: string) => {
     navigation.navigate('CreateCustomEvent', { title, address });
+    // pass place id
   };
 
   const onPoiPress = (poi: POI) => {
@@ -169,6 +169,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
         {mapMarker ? mapMarker : null}
       </MapView>
       <View style={styles.searchBarContainer}>
+        {/* X button on the right to clear input field */}
         <GooglePlacesAutocomplete
           placeholder="Search here"
           query={{

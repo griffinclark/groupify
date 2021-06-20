@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Qs from 'qs';
-import { StyleSheet, View, Text, Image, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
 import { LT_PURPLE, DK_PURPLE, GREY_1 } from '../res/styles/Colors';
-import { Button } from '../atoms/Button';
+import { Button } from '../atoms/AtomsExports';
 
 interface PlaceCardProps {
-  style?: Record<string, unknown>;
+  style?: StyleProp<ViewStyle>;
   name: string;
   address: string;
   distance: number; // miles
