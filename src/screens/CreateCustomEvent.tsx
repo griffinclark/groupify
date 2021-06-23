@@ -1,5 +1,4 @@
-import { FormikValues } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import uuid from 'uuid';
 import { Screen, NavButton, FormButton } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
@@ -13,8 +12,20 @@ interface Props {
 }
 
 export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
-  const onFormSubmit = (values: listInputProps['values']) => {
-    console.log('Submit');
+  const [updatedValues, setUpdatedValues] = useState<{
+    eventName: string;
+    eventDate: string;
+    eventTime: string;
+    eventLocation: string;
+    eventDescription: string;
+  }>({ eventName: '', eventDate: '', eventTime: '', eventLocation: '', eventDescription: '' });
+  const onFormSubmit = (values: {
+    eventName: string;
+    eventDate: string;
+    eventTime: string;
+    eventLocation: string;
+    eventDescription: string;
+  }) => {
     navigation.navigate('SelectFriends', {
       data: {
         eventData: {
@@ -53,24 +64,24 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
     },
   ];
 
-  interface listInputProps {
-    handleChange: {
-      (e: React.ChangeEvent<string>): void;
-      <T = string | React.ChangeEvent<string>>(field: T): T extends React.ChangeEvent<string>
-        ? void
-        : (e: string | React.ChangeEvent<string>) => void;
+  const setValues = (value: { title: string; value: string }[]) => {
+    const values = {
+      eventName: value[0].value,
+      eventDate: value[1].value,
+      eventTime: value[2].value,
+      eventLocation: value[3].value,
+      eventDescription: value[4].value,
     };
-    values: FormikValues;
-    input: string;
-  }
+    setUpdatedValues(values);
+  };
 
   return (
     <Screen>
       <Navbar>
         <NavButton onPress={() => navigation.navigate('Home', {})} title="Back" />
       </Navbar>
-      <MeepForm InputList={inputFields}>
-        <FormButton title="Invite Friends" onPress={() => onFormSubmit()} />
+      <MeepForm InputList={inputFields} updatedValues={(value) => setValues(value)}>
+        <FormButton title="Invite Friends" onPress={() => onFormSubmit(updatedValues)} />
       </MeepForm>
     </Screen>
   );

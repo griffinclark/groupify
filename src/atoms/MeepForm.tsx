@@ -1,4 +1,4 @@
-import React, { ReactChild } from 'react'
+import React, { ReactChild, useEffect, useState } from 'react'
 import { StyleSheet, TextInput, View, Text } from 'react-native'
 import { DK_PURPLE, GREY_5, WHITE } from '../res/styles/Colors'
 import { globalStyles } from '../res/styles/GlobalStyles';
@@ -6,19 +6,44 @@ import { globalStyles } from '../res/styles/GlobalStyles';
 interface Props {
     children: ReactChild;
     InputList: { title: string; placeholder: string }[];
+    updatedValues: (e: { title: string, value: string }[]) => void;
 }
 
-export const MeepForm: React.FC<Props> = ({children, InputList }: Props) => {
+export const MeepForm: React.FC<Props> = ({children, InputList, updatedValues }: Props) => {
+    const [values, setValues] = useState<{ title: string, value: string }[]>([])
+
+    useEffect(() => {
+        const itemsArray = []
+        for (let i = 0; i < InputList.length; i++) {
+            const element = InputList[i];
+            itemsArray.push({
+                title: element.title,
+                value: '',
+            })  
+        }
+        setValues(itemsArray);
+    }, [])
+
+    const setValue = (e: string, item: { title: string; placeholder: string }) => {
+        for (let i = 0; i < values.length; i++) {
+            const element = values[i];
+            if ( element.title == item.title ) {
+                element.value = e;
+                updatedValues(values);
+                return;
+            }
+        }
+    }
 
     const ListItems = InputList.map(item => {
+
         return (
-            <View>
+            <View key={item.title}>
                 <Text style={[globalStyles.title, { color: DK_PURPLE }]}>{item.title}</Text>
                 <TextInput
                 style={styles.textInputBody}
-                // onChangeText={handleChange(input)}
+                onChangeText={(e) => setValue(e, item)}
                 placeholder={item.placeholder}
-                // value={}
                 />
                 <View style={{ height: 15 }} />
             </View>
