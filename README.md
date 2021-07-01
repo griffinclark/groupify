@@ -54,7 +54,10 @@ check that you are in the amplify production environment and all backend resours
 - after the build has built, download it from the url provided
 - upload build to transporter and hit deliver
 
-### for android 
+### for android
+- run `expo push:android:show`
+- if you don't see FCM API key listed, contact jquach@munchkinlabs.us for the key
+- run `expo push:android:upload --api-key <your-token-here>`, replacing `<your-token-here>` with the key
 - in app.json go to android > versionCode and increment that number
 - run `expo build:android -t app-bundle`
 
