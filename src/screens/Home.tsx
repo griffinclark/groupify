@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { Event } from '../res/dataModels';
 import { getAllUserEvents } from './../res/storageFunctions';
+import { registerForPushNotificationsAsync } from '../res/notifications';
 import { Auth } from 'aws-amplify';
 import { Screen, Button, NavButton } from '../atoms/AtomsExports';
 import { DataDisplay } from '../organisms/OrganismsExports';
@@ -30,6 +31,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [feedData, setFeedData] = useState<Event[]>([]);
 
   useEffect(() => {
+    registerForPushNotificationsAsync();
     getUserEvents();
   }, [route.params]);
 
