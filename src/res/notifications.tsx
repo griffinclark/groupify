@@ -35,3 +35,28 @@ export const registerForPushNotificationsAsync = async (): Promise<void> => {
   }
 };
 
+export const sendPushNotification = async (
+  expoPushToken: string,
+  title: string,
+  body: string,
+  data: Record<string, unknown>,
+): Promise<void> => {
+  const message = {
+    to: expoPushToken,
+    sound: 'default',
+    title: title,
+    body: body,
+    data: data,
+  };
+  console.log(JSON.stringify(message));
+
+  await fetch('https://exp.host/--/api/v2/push/send', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(message),
+  });
+};

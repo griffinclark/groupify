@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Event, Contact } from '../res/dataModels';
 import { storeUserEvent } from '../res/storageFunctions';
+import { sendPushNotification } from '../res/notifications';
 import { API } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Auth } from 'aws-amplify';
@@ -83,6 +84,8 @@ ${event.description} \
     try {
       const event: Event = route.params.data.eventData;
       await pushEvent(event.friends, message);
+      // TODO: Change line below to send notifications to all invitees, get invitees expo push tokens from backend
+      // sendPushNotification('ExponentPushToken', 'title', 'body', { data: 'hello' });
       await storeUserEvent(event);
       navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
     } catch (err) {
