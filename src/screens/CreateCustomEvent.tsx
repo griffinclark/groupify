@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import uuid from 'uuid';
-import { Screen, NavButton, FormButton } from '../atoms/AtomsExports';
+import { Screen, NavButton, FormButton, Title } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { MeepForm } from '../atoms/MeepForm';
 
@@ -41,7 +41,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
     });
   };
 
-  const inputFields: { title: string; placeholder: string }[] = [
+  const inputFields: { title: string; placeholder: string; settings?: string }[] = [
     {
       title: 'Event Name',
       placeholder: '',
@@ -49,10 +49,12 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
     {
       title: 'Event Date',
       placeholder: 'MM/DD/YYYY',
+      settings: 'date',
     },
     {
       title: 'Event Time',
       placeholder: 'H:MM PM',
+      settings: 'time',
     },
     {
       title: 'Event Location',
@@ -80,6 +82,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
       <Navbar>
         <NavButton onPress={() => navigation.navigate('Home', {})} title="Back" />
       </Navbar>
+      <Title>Create Event</Title>
       <MeepForm InputList={inputFields} updatedValues={(value) => setValues(value)}>
         <FormButton title="Invite Friends" onPress={() => onFormSubmit(updatedValues)} />
       </MeepForm>
