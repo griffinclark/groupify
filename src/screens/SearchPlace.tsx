@@ -15,8 +15,7 @@ interface Props {
   };
 }
 
-const GOOGLE_PLACES_API_KEY = 'AIzaSyBr9OxC0pDU3nICMQDfSjnJ777vnZfsNww'; // replace with MunchkinLabs API key
-// Also add API key to app.json config before building
+const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
 interface GooglePlaceDetailExtended extends GooglePlaceDetail {
   rating: number;

@@ -26,7 +26,7 @@
       },
       "buildNumber": "1.0.1",
       "config": {
-        "googleMapsApiKey": "AIzaSyAV06lvUXnsUCgy1P9CPAH-Zi6FW7qqS80"
+        "googleMapsApiKey": "AIzaSyChCbEsnEsDQ3qJklY72r9PSTNMuRnY7Rw"
       }
     },
     "android": {
@@ -34,7 +34,7 @@
       "versionCode": 1,
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyBMlUNco0OJ4GtGmGuF3GwFnuMsRogKFfM"
+          "apiKey": "AIzaSyChCbEsnEsDQ3qJklY72r9PSTNMuRnY7Rw"
         }
       }
     },
