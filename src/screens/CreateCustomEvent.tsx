@@ -11,12 +11,11 @@ interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
-  endpointUID: string;
+  route: { params: { title: string; address: string } };
 }
 
-export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
+export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props) => {
   const onFormSubmit = (values: listInputProps['values']) => {
-    console.log('Submit');
     navigation.navigate('SelectFriends', {
       data: {
         eventData: {
@@ -88,14 +87,14 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
   return (
     <Screen>
       <Navbar>
-        <NavButton onPress={() => navigation.navigate('Home', {})} title="Back" />
+        <NavButton onPress={() => navigation.navigate('SearchPlace', {})} title="Back" />
       </Navbar>
       <Formik
         initialValues={{
-          eventName: '',
+          eventName: route.params.title ? route.params.title : '',
           eventDate: '',
           eventTime: '',
-          eventLocation: '',
+          eventLocation: route.params.address ? route.params.address : '',
           eventDescription: '',
         }}
         onSubmit={onFormSubmit}

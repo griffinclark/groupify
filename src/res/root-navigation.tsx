@@ -10,6 +10,7 @@ import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
 import { SendMessage } from '../screens/SendMessage';
 import { Contact } from './dataModels';
+import { SearchPlace } from '../screens/SearchPlace';
 
 export type RoutePropParams = {
   params: {
@@ -61,6 +62,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps)
         <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
         <Stack.Screen name="SendMessage" component={SendMessage} options={{ headerShown: false }} />
+        <Stack.Screen name="SearchPlace" component={SearchPlace} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
