@@ -1,6 +1,6 @@
 {
   "auth": {
-    "Meep": {
+    "meep60c88366": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -28,11 +28,32 @@
           ]
         }
       ]
+    },
+    "meepApi": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authmeep60c88366"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
     }
   },
   "storage": {
     "s383a7684a": {
       "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "analytics": {
+    "meep": {
+      "service": "Pinpoint",
       "providerPlugin": "awscloudformation"
     }
   }

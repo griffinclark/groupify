@@ -8,7 +8,7 @@ interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
-  endpointUID: string;
+  route: { params: { title: string; address: string } };
 }
 
 export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
@@ -80,7 +80,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
   return (
     <Screen>
       <Navbar>
-        <NavButton onPress={() => navigation.navigate('Home', {})} title="Back" />
+        <NavButton onPress={() => navigation.navigate('SearchPlace', {})} title="Back" />
       </Navbar>
       <Title>Create Event</Title>
       <MeepForm InputList={inputFields} updatedValues={(value) => setValues(value)}>
