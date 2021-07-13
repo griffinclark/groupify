@@ -1,17 +1,5 @@
-type EventDetail @model @auth(rules: [{ allow: owner, queries: null }]) {
-  id: ID!
-  title: String!
-  creator: String!
-  desc: String!
-  location: String!
-  date: String!
-  createdAt: String!
-  invitees: [Invitee] @connection(name: "eventInvitees")
-}
-
-type Invitee @model @auth(rules: [{ allow: owner, queries: null }]) {
+type User @model {
   id: ID!
   name: String!
-  status: Boolean!
-  event: EventDetail @connection(name: "eventInvitees")
+  phoneNumber: AWSPhone!
 }
