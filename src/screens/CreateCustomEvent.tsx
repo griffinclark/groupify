@@ -2,7 +2,7 @@ import { Formik, FormikValues } from 'formik';
 import React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { globalStyles } from '../res/styles/GlobalStyles';
-import { DK_PURPLE, GREY_5, WHITE } from '../res/styles/Colors';
+import { DK_PURPLE, WHITE } from '../res/styles/Colors';
 import uuid from 'uuid';
 import { Title, Screen, NavButton, FormButton } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
@@ -102,7 +102,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
         {({ handleChange, handleSubmit, values }) => (
           <>
             <View style={styles.formContainer}>
-              <Title>New Event</Title>
+              <Title>New Plan</Title>
               {listInputField(handleChange, values, 'eventName')}
               {listInputField(handleChange, values, 'eventDate')}
               {listInputField(handleChange, values, 'eventTime')}
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   formContainer: {
-    backgroundColor: GREY_5,
+    backgroundColor: WHITE,
     borderRadius: 10,
     margin: 10,
     padding: 20,

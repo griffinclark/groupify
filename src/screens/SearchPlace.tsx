@@ -5,7 +5,7 @@ import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { v4 as uuidv4 } from 'uuid';
-import { Navbar, PlaceCard } from '../molecules/MoleculesExports';
+import { PlaceCard } from '../molecules/MoleculesExports';
 import { Screen, NavButton } from '../atoms/AtomsExports';
 import { LT_PURPLE } from '../res/styles/Colors';
 
@@ -65,6 +65,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
           if (location === null) {
             location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Low });
           }
+          console.log(location);
           setUserLocation({
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -83,7 +84,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
   }, []);
 
   const onResultPress = async (data: GooglePlaceData, detail: GooglePlaceDetail | null) => {
-    // console.log(detail);
+    console.log(detail);
     const moreDetails = detail as GooglePlaceDetailExtended;
     setSessionToken(uuidv4());
     if (detail) {
@@ -147,7 +148,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
 origins=${origin}
 &destinations=place_id:${destination}
 &key=${GOOGLE_PLACES_API_KEY}
-&mode=${mode}
+&mode='${mode}'
 &units=${units}`,
     );
     const json = await response.json();
@@ -160,7 +161,7 @@ origins=${origin}
   };
 
   const onPoiPress = (poi: POI) => {
-    // console.log(poi);
+    console.log(poi);
     // TODO: Change marker to POI
   };
 
@@ -170,10 +171,6 @@ origins=${origin}
 
   return (
     <Screen>
-      <Navbar>
-        <NavButton onPress={() => navigation.navigate('Home', {})} title="Back" />
-        <NavButton onPress={() => navigation.navigate('CreateCustomEvent', {})} title="Skip" />
-      </Navbar>
       {/* TODO: Show categories */}
       {/* TODO: Show multiple markers */}
       <MapView
@@ -181,15 +178,17 @@ origins=${origin}
         showsUserLocation={true}
         region={region}
         onPoiClick={(event) => onPoiPress(event.nativeEvent)}
-        onMarkerPress={(event) => onMarkerPress()}
+        onMarkerPress={() => onMarkerPress()}
         style={styles.map}
       >
         {mapMarker ? mapMarker : null}
       </MapView>
-      <View style={styles.searchBarContainer}>
-        {/* X button on the right to clear input field */}
+      <View style={styles.navbar}>
+        <NavButton onPress={() => navigation.navigate('Home', {})} title="Back" />
+        <NavButton onPress={() => navigation.navigate('CreateCustomEvent', {})} title="next" />
+        <View style={{ padding: 10 }} />
         <GooglePlacesAutocomplete
-          placeholder="Search here"
+          placeholder="Search"
           query={{
             key: GOOGLE_PLACES_API_KEY,
             sessiontoken: sessionToken,
@@ -202,6 +201,7 @@ origins=${origin}
           enablePoweredByContainer={false}
         />
       </View>
+      <View style={styles.searchBarContainer}>{/* X button on the right to clear input field */}</View>
       {placeCard ? placeCard : null}
     </Screen>
   );
@@ -211,7 +211,9 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     position: 'absolute',
     marginTop: 85,
-    marginLeft: 15,
+    marginLeft: '10%',
+    marginRight: '10%',
+    alignItems: 'center',
     width: '80%',
   },
   placeCard: {
@@ -227,6 +229,16 @@ const styles = StyleSheet.create({
   },
   map: {
     width: '100%',
-    height: '90.5%',
+    height: '100%',
+  },
+  navbar: {
+    position: 'absolute',
+    top: 50,
+    paddingHorizontal: 5,
+    display: 'flex',
+    alignSelf: 'center',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
