@@ -65,7 +65,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
           if (location === null) {
             location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Low });
           }
-          console.log(location);
+          // console.log(location);
           setUserLocation({
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -84,7 +84,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
   }, []);
 
   const onResultPress = async (data: GooglePlaceData, detail: GooglePlaceDetail | null) => {
-    console.log(detail);
+    // console.log(detail);
     const moreDetails = detail as GooglePlaceDetailExtended;
     setSessionToken(uuidv4());
     if (detail) {
@@ -120,7 +120,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
       const distanceInfo = await getDistanceAndDuration(
         `${userLocation.latitude},${userLocation.longitude}`,
         detail.place_id,
-      );
+      ).catch((error) => console.log(error));
       setPlaceCard(
         <PlaceCard
           style={{ height: height, ...styles.placeCard }}
@@ -129,8 +129,8 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
           rating={moreDetails.rating ? moreDetails.rating : undefined}
           userRatings={moreDetails.user_ratings_total ? moreDetails.user_ratings_total : undefined}
           priceLevel={moreDetails.price_level ? moreDetails.price_level : undefined}
-          distance={distanceInfo.distance}
-          duration={distanceInfo.duration}
+          distance={distanceInfo ? distanceInfo.distance : undefined}
+          duration={distanceInfo ? distanceInfo.duration : undefined}
           openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
@@ -148,7 +148,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
 origins=${origin}
 &destinations=place_id:${destination}
 &key=${GOOGLE_PLACES_API_KEY}
-&mode='${mode}'
+&mode=${mode}
 &units=${units}`,
     );
     const json = await response.json();
@@ -161,7 +161,7 @@ origins=${origin}
   };
 
   const onPoiPress = (poi: POI) => {
-    console.log(poi);
+    // console.log(poi);
     // TODO: Change marker to POI
   };
 

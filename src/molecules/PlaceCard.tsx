@@ -8,8 +8,8 @@ interface PlaceCardProps {
   style?: StyleProp<ViewStyle>;
   name: string;
   address: string;
-  distance: string;
-  duration: string;
+  distance?: string;
+  duration?: string;
   rating?: number;
   userRatings?: number;
   priceLevel?: number;

@@ -3324,6 +3324,16 @@
     strip-ansi "^5.2.0"
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
+<<<<<<< HEAD
+=======
+
+"@react-native-community/datetimepicker@3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-3.0.4.tgz#ad3efa90fab78fc3c0710abf3cb06d2976603140"
+  integrity sha512-IsBkemz1XYubH5twfQPC/xleZdILA5SEUaLJ2C86IbnIOctb6suk8tB6uT9VxQkCsw4zjkrlqt9p9LGx9DJ97w==
+  dependencies:
+    invariant "^2.2.4"
+>>>>>>> 61a3c70bd3a9021ac0501c350543cbf8fc3901ca
 
 "@react-native-community/netinfo@5.9.7":
   version "5.9.7"
@@ -4301,7 +4311,11 @@ big-integer@^1.6.44:
 
 bindings@^1.5.0:
   version "1.5.0"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.5.0.tgz#10353c9e945334bc0511a6d90b38fbc7c9c504df"
+=======
+  resolved "https://registry.npmjs.org/bindings/-/bindings-1.5.0.tgz"
+>>>>>>> 61a3c70bd3a9021ac0501c350543cbf8fc3901ca
   integrity sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
   dependencies:
     file-uri-to-path "1.0.0"
@@ -6159,7 +6173,11 @@ fs.realpath@^1.0.0:
 
 fsevents@^1.2.7:
   version "1.2.13"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.13.tgz#f325cb0455592428bcf11b383370ef70e3bfcc38"
+=======
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-1.2.13.tgz"
+>>>>>>> 61a3c70bd3a9021ac0501c350543cbf8fc3901ca
   integrity sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==
   dependencies:
     bindings "^1.5.0"
@@ -6167,7 +6185,11 @@ fsevents@^1.2.7:
 
 fsevents@^2.1.2:
   version "2.3.2"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
+=======
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
+>>>>>>> 61a3c70bd3a9021ac0501c350543cbf8fc3901ca
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
 
 function-bind@^1.1.1:
@@ -8354,7 +8376,11 @@ mute-stream@0.0.7:
 
 nan@^2.12.1:
   version "2.14.2"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
+=======
+  resolved "https://registry.npmjs.org/nan/-/nan-2.14.2.tgz"
+>>>>>>> 61a3c70bd3a9021ac0501c350543cbf8fc3901ca
   integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
 
 nanoid@^3.1.15:
@@ -9174,7 +9200,11 @@ qs@~6.5.2:
 
 qs@~6.9.1:
   version "6.9.6"
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/qs/-/qs-6.9.6.tgz"
+=======
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.6.tgz#26ed3c8243a431b2924aca84cc90471f35d5a0ee"
+>>>>>>> 61a3c70bd3a9021ac0501c350543cbf8fc3901ca
   integrity sha512-TIRk4aqYLNoJUbd+g2lEdz5kLWIuTMRagAXxl78Q0RiVjAOugHmeKNGdd3cwo/ktpf9aL9epCfFqWDEKysUlLQ==
 
 query-string@^6.13.6:
@@ -9252,6 +9282,14 @@ react-native-contacts@^6.0.5:
   resolved "https://registry.npmjs.org/react-native-contacts/-/react-native-contacts-6.0.5.tgz"
   integrity sha512-2BPW1bODJPnKbi/Wr2+m43hlrxcYrzMkWVAre3nMwqekSrsapMu/iSpQbxcB3Ia8cvBNH6Cu2tSqGpqY4Lc/lg==
 
+<<<<<<< HEAD
+=======
+react-native-date-picker@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-3.3.2.tgz#1e08ae1793112510cd19eaca900b3be3b21c7339"
+  integrity sha512-iLlze62sBPwHXaBz69eXPy8cA5vXWV21UaDflQ6TECDhOOQ5HTeDXqSHrQFNPqsYwfmHADGiQdKRnzRy5st2VA==
+
+>>>>>>> 61a3c70bd3a9021ac0501c350543cbf8fc3901ca
 react-native-elements@^3.4.1:
   version "3.4.1"
   resolved "https://registry.npmjs.org/react-native-elements/-/react-native-elements-3.4.1.tgz"
@@ -9285,7 +9323,11 @@ react-native-get-random-values@^1.4.0:
 
 react-native-google-places-autocomplete@^2.2.0:
   version "2.2.0"
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-2.2.0.tgz"
+=======
+  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-2.2.0.tgz#8471515cc4c2db07e7c33c2acbebf4bc79ebdac3"
+>>>>>>> 61a3c70bd3a9021ac0501c350543cbf8fc3901ca
   integrity sha512-Kb1RmBLWTVsb4BKlAea5feZGr28EMFRUzqOQ4nenK3h+ACAb0B9IFpJZARKBn7yluRhK0v6/pDb8ulJB0RKxrQ==
   dependencies:
     lodash.debounce "^4.0.8"
@@ -9299,7 +9341,11 @@ react-native-iphone-x-helper@^1.3.0:
 
 react-native-maps@0.27.1:
   version "0.27.1"
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/react-native-maps/-/react-native-maps-0.27.1.tgz"
+=======
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
+>>>>>>> 61a3c70bd3a9021ac0501c350543cbf8fc3901ca
   integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
 
 react-native-ratings@^7.3.0:
