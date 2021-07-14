@@ -19,6 +19,7 @@ invitees: [Invitee] @connection(name: "planInvitees")
 type Invitee @model @auth(rules: [{ allow: owner, queries: null }]) {
   id: ID!
   name: String!
+   phoneNumber: AWSPhone!
   status: Boolean!
   pushToken: String!
   plan: planDetail @connection(name: "planInvitees")
