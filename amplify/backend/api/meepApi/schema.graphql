@@ -2,4 +2,25 @@ type User @model {
   id: ID!
   name: String!
   phoneNumber: AWSPhone!
+  pushToken: String!
 }
+
+type PlanDetail @model @auth(rules: [{allow: owner, queries: null }]) {
+id: ID!
+title: String!
+creator: String!
+desc: String!
+location: String!
+date: String!
+createdAt: String!
+invitees: [Invitee] @connection(name: "planInvitees")
+}
+
+type Invitee @model @auth(rules: [{ allow: owner, queries: null }]) {
+  id: ID!
+  name: String!
+  status: Boolean!
+  pushToken: String!
+  plan: planDetail @connection(name: "planInvitees")
+}
+
