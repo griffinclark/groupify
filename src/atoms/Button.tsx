@@ -43,7 +43,7 @@ export const buttonStyles = StyleSheet.create({
     fontSize: 16,
   },
   enabledButton: {
-    backgroundColor: LT_PURPLE,
+    backgroundColor: '#32A59F',
     color: WHITE,
   },
   disabledButton: {

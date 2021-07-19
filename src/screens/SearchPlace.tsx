@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView, { LatLng, Marker, Point, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { v4 as uuidv4 } from 'uuid';
 import { PlaceCard } from '../molecules/MoleculesExports';
-import { Screen, NavButton } from '../atoms/AtomsExports';
-import { LT_PURPLE } from '../res/styles/Colors';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { mapStyles } from '../res/styles/MapStyles';
 
 interface Props {
   navigation: {
@@ -65,7 +65,6 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
           if (location === null) {
             location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Low });
           }
-          // console.log(location);
           setUserLocation({
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -84,7 +83,6 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
   }, []);
 
   const onResultPress = async (data: GooglePlaceData, detail: GooglePlaceDetail | null) => {
-    // console.log(detail);
     const moreDetails = detail as GooglePlaceDetailExtended;
     setSessionToken(uuidv4());
     if (detail) {
@@ -113,9 +111,9 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
         if (moreDetails.photos.length > 5) {
           moreDetails.photos = moreDetails.photos.slice(0, 5);
         }
-        height = '40%';
+        height = '45%';
       } else {
-        height = '20%';
+        height = '30%';
       }
       const distanceInfo = await getDistanceAndDuration(
         `${userLocation.latitude},${userLocation.longitude}`,
@@ -123,7 +121,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
       ).catch((error) => console.log(error));
       setPlaceCard(
         <PlaceCard
-          style={{ height: height, ...styles.placeCard }}
+          style={{ height: height }}
           name={detail.name}
           address={detail.formatted_address}
           rating={moreDetails.rating ? moreDetails.rating : undefined}
@@ -134,7 +132,10 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
           openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
-          onButtonPress={() => onButtonPress(detail.name, detail.formatted_address)}
+          onButtonPress={() =>
+            onButtonPress(detail.name, detail.formatted_address, moreDetails.photos[0].photo_reference)
+          }
+          onCloseButtonPress={clearMarkers}
         />,
       );
     }
@@ -143,34 +144,42 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
   const getDistanceAndDuration = async (origin: string, destination: string) => {
     const mode = 'driving';
     const units = 'imperial';
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/distancematrix/json?
-origins=${origin}
-&destinations=place_id:${destination}
-&key=${GOOGLE_PLACES_API_KEY}
-&mode=${mode}
-&units=${units}`,
-    );
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=place_id:${destination}&key=${GOOGLE_PLACES_API_KEY}&mode=${mode}&units=${units}`;
+    const response = await fetch(url);
     const json = await response.json();
     return { distance: json.rows[0].elements[0].distance.text, duration: json.rows[0].elements[0].duration.text };
   };
 
-  const onButtonPress = (title: string, address: string) => {
-    navigation.navigate('CreateCustomEvent', { title, address });
+  const onButtonPress = (title: string, address: string, photo: string) => {
+    navigation.navigate('CreateCustomEvent', {
+      data: {
+        eventData: {
+          title: title,
+          location: address,
+          imageURL: photo,
+        },
+      },
+    });
     // pass place id
   };
 
-  const onPoiPress = (poi: POI) => {
-    // console.log(poi);
-    // TODO: Change marker to POI
+  const onPoiPress = async (poi: POI) => {
+    const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${poi.placeId}&key=${GOOGLE_PLACES_API_KEY}`;
+    const response = await fetch(search);
+    const detail = await response.json();
+    onResultPress(poi, detail.result);
   };
 
-  const onMarkerPress = () => {
-    // Show place card
+  const onMarkerPress = async (marker: Marker) => {
+    console.log(marker);
+  };
+  const clearMarkers = () => {
+    setPlaceCard(undefined);
+    setMapMarker(undefined);
   };
 
   return (
-    <Screen>
+    <View style={styles.container}>
       {/* TODO: Show categories */}
       {/* TODO: Show multiple markers */}
       <MapView
@@ -178,14 +187,15 @@ origins=${origin}
         showsUserLocation={true}
         region={region}
         onPoiClick={(event) => onPoiPress(event.nativeEvent)}
-        onMarkerPress={() => onMarkerPress()}
+        onMarkerPress={(event) => onMarkerPress(event.nativeEvent)}
         style={styles.map}
+        customMapStyle={mapStyles}
+        onPress={clearMarkers}
       >
         {mapMarker ? mapMarker : null}
       </MapView>
       <View style={styles.navbar}>
-        <NavButton onPress={() => navigation.navigate('Home', {})} title="Back" />
-        <NavButton onPress={() => navigation.navigate('CreateCustomEvent', {})} title="next" />
+        <Icon name="arrow-back-outline" type="ionicon" size={40} onPress={() => navigation.navigate('Home', {})} />
         <View style={{ padding: 10 }} />
         <GooglePlacesAutocomplete
           placeholder="Search"
@@ -199,11 +209,16 @@ origins=${origin}
           onPress={onResultPress}
           onFail={(error) => console.log(error)}
           enablePoweredByContainer={false}
+          styles={{
+            textInput: {
+              borderRadius: 15,
+            },
+          }}
         />
       </View>
       <View style={styles.searchBarContainer}>{/* X button on the right to clear input field */}</View>
       {placeCard ? placeCard : null}
-    </Screen>
+    </View>
   );
 };
 
@@ -216,20 +231,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '80%',
   },
-  placeCard: {
-    flex: 1,
-    flexDirection: 'column',
-    position: 'absolute',
-    bottom: 0,
-    left: '1%',
-    width: '100%',
-    backgroundColor: 'white',
-    borderWidth: 5,
-    borderColor: LT_PURPLE,
-  },
   map: {
-    width: '100%',
-    height: '100%',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
   navbar: {
     position: 'absolute',
@@ -240,5 +244,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  container: {
+    flex: 1,
   },
 });
