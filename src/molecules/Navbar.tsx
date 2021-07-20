@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    marginTop: 20,
     paddingBottom: 10,
   },
 });

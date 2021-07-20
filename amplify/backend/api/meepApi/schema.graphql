@@ -1,27 +1,55 @@
-type User @model {
+type User @model @auth(rules: [{allow: public}]) @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber") @key(name: "byEmail", fields: ["email"], queryField: "usersByEmail") @key(name: "byName", fields: ["name"], queryField: "usersByName") {
+  id: ID!
+  phoneNumber: AWSPhone!
+  email: AWSEmail!
+  name: String!
+  pushToken: String!
+  friends: [ID]
+  userContacts: [UserContact] @connection(keyName: "byUser", fields: ["id"])
+  availability: Availability @connection
+}
+
+type UserContact @model @auth(rules: [{allow: public}]) @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber") @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  phoneNumber: String!
+  name: String!
+  userID: ID!
+}
+
+type Availability @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Sunday: [AWSTime]
+  Monday: [AWSTime]
+  Tuesday: [AWSTime]
+  Wednesday: [AWSTime]
+  Thursday: [AWSTime]
+  Friday: [AWSTime]
+  Saturday: [AWSTime]
+}
+
+type Plan @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String!
+  description: String
+  location: String
+  placeID: String
+  date: AWSDate
+  time: AWSTime
+  invitees: [Invitee] @connection(keyName: "byPlan", fields: ["id"])
+  creator: ID!
+}
+
+type Invitee @model @auth(rules: [{allow: public}]) @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "inviteeByPhoneNUmber") @key(name: "byPlan", fields: ["planID"]) {
   id: ID!
   name: String!
   phoneNumber: AWSPhone!
-  pushToken: String!
+  status: Status!
+  planID: ID!
 }
 
-type PlanDetail @model  {
-id: ID!
-title: String!
-creator: String!
-desc: String!
-location: String!
-date: String!
-createdAt: String!
-invitees: [Invitee] @connection(name: "planInvitees")
+enum Status {
+  PENDING
+  ACCEPTED
+  DECLINED
 }
-
-type Invitee @model  {
-  id: ID!
-  name: String!
-   phoneNumber: AWSPhone!
-  status: Boolean!
-  pushToken: String!
-  plan: PlanDetail @connection(name: "planInvitees")
-}
-
+ 

@@ -33,6 +33,7 @@ export const App: React.FC = () => {
     };
     checkAuth();
   }, []);
+
   return (
     <View style={globalStyles.defaultRootContainer}>
       {initalScreen == '' && <Text>Loading...</Text>}

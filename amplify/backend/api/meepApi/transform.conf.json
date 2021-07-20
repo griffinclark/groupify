@@ -6,5 +6,8 @@
             "ConflictHandler": "AUTOMERGE",
             "ConflictDetection": "VERSION"
         }
+    },
+    "StackMapping": {
+        "QueryusersByPhoneNumberResolver": "User"
     }
 }

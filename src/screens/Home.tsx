@@ -7,8 +7,7 @@ import { Screen, Button, NavButton } from '../atoms/AtomsExports';
 import { DataDisplay } from '../organisms/OrganismsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { Auth, DataStore } from 'aws-amplify';
-import { User } from '../models';
+import { Auth } from 'aws-amplify';
 
 interface Props {
   navigation: {
@@ -32,17 +31,10 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     // (async () => console.log(await Auth.currentUserInfo()))();
-    // (async () =>
-    //   await DataStore.save(
-    //     new User({
-    //       name: 'tom',
-    //       phoneNumber: '626-244-9783',
-    //     }),
-    //   ))();
-    (async () => {
-      const users = await DataStore.query(User);
-      console.log(users);
-    })();
+    // (async () => {
+    //   const users = await DataStore.query(User);
+    //   console.log(users);
+    // })();
     getUserEvents();
   }, [route.params]);
 
@@ -66,6 +58,12 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
               }
             }}
             title="Log Out"
+          />
+          <NavButton
+            onPress={() => {
+              navigation.navigate('SetAvailability');
+            }}
+            title="Edit Availability"
           />
           <NavButton
             onPress={() => {

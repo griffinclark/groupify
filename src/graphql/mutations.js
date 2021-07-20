@@ -8,13 +8,46 @@ export const createUser = /* GraphQL */ `
   ) {
     createUser(input: $input, condition: $condition) {
       id
-      name
       phoneNumber
+      email
+      name
+      pushToken
+      friends
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
+      userContacts {
+        items {
+          id
+          phoneNumber
+          name
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      availability {
+        id
+        Sunday
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -25,13 +58,46 @@ export const updateUser = /* GraphQL */ `
   ) {
     updateUser(input: $input, condition: $condition) {
       id
-      name
       phoneNumber
+      email
+      name
+      pushToken
+      friends
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
+      userContacts {
+        items {
+          id
+          phoneNumber
+          name
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      availability {
+        id
+        Sunday
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -42,8 +108,329 @@ export const deleteUser = /* GraphQL */ `
   ) {
     deleteUser(input: $input, condition: $condition) {
       id
+      phoneNumber
+      email
+      name
+      pushToken
+      friends
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      userContacts {
+        items {
+          id
+          phoneNumber
+          name
+          userID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      availability {
+        id
+        Sunday
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const createUserContact = /* GraphQL */ `
+  mutation CreateUserContact(
+    $input: CreateUserContactInput!
+    $condition: ModelUserContactConditionInput
+  ) {
+    createUserContact(input: $input, condition: $condition) {
+      id
+      phoneNumber
+      name
+      userID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUserContact = /* GraphQL */ `
+  mutation UpdateUserContact(
+    $input: UpdateUserContactInput!
+    $condition: ModelUserContactConditionInput
+  ) {
+    updateUserContact(input: $input, condition: $condition) {
+      id
+      phoneNumber
+      name
+      userID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUserContact = /* GraphQL */ `
+  mutation DeleteUserContact(
+    $input: DeleteUserContactInput!
+    $condition: ModelUserContactConditionInput
+  ) {
+    deleteUserContact(input: $input, condition: $condition) {
+      id
+      phoneNumber
+      name
+      userID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createAvailability = /* GraphQL */ `
+  mutation CreateAvailability(
+    $input: CreateAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    createAvailability(input: $input, condition: $condition) {
+      id
+      Sunday
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateAvailability = /* GraphQL */ `
+  mutation UpdateAvailability(
+    $input: UpdateAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    updateAvailability(input: $input, condition: $condition) {
+      id
+      Sunday
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteAvailability = /* GraphQL */ `
+  mutation DeleteAvailability(
+    $input: DeleteAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    deleteAvailability(input: $input, condition: $condition) {
+      id
+      Sunday
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createPlan = /* GraphQL */ `
+  mutation CreatePlan(
+    $input: CreatePlanInput!
+    $condition: ModelPlanConditionInput
+  ) {
+    createPlan(input: $input, condition: $condition) {
+      id
+      title
+      description
+      location
+      placeID
+      date
+      time
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const updatePlan = /* GraphQL */ `
+  mutation UpdatePlan(
+    $input: UpdatePlanInput!
+    $condition: ModelPlanConditionInput
+  ) {
+    updatePlan(input: $input, condition: $condition) {
+      id
+      title
+      description
+      location
+      placeID
+      date
+      time
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const deletePlan = /* GraphQL */ `
+  mutation DeletePlan(
+    $input: DeletePlanInput!
+    $condition: ModelPlanConditionInput
+  ) {
+    deletePlan(input: $input, condition: $condition) {
+      id
+      title
+      description
+      location
+      placeID
+      date
+      time
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const createInvitee = /* GraphQL */ `
+  mutation CreateInvitee(
+    $input: CreateInviteeInput!
+    $condition: ModelInviteeConditionInput
+  ) {
+    createInvitee(input: $input, condition: $condition) {
+      id
       name
       phoneNumber
+      status
+      planID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateInvitee = /* GraphQL */ `
+  mutation UpdateInvitee(
+    $input: UpdateInviteeInput!
+    $condition: ModelInviteeConditionInput
+  ) {
+    updateInvitee(input: $input, condition: $condition) {
+      id
+      name
+      phoneNumber
+      status
+      planID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteInvitee = /* GraphQL */ `
+  mutation DeleteInvitee(
+    $input: DeleteInviteeInput!
+    $condition: ModelInviteeConditionInput
+  ) {
+    deleteInvitee(input: $input, condition: $condition) {
+      id
+      name
+      phoneNumber
+      status
+      planID
       _version
       _deleted
       _lastChangedAt

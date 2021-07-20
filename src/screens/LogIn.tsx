@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { Contact } from '../res/dataModels';
 import { Navbar } from '../molecules/MoleculesExports';
 import { Title, NavButton, Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import { User } from '../models';
 
 interface Props {
   navigation: {
@@ -56,12 +58,37 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
     return phoneNumber;
   };
 
+  const registerUser = async () => {
+    const userInfo = await Auth.currentUserInfo();
+    const user = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
+    console.log(user);
+    if (user.length > 0) {
+      console.log('Existing User: Updating users pushToken');
+      // TODO: Once Notifications branch is merged, update the user's push token
+    } else {
+      console.log('New User: Adding user to database');
+      // TODO: Once Notifications branch is merged, store the user's expoPushToken
+      const newUser = await DataStore.save(
+        new User({
+          phoneNumber: userInfo.attributes.phone_number,
+          email: userInfo.attributes.email,
+          name: userInfo.attributes.name,
+          pushToken: 'null',
+          friends: [],
+        }),
+      );
+      console.log('Created new user:');
+      console.log(newUser);
+    }
+  };
+
   const logIn = async () => {
     console.log(formatPhone);
     setError(undefined);
     try {
       await Auth.signIn(formatPhone, password);
       console.log('successfully signed in');
+      registerUser();
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
         navigation.navigate('ImportContacts');

@@ -2,10 +2,19 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const Status = {
+  "PENDING": "PENDING",
+  "ACCEPTED": "ACCEPTED",
+  "DECLINED": "DECLINED"
+};
 
-
-const { User } = initSchema(schema);
+const { User, UserContact, Availability, Plan, Invitee } = initSchema(schema);
 
 export {
-  User
+  User,
+  UserContact,
+  Availability,
+  Plan,
+  Invitee,
+  Status
 };

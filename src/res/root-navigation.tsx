@@ -9,6 +9,7 @@ import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
 import { SendMessage } from '../screens/SendMessage';
+import { SetAvailability } from '../screens/SetAvailability';
 import { Contact } from './dataModels';
 
 export type RoutePropParams = {
@@ -61,6 +62,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps)
         <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
         <Stack.Screen name="SendMessage" component={SendMessage} options={{ headerShown: false }} />
+        <Stack.Screen name="SetAvailability" component={SetAvailability} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
