@@ -10,7 +10,7 @@ import { globalStyles } from '../res/styles/GlobalStyles';
 
 interface Props {
   navigation: {
-    navigate: (ev: string, a?: { user?: User }) => void;
+    navigate: (ev: string, a?: { userID: string }) => void;
   };
   route: RoutePropParams;
 }
@@ -40,10 +40,10 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
   }, []);
 
   const loadUserAvailability = async () => {
-    const user = route.params.user;
+    const user = await DataStore.query(User, route.params.userID);
     setUser(user);
     // console.log(user);
-    if (user !== undefined && user.availability !== undefined) {
+    if (user && user.availability) {
       console.log('Loading user availability');
       const availability = user.availability;
       if (availability.Sunday !== undefined && availability.Sunday.length === 2) {
@@ -77,6 +77,8 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
       setLoading(false);
       console.log('Finished loading user availability');
     }
+    console.log('No previous availability');
+    setLoading(false);
   };
 
   const timePicker = (time: Date, setTime: React.Dispatch<React.SetStateAction<Date>>) => {
@@ -112,7 +114,7 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
 
   const onSubmit = async () => {
     if (user !== undefined) {
-      if (user.availability !== undefined) {
+      if (user.availability) {
         console.log('Deleting user old availability');
         await DataStore.delete(user.availability);
         console.log('Successfully deleted old availability');
@@ -129,15 +131,15 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
           Saturday: [dateToAWSTime(timeSatStart), dateToAWSTime(timeSatEnd)],
         }),
       );
-      await DataStore.save(
+      const updatedUser = await DataStore.save(
         User.copyOf(user, (updated) => {
           updated.availability = availability;
         }),
       );
       console.log('Successfully updated user availability');
       // console.log(availability);
+      navigation.navigate('Home', { userID: updatedUser.id });
     }
-    navigation.navigate('Home', { user: user });
   };
 
   return (

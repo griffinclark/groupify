@@ -23,7 +23,7 @@ interface Props {
     navigate:
       | ((ev: string, a?: { step?: string; email?: string }) => void)
       | ((ev: string, a?: { data?: { prevAction?: string } }) => void)
-      | ((ev: string, a?: { user: User }) => void);
+      | ((ev: string, a?: { userID: string }) => void);
     push: (ev: string, e: { email: string; step: string }) => void;
   };
   route: RoutePropParams;
@@ -34,17 +34,13 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     (async () => {
-      let user: User | undefined;
-      if (route.params.user) {
-        user = await DataStore.query(User, route.params.user.id);
-      }
-      if (user) {
-        route.params.user = user;
+      if (route.params && route.params.userID) {
+        const user = await DataStore.query(User, route.params.userID);
+        console.log('Current user');
+        console.log(user);
       }
     })();
     getUserEvents();
-    console.log('Current user');
-    console.log(route.params.user);
   }, [route.params]);
 
   const getUserEvents = async () => {
@@ -70,7 +66,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           />
           <NavButton
             onPress={() => {
-              navigation.navigate('SetAvailability', { user: route.params.user });
+              navigation.navigate('SetAvailability', { userID: route.params.userID });
             }}
             title="Edit Availability"
           />

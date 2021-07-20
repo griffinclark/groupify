@@ -20,7 +20,7 @@ interface Props {
     navigate:
       | ((ev: string, a?: { step?: string; phone?: string }) => void)
       | ((ev: string, a?: { data?: { prevAction?: string } }) => void)
-      | ((ev: string, a?: { user?: User }) => void);
+      | ((ev: string, a?: { userID?: string }) => void);
     push: (ev: string, e: { email: string; step: string }) => void;
   };
 }
@@ -62,7 +62,7 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
   const registerUser = async (): Promise<User> => {
     const userInfo = await Auth.currentUserInfo();
     const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
-    console.log(users);
+    // console.log(users);
     if (users.length > 0) {
       console.log('Existing User: Updating users pushToken');
       // TODO: Once Notifications branch is merged, update the user's push token
@@ -96,7 +96,7 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
       if (contacts.length === 0) {
         navigation.navigate('ImportContacts');
       } else {
-        navigation.navigate('Home', { user: user });
+        navigation.navigate('Home', { userID: user.id });
       }
     } catch (err) {
       console.log('error signing in...', err);

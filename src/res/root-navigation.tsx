@@ -11,11 +11,10 @@ import { ImportContacts } from '../screens/ImportContacts';
 import { SendMessage } from '../screens/SendMessage';
 import { SetAvailability } from '../screens/SetAvailability';
 import { Contact } from './dataModels';
-import { User } from '../models';
 
 export type RoutePropParams = {
   params: {
-    user: User;
+    userID: string;
     email: string;
     step: string;
     phone: string;
@@ -43,10 +42,11 @@ export interface StackProps {
 
 interface RootProps {
   initialRoute: string;
+  initialParams?: Record<string, unknown>;
 }
 
 const Stack = createStackNavigator();
-export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps) => {
+export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParams }: RootProps) => {
   console.log('Initial route: ' + initialRoute);
   return (
     <NavigationContainer>
@@ -59,7 +59,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps)
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={Home} initialParams={initialParams} options={{ headerShown: false }} />
         <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }} />
         <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
