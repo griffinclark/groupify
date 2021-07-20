@@ -8,6 +8,8 @@ import { DataDisplay } from '../organisms/OrganismsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { Auth } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
+import { User } from '../models';
 
 interface Props {
   navigation: {
@@ -20,7 +22,8 @@ interface Props {
     };
     navigate:
       | ((ev: string, a?: { step?: string; email?: string }) => void)
-      | ((ev: string, a?: { data?: { prevAction?: string } }) => void);
+      | ((ev: string, a?: { data?: { prevAction?: string } }) => void)
+      | ((ev: string, a?: { user: User }) => void);
     push: (ev: string, e: { email: string; step: string }) => void;
   };
   route: RoutePropParams;
@@ -30,12 +33,18 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [feedData, setFeedData] = useState<Event[]>([]);
 
   useEffect(() => {
-    // (async () => console.log(await Auth.currentUserInfo()))();
-    // (async () => {
-    //   const users = await DataStore.query(User);
-    //   console.log(users);
-    // })();
+    (async () => {
+      let user: User | undefined;
+      if (route.params.user) {
+        user = await DataStore.query(User, route.params.user.id);
+      }
+      if (user) {
+        route.params.user = user;
+      }
+    })();
     getUserEvents();
+    console.log('Current user');
+    console.log(route.params.user);
   }, [route.params]);
 
   const getUserEvents = async () => {
@@ -61,7 +70,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           />
           <NavButton
             onPress={() => {
-              navigation.navigate('SetAvailability');
+              navigation.navigate('SetAvailability', { user: route.params.user });
             }}
             title="Edit Availability"
           />

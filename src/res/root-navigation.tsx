@@ -11,9 +11,11 @@ import { ImportContacts } from '../screens/ImportContacts';
 import { SendMessage } from '../screens/SendMessage';
 import { SetAvailability } from '../screens/SetAvailability';
 import { Contact } from './dataModels';
+import { User } from '../models';
 
 export type RoutePropParams = {
   params: {
+    user: User;
     email: string;
     step: string;
     phone: string;

@@ -2,14 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { DataStore } from '@aws-amplify/datastore';
-import { Auth } from 'aws-amplify';
 import { Availability, User } from '../models';
-import { StackProps } from '../res/root-navigation';
+import { RoutePropParams } from '../res/root-navigation';
 import { Screen, NavButton, Button, Title } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { globalStyles } from '../res/styles/GlobalStyles';
 
-export const SetAvailability: React.FC<StackProps> = ({ navigation }: StackProps) => {
+interface Props {
+  navigation: {
+    navigate: (ev: string, a?: { user?: User }) => void;
+  };
+  route: RoutePropParams;
+}
+
+export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) => {
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(true);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -34,11 +40,9 @@ export const SetAvailability: React.FC<StackProps> = ({ navigation }: StackProps
   }, []);
 
   const loadUserAvailability = async () => {
-    const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
-    const users = await DataStore.query(User, (u) => u.phoneNumber('eq', phoneNumber));
-    setUser(users[0]);
-    const user = users[0];
-    console.log(user);
+    const user = route.params.user;
+    setUser(user);
+    // console.log(user);
     if (user !== undefined && user.availability !== undefined) {
       console.log('Loading user availability');
       const availability = user.availability;
@@ -133,7 +137,7 @@ export const SetAvailability: React.FC<StackProps> = ({ navigation }: StackProps
       console.log('Successfully updated user availability');
       // console.log(availability);
     }
-    navigation?.navigate('Home');
+    navigation.navigate('Home', { user: user });
   };
 
   return (
@@ -142,7 +146,7 @@ export const SetAvailability: React.FC<StackProps> = ({ navigation }: StackProps
         <NavButton
           title="Home"
           onPress={() => {
-            navigation?.navigate('Home');
+            navigation.navigate('Home');
           }}
         />
       </Navbar>
