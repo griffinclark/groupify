@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { DataStore } from '@aws-amplify/datastore';
 import { Auth } from 'aws-amplify';
@@ -11,6 +11,7 @@ import { globalStyles } from '../res/styles/GlobalStyles';
 
 export const SetAvailability: React.FC<StackProps> = ({ navigation }: StackProps) => {
   const [user, setUser] = useState<User>();
+  const [loading, setLoading] = useState(true);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [timeToChange, setTimeToChange] = useState('');
   const [timeSunStart, setTimeSunStart] = useState(new Date('2021-01-01T00:00:00'));
@@ -69,6 +70,7 @@ export const SetAvailability: React.FC<StackProps> = ({ navigation }: StackProps
         setTimeSatStart(new Date(`2021-01-01T${availability.Saturday[0]}`));
         setTimeSatEnd(new Date(`2021-01-01T${availability.Saturday[1]}`));
       }
+      setLoading(false);
       console.log('Finished loading user availability');
     }
   };
@@ -144,31 +146,37 @@ export const SetAvailability: React.FC<StackProps> = ({ navigation }: StackProps
           }}
         />
       </Navbar>
-      <Title>My Availability</Title>
-      <Text style={globalStyles.title}>Sunday:</Text>
-      <Text>From: {renderTimeString('timeSunStart')}</Text>
-      <Text>To: {renderTimeString('timeSunEnd')}</Text>
-      <Text style={globalStyles.title}>Monday:</Text>
-      <Text>From: {renderTimeString('timeMonStart')}</Text>
-      <Text>To: {renderTimeString('timeMonEnd')}</Text>
-      <Text style={globalStyles.title}>Tuesday:</Text>
-      <Text>From: {renderTimeString('timeTuesStart')}</Text>
-      <Text>To: {renderTimeString('timeTuesEnd')}</Text>
-      <Text style={globalStyles.title}>Wednesday:</Text>
-      <Text>From: {renderTimeString('timeWedStart')}</Text>
-      <Text>To: {renderTimeString('timeWedEnd')}</Text>
-      <Text style={globalStyles.title}>Thursday:</Text>
-      <Text>From: {renderTimeString('timeThursStart')}</Text>
-      <Text>To: {renderTimeString('timeThursEnd')}</Text>
-      <Text style={globalStyles.title}>Friday:</Text>
-      <Text>From: {renderTimeString('timeFriStart')}</Text>
-      <Text>To: {renderTimeString('timeFriEnd')}</Text>
-      <Text style={globalStyles.title}>Saturday:</Text>
-      <Text>From: {renderTimeString('timeSatStart')}</Text>
-      <Text>To: {renderTimeString('timeSatEnd')}</Text>
-      {showTimePicker &&
-        eval(`timePicker(${timeToChange}, set${timeToChange.charAt(0).toUpperCase() + timeToChange.slice(1)})`)}
-      <Button title={'Save'} onPress={onSubmit} />
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <View>
+          <Title>My Availability</Title>
+          <Text style={globalStyles.title}>Sunday:</Text>
+          <Text>From: {renderTimeString('timeSunStart')}</Text>
+          <Text>To: {renderTimeString('timeSunEnd')}</Text>
+          <Text style={globalStyles.title}>Monday:</Text>
+          <Text>From: {renderTimeString('timeMonStart')}</Text>
+          <Text>To: {renderTimeString('timeMonEnd')}</Text>
+          <Text style={globalStyles.title}>Tuesday:</Text>
+          <Text>From: {renderTimeString('timeTuesStart')}</Text>
+          <Text>To: {renderTimeString('timeTuesEnd')}</Text>
+          <Text style={globalStyles.title}>Wednesday:</Text>
+          <Text>From: {renderTimeString('timeWedStart')}</Text>
+          <Text>To: {renderTimeString('timeWedEnd')}</Text>
+          <Text style={globalStyles.title}>Thursday:</Text>
+          <Text>From: {renderTimeString('timeThursStart')}</Text>
+          <Text>To: {renderTimeString('timeThursEnd')}</Text>
+          <Text style={globalStyles.title}>Friday:</Text>
+          <Text>From: {renderTimeString('timeFriStart')}</Text>
+          <Text>To: {renderTimeString('timeFriEnd')}</Text>
+          <Text style={globalStyles.title}>Saturday:</Text>
+          <Text>From: {renderTimeString('timeSatStart')}</Text>
+          <Text>To: {renderTimeString('timeSatEnd')}</Text>
+          {showTimePicker &&
+            eval(`timePicker(${timeToChange}, set${timeToChange.charAt(0).toUpperCase() + timeToChange.slice(1)})`)}
+          <Button title={'Save'} onPress={onSubmit} />
+        </View>
+      )}
     </Screen>
   );
 };
