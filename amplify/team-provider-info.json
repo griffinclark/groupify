@@ -15,12 +15,12 @@
       "function": {
         "pushBroadcast": {
           "deploymentBucketName": "amplify-meep-staging-171906-deployment",
-          "s3Key": "amplify-builds/pushBroadcast-48586e634135726d6379-build.zip"
+          "s3Key": "amplify-builds/pushBroadcast-4d617a4a394770477577-build.zip"
         }
       },
       "auth": {
-        "Meep": {},
-        "meep60c88366": {}
+        "meep60c88366": {},
+        "Meep": {}
       }
     }
   },
