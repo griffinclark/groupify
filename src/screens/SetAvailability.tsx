@@ -76,9 +76,10 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
       }
       setLoading(false);
       console.log('Finished loading user availability');
+    } else {
+      console.log('No previous availability');
+      setLoading(false);
     }
-    console.log('No previous availability');
-    setLoading(false);
   };
 
   const timePicker = (time: Date, setTime: React.Dispatch<React.SetStateAction<Date>>) => {

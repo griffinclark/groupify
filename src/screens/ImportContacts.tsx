@@ -41,15 +41,9 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const removeSelectedContact = (contact: Contact) => {
-    let index = 0;
-    for (let i = 0; i < selectedContacts.length; i++) {
-      if (selectedContacts[i].id === contact.id) {
-        index = i;
-        break;
-      }
-    }
+    const index = selectedContacts.findIndex((c) => c.id == contact.id);
     selectedContacts.splice(index, 1);
-    setSelectedContacts(selectedContacts.slice(0));
+    setSelectedContacts(selectedContacts.slice());
   };
 
   const loadContacts = async () => {

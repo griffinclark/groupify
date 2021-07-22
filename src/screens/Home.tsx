@@ -68,13 +68,19 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
             onPress={() => {
               navigation.navigate('SetAvailability', { userID: route.params.userID });
             }}
-            title="Edit Availability"
+            title="Availability"
           />
           <NavButton
             onPress={() => {
               navigation.navigate('ImportContacts');
             }}
-            title="Edit Contacts"
+            title="Contacts"
+          />
+          <NavButton
+            onPress={() => {
+              navigation.navigate('EditFriends', { userID: route.params.userID });
+            }}
+            title="Friends"
           />
         </Navbar>
       </View>
