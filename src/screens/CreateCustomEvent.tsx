@@ -28,6 +28,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     eventLocation: string | undefined;
     eventDescription: string | undefined;
   }>({ eventName: title, eventDate: '', eventTime: '', eventLocation: address, eventDescription: '' });
+
   const onFormSubmit = (values: {
     eventName: string | undefined;
     eventDate: string | undefined;
@@ -35,6 +36,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     eventLocation: string | undefined;
     eventDescription: string | undefined;
   }) => {
+    const image = loadPhoto(photo).props.source.uri;
     navigation.navigate('SelectFriends', {
       data: {
         eventData: {
@@ -44,6 +46,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
           time: values.eventTime,
           location: values.eventLocation,
           description: values.eventDescription,
+          imageURL: image,
         },
       },
     });

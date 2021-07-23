@@ -93,7 +93,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = (props: PlaceCardProps) => {
               ) : null}
               <Text style={styles.placeDetails}>
                 {props.priceLevel ? `${'$'.repeat(props.priceLevel)}   |   ` : ''}
-                {`${props.distance}`}
+                {`${props.distance} away`}
               </Text>
               <Text>
                 <Image
@@ -102,7 +102,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = (props: PlaceCardProps) => {
                   }}
                   style={{ height: 10, width: 14 }}
                 />
-                <Text> {props.duration}</Text>
+                <Text> {`${props.duration} drive`}</Text>
               </Text>
               {props.openNow !== undefined ? (
                 <Text>

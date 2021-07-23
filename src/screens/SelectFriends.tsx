@@ -1,47 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-import { SearchBar } from 'react-native-elements';
-import { FlatList } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
-import { globalStyles } from '../res/styles/GlobalStyles';
 import { Contact } from '../res/dataModels';
-import { DEFAULT_CONTACT_IMAGE, GREY_5 } from '../res/styles/Colors';
 import { getAllImportedContacts } from '../res/storageFunctions';
-import { Navbar, AndroidContactTile } from '../molecules/MoleculesExports';
-import { NavButton, Button, Title, Screen } from '../atoms/AtomsExports';
-import { FriendList } from '../organisms/OrganismsExports';
+import { ContactTile } from '../molecules/MoleculesExports';
+import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
 
 interface Props {
   navigation: {
-    CreateAccount: {
-      step: string;
-      email: string;
-    };
-    params: {
-      Login: string;
-    };
-    navigate: (ev: string, a?: { step?: string; email?: string }) => void;
-    push: (ev: string, e: { email: string; step: string }) => void;
+    navigate: (ev: string, a?: { step?: string }) => void;
   };
   route: RoutePropParams;
-}
-
-enum State {
-  Empty,
-  Loading,
-  Done,
 }
 
 export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => {
   const [friends, setFriends] = useState<Contact[]>([]);
   const [filteredFriends, setFilteredFriends] = useState<Contact[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<Contact[]>([]);
-  const [query, setQuery] = useState<string>('');
-  const [state, setState] = useState<State>(State.Empty);
-
+  const [menuItemSelected, setMenuItemSelected] = useState('friends');
+  const [eventObject, setEventObject] = useState({
+    date: '',
+    description: '',
+    imageURL: '',
+    location: '',
+    time: '',
+    title: '',
+    uuid: '',
+  });
   useEffect(() => {
-    setState(State.Loading);
     loadFriends();
+    setEventObject(route.params.data.eventData);
   }, []);
 
   const addSelectedFriend = (friend: Contact) => {
@@ -64,11 +52,9 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     const importedContacts = await getAllImportedContacts();
     setFriends(importedContacts);
     setFilteredFriends(importedContacts);
-    setState(State.Done);
   };
 
   const searchFriends = (text: string) => {
-    setQuery(text);
     setFilteredFriends(
       friends.filter((friend) => {
         let friendLowercase = '';
@@ -87,77 +73,205 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     item: Contact;
   }
 
-  const renderContact = ({ item }: renderContactProps) => (
-    <AndroidContactTile
-      contact={item}
-      firstName={item.name}
-      imageURL={item.image ? item.image.uri : DEFAULT_CONTACT_IMAGE}
+  const renderFriend = ({ item }: renderContactProps) => (
+    <FriendBubble
+      selectedFriends={selectedFriends}
+      friend={item}
+      key={item.id}
       addUser={addSelectedFriend}
       removeUser={removeSelectedFriend}
     />
   );
+
+  const renderContact = ({ item }: renderContactProps) => {
+    return (
+      <ContactTile
+        friend={item}
+        addUser={addSelectedFriend}
+        removeUser={removeSelectedFriend}
+        isSelected={selectedFriends}
+      />
+    );
+  };
 
   const onPressSend = async () => {
     route.params.data.eventData.friends = selectedFriends;
     navigation.navigate('SendMessage', route.params);
   };
 
+  const menuSelection = (item: string) => {
+    setMenuItemSelected(item);
+  };
+
   return (
-    <Screen>
-      <Navbar>
-        <NavButton onPress={() => navigation.navigate('CreateCustomEvent')} title="Back" />
-      </Navbar>
-      <Title style={globalStyles.superTitle}>Select Friends</Title>
-      <SearchBar placeholder="Search for friends" onChangeText={searchFriends} value={query} lightTheme={true} />
-      <View style={styles.flatListContainer}>
-        {state === State.Loading ? (
-          <View>
-            <ActivityIndicator size="large" color="#bad555" />
+    <View style={styles.screen}>
+      <ImageBackground source={{ uri: eventObject.imageURL }} style={styles.backgroundImage}>
+        <View style={styles.overlay} />
+        <View style={styles.title}>
+          <Text style={styles.titleText}>Send your new plan to your friends</Text>
+        </View>
+        <View style={styles.body}>
+          <View style={styles.eventInfo}>
+            <Text style={styles.planInfo}>{eventObject.title}</Text>
+            <Text style={styles.planInfo}>{eventObject.date}</Text>
+            <Text style={styles.planInfo}>{eventObject.time}</Text>
+            <Text numberOfLines={1} style={styles.planInfo}>
+              {eventObject.location}
+            </Text>
           </View>
-        ) : null}
-        <FlatList
-          data={filteredFriends}
-          renderItem={renderContact}
-          ListEmptyComponent={() => (
-            <View style={styles.listContainer}>
-              <Text>No Friends Found</Text>
+          <Text style={styles.titleText}>Invite friends to join plan...</Text>
+        </View>
+      </ImageBackground>
+      <View style={styles.friendContainer}>
+        <View style={styles.menu}>
+          <View style={menuItemSelected === 'friends' && styles.itemSelectedContainer}>
+            <Text
+              style={[menuItemSelected === 'friends' ? styles.menuItemSelected : null, styles.menuItem]}
+              onPress={() => menuSelection('friends')}
+            >
+              FRIENDS
+            </Text>
+          </View>
+          <View style={menuItemSelected === 'contacts' && styles.itemSelectedContainer}>
+            <Text
+              style={[menuItemSelected === 'contacts' ? styles.menuItemSelected : null, styles.menuItem]}
+              onPress={() => menuSelection('contacts')}
+            >
+              CONTACTS
+            </Text>
+          </View>
+        </View>
+        <View>
+          {menuItemSelected === 'friends' && (
+            <View>
+              <Text style={styles.text}>Send your friends and in app notification!</Text>
+              <View style={styles.friendBubbleContainer}>
+                <FlatList
+                  data={filteredFriends}
+                  renderItem={renderFriend}
+                  ListEmptyComponent={() => (
+                    <View style={styles.title}>
+                      <Text>No Friends Found</Text>
+                    </View>
+                  )}
+                  horizontal={false}
+                  numColumns={4}
+                />
+              </View>
+              <Button title={'Notify'} onPress={onPressSend} />
             </View>
           )}
-        />
+          {menuItemSelected === 'contacts' && (
+            <View style={styles.contactsContainer}>
+              <Text style={styles.text}>Invite more friends to hang out together!</Text>
+              <SearchBar onInputChange={searchFriends} />
+              <View style={styles.flatlistContainer}>
+                <FlatList
+                  data={filteredFriends}
+                  renderItem={renderContact}
+                  ListEmptyComponent={() => (
+                    <View style={styles.title}>
+                      <Text>No Friends Found</Text>
+                    </View>
+                  )}
+                />
+              </View>
+              <Button title="Next" onPress={onPressSend} />
+            </View>
+          )}
+        </View>
       </View>
-      <View style={styles.footer}>
-        <FriendList style={styles.friendContainer} title="Selected friends" friends={selectedFriends} />
-        <Button title="Send Message" onPress={onPressSend} />
-      </View>
-    </Screen>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  listContainer: {
+  screen: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 50,
   },
-  contactContainer: {
-    color: 'purple',
-    fontWeight: 'bold',
-    fontSize: 26,
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
+    flex: 2.5,
   },
-  flatListContainer: {
-    flexGrow: 1,
-    flex: 1,
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'black',
+    opacity: 0.25,
+  },
+  eventInfo: {
+    backgroundColor: '#D9B139',
+    padding: 20,
+    borderRadius: 15,
+  },
+  planInfo: {
+    fontSize: 20,
+    margin: 5,
+    fontWeight: '700',
   },
   friendContainer: {
-    backgroundColor: GREY_5,
-    borderRadius: 10,
-    padding: 10,
+    flex: 3,
   },
-  footer: {
-    flex: 0.5,
-    height: '25%',
-    display: 'flex',
+  title: {
+    flex: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 20,
+  },
+  titleText: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: 'white',
+    textAlign: 'left',
+    paddingTop: 15,
+  },
+  body: {
+    flex: 4,
+    margin: 30,
     justifyContent: 'space-between',
+  },
+  menu: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    paddingBottom: 6,
+    height: 50,
+    paddingLeft: 20,
+    borderBottomWidth: 3,
+    borderColor: 'gray',
+  },
+  itemSelectedContainer: {
+    borderBottomWidth: 3,
+    borderBottomColor: '#32A59F',
+  },
+  menuItem: {
+    marginHorizontal: 15,
+    fontSize: 14,
+    paddingBottom: 4,
+  },
+  menuItemSelected: {
+    color: '#32A59F',
+    fontWeight: '700',
+  },
+  text: {
+    textAlign: 'center',
+    padding: 30,
+    fontSize: 16,
+  },
+  friendBubbleContainer: {
+    flexDirection: 'row',
+  },
+  flatlistContainer: {
+    flexDirection: 'column',
+    width: '100%',
+    height: '45%',
+    marginVertical: 20,
+  },
+  contactsContainer: {
+    display: 'flex',
+    height: '100%',
   },
 });

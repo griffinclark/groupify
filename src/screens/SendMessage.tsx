@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Event, Contact } from '../res/dataModels';
 import { storeUserEvent } from '../res/storageFunctions';
 import { API } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Auth } from 'aws-amplify';
-import { DK_PURPLE } from '../res/styles/Colors';
-import { Navbar } from '../molecules/MoleculesExports';
-import { FriendList } from '../organisms/OrganismsExports';
-import { Title, NavButton, Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
+import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
+import { Icon } from 'react-native-elements';
 
 interface Props {
   navigation: {
@@ -21,6 +19,7 @@ interface Props {
 export const SendMessage: React.FC<Props> = ({ navigation, route }: Props) => {
   const event: Event = route.params.data.eventData;
   const [message, setMessage] = useState<string>('Loading Message...');
+  const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
 
   useEffect(() => {
     createInitialMessage();
@@ -93,19 +92,47 @@ ${event.description} \
     }
   };
 
+  interface renderContactProps {
+    item: Contact;
+  }
+
+  const friendList = ({ item }: renderContactProps) => {
+    return (
+      <View key={item.id} style={styles.nameContainer}>
+        <View style={styles.bubble}>
+          <Icon size={30} color={'white'} name="check" type="entypo" />
+        </View>
+        <Text style={styles.name}>{item.name}</Text>
+      </View>
+    );
+  };
+
   return (
     <Screen>
-      <Navbar>
-        <NavButton onPress={() => navigation.navigate('SelectFriends')} title="Back" />
-      </Navbar>
-      <Title>Send Message</Title>
-      <FriendList friends={event.friends} />
+      <Icon
+        name="arrow-left"
+        type="font-awesome"
+        size={35}
+        onPress={() => navigation.navigate('SelectFriends', {})}
+        style={styles.back}
+      />
       <View style={styles.message}>
-        <MultiLineTextInput inputText={message} setText={setMessage} placeholder={''} style={styles.text} />
-        <Text style={{ textAlign: 'center' }}>Tap message to edit</Text>
+        <MultiLineTextInput enabled={editMessage} inputText={message} setText={setMessage} placeholder={''} />
       </View>
+      <Button title="Edit Note" onPress={() => setEditMessage(!editMessage)} />
+      <Text style={styles.text}>Sending text message to...</Text>
+      <FlatList
+        data={event.friends}
+        renderItem={friendList}
+        ListEmptyComponent={() => (
+          <View style={styles.title}>
+            <Text>No Friends Invited</Text>
+          </View>
+        )}
+        style={{ maxHeight: '52%' }}
+      />
       <View style={styles.footer}>
-        <Button title="Send & Create Event" onPress={createConfirmAlert} />
+        <Button title="Confirm" onPress={createConfirmAlert} />
       </View>
     </Screen>
   );
@@ -113,14 +140,52 @@ ${event.description} \
 
 const styles = StyleSheet.create({
   message: {
-    flex: 4,
+    borderWidth: 1,
+    paddingVertical: 15,
+    paddingHorizontal: 5,
+    borderRadius: 15,
+    borderColor: '#BE8C2C',
+    margin: 15,
   },
   footer: {
-    flex: 2,
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
   },
   text: {
-    backgroundColor: DK_PURPLE,
-    fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
+    margin: 15,
+    fontSize: 24,
+    fontWeight: '700',
+  },
+  back: {
+    margin: 20,
+    alignSelf: 'flex-start',
+  },
+  nameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+  },
+  bubble: {
+    width: 60,
+    height: 60,
+    backgroundColor: '#31A59F',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderRadius: 50,
+  },
+  name: {
+    fontSize: 15,
+    marginLeft: 10,
+  },
+  friendListContainer: {
+    flex: 1,
+  },
+  title: {
+    flex: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 20,
   },
 });
