@@ -1,22 +1,31 @@
-import { Formik, FormikValues } from 'formik';
-import React from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
-import { globalStyles } from '../res/styles/GlobalStyles';
-import { DK_PURPLE, GREY_5, WHITE } from '../res/styles/Colors';
+import React, { useState } from 'react';
 import uuid from 'uuid';
-import { Title, Screen, NavButton, FormButton } from '../atoms/AtomsExports';
+import { Screen, NavButton, FormButton, Title } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
+import { MeepForm } from '../atoms/MeepForm';
 
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
-  endpointUID: string;
+  route: { params: { title: string; address: string } };
 }
 
 export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
-  const onFormSubmit = (values: listInputProps['values']) => {
-    console.log('Submit');
+  const [updatedValues, setUpdatedValues] = useState<{
+    eventName: string;
+    eventDate: string;
+    eventTime: string;
+    eventLocation: string;
+    eventDescription: string;
+  }>({ eventName: '', eventDate: '', eventTime: '', eventLocation: '', eventDescription: '' });
+  const onFormSubmit = (values: {
+    eventName: string;
+    eventDate: string;
+    eventTime: string;
+    eventLocation: string;
+    eventDescription: string;
+  }) => {
     navigation.navigate('SelectFriends', {
       data: {
         eventData: {
@@ -32,104 +41,51 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation }: Props) => {
     });
   };
 
-  const inputFields: { [input: string]: { title: string; placeholder: string } } = {
-    eventName: {
+  const inputFields: { title: string; placeholder: string; settings?: string }[] = [
+    {
       title: 'Event Name',
       placeholder: '',
     },
-    eventDate: {
+    {
       title: 'Event Date',
       placeholder: 'MM/DD/YYYY',
+      settings: 'date',
     },
-    eventTime: {
+    {
       title: 'Event Time',
       placeholder: 'H:MM PM',
+      settings: 'time',
     },
-    eventLocation: {
+    {
       title: 'Event Location',
       placeholder: 'address',
     },
-    eventDescription: {
+    {
       title: 'Event Description',
       placeholder: '',
     },
-  };
+  ];
 
-  interface listInputProps {
-    handleChange: {
-      (e: React.ChangeEvent<string>): void;
-      <T = string | React.ChangeEvent<string>>(field: T): T extends React.ChangeEvent<string>
-        ? void
-        : (e: string | React.ChangeEvent<string>) => void;
+  const setValues = (value: { title: string; value: string }[]) => {
+    const values = {
+      eventName: value[0].value,
+      eventDate: value[1].value,
+      eventTime: value[2].value,
+      eventLocation: value[3].value,
+      eventDescription: value[4].value,
     };
-    values: FormikValues;
-    input: string;
-  }
-
-  const listInputField = (
-    handleChange: listInputProps['handleChange'],
-    values: listInputProps['values'],
-    input: listInputProps['input'],
-  ) => {
-    return (
-      <View>
-        <Text style={[globalStyles.title, { color: DK_PURPLE }]}>{inputFields[input].title}</Text>
-        <TextInput
-          style={styles.textInputBody}
-          onChangeText={handleChange(input)}
-          placeholder={inputFields[input].placeholder}
-          value={values[input]}
-        />
-        <View style={{ height: 15 }} />
-      </View>
-    );
+    setUpdatedValues(values);
   };
 
   return (
     <Screen>
       <Navbar>
-        <NavButton onPress={() => navigation.navigate('Home', {})} title="Back" />
+        <NavButton onPress={() => navigation.navigate('SearchPlace', {})} title="Back" />
       </Navbar>
-      <Formik
-        initialValues={{
-          eventName: '',
-          eventDate: '',
-          eventTime: '',
-          eventLocation: '',
-          eventDescription: '',
-        }}
-        onSubmit={onFormSubmit}
-      >
-        {({ handleChange, handleSubmit, values }) => (
-          <>
-            <View style={styles.formContainer}>
-              <Title>New Event</Title>
-              {listInputField(handleChange, values, 'eventName')}
-              {listInputField(handleChange, values, 'eventDate')}
-              {listInputField(handleChange, values, 'eventTime')}
-              {listInputField(handleChange, values, 'eventLocation')}
-              {listInputField(handleChange, values, 'eventDescription')}
-            </View>
-            <FormButton title="Invite Friends" onPress={handleSubmit} />
-          </>
-        )}
-      </Formik>
+      <Title>Create Event</Title>
+      <MeepForm InputList={inputFields} updatedValues={(value) => setValues(value)}>
+        <FormButton title="Invite Friends" onPress={() => onFormSubmit(updatedValues)} />
+      </MeepForm>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  textInputBody: {
-    fontSize: 16,
-    backgroundColor: WHITE,
-    borderRadius: 10,
-    padding: 7,
-    marginTop: 5,
-  },
-  formContainer: {
-    backgroundColor: GREY_5,
-    borderRadius: 10,
-    margin: 10,
-    padding: 20,
-  },
-});

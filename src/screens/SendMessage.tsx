@@ -100,7 +100,7 @@ ${event.description} \
       <Title>Send Message</Title>
       <FriendList friends={event.friends} />
       <View style={styles.message}>
-        <MultiLineTextInput inputText={message} setText={setMessage} placeholder={''} />
+        <MultiLineTextInput inputText={message} setText={setMessage} placeholder={''} style={styles.text} />
         <Text style={{ textAlign: 'center' }}>Tap message to edit</Text>
       </View>
       <View style={styles.footer}>
