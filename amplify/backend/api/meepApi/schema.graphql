@@ -1,19 +1,11 @@
-type User @model @auth(rules: [{allow: public}]) @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber") @key(name: "byEmail", fields: ["email"], queryField: "usersByEmail") @key(name: "byName", fields: ["name"], queryField: "usersByName") {
+type User @model @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber") @key(name: "byEmail", fields: ["email"], queryField: "usersByEmail") @key(name: "byName", fields: ["name"], queryField: "usersByName") {
   id: ID!
   phoneNumber: AWSPhone!
   email: AWSEmail!
   name: String!
   pushToken: String!
   friends: [ID]
-  userContacts: [UserContact] @connection(keyName: "byUser", fields: ["id"])
   availability: Availability @connection
-}
-
-type UserContact @model @auth(rules: [{allow: public}]) @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber") @key(name: "byUser", fields: ["userID"]) {
-  id: ID!
-  phoneNumber: String!
-  name: String!
-  userID: ID!
 }
 
 type Availability @model @auth(rules: [{allow: public}]) {
@@ -27,7 +19,7 @@ type Availability @model @auth(rules: [{allow: public}]) {
   Saturday: [AWSTime]
 }
 
-type Plan @model @auth(rules: [{allow: public}]) {
+type Plan @model @key(name: "byCreator", fields: ["creatorID"], queryField: "plansByCreator") {
   id: ID!
   title: String!
   description: String
@@ -35,16 +27,19 @@ type Plan @model @auth(rules: [{allow: public}]) {
   placeID: String
   date: AWSDate
   time: AWSTime
+  creatorID: ID!
+  creator: User @connection(fields: ["creatorID"])
   invitees: [Invitee] @connection(keyName: "byPlan", fields: ["id"])
-  creator: ID!
 }
 
-type Invitee @model @auth(rules: [{allow: public}]) @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "inviteeByPhoneNUmber") @key(name: "byPlan", fields: ["planID"]) {
+type Invitee @model @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "inviteeByPhoneNUmber") @key(name: "byPlan", fields: ["planID"]) {
   id: ID!
   name: String!
   phoneNumber: AWSPhone!
   status: Status!
+  pushToken: String
   planID: ID!
+  plan: Plan @connection(fields: ["planID"])
 }
 
 enum Status {

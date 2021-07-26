@@ -46,20 +46,6 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "userContacts": {
-                    "name": "userContacts",
-                    "isArray": true,
-                    "type": {
-                        "model": "UserContact"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "userID"
-                    }
-                },
                 "availability": {
                     "name": "availability",
                     "isArray": false,
@@ -109,98 +95,6 @@ export const schema = {
                             "name"
                         ],
                         "queryField": "usersByName"
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "UserContact": {
-            "name": "UserContact",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "phoneNumber": {
-                    "name": "phoneNumber",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "userID": {
-                    "name": "userID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "UserContacts",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byPhoneNumber",
-                        "fields": [
-                            "phoneNumber"
-                        ],
-                        "queryField": "usersByPhoneNumber"
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byUser",
-                        "fields": [
-                            "userID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
                     }
                 }
             ]
@@ -349,6 +243,27 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "creatorID": {
+                    "name": "creatorID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "creator": {
+                    "name": "creator",
+                    "isArray": false,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": "id",
+                        "targetName": "creatorID"
+                    }
+                },
                 "invitees": {
                     "name": "invitees",
                     "isArray": true,
@@ -360,15 +275,8 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "planID"
+                        "associatedWith": "plan"
                     }
-                },
-                "creator": {
-                    "name": "creator",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -379,19 +287,13 @@ export const schema = {
                     "properties": {}
                 },
                 {
-                    "type": "auth",
+                    "type": "key",
                     "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
+                        "name": "byCreator",
+                        "fields": [
+                            "creatorID"
+                        ],
+                        "queryField": "plansByCreator"
                     }
                 }
             ]
@@ -429,12 +331,25 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "planID": {
-                    "name": "planID",
+                "pushToken": {
+                    "name": "pushToken",
                     "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
+                },
+                "plan": {
+                    "name": "plan",
+                    "isArray": false,
+                    "type": {
+                        "model": "Plan"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "planID"
+                    }
                 }
             },
             "syncable": true,
@@ -462,22 +377,6 @@ export const schema = {
                             "planID"
                         ]
                     }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
                 }
             ]
         }
@@ -493,5 +392,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "240d470f5683daa41b8ad85fba5e377a"
+    "version": "d017b5731f1eaf95dd229a4f8ff5d931"
 };
