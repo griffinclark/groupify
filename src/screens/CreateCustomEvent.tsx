@@ -111,9 +111,9 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     <Screen>
       <View style={styles.navbar}>
         <Icon
-          name="arrow-back-outline"
-          type="ionicon"
-          size={40}
+          name="arrow-left"
+          type="font-awesome"
+          size={30}
           onPress={() => navigation.navigate('SearchPlace', {})}
           style={styles.back}
         />

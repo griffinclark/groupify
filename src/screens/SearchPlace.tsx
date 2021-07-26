@@ -195,7 +195,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
         {mapMarker ? mapMarker : null}
       </MapView>
       <View style={styles.navbar}>
-        <Icon name="arrow-back-outline" type="ionicon" size={40} onPress={() => navigation.navigate('Home', {})} />
+        <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Home', {})} />
         <View style={{ padding: 10 }} />
         <GooglePlacesAutocomplete
           placeholder="Search"
@@ -244,6 +244,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   container: {
     flex: 1,

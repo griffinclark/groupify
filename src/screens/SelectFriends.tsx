@@ -5,7 +5,8 @@ import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
-
+import { DataStore } from '@aws-amplify/datastore';
+import { User } from '../models';
 interface Props {
   navigation: {
     navigate: (ev: string, a?: { step?: string }) => void;
@@ -14,9 +15,9 @@ interface Props {
 }
 
 export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => {
-  const [friends, setFriends] = useState<Contact[]>([]);
-  const [filteredFriends, setFilteredFriends] = useState<Contact[]>([]);
-  const [selectedFriends, setSelectedFriends] = useState<Contact[]>([]);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
+  const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
   const [menuItemSelected, setMenuItemSelected] = useState('friends');
   const [eventObject, setEventObject] = useState({
     date: '',
@@ -27,16 +28,52 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     title: '',
     uuid: '',
   });
+  const [friends, setFriends] = useState<User[]>([]);
+  const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
   useEffect(() => {
-    loadFriends();
+    loadContacts();
     setEventObject(route.params.data.eventData);
+    getFriends();
   }, []);
 
-  const addSelectedFriend = (friend: Contact) => {
+  const getFriends = async () => {
+    const model = await DataStore.query(User, '315793bf-e71d-4a90-85e2-673aeaa78ba6');
+    if (model?.friends) {
+      const friendsList: User[] = [];
+      model.friends.map((friendId) => {
+        const getFriends = async () => {
+          const friend = await DataStore.query(User, friendId || 'No friends found');
+          if (friend) {
+            friendsList.push(friend);
+          }
+        };
+        getFriends();
+      });
+      setFriends(friendsList);
+    }
+  };
+
+  const addSelectedContact = (contact: Contact) => {
+    setSelectedContacts((selectedContacts) => [...selectedContacts, contact]);
+  };
+
+  const removeSelectedContact = (contact: Contact) => {
+    let index = 0;
+    for (let i = 0; i < selectedContacts.length; i++) {
+      if (selectedContacts[i].id === contact.id) {
+        index = i;
+        break;
+      }
+    }
+    selectedContacts.splice(index, 1);
+    setSelectedContacts(selectedContacts.slice(0));
+  };
+
+  const addSelectedFriend = (friend: User) => {
     setSelectedFriends((selectedFriends) => [...selectedFriends, friend]);
   };
 
-  const removeSelectedFriend = (friend: Contact) => {
+  const removeSelectedFriend = (friend: User) => {
     let index = 0;
     for (let i = 0; i < selectedFriends.length; i++) {
       if (selectedFriends[i].id === friend.id) {
@@ -48,32 +85,35 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     setSelectedFriends(selectedFriends.slice(0));
   };
 
-  const loadFriends = async () => {
+  const loadContacts = async () => {
     const importedContacts = await getAllImportedContacts();
-    setFriends(importedContacts);
-    setFilteredFriends(importedContacts);
+    setContacts(importedContacts);
+    setFilteredContacts(importedContacts);
   };
 
   const searchFriends = (text: string) => {
-    setFilteredFriends(
-      friends.filter((friend) => {
-        let friendLowercase = '';
+    setFilteredContacts(
+      contacts.filter((contact) => {
+        let contactLowercase = '';
         try {
-          friendLowercase = friend.name.toLowerCase();
+          contactLowercase = contact.name.toLowerCase();
         } catch {
           console.log('error filtering a contact');
         }
         const textLowercase = text.toLowerCase();
-        return friendLowercase.indexOf(textLowercase) > -1;
+        return contactLowercase.indexOf(textLowercase) > -1;
       }),
     );
   };
 
+  interface renderFriendProps {
+    item: User;
+  }
   interface renderContactProps {
     item: Contact;
   }
 
-  const renderFriend = ({ item }: renderContactProps) => (
+  const renderFriend = ({ item }: renderFriendProps) => (
     <FriendBubble
       selectedFriends={selectedFriends}
       friend={item}
@@ -87,16 +127,20 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     return (
       <ContactTile
         friend={item}
-        addUser={addSelectedFriend}
-        removeUser={removeSelectedFriend}
-        isSelected={selectedFriends}
+        addUser={addSelectedContact}
+        removeUser={removeSelectedContact}
+        isSelected={selectedContacts}
       />
     );
   };
 
-  const onPressSend = async () => {
-    route.params.data.eventData.friends = selectedFriends;
+  const sendContactMessage = () => {
+    route.params.data.eventData.friends = selectedContacts;
     navigation.navigate('SendMessage', route.params);
+  };
+
+  const notifyCurrentUsers = () => {
+    console.log(selectedFriends);
   };
 
   const menuSelection = (item: string) => {
@@ -141,13 +185,13 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
             </Text>
           </View>
         </View>
-        <View>
+        <View style={{ flex: 1 }}>
           {menuItemSelected === 'friends' && (
-            <View>
+            <View style={{ flex: 1 }}>
               <Text style={styles.text}>Send your friends and in app notification!</Text>
               <View style={styles.friendBubbleContainer}>
                 <FlatList
-                  data={filteredFriends}
+                  data={friends}
                   renderItem={renderFriend}
                   ListEmptyComponent={() => (
                     <View style={styles.title}>
@@ -158,7 +202,9 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
                   numColumns={4}
                 />
               </View>
-              <Button title={'Notify'} onPress={onPressSend} />
+              <View style={{ position: 'absolute', bottom: 27, alignSelf: 'center' }}>
+                <Button title={'Notify'} onPress={notifyCurrentUsers} />
+              </View>
             </View>
           )}
           {menuItemSelected === 'contacts' && (
@@ -167,7 +213,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
               <SearchBar onInputChange={searchFriends} />
               <View style={styles.flatlistContainer}>
                 <FlatList
-                  data={filteredFriends}
+                  data={filteredContacts}
                   renderItem={renderContact}
                   ListEmptyComponent={() => (
                     <View style={styles.title}>
@@ -176,7 +222,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
                   )}
                 />
               </View>
-              <Button title="Next" onPress={onPressSend} />
+              <Button title="Next" onPress={sendContactMessage} />
             </View>
           )}
         </View>
