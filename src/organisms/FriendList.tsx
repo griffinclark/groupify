@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Contact } from '../res/dataModels';
 import { DK_PURPLE, GREY_3, WHITE } from '../res/styles/Colors';
 
 interface FriendProps {
-  friends: Contact[];
+  friends: { id: string; name: string }[];
   title?: string;
   style?: Record<string, unknown>;
 }

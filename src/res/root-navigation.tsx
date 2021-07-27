@@ -9,11 +9,16 @@ import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
 import { SendMessage } from '../screens/SendMessage';
+import { SetAvailability } from '../screens/SetAvailability';
+import { EditFriends } from '../screens/EditFriends';
 import { Contact } from './dataModels';
 import { SearchPlace } from '../screens/SearchPlace';
+import { User } from '../models';
 
 export type RoutePropParams = {
   params: {
+    userID: string;
+    currentUser: User;
     email: string;
     step: string;
     phone: string;
@@ -30,6 +35,7 @@ export type RoutePropParams = {
         location: string;
         showImage: string;
         placeId: string;
+        fullDate: Date;
       };
     };
   };
@@ -42,10 +48,11 @@ export interface StackProps {
 
 interface RootProps {
   initialRoute: string;
+  initialParams?: Record<string, unknown>;
 }
 
 const Stack = createStackNavigator();
-export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps) => {
+export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParams }: RootProps) => {
   console.log('Initial route: ' + initialRoute);
   return (
     <NavigationContainer>
@@ -58,11 +65,13 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps)
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={Home} initialParams={initialParams} options={{ headerShown: false }} />
         <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }} />
         <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
         <Stack.Screen name="SendMessage" component={SendMessage} options={{ headerShown: false }} />
+        <Stack.Screen name="SetAvailability" component={SetAvailability} options={{ headerShown: false }} />
+        <Stack.Screen name="EditFriends" component={EditFriends} options={{ headerShown: false }} />
         <Stack.Screen name="SearchPlace" component={SearchPlace} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>

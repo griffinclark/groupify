@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import uuid from 'uuid';
-import { Screen, FormButton } from '../atoms/AtomsExports';
-import { MeepForm } from '../atoms/MeepForm';
+import { Screen, FormButton, MeepForm } from '../atoms/AtomsExports';
 import { Text } from 'react-native-elements';
 import { Image, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import Qs from 'qs';
+import { User } from '../models';
 
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
-  route: { params: { data: { eventData: { title: string; location: string; imageURL: string; placeId: string } } } };
+  route: {
+    params: {
+      currentUser: User;
+      data: { eventData: { title: string; location: string; imageURL: string; placeId: string } };
+    };
+  };
 }
 
 export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props) => {
@@ -28,6 +33,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     eventLocation: string | undefined;
     eventDescription: string | undefined;
   }>({ eventName: title, eventDate: '', eventTime: '', eventLocation: address, eventDescription: '' });
+  const [fullDate, setFullDate] = useState<Date>();
 
   const onFormSubmit = (values: {
     eventName: string | undefined;
@@ -36,9 +42,9 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     eventLocation: string | undefined;
     eventDescription: string | undefined;
   }) => {
-    console.log(route.params.data.eventData);
     const image = loadPhoto(photo).props.source.uri;
     navigation.navigate('SelectFriends', {
+      currentUser: route.params.currentUser,
       data: {
         eventData: {
           uuid: uuid.v4(),
@@ -49,6 +55,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
           description: values.eventDescription,
           imageURL: image,
           placeId: route.params.data.eventData.placeId,
+          fullDate: fullDate,
         },
       },
     });
@@ -122,7 +129,11 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
         <Text style={styles.title}>New Plan</Text>
       </View>
       {loadPhoto(photo)}
-      <MeepForm InputList={inputFields} updatedValues={(value) => setValues(value)}>
+      <MeepForm
+        InputList={inputFields}
+        updatedValues={(value) => setValues(value)}
+        fullDate={(date) => setFullDate(date)}
+      >
         <FormButton title="Create" onPress={() => onFormSubmit(updatedValues)} />
       </MeepForm>
     </Screen>

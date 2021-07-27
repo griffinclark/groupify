@@ -38,20 +38,17 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
   }, []);
 
   const getFriends = async () => {
-    const model = await DataStore.query(User, '315793bf-e71d-4a90-85e2-673aeaa78ba6');
-    if (model?.friends) {
-      const friendsList: User[] = [];
-      model.friends.map((friendId) => {
-        const getFriends = async () => {
-          const friend = await DataStore.query(User, friendId || 'No friends found');
-          if (friend) {
-            friendsList.push(friend);
-            setFriends(friendsList);
-          }
-        };
-        getFriends();
-      });
+    const friendList = [];
+    if (route.params.currentUser.friends) {
+      for (let i = 0; i < route.params.currentUser.friends.length; i++) {
+        const friendId = route.params.currentUser.friends[i];
+        if (friendId) {
+          const friend = await DataStore.query(User, friendId);
+          friendList.push(friend);
+        }
+      }
     }
+    setFriends(friendList);
   };
 
   const addSelectedContact = (contact: Contact) => {
@@ -141,17 +138,19 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   const notifyCurrentUsers = async () => {
-    console.log(eventObject.date, eventObject.time);
+    const fullDate = route.params.data.eventData.fullDate;
+    const date = fullDate.toISOString().substring(0, 10);
+    const time = fullDate.toTimeString().substring(0, 8);
     await DataStore.save(
       new Plan({
         title: eventObject.title,
         description: eventObject.description,
         location: eventObject.location,
         placeID: eventObject.placeId,
-        date: eventObject.date,
-        time: eventObject.time,
-        creatorID: '',
-        // invitees: selectedFriends,
+        time: time,
+        date: date,
+        creatorID: route.params.currentUser.id,
+        invitees: selectedFriends,
       }),
     );
   };

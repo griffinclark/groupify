@@ -8,11 +8,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { PlaceCard } from '../molecules/MoleculesExports';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { mapStyles } from '../res/styles/MapStyles';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
+  route: RoutePropParams;
 }
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
@@ -38,7 +40,7 @@ interface POI {
   name: string;
 }
 
-export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
+export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
@@ -133,7 +135,12 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
           onButtonPress={() =>
-            onButtonPress(detail.name, detail.formatted_address, moreDetails.photos[0].photo_reference, detail.place_id)
+            onButtonPress(
+              detail.name,
+              detail.formatted_address,
+              moreDetails.photos ? moreDetails.photos[0].photo_reference : 'none',
+              detail.place_id,
+            )
           }
           onCloseButtonPress={clearMarkers}
         />,
@@ -150,19 +157,19 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
     return { distance: json.rows[0].elements[0].distance.text, duration: json.rows[0].elements[0].duration.text };
   };
 
-  const onButtonPress = (title: string, address: string, photo: string, placeId: string) => {
+  const onButtonPress = (title: string, address: string, placeId: string, photo?: string) => {
     navigation.navigate('CreateCustomEvent', {
+      currentUser: route.params.currentUser,
       data: {
         eventData: {
           title: title,
           location: address,
-          imageURL: photo,
+          imageURL: photo !== 'none' ? photo : undefined,
           placeId: placeId,
         },
       },
     });
   };
-
 
   const onPoiPress = async (poi: POI) => {
     const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${poi.placeId}&key=${GOOGLE_PLACES_API_KEY}`;
@@ -171,9 +178,10 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
     onResultPress(poi, detail.result);
   };
 
-  const onMarkerPress = async (marker: Marker) => {
-    console.log(marker);
-  };
+  // const onMarkerPress = async (marker: Marker) => {
+  //   console.log(marker);
+  // };
+
   const clearMarkers = () => {
     setPlaceCard(undefined);
     setMapMarker(undefined);
@@ -188,7 +196,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
         showsUserLocation={true}
         region={region}
         onPoiClick={(event) => onPoiPress(event.nativeEvent)}
-        onMarkerPress={(event) => onMarkerPress(event.nativeEvent)}
+        // onMarkerPress={(event) => onMarkerPress(event.nativeEvent)}
         style={styles.map}
         customMapStyle={mapStyles}
         onPress={clearMarkers}

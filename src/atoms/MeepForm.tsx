@@ -7,11 +7,16 @@ interface Props {
   children: ReactChild;
   InputList: { title: string; placeholder: string; settings?: string; value?: string }[];
   updatedValues: (e: { title: string; value: string | undefined }[]) => void;
+  fullDate: (date: Date) => void;
 }
 
-export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }: Props) => {
+export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, fullDate }: Props) => {
   const [values, setValues] = useState<{ title: string; value: string | undefined }[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  useEffect(() => {
+    fullDate(currentDate);
+  }, [currentDate]);
 
   const onDateChange = (
     event: Event,

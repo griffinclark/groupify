@@ -13,6 +13,7 @@ import { TwoButtonAlert } from './TwoButtonAlert';
 import { FormButton } from './Formbutton';
 import { FriendBubble } from './FriendBubble';
 import { SearchBar } from './SearchBar';
+import { MeepForm } from './MeepForm';
 
 export {
   Alert,
@@ -30,4 +31,5 @@ export {
   FormButton,
   FriendBubble,
   SearchBar,
+  MeepForm,
 };

@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Event, Contact } from '../res/dataModels';
-import { storeUserEvent } from '../res/storageFunctions';
-import { API } from 'aws-amplify';
+import { API, Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
-import { Auth } from 'aws-amplify';
 import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
 import { Icon } from 'react-native-elements';
+import { Plan } from '../models';
 
 interface Props {
   navigation: {
@@ -64,7 +63,7 @@ ${event.description} \
     });
   };
 
-  const createErrorAlert = (): void => {
+  const createErrorAlert = (friends: Contact[], message: string): void => {
     TwoButtonAlert({
       title: 'Notice',
       message:
@@ -72,8 +71,8 @@ ${event.description} \
       button1Text: 'Go back',
       button2Text: 'Create Event Anyways',
       button2OnPress: async () => {
-        await storeUserEvent(event);
         navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
+        await pushEvent(friends, message);
       },
     });
   };
@@ -82,14 +81,28 @@ ${event.description} \
     try {
       const event: Event = route.params.data.eventData;
       await pushEvent(event.friends, message);
-      await storeUserEvent(event);
       navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
     } catch (err) {
       console.log(err, event.friends);
       if (err.message === 'The string supplied did not seem to be a phone number') {
-        createErrorAlert();
+        createErrorAlert(event.friends, message);
       }
     }
+    const fullDate = route.params.data.eventData.fullDate;
+    const date = fullDate.toISOString().substring(0, 10);
+    const time = fullDate.toTimeString().substring(0, 8);
+    await DataStore.save(
+      new Plan({
+        title: event.title,
+        description: event.description,
+        location: event.location,
+        placeID: event.placeId,
+        time: time,
+        date: date,
+        creatorID: route.params.currentUser.id,
+        invitees: event.friends,
+      }),
+    );
   };
 
   interface renderContactProps {
