@@ -1,12 +1,10 @@
+/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    createUser(input: $input, condition: $condition) {
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
       id
       phoneNumber
       email
@@ -51,12 +49,9 @@ export const createUser = /* GraphQL */ `
     }
   }
 `;
-export const updateUser = /* GraphQL */ `
-  mutation UpdateUser(
-    $input: UpdateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    updateUser(input: $input, condition: $condition) {
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
       id
       phoneNumber
       email
@@ -101,12 +96,9 @@ export const updateUser = /* GraphQL */ `
     }
   }
 `;
-export const deleteUser = /* GraphQL */ `
-  mutation DeleteUser(
-    $input: DeleteUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    deleteUser(input: $input, condition: $condition) {
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
       id
       phoneNumber
       email
@@ -151,12 +143,9 @@ export const deleteUser = /* GraphQL */ `
     }
   }
 `;
-export const createUserContact = /* GraphQL */ `
-  mutation CreateUserContact(
-    $input: CreateUserContactInput!
-    $condition: ModelUserContactConditionInput
-  ) {
-    createUserContact(input: $input, condition: $condition) {
+export const onCreateUserContact = /* GraphQL */ `
+  subscription OnCreateUserContact {
+    onCreateUserContact {
       id
       phoneNumber
       name
@@ -169,12 +158,9 @@ export const createUserContact = /* GraphQL */ `
     }
   }
 `;
-export const updateUserContact = /* GraphQL */ `
-  mutation UpdateUserContact(
-    $input: UpdateUserContactInput!
-    $condition: ModelUserContactConditionInput
-  ) {
-    updateUserContact(input: $input, condition: $condition) {
+export const onUpdateUserContact = /* GraphQL */ `
+  subscription OnUpdateUserContact {
+    onUpdateUserContact {
       id
       phoneNumber
       name
@@ -187,12 +173,9 @@ export const updateUserContact = /* GraphQL */ `
     }
   }
 `;
-export const deleteUserContact = /* GraphQL */ `
-  mutation DeleteUserContact(
-    $input: DeleteUserContactInput!
-    $condition: ModelUserContactConditionInput
-  ) {
-    deleteUserContact(input: $input, condition: $condition) {
+export const onDeleteUserContact = /* GraphQL */ `
+  subscription OnDeleteUserContact {
+    onDeleteUserContact {
       id
       phoneNumber
       name
@@ -205,12 +188,9 @@ export const deleteUserContact = /* GraphQL */ `
     }
   }
 `;
-export const createAvailability = /* GraphQL */ `
-  mutation CreateAvailability(
-    $input: CreateAvailabilityInput!
-    $condition: ModelAvailabilityConditionInput
-  ) {
-    createAvailability(input: $input, condition: $condition) {
+export const onCreateAvailability = /* GraphQL */ `
+  subscription OnCreateAvailability {
+    onCreateAvailability {
       id
       Sunday
       Monday
@@ -227,12 +207,9 @@ export const createAvailability = /* GraphQL */ `
     }
   }
 `;
-export const updateAvailability = /* GraphQL */ `
-  mutation UpdateAvailability(
-    $input: UpdateAvailabilityInput!
-    $condition: ModelAvailabilityConditionInput
-  ) {
-    updateAvailability(input: $input, condition: $condition) {
+export const onUpdateAvailability = /* GraphQL */ `
+  subscription OnUpdateAvailability {
+    onUpdateAvailability {
       id
       Sunday
       Monday
@@ -249,12 +226,9 @@ export const updateAvailability = /* GraphQL */ `
     }
   }
 `;
-export const deleteAvailability = /* GraphQL */ `
-  mutation DeleteAvailability(
-    $input: DeleteAvailabilityInput!
-    $condition: ModelAvailabilityConditionInput
-  ) {
-    deleteAvailability(input: $input, condition: $condition) {
+export const onDeleteAvailability = /* GraphQL */ `
+  subscription OnDeleteAvailability {
+    onDeleteAvailability {
       id
       Sunday
       Monday
@@ -271,12 +245,9 @@ export const deleteAvailability = /* GraphQL */ `
     }
   }
 `;
-export const createPlan = /* GraphQL */ `
-  mutation CreatePlan(
-    $input: CreatePlanInput!
-    $condition: ModelPlanConditionInput
-  ) {
-    createPlan(input: $input, condition: $condition) {
+export const onCreatePlan = /* GraphQL */ `
+  subscription OnCreatePlan {
+    onCreatePlan {
       id
       title
       description
@@ -308,12 +279,9 @@ export const createPlan = /* GraphQL */ `
     }
   }
 `;
-export const updatePlan = /* GraphQL */ `
-  mutation UpdatePlan(
-    $input: UpdatePlanInput!
-    $condition: ModelPlanConditionInput
-  ) {
-    updatePlan(input: $input, condition: $condition) {
+export const onUpdatePlan = /* GraphQL */ `
+  subscription OnUpdatePlan {
+    onUpdatePlan {
       id
       title
       description
@@ -345,12 +313,9 @@ export const updatePlan = /* GraphQL */ `
     }
   }
 `;
-export const deletePlan = /* GraphQL */ `
-  mutation DeletePlan(
-    $input: DeletePlanInput!
-    $condition: ModelPlanConditionInput
-  ) {
-    deletePlan(input: $input, condition: $condition) {
+export const onDeletePlan = /* GraphQL */ `
+  subscription OnDeletePlan {
+    onDeletePlan {
       id
       title
       description
@@ -382,12 +347,9 @@ export const deletePlan = /* GraphQL */ `
     }
   }
 `;
-export const createInvitee = /* GraphQL */ `
-  mutation CreateInvitee(
-    $input: CreateInviteeInput!
-    $condition: ModelInviteeConditionInput
-  ) {
-    createInvitee(input: $input, condition: $condition) {
+export const onCreateInvitee = /* GraphQL */ `
+  subscription OnCreateInvitee {
+    onCreateInvitee {
       id
       name
       phoneNumber
@@ -401,12 +363,9 @@ export const createInvitee = /* GraphQL */ `
     }
   }
 `;
-export const updateInvitee = /* GraphQL */ `
-  mutation UpdateInvitee(
-    $input: UpdateInviteeInput!
-    $condition: ModelInviteeConditionInput
-  ) {
-    updateInvitee(input: $input, condition: $condition) {
+export const onUpdateInvitee = /* GraphQL */ `
+  subscription OnUpdateInvitee {
+    onUpdateInvitee {
       id
       name
       phoneNumber
@@ -420,12 +379,9 @@ export const updateInvitee = /* GraphQL */ `
     }
   }
 `;
-export const deleteInvitee = /* GraphQL */ `
-  mutation DeleteInvitee(
-    $input: DeleteInviteeInput!
-    $condition: ModelInviteeConditionInput
-  ) {
-    deleteInvitee(input: $input, condition: $condition) {
+export const onDeleteInvitee = /* GraphQL */ `
+  subscription OnDeleteInvitee {
+    onDeleteInvitee {
       id
       name
       phoneNumber

@@ -4,14 +4,15 @@ import { CircularImageDisplay, CheckBox } from '../atoms/AtomsExports';
 import { StyleSheet } from 'react-native';
 import { TEST_IMAGE_URL, GRAY_DARK } from '../res/styles/Colors';
 import { Contact } from '../res/dataModels';
+import { User } from '../models';
 
 interface Props {
-  contact?: Contact;
+  contact?: Contact | User;
   firstName?: string;
   lastName?: string;
   imageURL?: string;
-  addUser: (contact: Contact) => void;
-  removeUser: (contact: Contact) => void;
+  addUser: (contact: Contact | User) => void;
+  removeUser: (contact: Contact | User) => void;
   isChecked?: boolean;
 }
 export const AndroidContactTile: React.FC<Props> = ({

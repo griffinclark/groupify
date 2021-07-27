@@ -3,11 +3,13 @@ import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { Event } from '../res/dataModels';
 import { getAllUserEvents } from './../res/storageFunctions';
-import { Auth } from 'aws-amplify';
 import { Screen, Button, NavButton } from '../atoms/AtomsExports';
 import { DataDisplay } from '../organisms/OrganismsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
+import { Auth } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
+import { User } from '../models';
 
 interface Props {
   navigation: {
@@ -20,7 +22,8 @@ interface Props {
     };
     navigate:
       | ((ev: string, a?: { step?: string; email?: string }) => void)
-      | ((ev: string, a?: { data?: { prevAction?: string } }) => void);
+      | ((ev: string, a?: { data?: { prevAction?: string } }) => void)
+      | ((ev: string, a?: { userID: string }) => void);
     push: (ev: string, e: { email: string; step: string }) => void;
   };
   route: RoutePropParams;
@@ -30,6 +33,13 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [feedData, setFeedData] = useState<Event[]>([]);
 
   useEffect(() => {
+    (async () => {
+      if (route.params && route.params.userID) {
+        const user = await DataStore.query(User, route.params.userID);
+        console.log('Current user');
+        console.log(user);
+      }
+    })();
     getUserEvents();
   }, [route.params]);
 
@@ -56,9 +66,21 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           />
           <NavButton
             onPress={() => {
+              navigation.navigate('SetAvailability', { userID: route.params.userID });
+            }}
+            title="Availability"
+          />
+          <NavButton
+            onPress={() => {
               navigation.navigate('ImportContacts');
             }}
-            title="Edit Contacts"
+            title="Contacts"
+          />
+          <NavButton
+            onPress={() => {
+              navigation.navigate('EditFriends', { userID: route.params.userID });
+            }}
+            title="Friends"
           />
         </Navbar>
       </View>
