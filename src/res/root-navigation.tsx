@@ -29,6 +29,7 @@ export type RoutePropParams = {
         time: string;
         location: string;
         showImage: string;
+        placeId: string;
       };
     };
   };

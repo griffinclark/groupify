@@ -19,6 +19,7 @@ export interface Event {
   time: string;
   location: string;
   showImage: string;
+  placeId: string;
 }
 
 export interface Contact {

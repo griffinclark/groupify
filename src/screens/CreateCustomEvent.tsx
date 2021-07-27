@@ -11,7 +11,7 @@ interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
-  route: { params: { data: { eventData: { title: string; location: string; imageURL: string } } } };
+  route: { params: { data: { eventData: { title: string; location: string; imageURL: string; placeId: string } } } };
 }
 
 export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props) => {
@@ -36,6 +36,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     eventLocation: string | undefined;
     eventDescription: string | undefined;
   }) => {
+    console.log(route.params.data.eventData);
     const image = loadPhoto(photo).props.source.uri;
     navigation.navigate('SelectFriends', {
       data: {
@@ -47,6 +48,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
           location: values.eventLocation,
           description: values.eventDescription,
           imageURL: image,
+          placeId: route.params.data.eventData.placeId,
         },
       },
     });

@@ -133,7 +133,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
           onButtonPress={() =>
-            onButtonPress(detail.name, detail.formatted_address, moreDetails.photos[0].photo_reference)
+            onButtonPress(detail.name, detail.formatted_address, moreDetails.photos[0].photo_reference, detail.place_id)
           }
           onCloseButtonPress={clearMarkers}
         />,
@@ -150,18 +150,19 @@ export const SearchPlace: React.FC<Props> = ({ navigation }: Props) => {
     return { distance: json.rows[0].elements[0].distance.text, duration: json.rows[0].elements[0].duration.text };
   };
 
-  const onButtonPress = (title: string, address: string, photo: string) => {
+  const onButtonPress = (title: string, address: string, photo: string, placeId: string) => {
     navigation.navigate('CreateCustomEvent', {
       data: {
         eventData: {
           title: title,
           location: address,
           imageURL: photo,
+          placeId: placeId,
         },
       },
     });
-    // pass place id
   };
+
 
   const onPoiPress = async (poi: POI) => {
     const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${poi.placeId}&key=${GOOGLE_PLACES_API_KEY}`;

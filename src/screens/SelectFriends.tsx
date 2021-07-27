@@ -6,7 +6,7 @@ import { getAllImportedContacts } from '../res/storageFunctions';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
-import { User } from '../models';
+import { User, Plan } from '../models';
 interface Props {
   navigation: {
     navigate: (ev: string, a?: { step?: string }) => void;
@@ -27,6 +27,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     time: '',
     title: '',
     uuid: '',
+    placeId: '',
   });
   const [friends, setFriends] = useState<User[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
@@ -45,11 +46,11 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           const friend = await DataStore.query(User, friendId || 'No friends found');
           if (friend) {
             friendsList.push(friend);
+            setFriends(friendsList);
           }
         };
         getFriends();
       });
-      setFriends(friendsList);
     }
   };
 
@@ -139,8 +140,20 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     navigation.navigate('SendMessage', route.params);
   };
 
-  const notifyCurrentUsers = () => {
-    console.log(selectedFriends);
+  const notifyCurrentUsers = async () => {
+    console.log(eventObject);
+    await DataStore.save(
+      new Plan({
+        title: eventObject.title,
+        description: eventObject.description,
+        location: eventObject.location,
+        placeID: eventObject.placeId,
+        date: eventObject.date,
+        time: eventObject.time,
+        creatorID: '',
+        // invitees: selectedFriends,
+      }),
+    );
   };
 
   const menuSelection = (item: string) => {
@@ -189,19 +202,21 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           {menuItemSelected === 'friends' && (
             <View style={{ flex: 1 }}>
               <Text style={styles.text}>Send your friends and in app notification!</Text>
-              <View style={styles.friendBubbleContainer}>
-                <FlatList
-                  data={friends}
-                  renderItem={renderFriend}
-                  ListEmptyComponent={() => (
-                    <View style={styles.title}>
-                      <Text>No Friends Found</Text>
-                    </View>
-                  )}
-                  horizontal={false}
-                  numColumns={4}
-                />
-              </View>
+              {friends.length > 0 ? (
+                <View style={styles.friendBubbleContainer}>
+                  <FlatList
+                    data={friends}
+                    renderItem={renderFriend}
+                    ListEmptyComponent={() => (
+                      <View style={styles.title}>
+                        <Text>No Friends Found</Text>
+                      </View>
+                    )}
+                    horizontal={false}
+                    numColumns={4}
+                  />
+                </View>
+              ) : null}
               <View style={{ position: 'absolute', bottom: 27, alignSelf: 'center' }}>
                 <Button title={'Notify'} onPress={notifyCurrentUsers} />
               </View>
