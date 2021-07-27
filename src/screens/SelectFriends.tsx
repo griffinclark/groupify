@@ -141,7 +141,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   const notifyCurrentUsers = async () => {
-    console.log(eventObject);
+    console.log(eventObject.date, eventObject.time);
     await DataStore.save(
       new Plan({
         title: eventObject.title,
