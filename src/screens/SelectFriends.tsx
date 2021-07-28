@@ -168,6 +168,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         invitees: inviteeList,
       }),
     ).catch((error) => console.log(error));
+    navigation.navigate('Home', {});
   };
 
   const menuSelection = (item: string) => {
