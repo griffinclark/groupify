@@ -6,7 +6,7 @@ import { API, Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
 import { Icon } from 'react-native-elements';
-import { Plan } from '../models';
+import { Plan, Status } from '../models';
 import uuid from 'uuid';
 
 interface Props {
@@ -96,7 +96,7 @@ ${event.description} \
         id: uuid.v4(),
         name: friend.name,
         phoneNumber: friend.phoneNumber,
-        status: 'pending',
+        status: Status.PENDING,
         pushToken: '',
         planID: event.uuid,
       });
