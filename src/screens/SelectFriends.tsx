@@ -6,7 +6,7 @@ import { getAllImportedContacts } from '../res/storageFunctions';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
-import { User, Plan } from '../models';
+import { User, Plan, Status, Invitee } from '../models';
 import uuid from 'uuid';
 interface Props {
   navigation: {
@@ -142,22 +142,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     const fullDate = route.params.data.eventData.fullDate;
     const date = fullDate.toISOString().substring(0, 10);
     const time = fullDate.toTimeString().substring(0, 8);
-    const inviteeList = [];
-    for (let i = 0; i < selectedFriends.length; i++) {
-      const friend = selectedFriends[i];
-      inviteeList.push({
-        id: uuid.v4(),
-        name: friend.name,
-        phoneNumber: friend.phoneNumber,
-        status: 'pending',
-        pushToken: '',
-        planID: eventObject.uuid,
-      });
-    }
+    const inviteeList: Invitee[] = [];
 
-    await DataStore.save(
+    const newPlan = await DataStore.save(
       new Plan({
-        id: eventObject.uuid,
         title: eventObject.title,
         description: eventObject.description,
         location: eventObject.location,
@@ -165,9 +153,29 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         time: time,
         date: date,
         creatorID: route.params.currentUser.id,
-        invitees: inviteeList,
       }),
-    ).catch((error) => console.log(error));
+    );
+
+    for (const friend of selectedFriends) {
+      const invitee = await DataStore.save(
+        new Invitee({
+          name: friend.name,
+          phoneNumber: friend.phoneNumber,
+          status: Status.PENDING,
+          pushToken: '',
+          plan: newPlan,
+        }),
+      );
+      inviteeList.push(invitee);
+    }
+
+    const updatedPlan = await DataStore.save(
+      Plan.copyOf(newPlan, (item) => {
+        item.invitees = inviteeList;
+      }),
+    );
+    // console.log(updatedPlan);
+
     navigation.navigate('Home', {});
   };
 
