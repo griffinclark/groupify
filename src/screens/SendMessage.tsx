@@ -7,6 +7,7 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
 import { Icon } from 'react-native-elements';
 import { Plan } from '../models';
+import uuid from 'uuid';
 
 interface Props {
   navigation: {
@@ -88,6 +89,19 @@ ${event.description} \
         createErrorAlert(event.friends, message);
       }
     }
+    const inviteeList = [];
+    for (let i = 0; i < event.friends.length; i++) {
+      const friend = event.friends[i];
+      inviteeList.push({
+        id: uuid.v4(),
+        name: friend.name,
+        phoneNumber: friend.phoneNumber,
+        status: 'pending',
+        pushToken: '',
+        planID: event.uuid,
+      });
+    }
+    console.log(inviteeList);
     const fullDate = route.params.data.eventData.fullDate;
     const date = fullDate.toISOString().substring(0, 10);
     const time = fullDate.toTimeString().substring(0, 8);
@@ -100,7 +114,7 @@ ${event.description} \
         time: time,
         date: date,
         creatorID: route.params.currentUser.id,
-        invitees: event.friends,
+        invitees: inviteeList,
       }),
     );
   };

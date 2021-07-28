@@ -135,12 +135,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
           onButtonPress={() =>
-            onButtonPress(
-              detail.name,
-              detail.formatted_address,
-              moreDetails.photos ? moreDetails.photos[0].photo_reference : 'none',
-              detail.place_id,
-            )
+            onButtonPress(detail.name, detail.formatted_address, detail.place_id, moreDetails.photos[0].photo_reference)
           }
           onCloseButtonPress={clearMarkers}
         />,
@@ -157,14 +152,14 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
     return { distance: json.rows[0].elements[0].distance.text, duration: json.rows[0].elements[0].duration.text };
   };
 
-  const onButtonPress = (title: string, address: string, placeId: string, photo?: string) => {
+  const onButtonPress = (title: string, address: string, placeId: string, photo: string) => {
     navigation.navigate('CreateCustomEvent', {
       currentUser: route.params.currentUser,
       data: {
         eventData: {
           title: title,
           location: address,
-          imageURL: photo !== 'none' ? photo : undefined,
+          imageURL: photo,
           placeId: placeId,
         },
       },

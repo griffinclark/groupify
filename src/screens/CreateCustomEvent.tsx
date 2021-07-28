@@ -128,7 +128,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
         />
         <Text style={styles.title}>New Plan</Text>
       </View>
-      {loadPhoto(photo)}
+      <View>{loadPhoto(photo)}</View>
       <MeepForm
         InputList={inputFields}
         updatedValues={(value) => setValues(value)}

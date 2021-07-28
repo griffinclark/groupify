@@ -141,8 +141,21 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     const fullDate = route.params.data.eventData.fullDate;
     const date = fullDate.toISOString().substring(0, 10);
     const time = fullDate.toTimeString().substring(0, 8);
+    const inviteeList = [];
+    for (let i = 0; i < selectedFriends.length; i++) {
+      const friend = selectedFriends[i];
+      inviteeList.push({
+        name: friend.name,
+        phoneNumber: friend.phoneNumber,
+        status: 'pending',
+        pushToken: '',
+        planID: eventObject.uuid,
+      });
+    }
+
     await DataStore.save(
       new Plan({
+        id: eventObject.uuid,
         title: eventObject.title,
         description: eventObject.description,
         location: eventObject.location,
@@ -150,9 +163,9 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         time: time,
         date: date,
         creatorID: route.params.currentUser.id,
-        invitees: selectedFriends,
+        invitees: inviteeList,
       }),
-    );
+    ).catch((error) => console.log(error));
   };
 
   const menuSelection = (item: string) => {

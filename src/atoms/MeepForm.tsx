@@ -1,5 +1,5 @@
 import React, { ReactChild, useEffect, useState } from 'react';
-import { StyleSheet, TextInput, View, Text } from 'react-native';
+import { StyleSheet, TextInput, View, Text, Platform } from 'react-native';
 import { WHITE } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -90,7 +90,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
             testID={'dateTimePicker'}
             value={currentDate}
             mode={'date'}
-            display={'compact'}
+            display={Platform.OS === 'ios' ? 'compact' : 'default'}
             onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
           />
           <Text style={styles.text}>{item.title}</Text>
