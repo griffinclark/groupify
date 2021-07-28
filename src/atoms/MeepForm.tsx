@@ -1,36 +1,43 @@
 import React, { ReactChild, useEffect, useState } from 'react';
-import { StyleSheet, TextInput, View, Text } from 'react-native';
-import { DK_PURPLE, GREY_5, WHITE } from '../res/styles/Colors';
-import { globalStyles } from '../res/styles/GlobalStyles';
+import { StyleSheet, TextInput, View, Text, Platform } from 'react-native';
+import { WHITE } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
   children: ReactChild;
-  InputList: { title: string; placeholder: string; settings?: string }[];
-  updatedValues: (e: { title: string; value: string }[]) => void;
+  InputList: { title: string; placeholder: string; settings?: string; value?: string }[];
+  updatedValues: (e: { title: string; value: string | undefined }[]) => void;
+  fullDate: (date: Date) => void;
 }
 
-export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }: Props) => {
-  const [values, setValues] = useState<{ title: string; value: string; settings?: string }[]>([]);
+export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, fullDate }: Props) => {
+  const [values, setValues] = useState<{ title: string; value: string | undefined }[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
+  useEffect(() => {
+    fullDate(currentDate);
+  }, [currentDate]);
 
   const onDateChange = (
     event: Event,
-    selectedDate: {
-      toLocaleTimeString: () => string;
-      toLocaleDateString: () => string;
-    },
+    selectedDate: Date = currentDate,
     item: { title: string; placeholder: string; settings?: string },
   ) => {
     for (let i = 0; i < values.length; i++) {
       const element = values[i];
       if (element.title == item.title) {
         if (item.settings === 'time') {
+          setShowTimePicker(false);
+          setCurrentDate(selectedDate);
           element.value = selectedDate.toLocaleTimeString();
           updatedValues(values);
           return;
         }
         if (item.settings === 'date') {
+          setShowDatePicker(false);
           setCurrentDate(selectedDate);
           element.value = selectedDate.toLocaleDateString();
           updatedValues(values);
@@ -41,16 +48,33 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
   };
 
   useEffect(() => {
-    const itemsArray = [];
+    const itemsArray: { title: string; value: string | undefined }[] = [];
     for (let i = 0; i < InputList.length; i++) {
       const element = InputList[i];
       itemsArray.push({
         title: element.title,
-        value: '',
+        value: element.value,
       });
+      if (itemsArray[i].title === 'Date') {
+        itemsArray[i].value = currentDate.toLocaleDateString();
+      }
+      if (itemsArray[i].title === 'Time') {
+        itemsArray[i].value = currentDate.toLocaleTimeString();
+      }
     }
     setValues(itemsArray);
+    updatedValues(itemsArray);
   }, []);
+
+  const getValue = (title: string) => {
+    for (let i = 0; i < values.length; i++) {
+      const element = values[i];
+      if (element.title == title) {
+        const value = values[i].value;
+        return value;
+      }
+    }
+  };
 
   const setValue = (e: string, item: { title: string; placeholder: string }) => {
     for (let i = 0; i < values.length; i++) {
@@ -63,82 +87,120 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
     }
   };
 
+  const formatTimeString = (time: Date) => {
+    let meridian = 'AM';
+    let hour = time.getHours();
+    if (hour > 12) {
+      hour -= 12;
+      meridian = 'PM';
+    }
+    return hour + time.toTimeString().slice(2, 5) + ' ' + meridian;
+  };
+
   const ListItems = InputList.map((item) => {
     if (item.settings === 'date') {
       return (
         <View key={item.title}>
-          <Text style={[globalStyles.title, { color: DK_PURPLE }]}>{item.title}</Text>
-          <DateTimePicker
-            testID={'dateTimePicker'}
-            value={currentDate}
-            mode={'date'}
-            display={'spinner'}
-            onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
-          />
+          {showDatePicker && (
+            <DateTimePicker
+              testID={'dateTimePicker'}
+              value={currentDate}
+              mode={'date'}
+              display={Platform.OS === 'ios' ? 'compact' : 'default'}
+              onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+            />
+          )}
+          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+            <Text style={styles.dateTime}>{currentDate ? currentDate.toLocaleDateString() : 'no date selected'}</Text>
+          </TouchableOpacity>
+          <Text style={styles.text}>{item.title}</Text>
+          <View style={{ height: 15 }} />
         </View>
       );
     }
     if (item.settings === 'time') {
       return (
         <View key={item.title}>
-          <Text style={[globalStyles.title, { color: DK_PURPLE }]}>{item.title}</Text>
-          <DateTimePicker
-            testID={'dateTimePicker'}
-            value={currentDate}
-            mode={'time'}
-            display={'inline'}
-            onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
-          />
+          {showTimePicker && (
+            <DateTimePicker
+              testID={'dateTimePicker'}
+              value={currentDate}
+              mode={'time'}
+              onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+            />
+          )}
+          <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+            <Text style={styles.dateTime}>{currentDate ? formatTimeString(currentDate) : 'no time selected'}</Text>
+          </TouchableOpacity>
+          <Text style={styles.text}>{item.title}</Text>
+          <View style={{ height: 15 }} />
         </View>
       );
     }
     if (item.settings === 'password') {
       return (
         <View key={item.title}>
-          <Text style={[globalStyles.title, { color: DK_PURPLE }]}>{item.title}</Text>
           <TextInput
             style={styles.textInputBody}
             onChangeText={(e) => setValue(e, item)}
             placeholder={item.placeholder}
             secureTextEntry={true}
           />
+          <Text style={styles.text}>{item.title}</Text>
           <View style={{ height: 15 }} />
         </View>
       );
     }
-    return (
-      <View key={item.title}>
-        <Text style={[globalStyles.title, { color: DK_PURPLE }]}>{item.title}</Text>
-        <TextInput
-          style={styles.textInputBody}
-          onChangeText={(e) => setValue(e, item)}
-          placeholder={item.placeholder}
-        />
-        <View style={{ height: 15 }} />
-      </View>
-    );
+    if (item.settings === 'default') {
+      return (
+        <View key={item.title}>
+          <TextInput
+            value={getValue(item.title)}
+            style={styles.textInputBody}
+            onChangeText={(e) => setValue(e, item)}
+            placeholder={item.placeholder}
+          />
+          <Text style={styles.text}>{item.title}</Text>
+          <View style={{ height: 15 }} />
+        </View>
+      );
+    }
   });
 
   return (
-    <View style={styles.formContainer}>
-      {ListItems}
-      {children}
+    <View style={styles.container}>
+      <View style={styles.formContainer}>{ListItems}</View>
+      <View>{children}</View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   textInputBody: {
-    fontSize: 16,
+    fontSize: 18,
     backgroundColor: WHITE,
     borderRadius: 10,
-    padding: 7,
+    borderColor: '#BE8C2C',
+    borderWidth: 1.5,
+    padding: 8,
     marginTop: 5,
   },
+  container: {
+    width: '100%',
+    flex: 5,
+    justifyContent: 'space-between',
+  },
   formContainer: {
-    backgroundColor: GREY_5,
-    borderRadius: 10,
-    margin: 10,
     padding: 20,
+    flex: 1,
+    flexDirection: 'column',
+    width: '100%',
+  },
+  text: {
+    marginTop: 4,
+    fontSize: 16,
+  },
+  dateTime: {
+    color: 'dodgerblue',
   },
 });

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { DK_PURPLE } from '../res/styles/Colors';
 
 interface TitleProps {
   style?: Record<string, unknown>;
@@ -15,7 +14,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     margin: 15,
-    color: DK_PURPLE,
+    color: '#32A59F',
     textAlign: 'center',
     fontWeight: 'bold',
   },

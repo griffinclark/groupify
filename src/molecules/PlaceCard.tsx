@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Qs from 'qs';
 import { StyleSheet, View, Text, Image, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
-import { LT_PURPLE, DK_PURPLE, GREY_1 } from '../res/styles/Colors';
+import { GREY_1 } from '../res/styles/Colors';
 import { Button } from '../atoms/AtomsExports';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface PlaceCardProps {
   style?: StyleProp<ViewStyle>;
   name: string;
   address: string;
-  distance: string;
-  duration: string;
+  distance?: string;
+  duration?: string;
   rating?: number;
   userRatings?: number;
   priceLevel?: number;
@@ -17,6 +18,7 @@ interface PlaceCardProps {
   openHours?: string[];
   photos?: string[]; // Array of Google's photo references
   onButtonPress: () => void;
+  onCloseButtonPress: () => void;
 }
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBr9OxC0pDU3nICMQDfSjnJ777vnZfsNww'; // replace with MunchkinLabs API key
@@ -61,6 +63,15 @@ export const PlaceCard: React.FC<PlaceCardProps> = (props: PlaceCardProps) => {
 
   return (
     <View style={[styles.defaultContainer, props.style]}>
+      <View style={{ alignSelf: 'flex-start' }}>
+        <Icon
+          name="close-o"
+          type="evilicon"
+          style={{ paddingVertical: 4 }}
+          size={40}
+          onPress={() => props.onCloseButtonPress()}
+        />
+      </View>
       {photos ? photos : null}
       <View style={styles.wholeTextContainer}>
         <Text style={styles.placeName}>{props.name}</Text>
@@ -73,35 +84,37 @@ export const PlaceCard: React.FC<PlaceCardProps> = (props: PlaceCardProps) => {
             </ScrollView>
           ) : null}
           <View style={styles.detailsContainer}>
-            {props.rating ? (
+            <View>
+              {props.rating ? (
+                <Text style={styles.placeDetails}>
+                  {props.rating ? `${props.rating} / 5 stars\n` : null}
+                  {props.userRatings ? `${props.userRatings} ratings` : null}
+                </Text>
+              ) : null}
               <Text style={styles.placeDetails}>
-                {props.rating ? `${props.rating} / 5 stars\n` : null}
-                {props.userRatings ? `${props.userRatings} ratings` : null}
+                {props.priceLevel ? `${'$'.repeat(props.priceLevel)}   |   ` : ''}
+                {`${props.distance} away`}
               </Text>
-            ) : null}
-            <Text style={styles.placeDetails}>
-              {props.priceLevel ? `${'$'.repeat(props.priceLevel)}   |   ` : ''}
-              {`${props.distance}`}
-            </Text>
-            <Text>
-              <Image
-                source={{
-                  uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Purple-car.svg/1221px-Purple-car.svg.png',
-                }}
-                style={{ height: 10, width: 14 }}
-              />
-              <Text> {props.duration}</Text>
-            </Text>
-            {props.openNow !== undefined ? (
               <Text>
-                {props.openNow ? (
-                  <Text style={{ color: 'green' }}>Open</Text>
-                ) : (
-                  <Text style={{ color: 'red' }}>Closed</Text>
-                )}
+                <Image
+                  source={{
+                    uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Purple-car.svg/1221px-Purple-car.svg.png',
+                  }}
+                  style={{ height: 10, width: 14 }}
+                />
+                <Text> {`${props.duration} drive`}</Text>
               </Text>
-            ) : null}
-            <Button onPress={props.onButtonPress} title={'Continue'} />
+              {props.openNow !== undefined ? (
+                <Text>
+                  {props.openNow ? (
+                    <Text style={{ color: 'green' }}>Open</Text>
+                  ) : (
+                    <Text style={{ color: 'red' }}>Closed</Text>
+                  )}
+                </Text>
+              ) : null}
+            </View>
+            <Button onPress={props.onButtonPress} title={'Confirm'} />
           </View>
         </View>
       </View>
@@ -112,14 +125,19 @@ export const PlaceCard: React.FC<PlaceCardProps> = (props: PlaceCardProps) => {
 const styles = StyleSheet.create({
   defaultContainer: {
     flex: 1,
-    width: '80%',
-    height: '20%',
+    flexDirection: 'column',
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: 'white',
+    borderRadius: 15,
   },
   imageContainer: {
     flex: 1,
+    height: 10,
   },
   image: {
-    height: 80,
+    height: 100,
     width: 150,
   },
   wholeTextContainer: {
@@ -129,12 +147,11 @@ const styles = StyleSheet.create({
   placeName: {
     fontWeight: 'bold',
     fontSize: 20,
-    color: DK_PURPLE,
   },
   placeAddress: {
     fontSize: 12,
-    color: LT_PURPLE,
     marginBottom: 10,
+    fontWeight: '200',
   },
   bottomTextContainer: {
     flex: 1,
@@ -156,6 +173,7 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     flex: 1,
+    justifyContent: 'space-between',
   },
   placeDetails: {
     fontSize: 14,

@@ -78,6 +78,10 @@ export const storeImportedContact: (contact: Contact) => Promise<void> = async (
   }
 };
 
+// export const eventObject: () => Promise<void> = async () => {
+
+// };
+
 export const deleteImportedContactFromID: (id: string) => Promise<void> = async (id: string) => {
   try {
     const userFriends: Contact[] = await getAllImportedContacts();

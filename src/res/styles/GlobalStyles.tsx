@@ -8,7 +8,6 @@ export const globalStyles = StyleSheet.create({
     width: '100%',
     backgroundColor: LIGHT,
     flexDirection: 'column',
-    padding: 5,
   },
   navbar_container: {
     height: 80,

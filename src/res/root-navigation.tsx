@@ -13,10 +13,12 @@ import { SetAvailability } from '../screens/SetAvailability';
 import { EditFriends } from '../screens/EditFriends';
 import { Contact } from './dataModels';
 import { SearchPlace } from '../screens/SearchPlace';
+import { User } from '../models';
 
 export type RoutePropParams = {
   params: {
     userID: string;
+    currentUser: User;
     email: string;
     step: string;
     phone: string;
@@ -32,6 +34,8 @@ export type RoutePropParams = {
         time: string;
         location: string;
         showImage: string;
+        placeId: string;
+        fullDate: Date;
       };
     };
   };
