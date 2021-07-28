@@ -7,7 +7,7 @@ import { ContactTile } from '../molecules/MoleculesExports';
 import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Status, Invitee } from '../models';
-import uuid from 'uuid';
+
 interface Props {
   navigation: {
     navigate: (ev: string, a?: { step?: string }) => void;
@@ -169,12 +169,11 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
       inviteeList.push(invitee);
     }
 
-    const updatedPlan = await DataStore.save(
+    await DataStore.save(
       Plan.copyOf(newPlan, (item) => {
         item.invitees = inviteeList;
       }),
     );
-    // console.log(updatedPlan);
 
     navigation.navigate('Home', {});
   };
