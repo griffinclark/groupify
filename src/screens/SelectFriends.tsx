@@ -7,6 +7,7 @@ import { ContactTile } from '../molecules/MoleculesExports';
 import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan } from '../models';
+import uuid from 'uuid';
 interface Props {
   navigation: {
     navigate: (ev: string, a?: { step?: string }) => void;
@@ -145,6 +146,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     for (let i = 0; i < selectedFriends.length; i++) {
       const friend = selectedFriends[i];
       inviteeList.push({
+        id: uuid.v4(),
         name: friend.name,
         phoneNumber: friend.phoneNumber,
         status: 'pending',
