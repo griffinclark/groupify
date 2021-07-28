@@ -2,6 +2,7 @@ import React, { ReactChild, useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View, Text, Platform } from 'react-native';
 import { WHITE } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
   children: ReactChild;
@@ -13,6 +14,8 @@ interface Props {
 export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, fullDate }: Props) => {
   const [values, setValues] = useState<{ title: string; value: string | undefined }[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
   useEffect(() => {
     fullDate(currentDate);
@@ -20,19 +23,21 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
 
   const onDateChange = (
     event: Event,
-    selectedDate: Date,
+    selectedDate: Date = currentDate,
     item: { title: string; placeholder: string; settings?: string },
   ) => {
     for (let i = 0; i < values.length; i++) {
       const element = values[i];
       if (element.title == item.title) {
         if (item.settings === 'time') {
+          setShowTimePicker(false);
           setCurrentDate(selectedDate);
           element.value = selectedDate.toLocaleTimeString();
           updatedValues(values);
           return;
         }
         if (item.settings === 'date') {
+          setShowDatePicker(false);
           setCurrentDate(selectedDate);
           element.value = selectedDate.toLocaleDateString();
           updatedValues(values);
@@ -82,17 +87,32 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
     }
   };
 
+  const formatTimeString = (time: Date) => {
+    let meridian = 'AM';
+    let hour = time.getHours();
+    if (hour > 12) {
+      hour -= 12;
+      meridian = 'PM';
+    }
+    return hour + time.toTimeString().slice(2, 5) + ' ' + meridian;
+  };
+
   const ListItems = InputList.map((item) => {
     if (item.settings === 'date') {
       return (
         <View key={item.title}>
-          <DateTimePicker
-            testID={'dateTimePicker'}
-            value={currentDate}
-            mode={'date'}
-            display={Platform.OS === 'ios' ? 'compact' : 'default'}
-            onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
-          />
+          {showDatePicker && (
+            <DateTimePicker
+              testID={'dateTimePicker'}
+              value={currentDate}
+              mode={'date'}
+              display={Platform.OS === 'ios' ? 'compact' : 'default'}
+              onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+            />
+          )}
+          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+            <Text style={styles.dateTime}>{currentDate ? currentDate.toLocaleDateString() : 'no date selected'}</Text>
+          </TouchableOpacity>
           <Text style={styles.text}>{item.title}</Text>
           <View style={{ height: 15 }} />
         </View>
@@ -101,12 +121,17 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
     if (item.settings === 'time') {
       return (
         <View key={item.title}>
-          <DateTimePicker
-            testID={'dateTimePicker'}
-            value={currentDate}
-            mode={'time'}
-            onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
-          />
+          {showTimePicker && (
+            <DateTimePicker
+              testID={'dateTimePicker'}
+              value={currentDate}
+              mode={'time'}
+              onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+            />
+          )}
+          <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+            <Text style={styles.dateTime}>{currentDate ? formatTimeString(currentDate) : 'no time selected'}</Text>
+          </TouchableOpacity>
           <Text style={styles.text}>{item.title}</Text>
           <View style={{ height: 15 }} />
         </View>
@@ -174,5 +199,8 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 4,
     fontSize: 16,
+  },
+  dateTime: {
+    color: 'dodgerblue',
   },
 });
