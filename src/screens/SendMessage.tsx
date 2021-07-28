@@ -6,8 +6,7 @@ import { API, Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
 import { Icon } from 'react-native-elements';
-import { Plan, Status } from '../models';
-import uuid from 'uuid';
+import { Plan, Status, Invitee } from '../models';
 
 interface Props {
   navigation: {
@@ -89,23 +88,10 @@ ${event.description} \
         createErrorAlert(event.friends, message);
       }
     }
-    const inviteeList = [];
-    for (let i = 0; i < event.friends.length; i++) {
-      const friend = event.friends[i];
-      inviteeList.push({
-        id: uuid.v4(),
-        name: friend.name,
-        phoneNumber: friend.phoneNumber,
-        status: Status.PENDING,
-        pushToken: '',
-        planID: event.uuid,
-      });
-    }
-    console.log(inviteeList);
     const fullDate = route.params.data.eventData.fullDate;
     const date = fullDate.toISOString().substring(0, 10);
     const time = fullDate.toTimeString().substring(0, 8);
-    await DataStore.save(
+    const newPlan = await DataStore.save(
       new Plan({
         title: event.title,
         description: event.description,
@@ -114,9 +100,32 @@ ${event.description} \
         time: time,
         date: date,
         creatorID: route.params.currentUser.id,
-        invitees: inviteeList,
       }),
     );
+
+    const inviteeList: Invitee[] = [];
+    for (const friend of event.friends) {
+      if (friend.phoneNumber !== 'No phone number found') {
+        const invitee = await DataStore.save(
+          new Invitee({
+            name: friend.name,
+            phoneNumber: friend.phoneNumber,
+            status: Status.PENDING,
+            pushToken: '',
+            plan: newPlan,
+          }),
+        );
+        inviteeList.push(invitee);
+      }
+    }
+
+    await DataStore.save(
+      Plan.copyOf(newPlan, (item) => {
+        item.invitees = inviteeList;
+      }),
+    );
+
+    // console.log(inviteeList);
   };
 
   interface renderContactProps {
