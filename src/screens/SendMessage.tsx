@@ -77,17 +77,7 @@ ${event.description} \
     });
   };
 
-  const onPressSend = async (): Promise<void> => {
-    try {
-      const event: Event = route.params.data.eventData;
-      await pushEvent(event.friends, message);
-      navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
-    } catch (err) {
-      console.log(err, event.friends);
-      if (err.message === 'The string supplied did not seem to be a phone number') {
-        createErrorAlert(event.friends, message);
-      }
-    }
+  const storeInvitees = async (contacts: Contact[]) => {
     const fullDate = route.params.data.eventData.fullDate;
     const date = fullDate.toISOString().substring(0, 10);
     const time = fullDate.toTimeString().substring(0, 8);
@@ -119,13 +109,25 @@ ${event.description} \
       }
     }
 
-    await DataStore.save(
+    const updatedPlan = await DataStore.save(
       Plan.copyOf(newPlan, (item) => {
         item.invitees = inviteeList;
       }),
     );
+    console.log(updatedPlan);
+  };
 
-    // console.log(inviteeList);
+  const onPressSend = async (): Promise<void> => {
+    try {
+      await storeInvitees(event.friends);
+      await pushEvent(event.friends, message);
+      navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
+    } catch (err) {
+      console.log(err, event.friends);
+      if (err.message === 'The string supplied did not seem to be a phone number') {
+        createErrorAlert(event.friends, message);
+      }
+    }
   };
 
   interface renderContactProps {

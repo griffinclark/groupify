@@ -169,11 +169,13 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
       inviteeList.push(invitee);
     }
 
-    await DataStore.save(
+    const updatedPlan = await DataStore.save(
       Plan.copyOf(newPlan, (item) => {
         item.invitees = inviteeList;
       }),
     );
+
+    console.log(updatedPlan);
 
     navigation.navigate('Home', {});
   };
