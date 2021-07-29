@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
+import { sendPushNotification } from '../res/notifications';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
@@ -175,8 +176,11 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
       }),
     );
 
-    // TODO: Change line below to send notifications to all invitees, get invitees expo push tokens from backend
-    // sendPushNotification('ExponentPushToken', 'title', 'body', { data: 'hello' });
+    for (const invitee of inviteeList) {
+      if (invitee.pushToken) {
+        sendPushNotification(invitee.pushToken, 'You Have Been Invited!!!', 'Tap to open the app', { data: 'hello' });
+      }
+    }
 
     console.log(updatedPlan);
 
