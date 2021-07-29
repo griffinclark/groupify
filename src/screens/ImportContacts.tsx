@@ -41,29 +41,25 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const removeSelectedContact = (contact: Contact) => {
-    let index = 0;
-    for (let i = 0; i < selectedContacts.length; i++) {
-      if (selectedContacts[i].id === contact.id) {
-        index = i;
-        break;
-      }
-    }
+    const index = selectedContacts.findIndex((c) => c.id == contact.id);
     selectedContacts.splice(index, 1);
-    setSelectedContacts(selectedContacts.slice(0));
+    setSelectedContacts(selectedContacts.slice());
   };
 
   const loadContacts = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
       const { data } = await Contacts.getContactsAsync({});
-      const contacts = data.map((contact) => ({
-        id: contact.id,
-        name: contact.name,
-        image: contact.image,
-        phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
-      }));
-      contacts.sort((c1, c2) => (c1.name < c2.name ? -1 : 1));
-      contacts[0].phoneNumber && setContacts(contacts);
+      if (data.length > 0) {
+        const contacts = data.map((contact) => ({
+          id: contact.id,
+          name: contact.name,
+          image: contact.image,
+          phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
+        }));
+        contacts.sort((c1, c2) => (c1.name < c2.name ? -1 : 1));
+        contacts[0].phoneNumber && setContacts(contacts);
+      }
     }
     setState(State.Done);
   };

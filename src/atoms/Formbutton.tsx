@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { GREY_3, GREY_4, LT_PURPLE, WHITE } from '../res/styles/Colors';
+import { GREY_3, GREY_4, WHITE } from '../res/styles/Colors';
 
 interface ButtonProps {
   onPress: (ev?: React.FormEvent<HTMLFormElement>) => void;
@@ -11,7 +11,6 @@ interface ButtonProps {
 export const FormButton: React.FC<ButtonProps> = ({ onPress, title, disabled = false }: ButtonProps) => {
   const handlePress = () => {
     onPress();
-    console.log('hi');
   };
 
   return (
@@ -48,7 +47,7 @@ export const buttonStyles = StyleSheet.create({
     fontSize: 16,
   },
   enabledButton: {
-    backgroundColor: LT_PURPLE,
+    backgroundColor: '#32A59F',
     color: WHITE,
   },
   disabledButton: {

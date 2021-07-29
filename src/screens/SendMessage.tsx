@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Event, Contact } from '../res/dataModels';
-import { storeUserEvent } from '../res/storageFunctions';
-import { sendPushNotification } from '../res/notifications';
-import { API } from 'aws-amplify';
+import { API, Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
-import { Auth } from 'aws-amplify';
-import { DK_PURPLE } from '../res/styles/Colors';
-import { Navbar } from '../molecules/MoleculesExports';
-import { FriendList } from '../organisms/OrganismsExports';
-import { Title, NavButton, Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
+import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
+import { Icon } from 'react-native-elements';
+import { Plan, Status, Invitee } from '../models';
 
 interface Props {
   navigation: {
@@ -22,6 +18,7 @@ interface Props {
 export const SendMessage: React.FC<Props> = ({ navigation, route }: Props) => {
   const event: Event = route.params.data.eventData;
   const [message, setMessage] = useState<string>('Loading Message...');
+  const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
 
   useEffect(() => {
     createInitialMessage();
@@ -66,7 +63,7 @@ ${event.description} \
     });
   };
 
-  const createErrorAlert = (): void => {
+  const createErrorAlert = (friends: Contact[], message: string): void => {
     TwoButtonAlert({
       title: 'Notice',
       message:
@@ -74,41 +71,106 @@ ${event.description} \
       button1Text: 'Go back',
       button2Text: 'Create Event Anyways',
       button2OnPress: async () => {
-        await storeUserEvent(event);
         navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
+        await pushEvent(friends, message);
       },
     });
   };
 
+  const storeInvitees = async (contacts: Contact[]) => {
+    const fullDate = route.params.data.eventData.fullDate;
+    const date = fullDate.toISOString().substring(0, 10);
+    const time = fullDate.toTimeString().substring(0, 8);
+    const newPlan = await DataStore.save(
+      new Plan({
+        title: event.title,
+        description: event.description,
+        location: event.location,
+        placeID: event.placeId,
+        time: time,
+        date: date,
+        creatorID: route.params.currentUser.id,
+      }),
+    );
+
+    const inviteeList: Invitee[] = [];
+    for (const friend of event.friends) {
+      if (friend.phoneNumber !== 'No phone number found') {
+        const invitee = await DataStore.save(
+          new Invitee({
+            name: friend.name,
+            phoneNumber: friend.phoneNumber,
+            status: Status.PENDING,
+            pushToken: '',
+            plan: newPlan,
+          }),
+        );
+        inviteeList.push(invitee);
+      }
+    }
+
+    const updatedPlan = await DataStore.save(
+      Plan.copyOf(newPlan, (item) => {
+        item.invitees = inviteeList;
+      }),
+    );
+    console.log(updatedPlan);
+  };
+
   const onPressSend = async (): Promise<void> => {
     try {
-      const event: Event = route.params.data.eventData;
+      await storeInvitees(event.friends);
       await pushEvent(event.friends, message);
-      // TODO: Change line below to send notifications to all invitees, get invitees expo push tokens from backend
-      // sendPushNotification('ExponentPushToken', 'title', 'body', { data: 'hello' });
-      await storeUserEvent(event);
       navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
     } catch (err) {
       console.log(err, event.friends);
       if (err.message === 'The string supplied did not seem to be a phone number') {
-        createErrorAlert();
+        createErrorAlert(event.friends, message);
       }
     }
   };
 
+  interface renderContactProps {
+    item: Contact;
+  }
+
+  const friendList = ({ item }: renderContactProps) => {
+    return (
+      <View key={item.id} style={styles.nameContainer}>
+        <View style={styles.bubble}>
+          <Icon size={30} color={'white'} name="check" type="entypo" />
+        </View>
+        <Text style={styles.name}>{item.name}</Text>
+      </View>
+    );
+  };
+
   return (
     <Screen>
-      <Navbar>
-        <NavButton onPress={() => navigation.navigate('SelectFriends')} title="Back" />
-      </Navbar>
-      <Title>Send Message</Title>
-      <FriendList friends={event.friends} />
+      <Icon
+        name="arrow-left"
+        type="font-awesome"
+        size={35}
+        onPress={() => navigation.navigate('SelectFriends', {})}
+        style={styles.back}
+      />
       <View style={styles.message}>
-        <MultiLineTextInput inputText={message} setText={setMessage} placeholder={''} />
-        <Text style={{ textAlign: 'center' }}>Tap message to edit</Text>
+        <MultiLineTextInput enabled={editMessage} inputText={message} setText={setMessage} placeholder={''} />
       </View>
+      <Button title="Edit Note" onPress={() => setEditMessage(!editMessage)} />
+      <Text style={styles.text}>Sending text message to...</Text>
+      <FlatList
+        data={event.friends}
+        renderItem={friendList}
+        ListEmptyComponent={() => (
+          <View style={styles.title}>
+            <Text>No Friends Invited</Text>
+          </View>
+        )}
+        style={{ maxHeight: '52%' }}
+      />
       <View style={styles.footer}>
-        <Button title="Send & Create Event" onPress={createConfirmAlert} />
+        <Button title="Confirm" onPress={createConfirmAlert} />
       </View>
     </Screen>
   );
@@ -116,14 +178,52 @@ ${event.description} \
 
 const styles = StyleSheet.create({
   message: {
-    flex: 4,
+    borderWidth: 1,
+    paddingVertical: 15,
+    paddingHorizontal: 5,
+    borderRadius: 15,
+    borderColor: '#BE8C2C',
+    margin: 15,
   },
   footer: {
-    flex: 2,
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
   },
   text: {
-    backgroundColor: DK_PURPLE,
-    fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
+    margin: 15,
+    fontSize: 24,
+    fontWeight: '700',
+  },
+  back: {
+    margin: 20,
+    alignSelf: 'flex-start',
+  },
+  nameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+  },
+  bubble: {
+    width: 60,
+    height: 60,
+    backgroundColor: '#31A59F',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderRadius: 50,
+  },
+  name: {
+    fontSize: 15,
+    marginLeft: 10,
+  },
+  friendListContainer: {
+    flex: 1,
+  },
+  title: {
+    flex: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 20,
   },
 });

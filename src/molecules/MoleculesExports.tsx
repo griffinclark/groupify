@@ -1,5 +1,7 @@
-import { AndroidContactTile } from '../molecules/AndroidContactTile';
-import { EventTile } from '../molecules/EventTile';
-import { Navbar } from '../molecules/Navbar';
+import { AndroidContactTile } from './AndroidContactTile';
+import { EventTile } from './EventTile';
+import { Navbar } from './Navbar';
+import { PlaceCard } from './PlaceCard';
+import { ContactTile } from './ContactTile';
 
-export { AndroidContactTile, EventTile, Navbar };
+export { AndroidContactTile, EventTile, Navbar, PlaceCard, ContactTile };

@@ -4,11 +4,13 @@ import { globalStyles } from './../res/styles/GlobalStyles';
 import { Event } from '../res/dataModels';
 import { getAllUserEvents } from './../res/storageFunctions';
 import { registerForPushNotificationsAsync } from '../res/notifications';
-import { Auth } from 'aws-amplify';
 import { Screen, Button, NavButton } from '../atoms/AtomsExports';
 import { DataDisplay } from '../organisms/OrganismsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
+import { Auth } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
+import { User } from '../models';
 
 interface Props {
   navigation: {
@@ -21,7 +23,9 @@ interface Props {
     };
     navigate:
       | ((ev: string, a?: { step?: string; email?: string }) => void)
-      | ((ev: string, a?: { data?: { prevAction?: string } }) => void);
+      | ((ev: string, a?: { data?: { prevAction?: string } }) => void)
+      | ((ev: string, a?: { userID?: string }) => void)
+      | ((ev: string, a?: { currentUser?: User }) => void);
     push: (ev: string, e: { email: string; step: string }) => void;
   };
   route: RoutePropParams;
@@ -29,11 +33,20 @@ interface Props {
 
 export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [feedData, setFeedData] = useState<Event[]>([]);
+  const [currentUser, setCurrentUser] = useState<User>();
 
   useEffect(() => {
     registerForPushNotificationsAsync();
+    (async () => {
+      if (route.params && route.params.userID) {
+        const user = await DataStore.query(User, route.params.userID);
+        if (user) {
+          setCurrentUser(user);
+        }
+      }
+    })();
     getUserEvents();
-  }, [route.params]);
+  }, []);
 
   const getUserEvents = async () => {
     const events = await getAllUserEvents();
@@ -58,9 +71,21 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           />
           <NavButton
             onPress={() => {
+              navigation.navigate('SetAvailability', { userID: route.params.userID });
+            }}
+            title="Availability"
+          />
+          <NavButton
+            onPress={() => {
               navigation.navigate('ImportContacts');
             }}
-            title="Edit Contacts"
+            title="Contacts"
+          />
+          <NavButton
+            onPress={() => {
+              navigation.navigate('EditFriends', { userID: route.params.userID });
+            }}
+            title="Friends"
           />
         </Navbar>
       </View>
@@ -77,7 +102,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         <Button
           title="Create event"
           onPress={() => {
-            navigation.navigate('CreateCustomEvent');
+            navigation.navigate('SearchPlace', { currentUser: currentUser });
           }}
         />
       </View>
