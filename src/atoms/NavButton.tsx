@@ -17,7 +17,7 @@ export const NavButton: React.FC<NavProps> = ({ onPress, title }: NavProps) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: LT_PURPLE,
+    backgroundColor: '#32A59F',
     borderRadius: 20,
     paddingHorizontal: 15,
     paddingVertical: 10,
