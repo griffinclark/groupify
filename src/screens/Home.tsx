@@ -3,7 +3,6 @@ import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { Event } from '../res/dataModels';
 import { getAllUserEvents } from './../res/storageFunctions';
-import { registerForPushNotificationsAsync } from '../res/notifications';
 import { Screen, Button, NavButton } from '../atoms/AtomsExports';
 import { DataDisplay } from '../organisms/OrganismsExports';
 import { Navbar } from '../molecules/MoleculesExports';
@@ -36,7 +35,6 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
 
   useEffect(() => {
-    registerForPushNotificationsAsync();
     (async () => {
       if (route.params && route.params.userID) {
         const user = await DataStore.query(User, route.params.userID);

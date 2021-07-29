@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
-export const registerForPushNotificationsAsync = async (): Promise<void> => {
+export const registerForPushNotifications = async (): Promise<void> => {
   if (Constants.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
@@ -14,13 +14,6 @@ export const registerForPushNotificationsAsync = async (): Promise<void> => {
       alert('Failed to get push token for push notification!');
       return;
     }
-    // if we do not have the user's expo push token stored in our database:
-    const token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
-    // TODO: store user's expo push token into our database
-    // Below code may be unnecessary
-    // const subscription = Notifications.addPushTokenListener(// function that stores the token)
-    // subscription.remove()
   } else {
     alert('Must use physical device for Push Notifications');
   }
@@ -33,6 +26,11 @@ export const registerForPushNotificationsAsync = async (): Promise<void> => {
       lightColor: '#FF231F7C',
     });
   }
+};
+
+export const getExpoPushToken = async (): Promise<string> => {
+  const token = (await Notifications.getExpoPushTokenAsync()).data;
+  return token;
 };
 
 export const sendPushNotification = async (

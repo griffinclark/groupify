@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts } from '../res/storageFunctions';
+import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
 import { Contact } from '../res/dataModels';
 import { Navbar } from '../molecules/MoleculesExports';
 import { Title, NavButton, Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
@@ -60,22 +61,30 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const registerUser = async (): Promise<User> => {
+    await registerForPushNotifications();
+    const token = await getExpoPushToken();
     const userInfo = await Auth.currentUserInfo();
     const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     // console.log(users);
     if (users.length > 0) {
+      const user = users[0];
       console.log('Existing User: Updating users pushToken');
-      // TODO: Once Notifications branch is merged, update the user's push token
-      return users[0];
+      if (user.pushToken !== token) {
+        await DataStore.save(
+          User.copyOf(user, (updated) => {
+            updated.pushToken = token;
+          }),
+        );
+      }
+      return user;
     } else {
       console.log('New User: Adding user to database');
-      // TODO: Once Notifications branch is merged, store the user's expoPushToken
       const newUser = await DataStore.save(
         new User({
           phoneNumber: userInfo.attributes.phone_number,
           email: userInfo.attributes.email,
           name: userInfo.attributes.name,
-          pushToken: 'null',
+          pushToken: token,
           friends: [],
         }),
       );
@@ -92,6 +101,7 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
       await Auth.signIn(formatPhone, password);
       console.log('successfully signed in');
       const user = await registerUser();
+      console.log(user);
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
         navigation.navigate('ImportContacts');

@@ -175,6 +175,9 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
       }),
     );
 
+    // TODO: Change line below to send notifications to all invitees, get invitees expo push tokens from backend
+    // sendPushNotification('ExponentPushToken', 'title', 'body', { data: 'hello' });
+
     console.log(updatedPlan);
 
     navigation.navigate('Home', {});
