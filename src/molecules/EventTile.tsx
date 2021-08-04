@@ -5,6 +5,7 @@ import { DK_PURPLE, GREY_5, POST_SPACING } from '../res/styles/Colors';
 // import { Event } from '../res/dataModels';
 import { FriendList } from '../organisms/FriendList';
 import { Plan } from '../models';
+import { formatTime } from '../res/utilFunctions';
 
 interface EventTileProps {
   plan: Plan;
@@ -19,7 +20,7 @@ export const EventTile: React.FC<EventTileProps> = ({ plan }: EventTileProps) =>
         <View style={styles.infoItem}>
           <Text style={styles.label}>When</Text>
           <Text>{plan.date}</Text>
-          <Text>{plan.time}</Text>
+          <Text>{plan.time ? formatTime(plan.time) : ''}</Text>
         </View>
         <View style={styles.infoItem}>
           <Text style={styles.label}>Where</Text>

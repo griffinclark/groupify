@@ -7,6 +7,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Screen, NavButton, Button, Title } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { globalStyles } from '../res/styles/GlobalStyles';
+import { formatTime } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
@@ -44,7 +45,7 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
     setUser(user);
     // console.log(user);
     if (user && user.availability) {
-      console.log('Loading user availability');
+      // console.log('Loading user availability');
       const availability = user.availability;
       if (availability.Sunday !== undefined && availability.Sunday.length === 2) {
         setTimeSunStart(new Date(`2021-01-01T${availability.Sunday[0]}`));
@@ -75,9 +76,9 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
         setTimeSatEnd(new Date(`2021-01-01T${availability.Saturday[1]}`));
       }
       setLoading(false);
-      console.log('Finished loading user availability');
+      // console.log('Finished loading user availability');
     } else {
-      console.log('No previous availability');
+      // console.log('No previous availability');
       setLoading(false);
     }
   };
@@ -110,19 +111,9 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
           setShowTimePicker(true);
         }}
       >
-        <Text>{prefix + formatTimeString(eval(dayAndTime))}</Text>
+        <Text>{prefix + formatTime(eval(dayAndTime))}</Text>
       </TouchableOpacity>
     );
-  };
-
-  const formatTimeString = (time: Date) => {
-    let meridian = 'AM';
-    let hour = time.getHours();
-    if (hour > 12) {
-      hour -= 12;
-      meridian = 'PM';
-    }
-    return hour + time.toTimeString().slice(2, 5) + ' ' + meridian;
   };
 
   const dateToAWSTime = (date: Date) => {
