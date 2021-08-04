@@ -15,7 +15,7 @@ export const registerForPushNotifications = async (): Promise<void> => {
       return;
     }
   } else {
-    alert('Must use physical device for Push Notifications');
+    console.log('Must use physical device for Push Notifications');
   }
 
   if (Platform.OS === 'android') {
