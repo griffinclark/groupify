@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
-import { Event } from '../res/dataModels';
-import { getAllUserEvents } from './../res/storageFunctions';
+// import { Event } from '../res/dataModels';
+// import { getAllUserEvents } from './../res/storageFunctions';
 import { Screen, Button, NavButton } from '../atoms/AtomsExports';
 import { DataDisplay } from '../organisms/OrganismsExports';
 import { Navbar } from '../molecules/MoleculesExports';
@@ -10,6 +10,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
+import { Plan } from '../models';
 
 interface Props {
   navigation: {
@@ -31,7 +32,7 @@ interface Props {
 }
 
 export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
-  const [feedData, setFeedData] = useState<Event[]>([]);
+  const [feedData, setFeedData] = useState<Plan[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
 
   useEffect(() => {
@@ -47,8 +48,12 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   }, []);
 
   const getUserEvents = async () => {
-    const events = await getAllUserEvents();
-    setFeedData(events);
+    // const events = await getAllUserEvents();
+    console.log('Getting user plans');
+    if (currentUser) {
+      const plans = await DataStore.query(Plan, (plan) => plan.creatorID('eq', currentUser.id));
+      setFeedData(plans);
+    }
   };
 
   return (

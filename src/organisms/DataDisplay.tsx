@@ -2,10 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { EventTile } from '../molecules/MoleculesExports';
-import { Event } from '../res/dataModels';
+// import { Event } from '../res/dataModels';
+import { Plan } from '../models';
 
 interface Props {
-  data: Event[];
+  data: Plan[];
 }
 
 export const DataDisplay: React.FC<Props> = ({ data }: Props) => {
@@ -14,9 +15,9 @@ export const DataDisplay: React.FC<Props> = ({ data }: Props) => {
       <FlatList
         data={data}
         renderItem={({ item }) => {
-          return <EventTile event={item} />;
+          return <EventTile plan={item} />;
         }}
-        keyExtractor={(item) => item.uuid}
+        keyExtractor={(item) => item.id}
       />
     </View>
   );
