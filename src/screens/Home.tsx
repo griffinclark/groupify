@@ -37,24 +37,18 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     (async () => {
+      console.log('Loading user plans');
       if (route.params && route.params.userID) {
         const user = await DataStore.query(User, route.params.userID);
         if (user) {
           setCurrentUser(user);
+          const plans = await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id));
+          setFeedData(plans);
+          console.log('Successfully loaded user plans');
         }
       }
     })();
-    getUserEvents();
   }, []);
-
-  const getUserEvents = async () => {
-    // const events = await getAllUserEvents();
-    console.log('Getting user plans');
-    if (currentUser) {
-      const plans = await DataStore.query(Plan, (plan) => plan.creatorID('eq', currentUser.id));
-      setFeedData(plans);
-    }
-  };
 
   return (
     <Screen>
@@ -63,6 +57,9 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           <NavButton
             onPress={async () => {
               try {
+                await DataStore.clear();
+                await DataStore.stop();
+                await DataStore.start();
                 await Auth.signOut();
                 console.log('successfully signed out');
                 navigation.navigate('Welcome');

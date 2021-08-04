@@ -92,6 +92,7 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
       await Auth.signIn(formatPhone, password);
       console.log('successfully signed in');
       const user = await registerUser();
+      console.log('User logged in:', user);
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
         navigation.navigate('ImportContacts');
