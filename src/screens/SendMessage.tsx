@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ImageBackground } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Event, Contact } from '../res/dataModels';
 import { API, Auth, DataStore } from 'aws-amplify';
@@ -7,6 +7,7 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
 import { Icon } from 'react-native-elements';
 import { Plan, Status, Invitee } from '../models';
+import { sendPushNotification } from '../res/notifications';
 
 interface Props {
   navigation: {
@@ -33,13 +34,20 @@ export const SendMessage: React.FC<Props> = ({ navigation, route }: Props) => {
     const name = await getUserName();
     setMessage(
       `Hey, ${name} is inviting you \
-to '${event.title ? event.title : '[event title not specified]'}' \
+to '${event.title ? event.title : '[plan title not specified]'}' \
 at ${event.time ? event.time : '[time not specified]'} \
 on ${event.date ? event.date : '[date not specified]'} \
 at ${event.location ? event.location : '[location not specified]'}. \
 ${event.description} \
 \nHope to see you there!`,
     );
+  };
+
+  const formatPhoneNumber = (friend: Contact) => {
+    const util = PhoneNumberUtil.getInstance();
+    const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+    const newNumber = util.format(num, PhoneNumberFormat.E164);
+    return newNumber;
   };
 
   const pushEvent = async (friends: Contact[], message: string): Promise<void> => {
@@ -55,8 +63,8 @@ ${event.description} \
   const createConfirmAlert = (): void => {
     getUserName();
     TwoButtonAlert({
-      title: 'Send and Create Event',
-      message: 'Are you sure you want to send this message to all invited friends and create this event?',
+      title: 'Send and Create Plan',
+      message: 'Are you sure you want to send this message to all invited friends and create this plan?',
       button1Text: 'Cancel',
       button2Text: 'Send & Create',
       button2OnPress: onPressSend,
@@ -77,7 +85,7 @@ ${event.description} \
     });
   };
 
-  const storeInvitees = async (contacts: Contact[]) => {
+  const storeInvitees = async () => {
     const fullDate = route.params.data.eventData.fullDate;
     const date = fullDate.toISOString().substring(0, 10);
     const time = fullDate.toTimeString().substring(0, 8);
@@ -94,6 +102,21 @@ ${event.description} \
     );
 
     const inviteeList: Invitee[] = [];
+    for (const contact of event.contacts) {
+      if (contact.phoneNumber !== 'No phone number found') {
+        const invitee = await DataStore.save(
+          new Invitee({
+            name: contact.name,
+            phoneNumber: formatPhoneNumber(contact),
+            status: Status.PENDING,
+            pushToken: '',
+            plan: newPlan,
+          }),
+        );
+        inviteeList.push(invitee);
+      }
+    }
+
     for (const friend of event.friends) {
       if (friend.phoneNumber !== 'No phone number found') {
         const invitee = await DataStore.save(
@@ -114,18 +137,25 @@ ${event.description} \
         item.invitees = inviteeList;
       }),
     );
+
+    for (const invitee of inviteeList) {
+      if (invitee.pushToken) {
+        sendPushNotification(invitee.pushToken, 'You Have Been Invited!!!', 'Tap to open the app', { data: 'hello' });
+      }
+    }
+
     console.log(updatedPlan);
   };
 
   const onPressSend = async (): Promise<void> => {
     try {
-      await storeInvitees(event.friends);
-      await pushEvent(event.friends, message);
+      await storeInvitees();
+      await pushEvent(event.contacts, message);
       navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
     } catch (err) {
       console.log(err, event.friends);
       if (err.message === 'The string supplied did not seem to be a phone number') {
-        createErrorAlert(event.friends, message);
+        createErrorAlert(event.contacts, message);
       }
     }
   };
@@ -134,7 +164,7 @@ ${event.description} \
     item: Contact;
   }
 
-  const friendList = ({ item }: renderContactProps) => {
+  const contactList = ({ item }: renderContactProps) => {
     return (
       <View key={item.id} style={styles.nameContainer}>
         <View style={styles.bubble}>
@@ -154,23 +184,63 @@ ${event.description} \
         onPress={() => navigation.navigate('SelectFriends', {})}
         style={styles.back}
       />
-      <View style={styles.message}>
-        <MultiLineTextInput enabled={editMessage} inputText={message} setText={setMessage} placeholder={''} />
-      </View>
-      <Button title="Edit Note" onPress={() => setEditMessage(!editMessage)} />
-      <Text style={styles.text}>Sending text message to...</Text>
-      <FlatList
-        data={event.friends}
-        renderItem={friendList}
-        ListEmptyComponent={() => (
-          <View style={styles.title}>
-            <Text>No Friends Invited</Text>
+      {event.contacts.length == 0 && event.friends.length > 0 && (
+        <ImageBackground
+          imageStyle={{ borderRadius: 15 }}
+          source={{ uri: event.imageURL }}
+          style={styles.backgroundImage}
+        >
+          <View style={styles.overlay} />
+          <Text style={styles.titleText}>Plan Details...</Text>
+          <View style={styles.body}>
+            <View style={styles.eventInfo}>
+              <Text style={styles.planInfo}>{event.title}</Text>
+              <Text style={styles.planInfo}>{event.date}</Text>
+              <Text style={styles.planInfo}>{event.time}</Text>
+              <Text numberOfLines={1} style={styles.planInfo}>
+                {event.location}
+              </Text>
+            </View>
           </View>
-        )}
-        style={{ maxHeight: '52%' }}
-      />
+        </ImageBackground>
+      )}
+      {event.contacts.length > 0 && (
+        <>
+          <Text style={styles.text}>Message to friends</Text>
+          <View style={styles.message}>
+            <MultiLineTextInput enabled={editMessage} inputText={message} setText={setMessage} placeholder={''} />
+          </View>
+          <Button title="Edit Note" onPress={() => setEditMessage(!editMessage)} />
+          <Text style={styles.text}>Sending text message to...</Text>
+          <FlatList
+            data={event.contacts}
+            renderItem={contactList}
+            ListEmptyComponent={() => (
+              <View style={styles.title}>
+                <Text>No Contacts Invited</Text>
+              </View>
+            )}
+            style={event.friends.length !== 0 ? { maxHeight: '20%' } : { maxHeight: '42%' }}
+          />
+        </>
+      )}
+      {event.friends.length > 0 && (
+        <View style={{ flex: 1 }}>
+          <Text style={styles.text}>Inviting friends to plan...</Text>
+          <FlatList
+            data={event.friends}
+            renderItem={contactList}
+            ListEmptyComponent={() => (
+              <View style={styles.title}>
+                <Text>No Friends Invited</Text>
+              </View>
+            )}
+            style={{ maxHeight: '60%' }}
+          />
+        </View>
+      )}
       <View style={styles.footer}>
-        <Button title="Confirm" onPress={createConfirmAlert} />
+        <Button title="Create Plan" onPress={createConfirmAlert} />
       </View>
     </Screen>
   );
@@ -225,5 +295,42 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 20,
+  },
+  backgroundImage: {
+    flex: 1,
+    borderRadius: 15,
+    marginHorizontal: 15,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'black',
+    opacity: 0.25,
+    borderRadius: 15,
+  },
+  titleText: {
+    fontSize: 30,
+    fontWeight: '700',
+    color: 'white',
+    textAlign: 'center',
+    marginTop: 30,
+  },
+  eventInfo: {
+    backgroundColor: '#D9B139',
+    padding: 20,
+    borderRadius: 15,
+  },
+  planInfo: {
+    fontSize: 20,
+    margin: 5,
+    fontWeight: '700',
+  },
+  body: {
+    flex: 1,
+    margin: 30,
+    justifyContent: 'center',
   },
 });
