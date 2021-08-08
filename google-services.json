@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "268591507162",
+    "project_id": "warm-actor-316520",
+    "storage_bucket": "warm-actor-316520.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268591507162:android:e5b593acd9b430c176a7e3",
+        "android_client_info": {
+          "package_name": "com.munchkinlabs.meep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268591507162-8demcvp029prulb895uju5lj5l892n95.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCePfTiA1qdlnIASSVvO-emDx-Tq2gSe0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268591507162-8demcvp029prulb895uju5lj5l892n95.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

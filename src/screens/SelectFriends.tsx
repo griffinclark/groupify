@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
+import { sendPushNotification } from '../res/notifications';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
@@ -174,6 +175,12 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         item.invitees = inviteeList;
       }),
     );
+
+    for (const invitee of inviteeList) {
+      if (invitee.pushToken) {
+        sendPushNotification(invitee.pushToken, 'You Have Been Invited!!!', 'Tap to open the app', { data: 'hello' });
+      }
+    }
 
     console.log(updatedPlan);
 

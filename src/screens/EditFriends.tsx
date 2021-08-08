@@ -38,6 +38,7 @@ export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const loadFriends = async () => {
     const user = await DataStore.query(User, route.params.userID);
+    console.log(user);
     const friends: User[] = [];
     if (user) {
       const friendIDs = user.friends;
