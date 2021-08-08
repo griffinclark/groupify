@@ -124,7 +124,7 @@ ${event.description} \
             name: friend.name,
             phoneNumber: friend.phoneNumber,
             status: Status.PENDING,
-            pushToken: '',
+            pushToken: friend.pushToken,
             plan: newPlan,
           }),
         );
@@ -144,7 +144,7 @@ ${event.description} \
       }
     }
 
-    console.log(updatedPlan);
+    // console.log(updatedPlan);
   };
 
   const onPressSend = async (): Promise<void> => {
