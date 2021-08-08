@@ -7,6 +7,7 @@ export const LT_PURPLE = '#9062cc';
 export const DK_PURPLE = '#3c2061';
 export const WHITE = '#ffffff';
 export const BLACK = '#000000';
+export const GREY_0 = '#222222';
 export const GREY_1 = '#333333';
 export const GREY_2 = '#4F4F4F';
 export const GREY_3 = '#828282';

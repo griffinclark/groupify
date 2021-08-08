@@ -2,16 +2,15 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { DK_PURPLE, GREY_5, POST_SPACING } from '../res/styles/Colors';
-// import { Event } from '../res/dataModels';
 import { FriendList } from '../organisms/FriendList';
 import { Plan } from '../models';
-import { formatTime } from '../res/utilFunctions';
+import { formatTime, formateDate } from '../res/utilFunctions';
 
-interface EventTileProps {
+interface PlanTileProps {
   plan: Plan;
 }
 
-export const EventTile: React.FC<EventTileProps> = ({ plan }: EventTileProps) => {
+export const EventTile: React.FC<PlanTileProps> = ({ plan }: PlanTileProps) => {
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.title}>{plan.title}</Text>
@@ -19,7 +18,7 @@ export const EventTile: React.FC<EventTileProps> = ({ plan }: EventTileProps) =>
       <View style={styles.infoContainer}>
         <View style={styles.infoItem}>
           <Text style={styles.label}>When</Text>
-          <Text>{plan.date}</Text>
+          <Text>{plan.date ? formateDate(plan.date) : ''}</Text>
           <Text>{plan.time ? formatTime(plan.time) : ''}</Text>
         </View>
         <View style={styles.infoItem}>

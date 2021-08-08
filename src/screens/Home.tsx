@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
-// import { Event } from '../res/dataModels';
-// import { getAllUserEvents } from './../res/storageFunctions';
+import { GREY_0 } from './../res/styles/Colors';
+import { convertDateStringToDate } from './../res/utilFunctions';
 import { Screen, Button, NavButton } from '../atoms/AtomsExports';
-import { DataDisplay } from '../organisms/OrganismsExports';
+import { MiniDataDisplay } from '../organisms/OrganismsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
-import { User } from '../models';
-import { Plan } from '../models';
+import { User, Plan, Invitee } from '../models';
 
 interface Props {
   navigation: {
@@ -32,23 +31,55 @@ interface Props {
 }
 
 export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
-  const [feedData, setFeedData] = useState<Plan[]>([]);
+  const [upcomingPlans, setUpcomingPlans] = useState<Plan[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
+  const [userPlans, setUserPlans] = useState<Plan[]>([]);
+  const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
 
   useEffect(() => {
     (async () => {
-      console.log('Loading user plans');
+      // console.log('Loading user plans');
       if (route.params && route.params.userID) {
         const user = await DataStore.query(User, route.params.userID);
         if (user) {
           setCurrentUser(user);
-          const plans = await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id));
-          setFeedData(plans);
-          console.log('Successfully loaded user plans');
+          const userPlans = await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id));
+          const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
+          const invitedPlans = invitees
+            .map((invitee) => {
+              return invitee.plan;
+            })
+            .filter((item): item is Plan => item !== undefined);
+          // const currentDate = new Date();
+          // const userPlan = userPlans[0];
+          // console.log(userPlan);
+          // if (userPlan.date) {
+          //   console.log(currentDate.valueOf());
+          //   console.log(convertDateStringToDate(userPlan.date).valueOf());
+          //   console.log(convertDateStringToDate(userPlan.date).valueOf() - currentDate.valueOf());
+          // }
+          // const upcomingPlans = userPlans.concat(invitedPlans);
+          setUpcomingPlans(await filterUpcomingPlans(userPlans.concat(invitedPlans)));
+          setUserPlans(userPlans);
+          setInvitedPlans(invitedPlans);
+          // console.log('Successfully loaded user plans');
         }
       }
     })();
   }, []);
+
+  const filterUpcomingPlans = async (plans: Plan[]) => {
+    const currentDate = new Date();
+    const weekInMS = 604800000;
+    return plans.filter((plan) => {
+      if (plan.date) {
+        if (convertDateStringToDate(plan.date).valueOf() - currentDate.valueOf() < weekInMS) {
+          return true;
+        }
+      }
+      return false;
+    });
+  };
 
   return (
     <Screen>
@@ -90,8 +121,17 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </Navbar>
       </View>
       <View style={styles.feedContainer}>
-        {feedData.length > 0 ? (
-          <DataDisplay data={feedData} />
+        {upcomingPlans.length > 0 ? (
+          <View>
+            <Text style={styles.label}>This Week</Text>
+            <MiniDataDisplay data={upcomingPlans} />
+            <View style={globalStyles.miniSpacer}></View>
+            <Text style={styles.label}>Your Created Plans</Text>
+            <MiniDataDisplay data={userPlans} />
+            <View style={globalStyles.miniSpacer}></View>
+            <Text style={styles.label}>Your Invites</Text>
+            <MiniDataDisplay data={invitedPlans} />
+          </View>
         ) : (
           <View style={styles.title}>
             <Text style={globalStyles.superTitle}>When you create an event, it will show up here</Text>
@@ -121,6 +161,13 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     justifyContent: 'center',
+  },
+  label: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginLeft: 15,
+    color: GREY_0,
   },
   button: {
     flex: 1.5,

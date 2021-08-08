@@ -1,23 +1,28 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { EventTile } from '../molecules/MoleculesExports';
+import { MiniPlanTile } from '../molecules/MoleculesExports';
 import { Plan } from '../models';
 
 interface Props {
   data: Plan[];
 }
 
-export const DataDisplay: React.FC<Props> = ({ data }: Props) => {
+export const MiniDataDisplay: React.FC<Props> = ({ data }: Props) => {
   return (
     <View>
       <FlatList
         data={data}
         renderItem={({ item }) => {
-          return <EventTile plan={item} />;
+          return <MiniPlanTile plan={item} />;
         }}
         keyExtractor={(item) => item.id}
+        horizontal={true}
       />
     </View>
   );
 };
+
+// const styles = StyleSheet.create({
+
+// });
