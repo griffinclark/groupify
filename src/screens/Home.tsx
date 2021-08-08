@@ -5,7 +5,7 @@ import { GREY_0 } from './../res/styles/Colors';
 import { convertDateStringToDate } from './../res/utilFunctions';
 import { Screen, Button, NavButton } from '../atoms/AtomsExports';
 import { MiniDataDisplay } from '../organisms/OrganismsExports';
-import { Navbar } from '../molecules/MoleculesExports';
+import { Navbar, HomeNavBar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
@@ -143,13 +143,14 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
         )}
       </View>
-      <View style={styles.button}>
-        <Button
+      <View style={styles.homeNavBar}>
+        {/* <Button
           title="Create event"
           onPress={() => {
             navigation.navigate('SearchPlace', { currentUser: currentUser });
           }}
-        />
+        /> */}
+        <HomeNavBar />
       </View>
     </Screen>
   );
@@ -173,6 +174,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 15,
     color: GREY_0,
+  },
+  homeNavBar: {
+    flex: 1.5,
   },
   button: {
     flex: 1.5,
