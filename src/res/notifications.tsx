@@ -46,7 +46,7 @@ export const sendPushNotification = async (
     body: body,
     data: data,
   };
-  console.log(JSON.stringify(message));
+  // console.log(JSON.stringify(message));
 
   await fetch('https://exp.host/--/api/v2/push/send', {
     method: 'POST',

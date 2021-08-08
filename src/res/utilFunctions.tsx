@@ -23,7 +23,7 @@ export const formateDate = (date: Date | string): string => {
   if (date instanceof Date) {
     newDate = date;
   }
-  return newDate.getMonth() + '/' + newDate.getDate() + '/' + newDate.getFullYear();
+  return newDate.getMonth() + 1 + '/' + newDate.getDate() + '/' + newDate.getFullYear();
 };
 
 export const convertTimeStringToDate = (time: string): Date => {

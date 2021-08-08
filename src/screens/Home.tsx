@@ -43,14 +43,16 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         const user = await DataStore.query(User, route.params.userID);
         if (user) {
           setCurrentUser(user);
-          const userPlans = await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id));
+          const userPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
           const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
-          const invitedPlans = invitees
-            .map((invitee) => {
-              return invitee.plan;
-            })
-            .filter((item): item is Plan => item !== undefined);
-          setUpcomingPlans(await filterUpcomingPlans(userPlans.concat(invitedPlans)));
+          const invitedPlans = removePastPlans(
+            invitees
+              .map((invitee) => {
+                return invitee.plan;
+              })
+              .filter((item): item is Plan => item !== undefined),
+          );
+          setUpcomingPlans(filterUpcomingPlans(userPlans.concat(invitedPlans)));
           setUserPlans(userPlans);
           setInvitedPlans(invitedPlans);
           // console.log('Successfully loaded user plans');
@@ -59,7 +61,19 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     })();
   }, []);
 
-  const filterUpcomingPlans = async (plans: Plan[]) => {
+  const removePastPlans = (plans: Plan[]) => {
+    const currentDate = new Date();
+    return plans.filter((plan) => {
+      if (plan.date) {
+        if (convertDateStringToDate(plan.date).valueOf() + 86400000 > currentDate.valueOf()) {
+          return true;
+        }
+      }
+      return false;
+    });
+  };
+
+  const filterUpcomingPlans = (plans: Plan[]) => {
     const currentDate = new Date();
     const weekInMS = 604800000;
     return plans.filter((plan) => {
@@ -112,7 +126,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </Navbar>
       </View>
       <View style={styles.feedContainer}>
-        {upcomingPlans.length > 0 ? (
+        {userPlans.concat(invitedPlans).length > 0 ? (
           <View>
             <Text style={styles.label}>This Week</Text>
             <MiniDataDisplay data={upcomingPlans} />
