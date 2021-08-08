@@ -50,15 +50,6 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
               return invitee.plan;
             })
             .filter((item): item is Plan => item !== undefined);
-          // const currentDate = new Date();
-          // const userPlan = userPlans[0];
-          // console.log(userPlan);
-          // if (userPlan.date) {
-          //   console.log(currentDate.valueOf());
-          //   console.log(convertDateStringToDate(userPlan.date).valueOf());
-          //   console.log(convertDateStringToDate(userPlan.date).valueOf() - currentDate.valueOf());
-          // }
-          // const upcomingPlans = userPlans.concat(invitedPlans);
           setUpcomingPlans(await filterUpcomingPlans(userPlans.concat(invitedPlans)));
           setUserPlans(userPlans);
           setInvitedPlans(invitedPlans);
