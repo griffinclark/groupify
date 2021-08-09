@@ -24,7 +24,8 @@ export type RoutePropParams = {
     phone: string;
     data: {
       eventData: {
-        friends: Contact[];
+        friends: User[];
+        contacts: Contact[];
         uuid: string;
         title: string;
         imageURL: string;

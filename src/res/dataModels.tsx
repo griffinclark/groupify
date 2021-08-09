@@ -1,4 +1,5 @@
 import { Image } from 'expo-contacts';
+import { User } from '../models';
 
 export interface Profile {
   email?: string;
@@ -9,7 +10,8 @@ export interface Profile {
   profileImageURL: string; // zombie accounts won't have profile photos
 }
 export interface Event {
-  friends: Contact[];
+  contacts: Contact[];
+  friends: User[];
   uuid: string;
   title: string;
   imageURL: string;
