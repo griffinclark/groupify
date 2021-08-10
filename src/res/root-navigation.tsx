@@ -13,6 +13,9 @@ import { SetAvailability } from '../screens/SetAvailability';
 import { EditFriends } from '../screens/EditFriends';
 import { Contact } from './dataModels';
 import { SearchPlace } from '../screens/SearchPlace';
+import { PlansFeed } from '../screens/PlansFeedDetails';
+import { Attendees } from '../organisms/attendees';
+import { AcceptDecline } from '../organisms/acceptDecline';
 import { User } from '../models';
 
 export type RoutePropParams = {
@@ -74,6 +77,9 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="SetAvailability" component={SetAvailability} options={{ headerShown: false }} />
         <Stack.Screen name="EditFriends" component={EditFriends} options={{ headerShown: false }} />
         <Stack.Screen name="SearchPlace" component={SearchPlace} options={{ headerShown: false }} />
+        <Stack.Screen name="PlansFeed" component={PlansFeed} options={{ headerShown: false }} />
+        <Stack.Screen name="Attendees" component={Attendees} options={{ headerShown: false }} />
+        <Stack.Screen name="AcceptDecline" component={AcceptDecline} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
