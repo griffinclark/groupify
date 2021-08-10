@@ -14,6 +14,7 @@ import { EditFriends } from '../screens/EditFriends';
 import { Contact } from './dataModels';
 import { SearchPlace } from '../screens/SearchPlace';
 import { User } from '../models';
+import { Profile } from '../screens/Profile';
 
 export type RoutePropParams = {
   params: {
@@ -74,6 +75,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="SetAvailability" component={SetAvailability} options={{ headerShown: false }} />
         <Stack.Screen name="EditFriends" component={EditFriends} options={{ headerShown: false }} />
         <Stack.Screen name="SearchPlace" component={SearchPlace} options={{ headerShown: false }} />
+        <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

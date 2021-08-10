@@ -155,54 +155,6 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     });
   };
 
-  // const notifyCurrentUsers = async () => {
-  //   const fullDate = route.params.data.eventData.fullDate;
-  //   const date = fullDate.toISOString().substring(0, 10);
-  //   const time = fullDate.toTimeString().substring(0, 8);
-  //   const inviteeList: Invitee[] = [];
-
-  //   const newPlan = await DataStore.save(
-  //     new Plan({
-  //       title: eventObject.title,
-  //       description: eventObject.description,
-  //       location: eventObject.location,
-  //       placeID: eventObject.placeId,
-  //       time: time,
-  //       date: date,
-  //       creatorID: route.params.currentUser.id,
-  //     }),
-  //   );
-
-  //   for (const friend of selectedFriends) {
-  //     const invitee = await DataStore.save(
-  //       new Invitee({
-  //         name: friend.name,
-  //         phoneNumber: friend.phoneNumber,
-  //         status: Status.PENDING,
-  //         pushToken: '',
-  //         plan: newPlan,
-  //       }),
-  //     );
-  //     inviteeList.push(invitee);
-  //   }
-
-  //   const updatedPlan = await DataStore.save(
-  //     Plan.copyOf(newPlan, (item) => {
-  //       item.invitees = inviteeList;
-  //     }),
-  //   );
-
-  //   for (const invitee of inviteeList) {
-  //     if (invitee.pushToken) {
-  //       sendPushNotification(invitee.pushToken, 'You Have Been Invited!!!', 'Tap to open the app', { data: 'hello' });
-  //     }
-  //   }
-
-  //   console.log(updatedPlan);
-
-  //   navigation.navigate('Home', {});
-  // };
-
   const menuSelection = (item: string) => {
     setMenuItemSelected(item);
   };

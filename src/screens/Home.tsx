@@ -103,6 +103,14 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
             navigation.navigate('SearchPlace', { currentUser: currentUser });
           }}
         />
+        <Button
+          title="Profile"
+          onPress={() =>
+            navigation.navigate('Profile', {
+              currentUser: currentUser,
+            })
+          }
+        />
       </View>
     </Screen>
   );
