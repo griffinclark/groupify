@@ -1,41 +1,55 @@
-import React, { useEffect, useState } from "react";
-// import { Button, SafeAreaView } from "react-native";
-import { StyleSheet, View, Text } from "react-native";
-import { TEST_HIGH_CONTRAST } from "../res/styles/Colors";
-// import { firestore } from "../res/services/firebase";
-// import firebase from "firebase";
-import { FlatList } from "react-native-gesture-handler";
-import DataDisplay from "../organisms/DataDisplay";
-import { Navbar } from "../organisms/Navbar";
-import { cannedEvents } from "../res/cannedData";
-import { globalStyles } from "./../res/styles/GlobalStyles";
-import { Event } from "../res/dataModels";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getAllUserEvents, getAllImportedContacts } from "./../res/storageFunctions";
-import { Button } from "../atoms/Button";
-import { Screen } from '../atoms/Screen';
-import { NavButton } from "../atoms/NavButton";
-import { Auth } from "aws-amplify";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { globalStyles } from './../res/styles/GlobalStyles';
+import { Event } from '../res/dataModels';
+import { getAllUserEvents } from './../res/storageFunctions';
+import { Screen, Button, NavButton } from '../atoms/AtomsExports';
+import { DataDisplay } from '../organisms/OrganismsExports';
+import { Navbar } from '../molecules/MoleculesExports';
+import { RoutePropParams } from '../res/root-navigation';
+import { Auth } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
+import { User } from '../models';
 
 interface Props {
-  navigation: any;
-  route: any
+  navigation: {
+    CreateAccount: {
+      step: string;
+      email: string;
+    };
+    params: {
+      Login: string;
+    };
+    navigate:
+      | ((ev: string, a?: { step?: string; email?: string }) => void)
+      | ((ev: string, a?: { data?: { prevAction?: string } }) => void)
+      | ((ev: string, a?: { userID?: string }) => void)
+      | ((ev: string, a?: { currentUser?: User }) => void);
+    push: (ev: string, e: { email: string; step: string }) => void;
+  };
+  route: RoutePropParams;
 }
 
-
-export default function Home({ navigation, route }: Props) {
+export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [feedData, setFeedData] = useState<Event[]>([]);
+  const [currentUser, setCurrentUser] = useState<User>();
 
   useEffect(() => {
+    (async () => {
+      if (route.params && route.params.userID) {
+        const user = await DataStore.query(User, route.params.userID);
+        if (user) {
+          setCurrentUser(user);
+        }
+      }
+    })();
     getUserEvents();
-  }, [route.params]); // only runs when route.params changes, need to change this in the future
+  }, []);
 
   const getUserEvents = async () => {
-    // console.log(await getAllUserEvents());
     const events = await getAllUserEvents();
     setFeedData(events);
-  }
-
+  };
 
   return (
     <Screen>
@@ -46,33 +60,39 @@ export default function Home({ navigation, route }: Props) {
               try {
                 await Auth.signOut();
                 console.log('successfully signed out');
-                navigation.navigate("Welcome");
+                navigation.navigate('Welcome');
               } catch (err) {
                 console.log('error signing out...', err);
               }
             }}
-            title='Log Out'
+            title="Log Out"
           />
           <NavButton
             onPress={() => {
-              navigation.navigate("ImportContacts")
+              navigation.navigate('SetAvailability', { userID: route.params.userID });
             }}
-            title='Edit Contacts'
+            title="Availability"
+          />
+          <NavButton
+            onPress={() => {
+              navigation.navigate('EditFriends');
+            }}
+            title="FriendList"
+          />
+          <NavButton
+            onPress={() => {
+              navigation.navigate('PlansFeed');
+            }}
+            title="PlansFeed"
           />
         </Navbar>
       </View>
       <View style={styles.feedContainer}>
         {feedData.length > 0 ? (
-          <DataDisplay
-            data={feedData}
-            navigation={navigation}
-            displayButton={false}
-          />
+          <DataDisplay data={feedData} />
         ) : (
           <View style={styles.title}>
-            <Text style={globalStyles.superTitle}>
-              When you create an event, it will show up here
-            </Text>
+            <Text style={globalStyles.superTitle}>When you create an event, it will show up here</Text>
           </View>
         )}
       </View>
@@ -80,29 +100,28 @@ export default function Home({ navigation, route }: Props) {
         <Button
           title="Create event"
           onPress={() => {
-            navigation.navigate("CreateCustomEvent"); 
+            navigation.navigate('SearchPlace', { currentUser: currentUser });
           }}
         />
       </View>
     </Screen>
   );
-}
+};
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   navbar: {
     flex: 1.5,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   feedContainer: {
-    flex: 10
+    flex: 10,
   },
   title: {
     flex: 1,
-    justifyContent: 'center'
-
+    justifyContent: 'center',
   },
   button: {
     flex: 1.5,
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });

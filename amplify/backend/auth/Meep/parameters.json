@@ -1,10 +1,10 @@
 {
-    "identityPoolName": "meep60c88366_identitypool_60c88366",
+    "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "meep60c88366",
-    "userPoolName": "meep60c88366_userpool_60c88366",
+    "resourceNameTruncated": "meepbefd9dd4",
+    "userPoolName": "Meep",
     "autoVerifiedAttributes": [
-        "email"
+        "phone_number"
     ],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
@@ -18,20 +18,18 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
+        "phone_number",
+        "name",
         "email"
     ],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [
-        "email"
-    ],
-    "userpoolClientReadAttributes": [
-        "email"
-    ],
-    "userpoolClientLambdaRole": "meep6060c88366_userpoolclient_lambda_role",
+    "userpoolClientWriteAttributes": [],
+    "userpoolClientReadAttributes": [],
+    "userpoolClientLambdaRole": "Meepbefd9dd4_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "60c88366",
-    "resourceName": "meep60c88366",
+    "sharedId": "befd9dd4",
+    "resourceName": "Meep",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -45,12 +43,17 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
-    "usernameAttributes": [
-        "email"
-    ],
-    "userPoolGroupList": [],
     "serviceName": "Cognito",
+    "usernameAttributes": [
+        "phone_number"
+    ],
+    "useDefault": "manual",
+    "userPoolGroups": false,
+    "userPoolGroupList": [],
+    "adminQueries": false,
+    "thirdPartyAuth": false,
+    "authProviders": [],
     "usernameCaseSensitive": false,
-    "dependsOn": []
+    "dependsOn": [],
+    "hostedUI": false
 }

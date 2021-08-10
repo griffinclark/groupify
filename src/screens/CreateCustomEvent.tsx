@@ -1,152 +1,163 @@
-import { Formik, validateYupSchema } from "formik";
-import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
-import SingleLineTextInput from "../atoms/SingleLineTextInput";
-import EventTile from "../molecules/EventTile";
-import { globalStyles } from './../res/styles/GlobalStyles';
-import { Event } from "./../res/dataModels";
-import { DK_PURPLE, GREY_5, LIGHT, WHITE } from '../res/styles/Colors';
-import { useIsFocused } from "@react-navigation/core";
-import { Navbar } from "../organisms/Navbar";
-// import DateTimePicker from "@react-native-community/datetimepicker";
+import React, { useState } from 'react';
 import uuid from 'uuid';
-import { NavButton } from "../atoms/NavButton";
-import { Screen } from "../atoms/Screen";
-import { Title } from "../atoms/Title";
-import { Button } from "../atoms/Button";
-
+import { Screen, FormButton, MeepForm } from '../atoms/AtomsExports';
+import { Text } from 'react-native-elements';
+import { Image, StyleSheet, View } from 'react-native';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
+import Qs from 'qs';
+import { User } from '../models';
 
 interface Props {
-  navigation: any;
-  endpointUID: string;
+  navigation: {
+    navigate: (ev: string, {}) => void;
+  };
+  route: {
+    params: {
+      currentUser: User;
+      data: { eventData: { title: string; location: string; imageURL: string; placeId: string } };
+    };
+  };
 }
 
-interface FormTextField {
-  variable: string;
-  title: string;
-  placeholder: string;
-}
+export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props) => {
+  const title = route.params.data.eventData.title;
+  const address = route.params.data.eventData.location;
+  const photo = route.params.data.eventData.imageURL;
+  const GOOGLE_PLACES_API_KEY = 'AIzaSyBr9OxC0pDU3nICMQDfSjnJ777vnZfsNww'; // replace with MunchkinLabs API key
+  const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
 
-export default function CreateCustomEvent({ navigation }: Props) {
+  const [updatedValues, setUpdatedValues] = useState<{
+    eventName: string | undefined;
+    eventDate: string | undefined;
+    eventTime: string | undefined;
+    eventLocation: string | undefined;
+    eventDescription: string | undefined;
+  }>({ eventName: title, eventDate: '', eventTime: '', eventLocation: address, eventDescription: '' });
+  const [fullDate, setFullDate] = useState<Date>();
 
-  const onFormSubmit = (values: any) => {
-    // console.log(values)
-    navigation.navigate("SelectFriends", {
+  const onFormSubmit = (values: {
+    eventName: string | undefined;
+    eventDate: string | undefined;
+    eventTime: string | undefined;
+    eventLocation: string | undefined;
+    eventDescription: string | undefined;
+  }) => {
+    const image = loadPhoto(photo).props.source.uri;
+    navigation.navigate('SelectFriends', {
+      currentUser: route.params.currentUser,
       data: {
         eventData: {
           uuid: uuid.v4(),
-          showImage: false,
           title: values.eventName,
           date: values.eventDate,
           time: values.eventTime,
           location: values.eventLocation,
           description: values.eventDescription,
-        }
-      }
-    })
+          imageURL: image,
+          placeId: route.params.data.eventData.placeId,
+          fullDate: fullDate,
+        },
+      },
+    });
   };
 
-  const inputFields = {
-    "eventName":
-    {
-      "title": "Event Name",
-      "placeholder":""
-    },
-    "eventDate":
-    {
-      "title": "Event Date",
-      "placeholder": "MM/DD/YYYY"
-    },
-    "eventTime":
-    {
-      "title": "Event Time",
-      "placeholder": "H:MM PM"
-    },
-    "eventLocation":
-    {
-      "title": "Event Location",
-      "placeholder": "address"
-    },
-    "eventDescription":
-    {
-      "title": "Event Description",
-      "placeholder": ""
-    },
+  const loadPhoto = (photoReference: string) => {
+    const photoRequetsParams = {
+      key: GOOGLE_PLACES_API_KEY,
+      maxwidth: 200,
+      maxheight: 200,
+      photoreference: photoReference,
+    };
+    const completeUri = photoRequestURL + Qs.stringify(photoRequetsParams);
+    return <Image source={{ uri: completeUri }} style={styles.image} resizeMode="cover" />;
   };
 
-  interface listInputProps {
-    handleChange: {
-      (e: React.ChangeEvent<any>): void;
-      <T = string | React.ChangeEvent<any>>(field: T): T extends React.ChangeEvent<any> ? void : (e: string | React.ChangeEvent<any>) => void;
-    }, 
-    values: any,
-    input: string
-  }
+  const inputFields: { title: string; placeholder: string; settings?: string; value?: string }[] = [
+    {
+      title: 'Name',
+      placeholder: '',
+      settings: 'default',
+      value: title,
+    },
+    {
+      title: 'Date',
+      placeholder: 'MM/DD/YYYY',
+      settings: 'date',
+      value: '',
+    },
+    {
+      title: 'Time',
+      placeholder: 'H:MM PM',
+      settings: 'time',
+      value: '',
+    },
+    {
+      title: 'Location',
+      placeholder: 'address',
+      settings: 'default',
+      value: address,
+    },
+    {
+      title: 'Description',
+      placeholder: '',
+      settings: 'default',
+      value: '',
+    },
+  ];
 
-  const listInputField = (handleChange: listInputProps["handleChange"], values: listInputProps["values"], input: listInputProps["input"]) => {
-    return (
-      <View>
-        <Text style={[globalStyles.title, {color: DK_PURPLE}]}>{inputFields[input].title}</Text>
-        <TextInput
-          style={styles.textInputBody}
-          onChangeText={handleChange(input)}
-          placeholder={inputFields[input].placeholder}
-          value={values[input]}
-        />
-        <View style={{height: 15}} />
-      </View>
-    );
-  }
+  const setValues = (value: { title: string; value: string | undefined }[]) => {
+    const values = {
+      eventName: value[0].value,
+      eventDate: value[1].value,
+      eventTime: value[2].value,
+      eventLocation: value[3].value,
+      eventDescription: value[4].value,
+    };
+    setUpdatedValues(values);
+  };
 
   return (
     <Screen>
-      <Navbar>
-        <NavButton
-          onPress={() => navigation.navigate("Home")}
-          title='Back'
+      <View style={styles.navbar}>
+        <Icon
+          name="arrow-left"
+          type="font-awesome"
+          size={30}
+          onPress={() => navigation.navigate('SearchPlace', {})}
+          style={styles.back}
         />
-      </Navbar>
-      <Formik
-        initialValues={{
-          eventName: "",
-          eventDate: "",
-          eventTime: "",
-          eventLocation: "",
-          eventDescription: "",
-        }}
-        onSubmit={onFormSubmit}
+        <Text style={styles.title}>New Plan</Text>
+      </View>
+      <View>{loadPhoto(photo)}</View>
+      <MeepForm
+        InputList={inputFields}
+        updatedValues={(value) => setValues(value)}
+        fullDate={(date) => setFullDate(date)}
       >
-        {({ handleChange, handleSubmit, values }) => (
-          <>
-          <View style={styles.formContainer}>
-            <Title>New Event</Title>
-            { listInputField(handleChange, values, "eventName") }
-            { listInputField(handleChange, values, "eventDate") }
-            { listInputField(handleChange, values, "eventTime") }
-            { listInputField(handleChange, values, "eventLocation") }
-            { listInputField(handleChange, values, "eventDescription") }
-            {/*idk how to fix this freaking onPress type error but it works so whatever */}
-          </View>
-          <Button title="Invite Friends" onPress={handleSubmit} />
-          </>
-        )}
-      </Formik>
+        <FormButton title="Create" onPress={() => onFormSubmit(updatedValues)} />
+      </MeepForm>
     </Screen>
   );
-}
+};
 
-let styles = StyleSheet.create({
-  textInputBody: {
-    fontSize: 16,
-    backgroundColor: WHITE,
-    borderRadius: 10,
-    padding: 7,
-    marginTop: 5
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 30,
+    color: '#32A59F',
+    textAlign: 'center',
+    fontWeight: '400',
   },
-  formContainer: {
-    backgroundColor: GREY_5,
-    borderRadius: 10,
-    margin: 10,
-    padding: 20,
-  }
-})
+  navbar: {
+    flexDirection: 'row',
+    marginHorizontal: 10,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  back: {
+    marginRight: 10,
+  },
+  image: {
+    height: 200,
+    width: '100%',
+  },
+});

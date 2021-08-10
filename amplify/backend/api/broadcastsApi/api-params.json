@@ -1,39 +1,39 @@
 {
-    "paths": [
-        {
-            "name": "/broadcasts",
-            "lambdaFunction": "pushBroadcast",
-            "privacy": {
-                "private": true,
-                "auth": [
-                    "/POST"
-                ]
-            },
-            "policyResourceName": "/broadcasts"
-        }
-    ],
-    "resourceName": "broadcastsApi",
-    "apiName": "broadcastsApi",
-    "functionArns": [
-        {
-            "lambdaFunction": "pushBroadcast"
-        }
-    ],
-    "privacy": {
-        "auth": 1,
-        "unauth": 0,
-        "authRoleName": "amplify-meep-staging-171906-authRole",
-        "unAuthRoleName": "amplify-meep-staging-171906-unauthRole"
-    },
-    "dependsOn": [
-        {
-            "category": "function",
-            "resourceName": "pushBroadcast",
-            "attributes": [
-                "Name",
-                "Arn"
-            ]
-        }
-    ],
-    "uuid": "823df4e6"
+  "paths": [
+    {
+      "name": "/broadcasts",
+      "lambdaFunction": "pushBroadcast",
+      "privacy": {
+        "private": true,
+        "auth": [
+          "/POST"
+        ]
+      },
+      "policyResourceName": "/broadcasts"
+    }
+  ],
+  "resourceName": "broadcastsApi",
+  "apiName": "broadcastsApi",
+  "functionArns": [
+    {
+      "lambdaFunction": "pushBroadcast"
+    }
+  ],
+  "privacy": {
+    "auth": 1,
+    "unauth": 0,
+    "authRoleName": "amplify-meep-staging-171906-authRole",
+    "unAuthRoleName": "amplify-meep-staging-171906-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "pushBroadcast",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ],
+  "uuid": "823df4e6"
 }

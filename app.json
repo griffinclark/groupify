@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "meep",
+    "icon": "./assets/Icon1024.png",
     "slug": "meep",
     "sdkVersion": "40.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -19,17 +19,30 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.munchkinlabs.meep"
+      "bundleIdentifier": "com.munchkinlabs.meep",
+      "infoPlist": {
+        "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
+        "NSLocationWhenInUseUsageDescription": "Your location is required to show places near you."
+      },
+      "buildNumber": "1.0.1",
+      "config": {
+        "googleMapsApiKey": "AIzaSyChCbEsnEsDQ3qJklY72r9PSTNMuRnY7Rw"
+      }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.munchkinlabs.meep"
+      "package": "com.munchkinlabs.meep",
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyChCbEsnEsDQ3qJklY72r9PSTNMuRnY7Rw"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
     }
+  },
+  "android": {
+    "googleServicesFile": "./google-services.json"
   }
 }
