@@ -99,9 +99,9 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
   const renderTimeString = (dayAndTime: string) => {
     let prefix = '';
     if (dayAndTime.endsWith('Start')) {
-      prefix = 'From: ';
+      //prefix = 'From: ';
     } else {
-      prefix = '     To: ';
+      prefix = '     to: ';
     }
     return (
       <TouchableOpacity
@@ -174,47 +174,70 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
           <ActivityIndicator size="large" color="#bad555" />
         </View>
       ) : (
-        <View>
+        <View style={styles.mainContainer}>
           <Title>My Availability</Title>
-          <Text style={styles.day}>Sunday:</Text>
-          <View style={styles.timeSlot}>
-            <Text>{renderTimeString('timeSunStart')} </Text>
-            <Text>{renderTimeString('timeSunEnd')}</Text>
+          <View style={styles.availabilityContainer}>
+            <View style={styles.dayContainer}>
+              <Text style={styles.day}>Sunday</Text>
+              <View style={styles.timeSlot}>
+                <Text>{renderTimeString('timeSunStart')} </Text>
+                <Text>{renderTimeString('timeSunEnd')}</Text>
+              </View>
+            </View>
+
+            <View style={styles.dayContainer}>
+              <Text style={styles.day}>Monday</Text>
+              <View style={styles.timeSlot}>
+                <Text>{renderTimeString('timeMonStart')}</Text>
+                <Text>{renderTimeString('timeMonEnd')}</Text>
+              </View>
+            </View>
+
+            <View style={styles.dayContainer}>
+              <Text style={styles.day}>Tuesday</Text>
+              <View style={styles.timeSlot}>
+                <Text style={styles.timeNumber}>{renderTimeString('timeTuesStart')}</Text>
+                <Text>{renderTimeString('timeTuesEnd')}</Text>
+              </View>
+            </View>
+
+            <View style={styles.dayContainer}>
+              <Text style={styles.day}>Wednesday</Text>
+              <View style={styles.timeSlot}>
+                <Text>{renderTimeString('timeWedStart')}</Text>
+                <Text>{renderTimeString('timeWedEnd')}</Text>
+              </View>
+            </View>
+
+            <View style={styles.dayContainer}>
+              <Text style={styles.day}>Thursday</Text>
+              <View style={styles.timeSlot}>
+                <Text>{renderTimeString('timeThursStart')}</Text>
+                <Text>{renderTimeString('timeThursEnd')}</Text>
+              </View>
+            </View>
+
+            <View style={styles.dayContainer}>
+              <Text style={styles.day}>Friday</Text>
+              <View style={styles.timeSlot}>
+                <Text>{renderTimeString('timeFriStart')}</Text>
+                <Text>{renderTimeString('timeFriEnd')}</Text>
+              </View>
+            </View>
+
+            <View style={styles.dayContainer}>
+              <Text style={styles.day}>Saturday</Text>
+              <View style={styles.timeSlot}>
+                <Text>{renderTimeString('timeSatStart')}</Text>
+                <Text>{renderTimeString('timeSatEnd')}</Text>
+              </View>
+            </View>
+
+            <View style={globalStyles.spacer} />
+            {showTimePicker &&
+              eval(`timePicker(${timeToChange}, set${timeToChange.charAt(0).toUpperCase() + timeToChange.slice(1)})`)}
+            <Button title={'Save'} onPress={onSubmit} />
           </View>
-          <Text style={styles.day}>Monday:</Text>
-          <View style={styles.timeSlot}>
-            <Text>{renderTimeString('timeMonStart')}</Text>
-            <Text>{renderTimeString('timeMonEnd')}</Text>
-          </View>
-          <Text style={styles.day}>Tuesday:</Text>
-          <View style={styles.timeSlot}>
-            <Text>{renderTimeString('timeTuesStart')}</Text>
-            <Text>{renderTimeString('timeTuesEnd')}</Text>
-          </View>
-          <Text style={styles.day}>Wednesday:</Text>
-          <View style={styles.timeSlot}>
-            <Text>{renderTimeString('timeWedStart')}</Text>
-            <Text>{renderTimeString('timeWedEnd')}</Text>
-          </View>
-          <Text style={styles.day}>Thursday:</Text>
-          <View style={styles.timeSlot}>
-            <Text>{renderTimeString('timeThursStart')}</Text>
-            <Text>{renderTimeString('timeThursEnd')}</Text>
-          </View>
-          <Text style={styles.day}>Friday:</Text>
-          <View style={styles.timeSlot}>
-            <Text>{renderTimeString('timeFriStart')}</Text>
-            <Text>{renderTimeString('timeFriEnd')}</Text>
-          </View>
-          <Text style={styles.day}>Saturday:</Text>
-          <View style={styles.timeSlot}>
-            <Text>{renderTimeString('timeSatStart')}</Text>
-            <Text>{renderTimeString('timeSatEnd')}</Text>
-          </View>
-          <View style={globalStyles.spacer} />
-          {showTimePicker &&
-            eval(`timePicker(${timeToChange}, set${timeToChange.charAt(0).toUpperCase() + timeToChange.slice(1)})`)}
-          <Button title={'Save'} onPress={onSubmit} />
         </View>
       )}
     </Screen>
@@ -224,11 +247,37 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
 const styles = StyleSheet.create({
   timeSlot: {
     flexDirection: 'row',
+    lineHeight: '23px',
+    color: '#31A59F',
   },
   day: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 15,
-    marginBottom: 5,
+  },
+  timeNumber: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+
+  mainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+  },
+
+  dayContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+  },
+
+  availabilityContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    borderWidth: 2,
+    borderColor: '#be8c2c',
+    borderRadius: 25,
+    padding: 20,
   },
 });
