@@ -100,13 +100,13 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       <View style={styles.header}>
         <Text style={[globalStyles.superTitle, styles.greeting]}>Hello {currentUser?.name}</Text>
         <View style={styles.icon}>
-        <Icon
-          name="refresh"
-          type="font-awesome"
-          size={30}
-          color={TEAL}
-          onPress={() => (currentUser ? loadPlans(currentUser) : 0)}
-        />
+          <Icon
+            name="refresh"
+            type="font-awesome"
+            size={30}
+            color={TEAL}
+            onPress={() => (currentUser ? loadPlans(currentUser) : 0)}
+          />
         </View>
       </View>
       {/* <View style={styles.navbar}>
@@ -177,9 +177,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
 const styles = StyleSheet.create({
   header: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
     marginLeft: 15,
   },
   greeting: {
@@ -187,7 +185,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   icon: {
-    marginHorizontal: '15%',
+    position: 'absolute',
+    top: 20,
+    right: 25,
   },
   // navbar: {
   //   flex: 1.5,
