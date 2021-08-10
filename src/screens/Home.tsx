@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
-import { GREY_0 } from './../res/styles/Colors';
-import { convertDateStringToDate } from './../res/utilFunctions';
+import { GREY_0, TEAL } from './../res/styles/Colors';
+import { convertDateStringToDate, comparePlansByDate } from './../res/utilFunctions';
 import { Screen, Button, NavButton } from '../atoms/AtomsExports';
 import { MiniDataDisplay } from '../organisms/OrganismsExports';
 import { Navbar, HomeNavBar } from '../molecules/MoleculesExports';
@@ -10,6 +10,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface Props {
   navigation: {
@@ -38,34 +39,42 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     (async () => {
-      // console.log('Loading user plans');
       if (route.params && route.params.userID) {
         const user = await DataStore.query(User, route.params.userID);
         if (user) {
           setCurrentUser(user);
-          const userPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
-          const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
-          const invitedPlans = removePastPlans(
-            invitees
-              .map((invitee) => {
-                return invitee.plan;
-              })
-              .filter((item): item is Plan => item !== undefined),
-          );
-          setUpcomingPlans(filterUpcomingPlans(userPlans.concat(invitedPlans)));
-          setUserPlans(userPlans);
-          setInvitedPlans(invitedPlans);
-          // console.log('Successfully loaded user plans');
+          loadPlans(user);
         }
       }
     })();
   }, []);
 
+  const loadPlans = async (user: User) => {
+    console.log('Loading plans');
+    const userPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
+    const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
+    const invitedPlans = removePastPlans(
+      invitees
+        .map((invitee) => {
+          return invitee.plan;
+        })
+        .filter((item): item is Plan => item !== undefined),
+    );
+    setUpcomingPlans(sortPlansByDate(filterUpcomingPlans(userPlans.concat(invitedPlans))));
+    setUserPlans(sortPlansByDate(userPlans));
+    setInvitedPlans(sortPlansByDate(invitedPlans));
+    console.log('Finished loading plans');
+  };
+
+  const sortPlansByDate = (plans: Plan[], reverse = false) => {
+    return plans.sort((planA, planB) => comparePlansByDate(planA, planB, reverse));
+  };
+
   const removePastPlans = (plans: Plan[]) => {
     const currentDate = new Date();
     return plans.filter((plan) => {
       if (plan.date) {
-        if (convertDateStringToDate(plan.date).valueOf() + 86400000 > currentDate.valueOf()) {
+        if (convertDateStringToDate(plan.date).valueOf() > currentDate.valueOf()) {
           return true;
         }
       }
@@ -88,7 +97,15 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen>
-      <View style={styles.navbar}>
+      <Text style={[globalStyles.superTitle, styles.greeting]}>Hello {currentUser?.name}</Text>
+      <Icon
+        name="refresh"
+        type="font-awesome"
+        size={30}
+        color={TEAL}
+        onPress={() => (currentUser ? loadPlans(currentUser) : 0)}
+      />
+      {/* <View style={styles.navbar}>
         <Navbar>
           <NavButton
             onPress={async () => {
@@ -124,7 +141,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
             title="Friends"
           />
         </Navbar>
-      </View>
+      </View> */}
       <View style={styles.feedContainer}>
         {userPlans.concat(invitedPlans).length > 0 ? (
           <View>
@@ -132,6 +149,10 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
             <MiniDataDisplay data={upcomingPlans} />
             <View style={globalStyles.miniSpacer}></View>
             <Text style={styles.label}>Your Created Plans</Text>
+            {/* <View style={styles.sortMenu}>
+              <Text>Newest</Text>
+              <Text>Oldest</Text>
+            </View> */}
             <MiniDataDisplay data={userPlans} />
             <View style={globalStyles.miniSpacer}></View>
             <Text style={styles.label}>Your Invites</Text>
@@ -143,24 +164,22 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
         )}
       </View>
-      <View style={styles.homeNavBar}>
-        {/* <Button
-          title="Create event"
-          onPress={() => {
-            navigation.navigate('SearchPlace', { currentUser: currentUser });
-          }}
-        /> */}
-        <HomeNavBar />
+      <View>
+        <HomeNavBar navigation={navigation} />
       </View>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  navbar: {
-    flex: 1.5,
-    justifyContent: 'center',
+  greeting: {
+    color: TEAL,
+    marginTop: 25,
   },
+  // navbar: {
+  //   flex: 1.5,
+  //   justifyContent: 'center',
+  // },
   feedContainer: {
     flex: 10,
   },
@@ -174,9 +193,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 15,
     color: GREY_0,
-  },
-  homeNavBar: {
-    flex: 1.5,
   },
   button: {
     flex: 1.5,

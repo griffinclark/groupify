@@ -15,6 +15,8 @@ export const GREY_4 = '#BDBDBD';
 export const GREY_5 = '#E0E0E0';
 export const GREY_6 = '#F2F2F2';
 export const RED = '#E71717';
+export const GOLD = '#BE8C2C';
+export const TEAL = '#31A59F';
 
 //OLD COLORS: WILL BE DEPRECIATED
 // COLORS

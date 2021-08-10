@@ -1,3 +1,5 @@
+import { Plan } from '../models';
+
 export const formatTime = (time: Date | string): string => {
   let newTime = new Date();
   if (typeof time === 'string') {
@@ -40,8 +42,25 @@ export const convertDateStringToDate = (date: string): Date => {
   const month = parseInt(date.slice(5, 7));
   const day = parseInt(date.slice(8, 10));
   const newDate = new Date();
+  newDate.setUTCHours(0, 0, 0);
   newDate.setFullYear(year);
   newDate.setMonth(month - 1);
   newDate.setDate(day);
   return newDate;
+};
+
+// This function compares a plan by their date. Plan with more recent date comes before. Set reverse to true to reverse order.
+export const comparePlansByDate = (planA: Plan, planB: Plan, reverse = false): number => {
+  if (planA.date && planB.date) {
+    const DateA = convertDateStringToDate(planA.date);
+    const DateB = convertDateStringToDate(planB.date);
+    if (DateA.valueOf() < DateB.valueOf()) {
+      return reverse ? 1 : -1;
+    } else if (DateA.valueOf() === DateB.valueOf()) {
+      return 0;
+    } else {
+      return reverse ? -1 : 1;
+    }
+  }
+  return 0;
 };
