@@ -97,14 +97,18 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen>
-      <Text style={[globalStyles.superTitle, styles.greeting]}>Hello {currentUser?.name}</Text>
-      <Icon
-        name="refresh"
-        type="font-awesome"
-        size={30}
-        color={TEAL}
-        onPress={() => (currentUser ? loadPlans(currentUser) : 0)}
-      />
+      <View style={styles.header}>
+        <Text style={[globalStyles.superTitle, styles.greeting]}>Hello {currentUser?.name}</Text>
+        <View style={styles.icon}>
+        <Icon
+          name="refresh"
+          type="font-awesome"
+          size={30}
+          color={TEAL}
+          onPress={() => (currentUser ? loadPlans(currentUser) : 0)}
+        />
+        </View>
+      </View>
       {/* <View style={styles.navbar}>
         <Navbar>
           <NavButton
@@ -165,16 +169,25 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         )}
       </View>
       <View>
-        <HomeNavBar navigation={navigation} />
+        <HomeNavBar user={currentUser} navigation={navigation} />
       </View>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginLeft: 15,
+  },
   greeting: {
     color: TEAL,
-    marginTop: 25,
+    marginTop: 10,
+  },
+  icon: {
+    marginHorizontal: '15%',
   },
   // navbar: {
   //   flex: 1.5,

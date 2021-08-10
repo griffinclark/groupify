@@ -5,8 +5,10 @@ import { globalStyles } from '../res/styles/GlobalStyles';
 import { StackProps } from '../res/root-navigation';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { Button } from '../atoms/AtomsExports';
+import { User } from '../models';
 
 interface HomeNavBarProps extends StackProps {
+  user?: User;
   style?: Record<string, unknown>;
 }
 
@@ -19,9 +21,15 @@ export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) =>
         <View style={styles.planOptions}>
           <Text>What type of plan will you choose?</Text>
           <View style={globalStyles.miniSpacer} />
-          <Button title={'Custom Plan'} onPress={() => props.navigation?.navigate('SearchPlace')}></Button>
-          <Button title={'Plan Quiz'} onPress={() => props.navigation?.navigate('SearchPlace')}></Button>
-          <Button title={'Random Plan'} onPress={() => props.navigation?.navigate('SearchPlace')}></Button>
+          <Button
+            title={'Custom Plan'}
+            onPress={() => {
+              props.navigation?.navigate('SearchPlace', { currentUser: props.user });
+              setShowOptions(false);
+            }}
+          />
+          <Button title={'Plan Quiz'} onPress={() => console.log('Go to plan quiz')}></Button>
+          <Button title={'Random Plan'} onPress={() => console.log('Go to random plan')}></Button>
         </View>
       ) : (
         <View></View>
@@ -31,6 +39,8 @@ export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) =>
           style={styles.button}
           onPress={() => {
             // TODO: Go to Profile screen
+            console.log('Go to profile screen');
+            setShowOptions(false);
           }}
         >
           <Text style={styles.text}>Profile</Text>
@@ -46,6 +56,7 @@ export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) =>
           style={styles.button}
           onPress={() => {
             props.navigation?.navigate('ImportContacts');
+            setShowOptions(false);
           }}
         >
           <Text style={styles.text}>Contacts</Text>
