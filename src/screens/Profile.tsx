@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
   bodyContainer: {
     flex: 2.5,
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   textName: {
     fontWeight: '700',
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   plan: {
-    marginVertical: 20,
+    marginVertical: 10,
     marginHorizontal: 5,
     padding: 15,
     borderRadius: 15,
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
   availabilityDays: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   availabilityText: {
     fontSize: 16,
