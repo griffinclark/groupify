@@ -132,7 +132,8 @@ ${event.description} \
       }
     }
 
-    const updatedPlan = await DataStore.save(
+    //FIXME: plan invitee not being updated properly
+    await DataStore.save(
       Plan.copyOf(newPlan, (item) => {
         item.invitees = inviteeList;
       }),

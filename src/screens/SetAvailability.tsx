@@ -83,6 +83,7 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const timePicker = (time: Date, setTime: React.Dispatch<React.SetStateAction<Date>>) => {
     return (
       <DateTimePicker

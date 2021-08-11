@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { MiniPlanTile } from '../molecules/MoleculesExports';
 import { Plan } from '../models';

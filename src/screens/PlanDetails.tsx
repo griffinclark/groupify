@@ -1,8 +1,8 @@
 import { DataStore, Auth } from 'aws-amplify';
 import Qs from 'qs';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, SafeAreaView, TouchableOpacity, Pressable, Image, FlatList } from 'react-native';
-import { Screen, FriendBubble, Button, NavButton } from '../atoms/AtomsExports';
+import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
+import { Screen, Button } from '../atoms/AtomsExports';
 import { formatTime, convertDateStringToDate } from '../res/utilFunctions';
 import { TEAL, WHITE, GREY_0, GREY_4, GOLD } from '../res/styles/Colors';
 import { Plan, User, Invitee, Status } from '../models';
