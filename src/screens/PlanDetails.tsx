@@ -115,7 +115,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View style={{ top: 38, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ fontSize: 25, color: '#31A59F', left: 20, fontWeight: 'bold' }}>{plan.title}</Text>
+        <Text style={styles.title}>{plan.title}</Text>
         <Icon
           name="close"
           type="fa"
@@ -192,6 +192,13 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 25,
+    color: TEAL,
+    left: 20,
+    width: '80%',
+    fontWeight: 'bold',
+  },
   inviteImg: {
     width: '100%',
     height: 200,
