@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 10,
     alignItems: 'center',
+    top: 10,
   },
   back: {
     marginRight: 10,

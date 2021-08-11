@@ -184,7 +184,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         <View style={styles.menu}>
           <View style={menuItemSelected === 'friends' && styles.itemSelectedContainer}>
             <Text
-              style={[menuItemSelected === 'friends' ? styles.menuItemSelected : null, styles.menuItem]}
+              style={[
+                menuItemSelected === 'friends' ? styles.menuItemSelected : styles.menuItemNotSelected,
+                styles.menuItem,
+              ]}
               onPress={() => menuSelection('friends')}
             >
               FRIENDS
@@ -192,7 +195,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           </View>
           <View style={menuItemSelected === 'contacts' && styles.itemSelectedContainer}>
             <Text
-              style={[menuItemSelected === 'contacts' ? styles.menuItemSelected : null, styles.menuItem]}
+              style={[
+                menuItemSelected === 'contacts' ? styles.menuItemSelected : styles.menuItemNotSelected,
+                styles.menuItem,
+              ]}
               onPress={() => menuSelection('contacts')}
             >
               CONTACTS
@@ -327,6 +333,9 @@ const styles = StyleSheet.create({
     color: '#32A59F',
     fontWeight: '700',
   },
+  menuItemNotSelected: {
+    color: 'gray',
+  },
   text: {
     textAlign: 'center',
     padding: 30,
@@ -338,8 +347,8 @@ const styles = StyleSheet.create({
   flatlistContainer: {
     flexDirection: 'column',
     width: '100%',
-    height: '45%',
-    marginVertical: 20,
+    height: '40%',
+    marginVertical: 10,
   },
   contactsContainer: {
     display: 'flex',

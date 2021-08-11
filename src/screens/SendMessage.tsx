@@ -177,7 +177,7 @@ ${event.description} \
 
   return (
     <Screen>
-      <View style={{ flexDirection: 'row', alignSelf: 'flex-start' }}>
+      <View style={{ flexDirection: 'row', alignSelf: 'flex-start', top: 10 }}>
         <Icon
           name="arrow-left"
           type="font-awesome"
@@ -301,6 +301,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 15,
     marginHorizontal: 15,
+    top: 10,
   },
   overlay: {
     position: 'absolute',
