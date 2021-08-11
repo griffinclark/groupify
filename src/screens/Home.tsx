@@ -108,43 +108,6 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           />
         </View>
       </View>
-      {/* <View style={styles.navbar}>
-        <Navbar>
-          <NavButton
-            onPress={async () => {
-              try {
-                await DataStore.clear();
-                await DataStore.stop();
-                await DataStore.start();
-                await Auth.signOut();
-                console.log('successfully signed out');
-                navigation.navigate('Welcome');
-              } catch (err) {
-                console.log('error signing out...', err);
-              }
-            }}
-            title="Log Out"
-          />
-          <NavButton
-            onPress={() => {
-              navigation.navigate('SetAvailability', { userID: route.params.userID });
-            }}
-            title="Availability"
-          />
-          <NavButton
-            onPress={() => {
-              navigation.navigate('ImportContacts');
-            }}
-            title="Contacts"
-          />
-          <NavButton
-            onPress={() => {
-              navigation.navigate('EditFriends', { userID: route.params.userID });
-            }}
-            title="Friends"
-          />
-        </Navbar>
-      </View> */}
       <View style={styles.feedContainer}>
         {userPlans.concat(invitedPlans).length > 0 ? (
           <View>
