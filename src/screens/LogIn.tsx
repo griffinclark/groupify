@@ -68,8 +68,9 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
     // console.log(users);
     if (users.length > 0) {
       const user = users[0];
-      console.log('Existing User: Updating users pushToken');
+      // console.log(token);
       if (user.pushToken !== token) {
+        console.log('Existing User: Updating users pushToken');
         await DataStore.save(
           User.copyOf(user, (updated) => {
             updated.pushToken = token;
@@ -101,7 +102,7 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
       await Auth.signIn(formatPhone, password);
       console.log('successfully signed in');
       const user = await registerUser();
-      console.log(user);
+      console.log('User logged in:', user);
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
         navigation.navigate('ImportContacts');

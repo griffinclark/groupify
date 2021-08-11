@@ -23,7 +23,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   const title = route.params.data.eventData.title;
   const address = route.params.data.eventData.location;
   const photo = route.params.data.eventData.imageURL;
-  const GOOGLE_PLACES_API_KEY = 'AIzaSyBr9OxC0pDU3nICMQDfSjnJ777vnZfsNww'; // replace with MunchkinLabs API key
+  const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
 
   const [updatedValues, setUpdatedValues] = useState<{
@@ -64,8 +64,8 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   const loadPhoto = (photoReference: string) => {
     const photoRequetsParams = {
       key: GOOGLE_PLACES_API_KEY,
-      maxwidth: 200,
-      maxheight: 200,
+      maxwidth: 500,
+      maxheight: 500,
       photoreference: photoReference,
     };
     const completeUri = photoRequestURL + Qs.stringify(photoRequetsParams);

@@ -18,7 +18,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <Screen>
-      <Title style={{ fontSize: 45, margin: 40 }}>Welcome to Meep</Title>
+      <Title style={{ fontSize: 45, margin: 40 }}>Welcome to Groupify</Title>
       <Button onPress={onPressCreateAccount} title={'Create Account'} />
       <Button onPress={onPressLogIn} title={'Log In'} />
     </Screen>

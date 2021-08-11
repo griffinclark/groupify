@@ -1,7 +1,9 @@
 import { AndroidContactTile } from './AndroidContactTile';
+import { ContactTile } from './ContactTile';
 import { EventTile } from './EventTile';
+import { HomeNavBar } from './HomeNavBar';
+import { MiniPlanTile } from './MiniPlanTile';
 import { Navbar } from './Navbar';
 import { PlaceCard } from './PlaceCard';
-import { ContactTile } from './ContactTile';
 
-export { AndroidContactTile, EventTile, Navbar, PlaceCard, ContactTile };
+export { AndroidContactTile, ContactTile, EventTile, HomeNavBar, Navbar, PlaceCard, MiniPlanTile };

@@ -2,6 +2,52 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const syncUsers = /* GraphQL */ `
+  query SyncUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncUsers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        phoneNumber
+        email
+        name
+        pushToken
+        friends
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -16,21 +62,6 @@ export const getUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
-      userContacts {
-        items {
-          id
-          phoneNumber
-          name
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
       availability {
         id
         Sunday
@@ -68,10 +99,347 @@ export const listUsers = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        userContacts {
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncPlans = /* GraphQL */ `
+  query SyncPlans(
+    $filter: ModelPlanFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPlans(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          email
+          name
+          pushToken
+          friends
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        invitees {
           nextToken
           startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getPlan = /* GraphQL */ `
+  query GetPlan($id: ID!) {
+    getPlan(id: $id) {
+      id
+      title
+      description
+      location
+      placeID
+      date
+      time
+      creatorID
+      creator {
+        id
+        phoneNumber
+        email
+        name
+        pushToken
+        friends
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPlans = /* GraphQL */ `
+  query ListPlans(
+    $filter: ModelPlanFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPlans(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          email
+          name
+          pushToken
+          friends
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncInvitees = /* GraphQL */ `
+  query SyncInvitees(
+    $filter: ModelInviteeFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncInvitees(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        phoneNumber
+        status
+        pushToken
+        planID
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getInvitee = /* GraphQL */ `
+  query GetInvitee($id: ID!) {
+    getInvitee(id: $id) {
+      id
+      name
+      phoneNumber
+      status
+      pushToken
+      planID
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          email
+          name
+          pushToken
+          friends
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listInvitees = /* GraphQL */ `
+  query ListInvitees(
+    $filter: ModelInviteeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listInvitees(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        phoneNumber
+        status
+        pushToken
+        planID
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const usersByPhoneNumber = /* GraphQL */ `
+  query UsersByPhoneNumber(
+    $phoneNumber: AWSPhone
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    usersByPhoneNumber(
+      phoneNumber: $phoneNumber
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        phoneNumber
+        email
+        name
+        pushToken
+        friends
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         availability {
           id
           Sunday
@@ -120,10 +488,6 @@ export const usersByEmail = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        userContacts {
-          nextToken
-          startedAt
-        }
         availability {
           id
           Sunday
@@ -172,10 +536,6 @@ export const usersByName = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        userContacts {
-          nextToken
-          startedAt
-        }
         availability {
           id
           Sunday
@@ -197,83 +557,47 @@ export const usersByName = /* GraphQL */ `
     }
   }
 `;
-export const syncUsers = /* GraphQL */ `
-  query SyncUsers(
-    $filter: ModelUserFilterInput
+export const plansByCreator = /* GraphQL */ `
+  query PlansByCreator(
+    $creatorID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelPlanFilterInput
     $limit: Int
     $nextToken: String
-    $lastSync: AWSTimestamp
   ) {
-    syncUsers(
+    plansByCreator(
+      creatorID: $creatorID
+      sortDirection: $sortDirection
       filter: $filter
       limit: $limit
       nextToken: $nextToken
-      lastSync: $lastSync
     ) {
       items {
         id
-        phoneNumber
-        email
-        name
-        pushToken
-        friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        userContacts {
-          nextToken
-          startedAt
-        }
-        availability {
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
           id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
+          phoneNumber
+          email
+          name
+          pushToken
+          friends
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getUserContact = /* GraphQL */ `
-  query GetUserContact($id: ID!) {
-    getUserContact(id: $id) {
-      id
-      phoneNumber
-      name
-      userID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listUserContacts = /* GraphQL */ `
-  query ListUserContacts(
-    $filter: ModelUserContactFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUserContacts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        phoneNumber
-        name
-        userID
+        invitees {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -285,15 +609,15 @@ export const listUserContacts = /* GraphQL */ `
     }
   }
 `;
-export const usersByPhoneNumber = /* GraphQL */ `
-  query UsersByPhoneNumber(
+export const inviteeByPhoneNUmber = /* GraphQL */ `
+  query InviteeByPhoneNUmber(
     $phoneNumber: AWSPhone
     $sortDirection: ModelSortDirection
-    $filter: ModelUserFilterInput
+    $filter: ModelInviteeFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    usersByPhoneNumber(
+    inviteeByPhoneNUmber(
       phoneNumber: $phoneNumber
       sortDirection: $sortDirection
       filter: $filter
@@ -302,59 +626,74 @@ export const usersByPhoneNumber = /* GraphQL */ `
     ) {
       items {
         id
-        phoneNumber
-        email
         name
+        phoneNumber
+        status
         pushToken
-        friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        userContacts {
-          nextToken
-          startedAt
-        }
-        availability {
+        planID
+        plan {
           id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
     }
   }
 `;
-export const syncUserContacts = /* GraphQL */ `
-  query SyncUserContacts(
-    $filter: ModelUserContactFilterInput
+export const inviteesByPlan = /* GraphQL */ `
+  query InviteesByPlan(
+    $planID: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelInviteeFilterInput
     $limit: Int
     $nextToken: String
-    $lastSync: AWSTimestamp
   ) {
-    syncUserContacts(
+    inviteesByPlan(
+      planID: $planID
+      sortDirection: $sortDirection
       filter: $filter
       limit: $limit
       nextToken: $nextToken
-      lastSync: $lastSync
     ) {
       items {
         id
-        phoneNumber
         name
-        userID
+        phoneNumber
+        status
+        pushToken
+        planID
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -434,208 +773,6 @@ export const syncAvailabilities = /* GraphQL */ `
         Thursday
         Friday
         Saturday
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getPlan = /* GraphQL */ `
-  query GetPlan($id: ID!) {
-    getPlan(id: $id) {
-      id
-      title
-      description
-      location
-      placeID
-      date
-      time
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      invitees {
-        items {
-          id
-          name
-          phoneNumber
-          status
-          planID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-    }
-  }
-`;
-export const listPlans = /* GraphQL */ `
-  query ListPlans(
-    $filter: ModelPlanFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPlans(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        invitees {
-          nextToken
-          startedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncPlans = /* GraphQL */ `
-  query SyncPlans(
-    $filter: ModelPlanFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncPlans(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        invitees {
-          nextToken
-          startedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getInvitee = /* GraphQL */ `
-  query GetInvitee($id: ID!) {
-    getInvitee(id: $id) {
-      id
-      name
-      phoneNumber
-      status
-      planID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listInvitees = /* GraphQL */ `
-  query ListInvitees(
-    $filter: ModelInviteeFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listInvitees(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        phoneNumber
-        status
-        planID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const inviteeByPhoneNUmber = /* GraphQL */ `
-  query InviteeByPhoneNUmber(
-    $phoneNumber: AWSPhone
-    $sortDirection: ModelSortDirection
-    $filter: ModelInviteeFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    inviteeByPhoneNUmber(
-      phoneNumber: $phoneNumber
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        phoneNumber
-        status
-        planID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncInvitees = /* GraphQL */ `
-  query SyncInvitees(
-    $filter: ModelInviteeFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncInvitees(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        phoneNumber
-        status
-        planID
         _version
         _deleted
         _lastChangedAt
