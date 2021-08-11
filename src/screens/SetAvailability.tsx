@@ -176,6 +176,7 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
       ) : (
         <View style={styles.mainContainer}>
           <Title>My Availability</Title>
+
           <View style={styles.availabilityContainer}>
             <View style={styles.dayContainer}>
               <Text style={styles.day}>Sunday</Text>
@@ -232,12 +233,12 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
                 <Text>{renderTimeString('timeSatEnd')}</Text>
               </View>
             </View>
-
-            <View style={globalStyles.spacer} />
-            {showTimePicker &&
-              eval(`timePicker(${timeToChange}, set${timeToChange.charAt(0).toUpperCase() + timeToChange.slice(1)})`)}
-            <Button title={'Save'} onPress={onSubmit} />
           </View>
+
+          <View style={globalStyles.spacer} />
+          {showTimePicker &&
+            eval(`timePicker(${timeToChange}, set${timeToChange.charAt(0).toUpperCase() + timeToChange.slice(1)})`)}
+          <Button title={'Save'} onPress={onSubmit} />
         </View>
       )}
     </Screen>
@@ -247,11 +248,12 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
 const styles = StyleSheet.create({
   timeSlot: {
     flexDirection: 'row',
-    lineHeight: '23px',
+    lineHeight: 23,
     color: '#31A59F',
+    justifyContent: 'space-evenly',
   },
   day: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
   },
   timeNumber: {
@@ -278,6 +280,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#be8c2c',
     borderRadius: 25,
-    padding: 20,
+    padding: 25,
+    width: '100',
   },
 });
