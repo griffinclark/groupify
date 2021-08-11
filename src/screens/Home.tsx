@@ -167,7 +167,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
         )}
       </View>
-      <View>
+      <View style={styles.navbar}>
         <HomeNavBar user={currentUser} navigation={navigation} />
       </View>
     </Screen>
@@ -188,10 +188,11 @@ const styles = StyleSheet.create({
     top: 20,
     right: 25,
   },
-  // navbar: {
-  //   flex: 1.5,
-  //   justifyContent: 'center',
-  // },
+  navbar: {
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center',
+  },
   feedContainer: {
     flex: 10,
   },

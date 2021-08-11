@@ -48,7 +48,7 @@ export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) =>
         <Icon
           name="plus-circle"
           type="font-awesome"
-          size={45}
+          size={60}
           color={WHITE}
           onPress={() => setShowOptions(!showOptions)}
         />
@@ -79,21 +79,20 @@ const styles = StyleSheet.create({
   },
   nav: {
     width: '100%',
-    height: 55,
+    height: 80,
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: GOLD,
     paddingHorizontal: 30,
-    paddingBottom: 5,
-    bottom: 0,
   },
   button: {
     padding: 10,
   },
   text: {
     fontSize: 17,
+    marginHorizontal: 10,
     color: WHITE,
   },
 });
