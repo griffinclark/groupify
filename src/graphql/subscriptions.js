@@ -15,21 +15,6 @@ export const onCreateUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
-      userContacts {
-        items {
-          id
-          phoneNumber
-          name
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
       availability {
         id
         Sunday
@@ -62,21 +47,6 @@ export const onUpdateUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
-      userContacts {
-        items {
-          id
-          phoneNumber
-          name
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
       availability {
         id
         Sunday
@@ -109,21 +79,6 @@ export const onDeleteUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
-      userContacts {
-        items {
-          id
-          phoneNumber
-          name
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
       availability {
         id
         Sunday
@@ -142,13 +97,62 @@ export const onDeleteUser = /* GraphQL */ `
     }
   }
 `;
-export const onCreateUserContact = /* GraphQL */ `
-  subscription OnCreateUserContact {
-    onCreateUserContact {
+export const onCreatePlan = /* GraphQL */ `
+  subscription OnCreatePlan {
+    onCreatePlan {
       id
-      phoneNumber
-      name
-      userID
+      title
+      description
+      location
+      placeID
+      date
+      time
+      creatorID
+      creator {
+        id
+        phoneNumber
+        email
+        name
+        pushToken
+        friends
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -157,13 +161,62 @@ export const onCreateUserContact = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateUserContact = /* GraphQL */ `
-  subscription OnUpdateUserContact {
-    onUpdateUserContact {
+export const onUpdatePlan = /* GraphQL */ `
+  subscription OnUpdatePlan {
+    onUpdatePlan {
       id
-      phoneNumber
-      name
-      userID
+      title
+      description
+      location
+      placeID
+      date
+      time
+      creatorID
+      creator {
+        id
+        phoneNumber
+        email
+        name
+        pushToken
+        friends
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -172,13 +225,209 @@ export const onUpdateUserContact = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteUserContact = /* GraphQL */ `
-  subscription OnDeleteUserContact {
-    onDeleteUserContact {
+export const onDeletePlan = /* GraphQL */ `
+  subscription OnDeletePlan {
+    onDeletePlan {
       id
-      phoneNumber
+      title
+      description
+      location
+      placeID
+      date
+      time
+      creatorID
+      creator {
+        id
+        phoneNumber
+        email
+        name
+        pushToken
+        friends
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateInvitee = /* GraphQL */ `
+  subscription OnCreateInvitee {
+    onCreateInvitee {
+      id
       name
-      userID
+      phoneNumber
+      status
+      pushToken
+      planID
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          email
+          name
+          pushToken
+          friends
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateInvitee = /* GraphQL */ `
+  subscription OnUpdateInvitee {
+    onUpdateInvitee {
+      id
+      name
+      phoneNumber
+      status
+      pushToken
+      planID
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          email
+          name
+          pushToken
+          friends
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteInvitee = /* GraphQL */ `
+  subscription OnDeleteInvitee {
+    onDeleteInvitee {
+      id
+      name
+      phoneNumber
+      status
+      pushToken
+      planID
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          email
+          name
+          pushToken
+          friends
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -236,156 +485,6 @@ export const onDeleteAvailability = /* GraphQL */ `
       Thursday
       Friday
       Saturday
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreatePlan = /* GraphQL */ `
-  subscription OnCreatePlan {
-    onCreatePlan {
-      id
-      title
-      description
-      location
-      placeID
-      date
-      time
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      invitees {
-        items {
-          id
-          name
-          phoneNumber
-          status
-          planID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-    }
-  }
-`;
-export const onUpdatePlan = /* GraphQL */ `
-  subscription OnUpdatePlan {
-    onUpdatePlan {
-      id
-      title
-      description
-      location
-      placeID
-      date
-      time
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      invitees {
-        items {
-          id
-          name
-          phoneNumber
-          status
-          planID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-    }
-  }
-`;
-export const onDeletePlan = /* GraphQL */ `
-  subscription OnDeletePlan {
-    onDeletePlan {
-      id
-      title
-      description
-      location
-      placeID
-      date
-      time
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      invitees {
-        items {
-          id
-          name
-          phoneNumber
-          status
-          planID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-    }
-  }
-`;
-export const onCreateInvitee = /* GraphQL */ `
-  subscription OnCreateInvitee {
-    onCreateInvitee {
-      id
-      name
-      phoneNumber
-      status
-      planID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateInvitee = /* GraphQL */ `
-  subscription OnUpdateInvitee {
-    onUpdateInvitee {
-      id
-      name
-      phoneNumber
-      status
-      planID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteInvitee = /* GraphQL */ `
-  subscription OnDeleteInvitee {
-    onDeleteInvitee {
-      id
-      name
-      phoneNumber
-      status
-      planID
       _version
       _deleted
       _lastChangedAt
