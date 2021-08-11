@@ -1,25 +1,21 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
 import { GREY_6, GREY_1, POST_SPACING } from '../res/styles/Colors';
 import { Plan } from '../models';
-import { formatTime, formateDate } from '../res/utilFunctions';
+import { formatTime, formatDate } from '../res/utilFunctions';
 
 interface MiniPlanTileProps {
   plan: Plan;
+  onPress?: (event: GestureResponderEvent) => void;
 }
 
-export const MiniPlanTile: React.FC<MiniPlanTileProps> = ({ plan }: MiniPlanTileProps) => {
-  const onPress = () => {
-    console.log('Go to plan details');
-    // TODO: Make this go to plan details screen.
-  };
-
+export const MiniPlanTile: React.FC<MiniPlanTileProps> = ({ plan, onPress }: MiniPlanTileProps) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.rootContainer}>
         <Text style={styles.title}>{plan.title}</Text>
         <View style={styles.infoItemRow}>
-          <Text style={styles.infoItem}>{plan.date ? formateDate(plan.date) : ''}</Text>
+          <Text style={styles.infoItem}>{plan.date ? formatDate(plan.date) : ''}</Text>
           <Text>{plan.time ? formatTime(plan.time) : ''}</Text>
         </View>
       </View>

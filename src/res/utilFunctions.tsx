@@ -17,7 +17,7 @@ export const formatTime = (time: Date | string): string => {
   return hour + newTime.toTimeString().slice(2, 5) + ' ' + meridian;
 };
 
-export const formateDate = (date: Date | string): string => {
+export const formatDate = (date: Date | string): string => {
   let newDate = new Date();
   if (typeof date === 'string') {
     newDate = convertDateStringToDate(date);
@@ -54,9 +54,9 @@ export const comparePlansByDate = (planA: Plan, planB: Plan, reverse = false): n
   if (planA.date && planB.date) {
     const DateA = convertDateStringToDate(planA.date);
     const DateB = convertDateStringToDate(planB.date);
-    if (DateA.valueOf() < DateB.valueOf()) {
+    if (DateA.getTime() < DateB.getTime()) {
       return reverse ? 1 : -1;
-    } else if (DateA.valueOf() === DateB.valueOf()) {
+    } else if (DateA.getTime() === DateB.getTime()) {
       return 0;
     } else {
       return reverse ? -1 : 1;

@@ -150,7 +150,9 @@ ${event.description} \
   const onPressSend = async (): Promise<void> => {
     try {
       await storeInvitees();
-      await pushEvent(event.contacts, message);
+      if (event.contacts.length > 0) {
+        await pushEvent(event.contacts, message);
+      }
       navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
     } catch (err) {
       console.log(err, event.friends);

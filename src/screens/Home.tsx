@@ -74,7 +74,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     const currentDate = new Date();
     return plans.filter((plan) => {
       if (plan.date) {
-        if (convertDateStringToDate(plan.date).valueOf() > currentDate.valueOf()) {
+        if (convertDateStringToDate(plan.date).getTime() > currentDate.getTime()) {
           return true;
         }
       }
@@ -87,7 +87,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     const weekInMS = 604800000;
     return plans.filter((plan) => {
       if (plan.date) {
-        if (convertDateStringToDate(plan.date).valueOf() - currentDate.valueOf() < weekInMS) {
+        if (convertDateStringToDate(plan.date).getTime() - currentDate.getTime() < weekInMS) {
           return true;
         }
       }
@@ -150,17 +150,17 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         {userPlans.concat(invitedPlans).length > 0 ? (
           <View>
             <Text style={styles.label}>This Week</Text>
-            <MiniDataDisplay data={upcomingPlans} />
+            <MiniDataDisplay data={upcomingPlans} navigation={navigation} />
             <View style={globalStyles.miniSpacer}></View>
             <Text style={styles.label}>Your Created Plans</Text>
             {/* <View style={styles.sortMenu}>
               <Text>Newest</Text>
               <Text>Oldest</Text>
             </View> */}
-            <MiniDataDisplay data={userPlans} />
+            <MiniDataDisplay data={userPlans} navigation={navigation} />
             <View style={globalStyles.miniSpacer}></View>
             <Text style={styles.label}>Your Invites</Text>
-            <MiniDataDisplay data={invitedPlans} />
+            <MiniDataDisplay data={invitedPlans} navigation={navigation} />
           </View>
         ) : (
           <View style={styles.title}>

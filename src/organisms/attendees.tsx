@@ -84,7 +84,7 @@ export const Attendees: React.FC<Props> = ({ navigation, route }: Props) => {
         </Pressable>
       </View>
 
-      <Image style={styles.inviteImg} source={require('../../assets/pain.png')} />
+      {/* <Image style={styles.inviteImg} source={require('../../assets/pain.png')} /> */}
 
       <Text style={{ top: 60, left: 20, fontSize: 18, color: '#616060' }}>Attendees</Text>
 

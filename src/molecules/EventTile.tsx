@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { DK_PURPLE, GREY_5, POST_SPACING } from '../res/styles/Colors';
 import { FriendList } from '../organisms/FriendList';
 import { Plan } from '../models';
-import { formatTime, formateDate } from '../res/utilFunctions';
+import { formatTime, formatDate } from '../res/utilFunctions';
 
 interface PlanTileProps {
   plan: Plan;
@@ -18,7 +18,7 @@ export const EventTile: React.FC<PlanTileProps> = ({ plan }: PlanTileProps) => {
       <View style={styles.infoContainer}>
         <View style={styles.infoItem}>
           <Text style={styles.label}>When</Text>
-          <Text>{plan.date ? formateDate(plan.date) : ''}</Text>
+          <Text>{plan.date ? formatDate(plan.date) : ''}</Text>
           <Text>{plan.time ? formatTime(plan.time) : ''}</Text>
         </View>
         <View style={styles.infoItem}>

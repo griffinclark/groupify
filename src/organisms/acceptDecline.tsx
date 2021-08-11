@@ -29,7 +29,7 @@ export const AcceptDecline: React.FC<Props> = ({ navigation, route }: Props) => 
         </Pressable>
       </View>
 
-      <Image style={styles.inviteImg} source={require('../../assets/pain.png')} />
+      {/* <Image style={styles.inviteImg} source={require('../../assets/pain.png')} /> */}
       <View>
         <Text style={styles.hostName}>Chelsea James</Text>
         <Text style={styles.hostNameSmall}>Host</Text>
