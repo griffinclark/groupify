@@ -1,3 +1,4 @@
+import { Auth, DataStore } from 'aws-amplify';
 import React, { useState } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
+  console.log(route.params);
   const currentUser = route.params.currentUser;
   const [sundayAvailabilityStart, setSundayAvailabilityStart] = useState('');
   const [sundayAvailabilityEnd, setSundayAvailabilityEnd] = useState('');
@@ -20,8 +22,6 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
   const [mondayAvailabilityEnd, setMondayAvailabilityEnd] = useState('');
   const [tuesdayAvailabilityStart, setTuesdayAvailabilityStart] = useState('');
   const [tuesdayAvailabilityEnd, setTuesdayAvailabilityEnd] = useState('');
-
-  console.log(currentUser.availability?.Sunday[1]);
 
   return (
     <Screen>
@@ -33,7 +33,23 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
           <Text style={styles.textName}>{currentUser.name}</Text>
         </View>
-        <Icon name="edit-3" type="feather" size={30} color="#31A59F" />
+        <Icon
+          name="logout"
+          type="material"
+          size={30}
+          onPress={async () => {
+            try {
+              await DataStore.clear();
+              await DataStore.stop();
+              await DataStore.start();
+              await Auth.signOut();
+              console.log('Successfully signed out');
+              navigation.navigate('Welcome', {});
+            } catch (err) {
+              console.log('error signing out...', err);
+            }
+          }}
+        />
       </View>
       <View style={styles.bodyContainer}>
         <View style={styles.userActivity}>

@@ -375,7 +375,8 @@ export const schema = {
                         "name": "byPlan",
                         "fields": [
                             "planID"
-                        ]
+                        ],
+                        "queryField": "inviteesByPlan"
                     }
                 }
             ]
@@ -392,5 +393,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "d017b5731f1eaf95dd229a4f8ff5d931"
+    "version": "20a64067603af71990a4acd480b2d9bd"
 };

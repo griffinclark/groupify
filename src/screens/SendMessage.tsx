@@ -132,7 +132,8 @@ ${event.description} \
       }
     }
 
-    const updatedPlan = await DataStore.save(
+    //FIXME: plan invitee not being updated properly
+    await DataStore.save(
       Plan.copyOf(newPlan, (item) => {
         item.invitees = inviteeList;
       }),
@@ -150,7 +151,9 @@ ${event.description} \
   const onPressSend = async (): Promise<void> => {
     try {
       await storeInvitees();
-      await pushEvent(event.contacts, message);
+      if (event.contacts.length > 0) {
+        await pushEvent(event.contacts, message);
+      }
       navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
     } catch (err) {
       console.log(err, event.friends);

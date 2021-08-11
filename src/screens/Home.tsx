@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
-import { Event } from '../res/dataModels';
-import { getAllUserEvents } from './../res/storageFunctions';
-import { Screen, Button, NavButton } from '../atoms/AtomsExports';
-import { DataDisplay } from '../organisms/OrganismsExports';
-import { Navbar } from '../molecules/MoleculesExports';
+import { GREY_0, TEAL } from './../res/styles/Colors';
+import { convertDateStringToDate, comparePlansByDate } from './../res/utilFunctions';
+import { Screen } from '../atoms/AtomsExports';
+import { MiniDataDisplay } from '../organisms/OrganismsExports';
+import { HomeNavBar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
-import { User } from '../models';
+import { User, Plan, Invitee } from '../models';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface Props {
   navigation: {
@@ -31,8 +31,10 @@ interface Props {
 }
 
 export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
-  const [feedData, setFeedData] = useState<Event[]>([]);
+  const [upcomingPlans, setUpcomingPlans] = useState<Plan[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
+  const [userPlans, setUserPlans] = useState<Plan[]>([]);
+  const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -40,86 +42,119 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         const user = await DataStore.query(User, route.params.userID);
         if (user) {
           setCurrentUser(user);
+          loadPlans(user);
         }
       }
     })();
-    getUserEvents();
   }, []);
 
-  const getUserEvents = async () => {
-    const events = await getAllUserEvents();
-    setFeedData(events);
+  const loadPlans = async (user: User) => {
+    console.log('Loading plans');
+    const userPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
+    const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
+    const invitedPlans = removePastPlans(
+      invitees
+        .map((invitee) => {
+          return invitee.plan;
+        })
+        .filter((item): item is Plan => item !== undefined),
+    );
+    setUpcomingPlans(sortPlansByDate(filterUpcomingPlans(userPlans.concat(invitedPlans))));
+    setUserPlans(sortPlansByDate(userPlans));
+    setInvitedPlans(sortPlansByDate(invitedPlans));
+    console.log('Finished loading plans');
+  };
+
+  const sortPlansByDate = (plans: Plan[], reverse = false) => {
+    return plans.sort((planA, planB) => comparePlansByDate(planA, planB, reverse));
+  };
+
+  const removePastPlans = (plans: Plan[]) => {
+    const currentDate = new Date();
+    return plans.filter((plan) => {
+      if (plan.date) {
+        if (convertDateStringToDate(plan.date).getTime() > currentDate.getTime()) {
+          return true;
+        }
+      }
+      return false;
+    });
+  };
+
+  const filterUpcomingPlans = (plans: Plan[]) => {
+    const currentDate = new Date();
+    const weekInMS = 604800000;
+    return plans.filter((plan) => {
+      if (plan.date) {
+        if (convertDateStringToDate(plan.date).getTime() - currentDate.getTime() < weekInMS) {
+          return true;
+        }
+      }
+      return false;
+    });
   };
 
   return (
     <Screen>
-      <View style={styles.navbar}>
-        <Navbar>
-          <NavButton
-            onPress={async () => {
-              try {
-                await Auth.signOut();
-                console.log('successfully signed out');
-                navigation.navigate('Welcome');
-              } catch (err) {
-                console.log('error signing out...', err);
-              }
-            }}
-            title="Log Out"
+      <View style={styles.header}>
+        <Text style={[globalStyles.superTitle, styles.greeting]}>Hello {currentUser?.name}</Text>
+        <View style={styles.icon}>
+          <Icon
+            name="refresh"
+            type="font-awesome"
+            size={30}
+            color={TEAL}
+            onPress={() => (currentUser ? loadPlans(currentUser) : 0)}
           />
-          <NavButton
-            onPress={() => {
-              navigation.navigate('SetAvailability', { userID: route.params.userID });
-            }}
-            title="Availability"
-          />
-          <NavButton
-            onPress={() => {
-              navigation.navigate('ImportContacts');
-            }}
-            title="Contacts"
-          />
-          <NavButton
-            onPress={() => {
-              navigation.navigate('EditFriends', { userID: route.params.userID });
-            }}
-            title="Friends"
-          />
-        </Navbar>
+        </View>
       </View>
       <View style={styles.feedContainer}>
-        {feedData.length > 0 ? (
-          <DataDisplay data={feedData} />
+        {userPlans.concat(invitedPlans).length > 0 ? (
+          <View>
+            <Text style={styles.label}>This Week</Text>
+            <MiniDataDisplay data={upcomingPlans} navigation={navigation} />
+            <View style={globalStyles.miniSpacer}></View>
+            <Text style={styles.label}>Your Created Plans</Text>
+            {/* <View style={styles.sortMenu}>
+              <Text>Newest</Text>
+              <Text>Oldest</Text>
+            </View> */}
+            <MiniDataDisplay data={userPlans} navigation={navigation} />
+            <View style={globalStyles.miniSpacer}></View>
+            <Text style={styles.label}>Your Invites</Text>
+            <MiniDataDisplay data={invitedPlans} navigation={navigation} />
+          </View>
         ) : (
           <View style={styles.title}>
             <Text style={globalStyles.superTitle}>When you create an event, it will show up here</Text>
           </View>
         )}
       </View>
-      <View style={styles.button}>
-        <Button
-          title="Create event"
-          onPress={() => {
-            navigation.navigate('SearchPlace', { currentUser: currentUser });
-          }}
-        />
-        <Button
-          title="Profile"
-          onPress={() =>
-            navigation.navigate('Profile', {
-              currentUser: currentUser,
-            })
-          }
-        />
+      <View style={styles.navbar}>
+        <HomeNavBar user={currentUser} navigation={navigation} />
       </View>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
+  header: {
+    alignItems: 'flex-start',
+    marginLeft: 15,
+  },
+  greeting: {
+    color: TEAL,
+    marginTop: 10,
+  },
+  icon: {
+    position: 'absolute',
+    top: 20,
+    right: 25,
+  },
   navbar: {
-    flex: 1.5,
-    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center',
   },
   feedContainer: {
     flex: 10,
@@ -127,6 +162,13 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     justifyContent: 'center',
+  },
+  label: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginLeft: 15,
+    color: GREY_0,
   },
   button: {
     flex: 1.5,

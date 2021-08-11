@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { DK_PURPLE, GREY_3, WHITE } from '../res/styles/Colors';
+import { Invitee } from '../models';
 
 interface FriendProps {
-  friends: { id: string; name: string }[];
+  friends?: (Invitee | null)[];
   title?: string;
   style?: Record<string, unknown>;
 }
@@ -17,9 +18,9 @@ export const FriendList: React.FC<FriendProps> = ({ friends, title, style }: Fri
         contentContainerStyle={styles.friendContainer}
         persistentScrollbar={true}
       >
-        {friends.map((friend) => (
-          <View style={styles.friend} key={friend.id}>
-            <Text style={styles.friendText}>{friend.name}</Text>
+        {friends?.map((friend) => (
+          <View style={styles.friend} key={friend?.id}>
+            <Text style={styles.friendText}>{friend?.name}</Text>
           </View>
         ))}
       </ScrollView>
