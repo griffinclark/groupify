@@ -1,10 +1,11 @@
 import { Auth, DataStore } from 'aws-amplify';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
+import { formatTime } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
@@ -14,14 +15,25 @@ interface Props {
 }
 
 export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
-  console.log(route.params);
   const currentUser = route.params.currentUser;
-  const [sundayAvailabilityStart, setSundayAvailabilityStart] = useState('');
+  const currentUserPlan = route.params.currentUserPlans;
+  const [sundayAvailabilityStart, setSundayAvailabilityStart] = useState<string>();
   const [sundayAvailabilityEnd, setSundayAvailabilityEnd] = useState('');
   const [mondayAvailabilityStart, setMondayAvailabilityStart] = useState('');
   const [mondayAvailabilityEnd, setMondayAvailabilityEnd] = useState('');
   const [tuesdayAvailabilityStart, setTuesdayAvailabilityStart] = useState('');
   const [tuesdayAvailabilityEnd, setTuesdayAvailabilityEnd] = useState('');
+
+  useEffect(() => {
+    if (currentUser.availability) {
+      setSundayAvailabilityStart(formatTime(currentUser.availability.Sunday[0]));
+      setSundayAvailabilityEnd(formatTime(currentUser.availability.Sunday[1]));
+      setMondayAvailabilityStart(formatTime(currentUser.availability.Monday[0]));
+      setMondayAvailabilityEnd(formatTime(currentUser.availability.Monday[1]));
+      setTuesdayAvailabilityStart(formatTime(currentUser.availability.Tuesday[0]));
+      setTuesdayAvailabilityEnd(formatTime(currentUser.availability.Tuesday[1]));
+    }
+  }, []);
 
   return (
     <Screen>
@@ -58,9 +70,9 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
             <Icon name="chevron-forward-outline" size={30} type="ionicon" />
           </TouchableOpacity>
           <View style={styles.plan}>
-            <Text style={styles.planTitle}>Sabrinas Cafe</Text>
+            <Text style={styles.planTitle}>{currentUserPlan.title}</Text>
             <View style={styles.planBody}>
-              <Text style={styles.planDate}>07/20/21</Text>
+              <Text style={styles.planDate}>{currentUserPlan.date}</Text>
               <View style={{ borderRadius: 15, backgroundColor: '#31A59F' }}>
                 <Text style={styles.upcoming}>Upcoming</Text>
               </View>

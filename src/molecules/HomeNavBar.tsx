@@ -6,10 +6,12 @@ import { StackProps } from '../res/root-navigation';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { Button } from '../atoms/AtomsExports';
 import { User } from '../models';
+import { Plan } from '../API';
 
 interface HomeNavBarProps extends StackProps {
   user: User;
   style?: Record<string, unknown>;
+  plan: Plan;
 }
 
 export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) => {
@@ -40,6 +42,7 @@ export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) =>
           onPress={() => {
             props.navigation?.navigate('Profile', {
               currentUser: props.user,
+              currentUserPlans: props.plan,
             });
             setShowOptions(false);
           }}
