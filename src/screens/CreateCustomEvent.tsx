@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import uuid from 'uuid';
 import { Screen, FormButton, MeepForm } from '../atoms/AtomsExports';
 import { Text } from 'react-native-elements';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import Qs from 'qs';
 import { User } from '../models';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: {
@@ -117,26 +118,30 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   };
 
   return (
-    <Screen>
-      <View style={styles.navbar}>
-        <Icon
-          name="arrow-left"
-          type="font-awesome"
-          size={30}
-          onPress={() => navigation.navigate('SearchPlace', {})}
-          style={styles.back}
-        />
-        <Text style={styles.title}>New Plan</Text>
-      </View>
-      <View>{loadPhoto(photo)}</View>
-      <MeepForm
-        InputList={inputFields}
-        updatedValues={(value) => setValues(value)}
-        fullDate={(date) => setFullDate(date)}
-      >
-        <FormButton title="Create" onPress={() => onFormSubmit(updatedValues)} />
-      </MeepForm>
-    </Screen>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled={true}>
+      <Screen>
+        <ScrollView>
+          <View style={styles.navbar}>
+            <Icon
+              name="arrow-left"
+              type="font-awesome"
+              size={30}
+              onPress={() => navigation.navigate('SearchPlace', {})}
+              style={styles.back}
+            />
+            <Text style={styles.title}>New Plan</Text>
+          </View>
+          <View>{loadPhoto(photo)}</View>
+          <MeepForm
+            InputList={inputFields}
+            updatedValues={(value) => setValues(value)}
+            fullDate={(date) => setFullDate(date)}
+          >
+            <FormButton title="Create" onPress={() => onFormSubmit(updatedValues)} />
+          </MeepForm>
+        </ScrollView>
+      </Screen>
+    </KeyboardAvoidingView>
   );
 };
 

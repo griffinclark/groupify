@@ -155,54 +155,6 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     });
   };
 
-  // const notifyCurrentUsers = async () => {
-  //   const fullDate = route.params.data.eventData.fullDate;
-  //   const date = fullDate.toISOString().substring(0, 10);
-  //   const time = fullDate.toTimeString().substring(0, 8);
-  //   const inviteeList: Invitee[] = [];
-
-  //   const newPlan = await DataStore.save(
-  //     new Plan({
-  //       title: eventObject.title,
-  //       description: eventObject.description,
-  //       location: eventObject.location,
-  //       placeID: eventObject.placeId,
-  //       time: time,
-  //       date: date,
-  //       creatorID: route.params.currentUser.id,
-  //     }),
-  //   );
-
-  //   for (const friend of selectedFriends) {
-  //     const invitee = await DataStore.save(
-  //       new Invitee({
-  //         name: friend.name,
-  //         phoneNumber: friend.phoneNumber,
-  //         status: Status.PENDING,
-  //         pushToken: '',
-  //         plan: newPlan,
-  //       }),
-  //     );
-  //     inviteeList.push(invitee);
-  //   }
-
-  //   const updatedPlan = await DataStore.save(
-  //     Plan.copyOf(newPlan, (item) => {
-  //       item.invitees = inviteeList;
-  //     }),
-  //   );
-
-  //   for (const invitee of inviteeList) {
-  //     if (invitee.pushToken) {
-  //       sendPushNotification(invitee.pushToken, 'You Have Been Invited!!!', 'Tap to open the app', { data: 'hello' });
-  //     }
-  //   }
-
-  //   console.log(updatedPlan);
-
-  //   navigation.navigate('Home', {});
-  // };
-
   const menuSelection = (item: string) => {
     setMenuItemSelected(item);
   };
@@ -223,6 +175,8 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
               {eventObject.location}
             </Text>
           </View>
+        </View>
+        <View style={styles.title}>
           <Text style={styles.titleText}>Invite friends to join plan...</Text>
         </View>
       </ImageBackground>
@@ -274,8 +228,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           )}
           {menuItemSelected === 'contacts' && (
             <View style={styles.contactsContainer}>
-              <Text style={styles.text}>Invite more friends to hang out together!</Text>
-              <SearchBar onInputChange={searchFriends} />
+              <View>
+                <Text style={styles.text}>Invite more friends to hang out together!</Text>
+                <SearchBar onInputChange={searchFriends} />
+              </View>
               <View style={styles.flatlistContainer}>
                 <FlatList
                   data={filteredContacts}
@@ -311,6 +267,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     flex: 2.5,
+    justifyContent: 'space-evenly',
   },
   overlay: {
     position: 'absolute',
@@ -335,21 +292,17 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   title: {
-    flex: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 20,
   },
   titleText: {
     fontSize: 22,
     fontWeight: '700',
     color: 'white',
     textAlign: 'left',
-    paddingTop: 15,
   },
   body: {
-    flex: 4,
-    margin: 30,
+    marginHorizontal: 30,
     justifyContent: 'space-between',
   },
   menu: {
@@ -390,7 +343,7 @@ const styles = StyleSheet.create({
   },
   contactsContainer: {
     display: 'flex',
-    height: '100%',
+    justifyContent: 'space-between',
   },
   error: {
     textAlign: 'center',

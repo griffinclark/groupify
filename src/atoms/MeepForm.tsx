@@ -101,6 +101,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
     if (item.settings === 'date') {
       return (
         <View key={item.title}>
+          <Text style={styles.text}>{item.title}</Text>
           {showDatePicker && (
             <DateTimePicker
               testID={'dateTimePicker'}
@@ -113,7 +114,6 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
           <TouchableOpacity onPress={() => setShowDatePicker(true)}>
             <Text style={styles.dateTime}>{currentDate ? currentDate.toLocaleDateString() : 'no date selected'}</Text>
           </TouchableOpacity>
-          <Text style={styles.text}>{item.title}</Text>
           <View style={{ height: 15 }} />
         </View>
       );
@@ -121,6 +121,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
     if (item.settings === 'time') {
       return (
         <View key={item.title}>
+          <Text style={styles.text}>{item.title}</Text>
           {showTimePicker && (
             <DateTimePicker
               testID={'dateTimePicker'}
@@ -132,7 +133,6 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
           <TouchableOpacity onPress={() => setShowTimePicker(true)}>
             <Text style={styles.dateTime}>{currentDate ? formatTimeString(currentDate) : 'no time selected'}</Text>
           </TouchableOpacity>
-          <Text style={styles.text}>{item.title}</Text>
           <View style={{ height: 15 }} />
         </View>
       );
@@ -140,13 +140,14 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
     if (item.settings === 'password') {
       return (
         <View key={item.title}>
+          <Text style={styles.text}>{item.title}</Text>
           <TextInput
             style={styles.textInputBody}
             onChangeText={(e) => setValue(e, item)}
             placeholder={item.placeholder}
             secureTextEntry={true}
+            autoFocus={true}
           />
-          <Text style={styles.text}>{item.title}</Text>
           <View style={{ height: 15 }} />
         </View>
       );
@@ -154,13 +155,14 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
     if (item.settings === 'default') {
       return (
         <View key={item.title}>
+          <Text style={styles.text}>{item.title}</Text>
           <TextInput
             value={getValue(item.title)}
             style={styles.textInputBody}
             onChangeText={(e) => setValue(e, item)}
             placeholder={item.placeholder}
+            autoFocus={true}
           />
-          <Text style={styles.text}>{item.title}</Text>
           <View style={{ height: 15 }} />
         </View>
       );
@@ -187,7 +189,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    flex: 5,
+    flex: 1,
     justifyContent: 'space-between',
   },
   formContainer: {
