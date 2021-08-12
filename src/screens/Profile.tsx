@@ -17,7 +17,7 @@ interface Props {
 export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
   const currentUser = route.params.currentUser;
   const currentUserPlan = route.params.currentUserPlans;
-  const [sundayAvailabilityStart, setSundayAvailabilityStart] = useState<string>();
+  const [sundayAvailabilityStart, setSundayAvailabilityStart] = useState('');
   const [sundayAvailabilityEnd, setSundayAvailabilityEnd] = useState('');
   const [mondayAvailabilityStart, setMondayAvailabilityStart] = useState('');
   const [mondayAvailabilityEnd, setMondayAvailabilityEnd] = useState('');
@@ -25,7 +25,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
   const [tuesdayAvailabilityEnd, setTuesdayAvailabilityEnd] = useState('');
 
   useEffect(() => {
-    if (currentUser.availability) {
+    if (currentUser.availability?.Sunday) {
       setSundayAvailabilityStart(formatTime(currentUser.availability.Sunday[0]));
       setSundayAvailabilityEnd(formatTime(currentUser.availability.Sunday[1]));
       setMondayAvailabilityStart(formatTime(currentUser.availability.Monday[0]));
@@ -69,15 +69,17 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
             <Text style={styles.planTitle}>Invites/Plans</Text>
             <Icon name="chevron-forward-outline" size={30} type="ionicon" />
           </TouchableOpacity>
-          <View style={styles.plan}>
-            <Text style={styles.planTitle}>{currentUserPlan.title}</Text>
-            <View style={styles.planBody}>
-              <Text style={styles.planDate}>{currentUserPlan.date}</Text>
-              <View style={{ borderRadius: 15, backgroundColor: '#31A59F' }}>
-                <Text style={styles.upcoming}>Upcoming</Text>
+          {currentUserPlan && (
+            <View style={styles.plan}>
+              <Text style={styles.planTitle}>{currentUserPlan.title}</Text>
+              <View style={styles.planBody}>
+                <Text style={styles.planDate}>{currentUserPlan.date}</Text>
+                <View style={{ borderRadius: 15, backgroundColor: '#31A59F' }}>
+                  <Text style={styles.upcoming}>Upcoming</Text>
+                </View>
               </View>
             </View>
-          </View>
+          )}
         </View>
         <View style={styles.userActivity}>
           <TouchableOpacity onPress={() => navigation.navigate('SetAvailability', {})} style={styles.selector}>

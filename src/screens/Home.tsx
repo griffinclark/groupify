@@ -131,7 +131,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         )}
       </View>
       <View style={styles.navbar}>
-        <HomeNavBar user={currentUser} navigation={navigation} plan={userPlans[0]} />
+        <HomeNavBar user={currentUser} navigation={navigation} plan={userPlans[0] ? userPlans[0] : invitedPlans[0]} />
       </View>
     </Screen>
   );
