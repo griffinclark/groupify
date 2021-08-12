@@ -26,14 +26,14 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     if (currentUser.availability) {
-      setSundayAvailabilityStart(formatTime(currentUser.availability.Sunday[0]));
-      setSundayAvailabilityEnd(formatTime(currentUser.availability.Sunday[1]));
-      setMondayAvailabilityStart(formatTime(currentUser.availability.Monday[0]));
-      setMondayAvailabilityEnd(formatTime(currentUser.availability.Monday[1]));
-      setTuesdayAvailabilityStart(formatTime(currentUser.availability.Tuesday[0]));
-      setTuesdayAvailabilityEnd(formatTime(currentUser.availability.Tuesday[1]));
+      setSundayAvailabilityStart(formatTime(new Date(`2021-01-01T${currentUser.availability.Sunday[0]}`)));
+      setSundayAvailabilityEnd(formatTime(new Date(`2021-01-01T${currentUser.availability.Sunday[1]}`)));
+      setMondayAvailabilityStart(formatTime(new Date(`2021-01-01T${currentUser.availability.Monday[0]}`)));
+      setMondayAvailabilityEnd(formatTime(new Date(`2021-01-01T${currentUser.availability.Monday[1]}`)));
+      setTuesdayAvailabilityStart(formatTime(new Date(`2021-01-01T${currentUser.availability.Tuesday[0]}`)));
+      setTuesdayAvailabilityEnd(formatTime(new Date(`2021-01-01T${currentUser.availability.Tuesday[1]}`)));
     }
-  }, []);
+  }, [currentUser]);
 
   return (
     <Screen>
@@ -80,7 +80,10 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
         </View>
         <View style={styles.userActivity}>
-          <TouchableOpacity onPress={() => navigation.navigate('SetAvailability', {})} style={styles.selector}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SetAvailability', { userID: currentUser.id })}
+            style={styles.selector}
+          >
             <Text style={styles.planTitle}>Availability</Text>
             <Icon name="chevron-forward-outline" size={30} type="ionicon" />
           </TouchableOpacity>

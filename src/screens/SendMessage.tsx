@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, ImageBackground } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';

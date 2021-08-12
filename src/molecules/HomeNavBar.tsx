@@ -30,7 +30,7 @@ export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) =>
               setShowOptions(false);
             }}
           />
-          <Button title={'Plan Quiz'} onPress={() => console.log('Go to plan quiz')}></Button>
+          {/* <Button title={'Plan Quiz'} onPress={() => console.log('Go to plan quiz')}></Button> */}
           <Button title={'Random Plan'} onPress={() => console.log('Go to random plan')}></Button>
         </View>
       ) : (
