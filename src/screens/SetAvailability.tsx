@@ -4,8 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { DataStore } from '@aws-amplify/datastore';
 import { Availability, User } from '../models';
 import { RoutePropParams } from '../res/root-navigation';
-import { Screen, NavButton, Button, Title } from '../atoms/AtomsExports';
-import { Navbar } from '../molecules/MoleculesExports';
+import { Screen, Button, Title } from '../atoms/AtomsExports';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { GOLD, TEAL, GREY_0 } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -100,10 +99,6 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
   };
 
   const renderTimeString = (dayAndTime: string) => {
-    let prefix = '';
-    if (dayAndTime.endsWith('End')) {
-      prefix = '  to  ';
-    }
     return (
       <TouchableOpacity
         onPress={() => {
@@ -155,14 +150,6 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
 
   return (
     <Screen>
-      {/* <Navbar>
-        <NavButton
-          title="Home"
-          onPress={() => {
-            navigation.navigate('Home');
-          }}
-        />
-      </Navbar> */}
       {loading ? (
         <View>
           <ActivityIndicator size="large" color="#bad555" />
