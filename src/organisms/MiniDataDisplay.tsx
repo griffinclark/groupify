@@ -32,7 +32,3 @@ export const MiniDataDisplay: React.FC<Props> = (props: Props) => {
     </View>
   );
 };
-
-// const styles = StyleSheet.create({
-
-// });
