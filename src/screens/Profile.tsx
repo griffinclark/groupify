@@ -4,6 +4,7 @@ import { Linking, StyleSheet, Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Screen } from '../atoms/AtomsExports';
+import { User } from '../models';
 import { RoutePropParams } from '../res/root-navigation';
 import { formatTime } from '../res/utilFunctions';
 
@@ -25,15 +26,34 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
   const [tuesdayAvailabilityEnd, setTuesdayAvailabilityEnd] = useState('');
 
   useEffect(() => {
-    if (currentUser.availability?.Sunday) {
-      setSundayAvailabilityStart(formatTime(currentUser.availability.Sunday[0]));
-      setSundayAvailabilityEnd(formatTime(currentUser.availability.Sunday[1]));
-      setMondayAvailabilityStart(formatTime(currentUser.availability.Monday[0]));
-      setMondayAvailabilityEnd(formatTime(currentUser.availability.Monday[1]));
-      setTuesdayAvailabilityStart(formatTime(currentUser.availability.Tuesday[0]));
-      setTuesdayAvailabilityEnd(formatTime(currentUser.availability.Tuesday[1]));
+    setAvailability();
+  }, [currentUser]);
+
+  const setAvailability = async () => {
+    const user = await DataStore.query(User, route.params.currentUser.id);
+    if (
+      user &&
+      user.availability &&
+      user.availability.Sunday &&
+      user.availability.Monday &&
+      user.availability.Tuesday
+    ) {
+      setSundayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Sunday[0]}`)));
+      setSundayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Sunday[1]}`)));
+      setMondayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Monday[0]}`)));
+      setMondayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Monday[1]}`)));
+      setTuesdayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Tuesday[0]}`)));
+      setTuesdayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Tuesday[1]}`)));
     }
-  }, []);
+  };
+
+  const isUpcoming = (date: string | null | undefined) => {
+    if (new Date().toISOString().substring(5, 7) == date?.substring(5, 7)) {
+      if (date.substring(8, 10) - new Date().toISOString().substring(8, 10) < 7) {
+        return true;
+      }
+    }
+  };
 
   return (
     <Screen>
@@ -75,14 +95,17 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
               <View style={styles.planBody}>
                 <Text style={styles.planDate}>{currentUserPlan.date}</Text>
                 <View style={{ borderRadius: 15, backgroundColor: '#31A59F' }}>
-                  <Text style={styles.upcoming}>Upcoming</Text>
+                  {isUpcoming(currentUserPlan.date) && <Text style={styles.upcoming}>Upcoming</Text>}
                 </View>
               </View>
             </View>
           )}
         </View>
         <View style={styles.userActivity}>
-          <TouchableOpacity onPress={() => navigation.navigate('SetAvailability', {})} style={styles.selector}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SetAvailability', { userID: currentUser.id })}
+            style={styles.selector}
+          >
             <Text style={styles.planTitle}>Availability</Text>
             <Icon name="chevron-forward-outline" size={30} type="ionicon" />
           </TouchableOpacity>
@@ -115,6 +138,16 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
           style={styles.bugReport}
         >
           <Text style={{ fontSize: 18 }}>Submit Bug Report</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('EditFriends', {
+              userID: route.params.currentUser.id,
+            });
+          }}
+          style={styles.bugReport}
+        >
+          <Text style={{ fontSize: 18 }}>Friends List</Text>
         </TouchableOpacity>
       </View>
     </Screen>
@@ -176,7 +209,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     textAlignVertical: 'center',
     alignItems: 'center',
-    margin: 20,
+    margin: 15,
   },
   userActivity: {
     width: '90%',

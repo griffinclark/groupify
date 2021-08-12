@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { GOLD, WHITE } from '../res/styles/Colors';
 import { globalStyles } from '../res/styles/GlobalStyles';
@@ -17,6 +17,10 @@ interface HomeNavBarProps extends StackProps {
 export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) => {
   const [showOptions, setShowOptions] = useState(false);
 
+  // useEffect(() => {
+  //   setShowOptions(false);
+  // }, []);
+
   return (
     <View>
       {showOptions ? (
@@ -30,7 +34,7 @@ export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) =>
               setShowOptions(false);
             }}
           />
-          <Button title={'Plan Quiz'} onPress={() => console.log('Go to plan quiz')}></Button>
+          {/* <Button title={'Plan Quiz'} onPress={() => console.log('Go to plan quiz')}></Button> */}
           <Button title={'Random Plan'} onPress={() => console.log('Go to random plan')}></Button>
         </View>
       ) : (
