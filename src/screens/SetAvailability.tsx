@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -8,11 +7,13 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Screen, NavButton, Button, Title } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { globalStyles } from '../res/styles/GlobalStyles';
+import { GOLD, TEAL, GREY_0 } from '../res/styles/Colors';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { formatTime } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
-    navigate: (ev: string, a?: { userID: string }) => void;
+    navigate: (ev: string, a?: { currentUser: User }) => void;
   };
   route: RoutePropParams;
 }
@@ -46,7 +47,7 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
     setUser(user);
     // console.log(user);
     if (user && user.availability) {
-      // console.log('Loading user availability');
+      console.log('Loading user availability');
       const availability = user.availability;
       if (availability.Sunday !== undefined && availability.Sunday.length === 2) {
         setTimeSunStart(new Date(`2021-01-01T${availability.Sunday[0]}`));
@@ -77,14 +78,13 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
         setTimeSatEnd(new Date(`2021-01-01T${availability.Saturday[1]}`));
       }
       setLoading(false);
-      // console.log('Finished loading user availability');
+      console.log('Finished loading user availability');
     } else {
-      // console.log('No previous availability');
+      console.log('No previous availability');
       setLoading(false);
     }
   };
 
-  // eslint-disable-next-line no-unused-vars
   const timePicker = (time: Date, setTime: React.Dispatch<React.SetStateAction<Date>>) => {
     return (
       <DateTimePicker
@@ -101,10 +101,8 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
 
   const renderTimeString = (dayAndTime: string) => {
     let prefix = '';
-    if (dayAndTime.endsWith('Start')) {
-      //prefix = 'From: ';
-    } else {
-      prefix = '     to: ';
+    if (dayAndTime.endsWith('End')) {
+      prefix = '  to  ';
     }
     return (
       <TouchableOpacity
@@ -113,7 +111,10 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
           setShowTimePicker(true);
         }}
       >
-        <Text>{prefix + formatTime(eval(dayAndTime))}</Text>
+        <Text style={styles.time}>
+          {dayAndTime.endsWith('End') ? <Text style={{ color: GREY_0 }}>{'  to  '}</Text> : null}
+          {formatTime(eval(dayAndTime))}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -148,28 +149,31 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
       );
       console.log('Successfully updated user availability');
       // console.log(availability);
-      navigation.navigate('Home', { userID: updatedUser.id });
+      navigation.navigate('Profile', { currentUser: updatedUser });
     }
   };
 
   return (
     <Screen>
-      <Navbar>
+      {/* <Navbar>
         <NavButton
           title="Home"
           onPress={() => {
             navigation.navigate('Home');
           }}
         />
-      </Navbar>
+      </Navbar> */}
       {loading ? (
         <View>
           <ActivityIndicator size="large" color="#bad555" />
         </View>
       ) : (
-        <View style={styles.mainContainer}>
-          <Title>My Availability</Title>
-
+        <View style={globalStyles.defaultRootContainer}>
+          <View style={styles.iconContainer}>
+            <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
+          </View>
+          <View style={globalStyles.miniSpacer} />
+          <Title>Availability</Title>
           <View style={styles.availabilityContainer}>
             <View style={styles.dayContainer}>
               <Text style={styles.day}>Sunday</Text>
@@ -178,7 +182,6 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
                 <Text>{renderTimeString('timeSunEnd')}</Text>
               </View>
             </View>
-
             <View style={styles.dayContainer}>
               <Text style={styles.day}>Monday</Text>
               <View style={styles.timeSlot}>
@@ -186,15 +189,13 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
                 <Text>{renderTimeString('timeMonEnd')}</Text>
               </View>
             </View>
-
             <View style={styles.dayContainer}>
               <Text style={styles.day}>Tuesday</Text>
               <View style={styles.timeSlot}>
-                <Text style={styles.timeNumber}>{renderTimeString('timeTuesStart')}</Text>
+                <Text>{renderTimeString('timeTuesStart')}</Text>
                 <Text>{renderTimeString('timeTuesEnd')}</Text>
               </View>
             </View>
-
             <View style={styles.dayContainer}>
               <Text style={styles.day}>Wednesday</Text>
               <View style={styles.timeSlot}>
@@ -202,7 +203,6 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
                 <Text>{renderTimeString('timeWedEnd')}</Text>
               </View>
             </View>
-
             <View style={styles.dayContainer}>
               <Text style={styles.day}>Thursday</Text>
               <View style={styles.timeSlot}>
@@ -210,7 +210,6 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
                 <Text>{renderTimeString('timeThursEnd')}</Text>
               </View>
             </View>
-
             <View style={styles.dayContainer}>
               <Text style={styles.day}>Friday</Text>
               <View style={styles.timeSlot}>
@@ -218,7 +217,6 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
                 <Text>{renderTimeString('timeFriEnd')}</Text>
               </View>
             </View>
-
             <View style={styles.dayContainer}>
               <Text style={styles.day}>Saturday</Text>
               <View style={styles.timeSlot}>
@@ -227,11 +225,10 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
               </View>
             </View>
           </View>
-
           <View style={globalStyles.spacer} />
           {showTimePicker &&
             eval(`timePicker(${timeToChange}, set${timeToChange.charAt(0).toUpperCase() + timeToChange.slice(1)})`)}
-          <Button title={'Save'} onPress={onSubmit} />
+          <Button title={'Confirm'} onPress={onSubmit} containerStyle={styles.button} />
         </View>
       )}
     </Screen>
@@ -239,41 +236,47 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
 };
 
 const styles = StyleSheet.create({
+  iconContainer: {
+    position: 'absolute',
+    top: 5,
+    left: 20,
+  },
   timeSlot: {
     flexDirection: 'row',
-    lineHeight: 23,
-    color: '#31A59F',
-    justifyContent: 'space-evenly',
+    top: 5,
+  },
+  time: {
+    color: TEAL,
+    fontWeight: 'bold',
+    fontSize: 15,
   },
   day: {
-    fontSize: 25,
-    fontWeight: 'bold',
-  },
-  timeNumber: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: GREY_0,
   },
-
   mainContainer: {
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
   },
-
   dayContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignContent: 'center',
+    marginTop: 10,
   },
-
   availabilityContainer: {
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
     borderWidth: 2,
-    borderColor: '#be8c2c',
+    borderColor: GOLD,
     borderRadius: 25,
     padding: 25,
-    width: '100',
+    marginHorizontal: '4%',
+  },
+  button: {
+    flex: 1,
   },
 });
