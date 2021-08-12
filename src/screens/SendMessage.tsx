@@ -180,13 +180,15 @@ ${event.description} \
 
   return (
     <Screen>
-      <Icon
-        name="arrow-left"
-        type="font-awesome"
-        size={35}
-        onPress={() => navigation.navigate('SelectFriends', {})}
-        style={styles.back}
-      />
+      <View style={{ flexDirection: 'row', alignSelf: 'flex-start', top: 10 }}>
+        <Icon
+          name="arrow-left"
+          type="font-awesome"
+          size={35}
+          onPress={() => navigation.navigate('SelectFriends', {})}
+          style={styles.back}
+        />
+      </View>
       {event.contacts.length == 0 && event.friends.length > 0 && (
         <ImageBackground
           imageStyle={{ borderRadius: 15 }}
@@ -270,8 +272,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   back: {
-    margin: 20,
-    alignSelf: 'flex-start',
+    marginHorizontal: 20,
   },
   nameContainer: {
     flexDirection: 'row',
@@ -303,6 +304,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 15,
     marginHorizontal: 15,
+    top: 10,
   },
   overlay: {
     position: 'absolute',
