@@ -6,11 +6,11 @@ import { getAllImportedContacts } from '../res/storageFunctions';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
-import { User, Plan, Status, Invitee } from '../models';
+import { User } from '../models';
 
 interface Props {
   navigation: {
-    navigate: (ev: string, a?: { step?: string }) => void;
+    navigate: (ev: string, {}) => void;
   };
   route: RoutePropParams;
 }
@@ -133,51 +133,26 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     );
   };
 
-  const sendContactMessage = () => {
-    route.params.data.eventData.friends = selectedContacts;
-    navigation.navigate('SendMessage', route.params);
-  };
-
-  const notifyCurrentUsers = async () => {
-    const fullDate = route.params.data.eventData.fullDate;
-    const date = fullDate.toISOString().substring(0, 10);
-    const time = fullDate.toTimeString().substring(0, 8);
-    const inviteeList: Invitee[] = [];
-
-    const newPlan = await DataStore.save(
-      new Plan({
-        title: eventObject.title,
-        description: eventObject.description,
-        location: eventObject.location,
-        placeID: eventObject.placeId,
-        time: time,
-        date: date,
-        creatorID: route.params.currentUser.id,
-      }),
-    );
-
-    for (const friend of selectedFriends) {
-      const invitee = await DataStore.save(
-        new Invitee({
-          name: friend.name,
-          phoneNumber: friend.phoneNumber,
-          status: Status.PENDING,
-          pushToken: '',
-          plan: newPlan,
-        }),
-      );
-      inviteeList.push(invitee);
-    }
-
-    const updatedPlan = await DataStore.save(
-      Plan.copyOf(newPlan, (item) => {
-        item.invitees = inviteeList;
-      }),
-    );
-
-    console.log(updatedPlan);
-
-    navigation.navigate('Home', {});
+  const sendContactMessage = async () => {
+    const event = route.params.data.eventData;
+    navigation.navigate('SendMessage', {
+      currentUser: route.params.currentUser,
+      data: {
+        eventData: {
+          uuid: event.uuid,
+          title: event.title,
+          date: event.date,
+          time: event.time,
+          location: event.location,
+          description: event.description,
+          imageURL: event.imageURL,
+          placeId: event.placeId,
+          fullDate: event.fullDate,
+          friends: selectedFriends,
+          contacts: selectedContacts,
+        },
+      },
+    });
   };
 
   const menuSelection = (item: string) => {
@@ -242,7 +217,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
                 </View>
               ) : null}
               <View style={{ position: 'absolute', bottom: 27, alignSelf: 'center' }}>
-                <Button title={'Notify'} onPress={notifyCurrentUsers} />
+                <Button
+                  title={selectedFriends.length === 0 ? 'Skip' : 'Next'}
+                  onPress={() => setMenuItemSelected('contacts')}
+                />
               </View>
             </View>
           )}
@@ -261,7 +239,14 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
                   )}
                 />
               </View>
-              <Button title="Next" onPress={sendContactMessage} />
+              <Button
+                title={selectedContacts.length === 0 ? 'Skip' : 'Next'}
+                onPress={sendContactMessage}
+                disabled={selectedFriends.length === 0 && selectedContacts.length === 0 ? true : false}
+              />
+              {selectedContacts.length === 0 && selectedFriends.length === 0 && (
+                <Text style={styles.error}>Select a friend to continue!</Text>
+              )}
             </View>
           )}
         </View>
@@ -358,5 +343,9 @@ const styles = StyleSheet.create({
   contactsContainer: {
     display: 'flex',
     height: '100%',
+  },
+  error: {
+    textAlign: 'center',
+    color: 'red',
   },
 });

@@ -3,6 +3,7 @@ import { StyleSheet, TextInput, View, Text, Platform } from 'react-native';
 import { WHITE } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { formatTime } from '../res/utilFunctions';
 
 interface Props {
   children: ReactChild;
@@ -87,16 +88,6 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
     }
   };
 
-  const formatTimeString = (time: Date) => {
-    let meridian = 'AM';
-    let hour = time.getHours();
-    if (hour > 12) {
-      hour -= 12;
-      meridian = 'PM';
-    }
-    return hour + time.toTimeString().slice(2, 5) + ' ' + meridian;
-  };
-
   const ListItems = InputList.map((item) => {
     if (item.settings === 'date') {
       return (
@@ -130,7 +121,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues, 
             />
           )}
           <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-            <Text style={styles.dateTime}>{currentDate ? formatTimeString(currentDate) : 'no time selected'}</Text>
+            <Text style={styles.dateTime}>{currentDate ? formatTime(currentDate) : 'no time selected'}</Text>
           </TouchableOpacity>
           <Text style={styles.text}>{item.title}</Text>
           <View style={{ height: 15 }} />

@@ -41,5 +41,8 @@
     "web": {
       "favicon": "./assets/favicon.png"
     }
+  },
+  "android": {
+    "googleServicesFile": "./google-services.json"
   }
 }

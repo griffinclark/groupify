@@ -2,30 +2,31 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { DK_PURPLE, GREY_5, POST_SPACING } from '../res/styles/Colors';
-import { Event } from '../res/dataModels';
 import { FriendList } from '../organisms/FriendList';
+import { Plan } from '../models';
+import { formatTime, formatDate } from '../res/utilFunctions';
 
-interface EventTileProps {
-  event: Event;
+interface PlanTileProps {
+  plan: Plan;
 }
 
-export const EventTile: React.FC<EventTileProps> = ({ event }: EventTileProps) => {
+export const EventTile: React.FC<PlanTileProps> = ({ plan }: PlanTileProps) => {
   return (
     <View style={styles.rootContainer}>
-      <Text style={styles.title}>{event.title}</Text>
-      <Text>{event.description}</Text>
+      <Text style={styles.title}>{plan.title}</Text>
+      <Text>{plan.description}</Text>
       <View style={styles.infoContainer}>
         <View style={styles.infoItem}>
           <Text style={styles.label}>When</Text>
-          <Text>{event.date}</Text>
-          <Text>{event.time}</Text>
+          <Text>{plan.date ? formatDate(plan.date) : ''}</Text>
+          <Text>{plan.time ? formatTime(plan.time) : ''}</Text>
         </View>
         <View style={styles.infoItem}>
           <Text style={styles.label}>Where</Text>
-          <Text>{event.location}</Text>
+          <Text>{plan.location}</Text>
         </View>
       </View>
-      <FriendList title="Invited Friends" friends={event.friends} />
+      <FriendList title="Invited Friends" friends={plan.invitees} />
     </View>
   );
 };
