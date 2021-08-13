@@ -5,8 +5,7 @@ import { globalStyles } from '../res/styles/GlobalStyles';
 import { StackProps } from '../res/root-navigation';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { Button } from '../atoms/AtomsExports';
-import { User } from '../models';
-import { Plan } from '../API';
+import { User, Plan } from '../models';
 
 interface HomeNavBarProps extends StackProps {
   user: User;
@@ -42,7 +41,7 @@ export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) =>
           onPress={() => {
             props.navigation?.navigate('Profile', {
               currentUser: props.user,
-              currentUserPlans: props.plan,
+              currentUserPlan: props.plan,
             });
             setShowOptions(false);
           }}

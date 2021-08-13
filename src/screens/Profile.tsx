@@ -16,7 +16,7 @@ interface Props {
 
 export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
   const currentUser = route.params.currentUser;
-  const currentUserPlan = route.params.currentUserPlans;
+  const currentUserPlan = route.params.currentUserPlan;
   const [sundayAvailabilityStart, setSundayAvailabilityStart] = useState<string>();
   const [sundayAvailabilityEnd, setSundayAvailabilityEnd] = useState('');
   const [mondayAvailabilityStart, setMondayAvailabilityStart] = useState('');
