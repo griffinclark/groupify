@@ -16,6 +16,8 @@ export declare class User {
   readonly pushToken: string;
   readonly friends?: (string | null)[];
   readonly availability?: Availability;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<User>);
   static copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
 }
@@ -29,6 +31,8 @@ export declare class Availability {
   readonly Thursday?: (string | null)[];
   readonly Friday?: (string | null)[];
   readonly Saturday?: (string | null)[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<Availability>);
   static copyOf(source: Availability, mutator: (draft: MutableModel<Availability>) => MutableModel<Availability> | void): Availability;
 }
@@ -44,6 +48,8 @@ export declare class Plan {
   readonly creatorID: string;
   readonly creator?: User;
   readonly invitees?: (Invitee | null)[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<Plan>);
   static copyOf(source: Plan, mutator: (draft: MutableModel<Plan>) => MutableModel<Plan> | void): Plan;
 }
@@ -55,6 +61,8 @@ export declare class Invitee {
   readonly status: Status | keyof typeof Status;
   readonly pushToken?: string;
   readonly plan?: Plan;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<Invitee>);
   static copyOf(source: Invitee, mutator: (draft: MutableModel<Invitee>) => MutableModel<Invitee> | void): Invitee;
 }
