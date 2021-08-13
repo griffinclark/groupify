@@ -117,7 +117,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <Screen>
-      <Navbar>
+        <Navbar>
         <NavButton onPress={() => navigation.navigate('Home')} title="Back" />
       </Navbar>
       <Title>Edit Contact List</Title>
