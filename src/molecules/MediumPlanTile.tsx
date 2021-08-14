@@ -45,6 +45,10 @@ const styles = StyleSheet.create({
     marginTop: POST_SPACING,
     marginHorizontal: POST_SPACING,
     elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
     marginBottom: 10,
   },
   textContainer: {
