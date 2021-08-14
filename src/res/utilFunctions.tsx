@@ -1,4 +1,7 @@
 import { Plan } from '../models';
+import Qs from 'qs';
+
+const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
 export const formatTime = (time: Date | string): string => {
   let newTime = new Date();
@@ -63,4 +66,20 @@ export const comparePlansByDate = (planA: Plan, planB: Plan, reverse = false): n
     }
   }
   return 0;
+};
+
+export const loadPhoto = async (placeID: string) => {
+  const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
+  const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeID}&key=${GOOGLE_PLACES_API_KEY}`;
+  const response = await fetch(search);
+  const detail = await response.json();
+  const photoReference = detail.result.photos[0].photo_reference;
+  const photoRequetsParams = {
+    key: GOOGLE_PLACES_API_KEY,
+    maxwidth: 500,
+    maxheight: 500,
+    photoreference: photoReference,
+  };
+  const completeUri = photoRequestURL + Qs.stringify(photoRequetsParams);
+  return completeUri;
 };
