@@ -175,6 +175,8 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
               {eventObject.location}
             </Text>
           </View>
+        </View>
+        <View style={styles.title}>
           <Text style={styles.titleText}>Invite friends to join plan...</Text>
         </View>
       </ImageBackground>
@@ -182,7 +184,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         <View style={styles.menu}>
           <View style={menuItemSelected === 'friends' && styles.itemSelectedContainer}>
             <Text
-              style={[menuItemSelected === 'friends' ? styles.menuItemSelected : null, styles.menuItem]}
+              style={[
+                menuItemSelected === 'friends' ? styles.menuItemSelected : styles.menuItemNotSelected,
+                styles.menuItem,
+              ]}
               onPress={() => menuSelection('friends')}
             >
               FRIENDS
@@ -190,7 +195,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           </View>
           <View style={menuItemSelected === 'contacts' && styles.itemSelectedContainer}>
             <Text
-              style={[menuItemSelected === 'contacts' ? styles.menuItemSelected : null, styles.menuItem]}
+              style={[
+                menuItemSelected === 'contacts' ? styles.menuItemSelected : styles.menuItemNotSelected,
+                styles.menuItem,
+              ]}
               onPress={() => menuSelection('contacts')}
             >
               CONTACTS
@@ -226,8 +234,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           )}
           {menuItemSelected === 'contacts' && (
             <View style={styles.contactsContainer}>
-              <Text style={styles.text}>Invite more friends to hang out together!</Text>
-              <SearchBar onInputChange={searchFriends} />
+              <View>
+                <Text style={styles.text}>Invite more friends to hang out together!</Text>
+                <SearchBar onInputChange={searchFriends} />
+              </View>
               <View style={styles.flatlistContainer}>
                 <FlatList
                   data={filteredContacts}
@@ -263,6 +273,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     flex: 2.5,
+    justifyContent: 'space-evenly',
   },
   overlay: {
     position: 'absolute',
@@ -287,21 +298,17 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   title: {
-    flex: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 20,
   },
   titleText: {
     fontSize: 22,
     fontWeight: '700',
     color: 'white',
     textAlign: 'left',
-    paddingTop: 15,
   },
   body: {
-    flex: 4,
-    margin: 30,
+    marginHorizontal: 30,
     justifyContent: 'space-between',
   },
   menu: {
@@ -326,6 +333,9 @@ const styles = StyleSheet.create({
     color: '#32A59F',
     fontWeight: '700',
   },
+  menuItemNotSelected: {
+    color: 'gray',
+  },
   text: {
     textAlign: 'center',
     padding: 30,
@@ -337,12 +347,12 @@ const styles = StyleSheet.create({
   flatlistContainer: {
     flexDirection: 'column',
     width: '100%',
-    height: '45%',
-    marginVertical: 20,
+    height: '40%',
+    marginVertical: 10,
   },
   contactsContainer: {
     display: 'flex',
-    height: '100%',
+    justifyContent: 'space-between',
   },
   error: {
     textAlign: 'center',
