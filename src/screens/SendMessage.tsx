@@ -9,7 +9,6 @@ import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/Ato
 import { Icon } from 'react-native-elements';
 import { Plan, Status, Invitee } from '../models';
 import { sendPushNotification } from '../res/notifications';
-import { formatDate } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
