@@ -85,7 +85,10 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
       </View>
       <View style={styles.bodyContainer}>
         <View style={styles.userActivity}>
-          <TouchableOpacity style={styles.selector}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('InvitedPlans', { currentUser: currentUser })}
+            style={styles.selector}
+          >
             <Text style={styles.planTitle}>Invites/Plans</Text>
             <Icon name="chevron-forward-outline" size={30} type="ionicon" />
           </TouchableOpacity>
