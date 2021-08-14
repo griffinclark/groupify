@@ -76,5 +76,29 @@
         }
       }
     }
+  },
+  "prods": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-meep-prods-231759-authRole",
+      "UnauthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-prods-231759-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-prods-231759-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-meep-prods-231759-deployment",
+      "UnauthRoleName": "amplify-meep-prods-231759-unauthRole",
+      "StackName": "amplify-meep-prods-231759",
+      "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-meep-prods-231759/60045440-fcc7-11eb-b1d5-06ed1cedafa1",
+      "AmplifyAppId": "dto2kcprsz7l"
+    },
+    "categories": {
+      "auth": {
+        "Meep": {}
+      },
+      "function": {
+        "pushBroadcast": {
+          "deploymentBucketName": "amplify-meep-prods-231759-deployment",
+          "s3Key": "amplify-builds/pushBroadcast-4d617a4a394770477577-build.zip"
+        }
+      }
+    }
   }
 }
