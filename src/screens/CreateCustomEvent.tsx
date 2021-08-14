@@ -45,7 +45,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   }) => {
     const image: string = loadPhoto(photo).props.source.uri;
     const id = uuid.v4();
-    const date = fullDate?.toISOString();
+    const dateString = fullDate?.toISOString();
     navigation.navigate('SelectFriends', {
       currentUser: route.params.currentUser,
       data: {
@@ -58,7 +58,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
           description: values.eventDescription,
           imageURL: image,
           placeId: route.params.data.eventData.placeId,
-          fullDate: date,
+          fullDate: dateString,
         },
       },
     });
