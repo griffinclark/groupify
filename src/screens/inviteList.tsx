@@ -84,7 +84,7 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View style={{ top: 38, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={styles.title}>{plan.title}</Text>
+        <Text style={styles.title}>Invitees</Text>
         <Icon
           name="close"
           type="fa"
@@ -93,13 +93,15 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
           onPress={() => navigation.navigate('Home')}
         />
       </View>
-      {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : <Text>No image</Text>}
+      <View style={styles.image}>
+        {photoURI ? <Image source={{ uri: photoURI }} resizeMode="cover" /> : <Text>No image</Text>}
+      </View>
       <View>
         <Text style={styles.hostName}>Invitees</Text>
         <Text style={styles.hostNameTitle}>Host</Text>
       </View>
 
-      <View style={{ top: 160 }}>
+      <View style={{ top: 300 }}>
         <FlatList
           style={styles.inviteesList}
           data={invitees}
@@ -148,7 +150,7 @@ const styles = StyleSheet.create({
   image: {
     height: 200,
     width: '100%',
-    top: 55,
+    top: 160,
   },
   evText3: {
     fontSize: 12,

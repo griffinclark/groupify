@@ -103,7 +103,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     <Screen>
       <View style={styles.header}>
         <Text style={[globalStyles.superTitle, styles.greeting]}>
-          Hello{' '}
+          Hello
           {currentUser?.name.includes(' ')
             ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
             : currentUser?.name}
