@@ -52,7 +52,12 @@ export const convertDateStringToDate = (date: string): Date => {
   return newDate;
 };
 
-// This function compares a plan by their date. Plan with more recent date comes before. Set reverse to true to reverse order.
+// Sorts a list of plans by their date. Set 'reverse' to true to reverse the order.
+export const sortPlansByDate = (plans: Plan[], reverse = false): Plan[] => {
+  return plans.sort((planA, planB) => comparePlansByDate(planA, planB, reverse));
+};
+
+// Helper function for sorting plans. The plan with more recent date comes before. Set 'reverse' to true to reverse order.
 export const comparePlansByDate = (planA: Plan, planB: Plan, reverse = false): number => {
   if (planA.date && planB.date) {
     const DateA = convertDateStringToDate(planA.date);
@@ -68,7 +73,8 @@ export const comparePlansByDate = (planA: Plan, planB: Plan, reverse = false): n
   return 0;
 };
 
-export const loadPhoto = async (placeID: string) => {
+// Returns the uri for a photo given a place's placeID using Google Places API
+export const loadPhoto = async (placeID: string): Promise<string> => {
   const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
   const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeID}&key=${GOOGLE_PLACES_API_KEY}`;
   const response = await fetch(search);

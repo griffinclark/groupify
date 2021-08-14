@@ -1,16 +1,15 @@
 import { DataStore, Auth } from 'aws-amplify';
-import Qs from 'qs';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Screen, Button } from '../atoms/AtomsExports';
-import { formatTime, convertDateStringToDate } from '../res/utilFunctions';
+import { formatTime, convertDateStringToDate, loadPhoto } from '../res/utilFunctions';
 import { TEAL, WHITE, GREY_0, GREY_4, GOLD } from '../res/styles/Colors';
 import { Plan, User, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface Props {
   navigation: {
-    navigate: (ev: string, a?: { userID: string }) => void;
+    goBack: () => void;
   };
   route: {
     params: {
@@ -21,7 +20,6 @@ interface Props {
 }
 
 export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
-  const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const plan = route.params.plan;
   const [hostName, setHostName] = useState('');
   const [invitees, setInvitees] = useState<Invitee[]>([]);
@@ -32,7 +30,11 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     setPlanHost(route.params.plan.creatorID);
-    loadPhoto();
+    (async () => {
+      if (plan.placeID) {
+        setPhotoURI(await loadPhoto(plan.placeID));
+      }
+    })();
   }, []);
 
   useEffect(() => {
@@ -44,22 +46,6 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     if (user) {
       setHostName(user.name);
     }
-  };
-
-  const loadPhoto = async () => {
-    const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
-    const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${plan.placeID}&key=${GOOGLE_PLACES_API_KEY}`;
-    const response = await fetch(search);
-    const detail = await response.json();
-    const photoReference = detail.result.photos[0].photo_reference;
-    const photoRequetsParams = {
-      key: GOOGLE_PLACES_API_KEY,
-      maxwidth: 500,
-      maxheight: 500,
-      photoreference: photoReference,
-    };
-    const completeUri = photoRequestURL + Qs.stringify(photoRequetsParams);
-    setPhotoURI(completeUri);
   };
 
   const loadInvitees = async () => {
@@ -116,15 +102,9 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     <Screen>
       <View style={{ top: 38, flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={styles.title}>{plan.title}</Text>
-        <Icon
-          name="close"
-          type="fa"
-          style={{ paddingVertical: 4 }}
-          size={40}
-          onPress={() => navigation.navigate('Home')}
-        />
+        <Icon name="close" type="fa" style={{ paddingVertical: 4 }} size={40} onPress={() => navigation.goBack()} />
       </View>
-      {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : <Text>No image</Text>}
+      {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : null}
       <View>
         <Text style={styles.hostName}>{hostName}</Text>
         <Text style={styles.hostNameTitle}>Host</Text>

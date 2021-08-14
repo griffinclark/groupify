@@ -13,20 +13,17 @@ export const MediumPlanTile: React.FC<MediumPlanTileProps> = ({ plan, onPress }:
   const [photoURI, setPhotoURI] = useState('');
 
   useEffect(() => {
-    if (plan.placeID !== undefined) {
-      const placeID = plan.placeID;
-      (async () => setPhotoURI(await loadPhoto(placeID)))();
-    }
+    (async () => {
+      if (plan.placeID) {
+        setPhotoURI(await loadPhoto(plan.placeID));
+      }
+    })();
   }, []);
 
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.rootContainer}>
-        {photoURI ? (
-          <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" />
-        ) : (
-          <Text>No image</Text>
-        )}
+        {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : null}
         <View style={styles.textContainer}>
           <Text style={styles.title}>{plan.title}</Text>
           <View style={styles.infoItemRow}>

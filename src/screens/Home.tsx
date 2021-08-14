@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { GREY_0, TEAL } from './../res/styles/Colors';
-import { convertDateStringToDate, comparePlansByDate } from './../res/utilFunctions';
+import { convertDateStringToDate, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { MiniDataDisplay } from '../organisms/OrganismsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
@@ -64,10 +64,6 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     setUserPlans(sortPlansByDate(userPlans));
     setInvitedPlans(sortPlansByDate(invitedPlans));
     console.log('Finished loading plans');
-  };
-
-  const sortPlansByDate = (plans: Plan[], reverse = false) => {
-    return plans.sort((planA, planB) => comparePlansByDate(planA, planB, reverse));
   };
 
   const removePastPlans = (plans: Plan[]) => {

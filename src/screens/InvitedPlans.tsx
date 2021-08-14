@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { GREY_0, TEAL } from './../res/styles/Colors';
-import { convertDateStringToDate, comparePlansByDate } from './../res/utilFunctions';
+import { convertDateStringToDate, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { MediumDataDisplay } from '../organisms/OrganismsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
-import { User, Plan, Invitee, Status } from '../models';
+import { Plan, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: {
@@ -38,8 +37,8 @@ export const InvitedPlans: React.FC<Props> = ({ navigation, route }: Props) => {
         })
         .filter((item): item is Plan => item !== undefined),
     );
-    setUpcomingPlans(filterUpcomingPlans(invitedPlans));
-    setPendingInvites(await filterPendingInvites(currentUser.phoneNumber));
+    setUpcomingPlans(sortPlansByDate(filterUpcomingPlans(invitedPlans)));
+    setPendingInvites(sortPlansByDate(await filterPendingInvites(currentUser.phoneNumber)));
   };
 
   const removePastPlans = (plans: Plan[]) => {
