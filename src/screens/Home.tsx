@@ -96,14 +96,19 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     });
   };
 
+  const createGreeting = () => {
+    const firstName = currentUser?.name.includes(' ')
+            ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
+            : currentUser?.name
+
+    return (`Hello, ${firstName}`)
+  };
+
   return (
     <Screen>
       <View style={styles.header}>
         <Text style={[globalStyles.superTitle, styles.greeting]}>
-          Hello
-          {currentUser?.name.includes(' ')
-            ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
-            : currentUser?.name}
+          {createGreeting()}
         </Text>
         <View style={styles.icon}>
           <Icon

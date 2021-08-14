@@ -73,11 +73,34 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
       backgroundColor = GREY_4;
     }
     return (
-      <View style={{ width: 200, flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
-        <View style={[styles.sphere, { backgroundColor: backgroundColor, marginRight: 25 }]}>
-          <Text style={styles.initial}>{item.name.slice(0, 1)}</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <View style={{ width: 200, flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
+          <View style={[styles.sphere, { backgroundColor: backgroundColor, marginRight: 25 }]}>
+            <Text style={styles.initial}>{item.name.slice(0, 1)}</Text>
+          </View>
+          <Text>{item.name}</Text>
         </View>
-        <Text>{item.name}</Text>
+        <View
+          style={
+            item.status === Status.ACCEPTED
+              ? styles.accepted
+              : item.status === Status.PENDING
+              ? styles.pending
+              : styles.declined
+          }
+        >
+          <Text
+            style={
+              item.status === Status.ACCEPTED
+                ? styles.acceptedText
+                : item.status === Status.PENDING
+                ? styles.pendingText
+                : styles.declinedText
+            }
+          >
+            {item.status === Status.ACCEPTED ? 'Accepted' : item.status === Status.PENDING ? 'Pending' : 'Declined'}
+          </Text>
+        </View>
       </View>
     );
   };
@@ -133,7 +156,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginVertical: 10,
     color: '#616060',
-
   },
   hostNameTitle: {
     position: 'absolute',
@@ -204,5 +226,47 @@ const styles = StyleSheet.create({
     color: GREY_0,
     borderWidth: 2,
     borderColor: TEAL,
+  },
+  accepted: {
+    width: 150,
+    height: 40,
+    borderWidth: 3,
+    borderRadius: 25,
+    borderColor: '#31A59F',
+  },
+  pending: {
+    width: 150,
+    height: 40,
+    borderWidth: 3,
+    borderRadius: 25,
+    borderColor: '#BE8C2C',
+  },
+  declined: {
+    width: 150,
+    height: 40,
+    borderWidth: 3,
+    borderRadius: 25,
+    borderColor: GREY_0,
+  },
+  acceptedText: {
+    alignSelf: 'center',
+    paddingTop: 6,
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#31A59F',
+  },
+  pendingText: {
+    alignSelf: 'center',
+    paddingTop: 6,
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#BE8C2C',
+  },
+  declinedText: {
+    alignSelf: 'center',
+    paddingTop: 6,
+    fontSize: 18,
+    fontWeight: '600',
+    color: GREY_0,
   },
 });
