@@ -9,6 +9,7 @@ import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/Ato
 import { Icon } from 'react-native-elements';
 import { Plan, Status, Invitee } from '../models';
 import { sendPushNotification } from '../res/notifications';
+import { formatDate } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
@@ -90,8 +91,8 @@ ${event.description} \
 
   const storeInvitees = async () => {
     const fullDate = route.params.data.eventData.fullDate;
-    const date = fullDate.toISOString().substring(0, 10);
-    const time = fullDate.toTimeString().substring(0, 8);
+    const date = fullDate.toString().substring(0, 10);
+    const time = fullDate.toString().substring(11, 19);
     const newPlan = await DataStore.save(
       new Plan({
         title: event.title,
@@ -149,7 +150,7 @@ ${event.description} \
       }
     }
 
-    // console.log(updatedPlan);
+    console.log(newPlan);
   };
 
   const onPressSend = async (): Promise<void> => {
