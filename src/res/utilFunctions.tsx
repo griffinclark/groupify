@@ -1,4 +1,7 @@
 import { Plan } from '../models';
+import Qs from 'qs';
+
+const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
 export const formatTime = (time: Date | string): string => {
   let newTime = new Date();
@@ -49,7 +52,12 @@ export const convertDateStringToDate = (date: string): Date => {
   return newDate;
 };
 
-// This function compares a plan by their date. Plan with more recent date comes before. Set reverse to true to reverse order.
+// Sorts a list of plans by their date. Set 'reverse' to true to reverse the order.
+export const sortPlansByDate = (plans: Plan[], reverse = false): Plan[] => {
+  return plans.sort((planA, planB) => comparePlansByDate(planA, planB, reverse));
+};
+
+// Helper function for sorting plans. The plan with more recent date comes before. Set 'reverse' to true to reverse order.
 export const comparePlansByDate = (planA: Plan, planB: Plan, reverse = false): number => {
   if (planA.date && planB.date) {
     const DateA = convertDateStringToDate(planA.date);
@@ -63,4 +71,21 @@ export const comparePlansByDate = (planA: Plan, planB: Plan, reverse = false): n
     }
   }
   return 0;
+};
+
+// Returns the uri for a photo given a place's placeID using Google Places API
+export const loadPhoto = async (placeID: string): Promise<string> => {
+  const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
+  const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeID}&key=${GOOGLE_PLACES_API_KEY}`;
+  const response = await fetch(search);
+  const detail = await response.json();
+  const photoReference = detail.result.photos[0].photo_reference;
+  const photoRequetsParams = {
+    key: GOOGLE_PLACES_API_KEY,
+    maxwidth: 500,
+    maxheight: 500,
+    photoreference: photoReference,
+  };
+  const completeUri = photoRequestURL + Qs.stringify(photoRequetsParams);
+  return completeUri;
 };
