@@ -15,6 +15,7 @@ import { Contact } from './dataModels';
 import { SearchPlace } from '../screens/SearchPlace';
 import { PlanDetails } from '../screens/PlanDetails';
 import { InvitedPlans } from '../screens/InvitedPlans';
+import { InviteeList } from '../screens/inviteList';
 // import { Attendees } from '../organisms/attendees';
 // import { AcceptDecline } from '../organisms/acceptDecline';
 import { User, Plan } from '../models';
@@ -83,6 +84,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name="PlanDetails" component={PlanDetails} options={{ headerShown: false }} />
         <Stack.Screen name="InvitedPlans" component={InvitedPlans} options={{ headerShown: false }} />
+        <Stack.Screen name="InviteeList" component={InviteeList} options={{ headerShown: false }} />
         {/* <Stack.Screen name="Attendees" component={Attendees} options={{ headerShown: false }} />
         <Stack.Screen name="AcceptDecline" component={AcceptDecline} options={{ headerShown: false }} /> */}
       </Stack.Navigator>

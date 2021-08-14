@@ -1,5 +1,5 @@
 import { RoutePropParams } from '../res/root-navigation';
-import { Text } from 'react-native';
+import { KeyboardAvoidingView, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Title, NavButton, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
@@ -123,66 +123,70 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   return (
-    <Screen>
-      <Navbar>
-        <NavButton onPress={() => navigation.navigate('Welcome')} title="Back" />
-      </Navbar>
-      {route.params.step === 'create' && (
-        <>
-          <Title>Create Account</Title>
-          <FormInput
-            label="Name"
-            onChangeText={(value) => {
-              setName(value.trim());
-            }}
-          />
-          <FormInput
-            value={phone}
-            label="Phone Number"
-            onChangeText={(value) => {
-              setPhone(formatPhoneNumber(value));
-            }}
-          />
-          <FormInput
-            label="Email"
-            onChangeText={(value) => {
-              setEmail(value.trim());
-            }}
-          />
-          <FormInput label="Password" onChangeText={setPassword} secureTextEntry={true} />
-          {error && <Alert status="error" message={error} />}
-          <Button title="Next" onPress={signUp} disabled={disabled} />
-        </>
-      )}
-      {route.params.step === 'validate' && (
-        <>
-          <Title>Validate Phone Number</Title>
-          <Text style={{ margin: 20, fontWeight: 'bold' }}>Please enter the verification code from your messages</Text>
-          <FormInput
-            label="Verification Code"
-            onChangeText={(value) => {
-              setCode(value.trim());
-            }}
-            secureTextEntry={true}
-          />
-          {error && <Alert status="error" message={error} />}
-          {success && <Alert status="success" message={success} />}
-          <Button
-            title="Send New Code"
-            onPress={() => {
-              try {
-                console.log(route.params.phone);
-                Auth.resendSignUp(route.params.phone);
-                setSuccess('Sent new verification code');
-              } catch (err) {
-                console.log(err);
-                setError(err.message);
-              }
-            }}
-          />
-          <Button title="Confirm Number" onPress={validateUser} disabled={disabled} />
-        </>
-      )}
-    </Screen>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled={true}>
+      <Screen>
+        <Navbar>
+          <NavButton onPress={() => navigation.navigate('Welcome')} title="Back" />
+        </Navbar>
+        {route.params.step === 'create' && (
+          <>
+            <Title>Create Account</Title>
+            <FormInput
+              label="Name"
+              onChangeText={(value) => {
+                setName(value.trim());
+              }}
+            />
+            <FormInput
+              value={phone}
+              label="Phone Number"
+              onChangeText={(value) => {
+                setPhone(formatPhoneNumber(value));
+              }}
+            />
+            <FormInput
+              label="Email"
+              onChangeText={(value) => {
+                setEmail(value.trim());
+              }}
+            />
+            <FormInput label="Password" onChangeText={setPassword} secureTextEntry={true} />
+            {error && <Alert status="error" message={error} />}
+            <Button title="Next" onPress={signUp} disabled={disabled} />
+          </>
+        )}
+        {route.params.step === 'validate' && (
+          <>
+            <Title>Validate Phone Number</Title>
+            <Text style={{ margin: 20, fontWeight: 'bold' }}>
+              Please enter the verification code from your messages
+            </Text>
+            <FormInput
+              label="Verification Code"
+              onChangeText={(value) => {
+                setCode(value.trim());
+              }}
+              secureTextEntry={true}
+            />
+            {error && <Alert status="error" message={error} />}
+            {success && <Alert status="success" message={success} />}
+            <Button
+              title="Send New Code"
+              onPress={() => {
+                try {
+                  console.log(route.params.phone);
+                  Auth.resendSignUp(route.params.phone);
+                  setSuccess('Sent new verification code');
+                } catch (err) {
+                  console.log(err);
+                  setError(err.message);
+                }
+              }}
+            />
+            <Button title="Confirm Number" onPress={validateUser} disabled={disabled} />
+          </>
+        )}
+      </Screen>
+    </KeyboardAvoidingView>
   );
 };

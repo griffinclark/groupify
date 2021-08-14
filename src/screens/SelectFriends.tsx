@@ -208,7 +208,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         <View style={{ flex: 1 }}>
           {menuItemSelected === 'friends' && (
             <View style={{ flex: 1 }}>
-              <Text style={styles.text}>Send your friends and in app notification!</Text>
+              <Text style={styles.text}>Send your friends an in app notification!</Text>
               {friends.length > 0 ? (
                 <View style={styles.friendBubbleContainer}>
                   <FlatList
