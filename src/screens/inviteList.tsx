@@ -1,11 +1,10 @@
-import { DataStore, Auth } from 'aws-amplify';
+import { DataStore } from 'aws-amplify';
 import Qs from 'qs';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
-import { Screen, Button } from '../atoms/AtomsExports';
-import { formatTime, convertDateStringToDate } from '../res/utilFunctions';
+import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
+import { Screen } from '../atoms/AtomsExports';
 import { TEAL, WHITE, GREY_0, GREY_4, GOLD } from '../res/styles/Colors';
-import { Plan, User, Invitee, Status } from '../models';
+import { Plan, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface Props {
@@ -23,18 +22,12 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const plan = route.params.plan;
   const [invitees, setInvitees] = useState<Invitee[]>([]);
-  const [userInvitee, setUserInvitee] = useState<Invitee>();
   const [photoURI, setPhotoURI] = useState('');
-  const [showRespondOptions, setShowRespondOptions] = useState(false);
-  const [refreshAttendeeList, setRefreshAttendeeList] = useState(false);
 
   useEffect(() => {
     loadPhoto();
-  }, []);
-
-  useEffect(() => {
     loadInvitees();
-  }, [refreshAttendeeList]);
+  }, []);
 
   const loadPhoto = async () => {
     const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
@@ -55,14 +48,6 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
   const loadInvitees = async () => {
     const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
     setInvitees(invitees);
-    const userInfo = await Auth.currentUserInfo();
-    for (const invitee of invitees) {
-      if (invitee.phoneNumber === userInfo.attributes.phone_number) {
-        setUserInvitee(invitee);
-        setShowRespondOptions(true);
-        break;
-      }
-    }
   };
 
   const renderInvitee = ({ item }: { item: Invitee }) => {
