@@ -42,6 +42,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       if (route.params && route.params.userID) {
         const user = await DataStore.query(User, route.params.userID);
         if (user) {
+          console.log(user);
           setCurrentUser(user);
           loadPlans(user);
         }
@@ -94,7 +95,12 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View style={styles.header}>
-        <Text style={[globalStyles.superTitle, styles.greeting]}>Hello {currentUser?.name}</Text>
+        <Text style={[globalStyles.superTitle, styles.greeting]}>
+          Hello{' '}
+          {currentUser?.name.includes(' ')
+            ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
+            : currentUser?.name}
+        </Text>
         <View style={styles.icon}>
           <Icon
             name="refresh"
@@ -139,7 +145,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         )}
       </View>
       <View style={styles.navbar}>
-        <HomeNavBar user={currentUser} navigation={navigation} plan={userPlans[0]} />
+        <HomeNavBar user={currentUser} navigation={navigation} plan={userPlans[0] ? userPlans[0] : invitedPlans[0]} />
       </View>
     </Screen>
   );
