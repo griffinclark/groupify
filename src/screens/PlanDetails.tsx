@@ -164,7 +164,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
           horizontal={true}
         />
         <Text style={styles.desc3}>Attendees</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('InviteeList', { invitees: invitees })}>
+        <TouchableOpacity onPress={() => navigation.navigate('InviteeList', {invitee: invitee})}>
           <Text style={styles.evText5}>View All</Text>
         </TouchableOpacity>
       </View>
