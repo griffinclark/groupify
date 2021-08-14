@@ -6,6 +6,7 @@ import { formatTime, convertDateStringToDate, loadPhoto } from '../res/utilFunct
 import { TEAL, WHITE, GREY_0, GREY_4, GOLD } from '../res/styles/Colors';
 import { Plan, User, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { sendPushNotification } from '../res/notifications';
 
 interface Props {
   navigation: {
@@ -14,7 +15,6 @@ interface Props {
   route: {
     params: {
       plan: Plan;
-      user: User;
     };
   };
 }
@@ -29,7 +29,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   const [refreshAttendeeList, setRefreshAttendeeList] = useState(false);
 
   useEffect(() => {
-    setPlanHost(route.params.plan.creatorID);
+    setPlanHost(plan.creatorID);
     (async () => {
       if (plan.placeID) {
         setPhotoURI(await loadPhoto(plan.placeID));
@@ -84,6 +84,11 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
           updated.status = Status.ACCEPTED;
         }),
       );
+      const host = await DataStore.query(User, plan.creatorID);
+      if (host) {
+        const userName = (await Auth.currentUserInfo()).attributes.name;
+        sendPushNotification(host.pushToken, `${userName} has accepted your invite!`, 'Tap to open the app', {});
+      }
     } else {
       await DataStore.save(
         Invitee.copyOf(invitee, (updated) => {
