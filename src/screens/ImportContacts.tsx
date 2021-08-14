@@ -26,6 +26,7 @@ enum State {
 
 export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
   const [query, setQuery] = useState<string>('');
   const [state, setState] = useState<State>(State.Empty);
@@ -71,7 +72,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
 
   const searchContacts = (text: string) => {
     setQuery(text);
-    setContacts(
+    setFilteredContacts(
       contacts.filter((contact) => {
         let contactLowercase = '';
         try {
@@ -135,7 +136,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
           </View>
         ) : null}
         <FlatList
-          data={contacts}
+          data={filteredContacts.length > 0 ? filteredContacts : contacts}
           renderItem={renderContact}
           ListEmptyComponent={() => (
             <View style={styles.listContainer}>
