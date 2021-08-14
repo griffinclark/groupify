@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "meep",
+    "name": "Groupify",
     "icon": "./assets/Icon1024.png",
-    "slug": "meep",
+    "slug": "groupify",
     "sdkVersion": "40.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.munchkinlabs.meep",
+      "bundleIdentifier": "com.munchkinlabs.groupify",
       "infoPlist": {
         "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
         "NSLocationWhenInUseUsageDescription": "Your location is required to show places near you."
@@ -30,7 +30,7 @@
       }
     },
     "android": {
-      "package": "com.munchkinlabs.meep",
+      "package": "com.munchkinlabs.groupify",
       "versionCode": 1,
       "config": {
         "googleMaps": {

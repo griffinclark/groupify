@@ -13,6 +13,7 @@ import { sendPushNotification } from '../res/notifications';
 interface Props {
   navigation: {
     navigate: (ev: string, a?: { data?: { prevAction?: string } }) => void;
+    push: (ev: string) => void;
   };
   route: RoutePropParams;
 }
@@ -40,7 +41,8 @@ at ${event.time ? event.time : '[time not specified]'} \
 on ${event.date ? event.date : '[date not specified]'} \
 at ${event.location ? event.location : '[location not specified]'}. \
 ${event.description} \
-\nHope to see you there!`,
+\nHope to see you there! \
+\nYou can download Groupify on the app store!`,
     );
   };
 
@@ -80,7 +82,7 @@ ${event.description} \
       button1Text: 'Go back',
       button2Text: 'Create Event Anyways',
       button2OnPress: async () => {
-        navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
+        navigation.push('Home');
         await pushEvent(friends, message);
       },
     });
@@ -156,7 +158,7 @@ ${event.description} \
       if (event.contacts.length > 0) {
         await pushEvent(event.contacts, message);
       }
-      navigation.navigate('Home', { data: { prevAction: 'created event' + event.uuid } });
+      navigation.push('Home');
     } catch (err) {
       console.log(err, event.friends);
       if (err.message === 'The string supplied did not seem to be a phone number') {

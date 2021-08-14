@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Title, Screen } from '../atoms/AtomsExports';
+import { DataStore } from 'aws-amplify';
 
 interface Props {
   navigation: {
@@ -8,11 +9,17 @@ interface Props {
 }
 
 export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
-  const onPressCreateAccount = (): void => {
+  const onPressCreateAccount = async (): Promise<void> => {
+    await DataStore.clear();
+    await DataStore.stop();
+    await DataStore.start();
     navigation.navigate('CreateAccount', { step: 'create' });
   };
 
-  const onPressLogIn = (): void => {
+  const onPressLogIn = async (): Promise<void> => {
+    await DataStore.clear();
+    await DataStore.stop();
+    await DataStore.start();
     navigation.navigate('Login');
   };
 
