@@ -9,71 +9,39 @@
       "UnauthRoleName": "amplify-meep-staging-171906-unauthRole",
       "StackName": "amplify-meep-staging-171906",
       "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-meep-staging-171906/ddedf4f0-90b2-11eb-b525-0ac403330061",
-      "AmplifyAppId": "dto2kcprsz7l"
+      "AmplifyAppId": "dto2kcprsz7l",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-meep-staging-171906-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
+      "auth": {
+        "Meep": {}
+      },
       "function": {
         "pushBroadcast": {
           "deploymentBucketName": "amplify-meep-staging-171906-deployment",
           "s3Key": "amplify-builds/pushBroadcast-4d617a4a394770477577-build.zip"
         }
-      },
-      "auth": {
-        "Meep": {},
-        "meep60c88366": {}
-      }
-    }
-  },
-  "production": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-meep-production-142445-authRole",
-      "UnauthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-production-142445-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-production-142445-authRole",
-      "Region": "us-west-2",
-      "DeploymentBucketName": "amplify-meep-production-142445-deployment",
-      "UnauthRoleName": "amplify-meep-production-142445-unauthRole",
-      "StackName": "amplify-meep-production-142445",
-      "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-meep-production-142445/2e50f630-958c-11eb-9878-06670be49f51",
-      "AmplifyAppId": "dto2kcprsz7l"
-    },
-    "categories": {
-      "function": {
-        "pushBroadcast": {
-          "deploymentBucketName": "amplify-meep-production-142445-deployment",
-          "s3Key": "amplify-builds/pushBroadcast-513236635665446d757a-build.zip"
-        }
-      },
-      "auth": {
-        "meep384c445f": {},
-        "meepc973b367": {},
-        "meepd2f6c6e4": {},
-        "meepe8262394": {},
-        "meep60c88366": {},
-        "Meep": {}
       }
     }
   },
   "prod": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-meep-prod-124312-authRole",
-      "UnauthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-prod-124312-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-prod-124312-authRole",
+      "AuthRoleName": "amplify-meep-prod-230941-authRole",
+      "UnauthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-prod-230941-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-prod-230941-authRole",
       "Region": "us-west-2",
-      "DeploymentBucketName": "amplify-meep-prod-124312-deployment",
-      "UnauthRoleName": "amplify-meep-prod-124312-unauthRole",
-      "StackName": "amplify-meep-prod-124312",
-      "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-meep-prod-124312/9e760bb0-b4ec-11eb-aff1-069c3947cedb",
+      "DeploymentBucketName": "amplify-meep-prod-230941-deployment",
+      "UnauthRoleName": "amplify-meep-prod-230941-unauthRole",
+      "StackName": "amplify-meep-prod-230941",
+      "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-meep-prod-230941/37a5a9a0-fcc6-11eb-ab5f-0abb512a1f57",
       "AmplifyAppId": "dto2kcprsz7l"
     },
     "categories": {
       "auth": {
-        "meep60c88366": {}
+        "Meep": {}
       },
       "function": {
-        "pushBroadcast": {
-          "deploymentBucketName": "amplify-meep-prod-124312-deployment",
-          "s3Key": "amplify-builds/pushBroadcast-7a3470566e7a75465851-build.zip"
-        }
+        "pushBroadcast": {}
       }
     }
   }

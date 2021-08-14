@@ -52,7 +52,11 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const loadPlans = async (user: User) => {
     console.log('Loading plans');
+    console.log(currentUser);
+
     const userPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
+    console.log(userPlans);
+
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
     const invitedPlans = removePastPlans(
       invitees
@@ -92,15 +96,17 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     });
   };
 
+  const createGreeting = () => {
+    const firstName = currentUser?.name.includes(' ')
+      ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
+      : currentUser?.name;
+    return `Hello, ${firstName}`;
+  };
+
   return (
     <Screen>
       <View style={styles.header}>
-        <Text style={[globalStyles.superTitle, styles.greeting]}>
-          Hello{' '}
-          {currentUser?.name.includes(' ')
-            ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
-            : currentUser?.name}
-        </Text>
+        <Text style={[globalStyles.superTitle, styles.greeting]}>{createGreeting()}</Text>
         <View style={styles.icon}>
           <Icon
             name="refresh"

@@ -56,12 +56,7 @@
       }
     }
   },
-  "storage": {
-    "s383a7684a": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation"
-    }
-  },
+  "storage": {},
   "analytics": {
     "meep": {
       "service": "Pinpoint",

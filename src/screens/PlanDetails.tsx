@@ -11,6 +11,7 @@ import { sendPushNotification } from '../res/notifications';
 interface Props {
   navigation: {
     goBack: () => void;
+    navigate: (ev: string, {}) => void;
   };
   route: {
     params: {
@@ -105,7 +106,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen>
-      <View style={{ top: 38, flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={{ top: 38, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Text style={styles.title}>{plan.title}</Text>
         <Icon name="close" type="fa" style={{ paddingVertical: 4 }} size={40} onPress={() => navigation.goBack()} />
       </View>
@@ -149,9 +150,9 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
           horizontal={true}
         />
         <Text style={styles.desc3}>Attendees</Text>
-        {/* <TouchableOpacity onPress={() => navigation.navigate('Attendees')}>
+        <TouchableOpacity onPress={() => navigation.navigate('InviteeList', { plan: plan })}>
           <Text style={styles.evText5}>View All</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
       {showRespondOptions ? (
         <View style={styles.planResponse}>
@@ -245,6 +246,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 40,
+    margin: 5,
     alignItems: 'center',
   },
   initial: {
