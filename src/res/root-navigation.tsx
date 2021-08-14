@@ -14,17 +14,17 @@ import { EditFriends } from '../screens/EditFriends';
 import { Contact } from './dataModels';
 import { SearchPlace } from '../screens/SearchPlace';
 import { PlanDetails } from '../screens/PlanDetails';
+import { InvitedPlans } from '../screens/InvitedPlans';
 // import { Attendees } from '../organisms/attendees';
 // import { AcceptDecline } from '../organisms/acceptDecline';
-import { User } from '../models';
+import { User, Plan } from '../models';
 import { Profile } from '../screens/Profile';
-import { Plan } from '../API';
 
 export type RoutePropParams = {
   params: {
     userID: string;
     currentUser: User;
-    currentUserPlans: Plan;
+    currentUserPlan: Plan;
     email: string;
     step: string;
     phone: string;
@@ -82,6 +82,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="SearchPlace" component={SearchPlace} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name="PlanDetails" component={PlanDetails} options={{ headerShown: false }} />
+        <Stack.Screen name="InvitedPlans" component={InvitedPlans} options={{ headerShown: false }} />
         {/* <Stack.Screen name="Attendees" component={Attendees} options={{ headerShown: false }} />
         <Stack.Screen name="AcceptDecline" component={AcceptDecline} options={{ headerShown: false }} /> */}
       </Stack.Navigator>

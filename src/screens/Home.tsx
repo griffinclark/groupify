@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { GREY_0, TEAL } from './../res/styles/Colors';
-import { convertDateStringToDate, comparePlansByDate } from './../res/utilFunctions';
+import { convertDateStringToDate, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { MiniDataDisplay } from '../organisms/OrganismsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
@@ -10,6 +10,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: {
@@ -64,10 +65,6 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     setUserPlans(sortPlansByDate(userPlans));
     setInvitedPlans(sortPlansByDate(invitedPlans));
     console.log('Finished loading plans');
-  };
-
-  const sortPlansByDate = (plans: Plan[], reverse = false) => {
-    return plans.sort((planA, planB) => comparePlansByDate(planA, planB, reverse));
   };
 
   const removePastPlans = (plans: Plan[]) => {
@@ -128,11 +125,22 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
             <MiniDataDisplay data={userPlans} navigation={navigation} />
             <View style={globalStyles.miniSpacer}></View>
             <Text style={styles.label}>Your Invites</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('InvitedPlans', { currentUser: currentUser });
+              }}
+            >
+              <Text style={styles.selector}>See All</Text>
+            </TouchableOpacity>
             <MiniDataDisplay data={invitedPlans} navigation={navigation} />
           </View>
         ) : (
           <View style={styles.title}>
-            <Text style={globalStyles.superTitle}>When you create an event, it will show up here</Text>
+            <Text style={globalStyles.superTitle}>Looks like you dont have any events.</Text>
+            <Text style={globalStyles.superTitle}>Lets create one together!</Text>
+            <Text style={[globalStyles.title, { textAlign: 'center' }]}>
+              Create your first event with the button below
+            </Text>
           </View>
         )}
       </View>
@@ -179,5 +187,10 @@ const styles = StyleSheet.create({
   button: {
     flex: 1.5,
     justifyContent: 'center',
+  },
+  selector: {
+    marginLeft: 15,
+    textDecorationLine: 'underline',
+    color: TEAL,
   },
 });

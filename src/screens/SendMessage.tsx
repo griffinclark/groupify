@@ -140,9 +140,10 @@ ${event.description} \
       }),
     );
 
+    const name = await getUserName();
     for (const invitee of inviteeList) {
       if (invitee.pushToken) {
-        sendPushNotification(invitee.pushToken, 'You Have Been Invited!!!', 'Tap to open the app', { data: 'hello' });
+        sendPushNotification(invitee.pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
       }
     }
 
