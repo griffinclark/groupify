@@ -111,7 +111,6 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
               <Text>No Attendees Yet</Text>
             </View>
           )}
-          horizontal={true}
         />
       </View>
     </Screen>
