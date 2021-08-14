@@ -104,9 +104,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View style={styles.header}>
-        <Text style={[globalStyles.superTitle, styles.greeting]}>
-          {createGreeting()}
-        </Text>
+        <Text style={[globalStyles.superTitle, styles.greeting]}>{createGreeting()}</Text>
         <View style={styles.icon}>
           <Icon
             name="refresh"
