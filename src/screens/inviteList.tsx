@@ -59,8 +59,8 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
     }
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <View style={{ width: 200, flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
-          <View style={[styles.sphere, { backgroundColor: backgroundColor, marginRight: 25 }]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
+          <View style={[styles.sphere, { backgroundColor: backgroundColor, marginRight: 10 }]}>
             <Text style={styles.initial}>{item.name.slice(0, 1)}</Text>
           </View>
           <Text>{item.name}</Text>
@@ -68,10 +68,10 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
         <View
           style={
             item.status === Status.ACCEPTED
-              ? styles.accepted
+              ? [styles.status, { borderColor: '#31A59F' }]
               : item.status === Status.PENDING
-              ? styles.pending
-              : styles.declined
+              ? [styles.status, { borderColor: '#BE8C2C' }]
+              : [styles.status, { borderColor: GREY_0 }]
           }
         >
           <Text
@@ -93,15 +93,9 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={styles.titleNav}>
           <Text style={styles.title}>{plan.title}</Text>
-          <Icon
-            name="close"
-            type="fa"
-            style={{ paddingVertical: 4 }}
-            size={40}
-            onPress={() => navigation.navigate('PlanDetails', {})}
-          />
+          <Icon name="close" type="fa" size={40} onPress={() => navigation.navigate('PlanDetails', {})} />
         </View>
         <View style={styles.image}>
           <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" />
@@ -110,7 +104,6 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
       <View style={{ flex: 2, padding: 20 }}>
         <Text style={styles.hostName}>Attendees</Text>
         <FlatList
-          style={styles.inviteesList}
           data={invitees}
           renderItem={renderInvitee}
           ListEmptyComponent={() => (
@@ -132,57 +125,14 @@ const styles = StyleSheet.create({
     width: '80%',
     fontWeight: 'bold',
   },
-  inviteImg: {
-    width: '100%',
-    height: 200,
-    top: 40,
-  },
   hostName: {
     fontSize: 25,
     marginVertical: 10,
     color: '#616060',
   },
-  hostNameTitle: {
-    position: 'absolute',
-    width: 150,
-    top: 78,
-    marginLeft: 20,
-    marginTop: 10,
-    color: '#616060',
-  },
   image: {
     height: 200,
     width: '100%',
-  },
-  evText3: {
-    fontSize: 12,
-    color: '#616060',
-    width: 86,
-    height: 16,
-  },
-  evText4: {
-    fontSize: 12,
-    color: '#31A59F',
-  },
-  evText5: {
-    left: 20,
-    fontSize: 12,
-    color: TEAL,
-    top: 15,
-  },
-  desc1: {
-    fontSize: 12,
-    color: '#616060',
-    marginLeft: 20,
-  },
-  desc2: {
-    left: 20,
-  },
-  desc3: {
-    fontSize: 12,
-    color: '#616060',
-    top: 15,
-    marginLeft: 20,
   },
   sphere: {
     backgroundColor: TEAL,
@@ -190,13 +140,12 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 40,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   initial: {
-    top: 5,
     fontSize: 20,
     color: WHITE,
   },
-  inviteesList: {},
   planResponse: {
     maxWidth: '100%',
     flexDirection: 'row',
@@ -212,26 +161,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: TEAL,
   },
-  accepted: {
-    width: 150,
+  status: {
+    width: 120,
     height: 40,
     borderWidth: 3,
     borderRadius: 25,
-    borderColor: '#31A59F',
-  },
-  pending: {
-    width: 150,
-    height: 40,
-    borderWidth: 3,
-    borderRadius: 25,
-    borderColor: '#BE8C2C',
-  },
-  declined: {
-    width: 150,
-    height: 40,
-    borderWidth: 3,
-    borderRadius: 25,
-    borderColor: GREY_0,
   },
   acceptedText: {
     alignSelf: 'center',
@@ -253,5 +187,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: GREY_0,
+  },
+  titleNav: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
