@@ -121,7 +121,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       <Navbar>
         <NavButton onPress={() => navigation.navigate('Home')} title="Back" />
       </Navbar>
-      <Title>Edit Contact List</Title>
+      <Title>Add Friends From Contacts</Title>
       <SearchBar
         lightTheme="true"
         placeholder="Search for contacts"
