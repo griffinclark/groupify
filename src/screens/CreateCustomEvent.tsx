@@ -24,8 +24,8 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
 
-  const [title, setTitle] = useState('');
-  const [address, setAddress] = useState('');
+  const [planTitle, setPlanTitle] = useState('');
+  const [planAddress, setPlanAddress] = useState('');
   const [photo, setPhoto] = useState('');
   const [updatedValues, setUpdatedValues] = useState<{
     eventName: string | undefined;
@@ -33,13 +33,13 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     eventTime: string | undefined;
     eventLocation: string | undefined;
     eventDescription: string | undefined;
-  }>({ eventName: title, eventDate: '', eventTime: '', eventLocation: address, eventDescription: '' });
+  }>({ eventName: planTitle, eventDate: '', eventTime: '', eventLocation: planAddress, eventDescription: 'hey' });
   const [fullDate, setFullDate] = useState<Date>();
 
   useEffect(() => {
     if (route.params.data) {
-      setTitle(route.params.data.eventData.title);
-      setAddress(route.params.data.eventData.location);
+      setPlanTitle(route.params.data.eventData.title);
+      setPlanAddress(route.params.data.eventData.location);
       setPhoto(route.params.data.eventData.imageURL);
     }
   }, []);
@@ -91,7 +91,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
       title: 'Name',
       placeholder: '',
       settings: 'default',
-      value: title || '',
+      value: route.params.data ? route.params.data.eventData.title : '',
     },
     {
       title: 'Date',
@@ -109,7 +109,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
       title: 'Location',
       placeholder: 'address',
       settings: 'default',
-      value: address || '',
+      value: route.params.data ? route.params.data.eventData.location : '',
     },
     {
       title: 'Description',
