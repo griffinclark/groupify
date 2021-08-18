@@ -161,7 +161,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
 
   return (
     <View style={styles.screen}>
-      <ImageBackground source={{ uri: eventObject.imageURL }} style={styles.backgroundImage}>
+      <ImageBackground source={{ uri: eventObject.imageURL || '' }} style={styles.backgroundImage}>
         <View style={styles.overlay} />
         <View style={styles.title}>
           <Text style={styles.titleText}>Send your new plan to your friends</Text>

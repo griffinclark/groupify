@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
 import { Screen, FormButton, MeepForm } from '../atoms/AtomsExports';
 import { Text } from 'react-native-elements';
@@ -21,12 +21,12 @@ interface Props {
 }
 
 export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props) => {
-  const title = route.params.data.eventData.title;
-  const address = route.params.data.eventData.location;
-  const photo = route.params.data.eventData.imageURL;
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
 
+  const [title, setTitle] = useState('');
+  const [address, setAddress] = useState('');
+  const [photo, setPhoto] = useState('');
   const [updatedValues, setUpdatedValues] = useState<{
     eventName: string | undefined;
     eventDate: string | undefined;
@@ -36,6 +36,14 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   }>({ eventName: title, eventDate: '', eventTime: '', eventLocation: address, eventDescription: '' });
   const [fullDate, setFullDate] = useState<Date>();
 
+  useEffect(() => {
+    if (route.params.data) {
+      setTitle(route.params.data.eventData.title);
+      setAddress(route.params.data.eventData.location);
+      setPhoto(route.params.data.eventData.imageURL);
+    }
+  }, []);
+
   const onFormSubmit = (values: {
     eventName: string | undefined;
     eventDate: string | undefined;
@@ -43,7 +51,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     eventLocation: string | undefined;
     eventDescription: string | undefined;
   }) => {
-    const image: string = loadPhoto(photo).props.source.uri;
+    const image: string = photo ? loadPhoto(photo).props.source.uri : '';
     const id = uuid.v4();
     const dateString = fullDate?.toISOString();
     navigation.navigate('SelectFriends', {
@@ -56,8 +64,8 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
           time: values.eventTime,
           location: values.eventLocation,
           description: values.eventDescription,
-          imageURL: image,
-          placeId: route.params.data.eventData.placeId,
+          imageURL: image || '',
+          placeId: route.params.data ? route.params.data.eventData.placeId : '',
           fullDate: dateString,
         },
       },
@@ -65,14 +73,17 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   };
 
   const loadPhoto = (photoReference: string) => {
-    const photoRequetsParams = {
-      key: GOOGLE_PLACES_API_KEY,
-      maxwidth: 500,
-      maxheight: 500,
-      photoreference: photoReference,
-    };
-    const completeUri = photoRequestURL + Qs.stringify(photoRequetsParams);
-    return <Image source={{ uri: completeUri }} style={styles.image} resizeMode="cover" />;
+    if (photoReference) {
+      const photoRequetsParams = {
+        key: GOOGLE_PLACES_API_KEY,
+        maxwidth: 500,
+        maxheight: 500,
+        photoreference: photoReference,
+      };
+      const completeUri = photoRequestURL + Qs.stringify(photoRequetsParams);
+      return <Image source={{ uri: completeUri }} style={styles.image} resizeMode="cover" />;
+    }
+    return;
   };
 
   const inputFields: { title: string; placeholder: string; settings?: string; value?: string }[] = [
@@ -80,7 +91,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
       title: 'Name',
       placeholder: '',
       settings: 'default',
-      value: title,
+      value: title || '',
     },
     {
       title: 'Date',
@@ -98,7 +109,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
       title: 'Location',
       placeholder: 'address',
       settings: 'default',
-      value: address,
+      value: address || '',
     },
     {
       title: 'Description',
