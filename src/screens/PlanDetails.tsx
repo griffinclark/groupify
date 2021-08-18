@@ -107,8 +107,8 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View style={styles.titleContainer}>
+        <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
         <Text style={styles.title}>{plan.title}</Text>
-        <Icon name="close" type="fa" size={40} onPress={() => navigation.goBack()} />
       </View>
       {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : null}
       <View style={styles.container}>
@@ -197,6 +197,7 @@ const styles = StyleSheet.create({
     color: TEAL,
     flexWrap: 'wrap',
     maxWidth: 250,
+    textAlign: 'right',
   },
   titleContainer: {
     flexDirection: 'row',

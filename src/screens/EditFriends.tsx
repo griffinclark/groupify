@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import { Icon, SearchBar } from 'react-native-elements';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
 import { DEFAULT_CONTACT_IMAGE, GREY_5 } from '../res/styles/Colors';
-import { Button, Title, NavButton, Screen } from '../atoms/AtomsExports';
+import { Button, Title, Screen } from '../atoms/AtomsExports';
 import { FriendList } from '../organisms/OrganismsExports';
 import { AndroidContactTile, Navbar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
@@ -116,7 +116,7 @@ export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <Navbar>
-        <NavButton onPress={() => navigation.navigate('Profile')} title="Back" />
+        <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Profile')} />
       </Navbar>
       <Title>Edit Friends List</Title>
       <SearchBar
