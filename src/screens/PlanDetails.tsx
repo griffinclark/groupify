@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Screen, Button } from '../atoms/AtomsExports';
 import { formatTime, convertDateStringToDate, loadPhoto } from '../res/utilFunctions';
-import { TEAL, WHITE, GREY_0, GREY_4, GOLD } from '../res/styles/Colors';
+import { TEAL, GREY_4, GOLD, GREY_8 } from '../res/styles/Colors';
 import { Plan, User, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { sendPushNotification } from '../res/notifications';
@@ -106,65 +106,65 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen>
-      <View style={{ top: 38, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+      <View style={styles.titleContainer}>
         <Text style={styles.title}>{plan.title}</Text>
-        <Icon name="close" type="fa" style={{ paddingVertical: 4 }} size={40} onPress={() => navigation.goBack()} />
+        <Icon name="close" type="fa" size={40} onPress={() => navigation.goBack()} />
       </View>
       {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : null}
-      <View>
-        <Text style={styles.hostName}>{hostName}</Text>
-        <Text style={styles.hostNameTitle}>Host</Text>
-      </View>
+      <View style={styles.container}>
+        <View style={styles.hostContainer}>
+          <Text style={styles.hostName}>{hostName}</Text>
+          <Text style={styles.descTitle}>Host</Text>
+        </View>
 
-      <View style={{ left: 20, top: 150 }}>
-        <Text>{convertDateStringToDate(plan.date).toDateString()}</Text>
-        <Text>{formatTime(plan.time)}</Text>
-        <Text style={styles.evText3}>Date</Text>
-        <TouchableOpacity style={{ height: 25 }} onPress={pressed}>
-          {/* <Text style={styles.evText4}>Add to calendar</Text> */}
-        </TouchableOpacity>
-      </View>
+        <View style={styles.detailsContainer}>
+          <View style={styles.details}>
+            <Text>{convertDateStringToDate(plan.date).toDateString()}</Text>
+            <Text>{formatTime(plan.time)}</Text>
+            <Text style={styles.descTitle}>Date</Text>
+            <TouchableOpacity onPress={pressed}>
+              {/* <Text style={styles.evText4}>Add to calendar</Text> */}
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text style={{ maxWidth: 150, flexWrap: 'wrap' }}>{plan.title}</Text>
+            <Text style={[styles.descTitle]}>Location</Text>
+            <TouchableOpacity onPress={pressed}>
+              {/* <Text style={{ color: '#31A59F' }}>View map</Text> */}
+            </TouchableOpacity>
+          </View>
+        </View>
 
-      <View style={{ left: 180, top: 70, width: 180 }}>
-        <Text>{plan.location}</Text>
-        <Text style={[styles.evText3]}>Location</Text>
-        <TouchableOpacity style={{ height: 25 }} onPress={pressed}>
-          {/* <Text style={{ color: '#31A59F' }}>View map</Text> */}
-        </TouchableOpacity>
-      </View>
+        <View style={styles.description}>
+          <Text>{plan.description}</Text>
+          <Text style={styles.descTitle}>Description</Text>
+        </View>
 
-      <View style={{ top: 100 }}>
-        <Text style={styles.desc2}>{plan.description}</Text>
-        <Text style={styles.desc1}>Description</Text>
-      </View>
-      <View style={{ top: 160 }}>
-        <FlatList
-          style={styles.inviteesList}
-          data={invitees}
-          renderItem={renderInvitee}
-          ListEmptyComponent={() => (
-            <View style={styles.title}>
-              <Text>No Attendees Yet</Text>
-            </View>
-          )}
-          horizontal={true}
-        />
-        <Text style={styles.desc3}>Attendees</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('InviteeList', { plan: plan })}>
-          <Text style={styles.evText5}>View All</Text>
-        </TouchableOpacity>
+        <View style={styles.inviteeList}>
+          <FlatList
+            data={invitees}
+            renderItem={renderInvitee}
+            ListEmptyComponent={() => (
+              <View>
+                <Text style={styles.title}>No Attendees Yet</Text>
+              </View>
+            )}
+            horizontal={true}
+          />
+          <Text style={styles.descTitle}>Attendees</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('InviteeList', { plan: plan })}>
+            <Text style={styles.viewAll}>View All</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       {showRespondOptions ? (
         <View style={styles.planResponse}>
           <Button
-            containerStyle={styles.button}
-            buttonStyle={styles.declineButton}
             title={userInvitee?.status === Status.DECLINED ? 'Declined' : 'Decline'}
             onPress={() => respondToPlan(false)}
             disabled={userInvitee?.status === Status.DECLINED}
           />
           <Button
-            containerStyle={styles.button}
             title={userInvitee?.status === Status.ACCEPTED ? 'Accepted' : 'Accept'}
             onPress={() => respondToPlan(true)}
             disabled={userInvitee?.status === Status.ACCEPTED}
@@ -178,68 +178,9 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 25,
-    color: TEAL,
-    left: 20,
-    width: '80%',
-    fontWeight: 'bold',
-  },
-  inviteImg: {
-    width: '100%',
-    height: 200,
-    top: 40,
-  },
-  hostName: {
-    position: 'absolute',
-    width: 300,
-    top: 60,
-    marginLeft: 18,
-    fontSize: 25,
-    color: '#31A59F',
-  },
-  hostNameTitle: {
-    position: 'absolute',
-    width: 150,
-    top: 78,
-    marginLeft: 20,
-    marginTop: 10,
-    color: '#616060',
-  },
   image: {
     height: 200,
     width: '100%',
-    top: 55,
-  },
-  evText3: {
-    fontSize: 12,
-    color: '#616060',
-    width: 86,
-    height: 16,
-  },
-  evText4: {
-    fontSize: 12,
-    color: '#31A59F',
-  },
-  evText5: {
-    left: 20,
-    fontSize: 12,
-    color: TEAL,
-    top: 15,
-  },
-  desc1: {
-    fontSize: 12,
-    color: '#616060',
-    marginLeft: 20,
-  },
-  desc2: {
-    left: 20,
-  },
-  desc3: {
-    fontSize: 12,
-    color: '#616060',
-    top: 15,
-    marginLeft: 20,
   },
   sphere: {
     backgroundColor: TEAL,
@@ -248,30 +189,77 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     margin: 5,
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  initial: {
-    top: 5,
+  title: {
     fontSize: 20,
-    color: WHITE,
+    fontWeight: '400',
+    color: TEAL,
+    flexWrap: 'wrap',
+    maxWidth: 250,
   },
-  inviteesList: {
-    position: 'absolute',
-    left: 20,
-    bottom: 20,
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+  },
+  hostName: {
+    fontSize: 20,
+    fontWeight: '400',
+  },
+  descTitle: {
+    fontWeight: '400',
+    fontSize: 12,
+    color: GREY_8,
+    marginVertical: 5,
+  },
+  hostContainer: {
+    flex: 1,
+  },
+  detailsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 1,
+  },
+  details: {
+    flexDirection: 'column',
+  },
+  description: {
+    flex: 1,
+  },
+  container: {
+    flex: 5,
+    marginHorizontal: 25,
+    marginVertical: 20,
+  },
+  inviteeList: {
+    flex: 1,
+  },
+  viewAll: {
+    color: TEAL,
   },
   planResponse: {
-    maxWidth: '100%',
     flexDirection: 'row',
-    position: 'absolute',
-    bottom: '2%',
-  },
-  button: {
     width: '50%',
+    flex: 1,
+    alignItems: 'flex-end',
   },
-  declineButton: {
-    backgroundColor: WHITE,
-    color: GREY_0,
-    borderWidth: 2,
-    borderColor: TEAL,
+  initial: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: 'white',
   },
+  // boxShadow: {
+  //   elevation: 5,
+  //   shadowColor: '#000',
+  //   shadowOffset: { width: 1, height: 1 },
+  //   shadowOpacity: 0.25,
+  //   shadowRadius: 2,
+  //   padding: 8,
+  //   backgroundColor: 'white',
+  //   borderRadius: 20,
+  //   maxHeight: 80,
+  // },
 });
