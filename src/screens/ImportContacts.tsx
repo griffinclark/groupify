@@ -71,6 +71,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const searchContacts = (text: string) => {
+    const trimText = text.trim();
     setQuery(text);
     setFilteredContacts(
       contacts.filter((contact) => {
@@ -80,7 +81,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
         } catch {
           console.log('error filtering a contact');
         }
-        const textLowercase = text.toLowerCase();
+        const textLowercase = trimText.toLowerCase();
         return contactLowercase.indexOf(textLowercase) > -1;
       }),
     );
