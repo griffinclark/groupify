@@ -3354,8 +3354,9 @@
     "sudo-prompt" "^9.0.0"
     "wcwidth" "^1.0.1"
 
-"@react-native-community/datetimepicker@3.0.4":
-  "version" "3.0.4"
+"@react-native-community/datetimepicker@github:react-native-community/datetimepicker":
+  "resolved" "git+ssh://git@github.com/react-native-community/datetimepicker.git#244978e74b5935a7bd8e6145296df739d2f4b3d1"
+  "version" "3.5.2"
   dependencies:
     "invariant" "^2.2.4"
 
@@ -3512,8 +3513,10 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
-"@types/react-native@*", "@types/react-native@~0.63.2":
-  "version" "0.63.52"
+"@types/react-native@*", "@types/react-native@^0.63.53":
+  "integrity" "sha512-hfUYHlfuy436viNct5uYNh2y40iWl1+iWhAQ18vzoKtyeW4WLNyccZf6OfkJdkqkHyH+bgvHLhbmnocpnQeKXg=="
+  "resolved" "https://registry.npmjs.org/@types/react-native/-/react-native-0.63.53.tgz"
+  "version" "0.63.53"
   dependencies:
     "@types/react" "*"
 
@@ -7950,7 +7953,7 @@
 "react-timer-mixin@^0.13.4":
   "version" "0.13.4"
 
-"react@*", "react@^16.0.0", "react@^16.0.0 || ^17.0.0", "react@^16.13.1", "react@^16.8.0 || ^17.0.0", "react@>= 16.0 || < 17.0", "react@>=16.5.1", "react@>=16.8.0", "react@>=16.8.3", "react@16.13.1", "react@17.0.2":
+"react@*", "react@^16.0.0", "react@^16.0.0 || ^17.0.0", "react@^16.13.1", "react@^16.8.0 || ^17.0.0", "react@>= 16.0 || < 17.0", "react@>=16.5.1", "react@>=16.8.0", "react@16.13.1", "react@17.0.2":
   "version" "16.14.0"
   dependencies:
     "loose-envify" "^1.1.0"

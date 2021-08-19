@@ -57,13 +57,10 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     const userPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
     console.log(userPlans);
 
-    const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
+    const inviteesDis = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
+    console.log(inviteesDis);
     const invitedPlans = removePastPlans(
-      invitees
-        .map((invitee) => {
-          return invitee.plan;
-        })
-        .filter((item): item is Plan => item !== undefined),
+      inviteesDis.map((invitee) => invitee.plan).filter((item): item is Plan => item !== undefined),
     );
     setUpcomingPlans(sortPlansByDate(filterUpcomingPlans(userPlans.concat(invitedPlans))));
     setUserPlans(sortPlansByDate(userPlans));
@@ -96,11 +93,18 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     });
   };
 
-  const createGreeting = () => {
-    const firstName = currentUser?.name.includes(' ')
+  {
+    /*  const createGreeting = () => {
+    const firstName =  currentUser?.name.includes(' ')
       ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
       : currentUser?.name;
     return `Hello, ${firstName}`;
+  }; */
+  }
+
+  const createGreeting = () => {
+    const firstName = currentUser?.name;
+    return `Hey, ${firstName}`;
   };
 
   return (
