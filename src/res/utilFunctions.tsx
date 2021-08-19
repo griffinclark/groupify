@@ -1,5 +1,6 @@
-import { Plan } from '../models';
+import { Plan, User } from '../models';
 import Qs from 'qs';
+import { Auth, DataStore } from 'aws-amplify';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
@@ -88,4 +89,16 @@ export const loadPhoto = async (placeID: string): Promise<string> => {
   };
   const completeUri = photoRequestURL + Qs.stringify(photoRequetsParams);
   return completeUri;
+};
+
+export const getCurrentUser = async (): Promise<User> => {
+  const userInfo = await Auth.currentUserInfo();
+  if (userInfo) {
+    // console.log(userInfo.attributes.phone_number);
+    const user = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
+    if (user) {
+      // console.log(user[0]);
+      return user[0];
+    }
+  }
 };
