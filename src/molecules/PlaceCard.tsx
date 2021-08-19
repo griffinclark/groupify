@@ -114,7 +114,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = (props: PlaceCardProps) => {
                 </Text>
               ) : null}
             </View>
-            <Button onPress={props.onButtonPress} title={'Confirm'} />
+            <Button onPress={props.onButtonPress} title={'Select Location'} />
           </View>
         </View>
       </View>

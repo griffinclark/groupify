@@ -94,8 +94,13 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
     <Screen>
       <View style={{ flex: 1 }}>
         <View style={styles.titleNav}>
+          <Icon
+            name="arrow-left"
+            type="font-awesome"
+            size={30}
+            onPress={() => navigation.navigate('PlanDetails', {})}
+          />
           <Text style={styles.title}>{plan.title}</Text>
-          <Icon name="close" type="fa" size={40} onPress={() => navigation.navigate('PlanDetails', {})} />
         </View>
         <View style={styles.image}>
           <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" />
@@ -119,11 +124,12 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 25,
+    fontSize: 20,
+    fontWeight: '400',
     color: TEAL,
-    left: 20,
-    width: '80%',
-    fontWeight: 'bold',
+    flexWrap: 'wrap',
+    maxWidth: 250,
+    textAlign: 'right',
   },
   hostName: {
     fontSize: 25,
@@ -189,9 +195,9 @@ const styles = StyleSheet.create({
     color: GREY_0,
   },
   titleNav: {
-    flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    margin: 10,
   },
 });

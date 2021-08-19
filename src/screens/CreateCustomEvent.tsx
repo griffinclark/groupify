@@ -150,7 +150,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
             updatedValues={(value) => setValues(value)}
             fullDate={(date) => setFullDate(date)}
           >
-            <FormButton title="Create" onPress={() => onFormSubmit(updatedValues)} />
+            <FormButton title="Next" onPress={() => onFormSubmit(updatedValues)} />
           </MeepForm>
         </ScrollView>
       </Screen>
