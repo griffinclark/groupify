@@ -11,6 +11,7 @@ import { ImportContacts } from '../screens/ImportContacts';
 import { SendMessage } from '../screens/SendMessage';
 import { Contact } from './dataModels';
 import { SearchPlace } from '../screens/SearchPlace';
+import { CreateRandomEvent } from '../screens/CreateRandomEvent';
 
 export type RoutePropParams = {
   params: {
@@ -59,6 +60,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute }: RootProps)
         <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }} />
+        <Stack.Screen name="CreateRandomEvent" component={CreateRandomEvent} options={{ headerShown: false }} />
         <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
         <Stack.Screen name="SendMessage" component={SendMessage} options={{ headerShown: false }} />

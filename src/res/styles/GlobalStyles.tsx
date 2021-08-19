@@ -3,12 +3,12 @@ import { LIGHT } from './Colors';
 
 export const globalStyles = StyleSheet.create({
   defaultRootContainer: {
-    display: 'flex',
+    flex: 1,
     height: '100%',
     width: '100%',
     backgroundColor: LIGHT,
     flexDirection: 'column',
-    padding: 5,
+    padding: 0,
   },
   navbar_container: {
     height: 80,

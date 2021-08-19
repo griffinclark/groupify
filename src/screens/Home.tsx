@@ -73,6 +73,14 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       </View>
       <View style={styles.button}>
         <Button
+          title="Generate Random Plan"
+          onPress={() => {
+            navigation.navigate('CreateRandomEvent');
+          }}
+        />
+      </View>
+      <View style={styles.button}>
+        <Button
           title="Create event"
           onPress={() => {
             navigation.navigate('SearchPlace');
