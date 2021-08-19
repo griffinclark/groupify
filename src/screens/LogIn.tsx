@@ -18,10 +18,7 @@ interface Props {
     params: {
       Login: string;
     };
-    navigate:
-      | ((ev: string, a?: { step?: string; phone?: string }) => void)
-      | ((ev: string, a?: { data?: { prevAction?: string } }) => void)
-      | ((ev: string, a?: { userID?: string }) => void);
+    navigate: (ev: string, {}) => void;
     push: (ev: string, e: { email: string; step: string }) => void;
   };
 }
@@ -90,24 +87,25 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
         }),
       );
       console.log('Created new user:');
-      console.log(newUser);
+      // console.log(newUser);
       return newUser;
     }
   };
 
   const logIn = async () => {
-    console.log(formatPhone);
     setError(undefined);
     try {
       await Auth.signIn(formatPhone, password);
       console.log('successfully signed in');
       const user = await registerUser();
-      console.log('User logged in:', user);
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
-        navigation.navigate('ImportContacts');
+        navigation.navigate('ImportContacts', {});
       } else {
-        navigation.navigate('Home', { userID: user.id });
+        if (user.id) {
+          console.log(user);
+          navigation.navigate('Home', { userID: user.id });
+        }
       }
     } catch (err) {
       console.log('error signing in...', err);

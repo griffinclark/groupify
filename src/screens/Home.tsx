@@ -11,6 +11,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Auth } from 'aws-amplify';
 
 interface Props {
   navigation: {
@@ -31,20 +32,23 @@ interface Props {
   route: RoutePropParams;
 }
 
-export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
+export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [upcomingPlans, setUpcomingPlans] = useState<Plan[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
   const [userPlans, setUserPlans] = useState<Plan[]>([]);
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
 
   useEffect(() => {
+    setCurrentUser(null);
     (async () => {
-      if (route.params && route.params.userID) {
-        const user = await DataStore.query(User, route.params.userID);
+      const userInfo = await Auth.currentUserInfo();
+      if (userInfo) {
+        console.log(userInfo);
+        const user = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
         if (user) {
-          console.log(user);
-          setCurrentUser(user);
-          loadPlans(user);
+          console.log('user: ', user);
+          setCurrentUser(user[0]);
+          loadPlans(user[0]);
         }
       }
     })();
@@ -52,10 +56,8 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const loadPlans = async (user: User) => {
     console.log('Loading plans');
-    console.log(currentUser);
 
     const userPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
-    console.log(userPlans);
 
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
     const invitedPlans = removePastPlans(
@@ -97,10 +99,13 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   const createGreeting = () => {
-    const firstName = currentUser?.name.includes(' ')
-      ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
-      : currentUser?.name;
-    return `Hello, ${firstName}`;
+    if (currentUser) {
+      console.log(currentUser.name);
+      const firstName = currentUser.name.includes(' ')
+        ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
+        : currentUser?.name;
+      return `Hello, ${firstName}`;
+    }
   };
 
   return (
