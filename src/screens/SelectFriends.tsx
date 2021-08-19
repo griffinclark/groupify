@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Auth } from 'aws-amplify';
 import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
