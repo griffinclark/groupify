@@ -119,7 +119,7 @@ export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
       <Navbar>
         <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Profile')} />
       </Navbar>
-      <Title>Edit Friends List</Title>
+      <Title>Add Friends</Title>
       <SearchBar
         lightTheme="true"
         placeholder="Search by name, phone number, email"
