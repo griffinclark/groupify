@@ -225,7 +225,6 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
         style={styles.skip}
         onPress={() => {
           navigation.navigate('CreateCustomEvent', { currentUser: route.params.currentUser });
-          console.log('hey');
         }}
       >
         <Text style={styles.skipText}>Skip</Text>
@@ -265,8 +264,8 @@ const styles = StyleSheet.create({
   },
   skip: {
     position: 'absolute',
-    bottom: 50,
-    right: 50,
+    bottom: 25,
+    right: 25,
     backgroundColor: TEAL,
     width: 75,
     height: 35,
