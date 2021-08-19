@@ -11,7 +11,6 @@ import { Icon } from 'react-native-elements';
 import { Plan, Status, Invitee } from '../models';
 import { sendPushNotification } from '../res/notifications';
 
-
 interface Props {
   navigation: {
     navigate: (ev: string, a?: { data?: { prevAction?: string } }) => void;
