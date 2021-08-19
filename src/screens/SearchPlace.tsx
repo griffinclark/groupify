@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import MapView, { LatLng, Marker, Point, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
@@ -9,6 +9,7 @@ import { PlaceCard } from '../molecules/MoleculesExports';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { mapStyles } from '../res/styles/MapStyles';
 import { RoutePropParams } from '../res/root-navigation';
+import { TEAL } from '../res/styles/Colors';
 
 interface Props {
   navigation: {
@@ -220,6 +221,14 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
           }}
         />
       </View>
+      <TouchableOpacity
+        style={styles.skip}
+        onPress={() => {
+          navigation.navigate('CreateCustomEvent', { currentUser: route.params.currentUser });
+        }}
+      >
+        <Text style={styles.skipText}>Skip</Text>
+      </TouchableOpacity>
       <View style={styles.searchBarContainer}>{/* X button on the right to clear input field */}</View>
       {placeCard ? placeCard : null}
     </View>
@@ -252,5 +261,20 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  skip: {
+    position: 'absolute',
+    bottom: 25,
+    right: 25,
+    backgroundColor: TEAL,
+    width: 75,
+    height: 35,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 25,
+  },
+  skipText: {
+    color: 'white',
+    fontWeight: '800',
   },
 });
