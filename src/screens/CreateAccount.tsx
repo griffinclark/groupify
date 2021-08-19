@@ -1,14 +1,15 @@
 import { RoutePropParams } from '../res/root-navigation';
-import { KeyboardAvoidingView, Text } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Title, NavButton, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { Navbar } from '../molecules/MoleculesExports';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: {
-    navigate: (ev: string) => void;
+    navigate: (ev: string, {}) => void;
     push: (ev: string, e: { phone: string; step: string }) => void;
   };
   route: RoutePropParams;
@@ -112,10 +113,9 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   const validateUser = async () => {
-    console.log();
     try {
       await Auth.confirmSignUp(route.params.phone, validationCode);
-      navigation.navigate('Login');
+      navigation.navigate('Login', {});
     } catch (err) {
       console.log('Error: ', err);
       setError(err.message);
@@ -126,18 +126,21 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled={true}>
       <Screen>
         <Navbar>
-          <NavButton onPress={() => navigation.navigate('Welcome')} title="Back" />
+          <NavButton onPress={() => navigation.navigate('Welcome', {})} title="Back" />
         </Navbar>
         {route.params.step === 'create' && (
-          <>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <Title>Create Account</Title>
             <FormInput
+              autoFocus={true}
+              returnKeyNext={true}
               label="Name"
               onChangeText={(value) => {
                 setName(value.trim());
               }}
             />
             <FormInput
+              returnKeyNext={true}
               value={phone}
               label="Phone Number"
               onChangeText={(value) => {
@@ -145,15 +148,22 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
               }}
             />
             <FormInput
+              returnKeyNext={true}
               label="Email"
               onChangeText={(value) => {
                 setEmail(value.trim());
               }}
             />
-            <FormInput label="Password" onChangeText={setPassword} secureTextEntry={true} />
+            <FormInput
+              submit={signUp}
+              returnKeyNext={false}
+              label="Password"
+              onChangeText={setPassword}
+              secureTextEntry={true}
+            />
             {error && <Alert status="error" message={error} />}
             <Button title="Next" onPress={signUp} disabled={disabled} />
-          </>
+          </TouchableWithoutFeedback>
         )}
         {route.params.step === 'validate' && (
           <>
@@ -162,6 +172,8 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
               Please enter the verification code from your messages
             </Text>
             <FormInput
+              returnKeyNext={false}
+              autoFocus={true}
               label="Verification Code"
               onChangeText={(value) => {
                 setCode(value.trim());

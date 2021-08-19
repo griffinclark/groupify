@@ -9,6 +9,9 @@ interface FormProps {
   placeholder?: string;
   secureTextEntry?: boolean;
   value?: string;
+  returnKeyNext: boolean;
+  autoFocus?: boolean;
+  submit?: (ev: string) => void;
 }
 export const FormInput: React.FC<FormProps> = ({
   onChangeText,
@@ -16,12 +19,25 @@ export const FormInput: React.FC<FormProps> = ({
   placeholder,
   secureTextEntry = false,
   value,
+  returnKeyNext,
+  autoFocus,
+  submit,
 }: FormProps) => {
   return (
     <View style={styles.wrapper}>
       <Text>{label}</Text>
       <TextInput
+        returnKeyType={returnKeyNext ? 'next' : 'done'}
+        autoFocus={autoFocus || false}
         value={value}
+        keyboardType={
+          label === 'Phone Number' ? 'number-pad' : label === 'Verification Code' ? 'number-pad' : 'default'
+        }
+        onSubmitEditing={() => {
+          if (label === 'Password') {
+            submit(label);
+          }
+        }}
         style={styles.input}
         placeholder={placeholder}
         onChangeText={onChangeText}
