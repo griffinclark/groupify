@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Auth } from 'aws-amplify';
 import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
@@ -40,9 +41,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
 
   const getFriends = async () => {
     const friendList = [];
-    if (route.params.currentUser.friends) {
-      for (let i = 0; i < route.params.currentUser.friends.length; i++) {
-        const friendId = route.params.currentUser.friends[i];
+    const userInfo = await Auth.currentUserInfo();
+    if (userInfo.friends) {
+      for (let i = 0; i < userInfo.length; i++) {
+        const friendId = userInfo[i];
         if (friendId) {
           const friend = await DataStore.query(User, friendId);
           friendList.push(friend);

@@ -89,6 +89,7 @@ ${event.description} \
   };
 
   const storeInvitees = async () => {
+    const userInfo = await Auth.currentUserInfo();
     const fullDate = route.params.data.eventData.fullDate;
     const date = fullDate.toString().substring(0, 10);
     const time = fullDate.toString().substring(11, 19);
@@ -100,7 +101,7 @@ ${event.description} \
         placeID: event.placeId,
         time: time,
         date: date,
-        creatorID: route.params.currentUser.id,
+        creatorID: userInfo.id,
       }),
     );
 
