@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, ImageBackground } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet, FlatList, ImageBackground } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Event, Contact } from '../res/dataModels';
+import { TEAL } from '../res/styles/Colors';
 import { API, Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
 import { Icon } from 'react-native-elements';
 import { Plan, Status, Invitee } from '../models';
 import { sendPushNotification } from '../res/notifications';
+
 
 interface Props {
   navigation: {
@@ -22,6 +24,7 @@ export const SendMessage: React.FC<Props> = ({ navigation, route }: Props) => {
   const event: Event = route.params.data.eventData;
   const [message, setMessage] = useState<string>('Loading Message...');
   const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     createInitialMessage();
@@ -154,6 +157,7 @@ ${event.description} \
   };
 
   const onPressSend = async (): Promise<void> => {
+    setIsLoading(true);
     try {
       await storeInvitees();
       if (event.contacts.length > 0) {
@@ -165,6 +169,8 @@ ${event.description} \
       if (err.message === 'The string supplied did not seem to be a phone number') {
         createErrorAlert(event.contacts, message);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -250,7 +256,11 @@ ${event.description} \
         </View>
       )}
       <View style={styles.footer}>
-        <Button title="Create Plan" onPress={createConfirmAlert} />
+        {isLoading ? (
+          <ActivityIndicator size="large" color={TEAL} />
+        ) : (
+          <Button title="Create Plan" onPress={createConfirmAlert} />
+        )}
       </View>
     </Screen>
   );
