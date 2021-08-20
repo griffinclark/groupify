@@ -7,10 +7,12 @@ import { ContactTile } from '../molecules/MoleculesExports';
 import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
+    goBack: () => void;
   };
   route: RoutePropParams;
 }
@@ -160,10 +162,17 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   return (
+  
     <View style={styles.screen}>
+       
       <ImageBackground source={{ uri: eventObject.imageURL || '' }} style={styles.backgroundImage}>
         <View style={styles.overlay} />
-        <View style={styles.title}>
+        <View style={styles.header}>
+       <View style={styles.icon}>
+        <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
+        </View>
+       </View> 
+       <View style={styles.title}>
           <Text style={styles.titleText}>Send your new plan to your friends</Text>
         </View>
         <View style={styles.body}>
@@ -268,6 +277,14 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+  },
+  icon: {
+    top: 20,
   },
   backgroundImage: {
     width: '100%',
