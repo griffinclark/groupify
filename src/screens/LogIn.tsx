@@ -130,11 +130,16 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
   return (
     <Screen>
       <Navbar>
-        <NavButton onPress={() => navigation.navigate('Welcome')} title="Back" />
+        <NavButton onPress={() => navigation.navigate('Welcome', {})} title="Back" />
       </Navbar>
       <Title>Log In</Title>
-      <FormInput label="Phone Number" value={phone} onChangeText={(e) => setPhone(formatPhoneNumber(e))} />
-      <FormInput label="Password" onChangeText={setPassword} secureTextEntry={true} />
+      <FormInput
+        returnKeyNext={true}
+        label="Phone Number"
+        value={phone}
+        onChangeText={(e) => setPhone(formatPhoneNumber(e))}
+      />
+      <FormInput returnKeyNext={false} label="Password" onChangeText={setPassword} secureTextEntry={true} />
       {error && <Alert status="error" message={error} />}
       <Button title="Sign In" onPress={logIn} disabled={disabled} />
     </Screen>

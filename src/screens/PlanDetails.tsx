@@ -119,8 +119,8 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
 
         <View style={styles.detailsContainer}>
           <View style={styles.details}>
-            <Text>{convertDateStringToDate(plan.date).toDateString()}</Text>
-            <Text>{formatTime(plan.time)}</Text>
+            {plan.date && <Text>{convertDateStringToDate(plan.date).toDateString()}</Text>}
+            {plan.time && <Text>{formatTime(plan.time)}</Text>}
             <Text style={styles.descTitle}>Date</Text>
             <TouchableOpacity onPress={pressed}>
               {/* <Text style={styles.evText4}>Add to calendar</Text> */}
