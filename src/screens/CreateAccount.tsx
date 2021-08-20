@@ -1,5 +1,5 @@
 import { RoutePropParams } from '../res/root-navigation';
-import { Keyboard, KeyboardAvoidingView, Text } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Title, NavButton, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
@@ -123,81 +123,83 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   return (
-    <KeyboardAvoidingView keyboardVerticalOffset={-500} style={{ flex: 1 }} behavior="padding" enabled={true}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Screen>
-        <Navbar>
-          <NavButton onPress={() => navigation.navigate('Welcome', {})} title="Back" />
-        </Navbar>
-        {route.params.step === 'create' && (
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <Title>Create Account</Title>
-            <FormInput
-              autoFocus={true}
-              returnKeyNext={true}
-              label="Name"
-              onChangeText={(value) => {
-                setName(value.trim());
-              }}
-            />
-            <FormInput
-              returnKeyNext={true}
-              value={phone}
-              label="Phone Number"
-              onChangeText={(value) => {
-                setPhone(formatPhoneNumber(value));
-              }}
-            />
-            <FormInput
-              returnKeyNext={true}
-              label="Email"
-              onChangeText={(value) => {
-                setEmail(value.trim());
-              }}
-            />
-            <FormInput
-              submit={signUp}
-              returnKeyNext={false}
-              label="Password"
-              onChangeText={setPassword}
-              secureTextEntry={true}
-            />
-            {error && <Alert status="error" message={error} />}
-            <Button title="Next" onPress={signUp} disabled={disabled} />
-          </TouchableWithoutFeedback>
-        )}
-        {route.params.step === 'validate' && (
-          <>
-            <Title>Validate Phone Number</Title>
-            <Text style={{ margin: 20, fontWeight: 'bold' }}>
-              Please enter the verification code from your messages
-            </Text>
-            <FormInput
-              returnKeyNext={false}
-              autoFocus={true}
-              label="Verification Code"
-              onChangeText={(value) => {
-                setCode(value.trim());
-              }}
-              secureTextEntry={true}
-            />
-            {error && <Alert status="error" message={error} />}
-            {success && <Alert status="success" message={success} />}
-            <Button
-              title="Send New Code"
-              onPress={() => {
-                try {
-                  console.log(route.params.phone);
-                  Auth.resendSignUp(route.params.phone);
-                  setSuccess('Sent new verification code');
-                } catch (err) {
-                  console.log(err);
-                  setError(err.message);
-                }
-              }}
-            />
-            <Button title="Confirm Number" onPress={validateUser} disabled={disabled} />
-          </>
-        )}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+          <Navbar>
+            <NavButton onPress={() => navigation.navigate('Welcome', {})} title="Back" />
+          </Navbar>
+          {route.params.step === 'create' && (
+            <View>
+              <Title>Create Account</Title>
+              <FormInput
+                autoFocus={true}
+                returnKeyNext={true}
+                label="Name"
+                onChangeText={(value) => {
+                  setName(value.trim());
+                }}
+              />
+              <FormInput
+                returnKeyNext={true}
+                value={phone}
+                label="Phone Number"
+                onChangeText={(value) => {
+                  setPhone(formatPhoneNumber(value));
+                }}
+              />
+              <FormInput
+                returnKeyNext={true}
+                label="Email"
+                onChangeText={(value) => {
+                  setEmail(value.trim());
+                }}
+              />
+              <FormInput
+                submit={signUp}
+                returnKeyNext={false}
+                label="Password"
+                onChangeText={setPassword}
+                secureTextEntry={true}
+              />
+              {error && <Alert status="error" message={error} />}
+              <Button title="Next" onPress={signUp} disabled={disabled} />
+            </View>
+          )}
+          {route.params.step === 'validate' && (
+            <>
+              <Title>Validate Phone Number</Title>
+              <Text style={{ margin: 20, fontWeight: 'bold' }}>
+                Please enter the verification code from your messages
+              </Text>
+              <FormInput
+                returnKeyNext={false}
+                autoFocus={true}
+                label="Verification Code"
+                onChangeText={(value) => {
+                  setCode(value.trim());
+                }}
+                secureTextEntry={true}
+              />
+              {error && <Alert status="error" message={error} />}
+              {success && <Alert status="success" message={success} />}
+              <Button
+                title="Send New Code"
+                onPress={() => {
+                  try {
+                    console.log(route.params.phone);
+                    Auth.resendSignUp(route.params.phone);
+                    setSuccess('Sent new verification code');
+                  } catch (err) {
+                    console.log(err);
+                    setError(err.message);
+                  }
+                }}
+              />
+              <Button title="Confirm Number" onPress={validateUser} disabled={disabled} />
+            </>
+          )}
+        </TouchableWithoutFeedback>
       </Screen>
     </KeyboardAvoidingView>
   );

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
 import { Screen, FormButton, MeepForm } from '../atoms/AtomsExports';
 import { Text } from 'react-native-elements';
-import { Image, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import Qs from 'qs';
 import { User } from '../models';
@@ -131,7 +131,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   };
 
   return (
-    <KeyboardAvoidingView keyboardVerticalOffset={-500} style={{ flex: 1 }} behavior="padding" enabled={true}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Screen>
         <ScrollView>
           <View style={styles.navbar}>
