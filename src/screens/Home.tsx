@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { GREY_0, TEAL } from './../res/styles/Colors';
-import { convertDateStringToDate, sortPlansByDate } from './../res/utilFunctions';
+import { convertDateStringToDate, getCurrentUser, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { MiniDataDisplay } from '../organisms/OrganismsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
@@ -11,7 +11,6 @@ import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Auth } from 'aws-amplify';
 
 interface Props {
   navigation: {
@@ -34,24 +33,16 @@ interface Props {
 
 export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [upcomingPlans, setUpcomingPlans] = useState<Plan[]>([]);
-  const [currentUser, setCurrentUser] = useState<User>();
   const [userPlans, setUserPlans] = useState<Plan[]>([]);
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
+  const [currentUser, setCurrentUser] = useState<User>();
 
   useEffect(() => {
-    setCurrentUser(null);
-    (async () => {
-      const userInfo = await Auth.currentUserInfo();
-      if (userInfo) {
-        console.log(userInfo);
-        const user = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
-        if (user) {
-          console.log('user: ', user);
-          setCurrentUser(user[0]);
-          loadPlans(user[0]);
-        }
-      }
-    })();
+    const awaitUser = async () => {
+      const user = await getCurrentUser();
+      setCurrentUser(user);
+    };
+    awaitUser();
   }, []);
 
   const loadPlans = async (user: User) => {
@@ -100,7 +91,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
 
   const createGreeting = () => {
     if (currentUser) {
-      console.log(currentUser.name);
       const firstName = currentUser.name.includes(' ')
         ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
         : currentUser?.name;
