@@ -11,7 +11,6 @@ import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Auth } from 'aws-amplify';
 
 interface Props {
   navigation: {
