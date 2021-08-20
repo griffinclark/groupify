@@ -34,7 +34,7 @@ export const FormInput: React.FC<FormProps> = ({
           label === 'Phone Number' ? 'number-pad' : label === 'Verification Code' ? 'number-pad' : 'default'
         }
         onSubmitEditing={() => {
-          if (label === 'Password') {
+          if (submit && label === 'Password') {
             submit(label);
           }
         }}
