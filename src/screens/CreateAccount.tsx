@@ -89,6 +89,12 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
           phone_number: formatPhone,
           name: name,
         },
+        validationData: [
+          {
+            Name: 'phoneNumber',
+            Value: formatPhone,
+          },
+        ],
       });
       console.log('user successfully created');
       setError(undefined);
@@ -105,6 +111,11 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
         }
       } else if (err.code == 'InvalidPasswordException') {
         setError('Password must be at least 8 characters');
+      } else if (
+        err.code === 'UserLambdaValidationException' &&
+        err.message == 'PreSignUp failed with error phoneNumber already exists!.'
+      ) {
+        err.message = 'phone number already exists';
       } else {
         setError(err.message);
       }
