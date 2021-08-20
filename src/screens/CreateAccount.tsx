@@ -123,7 +123,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled={true}>
+    <KeyboardAvoidingView keyboardVerticalOffset={-500} style={{ flex: 1 }} behavior="padding" enabled={true}>
       <Screen>
         <Navbar>
           <NavButton onPress={() => navigation.navigate('Welcome', {})} title="Back" />

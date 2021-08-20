@@ -131,7 +131,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled={true}>
+    <KeyboardAvoidingView keyboardVerticalOffset={-500} style={{ flex: 1 }} behavior="padding" enabled={true}>
       <Screen>
         <ScrollView>
           <View style={styles.navbar}>
