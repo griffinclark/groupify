@@ -162,17 +162,15 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   return (
-  
     <View style={styles.screen}>
-       
       <ImageBackground source={{ uri: eventObject.imageURL || '' }} style={styles.backgroundImage}>
         <View style={styles.overlay} />
         <View style={styles.header}>
-       <View style={styles.icon}>
-        <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
+          <View style={styles.icon}>
+            <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
+          </View>
         </View>
-       </View> 
-       <View style={styles.title}>
+        <View style={styles.title}>
           <Text style={styles.titleText}>Send your new plan to your friends</Text>
         </View>
         <View style={styles.body}>
