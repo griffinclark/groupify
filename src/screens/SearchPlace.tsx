@@ -10,6 +10,7 @@ import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { mapStyles } from '../res/styles/MapStyles';
 import { RoutePropParams } from '../res/root-navigation';
 import { TEAL } from '../res/styles/Colors';
+import { Button } from '../atoms/AtomsExports';
 
 interface Props {
   navigation: {
@@ -56,6 +57,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
   const markerRef = useRef<Marker>(null);
   const [placeCard, setPlaceCard] = useState<JSX.Element>();
   const [sessionToken, setSessionToken] = useState(uuidv4());
+  const [mapPopupOpen, setMapPopupOpen] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -175,10 +177,6 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
     onResultPress(poi, detail.result);
   };
 
-  // const onMarkerPress = async (marker: Marker) => {
-  //   console.log(marker);
-  // };
-
   const clearMarkers = () => {
     setPlaceCard(undefined);
     setMapMarker(undefined);
@@ -193,7 +191,6 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
         showsUserLocation={true}
         region={region}
         onPoiClick={(event) => onPoiPress(event.nativeEvent)}
-        // onMarkerPress={(event) => onMarkerPress(event.nativeEvent)}
         style={styles.map}
         customMapStyle={mapStyles}
         onPress={clearMarkers}
@@ -222,6 +219,14 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
           }}
         />
       </View>
+      {mapPopupOpen ? (
+        <View style={styles.popup}>
+          <View style={styles.mapPopup}>
+            <Text style={styles.mapPopupText}>Select or search for a location on the map for your event.</Text>
+            <Button title="Okay" onPress={() => setMapPopupOpen(false)} />
+          </View>
+        </View>
+      ) : null}
       <TouchableOpacity
         style={styles.skip}
         onPress={() => {
@@ -277,5 +282,28 @@ const styles = StyleSheet.create({
   skipText: {
     color: 'white',
     fontWeight: '800',
+  },
+  popup: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'transparent',
+    position: 'absolute',
+  },
+  mapPopup: {
+    top: 110,
+    backgroundColor: 'white',
+    width: '95%',
+    alignSelf: 'center',
+    height: 250,
+    justifyContent: 'space-evenly',
+    borderRadius: 20,
+  },
+  mapPopupText: {
+    fontWeight: '400',
+    fontSize: 24,
+    color: TEAL,
+    width: '80%',
+    alignSelf: 'center',
+    textAlign: 'center',
   },
 });
