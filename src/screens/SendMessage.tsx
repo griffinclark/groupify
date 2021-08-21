@@ -10,6 +10,7 @@ import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/Ato
 import { Icon } from 'react-native-elements';
 import { Plan, Status, Invitee } from '../models';
 import { sendPushNotification } from '../res/notifications';
+import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
@@ -91,18 +92,16 @@ ${event.description} \
   };
 
   const storeInvitees = async () => {
-    // const userInfo = await Auth.currentUserInfo();
-    const fullDate = route.params.data.eventData.fullDate;
-    const date = fullDate.toString().substring(0, 10);
-    const time = fullDate.toString().substring(11, 19);
+    const date = route.params.data.eventData.date;
+    const time = route.params.data.eventData.time;
     const newPlan = await DataStore.save(
       new Plan({
         title: event.title,
         description: event.description,
         location: event.location,
         placeID: event.placeId,
-        time: time,
-        date: date,
+        date: formatDatabaseDate(date),
+        time: formatDatabaseTime(time),
         creatorID: route.params.currentUser.id,
       }),
     );
@@ -164,7 +163,7 @@ ${event.description} \
       }
       navigation.push('Home');
     } catch (err) {
-      console.log(err, event.friends);
+      console.log(err);
       if (err.message === 'The string supplied did not seem to be a phone number') {
         createErrorAlert(event.contacts, message);
       }

@@ -53,6 +53,50 @@ export const convertDateStringToDate = (date: string): Date => {
   return newDate;
 };
 
+export const formatDatabaseDate = (date: string): string => {
+  if (date.length === 9) {
+    date = 0 + date;
+    const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+    return newDate;
+  }
+  if (date.length === 10) {
+    const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+    return newDate;
+  }
+  return date;
+};
+
+export const formatDatabaseTime = (time: string): string => {
+  if (time.length === 10) {
+    time = 0 + time;
+    const meridian = time.substring(9, 11);
+    if (meridian === 'AM') {
+      const newTime = time.substring(0, 8);
+      return newTime;
+    }
+    if (meridian === 'PM') {
+      let hour = time.substring(0, 2);
+      hour = hour * 1 + 12;
+      const newTime = hour + ':' + time.substring(3, 5) + ':' + time.substring(6, 8);
+      return newTime;
+    }
+  }
+  if (time.length === 11) {
+    const meridian = time.substring(9, 11);
+    if (meridian === 'AM') {
+      const newTime = time.substring(0, 8);
+      return newTime;
+    }
+    if (meridian === 'PM') {
+      let hour = time.substring(0, 2);
+      hour = hour * 1 + 12;
+      const newTime = hour + ':' + time.substring(3, 5) + ':' + time.substring(6, 8);
+      return newTime;
+    }
+  }
+  return time;
+};
+
 // Sorts a list of plans by their date. Set 'reverse' to true to reverse the order.
 export const sortPlansByDate = (plans: Plan[], reverse = false): Plan[] => {
   return plans.sort((planA, planB) => comparePlansByDate(planA, planB, reverse));
@@ -94,10 +138,8 @@ export const loadPhoto = async (placeID: string): Promise<string> => {
 export const getCurrentUser = async (): Promise<User> => {
   const userInfo = await Auth.currentUserInfo();
   if (userInfo) {
-    // console.log(userInfo.attributes.phone_number);
     const user = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     if (user) {
-      // console.log(user[0]);
       return user[0];
     }
   }
