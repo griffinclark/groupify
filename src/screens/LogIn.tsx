@@ -8,6 +8,8 @@ import { Navbar } from '../molecules/MoleculesExports';
 import { Title, NavButton, Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { User } from '../models';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Text } from 'react-native';
 
 interface Props {
   navigation: {
@@ -140,6 +142,12 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
         onChangeText={(e) => setPhone(formatPhoneNumber(e))}
       />
       <FormInput returnKeyNext={false} label="Password" onChangeText={setPassword} secureTextEntry={true} />
+      <TouchableOpacity
+        style={{ alignSelf: 'center', marginBottom: 20 }}
+        onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
+      >
+        <Text style={{ color: '#288EF5' }}>Forgot password?</Text>
+      </TouchableOpacity>
       {error && <Alert status="error" message={error} />}
       <Button title="Sign In" onPress={logIn} disabled={disabled} />
     </Screen>
