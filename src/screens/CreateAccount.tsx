@@ -20,6 +20,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [formatPhone, setFormatPhone] = useState<string>('');
   const [validationCode, setCode] = useState('');
   const [disabled, setDisabled] = useState(true);
@@ -79,6 +80,10 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   // sign the user up
   const signUp = async () => {
     if (invalidInput(formatPhone)) {
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
       return;
     }
     try {
@@ -155,11 +160,12 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                   setEmail(value.trim());
                 }}
               />
+              <FormInput returnKeyNext={true} label="Password" onChangeText={setPassword} secureTextEntry={true} />
               <FormInput
                 submit={signUp}
                 returnKeyNext={false}
-                label="Password"
-                onChangeText={setPassword}
+                label="Confirm Password"
+                onChangeText={setConfirmPassword}
                 secureTextEntry={true}
               />
               {error && <Alert status="error" message={error} />}

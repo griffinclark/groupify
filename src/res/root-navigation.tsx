@@ -20,6 +20,7 @@ import { InviteeList } from '../screens/inviteList';
 // import { AcceptDecline } from '../organisms/acceptDecline';
 import { User, Plan } from '../models';
 import { Profile } from '../screens/Profile';
+import { ForgotPassword } from '../screens/ForgotPassword';
 
 export type RoutePropParams = {
   params: {
@@ -85,6 +86,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="PlanDetails" component={PlanDetails} options={{ headerShown: false }} />
         <Stack.Screen name="InvitedPlans" component={InvitedPlans} options={{ headerShown: false }} />
         <Stack.Screen name="InviteeList" component={InviteeList} options={{ headerShown: false }} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
         {/* <Stack.Screen name="Attendees" component={Attendees} options={{ headerShown: false }} />
         <Stack.Screen name="AcceptDecline" component={AcceptDecline} options={{ headerShown: false }} /> */}
       </Stack.Navigator>
