@@ -128,7 +128,11 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? -300 : -200}
+      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
+    >
       <Screen>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
           <Navbar>

@@ -73,9 +73,10 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
     if (verificationCode && confirmNewPassword && newPassword) {
       if (confirmNewPassword === newPassword) {
         try {
-          Auth.forgotPasswordSubmit(route.params.phone, verificationCode, newPassword).then(() => {
-            navigation.navigate('Login', {});
-            console.log('Successfully reset password');
+          Auth.forgotPasswordSubmit(route.params.phone, verificationCode, newPassword)
+            .then(() => {
+              navigation.navigate('Login', {});
+              console.log('Successfully reset password');
             })
             .catch((error) => setError(error.message));
         } catch (error) {
@@ -83,6 +84,16 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
         }
       } else {
         setError('Passwords do not match');
+      }
+    } else {
+      if (!verificationCode) {
+        setError('Enter verification code');
+      }
+      if (!newPassword) {
+        setError('Enter new password');
+      }
+      if (!confirmNewPassword) {
+        setError('Confirm new password');
       }
     }
   };
