@@ -1,6 +1,6 @@
 import { DataStore, Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Linking, Platform } from 'react-native';
 import { Screen, Button } from '../atoms/AtomsExports';
 import { formatTime, convertDateStringToDate, loadPhoto } from '../res/utilFunctions';
 import { TEAL, GREY_4, GOLD, GREY_8 } from '../res/styles/Colors';
@@ -100,8 +100,19 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     setRefreshAttendeeList(!refreshAttendeeList);
   };
 
-  const pressed = () => {
-    console.warn('coming soon!');
+  const linkToMaps = (location: string) => {
+    const url = Platform.select({
+      ios: `maps:0,0?q=${location}`,
+      android: `geo:0,0?q=${location}`,
+    });
+
+    try {
+      if (url) {
+        Linking.openURL(url);
+      }
+    } catch (error) {
+      console.log('No location found');
+    }
   };
 
   return (
@@ -122,15 +133,13 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
             {plan.date && <Text>{convertDateStringToDate(plan.date).toDateString()}</Text>}
             {plan.time && <Text>{formatTime(plan.time)}</Text>}
             <Text style={styles.descTitle}>Date</Text>
-            <TouchableOpacity onPress={pressed}>
-              {/* <Text style={styles.evText4}>Add to calendar</Text> */}
-            </TouchableOpacity>
+            <TouchableOpacity>{/* <Text style={styles.evText4}>Add to calendar</Text> */}</TouchableOpacity>
           </View>
           <View>
             <Text style={{ maxWidth: 150, flexWrap: 'wrap' }}>{plan.title}</Text>
             <Text style={[styles.descTitle]}>Location</Text>
-            <TouchableOpacity onPress={pressed}>
-              {/* <Text style={{ color: '#31A59F' }}>View map</Text> */}
+            <TouchableOpacity onPress={() => plan.location && linkToMaps(plan.location)}>
+              <Text style={{ color: TEAL }}>View map</Text>
             </TouchableOpacity>
           </View>
         </View>
