@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { GREY_0, TEAL } from './../res/styles/Colors';
-import { convertDateStringToDate, convertTimeStringToDate, getCurrentUser, sortPlansByDate } from './../res/utilFunctions';
+import {
+  convertDateStringToDate,
+  convertTimeStringToDate,
+  getCurrentUser,
+  sortPlansByDate,
+} from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { MiniDataDisplay } from '../organisms/OrganismsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
