@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { GREY_0, TEAL } from './../res/styles/Colors';
-import { convertDateStringToDate, getCurrentUser, sortPlansByDate } from './../res/utilFunctions';
+import { convertDateStringToDate, convertTimeStringToDate, getCurrentUser, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { MiniDataDisplay } from '../organisms/OrganismsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
@@ -69,11 +69,18 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     const currentDate = new Date();
     return plans.filter((plan) => {
       if (plan.date) {
-        if (convertDateStringToDate(plan.date).getTime() > currentDate.getTime()) {
-          return true;
+        if (convertDateStringToDate(plan.date).toLocaleDateString() < currentDate.toLocaleDateString()) {
+          return false;
+        }
+        if (convertDateStringToDate(plan.date).toLocaleDateString() == currentDate.toLocaleDateString()) {
+          if (convertTimeStringToDate(plan.time).toLocaleTimeString() < currentDate.toLocaleTimeString()) {
+            return false;
+          } else {
+            return true;
+          }
         }
       }
-      return false;
+      return true;
     });
   };
 
