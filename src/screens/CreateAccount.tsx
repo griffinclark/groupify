@@ -95,12 +95,12 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
           phone_number: formatPhone,
           name: name,
         },
-        validationData: [
-          {
-            Name: 'phoneNumber',
-            Value: formatPhone,
-          },
-        ],
+        // validationData: [
+        //   {
+        //     Name: 'phoneNumber',
+        //     Value: formatPhone,
+        //   },
+        // ],
       });
       console.log('user successfully created');
       setError(undefined);
