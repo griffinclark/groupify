@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { GREY_5 } from '../res/styles/Colors';
+import { GOLD, GREY_5 } from '../res/styles/Colors';
 
 interface FormProps {
   onChangeText: React.Dispatch<string>;
@@ -23,9 +23,10 @@ export const FormInput: React.FC<FormProps> = ({
   autoFocus,
   submit,
 }: FormProps) => {
+  const [focus, setFocus] = useState(false);
   return (
     <View style={styles.wrapper}>
-      <Text>{label}</Text>
+      <Text style={styles.title}>{label}</Text>
       <TextInput
         returnKeyType={returnKeyNext ? 'next' : 'done'}
         autoFocus={autoFocus || false}
@@ -38,10 +39,12 @@ export const FormInput: React.FC<FormProps> = ({
             submit(label);
           }
         }}
-        style={styles.input}
+        style={[styles.input, { borderColor: focus ? GOLD : GREY_5 }]}
         placeholder={placeholder}
         onChangeText={onChangeText}
+        onBlur={() => setFocus(false)}
         secureTextEntry={secureTextEntry}
+        onFocus={() => setFocus(true)}
       />
     </View>
   );
@@ -52,10 +55,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 10,
   },
+  title: {
+    fontWeight: '400',
+    fontSize: 14,
+  },
   input: {
-    backgroundColor: GREY_5,
+    backgroundColor: 'white',
     padding: 10,
+    paddingVertical: 12,
     marginVertical: 5,
     borderRadius: 5,
+    borderWidth: 1,
   },
 });

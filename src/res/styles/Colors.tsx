@@ -1,6 +1,6 @@
 // Author: Griffin Clark
 // Init date: 1/21/2021
-// Last updated: 4/11/2021
+// Last updated: 8/24/2021
 
 //CURRENT COLORS
 export const LT_PURPLE = '#9062cc';
@@ -17,8 +17,29 @@ export const GREY_6 = '#F2F2F2';
 export const GREY_7 = '#FAFAFA';
 export const GREY_8 = '#616060';
 export const RED = '#E71717';
+
+//NEW COLOR SCALE
+
+//GOLD SCALE
+export const GOLD_1 = '#D1BF9F';
+export const GOLD_2 = '#D1AA5E';
 export const GOLD = '#BE8C2C';
+export const GOLD_4 = '#7B5B24';
+export const GOLD_5 = '#483517';
+
+//TEAL SCALE
+export const TEAL_1 = '#123B39';
+export const TEAL_2 = '#22706C';
 export const TEAL = '#31A59F';
+export const TEAL_4 = '#7FCFD8';
+export const TEAL_5 = '#A5DDED';
+
+//YELLOW SCALE
+export const YELLOW_1 = '#4D3F18';
+export const YELLOW_2 = '#876F2B';
+export const YELLOW = '#D9B139';
+export const YELLOW_4 = '#FFDC73';
+export const YELLOW_5 = '#FEEAAD';
 
 //OLD COLORS: WILL BE DEPRECIATED
 // COLORS

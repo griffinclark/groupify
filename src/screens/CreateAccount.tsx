@@ -1,11 +1,12 @@
 import { RoutePropParams } from '../res/root-navigation';
-import { Keyboard, KeyboardAvoidingView, Platform, Text, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { Title, NavButton, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
-import { Navbar } from '../molecules/MoleculesExports';
+import { Title, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TEAL } from '../res/styles/Colors';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface Props {
   navigation: {
@@ -18,6 +19,8 @@ interface Props {
 export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -35,6 +38,10 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       setDisabled(true);
     }
   }, [email, password, name, phone, formatPhone, validationCode]);
+
+  useEffect(() => {
+    setName(firstName + ' ' + lastName);
+  }, [firstName, lastName]);
 
   useEffect(() => {
     setPhone(formatPhoneNumber(phone));
@@ -87,6 +94,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       return;
     }
     try {
+      console.log(name);
       await Auth.signUp({
         username: formatPhone,
         password,
@@ -145,46 +153,62 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
     >
       <Screen>
+        <Icon
+          style={{ alignSelf: 'flex-start', marginLeft: 20 }}
+          name="arrow-left"
+          type="font-awesome"
+          size={30}
+          onPress={() => navigation.navigate('Welcome', {})}
+        />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-          <Navbar>
-            <NavButton onPress={() => navigation.navigate('Welcome', {})} title="Back" />
-          </Navbar>
           {route.params.step === 'create' && (
-            <View>
-              <Title>Create Account</Title>
-              <FormInput
-                autoFocus={true}
-                returnKeyNext={true}
-                label="Name"
-                onChangeText={(value) => {
-                  setName(value.trim());
-                }}
-              />
-              <FormInput
-                returnKeyNext={true}
-                value={phone}
-                label="Phone Number"
-                onChangeText={(value) => {
-                  setPhone(formatPhoneNumber(value));
-                }}
-              />
-              <FormInput
-                returnKeyNext={true}
-                label="Email"
-                onChangeText={(value) => {
-                  setEmail(value.trim());
-                }}
-              />
-              <FormInput returnKeyNext={true} label="Password" onChangeText={setPassword} secureTextEntry={true} />
-              <FormInput
-                submit={signUp}
-                returnKeyNext={false}
-                label="Confirm Password"
-                onChangeText={setConfirmPassword}
-                secureTextEntry={true}
-              />
-              {error && <Alert status="error" message={error} />}
-              <Button title="Next" onPress={signUp} disabled={disabled} />
+            <View style={styles.container}>
+              <View>
+                <Text style={styles.title}>Create Account</Text>
+                <FormInput
+                  autoFocus={false}
+                  returnKeyNext={true}
+                  label="First Name"
+                  onChangeText={(value) => {
+                    setFirstName(value.trim());
+                  }}
+                />
+                <FormInput
+                  autoFocus={false}
+                  returnKeyNext={true}
+                  label="Last Name"
+                  onChangeText={(value) => {
+                    setLastName(value.trim());
+                  }}
+                />
+                <FormInput
+                  returnKeyNext={true}
+                  value={phone}
+                  label="Phone Number"
+                  onChangeText={(value) => {
+                    setPhone(formatPhoneNumber(value));
+                  }}
+                />
+                <FormInput
+                  returnKeyNext={true}
+                  label="Email"
+                  onChangeText={(value) => {
+                    setEmail(value.trim());
+                  }}
+                />
+                <FormInput returnKeyNext={true} label="Password" onChangeText={setPassword} secureTextEntry={true} />
+                <FormInput
+                  submit={signUp}
+                  returnKeyNext={false}
+                  label="Confirm Password"
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry={true}
+                />
+                {error && <Alert status="error" message={error} />}
+              </View>
+              <View style={{ margin: 20 }}>
+                <Button title="Next" onPress={signUp} disabled={disabled} />
+              </View>
             </View>
           )}
           {route.params.step === 'validate' && (
@@ -225,3 +249,17 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    height: '100%',
+    justifyContent: 'space-between',
+  },
+  title: {
+    margin: 20,
+    color: TEAL,
+    fontSize: 32,
+    fontWeight: '400',
+  },
+});
