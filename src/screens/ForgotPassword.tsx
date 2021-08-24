@@ -1,15 +1,15 @@
 import { Auth } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Keyboard, Text, View, StyleSheet } from 'react-native';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Alert } from '../atoms/AlertModal';
 import { Button } from '../atoms/Button';
 import { FormInput } from '../atoms/FormInput';
-import { NavButton } from '../atoms/NavButton';
 import { Screen } from '../atoms/Screen';
-import { Title } from '../atoms/Title';
-import { Navbar } from '../molecules/Navbar';
 import { RoutePropParams } from '../res/root-navigation';
+import { TEAL } from '../res/styles/Colors';
 
 interface Props {
   navigation: {
@@ -100,41 +100,58 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
 
   return (
     <Screen>
-      <Navbar>
-        <NavButton onPress={() => navigation.navigate('Welcome', {})} title="Back" />
-      </Navbar>
+      <Icon
+        style={{ alignSelf: 'flex-start', marginLeft: 20 }}
+        name="arrow-left"
+        type="font-awesome"
+        size={30}
+        onPress={() => navigation.navigate('Login', {})}
+      />
       {route.params.step === 'phone' && (
         <View>
-          <Title>Enter Phone Number</Title>
-          <FormInput
-            returnKeyNext={true}
-            label="Phone Number"
-            value={phone}
-            onChangeText={(e) => setPhone(formatPhoneNumber(e))}
-          />
-          {error && <Alert status="error" message={error} />}
-          <Button title="Reset Password" onPress={confirmUserPhone} />
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+            <Text style={styles.title}>Enter Phone Number</Text>
+            <FormInput
+              returnKeyNext={true}
+              label="Phone Number"
+              value={phone}
+              onChangeText={(e) => setPhone(formatPhoneNumber(e))}
+            />
+            {error && <Alert status="error" message={error} />}
+            <Button title="Reset Password" onPress={confirmUserPhone} />
+          </TouchableWithoutFeedback>
         </View>
       )}
       {route.params.step === 'password' && (
         <View>
-          <FormInput
-            returnKeyNext={true}
-            label="Verification Code"
-            onChangeText={setVerificationCode}
-            secureTextEntry={false}
-          />
-          <FormInput returnKeyNext={true} label="New Password" onChangeText={setNewPassword} secureTextEntry={true} />
-          <FormInput
-            returnKeyNext={false}
-            label="Confirm New Password"
-            onChangeText={setConfirmNewPassword}
-            secureTextEntry={true}
-          />
-          {error && <Alert status="error" message={error} />}
-          <Button title="Confirm New Password" onPress={confirmResetPassword} />
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+            <FormInput
+              returnKeyNext={true}
+              label="Verification Code"
+              onChangeText={setVerificationCode}
+              secureTextEntry={false}
+            />
+            <FormInput returnKeyNext={true} label="New Password" onChangeText={setNewPassword} secureTextEntry={true} />
+            <FormInput
+              returnKeyNext={false}
+              label="Confirm New Password"
+              onChangeText={setConfirmNewPassword}
+              secureTextEntry={true}
+            />
+            {error && <Alert status="error" message={error} />}
+            <Button title="Confirm New Password" onPress={confirmResetPassword} />
+          </TouchableWithoutFeedback>
         </View>
       )}
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    margin: 20,
+    color: TEAL,
+    fontSize: 32,
+    fontWeight: '400',
+  },
+});

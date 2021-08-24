@@ -4,12 +4,13 @@ import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
 import { Contact } from '../res/dataModels';
-import { Navbar } from '../molecules/MoleculesExports';
-import { Title, NavButton, Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
+import { Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { User } from '../models';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Text } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Keyboard, StyleSheet, Text } from 'react-native';
+import { TEAL } from '../res/styles/Colors';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface Props {
   navigation: {
@@ -131,25 +132,40 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <Screen>
-      <Navbar>
-        <NavButton onPress={() => navigation.navigate('Welcome', {})} title="Back" />
-      </Navbar>
-      <Title>Log In</Title>
-      <FormInput
-        returnKeyNext={true}
-        label="Phone Number"
-        value={phone}
-        onChangeText={(e) => setPhone(formatPhoneNumber(e))}
+      <Icon
+        style={{ alignSelf: 'flex-start', marginLeft: 20 }}
+        name="arrow-left"
+        type="font-awesome"
+        size={30}
+        onPress={() => navigation.navigate('Welcome', {})}
       />
-      <FormInput returnKeyNext={false} label="Password" onChangeText={setPassword} secureTextEntry={true} />
-      <TouchableOpacity
-        style={{ alignSelf: 'center', marginBottom: 20 }}
-        onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
-      >
-        <Text style={{ color: '#288EF5' }}>Forgot password?</Text>
-      </TouchableOpacity>
-      {error && <Alert status="error" message={error} />}
-      <Button title="Sign In" onPress={logIn} disabled={disabled} />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+        <Text style={styles.title}>Log In</Text>
+        <FormInput
+          returnKeyNext={true}
+          label="Phone Number"
+          value={phone}
+          onChangeText={(e) => setPhone(formatPhoneNumber(e))}
+        />
+        <FormInput returnKeyNext={false} label="Password" onChangeText={setPassword} secureTextEntry={true} />
+        <TouchableOpacity
+          style={{ alignSelf: 'center', marginBottom: 20 }}
+          onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
+        >
+          <Text style={{ color: '#288EF5' }}>Forgot password?</Text>
+        </TouchableOpacity>
+        {error && <Alert status="error" message={error} />}
+        <Button title="Sign In" onPress={logIn} disabled={disabled} />
+      </TouchableWithoutFeedback>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    margin: 20,
+    color: TEAL,
+    fontSize: 32,
+    fontWeight: '400',
+  },
+});
