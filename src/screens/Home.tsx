@@ -150,7 +150,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
           </View>
         ) : (
           <View style={styles.title}>
-            <Text style={globalStyles.superTitle}>Looks like you dont have any events.</Text>
+            <Text style={globalStyles.superTitle}>Looks like you don't have any events.</Text>
             <Text style={globalStyles.superTitle}>Lets create one together!</Text>
             <Text style={[globalStyles.title, { textAlign: 'center' }]}>
               Create your first event with the button below
