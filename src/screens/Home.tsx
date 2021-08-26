@@ -26,11 +26,7 @@ interface Props {
     params: {
       Login: string;
     };
-    navigate:
-      | ((ev: string, a?: { step?: string; email?: string }) => void)
-      | ((ev: string, a?: { data?: { prevAction?: string } }) => void)
-      | ((ev: string, a?: { userID?: string }) => void)
-      | ((ev: string, a?: { currentUser?: User }) => void);
+    navigate: (ev: string, {}) => void;
     push: (ev: string, e: { email: string; step: string }) => void;
   };
   route: RoutePropParams;
@@ -73,7 +69,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const removePastPlans = (plans: Plan[]) => {
     const currentDate = new Date();
     return plans.filter((plan) => {
-      if (plan.date) {
+      if (plan.date && plan.time) {
         if (convertDateStringToDate(plan.date).toLocaleDateString() < currentDate.toLocaleDateString()) {
           return false;
         }
@@ -129,14 +125,14 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
         {userPlans.concat(invitedPlans).length > 0 ? (
           <View>
             <Text style={styles.label}>This Week</Text>
-            <MiniDataDisplay data={upcomingPlans} navigation={navigation} />
+            <MiniDataDisplay navigation={navigation} data={upcomingPlans} />
             <View style={globalStyles.miniSpacer}></View>
             <Text style={styles.label}>Your Created Plans</Text>
             {/* <View style={styles.sortMenu}>
               <Text>Newest</Text>
               <Text>Oldest</Text>
             </View> */}
-            <MiniDataDisplay data={userPlans} navigation={navigation} />
+            <MiniDataDisplay navigation={navigation} data={userPlans} />
             <View style={globalStyles.miniSpacer}></View>
             <Text style={styles.label}>Your Invites</Text>
             <TouchableOpacity
@@ -146,7 +142,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
             >
               <Text style={styles.selector}>See All</Text>
             </TouchableOpacity>
-            <MiniDataDisplay data={invitedPlans} navigation={navigation} />
+            <MiniDataDisplay navigation={navigation} data={invitedPlans} />
           </View>
         ) : (
           <View style={styles.title}>

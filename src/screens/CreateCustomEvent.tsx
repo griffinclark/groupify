@@ -34,7 +34,6 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     eventLocation: string | undefined;
     eventDescription: string | undefined;
   }>({ eventName: planTitle, eventDate: '', eventTime: '', eventLocation: planAddress, eventDescription: 'hey' });
-  const [fullDate, setFullDate] = useState<Date>();
 
   useEffect(() => {
     if (route.params.data) {

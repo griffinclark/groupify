@@ -1,11 +1,11 @@
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 
-interface SquareImageDisplayProps {
+interface Props {
   imageURI: string;
 }
 
-export const SquareImageDisplay: React.FC<SquareImageDisplayProps> = ({ imageURI }: SquareImageDisplayProps) => {
+export const SquareImageDisplay: React.FC<Props> = ({ imageURI }: Props) => {
   return <Image style={styles.imagePreviewContainer} source={{ uri: imageURI }} />;
 };
 

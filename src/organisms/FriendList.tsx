@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { DK_PURPLE, GREY_3, WHITE } from '../res/styles/Colors';
 import { Invitee } from '../models';
 
-interface FriendProps {
+interface Props {
   friends?: (Invitee | null)[];
   title?: string;
   style?: Record<string, unknown>;
 }
 
-export const FriendList: React.FC<FriendProps> = ({ friends, title, style }: FriendProps) => {
+export const FriendList: React.FC<Props> = ({ friends, title, style }: Props) => {
   return (
     <View style={[styles.outer, style]}>
       {title && <Text style={styles.friendTitle}>{title}</Text>}

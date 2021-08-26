@@ -5,7 +5,7 @@ import { GREY_1 } from '../res/styles/Colors';
 import { Button } from '../atoms/AtomsExports';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 
-interface PlaceCardProps {
+interface Props {
   style?: StyleProp<ViewStyle>;
   name: string;
   address: string;
@@ -24,7 +24,7 @@ interface PlaceCardProps {
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 // Also add API key to app.json config before building
 
-export const PlaceCard: React.FC<PlaceCardProps> = (props: PlaceCardProps) => {
+export const PlaceCard: React.FC<Props> = (props: Props) => {
   const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
   const [photos, setPhotos] = useState<JSX.Element>();
 

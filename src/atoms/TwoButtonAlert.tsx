@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 
-interface TwoButtonAlertProps {
+interface Props {
   title: string;
   message: string;
   button1Text: string;
@@ -11,14 +11,14 @@ interface TwoButtonAlertProps {
 
 const defaultFunction = () => void 0;
 
-export const TwoButtonAlert: (props: TwoButtonAlertProps) => void = ({
+export const TwoButtonAlert: (props: Props) => void = ({
   title,
   message,
   button1Text,
   button1OnPress = defaultFunction,
   button2Text,
   button2OnPress = defaultFunction,
-}: TwoButtonAlertProps) => {
+}: Props) => {
   Alert.alert(title, message, [
     { text: button1Text, onPress: button1OnPress },
     { text: button2Text, onPress: button2OnPress },

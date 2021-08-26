@@ -2,11 +2,11 @@ import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { GREY_2, RED, WHITE } from '../res/styles/Colors';
 
-interface AlertProps {
+interface Props {
   status: 'error' | 'success';
   message: string;
 }
-export const Alert: React.FC<AlertProps> = ({ status, message }: AlertProps) => {
+export const Alert: React.FC<Props> = ({ status, message }: Props) => {
   return (
     <View style={[styles.container, styles[status]]}>
       <Text style={styles.text}>{message}</Text>

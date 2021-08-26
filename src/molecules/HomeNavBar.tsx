@@ -1,17 +1,19 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { GOLD, WHITE } from '../res/styles/Colors';
-import { StackProps } from '../res/root-navigation';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { User, Plan } from '../models';
 
-interface HomeNavBarProps extends StackProps {
-  user: User;
+interface Props {
+  user?: User;
   style?: Record<string, unknown>;
   plan: Plan;
+  navigation: {
+    navigate: (ev: string, {}) => void;
+  };
 }
 
-export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) => {
+export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: Props) => {
   // const [showOptions, setShowOptions] = useState(false);
 
   return (
@@ -33,13 +35,13 @@ export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) =>
       ) : (
         <View></View>
       )} */}
-      <View style={[styles.nav, props.style]}>
+      <View style={[styles.nav, style]}>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            props.navigation?.navigate('Profile', {
-              currentUser: props.user,
-              currentUserPlan: props.plan,
+            navigation?.navigate('Profile', {
+              currentUser: user,
+              currentUserPlan: plan,
             });
             // setShowOptions(false);
           }}
@@ -52,13 +54,13 @@ export const HomeNavBar: React.FC<HomeNavBarProps> = (props: HomeNavBarProps) =>
           size={60}
           color={WHITE}
           onPress={() => {
-            props.navigation?.navigate('SearchPlace', { currentUser: props.user });
+            navigation.navigate('SearchPlace', { currentUser: user });
           }}
         />
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            props.navigation?.navigate('ImportContacts');
+            navigation?.navigate('ImportContacts', {});
             // setShowOptions(false);
           }}
         >

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-interface TitleProps {
+interface Props {
   style?: Record<string, unknown>;
   children?: string;
 }
 
-export const Title: React.FC<TitleProps> = (props: TitleProps) => {
+export const Title: React.FC<Props> = (props: Props) => {
   return <Text style={[styles.title, props.style]}>{props.children}</Text>;
 };
 
