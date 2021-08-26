@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { GOLD, GREY_5 } from '../res/styles/Colors';
 
-interface FormProps {
+interface Props {
   onChangeText: React.Dispatch<string>;
   label?: string;
   placeholder?: string;
@@ -13,7 +13,7 @@ interface FormProps {
   autoFocus?: boolean;
   submit?: (ev: string) => void;
 }
-export const FormInput: React.FC<FormProps> = ({
+export const FormInput: React.FC<Props> = ({
   onChangeText,
   label,
   placeholder,
@@ -22,7 +22,7 @@ export const FormInput: React.FC<FormProps> = ({
   returnKeyNext,
   autoFocus,
   submit,
-}: FormProps) => {
+}: Props) => {
   const [focus, setFocus] = useState(false);
 
   return (

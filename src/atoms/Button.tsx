@@ -3,20 +3,14 @@ import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, Text, View } from '
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, WHITE, TEAL } from '../res/styles/Colors';
 
-interface ButtonProps {
+interface Props {
   onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;
   title: string;
   disabled?: boolean;
   containerStyle?: Record<string, unknown>;
   buttonStyle?: Record<string, unknown>;
 }
-export const Button: React.FC<ButtonProps> = ({
-  onPress,
-  title,
-  disabled = false,
-  containerStyle,
-  buttonStyle,
-}: ButtonProps) => {
+export const Button: React.FC<Props> = ({ onPress, title, disabled = false, containerStyle, buttonStyle }: Props) => {
   return (
     <View style={[buttonStyles.container, containerStyle]}>
       <TouchableOpacity

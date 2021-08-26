@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-interface NavbarProps {
+interface Props {
   style?: Record<string, unknown>;
   children?: ReactNode;
 }
 
-export const Navbar: React.FC<NavbarProps> = (props: NavbarProps) => {
+export const Navbar: React.FC<Props> = (props: Props) => {
   return <View style={[styles.nav, props.style]}>{props.children}</View>;
 };
 

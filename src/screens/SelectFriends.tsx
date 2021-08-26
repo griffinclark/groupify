@@ -4,10 +4,11 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { ContactTile } from '../molecules/MoleculesExports';
-import { Button, FriendBubble, SearchBar } from '../atoms/AtomsExports';
+import { Button, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { FriendsContainer } from '../organisms/FriendContainer';
 
 interface Props {
   navigation: {
@@ -53,7 +54,9 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         }
       }
     }
-    setFriends(friendList);
+    if (friendList) {
+      setFriends(friendList);
+    }
   };
 
   const addSelectedContact = (contact: Contact) => {
@@ -70,22 +73,6 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     }
     selectedContacts.splice(index, 1);
     setSelectedContacts(selectedContacts.slice(0));
-  };
-
-  const addSelectedFriend = (friend: User) => {
-    setSelectedFriends((selectedFriends) => [...selectedFriends, friend]);
-  };
-
-  const removeSelectedFriend = (friend: User) => {
-    let index = 0;
-    for (let i = 0; i < selectedFriends.length; i++) {
-      if (selectedFriends[i].id === friend.id) {
-        index = i;
-        break;
-      }
-    }
-    selectedFriends.splice(index, 1);
-    setSelectedFriends(selectedFriends.slice(0));
   };
 
   const loadContacts = async () => {
@@ -109,22 +96,9 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     );
   };
 
-  interface renderFriendProps {
-    item: User;
-  }
   interface renderContactProps {
     item: Contact;
   }
-
-  const renderFriend = ({ item }: renderFriendProps) => (
-    <FriendBubble
-      selectedFriends={selectedFriends}
-      friend={item}
-      key={item.id}
-      addUser={addSelectedFriend}
-      removeUser={removeSelectedFriend}
-    />
-  );
 
   const renderContact = ({ item }: renderContactProps) => {
     return (
@@ -151,7 +125,6 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           description: event.description,
           imageURL: event.imageURL,
           placeId: event.placeId,
-          fullDate: event.fullDate,
           friends: selectedFriends,
           contacts: selectedContacts,
         },
@@ -220,20 +193,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
               <Text style={styles.text}>Send your friends an in app notification!</Text>
               {friends.length > 0 ? (
                 <View style={styles.friendBubbleContainer}>
-                  <FlatList
-                    data={friends}
-                    renderItem={renderFriend}
-                    ListEmptyComponent={() => (
-                      <View style={styles.title}>
-                        <Text>No Friends Found</Text>
-                      </View>
-                    )}
-                    horizontal={false}
-                    numColumns={4}
-                  />
+                  <FriendsContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
                 </View>
               ) : null}
-              <View style={{ position: 'absolute', bottom: 27, alignSelf: 'center' }}>
+              <View style={{ marginBottom: 27, alignSelf: 'center' }}>
                 <Button
                   title={selectedFriends.length === 0 ? 'Skip' : 'Next'}
                   onPress={() => setMenuItemSelected('contacts')}
@@ -360,6 +323,7 @@ const styles = StyleSheet.create({
   },
   friendBubbleContainer: {
     flexDirection: 'row',
+    flex: 1,
   },
   flatlistContainer: {
     flexDirection: 'column',

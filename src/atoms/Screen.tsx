@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { WHITE } from '../res/styles/Colors';
 
-interface ScreenProps {
+interface Props {
   style?: Record<string, unknown>;
+  children: ReactNode;
 }
 
-export const Screen: React.FC<ScreenProps> = (props: React.PropsWithChildren<ScreenProps>) => {
-  return <SafeAreaView style={[styles.screen, props.style]}>{props.children}</SafeAreaView>;
+export const Screen: React.FC<Props> = ({ style, children }: Props) => {
+  return <SafeAreaView style={[styles.screen, style]}>{children}</SafeAreaView>;
 };
 
 const styles = StyleSheet.create({

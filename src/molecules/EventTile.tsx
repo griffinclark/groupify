@@ -6,11 +6,11 @@ import { FriendList } from '../organisms/FriendList';
 import { Plan } from '../models';
 import { formatTime, formatDate } from '../res/utilFunctions';
 
-interface PlanTileProps {
+interface Props {
   plan: Plan;
 }
 
-export const EventTile: React.FC<PlanTileProps> = ({ plan }: PlanTileProps) => {
+export const EventTile: React.FC<Props> = ({ plan }: Props) => {
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.title}>{plan.title}</Text>

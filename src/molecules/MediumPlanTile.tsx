@@ -4,12 +4,12 @@ import { GREY_1, WHITE, POST_SPACING } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { formatTime, formatDate, loadPhoto } from '../res/utilFunctions';
 
-interface MediumPlanTileProps {
+interface Props {
   plan: Plan;
   onPress?: (event: GestureResponderEvent) => void;
 }
 
-export const MediumPlanTile: React.FC<MediumPlanTileProps> = ({ plan, onPress }: MediumPlanTileProps) => {
+export const MediumPlanTile: React.FC<Props> = ({ plan, onPress }: Props) => {
   const [photoURI, setPhotoURI] = useState('');
 
   useEffect(() => {
