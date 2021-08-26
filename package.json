@@ -15,6 +15,7 @@
     ]
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.2.0",
     "@iconify-icons/eva": "^1.1.0",
     "@iconify/react": "^1.1.4",
     "@react-native-async-storage/async-storage": "^1.15.2",

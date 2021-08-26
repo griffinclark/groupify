@@ -24,6 +24,7 @@ export const FormInput: React.FC<FormProps> = ({
   submit,
 }: FormProps) => {
   const [focus, setFocus] = useState(false);
+
   return (
     <View style={styles.wrapper}>
       <Text style={styles.title}>{label}</Text>
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: '400',
     fontSize: 14,
+    fontFamily: 'Brandon_bld',
   },
   input: {
     backgroundColor: 'white',
