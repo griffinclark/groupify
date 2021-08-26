@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: '400',
     fontSize: 14,
-    fontFamily: 'Brandon_bld',
   },
   input: {
     backgroundColor: 'white',
