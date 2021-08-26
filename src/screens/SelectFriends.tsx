@@ -41,10 +41,12 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
   }, []);
 
   const getFriends = async () => {
+    const user = await DataStore.query(User, (user) => user.id('contains', route.params.currentUser.id));
+    const userFriends = user[0].friends;
     const friendList = [];
-    if (route.params.currentUser.friends) {
-      for (let i = 0; i < route.params.currentUser.friends.length; i++) {
-        const friendId = route.params.currentUser.friends[i];
+    if (userFriends) {
+      for (let i = 0; i < userFriends.length; i++) {
+        const friendId = userFriends[i];
         if (friendId) {
           const friend = await DataStore.query(User, friendId);
           friendList.push(friend);

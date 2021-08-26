@@ -5,12 +5,12 @@ import { getAllImportedContacts } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
 import { Contact } from '../res/dataModels';
 import { Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
-import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { User } from '../models';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Keyboard, StyleSheet, Text } from 'react-native';
 import { TEAL } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
@@ -36,29 +36,6 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
   useEffect(() => {
     setFormatPhone(amplifyPhoneFormat(phone));
   }, [phone]);
-
-  const amplifyPhoneFormat = (phone: string) => {
-    if (phone.length > 10) {
-      const util = PhoneNumberUtil.getInstance();
-      const num = util.parseAndKeepRawInput(phone, 'US');
-      return util.format(num, PhoneNumberFormat.E164);
-    }
-    return phone;
-  };
-
-  const formatPhoneNumber = (value: string) => {
-    if (!value) return value;
-    const phoneNumber = value.replace(/[^\d]/g, '');
-    const phoneNumberLength = phoneNumber.length;
-    if (phoneNumberLength < 4) return phoneNumber;
-    if (phoneNumberLength < 7) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
-    }
-    if (phoneNumberLength < 11) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
-    }
-    return phoneNumber;
-  };
 
   const registerUser = async (): Promise<User> => {
     await registerForPushNotifications();
@@ -145,7 +122,7 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
           returnKeyNext={true}
           label="Phone Number"
           value={phone}
-          onChangeText={(e) => setPhone(formatPhoneNumber(e))}
+          onChangeText={(number) => setPhone(formatPhoneNumber(number))}
         />
         <FormInput returnKeyNext={false} label="Password" onChangeText={setPassword} secureTextEntry={true} />
         <TouchableOpacity

@@ -156,7 +156,6 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   const onButtonPress = (title: string, address: string, placeId: string, photo: string) => {
-    console.log(route.params.currentUser);
     navigation.navigate('CreateCustomEvent', {
       currentUser: route.params.currentUser,
       data: {
