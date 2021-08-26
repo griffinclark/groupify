@@ -93,8 +93,15 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       setError('Passwords do not match');
       return;
     }
+    if (!firstName) {
+      setError('Please enter your first name');
+      return;
+    }
+    if (!lastName) {
+      setError('Please enter your last name');
+      return;
+    }
     try {
-      console.log(name);
       await Auth.signUp({
         username: formatPhone,
         password,

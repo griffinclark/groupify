@@ -24,6 +24,7 @@ export const FormInput: React.FC<FormProps> = ({
   submit,
 }: FormProps) => {
   const [focus, setFocus] = useState(false);
+
   return (
     <View style={styles.wrapper}>
       <Text style={styles.title}>{label}</Text>
