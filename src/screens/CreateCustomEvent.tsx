@@ -53,7 +53,6 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   }) => {
     const image: string = photo ? loadPhoto(photo)?.props.source.uri : '';
     const id = uuid.v4();
-    console.log(fullDate);
     navigation.navigate('SelectFriends', {
       currentUser: route.params.currentUser,
       data: {
@@ -144,11 +143,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
             <Text style={styles.title}>New Plan</Text>
           </View>
           <View>{loadPhoto(photo)}</View>
-          <MeepForm
-            InputList={inputFields}
-            updatedValues={(value) => setValues(value)}
-            fullDate={(date) => setFullDate(date)}
-          >
+          <MeepForm InputList={inputFields} updatedValues={(value) => setValues(value)}>
             <FormButton title="Next" onPress={() => onFormSubmit(updatedValues)} />
           </MeepForm>
         </ScrollView>

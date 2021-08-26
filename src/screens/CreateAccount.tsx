@@ -3,10 +3,10 @@ import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Title, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
-import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { TEAL } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
@@ -48,20 +48,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     setFormatPhone(amplifyPhoneFormat(phone));
   }, [phone]);
 
-  const formatPhoneNumber = (phone: string) => {
-    if (!phone) return phone;
-    const phoneNumber = phone.replace(/[^\d]/g, '');
-    const phoneNumberLength = phoneNumber.length;
-    if (phoneNumberLength < 4) return phoneNumber;
-    if (phoneNumberLength < 7) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
-    }
-    if (phoneNumberLength < 11) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
-    }
-    return phoneNumber;
-  };
-
   const invalidInput = (phoneNumber: string) => {
     const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
     if (!phoneRegex.test(phone) && phoneNumber.length > 10) {
@@ -73,15 +59,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     } else {
       return false;
     }
-  };
-
-  const amplifyPhoneFormat = (phone: string) => {
-    if (phone.length > 10) {
-      const util = PhoneNumberUtil.getInstance();
-      const num = util.parseAndKeepRawInput(phone, 'US');
-      return util.format(num, PhoneNumberFormat.E164);
-    }
-    return phone;
   };
 
   // sign the user up
@@ -150,6 +127,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     } catch (err) {
       console.log('Error: ', err);
       setError(err.message);
+      setSuccess(undefined);
     }
   };
 
@@ -242,6 +220,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     console.log(route.params.phone);
                     Auth.resendSignUp(route.params.phone);
                     setSuccess('Sent new verification code');
+                    setError(undefined);
                   } catch (err) {
                     console.log(err);
                     setError(err.message);

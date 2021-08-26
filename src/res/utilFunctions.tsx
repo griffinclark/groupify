@@ -1,9 +1,11 @@
 import { Plan, User } from '../models';
 import Qs from 'qs';
 import { Auth, DataStore } from 'aws-amplify';
+import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
+//formats time to be presentable to users
 export const formatTime = (time: Date | string): string => {
   let newTime = new Date();
   if (typeof time === 'string') {
@@ -21,6 +23,7 @@ export const formatTime = (time: Date | string): string => {
   return hour + newTime.toTimeString().slice(2, 5) + ' ' + meridian;
 };
 
+//formats date to be presentable to users
 export const formatDate = (date: Date | string): string => {
   let newDate = new Date();
   if (typeof date === 'string') {
@@ -32,6 +35,7 @@ export const formatDate = (date: Date | string): string => {
   return newDate.getMonth() + 1 + '/' + newDate.getDate() + '/' + newDate.getFullYear();
 };
 
+//converts a raw time string into a full time type
 export const convertTimeStringToDate = (time: string): Date => {
   const hours = parseInt(time.slice(0, 2));
   const minutes = parseInt(time.slice(3, 5));
@@ -41,6 +45,7 @@ export const convertTimeStringToDate = (time: string): Date => {
   return newTime;
 };
 
+//converts a raw date string into a full date type
 export const convertDateStringToDate = (date: string): Date => {
   const year = parseInt(date.slice(0, 4));
   const month = parseInt(date.slice(5, 7));
@@ -53,6 +58,7 @@ export const convertDateStringToDate = (date: string): Date => {
   return newDate;
 };
 
+//formats date to be accepted by the database
 export const formatDatabaseDate = (date: string): string => {
   if (date.length === 9) {
     date = 0 + date;
@@ -66,6 +72,7 @@ export const formatDatabaseDate = (date: string): string => {
   return date;
 };
 
+//formats time to be accepted by the database
 export const formatDatabaseTime = (time: string): string => {
   if (time.length === 10) {
     time = 0 + time;
@@ -135,6 +142,7 @@ export const loadPhoto = async (placeID: string): Promise<string> => {
   return completeUri;
 };
 
+//retrieves the current user
 export const getCurrentUser = async (): Promise<User> => {
   const userInfo = await Auth.currentUserInfo();
   if (userInfo) {
@@ -143,4 +151,32 @@ export const getCurrentUser = async (): Promise<User> => {
       return user[0];
     }
   }
+};
+
+//format string phone number into (###) ###-####
+export const formatPhoneNumber = (phone: string): string => {
+  if (!phone) return phone;
+  const phoneNumber = phone.replace(/[^\d]/g, '');
+  const phoneNumberLength = phoneNumber.length;
+  if (phoneNumberLength < 4) return phoneNumber;
+  if (phoneNumberLength < 7) {
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+  }
+  if (phoneNumberLength < 11) {
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  }
+  if (phoneNumberLength == 11) {
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  }
+  return phoneNumber;
+};
+
+//formats string phone number into +1########## for amplify format
+export const amplifyPhoneFormat = (phone: string): string => {
+  if (phone.length > 10) {
+    const util = PhoneNumberUtil.getInstance();
+    const num = util.parseAndKeepRawInput(phone, 'US');
+    return util.format(num, PhoneNumberFormat.E164);
+  }
+  return phone;
 };

@@ -10,6 +10,7 @@ import { FormInput } from '../atoms/FormInput';
 import { Screen } from '../atoms/Screen';
 import { RoutePropParams } from '../res/root-navigation';
 import { TEAL } from '../res/styles/Colors';
+import { formatPhoneNumber } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
@@ -38,20 +39,6 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
       return util.format(num, PhoneNumberFormat.E164);
     }
     return phone;
-  };
-
-  const formatPhoneNumber = (value: string) => {
-    if (!value) return value;
-    const phoneNumber = value.replace(/[^\d]/g, '');
-    const phoneNumberLength = phoneNumber.length;
-    if (phoneNumberLength < 4) return phoneNumber;
-    if (phoneNumberLength < 7) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
-    }
-    if (phoneNumberLength < 11) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
-    }
-    return phoneNumber;
   };
 
   const confirmUserPhone = async () => {
@@ -115,10 +102,10 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
               returnKeyNext={true}
               label="Phone Number"
               value={phone}
-              onChangeText={(e) => setPhone(formatPhoneNumber(e))}
+              onChangeText={(number) => setPhone(formatPhoneNumber(number))}
             />
             {error && <Alert status="error" message={error} />}
-            <Button title="Reset Password" onPress={confirmUserPhone} />
+            <Button title="Submit" onPress={confirmUserPhone} />
           </TouchableWithoutFeedback>
         </View>
       )}
