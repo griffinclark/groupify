@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, View, Text, Platform } from 'react-native';
 import { WHITE } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { formatTime } from '../res/utilFunctions';
+import { formatIosTimeInput, formatTime } from '../res/utilFunctions';
 
 interface Props {
   children: ReactChild;
@@ -28,9 +28,16 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
         if (item.settings === 'time') {
           setShowTimePicker(false);
           setCurrentDate(selectedDate);
-          element.value = selectedDate.toLocaleTimeString();
-          updatedValues(values);
-          return;
+          if (Platform.OS === 'android') {
+            element.value = formatTime(selectedDate.toLocaleTimeString());
+            updatedValues(values);
+            return;
+          }
+          if (Platform.OS === 'ios') {
+            element.value = formatIosTimeInput(selectedDate.toLocaleTimeString());
+            updatedValues(values);
+            return;
+          }
         }
         if (item.settings === 'date') {
           setShowDatePicker(false);
@@ -55,7 +62,12 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
         itemsArray[i].value = currentDate.toLocaleDateString();
       }
       if (itemsArray[i].title === 'Time') {
-        itemsArray[i].value = currentDate.toLocaleTimeString();
+        if (Platform.OS === 'android') {
+          itemsArray[i].value = formatTime(currentDate.toLocaleTimeString());
+        }
+        if (Platform.OS === 'ios') {
+          itemsArray[i].value = formatIosTimeInput(currentDate.toLocaleTimeString());
+        }
       }
     }
     setValues(itemsArray);
@@ -93,13 +105,25 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'date'}
-              display={Platform.OS === 'ios' ? 'compact' : 'default'}
+              display={'default'}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
             />
           )}
-          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-            <Text style={styles.dateTime}>{currentDate ? currentDate.toLocaleDateString() : 'no date selected'}</Text>
-          </TouchableOpacity>
+          {Platform.OS === 'android' && (
+            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+              <Text style={styles.dateTime}>{currentDate ? currentDate.toLocaleDateString() : 'no date selected'}</Text>
+            </TouchableOpacity>
+          )}
+          {Platform.OS === 'ios' && (
+            <DateTimePicker
+              style={{ marginTop: 5 }}
+              testID={'dateTimePicker'}
+              value={currentDate}
+              mode={'date'}
+              display={'default'}
+              onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+            />
+          )}
           <View style={{ height: 15 }} />
         </View>
       );
@@ -113,12 +137,25 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'time'}
+              display={'default'}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
             />
           )}
-          <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-            <Text style={styles.dateTime}>{currentDate ? formatTime(currentDate) : 'no time selected'}</Text>
-          </TouchableOpacity>
+          {Platform.OS === 'android' && (
+            <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+              <Text style={styles.dateTime}>{currentDate ? formatTime(currentDate) : 'no time selected'}</Text>
+            </TouchableOpacity>
+          )}
+          {Platform.OS === 'ios' && (
+            <DateTimePicker
+              style={{ marginTop: 5 }}
+              testID={'dateTimePicker'}
+              value={currentDate}
+              mode={'time'}
+              display={'default'}
+              onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+            />
+          )}
           <View style={{ height: 15 }} />
         </View>
       );
