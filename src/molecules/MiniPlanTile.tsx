@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
-import { GREY_1, WHITE, POST_SPACING, TEAL, TEAL_5, TEAL_2 } from '../res/styles/Colors';
+import { GREY_1, WHITE, POST_SPACING, TEAL } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { formatTime, formatDate, isToday } from '../res/utilFunctions';
 
