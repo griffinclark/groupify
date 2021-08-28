@@ -60,7 +60,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            navigation?.navigate('ImportContacts', {});
+            navigation?.navigate('ImportContactDetails', {});
             // setShowOptions(false);
           }}
         >
