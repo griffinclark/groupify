@@ -7,7 +7,6 @@
     "eject": "expo eject",
     "test": "jest",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
-    "lint:fix":"eslint --fix --ext .js,.jsx ."
   },
   "jest": {
     "preset": "jest-expo",
