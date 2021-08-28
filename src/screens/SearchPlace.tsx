@@ -138,7 +138,12 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
           onButtonPress={() =>
-            onButtonPress(detail.name, detail.formatted_address, detail.place_id, moreDetails.photos[0].photo_reference)
+            onButtonPress(
+              detail.name,
+              detail.formatted_address,
+              detail.place_id,
+              moreDetails.photos ? moreDetails.photos[0].photo_reference : '',
+            )
           }
           onCloseButtonPress={clearMarkers}
         />,
