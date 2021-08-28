@@ -6,6 +6,7 @@ import {
   convertDateStringToDate,
   convertTimeStringToDate,
   getCurrentUser,
+  isFuturePlan,
   sortPlansByDate,
 } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
@@ -70,18 +71,8 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     const currentDate = new Date();
     return plans.filter((plan) => {
       if (plan.date && plan.time) {
-        if (convertDateStringToDate(plan.date).toLocaleDateString() < currentDate.toLocaleDateString()) {
-          return false;
-        }
-        if (convertDateStringToDate(plan.date).toLocaleDateString() == currentDate.toLocaleDateString()) {
-          if (convertTimeStringToDate(plan.time).toLocaleTimeString() < currentDate.toLocaleTimeString()) {
-            return false;
-          } else {
-            return true;
-          }
-        }
+        return isFuturePlan(plan.date, currentDate);
       }
-      return true;
     });
   };
 
