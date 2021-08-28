@@ -80,7 +80,7 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
       const user = await registerUser();
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
-        navigation.navigate('ImportContacts', {});
+        navigation.navigate('ImportContactDetails', {});
       } else {
         if (user.id) {
           console.log(user);
