@@ -17,7 +17,7 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
   const handlePress = () => {
     setSelected(!selected);
   };
-
+/*
   useEffect(() => {
     isSelected.map((selectedFriend) => {
       if (selectedFriend.name === friend.name) {
@@ -25,7 +25,7 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
       }
     });
   }, []);
-
+*/
   useEffect(() => {
     selected && addUser(friend);
     !selected && removeUser(friend);
