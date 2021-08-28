@@ -194,3 +194,41 @@ export const amplifyPhoneFormat = (phone: string): string => {
   }
   return phone;
 };
+
+export const isFuturePlan = (date: string, currentDate: Date): boolean => {
+  if (convertDateStringToDate(date).getFullYear() > currentDate.getFullYear()) {
+    return true;
+  } else if (convertDateStringToDate(date).getFullYear() < currentDate.getFullYear()) {
+    return false;
+  } else {
+    if (convertDateStringToDate(date).getMonth() > currentDate.getMonth()) {
+      return true;
+    } else if (convertDateStringToDate(date).getMonth() < currentDate.getMonth()) {
+      return false;
+    } else {
+      if (
+        date.substring(date.lastIndexOf('-') + 1) >
+        currentDate
+          .toLocaleDateString()
+          .substring(
+            currentDate.toLocaleDateString().indexOf('/') + 1,
+            currentDate.toLocaleDateString().lastIndexOf('/'),
+          )
+      ) {
+        return true;
+      } else if (
+        date.substring(date.lastIndexOf('-') + 1) <
+        currentDate
+          .toLocaleDateString()
+          .substring(
+            currentDate.toLocaleDateString().indexOf('/') + 1,
+            currentDate.toLocaleDateString().lastIndexOf('/'),
+          )
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+};
