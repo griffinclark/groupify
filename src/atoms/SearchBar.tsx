@@ -31,7 +31,7 @@ export const SearchBar: React.FC<Props> = ({ onInputChange }: Props) => {
 const styles = StyleSheet.create({
   searchSection: {
     width: '85%',
-    height: 35,
+    height: 45,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -45,9 +45,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    paddingTop: 10,
     paddingRight: 10,
-    paddingBottom: 10,
     paddingLeft: 0,
     color: '#424242',
   },
