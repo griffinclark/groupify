@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-import { Icon, SearchBar } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
-import { DEFAULT_CONTACT_IMAGE, GREY_5 } from '../res/styles/Colors';
+import { GREY_5 } from '../res/styles/Colors';
 import { deleteAllImportedContacts, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
-import { Button, Title, Screen } from '../atoms/AtomsExports';
-import { FriendList } from '../organisms/OrganismsExports';
-import { AndroidContactTile, Navbar } from '../molecules/MoleculesExports';
+import { Button, Title, Screen, SearchBar } from '../atoms/AtomsExports';
+import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
@@ -28,7 +27,6 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
-  const [query, setQuery] = useState<string>('');
   const [state, setState] = useState<State>(State.Empty);
 
   useEffect(() => {
@@ -76,7 +74,6 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
 
   const searchContacts = (text: string) => {
     const trimText = text.trim();
-    setQuery(text);
     setFilteredContacts(
       contacts.filter((contact) => {
         let contactLowercase = '';
@@ -96,13 +93,11 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   }
 
   const renderContact = ({ item }: renderContactProps) => (
-    <AndroidContactTile
-      contact={item}
-      firstName={item.name}
-      imageURL={item.image ? item.image.uri : DEFAULT_CONTACT_IMAGE}
+    <ContactTile
       addUser={addSelectedContact}
       removeUser={removeSelectedContact}
-      isChecked={isContactSelected(item.id)}
+      friend={item}
+      isSelected={selectedContacts}
     />
   );
 
@@ -112,55 +107,43 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
-  const isContactSelected = (id: string) => {
-    for (const contact of selectedContacts) {
-      if (contact.id === id) {
-        return true;
-      }
-    }
-    return false;
-  };
-
   return (
     <Screen>
-      <Navbar>
-        <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Home')} />
-      </Navbar>
-      <Title>Add Friends From Contacts</Title>
-      <SearchBar
-        lightTheme="true"
-        placeholder="Search for contacts"
-        onChangeText={searchContacts}
-        value={query}
-        platform="default"
-      />
-      <View style={styles.flatListContainer}>
-        {state === State.Loading ? (
-          <View>
-            <ActivityIndicator size="large" color="#bad555" />
+      <View style={{ flex: 1, justifyContent: 'space-between' }}>
+        <View style={{ flex: 1 }}>
+          <View style={styles.navbar}>
+            <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Home')} />
+            <Title>Contacts</Title>
+            <Text style={{ color: 'white' }}>blank</Text>
           </View>
-        ) : null}
-        <FlatList
-          data={filteredContacts.length > 0 ? filteredContacts : contacts}
-          renderItem={renderContact}
-          ListEmptyComponent={() => (
-            <View style={styles.listContainer}>
-              <Text>No Contacts Found</Text>
-            </View>
-          )}
-        />
-      </View>
-
-      <View style={styles.footer}>
-        <FriendList style={styles.friendContainer} title="Contact List" friends={selectedContacts} />
-        <Button
-          title="Save Contacts"
-          onPress={async () => {
-            await deleteAllImportedContacts();
-            await storeSelectedContacts();
-            navigation.navigate('Home');
-          }}
-        />
+          <SearchBar onInputChange={searchContacts} />
+          <View style={styles.flatListContainer}>
+            {state === State.Loading ? (
+              <View>
+                <ActivityIndicator size="large" color="#bad555" />
+              </View>
+            ) : null}
+            <FlatList
+              data={filteredContacts.length > 0 ? filteredContacts : contacts}
+              renderItem={renderContact}
+              ListEmptyComponent={() => (
+                <View style={styles.listContainer}>
+                  <Text>No Contacts Found</Text>
+                </View>
+              )}
+            />
+          </View>
+        </View>
+        <View>
+          <Button
+            title="Save Contacts"
+            onPress={async () => {
+              await deleteAllImportedContacts();
+              await storeSelectedContacts();
+              navigation.navigate('Home');
+            }}
+          />
+        </View>
       </View>
     </Screen>
   );
@@ -181,16 +164,17 @@ const styles = StyleSheet.create({
   flatListContainer: {
     flexGrow: 1,
     flex: 1,
+    marginVertical: 15,
   },
   friendContainer: {
     backgroundColor: GREY_5,
     borderRadius: 10,
     padding: 10,
   },
-  footer: {
-    flex: 0.5,
-    height: '25%',
-    display: 'flex',
+  navbar: {
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 20,
   },
 });
