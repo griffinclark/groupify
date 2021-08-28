@@ -23,6 +23,15 @@ export const formatTime = (time: Date | string): string => {
   return hour + newTime.toTimeString().slice(2, 5) + ' ' + meridian;
 };
 
+export const formatIosTimeInput = (time: Date | string): string => {
+  const timeString = time.toString();
+  const hour = timeString.substring(0, timeString.indexOf(':'));
+  const minutes = timeString.substring(timeString.indexOf(':') + 1, timeString.lastIndexOf(':'));
+  const meridian = timeString.includes('PM') ? 'PM' : 'AM';
+  const newTime = hour + ':' + minutes + ' ' + meridian;
+  return newTime;
+};
+
 //formats date to be presentable to users
 export const formatDate = (date: Date | string): string => {
   let newDate = new Date();
@@ -60,6 +69,10 @@ export const convertDateStringToDate = (date: string): Date => {
 
 //formats date to be accepted by the database
 export const formatDatabaseDate = (date: string): string => {
+  if (date.length === 8) {
+    const newDate = 20 + date.substring(6, 8) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+    return newDate;
+  }
   if (date.length === 9) {
     date = 0 + date;
     const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
@@ -74,30 +87,31 @@ export const formatDatabaseDate = (date: string): string => {
 
 //formats time to be accepted by the database
 export const formatDatabaseTime = (time: string): string => {
-  if (time.length === 10) {
+  console.log(time.length);
+  if (time.length === 7) {
     time = 0 + time;
-    const meridian = time.substring(9, 11);
+    const meridian = time.substring(6, 8);
     if (meridian === 'AM') {
-      const newTime = time.substring(0, 8);
+      const newTime = time.substring(0, 5);
       return newTime;
     }
     if (meridian === 'PM') {
       let hour = time.substring(0, 2);
       hour = hour * 1 + 12;
-      const newTime = hour + ':' + time.substring(3, 5) + ':' + time.substring(6, 8);
+      const newTime = hour + ':' + time.substring(3, 5) + ':' + '00';
       return newTime;
     }
   }
-  if (time.length === 11) {
-    const meridian = time.substring(9, 11);
+  if (time.length === 8) {
+    const meridian = time.substring(6, 8);
     if (meridian === 'AM') {
-      const newTime = time.substring(0, 8);
+      const newTime = time.substring(0, 5);
       return newTime;
     }
     if (meridian === 'PM') {
       let hour = time.substring(0, 2);
       hour = hour * 1 + 12;
-      const newTime = hour + ':' + time.substring(3, 5) + ':' + time.substring(6, 8);
+      const newTime = hour + ':' + time.substring(3, 5) + ':' + '00';
       return newTime;
     }
   }
