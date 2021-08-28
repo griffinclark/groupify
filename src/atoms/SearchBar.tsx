@@ -15,7 +15,6 @@ export const SearchBar: React.FC<Props> = ({ onInputChange }: Props) => {
 
   return (
     <View>
-      {/* <TextInput style={styles.inputField} placeholder={'search'} /> */}
       <View style={styles.searchSection}>
         <Icon style={styles.searchIcon} name="search" type="material" size={20} color="#000" />
         <TextInput

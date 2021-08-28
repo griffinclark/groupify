@@ -8,6 +8,7 @@ import { CreateCustomEvent } from '../screens/CreateCustomEvent';
 import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
+import { ImportContactDetails } from '../screens/ImportContactDetails';
 import { SendMessage } from '../screens/SendMessage';
 import { SetAvailability } from '../screens/SetAvailability';
 import { EditFriends } from '../screens/EditFriends';
@@ -77,6 +78,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }} />
         <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
+        <Stack.Screen name="ImportContactDetails" component={ImportContactDetails} options={{ headerShown: false }} />
         <Stack.Screen name="SendMessage" component={SendMessage} options={{ headerShown: false }} />
         <Stack.Screen name="SetAvailability" component={SetAvailability} options={{ headerShown: false }} />
         <Stack.Screen name="EditFriends" component={EditFriends} options={{ headerShown: false }} />
