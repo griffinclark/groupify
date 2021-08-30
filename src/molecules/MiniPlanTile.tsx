@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
-import { GREY_1, WHITE, POST_SPACING } from '../res/styles/Colors';
+import { GREY_1, WHITE, POST_SPACING, TEAL } from '../res/styles/Colors';
 import { Plan } from '../models';
-import { formatTime, formatDate } from '../res/utilFunctions';
+import { formatTime, formatDate, isToday } from '../res/utilFunctions';
 
 interface Props {
   plan: Plan;
@@ -10,13 +10,28 @@ interface Props {
 }
 
 export const MiniPlanTile: React.FC<Props> = ({ plan, onPress }: Props) => {
+  const [today, setToday] = useState(false);
+
+  useEffect(() => {
+    if (plan.date) {
+      setToday(isToday(plan.date));
+    }
+  }, []);
+
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.rootContainer}>
         <Text style={styles.title}>{plan.title}</Text>
         <View style={styles.infoItemRow}>
-          <Text style={styles.infoItem}>{plan.date ? formatDate(plan.date) : ''}</Text>
-          <Text>{plan.time ? formatTime(plan.time) : ''}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.infoItem}>{plan.date ? formatDate(plan.date) : ''}</Text>
+            <Text>{plan.time ? formatTime(plan.time) : ''}</Text>
+          </View>
+          {today && (
+            <View style={styles.today}>
+              <Text>Today!</Text>
+            </View>
+          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -41,6 +56,8 @@ const styles = StyleSheet.create({
   },
   infoItemRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 4,
   },
   infoItem: {
     marginRight: 10,
@@ -49,5 +66,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: GREY_1,
     fontWeight: 'bold',
+  },
+  today: {
+    backgroundColor: TEAL,
+    padding: 3,
+    borderRadius: 25,
   },
 });

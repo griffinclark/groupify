@@ -232,3 +232,18 @@ export const isFuturePlan = (date: string, currentDate: Date): boolean => {
     }
   }
 };
+
+export const isToday = (date: string): boolean => {
+  const currentDate = new Date();
+  const planDay = date.substring(date.lastIndexOf('-') + 1);
+  const planYear = '2,0' + date.substring(2, date.indexOf('-'));
+  const planMonth = date.substring(date.indexOf('-') + 1, date.lastIndexOf('-'));
+  const currentDay = currentDate.getDate().toLocaleString();
+  const currentMonth =
+    (currentDate.getMonth().toLocaleString().length == 1 ? 0 : null) + (currentDate.getMonth() + 1).toLocaleString();
+  const currentYear = currentDate.getUTCFullYear().toLocaleString();
+  if (planDay == currentDay && planMonth == currentMonth && planYear == currentYear) {
+    return true;
+  }
+  return false;
+};
