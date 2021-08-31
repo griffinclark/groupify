@@ -106,6 +106,9 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
           />
         </View>
       </View>
+      <View>
+        <Text>Hello Ty</Text>
+      </View>
       <View style={styles.feedContainer}>
         {userPlans.concat(invitedPlans).length > 0 ? (
           <View>

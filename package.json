@@ -15,6 +15,7 @@
     ]
   },
   "dependencies": {
+    "@aws-amplify/cli": "^5.3.1",
     "@expo-google-fonts/inter": "^0.2.0",
     "@iconify-icons/eva": "^1.1.0",
     "@iconify/react": "^1.1.4",
