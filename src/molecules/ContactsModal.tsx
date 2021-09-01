@@ -26,7 +26,7 @@ export const ContactsModal: React.FC<Props> = ({
   return (
     <View style={styles.modalContainer}>
       <View style={[styles.modal, modalStyle]}>
-        <Text style={[styles.modalText, textStyle]}>Are you sure you don't want to import contacts?</Text>
+        <Text style={[styles.modalText, textStyle]}>Are you sure you don&apos;t want to import contacts?</Text>
         <View style={[styles.buttons, buttonStyle]}>
           <TouchableOpacity onPress={handleConfirm} style={[styles.button, styles.yesButton]}>
             <Text style={[styles.buttonText, styles.yesButtonText]}>Yes</Text>
