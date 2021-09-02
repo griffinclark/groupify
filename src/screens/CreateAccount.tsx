@@ -83,7 +83,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
         username: formatPhone,
         password,
         attributes: {
-          email: email,
           phone_number: formatPhone,
           name: name,
         },
@@ -222,7 +221,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     setSuccess('Sent new verification code');
                     setError(undefined);
                   } catch (err) {
-                    console.log(err);
+                    console.log(err, 'error');
                     setError(err.message);
                   }
                 }}

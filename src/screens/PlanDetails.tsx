@@ -261,15 +261,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'white',
   },
-  // boxShadow: {
-  //   elevation: 5,
-  //   shadowColor: '#000',
-  //   shadowOffset: { width: 1, height: 1 },
-  //   shadowOpacity: 0.25,
-  //   shadowRadius: 2,
-  //   padding: 8,
-  //   backgroundColor: 'white',
-  //   borderRadius: 20,
-  //   maxHeight: 80,
-  // },
 });

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
 import { GREY_1, WHITE, POST_SPACING, TEAL } from '../res/styles/Colors';
 import { Plan } from '../models';
-import { formatTime, formatDate, isToday } from '../res/utilFunctions';
+import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
+import { Image } from 'react-native-elements';
 
 interface Props {
   plan: Plan;
@@ -10,28 +11,25 @@ interface Props {
 }
 
 export const MiniPlanTile: React.FC<Props> = ({ plan, onPress }: Props) => {
-  const [today, setToday] = useState(false);
+  const [photoURI, setPhotoURI] = useState<string>('')
 
   useEffect(() => {
-    if (plan.date) {
-      setToday(isToday(plan.date));
-    }
+    (async () => {
+      if (plan.placeID) {
+        setPhotoURI(await loadPhoto(plan.placeID));
+      }
+    })();
   }, []);
 
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.rootContainer}>
-        <Text style={styles.title}>{plan.title}</Text>
-        <View style={styles.infoItemRow}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={styles.infoItem}>{plan.date ? formatDate(plan.date) : ''}</Text>
-            <Text>{plan.time ? formatTime(plan.time) : ''}</Text>
+        <Image style={{ width: 89, height: 63, borderRadius: 5, marginRight: 5 }} source={{ uri: photoURI }}/>
+        <View>
+          <Text style={styles.title}>{plan.title}</Text>
+          <View style={styles.infoItemRow}>
+          <Text style={styles.infoItem}>Date: {plan.date ? formatDayOfWeekDate(plan.date) : ''}</Text>
           </View>
-          {today && (
-            <View style={styles.today}>
-              <Text>Today!</Text>
-            </View>
-          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -40,12 +38,11 @@ export const MiniPlanTile: React.FC<Props> = ({ plan, onPress }: Props) => {
 
 const styles = StyleSheet.create({
   rootContainer: {
-    width: 300,
-    flexDirection: 'column',
+    width: '100%',
+    flexDirection: 'row',
     backgroundColor: WHITE,
     borderRadius: 10,
     marginTop: POST_SPACING,
-    marginHorizontal: POST_SPACING,
     padding: 15,
     elevation: 5,
     shadowColor: '#000',
@@ -66,6 +63,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: GREY_1,
     fontWeight: 'bold',
+    flexWrap: 'wrap',
+    maxWidth: '90%',
   },
   today: {
     backgroundColor: TEAL,

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { GOLD, WHITE } from '../res/styles/Colors';
+import { GOLD, GRAY_LIGHT, TEAL, WHITE } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { User, Plan } from '../models';
 
@@ -14,6 +14,7 @@ interface Props {
 }
 
 export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: Props) => {
+  const [selectedItem, setSelectedItem] = useState<string>('');
   // const [showOptions, setShowOptions] = useState(false);
 
   return (
@@ -43,28 +44,38 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
               currentUser: user,
               currentUserPlan: plan,
             });
-            // setShowOptions(false);
           }}
         >
-          <Text style={styles.text}>Profile</Text>
+          <Icon
+            name="megaphone-outline"
+            size={50}
+            type="ionicon"
+            color={selectedItem === 'plans' ? 'white' : GRAY_LIGHT}
+          />
+          <Text style={styles.text}>View Plans</Text>
         </TouchableOpacity>
-        <Icon
-          name="plus-circle"
-          type="font-awesome"
-          size={60}
-          color={WHITE}
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => {
             navigation.navigate('SearchPlace', { currentUser: user });
           }}
-        />
+        >
+          <Icon
+            name="plus-circle"
+            type="font-awesome"
+            size={50}
+            color={selectedItem === 'create' ? 'white' : GRAY_LIGHT}
+          />
+          <Text style={styles.text}>Create Plan</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
             navigation?.navigate('ImportContactDetails', {});
-            // setShowOptions(false);
           }}
         >
-          <Text style={styles.text}>Contacts</Text>
+          <Icon name="sliders" size={50} type="feather" color={selectedItem === 'settings' ? 'white' : GRAY_LIGHT} />
+          <Text style={styles.text}>Settings</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -78,26 +89,28 @@ const styles = StyleSheet.create({
     borderColor: GOLD,
     borderRadius: 20,
     borderWidth: 1,
-    marginHorizontal: '7%',
-    marginBottom: '10%',
+    paddingHorizontal: '7%',
+    paddingBottom: '10%',
     padding: 10,
   },
   nav: {
     width: '100%',
-    height: 80,
+    height: 100,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: GOLD,
+    backgroundColor: TEAL,
     paddingHorizontal: 30,
   },
   button: {
-    padding: 10,
+    padding: 5,
   },
   text: {
-    fontSize: 17,
+    fontSize: 14,
+    fontWeight: '700',
     marginHorizontal: 10,
+    marginTop: 10,
     color: WHITE,
   },
 });

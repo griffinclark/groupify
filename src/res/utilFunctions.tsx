@@ -32,6 +32,19 @@ export const formatIosTimeInput = (time: Date | string): string => {
   return newTime;
 };
 
+//Formats date into format: DayOfWeek, Month DayOfMonth
+export const formatDayOfWeekDate = (date: string, shorten?: boolean): string => {
+  const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+  let newDate = convertTimeStringToDate(date);
+  newDate.setMonth(newDate.getMonth() + 1);
+  const dayOfMonth = newDate.getDate() + 1;
+  if (shorten) {
+    return months[newDate.getMonth() - 1] + ' ' + dayOfMonth;
+  }
+  return daysOfWeek[newDate.getDay()] + ',' + ' ' + months[newDate.getMonth() - 1] + ' ' + dayOfMonth;
+};
+
 //formats date to be presentable to users
 export const formatDate = (date: Date | string): string => {
   let newDate = new Date();
@@ -70,12 +83,21 @@ export const convertDateStringToDate = (date: string): Date => {
 //formats date to be accepted by the database
 export const formatDatabaseDate = (date: string): string => {
   if (date.length === 8) {
-    const newDate = 20 + date.substring(6, 8) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+    const newDate = 20 + date.substring(6, 8) + '-' +  '0' + date.substring(0, 1) + '-' + '0' + date.substring(2, 3);
     return newDate;
   }
-  if (date.length === 9) {
-    date = 0 + date;
-    const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+  if (date.length === 9 && date.substring(0, date.indexOf('/')).length == 2) {
+    const year = date.substring(date.lastIndexOf('/') + 1);
+    const month = date.substring(0, date.indexOf('/'));
+    const day = 0 + date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'));
+    const newDate = year + '-' + month + '-' + day;
+    return newDate;
+  }
+  if (date.length === 9 && date.substring(0, date.indexOf('/')).length == 1) {
+    const year = date.substring(date.lastIndexOf('/') + 1);
+    const month = 0 + date.substring(0, date.indexOf('/'));
+    const day = date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'));
+    const newDate = year + '-' + month + '-' + day;
     return newDate;
   }
   if (date.length === 10) {
@@ -87,7 +109,6 @@ export const formatDatabaseDate = (date: string): string => {
 
 //formats time to be accepted by the database
 export const formatDatabaseTime = (time: string): string => {
-  console.log(time.length);
   if (time.length === 7) {
     time = 0 + time;
     const meridian = time.substring(6, 8);
@@ -99,6 +120,7 @@ export const formatDatabaseTime = (time: string): string => {
       let hour = time.substring(0, 2);
       hour = hour * 1 + 12;
       const newTime = hour + ':' + time.substring(3, 5) + ':' + '00';
+      console.log(newTime);
       return newTime;
     }
   }
@@ -110,8 +132,8 @@ export const formatDatabaseTime = (time: string): string => {
     }
     if (meridian === 'PM') {
       let hour = time.substring(0, 2);
-      hour = hour * 1 + 12;
-      const newTime = hour + ':' + time.substring(3, 5) + ':' + '00';
+      hour = 12 ? hour * 1 - 12 : hour * 1 + 12;
+      const newTime = hour + '0' + ':' + time.substring(3, 5) + ':' + '00';
       return newTime;
     }
   }

@@ -9,7 +9,7 @@ import { FriendList } from '../organisms/OrganismsExports';
 import { AndroidContactTile, Navbar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from 'aws-amplify';
-import { User } from '../models';
+import { Invitee, User } from '../models';
 
 interface Props {
   navigation: {
@@ -27,7 +27,7 @@ enum State {
 export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
   const [query, setQuery] = useState('');
   const [state, setState] = useState(State.Empty);
-  const [friends, setFriends] = useState<{ id: string; name: string }[]>([]);
+  const [friends, setFriends] = useState<Invitee[]>([]);
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
