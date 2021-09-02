@@ -1,4 +1,5 @@
 import { AndroidContactTile } from './AndroidContactTile';
+import { ContactsModal } from './ContactsModal';
 import { ContactTile } from './ContactTile';
 import { EventTile } from './EventTile';
 import { HomeNavBar } from './HomeNavBar';
@@ -11,6 +12,7 @@ import { CreatedPlanTile } from './CreatedPlanTile';
 export {
   AndroidContactTile,
   ContactTile,
+  ContactsModal,
   EventTile,
   HomeNavBar,
   Navbar,
