@@ -1,11 +1,11 @@
-import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Invitee, Plan } from '../models';
+import { Plan } from '../models';
 import { MiniPlanTile } from '../molecules/MiniPlanTile';
 import { GREY_4, TEAL } from '../res/styles/Colors';
-import { getCurrentUser } from '../res/utilFunctions';
+import { loadInviteeStatus } from '../res/utilFunctions';
+import { ViewAll } from '../atoms/AtomsExports';
 
 interface Props {
   invitedPlans: Plan[];
@@ -21,23 +21,9 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation }: Pr
   const [acceptedPlans, setAcceptedPlans] = useState([]);
 
   useEffect(() => {
-    setAcceptedPlans([]);
-    setPendingPlans([]);
     getPendingPlans();
     getAcceptedPlans();
   }, []);
-
-  const loadInvitees = async (plan: Plan) => {
-    const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
-    const currentUserStatus = await getCurrentUser().then((currentUser) => {
-      if (currentUser && currentUser.id) {
-      }
-      //   console.log(invitees[0].phoneNumber, currentUser.phoneNumber)
-      const currentUserInvitee = invitees.find((invitee) => invitee.phoneNumber == currentUser.phoneNumber);
-      return currentUserInvitee?.status;
-    });
-    return currentUserStatus;
-  };
 
   const getPendingPlans = () => {
     let x = 0;
@@ -46,7 +32,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation }: Pr
         break;
       }
       const plan = invitedPlans[i];
-      loadInvitees(plan).then((result) => {
+      loadInviteeStatus(plan).then((result) => {
         if (result === 'PENDING') {
           x++;
           const newPlan = [
@@ -73,7 +59,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation }: Pr
         break;
       }
       const plan = invitedPlans[i];
-      loadInvitees(plan).then((result) => {
+      loadInviteeStatus(plan).then((result) => {
         if (result === 'ACCEPTED') {
           x++;
           const newPlan = [
@@ -117,6 +103,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation }: Pr
       </View>
       {pendingSelected && pendingPlans}
       {acceptedSelected && acceptedPlans}
+      <ViewAll navigation={navigation} destination={'InvitedPlans'} />
     </View>
   );
 };

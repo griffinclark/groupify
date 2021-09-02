@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { background, GREY_0, TEAL } from './../res/styles/Colors';
-import { getCurrentUser, isFuturePlan, sortPlansByDate } from './../res/utilFunctions';
+import { getCurrentUser, isFuturePlan, loadInviteeStatus, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
-import { MiniDataDisplay, NextPlan, InvitedPreview } from '../organisms/OrganismsExports';
+import { NextPlan, InvitedPreview, CreatedPlans } from '../organisms/OrganismsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: {
@@ -30,6 +29,7 @@ interface Props {
 export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [userPlans, setUserPlans] = useState<Plan[]>([]);
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
+  const [pendingInvitedPlans, setPendingInvitedPlans] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User>();
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const loadPlans = async (user: User) => {
     console.log('Loading plans');
 
-    const userPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
+    const userCreatedPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
 
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
     const invitedPlans = removePastPlans(
@@ -54,10 +54,17 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
         })
         .filter((item): item is Plan => item !== undefined),
     );
-    // setUpcomingPlans(sortPlansByDate(filterUpcomingPlans(userPlans.concat(invitedPlans))));
-    setUserPlans(sortPlansByDate(userPlans));
+    setUserPlans(sortPlansByDate(userCreatedPlans));
     setInvitedPlans(sortPlansByDate(invitedPlans));
     console.log('Finished loading plans');
+    for (let i = 0; i < invitedPlans.length; i++) {
+      const plan = invitedPlans[i];
+      const status = await loadInviteeStatus(plan);
+      if (status === 'ACCEPTED' || status === 'PENDING') {
+        setPendingInvitedPlans(true);
+        break;
+      }
+    }
   };
 
   const removePastPlans = (plans: Plan[]) => {
@@ -92,9 +99,8 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
-
   return (
-    <Screen style={{backgroundColor: background}}>
+    <Screen style={{ backgroundColor: background }}>
       <ScrollView>
         <View style={styles.header}>
           <Text style={[globalStyles.superTitle, styles.greeting]}>{createGreeting()}</Text>
@@ -108,22 +114,16 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                 <NextPlan navigation={navigation} plan={userPlans[0]} />
               </View>
               <View style={globalStyles.miniSpacer}></View>
-              {invitedPlans.length > 0 && (
+              {invitedPlans.length > 0 && pendingInvitedPlans && (
                 <View style={styles.invitedPlans}>
-                  <Text style={styles.label}>YOU'RE INVITED...</Text>
+                  <Text style={styles.label}>YOU&apos;RE INVITED...</Text>
                   <InvitedPreview navigation={navigation} invitedPlans={invitedPlans} />
                   <View style={globalStyles.miniSpacer}></View>
                 </View>
               )}
               <Text style={styles.label}>CREATED PLANS</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('InvitedPlans', { currentUser: currentUser });
-                }}
-              >
-                <Text style={styles.selector}>See All</Text>
-              </TouchableOpacity>
-              <MiniDataDisplay navigation={navigation} data={userPlans} />
+              <CreatedPlans navigation={navigation} userPlans={userPlans} />
+              {/* <MiniDataDisplay navigation={navigation} data={userPlans} /> */}
             </View>
           ) : (
             <View style={styles.title}>
@@ -135,6 +135,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
             </View>
           )}
         </View>
+        <View style={{ height: 100 }}></View>
       </ScrollView>
       <View style={styles.navbar}>
         <HomeNavBar user={currentUser} navigation={navigation} plan={userPlans[0] ? userPlans[0] : invitedPlans[0]} />
@@ -186,5 +187,5 @@ const styles = StyleSheet.create({
   },
   invitedPlans: {
     backgroundColor: 'white',
-  }
+  },
 });

@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
-import { GREY_1, WHITE, POST_SPACING, TEAL } from '../res/styles/Colors';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { GREY_1, WHITE } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
-import { Image } from 'react-native-elements';
 
 interface Props {
   plan: Plan;
-  onPress?: (event: GestureResponderEvent) => void;
+  navigation: {
+    navigate: (ev: string, {}) => void;
+  };
+  destination: string;
 }
 
-export const MiniPlanTile: React.FC<Props> = ({ plan, onPress }: Props) => {
-  const [photoURI, setPhotoURI] = useState<string>('');
+export const CreatedPlanTile: React.FC<Props> = ({ plan, navigation, destination }: Props) => {
+  const [photoURI, setPhotoURI] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -21,11 +23,15 @@ export const MiniPlanTile: React.FC<Props> = ({ plan, onPress }: Props) => {
     })();
   }, []);
 
+  const onPress = () => {
+    navigation.navigate(destination, { plan: plan });
+  };
+
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.rootContainer}>
-        <Image style={{ width: 89, height: 63, borderRadius: 5, marginRight: 5 }} source={{ uri: photoURI }} />
-        <View>
+        {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : null}
+        <View style={styles.textContainer}>
           <Text style={styles.title}>{plan.title}</Text>
           <View style={styles.infoItemRow}>
             <Text style={styles.infoItem}>Date: {plan.date ? formatDayOfWeekDate(plan.date) : ''}</Text>
@@ -38,12 +44,12 @@ export const MiniPlanTile: React.FC<Props> = ({ plan, onPress }: Props) => {
 
 const styles = StyleSheet.create({
   rootContainer: {
-    width: '100%',
-    flexDirection: 'row',
+    width: 216,
+    flexDirection: 'column',
     backgroundColor: WHITE,
-    borderRadius: 10,
-    marginTop: POST_SPACING,
-    padding: 15,
+    borderRadius: 5,
+    marginTop: 15,
+    marginRight: 30,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 1, height: 1 },
@@ -51,10 +57,12 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     marginBottom: 10,
   },
+  textContainer: {
+    marginHorizontal: 15,
+    marginVertical: 10,
+  },
   infoItemRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 4,
   },
   infoItem: {
     marginRight: 10,
@@ -63,12 +71,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: GREY_1,
     fontWeight: 'bold',
-    flexWrap: 'wrap',
-    maxWidth: '90%',
   },
-  today: {
-    backgroundColor: TEAL,
-    padding: 3,
-    borderRadius: 25,
+  image: {
+    width: '100%',
+    height: 91,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
   },
 });

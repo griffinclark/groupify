@@ -6,5 +6,16 @@ import { MediumPlanTile } from './MediumPlanTile';
 import { MiniPlanTile } from './MiniPlanTile';
 import { Navbar } from './Navbar';
 import { PlaceCard } from './PlaceCard';
+import { CreatedPlanTile } from './CreatedPlanTile';
 
-export { AndroidContactTile, ContactTile, EventTile, HomeNavBar, Navbar, PlaceCard, MiniPlanTile, MediumPlanTile };
+export {
+  AndroidContactTile,
+  ContactTile,
+  EventTile,
+  HomeNavBar,
+  Navbar,
+  PlaceCard,
+  MiniPlanTile,
+  MediumPlanTile,
+  CreatedPlanTile,
+};

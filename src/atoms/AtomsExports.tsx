@@ -14,6 +14,7 @@ import { FormButton } from './Formbutton';
 import { FriendBubble } from './FriendBubble';
 import { SearchBar } from './SearchBar';
 import { MeepForm } from './MeepForm';
+import { ViewAll } from './ViewAll';
 
 export {
   Alert,
@@ -32,4 +33,5 @@ export {
   FriendBubble,
   SearchBar,
   MeepForm,
+  ViewAll,
 };

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { GOLD, GRAY_LIGHT, TEAL, WHITE } from '../res/styles/Colors';
+import { GOLD, TEAL, WHITE } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { User, Plan } from '../models';
 
@@ -14,7 +14,6 @@ interface Props {
 }
 
 export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: Props) => {
-  const [selectedItem, setSelectedItem] = useState<string>('');
   // const [showOptions, setShowOptions] = useState(false);
 
   return (
@@ -46,12 +45,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
             });
           }}
         >
-          <Icon
-            name="megaphone-outline"
-            size={50}
-            type="ionicon"
-            color={selectedItem === 'plans' ? 'white' : GRAY_LIGHT}
-          />
+          <Icon name="megaphone-outline" size={50} type="ionicon" color={'white'} />
           <Text style={styles.text}>View Plans</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -60,12 +54,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
             navigation.navigate('SearchPlace', { currentUser: user });
           }}
         >
-          <Icon
-            name="plus-circle"
-            type="font-awesome"
-            size={50}
-            color={selectedItem === 'create' ? 'white' : GRAY_LIGHT}
-          />
+          <Icon name="plus-circle" type="font-awesome" size={50} color={'white'} />
           <Text style={styles.text}>Create Plan</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -74,7 +63,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
             navigation?.navigate('ImportContactDetails', {});
           }}
         >
-          <Icon name="sliders" size={50} type="feather" color={selectedItem === 'settings' ? 'white' : GRAY_LIGHT} />
+          <Icon name="sliders" size={50} type="feather" color={'white'} />
           <Text style={styles.text}>Settings</Text>
         </TouchableOpacity>
       </View>
@@ -104,7 +93,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   button: {
-    padding: 5,
+    paddingHorizontal: 5,
   },
   text: {
     fontSize: 14,

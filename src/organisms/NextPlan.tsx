@@ -15,7 +15,7 @@ interface Props {
   };
 }
 
-export const NextPlan: React.FC<Props> = ({ plan }: Props) => {
+export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
   const [photoURI, setPhotoURI] = useState('');
   const [hostName, setHostName] = useState('');
   const [invitees, setInvitees] = useState<Invitee[]>([]);
@@ -58,7 +58,7 @@ export const NextPlan: React.FC<Props> = ({ plan }: Props) => {
   };
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate('PlanDetails', { plan: plan })}>
       <View style={styles.planContainer}>
         {photoURI ? (
           <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover">
