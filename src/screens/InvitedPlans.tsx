@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { GREY_0, TEAL } from './../res/styles/Colors';
-import { convertDateStringToDate, sortPlansByDate } from './../res/utilFunctions';
+import { convertDateStringToDate, getCurrentUser, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { MediumDataDisplay } from '../organisms/OrganismsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
-import { Plan, Invitee, Status } from '../models';
+import { Plan, Invitee, Status, User } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface Props {
@@ -20,15 +20,17 @@ interface Props {
 }
 
 export const InvitedPlans: React.FC<Props> = ({ navigation, route }: Props) => {
-  const currentUser = route.params.currentUser;
   const [upcomingPlans, setUpcomingPlans] = useState<Plan[]>([]);
   const [pendingInvites, setPendingInvites] = useState<Plan[]>([]);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     loadPlans();
   }, []);
 
   const loadPlans = async () => {
+    const currentUser = await getCurrentUser();
+    setUser(currentUser);
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', currentUser.phoneNumber));
     const invitedPlans = removePastPlans(
       invitees
@@ -88,13 +90,7 @@ export const InvitedPlans: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
         <Text style={[globalStyles.superTitle, styles.greeting]}>Your Invites</Text>
         <View style={styles.icon}>
-          <Icon
-            name="refresh"
-            type="font-awesome"
-            size={30}
-            color={TEAL}
-            onPress={() => (currentUser ? loadPlans() : 0)}
-          />
+          <Icon name="refresh" type="font-awesome" size={30} color={TEAL} onPress={() => loadPlans()} />
         </View>
       </View>
       <View style={styles.feedContainer}>
@@ -112,9 +108,9 @@ export const InvitedPlans: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
         )}
       </View>
-      <View style={styles.navbar}>
-        <HomeNavBar user={currentUser} navigation={navigation} plan={upcomingPlans[0]} />
-      </View>
+      {/* <View style={styles.navbar}>
+        <HomeNavBar user={user} navigation={navigation} plan={upcomingPlans[0]} />
+      </View> */}
     </Screen>
   );
 };

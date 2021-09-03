@@ -2,6 +2,7 @@ import { Invitee, Plan, User } from '../models';
 import Qs from 'qs';
 import { Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import { Platform } from 'react-native';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
@@ -88,6 +89,14 @@ export const convertDateStringToDate = (date: string): Date => {
 
 //formats date to be accepted by the database
 export const formatDatabaseDate = (date: string): string => {
+  if (Platform.OS === 'android') {
+    console.log(date);
+    if (date.length === 8) {
+      const newDate = 20 + date.substring(6, 8) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+      console.log(newDate);
+      return newDate;
+    }
+  }
   if (date.length === 8) {
     const newDate = 20 + date.substring(6, 8) + '-' + '0' + date.substring(0, 1) + '-' + '0' + date.substring(2, 3);
     return newDate;
@@ -126,7 +135,6 @@ export const formatDatabaseTime = (time: string): string => {
       let hour = time.substring(0, 2);
       hour = parseInt(hour) + 12;
       const newTime = hour + ':' + time.substring(3, 5) + ':' + '00';
-      console.log(newTime);
       return newTime;
     }
   }

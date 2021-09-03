@@ -39,7 +39,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            navigation?.navigate('Profile', {
+            navigation?.navigate('InvitedPlans', {
               currentUser: user,
               currentUserPlan: plan,
             });
@@ -60,7 +60,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            navigation?.navigate('ImportContactDetails', {});
+            navigation?.navigate('Profile', { currentUser: user, currentUserPlan: plan });
           }}
         >
           <Icon name="sliders" size={50} type="feather" color={'white'} />

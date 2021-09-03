@@ -17,7 +17,7 @@ export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans }: Props) 
     const plans = [];
     for (let i = 0; i < userPlans.length; i++) {
       const plan = userPlans[i];
-      plans.push(<CreatedPlanTile navigation={navigation} destination={'PlanDetails'} plan={plan} />);
+      plans.push(<CreatedPlanTile key={plan.id} navigation={navigation} destination={'PlanDetails'} plan={plan} />);
     }
     return plans;
   };
@@ -26,9 +26,9 @@ export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans }: Props) 
       <ScrollView horizontal={true} style={styles.scrollContainer}>
         {userPlans.length > 0 && getUserPlans()}
       </ScrollView>
-      <View style={styles.viewContainer}>
+      {/* <View style={styles.viewContainer}>
         <ViewAll navigation={navigation} destination={''} />
-      </View>
+      </View> */}
     </View>
   );
 };

@@ -1,12 +1,11 @@
 import { Auth, DataStore } from 'aws-amplify';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Screen } from '../atoms/AtomsExports';
-import { User } from '../models';
+import { MediumPlanTile } from '../molecules/MediumPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
-import { formatTime } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
@@ -18,42 +17,34 @@ interface Props {
 export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
   const currentUser = route.params.currentUser;
   const currentUserPlan = route.params.currentUserPlan;
-  const [sundayAvailabilityStart, setSundayAvailabilityStart] = useState('');
-  const [sundayAvailabilityEnd, setSundayAvailabilityEnd] = useState('');
-  const [mondayAvailabilityStart, setMondayAvailabilityStart] = useState('');
-  const [mondayAvailabilityEnd, setMondayAvailabilityEnd] = useState('');
-  const [tuesdayAvailabilityStart, setTuesdayAvailabilityStart] = useState('');
-  const [tuesdayAvailabilityEnd, setTuesdayAvailabilityEnd] = useState('');
+  // const [sundayAvailabilityStart, setSundayAvailabilityStart] = useState('');
+  // const [sundayAvailabilityEnd, setSundayAvailabilityEnd] = useState('');
+  // const [mondayAvailabilityStart, setMondayAvailabilityStart] = useState('');
+  // const [mondayAvailabilityEnd, setMondayAvailabilityEnd] = useState('');
+  // const [tuesdayAvailabilityStart, setTuesdayAvailabilityStart] = useState('');
+  // const [tuesdayAvailabilityEnd, setTuesdayAvailabilityEnd] = useState('');
 
-  useEffect(() => {
-    setAvailability();
-  }, [currentUser]);
+  // useEffect(() => {
+  //   setAvailability();
+  // }, [currentUser]);
 
-  const setAvailability = async () => {
-    const user = await DataStore.query(User, route.params.currentUser.id);
-    if (
-      user &&
-      user.availability &&
-      user.availability.Sunday &&
-      user.availability.Monday &&
-      user.availability.Tuesday
-    ) {
-      setSundayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Sunday[0]}`)));
-      setSundayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Sunday[1]}`)));
-      setMondayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Monday[0]}`)));
-      setMondayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Monday[1]}`)));
-      setTuesdayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Tuesday[0]}`)));
-      setTuesdayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Tuesday[1]}`)));
-    }
-  };
-
-  const isUpcoming = (date: string | null | undefined) => {
-    if (new Date().toISOString().substring(5, 7) == date?.substring(5, 7)) {
-      if (date.substring(8, 10) - new Date().toISOString().substring(8, 10) < 7) {
-        return true;
-      }
-    }
-  };
+  // const setAvailability = async () => {
+  //   const user = await DataStore.query(User, route.params.currentUser.id);
+  //   if (
+  //     user &&
+  //     user.availability &&
+  //     user.availability.Sunday &&
+  //     user.availability.Monday &&
+  //     user.availability.Tuesday
+  //   ) {
+  //     setSundayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Sunday[0]}`)));
+  //     setSundayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Sunday[1]}`)));
+  //     setMondayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Monday[0]}`)));
+  //     setMondayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Monday[1]}`)));
+  //     setTuesdayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Tuesday[0]}`)));
+  //     setTuesdayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Tuesday[1]}`)));
+  //   }
+  // };
 
   return (
     <Screen>
@@ -85,31 +76,22 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
         />
       </View>
       <View style={styles.bodyContainer}>
-        <View style={styles.userActivity}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('InvitedPlans', { currentUser: currentUser })}
-            style={styles.selector}
-          >
+        <TouchableOpacity
+          onPress={() => navigation.navigate('InvitedPlans', { currentUser: currentUser })}
+          style={styles.userActivity}
+        >
+          <View style={styles.selector}>
             <Text style={styles.planTitle}>Invites/Plans</Text>
             <Icon name="chevron-forward-outline" size={30} type="ionicon" />
-          </TouchableOpacity>
+          </View>
           {currentUserPlan ? (
             <View style={styles.plan}>
-              <Text style={styles.planTitle}>{currentUserPlan.title}</Text>
-              <View style={styles.planBody}>
-                <Text style={styles.planDate}>{currentUserPlan.date}</Text>
-                <View style={{ borderRadius: 15, backgroundColor: '#31A59F' }}>
-                  {isUpcoming(currentUserPlan.date) && <Text style={styles.upcoming}>Upcoming</Text>}
-                </View>
-              </View>
+              <MediumPlanTile plan={currentUserPlan} />
             </View>
           ) : (
-            <View>
-              <Text style={styles.availabilityText}>Looks like you don&apos;t have any plans.</Text>
-              <Text style={styles.availabilityText}>Lets create one together! </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('SearchPlace', {})} style={styles.bugReport}>
-                <Text style={{ fontSize: 18 }}>Create Plan</Text>
-              </TouchableOpacity>
+            <View style={{ alignItems: 'center', padding: 20 }}>
+              <Text style={{ fontSize: 20, fontWeight: '200' }}>Looks like you don&apos;t have any plans.</Text>
+              <Text style={{ fontSize: 20, fontWeight: '200' }}>Lets create one together! </Text>
             </View>
           )}
 
@@ -138,7 +120,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
             </View>
           </View>
           */}
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('EditFriends', {
@@ -240,29 +222,7 @@ const styles = StyleSheet.create({
   plan: {
     marginVertical: 10,
     marginHorizontal: 5,
-    padding: 15,
     borderRadius: 15,
-    backgroundColor: 'white',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 1, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-  },
-  planBody: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  planDate: {
-    fontSize: 16,
-    fontWeight: '400',
-  },
-  upcoming: {
-    fontWeight: '400',
-    fontSize: 12,
-    padding: 6,
-    color: 'white',
   },
   availability: {
     paddingHorizontal: 20,

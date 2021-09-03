@@ -58,7 +58,10 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
   };
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('PlanDetails', { plan: plan })}>
+    <TouchableOpacity
+      style={{ paddingVertical: 10 }}
+      onPress={() => navigation.navigate('PlanDetails', { plan: plan })}
+    >
       <View style={styles.planContainer}>
         {photoURI ? (
           <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover">
