@@ -5,10 +5,9 @@ import { GREY_0, TEAL } from './../res/styles/Colors';
 import { convertDateStringToDate, getCurrentUser, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { MediumDataDisplay } from '../organisms/OrganismsExports';
-import { HomeNavBar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
-import { Plan, Invitee, Status, User } from '../models';
+import { Plan, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface Props {
@@ -19,10 +18,10 @@ interface Props {
   route: RoutePropParams;
 }
 
-export const InvitedPlans: React.FC<Props> = ({ navigation, route }: Props) => {
+export const InvitedPlans: React.FC<Props> = ({ navigation }: Props) => {
   const [upcomingPlans, setUpcomingPlans] = useState<Plan[]>([]);
   const [pendingInvites, setPendingInvites] = useState<Plan[]>([]);
-  const [user, setUser] = useState<User>();
+  // const [user, setUser] = useState<User>();
 
   useEffect(() => {
     loadPlans();
@@ -30,7 +29,7 @@ export const InvitedPlans: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const loadPlans = async () => {
     const currentUser = await getCurrentUser();
-    setUser(currentUser);
+    // setUser(currentUser);
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', currentUser.phoneNumber));
     const invitedPlans = removePastPlans(
       invitees

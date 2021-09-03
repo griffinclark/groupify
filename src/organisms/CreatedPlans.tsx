@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { ViewAll } from '../atoms/ViewAll';
 import { Plan } from '../models';
 import { CreatedPlanTile } from '../molecules/CreatedPlanTile';
 
