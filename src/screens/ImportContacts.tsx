@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
-import { GREY_5 } from '../res/styles/Colors';
+import { background, GREY_5 } from '../res/styles/Colors';
 import { deleteAllImportedContacts, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
-import { Button, Title, Screen, SearchBar, TwoButtonAlert } from '../atoms/AtomsExports';
+import { Button, Title, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 
@@ -28,6 +28,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
   const [state, setState] = useState<State>(State.Empty);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     setState(State.Loading);
@@ -107,35 +108,8 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
-  const contactsAlert = (): void => {
-    TwoButtonAlert({
-      title: ' ',
-      message: 'Are you sure you dont want to import contacts?',
-      button1Text: 'Yes',
-      button2Text: 'Back',
-      button1OnPress: async () => {
-        navigation.navigate('Home');
-        Alert.alert(
-          ' ',
-          'You have no Contacts. Groupify works best when you invite friends! Go to settings to import contacts',
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                navigation.navigate('Home');
-              },
-            },
-          ],
-        );
-      },
-      button2OnPress: async () => {
-        navigation.navigate('ImportContacts');
-      },
-    });
-  };
-
   return (
-    <Screen>
+    <Screen style={{ backgroundColor: background }}>
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
@@ -174,10 +148,17 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
           </View>
         ) : (
           <View>
-            <Button title="Skip" onPress={contactsAlert} />
+            <Button title="Skip" onPress={() => setOpenModal(true)} />
           </View>
         )}
       </View>
+      {openModal && (
+        <AlertModal
+          onConfirm={() => navigation.navigate('Home')}
+          onReject={() => setOpenModal(false)}
+          message="Are you sure you don't want to import contacts?"
+        />
+      )}
     </Screen>
   );
 };
