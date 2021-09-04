@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { WHITE } from '../res/styles/Colors';
 
 interface Props {
   style?: Record<string, unknown>;
@@ -16,7 +15,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     height: '100%',
     width: '100%',
-    backgroundColor: WHITE,
     flexDirection: 'column',
     paddingTop: 15,
   },

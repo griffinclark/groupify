@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
-import { GREY_5 } from '../res/styles/Colors';
+import { background, GREY_5 } from '../res/styles/Colors';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { Button, Title, Screen } from '../atoms/AtomsExports';
 import { ContactTile } from '../molecules/MoleculesExports';
@@ -91,7 +91,7 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
     }
   };
   return (
-    <Screen>
+    <Screen style={{ backgroundColor: background }}>
       <Title>Import Contacts</Title>
 
       <View style={styles.flatListContainer}>

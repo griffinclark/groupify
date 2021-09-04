@@ -4,9 +4,9 @@ import { Icon } from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
-import { GREY_5 } from '../res/styles/Colors';
+import { background, GREY_5 } from '../res/styles/Colors';
 import { deleteAllImportedContacts, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
-import { Button, Title, Screen, SearchBar } from '../atoms/AtomsExports';
+import { Button, Title, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 
@@ -28,6 +28,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
   const [state, setState] = useState<State>(State.Empty);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     setState(State.Loading);
@@ -108,7 +109,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   return (
-    <Screen>
+    <Screen style={{ backgroundColor: background }}>
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
@@ -134,17 +135,30 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
             />
           </View>
         </View>
-        <View>
-          <Button
-            title="Save Contacts"
-            onPress={async () => {
-              await deleteAllImportedContacts();
-              await storeSelectedContacts();
-              navigation.navigate('Home');
-            }}
-          />
-        </View>
+        {selectedContacts.length > 0 ? (
+          <View>
+            <Button
+              title="Save Contacts"
+              onPress={async () => {
+                await deleteAllImportedContacts();
+                await storeSelectedContacts();
+                navigation.navigate('Home');
+              }}
+            />
+          </View>
+        ) : (
+          <View>
+            <Button title="Skip" onPress={() => setOpenModal(true)} />
+          </View>
+        )}
       </View>
+      {openModal && (
+        <AlertModal
+          onConfirm={() => navigation.navigate('Home')}
+          onReject={() => setOpenModal(false)}
+          message="Are you sure you don't want to import contacts?"
+        />
+      )}
     </Screen>
   );
 };

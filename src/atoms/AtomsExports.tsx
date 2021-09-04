@@ -1,4 +1,3 @@
-import { Alert } from './AlertModal';
 import { Button } from './Button';
 import { CheckBox } from './CheckBox';
 import { CircularImageDisplay } from './CircularImageDisplay';
@@ -15,9 +14,10 @@ import { FriendBubble } from './FriendBubble';
 import { SearchBar } from './SearchBar';
 import { MeepForm } from './MeepForm';
 import { ViewAll } from './ViewAll';
+import { AlertModal } from './AlertModal';
+import { Alert } from './Alert';
 
 export {
-  Alert,
   Button,
   CheckBox,
   CircularImageDisplay,
@@ -34,4 +34,6 @@ export {
   SearchBar,
   MeepForm,
   ViewAll,
+  AlertModal,
+  Alert,
 };

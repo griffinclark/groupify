@@ -3,8 +3,8 @@ import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Title, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { TEAL } from '../res/styles/Colors';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { background, TEAL } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 
@@ -17,7 +17,6 @@ interface Props {
 }
 
 export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => {
-  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
@@ -30,14 +29,14 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   useEffect(() => {
-    if (route.params.step == 'create' && email && password && name && phone) {
+    if (route.params.step == 'create' && password && name && phone) {
       setDisabled(false);
     } else if (route.params.step == 'validate' && validationCode) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [email, password, name, phone, formatPhone, validationCode]);
+  }, [password, name, phone, formatPhone, validationCode]);
 
   useEffect(() => {
     setName(firstName + ' ' + lastName);
@@ -84,14 +83,9 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
         password,
         attributes: {
           phone_number: formatPhone,
+          email: 'removeWhen@DatabaseUpdated.com', //remove when we update the database for no email
           name: name,
         },
-        // validationData: [
-        //   {
-        //     Name: 'phoneNumber',
-        //     Value: formatPhone,
-        //   },
-        // ],
       });
       console.log('user successfully created');
       setError(undefined);
@@ -133,10 +127,10 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? -300 : -200}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? -300 : -300}
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
     >
-      <Screen>
+      <Screen style={{ backgroundColor: background }}>
         <Icon
           style={{ alignSelf: 'flex-start', marginLeft: 20 }}
           name="arrow-left"
@@ -173,13 +167,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     setPhone(formatPhoneNumber(value));
                   }}
                 />
-                <FormInput
-                  returnKeyNext={true}
-                  label="Email"
-                  onChangeText={(value) => {
-                    setEmail(value.trim());
-                  }}
-                />
                 <FormInput returnKeyNext={true} label="Password" onChangeText={setPassword} secureTextEntry={true} />
                 <FormInput
                   submit={signUp}
@@ -196,38 +183,41 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             </View>
           )}
           {route.params.step === 'validate' && (
-            <>
-              <Title>Validate Phone Number</Title>
-              <Text style={{ margin: 20, fontWeight: 'bold' }}>
-                Please enter the verification code from your messages
-              </Text>
-              <FormInput
-                returnKeyNext={false}
-                autoFocus={true}
-                label="Verification Code"
-                onChangeText={(value) => {
-                  setCode(value.trim());
-                }}
-                secureTextEntry={true}
-              />
-              {error && <Alert status="error" message={error} />}
-              {success && <Alert status="success" message={success} />}
-              <Button
-                title="Send New Code"
-                onPress={() => {
-                  try {
-                    console.log(route.params.phone);
-                    Auth.resendSignUp(route.params.phone);
-                    setSuccess('Sent new verification code');
-                    setError(undefined);
-                  } catch (err) {
-                    console.log(err, 'error');
-                    setError(err.message);
-                  }
-                }}
-              />
-              <Button title="Confirm Number" onPress={validateUser} disabled={disabled} />
-            </>
+            <View style={styles.validateContainer}>
+              <Title>Verify Your Phone Number</Title>
+              <View>
+                <FormInput
+                  returnKeyNext={false}
+                  autoFocus={true}
+                  label="Verification Code"
+                  onChangeText={(value) => {
+                    setCode(value.trim());
+                  }}
+                  secureTextEntry={true}
+                />
+                {error && <Alert status="error" message={error} />}
+                {success && <Alert status="success" message={success} />}
+                <TouchableOpacity
+                  onPress={() => {
+                    try {
+                      console.log(route.params.phone);
+                      Auth.resendSignUp(route.params.phone);
+                      setSuccess('Sent new verification code');
+                      setError(undefined);
+                    } catch (err) {
+                      console.log(err);
+                      setError(err.message);
+                    }
+                  }}
+                  style={styles.buttonStyle}
+                >
+                  <Text style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>Send New Verification Code</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ marginBottom: 30 }}>
+                <Button title="Next" onPress={validateUser} disabled={disabled} />
+              </View>
+            </View>
           )}
         </TouchableWithoutFeedback>
       </Screen>
@@ -246,5 +236,19 @@ const styles = StyleSheet.create({
     color: TEAL,
     fontSize: 32,
     fontWeight: '400',
+  },
+  buttonStyle: {
+    borderRadius: 0,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    paddingBottom: 50,
+    marginVertical: 10,
+    marginHorizontal: 'auto',
+    minWidth: 150,
+    alignItems: 'center',
+  },
+  validateContainer: {
+    justifyContent: 'space-between',
+    height: '100%',
   },
 });
