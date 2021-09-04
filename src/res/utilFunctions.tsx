@@ -1,7 +1,8 @@
-import { Plan, User } from '../models';
+import { Invitee, Plan, User } from '../models';
 import Qs from 'qs';
 import { Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import { Platform } from 'react-native';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
@@ -20,6 +21,10 @@ export const formatTime = (time: Date | string): string => {
     hour -= 12;
     meridian = 'PM';
   }
+  if (hour == 0) {
+    hour += 12;
+    meridian = 'PM';
+  }
   return hour + newTime.toTimeString().slice(2, 5) + ' ' + meridian;
 };
 
@@ -30,6 +35,21 @@ export const formatIosTimeInput = (time: Date | string): string => {
   const meridian = timeString.includes('PM') ? 'PM' : 'AM';
   const newTime = hour + ':' + minutes + ' ' + meridian;
   return newTime;
+};
+
+//Formats date into format: DayOfWeek, Month DayOfMonth
+export const formatDayOfWeekDate = (date: string, shorten?: boolean): string => {
+  const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+  const newDate = convertTimeStringToDate(date);
+  const month = parseInt(date.substring(date.indexOf('-') + 1, date.lastIndexOf('-')));
+  const dayOfMonth = parseInt(date.substring(date.lastIndexOf('-') + 1));
+  newDate.setDate(dayOfMonth);
+  newDate.setMonth(month - 1);
+  if (shorten) {
+    return months[month - 1] + ' ' + dayOfMonth;
+  }
+  return daysOfWeek[newDate.getDay()] + ',' + ' ' + months[month - 1] + ' ' + dayOfMonth;
 };
 
 //formats date to be presentable to users
@@ -69,13 +89,30 @@ export const convertDateStringToDate = (date: string): Date => {
 
 //formats date to be accepted by the database
 export const formatDatabaseDate = (date: string): string => {
+  if (Platform.OS === 'android') {
+    console.log(date);
+    if (date.length === 8) {
+      const newDate = 20 + date.substring(6, 8) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+      console.log(newDate);
+      return newDate;
+    }
+  }
   if (date.length === 8) {
-    const newDate = 20 + date.substring(6, 8) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+    const newDate = 20 + date.substring(6, 8) + '-' + '0' + date.substring(0, 1) + '-' + '0' + date.substring(2, 3);
     return newDate;
   }
-  if (date.length === 9) {
-    date = 0 + date;
-    const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+  if (date.length === 9 && date.substring(0, date.indexOf('/')).length == 2) {
+    const year = date.substring(date.lastIndexOf('/') + 1);
+    const month = date.substring(0, date.indexOf('/'));
+    const day = 0 + date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'));
+    const newDate = year + '-' + month + '-' + day;
+    return newDate;
+  }
+  if (date.length === 9 && date.substring(0, date.indexOf('/')).length == 1) {
+    const year = date.substring(date.lastIndexOf('/') + 1);
+    const month = 0 + date.substring(0, date.indexOf('/'));
+    const day = date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'));
+    const newDate = year + '-' + month + '-' + day;
     return newDate;
   }
   if (date.length === 10) {
@@ -87,7 +124,6 @@ export const formatDatabaseDate = (date: string): string => {
 
 //formats time to be accepted by the database
 export const formatDatabaseTime = (time: string): string => {
-  console.log(time.length);
   if (time.length === 7) {
     time = 0 + time;
     const meridian = time.substring(6, 8);
@@ -97,7 +133,7 @@ export const formatDatabaseTime = (time: string): string => {
     }
     if (meridian === 'PM') {
       let hour = time.substring(0, 2);
-      hour = hour * 1 + 12;
+      hour = parseInt(hour) + 12;
       const newTime = hour + ':' + time.substring(3, 5) + ':' + '00';
       return newTime;
     }
@@ -110,8 +146,8 @@ export const formatDatabaseTime = (time: string): string => {
     }
     if (meridian === 'PM') {
       let hour = time.substring(0, 2);
-      hour = hour * 1 + 12;
-      const newTime = hour + ':' + time.substring(3, 5) + ':' + '00';
+      hour = 12 ? parseInt(hour) - 12 : parseInt(hour) + 12;
+      const newTime = hour + '0' + ':' + time.substring(3, 5) + ':' + '00';
       return newTime;
     }
   }
@@ -165,6 +201,7 @@ export const getCurrentUser = async (): Promise<User> => {
       return user[0];
     }
   }
+  return userInfo;
 };
 
 //format string phone number into (###) ###-####
@@ -195,6 +232,7 @@ export const amplifyPhoneFormat = (phone: string): string => {
   return phone;
 };
 
+//checks the current date against the plan date to determine if plan is in the future
 export const isFuturePlan = (date: string, currentDate: Date): boolean => {
   if (convertDateStringToDate(date).getFullYear() > currentDate.getFullYear()) {
     return true;
@@ -207,23 +245,15 @@ export const isFuturePlan = (date: string, currentDate: Date): boolean => {
       return false;
     } else {
       if (
-        date.substring(date.lastIndexOf('-') + 1) >
-        currentDate
-          .toLocaleDateString()
-          .substring(
-            currentDate.toLocaleDateString().indexOf('/') + 1,
-            currentDate.toLocaleDateString().lastIndexOf('/'),
-          )
-      ) {
-        return true;
-      } else if (
-        date.substring(date.lastIndexOf('-') + 1) <
-        currentDate
-          .toLocaleDateString()
-          .substring(
-            currentDate.toLocaleDateString().indexOf('/') + 1,
-            currentDate.toLocaleDateString().lastIndexOf('/'),
-          )
+        parseInt(date.substring(date.lastIndexOf('-') + 1)) <
+        parseInt(
+          currentDate
+            .toLocaleDateString()
+            .substring(
+              currentDate.toLocaleDateString().indexOf('/') + 1,
+              currentDate.toLocaleDateString().lastIndexOf('/'),
+            ),
+        )
       ) {
         return false;
       } else {
@@ -233,6 +263,7 @@ export const isFuturePlan = (date: string, currentDate: Date): boolean => {
   }
 };
 
+//determines if a plan is today
 export const isToday = (date: string): boolean => {
   const currentDate = new Date();
   const planDay = date.substring(date.lastIndexOf('-') + 1);
@@ -246,4 +277,18 @@ export const isToday = (date: string): boolean => {
     return true;
   }
   return false;
+};
+
+export const loadInviteeStatus = async (plan: Plan): Promise<string> => {
+  const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
+  const currentUserStatus = await getCurrentUser().then((currentUser) => {
+    if (currentUser && currentUser.id) {
+    }
+    const currentUserInvitee = invitees.find((invitee) => invitee.phoneNumber == currentUser.phoneNumber);
+    return currentUserInvitee?.status;
+  });
+  if (currentUserStatus) {
+    return currentUserStatus.toString();
+  }
+  return 'undefined';
 };

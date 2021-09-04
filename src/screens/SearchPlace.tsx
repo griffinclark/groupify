@@ -226,7 +226,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
       {mapPopupOpen ? (
         <View style={styles.popup}>
           <View style={styles.mapPopup}>
-            <Text style={styles.mapPopupText}>Select or search for a location on the map for your event.</Text>
+            <Text style={styles.mapPopupText}>Select or search for a location on the map for your plan.</Text>
             <Button title="Okay" onPress={() => setMapPopupOpen(false)} />
           </View>
         </View>

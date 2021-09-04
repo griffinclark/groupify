@@ -21,7 +21,11 @@
       },
       "auth": {
         "meep1767d49b1767d49b": {},
-        "Meep": {}
+        "Meep": {},
+        "meepAuth": {},
+        "groupify": {},
+        "meepcbd280d7": {},
+        "meepcb0c79efcb0c79ef": {}
       }
     }
   },
@@ -38,11 +42,11 @@
       "AmplifyAppId": "dto2kcprsz7l"
     },
     "categories": {
-      "auth": {
-        "Meep": {}
-      },
       "function": {
         "pushBroadcast": {}
+      },
+      "auth": {
+        "groupify": {}
       }
     }
   },
@@ -63,7 +67,8 @@
         "pushBroadcast": {
           "deploymentBucketName": "amplify-meep-prods-231759-deployment",
           "s3Key": "amplify-builds/pushBroadcast-4d617a4a394770477577-build.zip"
-        }
+        },
+        "MyFunction": {}
       },
       "auth": {
         "meep1767d49b1767d49b": {},
