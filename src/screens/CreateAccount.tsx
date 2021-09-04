@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Title, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { TEAL} from '../res/styles/Colors';
+import { TEAL } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 
