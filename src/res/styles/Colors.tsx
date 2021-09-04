@@ -20,6 +20,9 @@ export const RED = '#E71717';
 
 //NEW COLOR SCALE
 
+//BACKGROUND COLOR
+export const background = '#FFFCF0';
+
 //GOLD SCALE
 export const GOLD_1 = '#D1BF9F';
 export const GOLD_2 = '#D1AA5E';
