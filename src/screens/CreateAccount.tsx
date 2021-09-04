@@ -3,8 +3,8 @@ import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Title, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { TEAL } from '../res/styles/Colors';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TEAL} from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 
@@ -198,10 +198,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
           )}
           {route.params.step === 'validate' && (
             <>
-              <Title>Validate Phone Number</Title>
-              <Text style={{ margin: 20, fontWeight: 'bold' }}>
-                Please enter the verification code from your messages
-              </Text>
+              <Title>Verify Your Phone Number</Title>
               <FormInput
                 returnKeyNext={false}
                 autoFocus={true}
@@ -213,8 +210,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
               />
               {error && <Alert status="error" message={error} />}
               {success && <Alert status="success" message={success} />}
-              <Button
-                title="Send New Code"
+              <TouchableOpacity
                 onPress={() => {
                   try {
                     console.log(route.params.phone);
@@ -226,8 +222,11 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     setError(err.message);
                   }
                 }}
-              />
-              <Button title="Confirm Number" onPress={validateUser} disabled={disabled} />
+                style={styles.buttonStyle}
+              >
+                <Text style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>Send New Verification Code</Text>
+              </TouchableOpacity>
+              <Button title="Next" onPress={validateUser} disabled={disabled} />
             </>
           )}
         </TouchableWithoutFeedback>
@@ -247,5 +246,15 @@ const styles = StyleSheet.create({
     color: TEAL,
     fontSize: 32,
     fontWeight: '400',
+  },
+  buttonStyle: {
+    borderRadius: 0,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    paddingBottom: 50,
+    marginVertical: 10,
+    marginHorizontal: 'auto',
+    minWidth: 150,
+    alignItems: 'center',
   },
 });
