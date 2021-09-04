@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
 import { GREY_5 } from '../res/styles/Colors';
 import { deleteAllImportedContacts, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
-import { Button, Title, Screen, SearchBar } from '../atoms/AtomsExports';
+import { Button, Title, Screen, SearchBar, TwoButtonAlert } from '../atoms/AtomsExports';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 
@@ -107,6 +107,33 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
+  const contactsAlert = (): void => {
+    TwoButtonAlert({
+      title: ' ',
+      message: "Are you sure you don't want to import contacts?",
+      button1Text: 'Yes',
+      button2Text: 'Back',
+      button1OnPress: async () => {
+        navigation.navigate('Home');
+        Alert.alert(
+          ' ',
+          'You have no Contacts. Groupify works best when you invite friends! Go to settings to import contacts',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.navigate('Home');
+              },
+            },
+          ],
+        );
+      },
+      button2OnPress: async () => {
+        navigation.navigate('ImportContacts');
+      },
+    });
+  };
+
   return (
     <Screen>
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
@@ -134,16 +161,22 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
             />
           </View>
         </View>
-        <View>
-          <Button
-            title="Save Contacts"
-            onPress={async () => {
-              await deleteAllImportedContacts();
-              await storeSelectedContacts();
-              navigation.navigate('Home');
-            }}
-          />
-        </View>
+        {selectedContacts.length > 0 ? (
+          <View>
+            <Button
+              title="Save Contacts"
+              onPress={async () => {
+                await deleteAllImportedContacts();
+                await storeSelectedContacts();
+                navigation.navigate('Home');
+              }}
+            />
+          </View>
+        ) : (
+          <View>
+            <Button title="Skip" onPress={contactsAlert} />
+          </View>
+        )}
       </View>
     </Screen>
   );
