@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { GOLD, GREY_5 } from '../res/styles/Colors';
+// eslint-disable-next-line prettier/prettier
+import { GOLD, GREY_5 , background } from '../res/styles/Colors';
 
 interface Props {
   onChangeText: React.Dispatch<string>;
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: background,
     padding: 10,
     paddingVertical: 12,
     marginVertical: 5,
