@@ -110,7 +110,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const contactsAlert = (): void => {
     TwoButtonAlert({
       title: ' ',
-      message: "Are you sure you don't want to import contacts?",
+      message: 'Are you sure you don\'t want to import contacts?',
       button1Text: 'Yes',
       button2Text: 'Back',
       button1OnPress: async () => {
