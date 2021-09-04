@@ -16,7 +16,7 @@
       "function": {
         "pushBroadcast": {
           "deploymentBucketName": "amplify-meep-staging-171906-deployment",
-          "s3Key": "amplify-builds/pushBroadcast-4d617a4a394770477577-build.zip"
+          "s3Key": "amplify-builds/pushBroadcast-33503676794b3151566c-build.zip"
         }
       },
       "auth": {
@@ -66,7 +66,8 @@
         }
       },
       "auth": {
-        "meep1767d49b1767d49b": {}
+        "meep1767d49b1767d49b": {},
+        "Meep": {}
       }
     }
   }

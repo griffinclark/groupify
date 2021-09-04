@@ -90,7 +90,7 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
     } catch (err) {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {
-        navigation.navigate('CreateAccount', { step: 'validate', phone: phone });
+        navigation.navigate('CreateAccount', { step: 'validate', phone: formatPhone });
       } else if (err.code == 'InvalidParameterException' && err.message.includes('Incorrect·username·or·password.')) {
         setError('Incorrect username or password.');
       } else {
