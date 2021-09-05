@@ -63,8 +63,8 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
             navigation?.navigate('Profile', { currentUser: user, currentUserPlan: plan });
           }}
         >
-          <Icon name="sliders" size={50} type="feather" color={'white'} />
-          <Text style={styles.text}>Settings</Text>
+          <Icon name="user" size={50} type="antdesign" color={'white'} />
+          <Text style={styles.text}>Profile</Text>
         </TouchableOpacity>
       </View>
     </View>
