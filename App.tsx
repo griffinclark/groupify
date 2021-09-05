@@ -35,7 +35,7 @@ export const App: React.FC = () => {
       } catch (err) {
         console.log('user not signed in');
         console.log(err);
-        setInitialScreen('Welcome');
+        setInitialScreen('Login');
       }
     };
     checkAuth();

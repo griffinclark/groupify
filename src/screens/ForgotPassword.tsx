@@ -3,13 +3,11 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, Text, View, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { Image } from 'react-native-elements/dist/image/Image';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Alert } from '../atoms/AlertModal';
-import { Button } from '../atoms/Button';
-import { FormInput } from '../atoms/FormInput';
-import { Screen } from '../atoms/Screen';
+import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { TEAL } from '../res/styles/Colors';
+import { background, TEAL } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
 
 interface Props {
@@ -86,18 +84,21 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
   };
 
   return (
-    <Screen>
+    <Screen style={{ backgroundColor: background }}>
       <Icon
-        style={{ alignSelf: 'flex-start', marginLeft: 20 }}
+        style={{ position: 'relative', bottom: 50, left: 100 }}
         name="arrow-left"
         type="font-awesome"
         size={30}
         onPress={() => navigation.navigate('Login', {})}
       />
+      <View style={{ alignSelf: 'center', marginTop: 80, marginBottom: 20 }}>
+        <Image style={styles.logo} source={require('../../assets/logo.png')} />
+      </View>
       {route.params.step === 'phone' && (
         <View>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-            <Text style={styles.title}>Enter Phone Number</Text>
+            <Text style={styles.title}>Forgot Password</Text>
             <FormInput
               returnKeyNext={true}
               label="Phone Number"
@@ -105,13 +106,14 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
               onChangeText={(number) => setPhone(formatPhoneNumber(number))}
             />
             {error && <Alert status="error" message={error} />}
-            <Button title="Submit" onPress={confirmUserPhone} />
+            <Button title="Next" onPress={confirmUserPhone} />
           </TouchableWithoutFeedback>
         </View>
       )}
       {route.params.step === 'password' && (
         <View>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+            <Text style={styles.title}>Verification/New Password</Text>
             <FormInput
               returnKeyNext={true}
               label="Verification Code"
@@ -126,7 +128,7 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
               secureTextEntry={true}
             />
             {error && <Alert status="error" message={error} />}
-            <Button title="Confirm New Password" onPress={confirmResetPassword} />
+            <Button title="Next" onPress={confirmResetPassword} />
           </TouchableWithoutFeedback>
         </View>
       )}
@@ -137,8 +139,11 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
 const styles = StyleSheet.create({
   title: {
     margin: 20,
-    color: TEAL,
-    fontSize: 32,
-    fontWeight: '400',
+    fontSize: 30,
+    fontWeight: '500',
+  },
+  logo: {
+    width: 318,
+    height: 98,
   },
 });

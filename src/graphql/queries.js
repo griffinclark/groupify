@@ -21,11 +21,6 @@ export const syncUsers = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -41,6 +36,11 @@ export const syncUsers = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
@@ -56,11 +56,6 @@ export const getUser = /* GraphQL */ `
       name
       pushToken
       friends
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       availability {
         id
         Sunday
@@ -76,6 +71,11 @@ export const getUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -93,11 +93,6 @@ export const listUsers = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -113,6 +108,90 @@ export const listUsers = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncAvailabilities = /* GraphQL */ `
+  query SyncAvailabilities(
+    $filter: ModelAvailabilityFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAvailabilities(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        Sunday
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getAvailability = /* GraphQL */ `
+  query GetAvailability($id: ID!) {
+    getAvailability(id: $id) {
+      id
+      Sunday
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listAvailabilitys = /* GraphQL */ `
+  query ListAvailabilitys(
+    $filter: ModelAvailabilityFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAvailabilitys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        Sunday
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
@@ -187,11 +266,6 @@ export const getPlan = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -207,6 +281,11 @@ export const getPlan = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       invitees {
         items {
@@ -434,11 +513,6 @@ export const usersByPhoneNumber = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -454,6 +528,11 @@ export const usersByPhoneNumber = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
@@ -482,11 +561,6 @@ export const usersByEmail = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -502,6 +576,11 @@ export const usersByEmail = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
@@ -530,11 +609,6 @@ export const usersByName = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -550,6 +624,11 @@ export const usersByName = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
@@ -693,85 +772,6 @@ export const inviteesByPlan = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getAvailability = /* GraphQL */ `
-  query GetAvailability($id: ID!) {
-    getAvailability(id: $id) {
-      id
-      Sunday
-      Monday
-      Tuesday
-      Wednesday
-      Thursday
-      Friday
-      Saturday
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listAvailabilitys = /* GraphQL */ `
-  query ListAvailabilitys(
-    $filter: ModelAvailabilityFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listAvailabilitys(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        Sunday
-        Monday
-        Tuesday
-        Wednesday
-        Thursday
-        Friday
-        Saturday
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncAvailabilities = /* GraphQL */ `
-  query SyncAvailabilities(
-    $filter: ModelAvailabilityFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncAvailabilities(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        Sunday
-        Monday
-        Tuesday
-        Wednesday
-        Thursday
-        Friday
-        Saturday
         _version
         _deleted
         _lastChangedAt

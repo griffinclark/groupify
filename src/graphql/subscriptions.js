@@ -10,11 +10,6 @@ export const onCreateUser = /* GraphQL */ `
       name
       pushToken
       friends
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       availability {
         id
         Sunday
@@ -30,6 +25,11 @@ export const onCreateUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -42,11 +42,6 @@ export const onUpdateUser = /* GraphQL */ `
       name
       pushToken
       friends
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       availability {
         id
         Sunday
@@ -62,6 +57,11 @@ export const onUpdateUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -74,11 +74,6 @@ export const onDeleteUser = /* GraphQL */ `
       name
       pushToken
       friends
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       availability {
         id
         Sunday
@@ -94,6 +89,68 @@ export const onDeleteUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateAvailability = /* GraphQL */ `
+  subscription OnCreateAvailability {
+    onCreateAvailability {
+      id
+      Sunday
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateAvailability = /* GraphQL */ `
+  subscription OnUpdateAvailability {
+    onUpdateAvailability {
+      id
+      Sunday
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteAvailability = /* GraphQL */ `
+  subscription OnDeleteAvailability {
+    onDeleteAvailability {
+      id
+      Sunday
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -115,11 +172,6 @@ export const onCreatePlan = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -135,6 +187,11 @@ export const onCreatePlan = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       invitees {
         items {
@@ -179,11 +236,6 @@ export const onUpdatePlan = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -199,6 +251,11 @@ export const onUpdatePlan = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       invitees {
         items {
@@ -243,11 +300,6 @@ export const onDeletePlan = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -263,6 +315,11 @@ export const onDeletePlan = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       invitees {
         items {
@@ -428,63 +485,6 @@ export const onDeleteInvitee = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateAvailability = /* GraphQL */ `
-  subscription OnCreateAvailability {
-    onCreateAvailability {
-      id
-      Sunday
-      Monday
-      Tuesday
-      Wednesday
-      Thursday
-      Friday
-      Saturday
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateAvailability = /* GraphQL */ `
-  subscription OnUpdateAvailability {
-    onUpdateAvailability {
-      id
-      Sunday
-      Monday
-      Tuesday
-      Wednesday
-      Thursday
-      Friday
-      Saturday
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteAvailability = /* GraphQL */ `
-  subscription OnDeleteAvailability {
-    onDeleteAvailability {
-      id
-      Sunday
-      Monday
-      Tuesday
-      Wednesday
-      Thursday
-      Friday
-      Saturday
       _version
       _deleted
       _lastChangedAt

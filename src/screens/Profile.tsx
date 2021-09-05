@@ -68,7 +68,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
               await Auth.signOut();
               console.log(route.params.currentUser);
               console.log('Successfully signed out');
-              navigation.navigate('Welcome', { currentUser: null });
+              navigation.navigate('Login', { currentUser: null });
             } catch (err) {
               console.log('error signing out...', err);
             }
@@ -77,7 +77,9 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
       </View>
       <View style={styles.bodyContainer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('InvitedPlans', { currentUser: currentUser })}
+          onPress={() =>
+            navigation.navigate(currentUserPlan ? 'InvitedPlans' : 'SearchPlace', { currentUser: currentUser })
+          }
           style={styles.userActivity}
         >
           <View style={styles.selector}>
@@ -136,6 +138,9 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
           style={styles.bugReport}
         >
           <Text style={{ fontSize: 18 }}>Submit Bug Report</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ImportContacts', {})} style={styles.bugReport}>
+          <Text style={{ fontSize: 18 }}>Import Contacts</Text>
         </TouchableOpacity>
       </View>
     </Screen>

@@ -7,10 +7,10 @@ import { Contact } from '../res/dataModels';
 import { Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
 import { User } from '../models';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Keyboard, StyleSheet, Text } from 'react-native';
-import { TEAL } from '../res/styles/Colors';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { Keyboard, StyleSheet, Text, View } from 'react-native';
+import { background, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
+import { Image } from 'react-native-elements/dist/image/Image';
 
 interface Props {
   navigation: {
@@ -34,6 +34,16 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
   const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
+    clearUserData();
+  }, []);
+
+  const clearUserData = async () => {
+    await DataStore.clear();
+    await DataStore.stop();
+    await DataStore.start();
+  };
+
+  useEffect(() => {
     setFormatPhone(amplifyPhoneFormat(phone));
   }, [phone]);
 
@@ -42,10 +52,8 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
     const token = await getExpoPushToken();
     const userInfo = await Auth.currentUserInfo();
     const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
-    // console.log(users);
     if (users.length > 0) {
       const user = users[0];
-      // console.log(token);
       if (user.pushToken !== token) {
         console.log('Existing User: Updating users pushToken');
         await DataStore.save(
@@ -60,14 +68,12 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
       const newUser = await DataStore.save(
         new User({
           phoneNumber: userInfo.attributes.phone_number,
-          email: userInfo.attributes.email,
           name: userInfo.attributes.name,
           pushToken: token,
           friends: [],
         }),
       );
       console.log('Created new user:');
-      // console.log(newUser);
       return newUser;
     }
   };
@@ -108,14 +114,10 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
   }, [phone, password]);
 
   return (
-    <Screen>
-      <Icon
-        style={{ alignSelf: 'flex-start', marginLeft: 20 }}
-        name="arrow-left"
-        type="font-awesome"
-        size={30}
-        onPress={() => navigation.navigate('Welcome', {})}
-      />
+    <Screen style={{ backgroundColor: background, justifyContent: 'space-evenly' }}>
+      <View style={{ alignSelf: 'center', flex: 1, marginTop: 80 }}>
+        <Image style={styles.logo} source={require('../../assets/logo.png')} />
+      </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
         <Text style={styles.title}>Log In</Text>
         <FormInput
@@ -126,14 +128,30 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
         />
         <FormInput returnKeyNext={false} label="Password" onChangeText={setPassword} secureTextEntry={true} />
         <TouchableOpacity
-          style={{ alignSelf: 'center', marginBottom: 20 }}
+          style={{ alignSelf: 'center' }}
           onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
         >
-          <Text style={{ color: '#288EF5' }}>Forgot password?</Text>
+          <Text style={{ color: TEAL }}>Forgot password?</Text>
         </TouchableOpacity>
         {error && <Alert status="error" message={error} />}
-        <Button title="Sign In" onPress={logIn} disabled={disabled} />
       </TouchableWithoutFeedback>
+      <View style={styles.createAccount}>
+        <Text style={styles.text}>
+          Don&apos;t have an account? Create one
+          <Text
+            style={[styles.text, { color: TEAL }]}
+            onPress={async () => {
+              navigation.navigate('CreateAccount', {});
+            }}
+          >
+            {' '}
+            here
+          </Text>
+        </Text>
+      </View>
+      <View style={{ flex: 1 }}>
+        <Button title="Log In" onPress={logIn} disabled={disabled} />
+      </View>
     </Screen>
   );
 };
@@ -141,8 +159,20 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   title: {
     margin: 20,
-    color: TEAL,
-    fontSize: 32,
-    fontWeight: '400',
+    fontSize: 30,
+    fontWeight: '500',
+  },
+  logo: {
+    width: 318,
+    height: 98,
+  },
+  createAccount: {
+    flex: 1,
+    alignSelf: 'center',
+    marginVertical: 40,
+  },
+  text: {
+    fontWeight: '500',
+    fontSize: 20,
   },
 });

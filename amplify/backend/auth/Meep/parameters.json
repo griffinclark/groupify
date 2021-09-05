@@ -1,35 +1,37 @@
 {
-    "identityPoolName": "testAuthIdentityPool",
+    "identityPoolName": "Meep",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "meepbefd9dd4",
-    "userPoolName": "Meep",
+    "resourceNameTruncated": "meep41a91615",
+    "userPoolName": "Meep-pool",
     "autoVerifiedAttributes": [
         "phone_number"
     ],
-    "mfaConfiguration": "OPTIONAL",
+    "mfaConfiguration": "OFF",
     "mfaTypes": [
         "SMS Text Message"
     ],
-    "smsAuthenticationMessage": "Your verification code is {####}",
-    "smsVerificationMessage": "Body {####}",
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "phone_number",
         "name",
-        "email"
+        "phone_number"
     ],
-    "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [],
-    "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "Meepbefd9dd4_userpoolclient_lambda_role",
+    "userpoolClientWriteAttributes": [
+        "email"
+    ],
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
+    "userpoolClientLambdaRole": "Meep41a91615_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "befd9dd4",
+    "sharedId": "41a91615",
     "resourceName": "Meep",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
@@ -44,17 +46,22 @@
             "Arn"
         ]
     },
-    "serviceName": "Cognito",
+    "useDefault": "manual",
+    "thirdPartyAuth": false,
     "usernameAttributes": [
         "phone_number"
     ],
-    "useDefault": "manual",
     "userPoolGroups": false,
-    "userPoolGroupList": [],
     "adminQueries": false,
-    "thirdPartyAuth": false,
-    "authProviders": [],
+    "triggers": "{}",
+    "hostedUI": false,
+    "userPoolGroupList": [],
+    "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "dependsOn": [],
-    "hostedUI": false
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "breakCircularDependency": false,
+    "permissions": [],
+    "dependsOn": []
 }

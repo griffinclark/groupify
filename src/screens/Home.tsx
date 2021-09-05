@@ -127,9 +127,14 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
             </View>
           ) : (
             <View style={styles.title}>
-              <Text style={globalStyles.superTitle}>Looks like you don&apos;t have any plans.</Text>
-              <Text style={globalStyles.superTitle}>Lets create one together!</Text>
-              <Text style={[globalStyles.title, { textAlign: 'center' }]}>
+              <Text style={styles.noPlanText}>
+                Welcome to your plan dashboard. This is where you will see a round-up of plans you’ve created, and
+                things you&apos;re invited to.
+              </Text>
+              <Text style={[styles.noPlanText, { textAlign: 'center', marginTop: '95%' }]}>
+                Lets create one together!
+              </Text>
+              <Text style={[styles.noPlanText, { textAlign: 'center', width: '70%' }]}>
                 Create your first plan with the button below
               </Text>
             </View>
@@ -166,7 +171,9 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    justifyContent: 'center',
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   label: {
     fontSize: 14,
@@ -187,5 +194,13 @@ const styles = StyleSheet.create({
   },
   invitedPlans: {
     backgroundColor: 'white',
+  },
+  noPlanText: {
+    fontSize: 20,
+    fontWeight: '500',
+    lineHeight: 28.6,
+    width: '90%',
+    alignSelf: 'center',
+    marginVertical: 15,
   },
 });

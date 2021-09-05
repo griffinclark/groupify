@@ -88,12 +88,12 @@ export type User = {
   name: string,
   pushToken: string,
   friends?: Array< string | null > | null,
+  availability?: Availability | null,
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
   createdAt: string,
   updatedAt: string,
-  availability?: Availability | null,
 };
 
 export type Availability = {
@@ -125,6 +125,48 @@ export type UpdateUserInput = {
 };
 
 export type DeleteUserInput = {
+  id: string,
+  _version?: number | null,
+};
+
+export type CreateAvailabilityInput = {
+  id?: string | null,
+  Sunday?: Array< string | null > | null,
+  Monday?: Array< string | null > | null,
+  Tuesday?: Array< string | null > | null,
+  Wednesday?: Array< string | null > | null,
+  Thursday?: Array< string | null > | null,
+  Friday?: Array< string | null > | null,
+  Saturday?: Array< string | null > | null,
+  _version?: number | null,
+};
+
+export type ModelAvailabilityConditionInput = {
+  Sunday?: ModelStringInput | null,
+  Monday?: ModelStringInput | null,
+  Tuesday?: ModelStringInput | null,
+  Wednesday?: ModelStringInput | null,
+  Thursday?: ModelStringInput | null,
+  Friday?: ModelStringInput | null,
+  Saturday?: ModelStringInput | null,
+  and?: Array< ModelAvailabilityConditionInput | null > | null,
+  or?: Array< ModelAvailabilityConditionInput | null > | null,
+  not?: ModelAvailabilityConditionInput | null,
+};
+
+export type UpdateAvailabilityInput = {
+  id: string,
+  Sunday?: Array< string | null > | null,
+  Monday?: Array< string | null > | null,
+  Tuesday?: Array< string | null > | null,
+  Wednesday?: Array< string | null > | null,
+  Thursday?: Array< string | null > | null,
+  Friday?: Array< string | null > | null,
+  Saturday?: Array< string | null > | null,
+  _version?: number | null,
+};
+
+export type DeleteAvailabilityInput = {
   id: string,
   _version?: number | null,
 };
@@ -261,48 +303,6 @@ export type DeleteInviteeInput = {
   _version?: number | null,
 };
 
-export type CreateAvailabilityInput = {
-  id?: string | null,
-  Sunday?: Array< string | null > | null,
-  Monday?: Array< string | null > | null,
-  Tuesday?: Array< string | null > | null,
-  Wednesday?: Array< string | null > | null,
-  Thursday?: Array< string | null > | null,
-  Friday?: Array< string | null > | null,
-  Saturday?: Array< string | null > | null,
-  _version?: number | null,
-};
-
-export type ModelAvailabilityConditionInput = {
-  Sunday?: ModelStringInput | null,
-  Monday?: ModelStringInput | null,
-  Tuesday?: ModelStringInput | null,
-  Wednesday?: ModelStringInput | null,
-  Thursday?: ModelStringInput | null,
-  Friday?: ModelStringInput | null,
-  Saturday?: ModelStringInput | null,
-  and?: Array< ModelAvailabilityConditionInput | null > | null,
-  or?: Array< ModelAvailabilityConditionInput | null > | null,
-  not?: ModelAvailabilityConditionInput | null,
-};
-
-export type UpdateAvailabilityInput = {
-  id: string,
-  Sunday?: Array< string | null > | null,
-  Monday?: Array< string | null > | null,
-  Tuesday?: Array< string | null > | null,
-  Wednesday?: Array< string | null > | null,
-  Thursday?: Array< string | null > | null,
-  Friday?: Array< string | null > | null,
-  Saturday?: Array< string | null > | null,
-  _version?: number | null,
-};
-
-export type DeleteAvailabilityInput = {
-  id: string,
-  _version?: number | null,
-};
-
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   phoneNumber?: ModelStringInput | null,
@@ -318,6 +318,27 @@ export type ModelUserFilterInput = {
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
   items?:  Array<User | null > | null,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelAvailabilityFilterInput = {
+  id?: ModelIDInput | null,
+  Sunday?: ModelStringInput | null,
+  Monday?: ModelStringInput | null,
+  Tuesday?: ModelStringInput | null,
+  Wednesday?: ModelStringInput | null,
+  Thursday?: ModelStringInput | null,
+  Friday?: ModelStringInput | null,
+  Saturday?: ModelStringInput | null,
+  and?: Array< ModelAvailabilityFilterInput | null > | null,
+  or?: Array< ModelAvailabilityFilterInput | null > | null,
+  not?: ModelAvailabilityFilterInput | null,
+};
+
+export type ModelAvailabilityConnection = {
+  __typename: "ModelAvailabilityConnection",
+  items?:  Array<Availability | null > | null,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -361,27 +382,6 @@ export enum ModelSortDirection {
 }
 
 
-export type ModelAvailabilityFilterInput = {
-  id?: ModelIDInput | null,
-  Sunday?: ModelStringInput | null,
-  Monday?: ModelStringInput | null,
-  Tuesday?: ModelStringInput | null,
-  Wednesday?: ModelStringInput | null,
-  Thursday?: ModelStringInput | null,
-  Friday?: ModelStringInput | null,
-  Saturday?: ModelStringInput | null,
-  and?: Array< ModelAvailabilityFilterInput | null > | null,
-  or?: Array< ModelAvailabilityFilterInput | null > | null,
-  not?: ModelAvailabilityFilterInput | null,
-};
-
-export type ModelAvailabilityConnection = {
-  __typename: "ModelAvailabilityConnection",
-  items?:  Array<Availability | null > | null,
-  nextToken?: string | null,
-  startedAt?: number | null,
-};
-
 export type CreateUserMutationVariables = {
   input: CreateUserInput,
   condition?: ModelUserConditionInput | null,
@@ -396,11 +396,6 @@ export type CreateUserMutation = {
     name: string,
     pushToken: string,
     friends?: Array< string | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     availability?:  {
       __typename: "Availability",
       id: string,
@@ -417,6 +412,11 @@ export type CreateUserMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -434,11 +434,6 @@ export type UpdateUserMutation = {
     name: string,
     pushToken: string,
     friends?: Array< string | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     availability?:  {
       __typename: "Availability",
       id: string,
@@ -455,6 +450,11 @@ export type UpdateUserMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -472,11 +472,6 @@ export type DeleteUserMutation = {
     name: string,
     pushToken: string,
     friends?: Array< string | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     availability?:  {
       __typename: "Availability",
       id: string,
@@ -493,6 +488,83 @@ export type DeleteUserMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateAvailabilityMutationVariables = {
+  input: CreateAvailabilityInput,
+  condition?: ModelAvailabilityConditionInput | null,
+};
+
+export type CreateAvailabilityMutation = {
+  createAvailability?:  {
+    __typename: "Availability",
+    id: string,
+    Sunday?: Array< string | null > | null,
+    Monday?: Array< string | null > | null,
+    Tuesday?: Array< string | null > | null,
+    Wednesday?: Array< string | null > | null,
+    Thursday?: Array< string | null > | null,
+    Friday?: Array< string | null > | null,
+    Saturday?: Array< string | null > | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateAvailabilityMutationVariables = {
+  input: UpdateAvailabilityInput,
+  condition?: ModelAvailabilityConditionInput | null,
+};
+
+export type UpdateAvailabilityMutation = {
+  updateAvailability?:  {
+    __typename: "Availability",
+    id: string,
+    Sunday?: Array< string | null > | null,
+    Monday?: Array< string | null > | null,
+    Tuesday?: Array< string | null > | null,
+    Wednesday?: Array< string | null > | null,
+    Thursday?: Array< string | null > | null,
+    Friday?: Array< string | null > | null,
+    Saturday?: Array< string | null > | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteAvailabilityMutationVariables = {
+  input: DeleteAvailabilityInput,
+  condition?: ModelAvailabilityConditionInput | null,
+};
+
+export type DeleteAvailabilityMutation = {
+  deleteAvailability?:  {
+    __typename: "Availability",
+    id: string,
+    Sunday?: Array< string | null > | null,
+    Monday?: Array< string | null > | null,
+    Tuesday?: Array< string | null > | null,
+    Wednesday?: Array< string | null > | null,
+    Thursday?: Array< string | null > | null,
+    Friday?: Array< string | null > | null,
+    Saturday?: Array< string | null > | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -520,11 +592,6 @@ export type CreatePlanMutation = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -541,6 +608,11 @@ export type CreatePlanMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     invitees?:  {
       __typename: "ModelInviteeConnection",
@@ -593,11 +665,6 @@ export type UpdatePlanMutation = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -614,6 +681,11 @@ export type UpdatePlanMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     invitees?:  {
       __typename: "ModelInviteeConnection",
@@ -666,11 +738,6 @@ export type DeletePlanMutation = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -687,6 +754,11 @@ export type DeletePlanMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     invitees?:  {
       __typename: "ModelInviteeConnection",
@@ -886,78 +958,6 @@ export type DeleteInviteeMutation = {
   } | null,
 };
 
-export type CreateAvailabilityMutationVariables = {
-  input: CreateAvailabilityInput,
-  condition?: ModelAvailabilityConditionInput | null,
-};
-
-export type CreateAvailabilityMutation = {
-  createAvailability?:  {
-    __typename: "Availability",
-    id: string,
-    Sunday?: Array< string | null > | null,
-    Monday?: Array< string | null > | null,
-    Tuesday?: Array< string | null > | null,
-    Wednesday?: Array< string | null > | null,
-    Thursday?: Array< string | null > | null,
-    Friday?: Array< string | null > | null,
-    Saturday?: Array< string | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateAvailabilityMutationVariables = {
-  input: UpdateAvailabilityInput,
-  condition?: ModelAvailabilityConditionInput | null,
-};
-
-export type UpdateAvailabilityMutation = {
-  updateAvailability?:  {
-    __typename: "Availability",
-    id: string,
-    Sunday?: Array< string | null > | null,
-    Monday?: Array< string | null > | null,
-    Tuesday?: Array< string | null > | null,
-    Wednesday?: Array< string | null > | null,
-    Thursday?: Array< string | null > | null,
-    Friday?: Array< string | null > | null,
-    Saturday?: Array< string | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteAvailabilityMutationVariables = {
-  input: DeleteAvailabilityInput,
-  condition?: ModelAvailabilityConditionInput | null,
-};
-
-export type DeleteAvailabilityMutation = {
-  deleteAvailability?:  {
-    __typename: "Availability",
-    id: string,
-    Sunday?: Array< string | null > | null,
-    Monday?: Array< string | null > | null,
-    Tuesday?: Array< string | null > | null,
-    Wednesday?: Array< string | null > | null,
-    Thursday?: Array< string | null > | null,
-    Friday?: Array< string | null > | null,
-    Saturday?: Array< string | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
 export type SyncUsersQueryVariables = {
   filter?: ModelUserFilterInput | null,
   limit?: number | null,
@@ -976,11 +976,6 @@ export type SyncUsersQuery = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -997,6 +992,11 @@ export type SyncUsersQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1016,11 +1016,6 @@ export type GetUserQuery = {
     name: string,
     pushToken: string,
     friends?: Array< string | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     availability?:  {
       __typename: "Availability",
       id: string,
@@ -1037,6 +1032,11 @@ export type GetUserQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1057,11 +1057,6 @@ export type ListUsersQuery = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -1078,6 +1073,95 @@ export type ListUsersQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncAvailabilitiesQueryVariables = {
+  filter?: ModelAvailabilityFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncAvailabilitiesQuery = {
+  syncAvailabilities?:  {
+    __typename: "ModelAvailabilityConnection",
+    items?:  Array< {
+      __typename: "Availability",
+      id: string,
+      Sunday?: Array< string | null > | null,
+      Monday?: Array< string | null > | null,
+      Tuesday?: Array< string | null > | null,
+      Wednesday?: Array< string | null > | null,
+      Thursday?: Array< string | null > | null,
+      Friday?: Array< string | null > | null,
+      Saturday?: Array< string | null > | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type GetAvailabilityQueryVariables = {
+  id: string,
+};
+
+export type GetAvailabilityQuery = {
+  getAvailability?:  {
+    __typename: "Availability",
+    id: string,
+    Sunday?: Array< string | null > | null,
+    Monday?: Array< string | null > | null,
+    Tuesday?: Array< string | null > | null,
+    Wednesday?: Array< string | null > | null,
+    Thursday?: Array< string | null > | null,
+    Friday?: Array< string | null > | null,
+    Saturday?: Array< string | null > | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListAvailabilitysQueryVariables = {
+  filter?: ModelAvailabilityFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListAvailabilitysQuery = {
+  listAvailabilitys?:  {
+    __typename: "ModelAvailabilityConnection",
+    items?:  Array< {
+      __typename: "Availability",
+      id: string,
+      Sunday?: Array< string | null > | null,
+      Monday?: Array< string | null > | null,
+      Tuesday?: Array< string | null > | null,
+      Wednesday?: Array< string | null > | null,
+      Thursday?: Array< string | null > | null,
+      Friday?: Array< string | null > | null,
+      Saturday?: Array< string | null > | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1157,11 +1241,6 @@ export type GetPlanQuery = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -1178,6 +1257,11 @@ export type GetPlanQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     invitees?:  {
       __typename: "ModelInviteeConnection",
@@ -1419,11 +1503,6 @@ export type UsersByPhoneNumberQuery = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -1440,6 +1519,11 @@ export type UsersByPhoneNumberQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1465,11 +1549,6 @@ export type UsersByEmailQuery = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -1486,6 +1565,11 @@ export type UsersByEmailQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1511,11 +1595,6 @@ export type UsersByNameQuery = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -1532,6 +1611,11 @@ export type UsersByNameQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1681,12 +1765,107 @@ export type InviteesByPlanQuery = {
   } | null,
 };
 
-export type GetAvailabilityQueryVariables = {
-  id: string,
+export type OnCreateUserSubscription = {
+  onCreateUser?:  {
+    __typename: "User",
+    id: string,
+    phoneNumber: string,
+    email: string,
+    name: string,
+    pushToken: string,
+    friends?: Array< string | null > | null,
+    availability?:  {
+      __typename: "Availability",
+      id: string,
+      Sunday?: Array< string | null > | null,
+      Monday?: Array< string | null > | null,
+      Tuesday?: Array< string | null > | null,
+      Wednesday?: Array< string | null > | null,
+      Thursday?: Array< string | null > | null,
+      Friday?: Array< string | null > | null,
+      Saturday?: Array< string | null > | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
 };
 
-export type GetAvailabilityQuery = {
-  getAvailability?:  {
+export type OnUpdateUserSubscription = {
+  onUpdateUser?:  {
+    __typename: "User",
+    id: string,
+    phoneNumber: string,
+    email: string,
+    name: string,
+    pushToken: string,
+    friends?: Array< string | null > | null,
+    availability?:  {
+      __typename: "Availability",
+      id: string,
+      Sunday?: Array< string | null > | null,
+      Monday?: Array< string | null > | null,
+      Tuesday?: Array< string | null > | null,
+      Wednesday?: Array< string | null > | null,
+      Thursday?: Array< string | null > | null,
+      Friday?: Array< string | null > | null,
+      Saturday?: Array< string | null > | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUserSubscription = {
+  onDeleteUser?:  {
+    __typename: "User",
+    id: string,
+    phoneNumber: string,
+    email: string,
+    name: string,
+    pushToken: string,
+    friends?: Array< string | null > | null,
+    availability?:  {
+      __typename: "Availability",
+      id: string,
+      Sunday?: Array< string | null > | null,
+      Monday?: Array< string | null > | null,
+      Tuesday?: Array< string | null > | null,
+      Wednesday?: Array< string | null > | null,
+      Thursday?: Array< string | null > | null,
+      Friday?: Array< string | null > | null,
+      Saturday?: Array< string | null > | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateAvailabilitySubscription = {
+  onCreateAvailability?:  {
     __typename: "Availability",
     id: string,
     Sunday?: Array< string | null > | null,
@@ -1704,163 +1883,41 @@ export type GetAvailabilityQuery = {
   } | null,
 };
 
-export type ListAvailabilitysQueryVariables = {
-  filter?: ModelAvailabilityFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListAvailabilitysQuery = {
-  listAvailabilitys?:  {
-    __typename: "ModelAvailabilityConnection",
-    items?:  Array< {
-      __typename: "Availability",
-      id: string,
-      Sunday?: Array< string | null > | null,
-      Monday?: Array< string | null > | null,
-      Tuesday?: Array< string | null > | null,
-      Wednesday?: Array< string | null > | null,
-      Thursday?: Array< string | null > | null,
-      Friday?: Array< string | null > | null,
-      Saturday?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncAvailabilitiesQueryVariables = {
-  filter?: ModelAvailabilityFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncAvailabilitiesQuery = {
-  syncAvailabilities?:  {
-    __typename: "ModelAvailabilityConnection",
-    items?:  Array< {
-      __typename: "Availability",
-      id: string,
-      Sunday?: Array< string | null > | null,
-      Monday?: Array< string | null > | null,
-      Tuesday?: Array< string | null > | null,
-      Wednesday?: Array< string | null > | null,
-      Thursday?: Array< string | null > | null,
-      Friday?: Array< string | null > | null,
-      Saturday?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type OnCreateUserSubscription = {
-  onCreateUser?:  {
-    __typename: "User",
+export type OnUpdateAvailabilitySubscription = {
+  onUpdateAvailability?:  {
+    __typename: "Availability",
     id: string,
-    phoneNumber: string,
-    email: string,
-    name: string,
-    pushToken: string,
-    friends?: Array< string | null > | null,
+    Sunday?: Array< string | null > | null,
+    Monday?: Array< string | null > | null,
+    Tuesday?: Array< string | null > | null,
+    Wednesday?: Array< string | null > | null,
+    Thursday?: Array< string | null > | null,
+    Friday?: Array< string | null > | null,
+    Saturday?: Array< string | null > | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-    availability?:  {
-      __typename: "Availability",
-      id: string,
-      Sunday?: Array< string | null > | null,
-      Monday?: Array< string | null > | null,
-      Tuesday?: Array< string | null > | null,
-      Wednesday?: Array< string | null > | null,
-      Thursday?: Array< string | null > | null,
-      Friday?: Array< string | null > | null,
-      Saturday?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
   } | null,
 };
 
-export type OnUpdateUserSubscription = {
-  onUpdateUser?:  {
-    __typename: "User",
+export type OnDeleteAvailabilitySubscription = {
+  onDeleteAvailability?:  {
+    __typename: "Availability",
     id: string,
-    phoneNumber: string,
-    email: string,
-    name: string,
-    pushToken: string,
-    friends?: Array< string | null > | null,
+    Sunday?: Array< string | null > | null,
+    Monday?: Array< string | null > | null,
+    Tuesday?: Array< string | null > | null,
+    Wednesday?: Array< string | null > | null,
+    Thursday?: Array< string | null > | null,
+    Friday?: Array< string | null > | null,
+    Saturday?: Array< string | null > | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-    availability?:  {
-      __typename: "Availability",
-      id: string,
-      Sunday?: Array< string | null > | null,
-      Monday?: Array< string | null > | null,
-      Tuesday?: Array< string | null > | null,
-      Wednesday?: Array< string | null > | null,
-      Thursday?: Array< string | null > | null,
-      Friday?: Array< string | null > | null,
-      Saturday?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-  } | null,
-};
-
-export type OnDeleteUserSubscription = {
-  onDeleteUser?:  {
-    __typename: "User",
-    id: string,
-    phoneNumber: string,
-    email: string,
-    name: string,
-    pushToken: string,
-    friends?: Array< string | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-    availability?:  {
-      __typename: "Availability",
-      id: string,
-      Sunday?: Array< string | null > | null,
-      Monday?: Array< string | null > | null,
-      Tuesday?: Array< string | null > | null,
-      Wednesday?: Array< string | null > | null,
-      Thursday?: Array< string | null > | null,
-      Friday?: Array< string | null > | null,
-      Saturday?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
   } | null,
 };
 
@@ -1883,11 +1940,6 @@ export type OnCreatePlanSubscription = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -1904,6 +1956,11 @@ export type OnCreatePlanSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     invitees?:  {
       __typename: "ModelInviteeConnection",
@@ -1951,11 +2008,6 @@ export type OnUpdatePlanSubscription = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -1972,6 +2024,11 @@ export type OnUpdatePlanSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     invitees?:  {
       __typename: "ModelInviteeConnection",
@@ -2019,11 +2076,6 @@ export type OnDeletePlanSubscription = {
       name: string,
       pushToken: string,
       friends?: Array< string | null > | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       availability?:  {
         __typename: "Availability",
         id: string,
@@ -2040,6 +2092,11 @@ export type OnDeletePlanSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     invitees?:  {
       __typename: "ModelInviteeConnection",
@@ -2216,63 +2273,6 @@ export type OnDeleteInviteeSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateAvailabilitySubscription = {
-  onCreateAvailability?:  {
-    __typename: "Availability",
-    id: string,
-    Sunday?: Array< string | null > | null,
-    Monday?: Array< string | null > | null,
-    Tuesday?: Array< string | null > | null,
-    Wednesday?: Array< string | null > | null,
-    Thursday?: Array< string | null > | null,
-    Friday?: Array< string | null > | null,
-    Saturday?: Array< string | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateAvailabilitySubscription = {
-  onUpdateAvailability?:  {
-    __typename: "Availability",
-    id: string,
-    Sunday?: Array< string | null > | null,
-    Monday?: Array< string | null > | null,
-    Tuesday?: Array< string | null > | null,
-    Wednesday?: Array< string | null > | null,
-    Thursday?: Array< string | null > | null,
-    Friday?: Array< string | null > | null,
-    Saturday?: Array< string | null > | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteAvailabilitySubscription = {
-  onDeleteAvailability?:  {
-    __typename: "Availability",
-    id: string,
-    Sunday?: Array< string | null > | null,
-    Monday?: Array< string | null > | null,
-    Tuesday?: Array< string | null > | null,
-    Wednesday?: Array< string | null > | null,
-    Thursday?: Array< string | null > | null,
-    Friday?: Array< string | null > | null,
-    Saturday?: Array< string | null > | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
