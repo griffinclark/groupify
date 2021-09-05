@@ -4,7 +4,7 @@
     "icon": "./assets/groupify_icon_official.png",
     "slug": "groupify",
     "sdkVersion": "40.0.0",
-    "version": "1.5.2",
+    "version": "1.5.3",
     "orientation": "portrait",
     "splash": {
       "image": "./assets/Create_Account.png",
@@ -24,14 +24,14 @@
         "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
         "NSLocationWhenInUseUsageDescription": "Accessing your location will allow you to view places near you."
       },
-      "buildNumber": "1.5.2",
+      "buildNumber": "1.5.3",
       "config": {
         "googleMapsApiKey": "AIzaSyChCbEsnEsDQ3qJklY72r9PSTNMuRnY7Rw"
       }
     },
     "android": {
       "package": "com.munchkinlabs.meep",
-      "versionCode": 4,
+      "versionCode": 5,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAjyWqzciMARyactNXDfNhesz6Z4k4zNbo"

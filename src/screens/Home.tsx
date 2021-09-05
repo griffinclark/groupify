@@ -45,7 +45,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     console.log('Loading plans');
 
     const userCreatedPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
-
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
     const invitedPlans = removePastPlans(
       invitees
@@ -76,20 +75,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     });
   };
 
-  // const filterUpcomingPlans = (plans: Plan[]) => {
-  //   const currentDate = new Date();
-  //   const weekInMS = 604800000;
-  //   return plans.filter((plan) => {
-  //     console.log(plan.date);
-  //     if (plan.date) {
-  //       if (convertDateStringToDate(plan.date).getTime() - currentDate.getTime() < weekInMS) {
-  //         return true;
-  //       }
-  //     }
-  //     return false;
-  //   });
-  // };
-
   const createGreeting = () => {
     if (currentUser) {
       const firstName = currentUser.name.includes(' ')
@@ -111,7 +96,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
             <View>
               <View>
                 <Text style={styles.label}>COMING UP NEXT</Text>
-                <NextPlan navigation={navigation} plan={userPlans[0]} />
+                <NextPlan navigation={navigation} plan={userPlans.concat(invitedPlans)[0]} />
               </View>
               <View style={globalStyles.miniSpacer}></View>
               {invitedPlans.length > 0 && pendingInvitedPlans && (
@@ -121,9 +106,12 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                   <View style={globalStyles.miniSpacer}></View>
                 </View>
               )}
-              <Text style={styles.label}>CREATED PLANS</Text>
-              <CreatedPlans navigation={navigation} userPlans={userPlans} />
-              {/* <MiniDataDisplay navigation={navigation} data={userPlans} /> */}
+              {userPlans.length > 0 && (
+                <View>
+                  <Text style={styles.label}>CREATED PLANS</Text>
+                  <CreatedPlans navigation={navigation} userPlans={userPlans} />
+                </View>
+              )}
             </View>
           ) : (
             <View style={styles.title}>
