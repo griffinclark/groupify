@@ -7,7 +7,7 @@ import { Image } from 'react-native-elements/dist/image/Image';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { background, TEAL } from '../res/styles/Colors';
+import { background } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
 
 interface Props {
