@@ -105,9 +105,7 @@ export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
     // console.log(`Searching users that contain ${text}`);
     text = trimText.charAt(0).toUpperCase() + trimText.slice(1);
     const users = await DataStore.query(User, (user) =>
-      user
-        .or((user) => user.name('contains', text).phoneNumber('contains', text).email('contains', text))
-        .id('ne', route.params.userID),
+      user.or((user) => user.name('contains', text).phoneNumber('contains', text)).id('ne', route.params.userID),
     );
     // console.log(users);
     setUsers(users);

@@ -14,11 +14,6 @@ export const createUser = /* GraphQL */ `
       name
       pushToken
       friends
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       availability {
         id
         Sunday
@@ -34,6 +29,11 @@ export const createUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -49,11 +49,6 @@ export const updateUser = /* GraphQL */ `
       name
       pushToken
       friends
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       availability {
         id
         Sunday
@@ -69,6 +64,11 @@ export const updateUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -84,11 +84,6 @@ export const deleteUser = /* GraphQL */ `
       name
       pushToken
       friends
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       availability {
         id
         Sunday
@@ -104,6 +99,77 @@ export const deleteUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createAvailability = /* GraphQL */ `
+  mutation CreateAvailability(
+    $input: CreateAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    createAvailability(input: $input, condition: $condition) {
+      id
+      Sunday
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateAvailability = /* GraphQL */ `
+  mutation UpdateAvailability(
+    $input: UpdateAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    updateAvailability(input: $input, condition: $condition) {
+      id
+      Sunday
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteAvailability = /* GraphQL */ `
+  mutation DeleteAvailability(
+    $input: DeleteAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    deleteAvailability(input: $input, condition: $condition) {
+      id
+      Sunday
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -128,11 +194,6 @@ export const createPlan = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -148,6 +209,11 @@ export const createPlan = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       invitees {
         items {
@@ -195,11 +261,6 @@ export const updatePlan = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -215,6 +276,11 @@ export const updatePlan = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       invitees {
         items {
@@ -262,11 +328,6 @@ export const deletePlan = /* GraphQL */ `
         name
         pushToken
         friends
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         availability {
           id
           Sunday
@@ -282,6 +343,11 @@ export const deletePlan = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       invitees {
         items {
@@ -456,72 +522,6 @@ export const deleteInvitee = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createAvailability = /* GraphQL */ `
-  mutation CreateAvailability(
-    $input: CreateAvailabilityInput!
-    $condition: ModelAvailabilityConditionInput
-  ) {
-    createAvailability(input: $input, condition: $condition) {
-      id
-      Sunday
-      Monday
-      Tuesday
-      Wednesday
-      Thursday
-      Friday
-      Saturday
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateAvailability = /* GraphQL */ `
-  mutation UpdateAvailability(
-    $input: UpdateAvailabilityInput!
-    $condition: ModelAvailabilityConditionInput
-  ) {
-    updateAvailability(input: $input, condition: $condition) {
-      id
-      Sunday
-      Monday
-      Tuesday
-      Wednesday
-      Thursday
-      Friday
-      Saturday
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteAvailability = /* GraphQL */ `
-  mutation DeleteAvailability(
-    $input: DeleteAvailabilityInput!
-    $condition: ModelAvailabilityConditionInput
-  ) {
-    deleteAvailability(input: $input, condition: $condition) {
-      id
-      Sunday
-      Monday
-      Tuesday
-      Wednesday
-      Thursday
-      Friday
-      Saturday
       _version
       _deleted
       _lastChangedAt

@@ -2,7 +2,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { Title, Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
+import { Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { background, TEAL } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -83,7 +83,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
         password,
         attributes: {
           phone_number: formatPhone,
-          email: 'removeWhen@DatabaseUpdated.com', //remove when we update the database for no email
           name: name,
         },
       });
@@ -136,7 +135,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
           name="arrow-left"
           type="font-awesome"
           size={30}
-          onPress={() => navigation.navigate('Welcome', {})}
+          onPress={() => navigation.navigate('Login', {})}
         />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
           {route.params.step === 'create' && (
@@ -184,7 +183,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
           )}
           {route.params.step === 'validate' && (
             <View style={styles.validateContainer}>
-              <Title>Verify Your Phone Number</Title>
+              <Text style={styles.title}>Verify Your Phone Number</Text>
               <View>
                 <FormInput
                   returnKeyNext={false}
