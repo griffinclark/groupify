@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
-import { Welcome } from '../screens/Welcome';
 import { Home } from '../screens/Home';
 import { SelectFriends } from '../screens/SelectFriends';
 import { CreateCustomEvent } from '../screens/CreateCustomEvent';
@@ -66,7 +65,6 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialRoute}>
-        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccount}
