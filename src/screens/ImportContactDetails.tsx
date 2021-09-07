@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
-import { FlatList } from 'react-native-gesture-handler';
 import { background, GREY_5 } from '../res/styles/Colors';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { Button, Title, Screen } from '../atoms/AtomsExports';
@@ -10,6 +9,7 @@ import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { getCurrentUser } from '../res/utilFunctions';
 import { User } from '../models';
+import { Image } from 'react-native-elements/dist/image/Image';
 
 interface Props {
   navigation: {
@@ -96,7 +96,7 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
 
       <View style={styles.flatListContainer}>
         <Text style={{ fontSize: 20, paddingBottom: 20 }}>{createGreeting()}</Text>
-        <View style={styles.listContainer}>
+        {/* <View style={styles.listContainer}>
           <FlatList
             data={contacts}
             renderItem={renderContact}
@@ -106,7 +106,8 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
               </View>
             )}
           />
-        </View>
+        </View> */}
+        <Image source={require('../../assets/Contacts-Graphic.png')} style={{ width: '100%', height: 186 }} />
         <Text style={{ fontSize: 20, marginBottom: 240, paddingTop: 20 }}>
           From your contact list, please select all people you’d like to import into Groupify.*
         </Text>

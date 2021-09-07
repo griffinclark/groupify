@@ -106,10 +106,10 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         friend={item}
         addUser={addSelectedContact}
         removeUser={removeSelectedContact}
-        isSelected={selectedContacts}
+        isSelected={selectedContacts.find((contact) => contact.id)}
       />
     );
-  };
+  }
 
   const sendContactMessage = async () => {
     const event = route.params.data.eventData;
