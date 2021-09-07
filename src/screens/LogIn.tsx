@@ -11,6 +11,7 @@ import { Keyboard, StyleSheet, Text, View } from 'react-native';
 import { background, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Image } from 'react-native-elements/dist/image/Image';
+import * as SecureStore from 'expo-secure-store';
 
 interface Props {
   navigation: {
@@ -82,6 +83,8 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
     setError(undefined);
     try {
       await Auth.signIn(formatPhone, password);
+      setSecureStoreItem('phone', phone);
+      setSecureStoreItem('password', password);
       console.log('successfully signed in');
       const user = await registerUser();
       const contacts: Contact[] = await getAllImportedContacts();
@@ -105,6 +108,21 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
+  const getSecureStoreItems = async (): Promise<void> => {
+    const savedPhone = await SecureStore.getItemAsync('phone');
+    const savedPassword = await SecureStore.getItemAsync('password');
+    if (savedPhone) setPhone(savedPhone);
+    if (savedPassword) setPassword(savedPassword);
+  };
+
+  const setSecureStoreItem = async (key: string, value: string): Promise<void> => {
+    return SecureStore.setItemAsync(key, value);
+  };
+
+  useEffect(() => {
+    getSecureStoreItems();
+  }, []);
+
   useEffect(() => {
     if (phone.trim() && password.trim()) {
       setDisabled(false);
@@ -126,7 +144,13 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
           value={phone}
           onChangeText={(number) => setPhone(formatPhoneNumber(number))}
         />
-        <FormInput returnKeyNext={false} label="Password" onChangeText={setPassword} secureTextEntry={true} />
+        <FormInput
+          returnKeyNext={false}
+          label="Password"
+          onChangeText={setPassword}
+          secureTextEntry={true}
+          value={password}
+        />
         <TouchableOpacity
           style={{ alignSelf: 'center' }}
           onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
