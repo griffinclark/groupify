@@ -5,7 +5,12 @@ import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
 import { background, GREY_5 } from '../res/styles/Colors';
-import { deleteAllImportedContacts, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
+import {
+  deleteAllImportedContacts,
+  deleteImportedContactFromID,
+  getAllImportedContacts,
+  storeImportedContact,
+} from '../res/storageFunctions';
 import { Button, Title, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
@@ -13,6 +18,7 @@ import { RoutePropParams } from '../res/root-navigation';
 interface Props {
   navigation: {
     navigate: (ev: string) => void;
+    goBack: () => void;
   };
   route: RoutePropParams;
 }
@@ -26,7 +32,8 @@ enum State {
 export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
-  const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
+  const [addedContacts, setAddedContacts] = useState<Contact[]>([]);
+  const [removedContacts, setRemovedContacts] = useState<Contact[]>([]);
   const [state, setState] = useState<State>(State.Empty);
   const [openModal, setOpenModal] = useState(false);
 
@@ -36,14 +43,16 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
     loadImportedContacts();
   }, []);
 
-  const addSelectedContact = (contact: Contact) => {
-    setSelectedContacts((selectedContacts) => [...selectedContacts, contact]);
+  const addSelectedContact = (newContact: Contact) => {
+    const id = addedContacts.find((contact) => contact.id === newContact.id);
+    if (id) {
+      return;
+    }
+    setAddedContacts((addedContacts) => [...addedContacts, newContact]);
   };
 
-  const removeSelectedContact = (contact: Contact) => {
-    const index = selectedContacts.findIndex((c) => c.id == contact.id);
-    selectedContacts.splice(index, 1);
-    setSelectedContacts(selectedContacts.slice());
+  const removeSelectedContact = (newContact: Contact) => {
+    setRemovedContacts((removedContacts) => [...removedContacts, newContact]);
   };
 
   const loadContacts = async () => {
@@ -69,8 +78,9 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const loadImportedContacts = async () => {
-    const importedContacts = await getAllImportedContacts();
-    setSelectedContacts(importedContacts);
+    await getAllImportedContacts().then((contacts) => {
+      setAddedContacts(contacts);
+    });
   };
 
   const searchContacts = (text: string) => {
@@ -98,13 +108,17 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       addUser={addSelectedContact}
       removeUser={removeSelectedContact}
       friend={item}
-      isSelected={selectedContacts}
+      isSelected={addedContacts.find((contact) => contact.id === item.id)}
     />
   );
 
   const storeSelectedContacts = async () => {
-    for (const contact of selectedContacts) {
+    console.log(addedContacts, 'removed', removedContacts);
+    for (const contact of addedContacts) {
       await storeImportedContact(contact);
+    }
+    for (const contact of removedContacts) {
+      await deleteImportedContactFromID(contact.id);
     }
   };
 
@@ -113,7 +127,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
-            <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Home')} />
+            <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
             <Title>Contacts</Title>
             <Text style={{ color: 'white' }}>blank</Text>
           </View>
@@ -135,7 +149,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
             />
           </View>
         </View>
-        {selectedContacts.length > 0 ? (
+        {addedContacts.length > 0 ? (
           <View>
             <Button
               title="Save Contacts"

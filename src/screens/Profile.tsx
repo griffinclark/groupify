@@ -131,7 +131,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
           }}
           style={styles.bugReport}
         >
-          <Text style={{ fontSize: 18 }}>Friends List</Text>
+          <Text style={{ fontSize: 18 }}>Edit Friends</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => Linking.openURL('https://forms.gle/ysqh1hg5NhisEAcM7')}
