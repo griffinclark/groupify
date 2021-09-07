@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ContactTile } from '../molecules/ContactTile';
 import { Contact } from '../res/dataModels';
@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    // flex: 1,
     overflow: 'scroll',
   },
 });
