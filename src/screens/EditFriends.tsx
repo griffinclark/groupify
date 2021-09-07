@@ -121,7 +121,10 @@ export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
       <SearchBar
         lightTheme="true"
         placeholder="Search by name, phone number, email"
-        onChangeText={(text) => setQuery(text)}
+        onChangeText={(text) => {
+          setQuery(text);
+          searchUsers(query);
+        }}
         onSubmitEditing={() => searchUsers(query)}
         value={query}
         platform="default"

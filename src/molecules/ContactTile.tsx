@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Contact } from '../res/dataModels';
 
 interface Props {
-  isSelected: Contact[];
+  isSelected?: Contact;
   friend: Contact;
   addUser: (friend: Contact) => void;
   removeUser: (friend: Contact) => void;
@@ -15,12 +15,21 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
   const [selected, setSelected] = useState(false);
 
   const handlePress = () => {
-    setSelected(!selected);
+    if (!selected) {
+      setSelected(true);
+      addUser(friend);
+    }
+    if (selected) {
+      setSelected(false);
+      removeUser(friend);
+    }
   };
+
   useEffect(() => {
-    selected && addUser(friend);
-    !selected && removeUser(friend);
-  }, [selected]);
+    if (isSelected) {
+      setSelected(true);
+    }
+  }, []);
 
   const firstInitial = friend.name.slice(0, 1);
   return (
