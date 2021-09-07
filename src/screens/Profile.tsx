@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     textAlignVertical: 'center',
     alignItems: 'center',
-    margin: 15,
+    margin: 8,
   },
   userActivity: {
     width: '90%',
