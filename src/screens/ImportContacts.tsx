@@ -18,6 +18,7 @@ import { RoutePropParams } from '../res/root-navigation';
 interface Props {
   navigation: {
     navigate: (ev: string) => void;
+    goBack: () => void;
   };
   route: RoutePropParams;
 }
@@ -126,7 +127,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
-            <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Home')} />
+            <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
             <Title>Contacts</Title>
             <Text style={{ color: 'white' }}>blank</Text>
           </View>
