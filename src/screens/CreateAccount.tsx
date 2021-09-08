@@ -7,6 +7,7 @@ import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture
 import { background, TEAL } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
+import * as SecureStore from 'expo-secure-store';
 
 interface Props {
   navigation: {
@@ -86,6 +87,8 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
           name: name,
         },
       });
+      setSecureStoreItem('phone', phone);
+      setSecureStoreItem('password', password);
       console.log('user successfully created');
       setError(undefined);
       navigation.push('CreateAccount', { step: 'validate', phone: formatPhone });
@@ -121,6 +124,10 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       setError(err.message);
       setSuccess(undefined);
     }
+  };
+
+  const setSecureStoreItem = async (key: string, value: string): Promise<void> => {
+    return SecureStore.setItemAsync(key, value);
   };
 
   return (
