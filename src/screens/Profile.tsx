@@ -123,7 +123,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
           */}
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             navigation.navigate('EditFriends', {
               userID: route.params.currentUser.id,
@@ -132,7 +132,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
           style={styles.bugReport}
         >
           <Text style={{ fontSize: 18 }}>Edit Friends</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => Linking.openURL('https://forms.gle/ysqh1hg5NhisEAcM7')}
           style={styles.bugReport}
