@@ -36,14 +36,7 @@ export const ContactContainer: React.FC<Props> = ({ contacts, adjustSelectedCont
     const contactList = [];
     for (let i = 0; i < contacts.length; i++) {
       const item = contacts[i];
-      contactList.push(
-        <ContactTile
-          isSelected={selectedContacts}
-          friend={item}
-          addUser={addSelectedContacts}
-          removeUser={removeSelectedContact}
-        />,
-      );
+      contactList.push(<ContactTile friend={item} addUser={addSelectedContacts} removeUser={removeSelectedContact} />);
     }
     return <View style={styles.friendsList}>{contactList}</View>;
   };

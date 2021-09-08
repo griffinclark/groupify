@@ -292,3 +292,15 @@ export const loadInviteeStatus = async (plan: Plan): Promise<string> => {
   }
   return 'undefined';
 };
+
+//Rounds date to the next hour, if minutes are above 45 it will go to 2 hours
+export const roundDate = (date: Date): Date => {
+  let hours = date.getHours();
+  if (date.getMinutes() > 45) {
+    hours += 1;
+  }
+  hours += 1;
+  date.setMinutes(0);
+  date.setHours(hours);
+  return date;
+};

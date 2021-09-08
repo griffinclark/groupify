@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { GREY_0, TEAL } from './../res/styles/Colors';
-import { convertDateStringToDate, getCurrentUser, sortPlansByDate } from './../res/utilFunctions';
+import { convertDateStringToDate, getCurrentUser, isFuturePlan, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { MediumDataDisplay } from '../organisms/OrganismsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
 import { Plan, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: {
@@ -21,6 +22,7 @@ interface Props {
 export const InvitedPlans: React.FC<Props> = ({ navigation }: Props) => {
   const [upcomingPlans, setUpcomingPlans] = useState<Plan[]>([]);
   const [pendingInvites, setPendingInvites] = useState<Plan[]>([]);
+  const [pastPlans, setPastPlans] = useState<Plan[]>([]);
   // const [user, setUser] = useState<User>();
 
   useEffect(() => {
@@ -38,19 +40,36 @@ export const InvitedPlans: React.FC<Props> = ({ navigation }: Props) => {
         })
         .filter((item): item is Plan => item !== undefined),
     );
+    const userCreatedPastPlans = getPastPlans(
+      await DataStore.query(Plan, (plan) => plan.creatorID('eq', currentUser.id)),
+    );
+    const invitedPastPlans = getPastPlans(
+      invitees
+        .map((invitee) => {
+          return invitee.plan;
+        })
+        .filter((item): item is Plan => item !== undefined),
+    );
+    setPastPlans(sortPlansByDate(userCreatedPastPlans.concat(invitedPastPlans), true));
     setUpcomingPlans(sortPlansByDate(filterUpcomingPlans(invitedPlans)));
     setPendingInvites(sortPlansByDate(await filterPendingInvites(currentUser.phoneNumber)));
+  };
+
+  const getPastPlans = (plans: Plan[]) => {
+    const currentDate = new Date();
+    return plans.filter((plan) => {
+      if (plan.date && plan.time) {
+        return !isFuturePlan(plan.date, currentDate);
+      }
+    });
   };
 
   const removePastPlans = (plans: Plan[]) => {
     const currentDate = new Date();
     return plans.filter((plan) => {
-      if (plan.date) {
-        if (convertDateStringToDate(plan.date).getTime() > currentDate.getTime()) {
-          return true;
-        }
+      if (plan.date && plan.time) {
+        return isFuturePlan(plan.date, currentDate);
       }
-      return false;
     });
   };
 
@@ -94,13 +113,16 @@ export const InvitedPlans: React.FC<Props> = ({ navigation }: Props) => {
       </View>
       <View style={styles.feedContainer}>
         {upcomingPlans.concat(pendingInvites).length > 0 ? (
-          <View>
+          <ScrollView>
             <Text style={styles.label}>This Week</Text>
             <MediumDataDisplay data={upcomingPlans} navigation={navigation} />
             <View style={globalStyles.miniSpacer}></View>
             <Text style={styles.label}>Pending Invites</Text>
             <MediumDataDisplay data={pendingInvites} navigation={navigation} />
-          </View>
+            <View style={globalStyles.miniSpacer}></View>
+            <Text style={styles.label}>Past Plans</Text>
+            <MediumDataDisplay data={pastPlans} navigation={navigation} />
+          </ScrollView>
         ) : (
           <View style={styles.title}>
             <Text style={globalStyles.superTitle}>When you get invited to a plan, it will show up here</Text>

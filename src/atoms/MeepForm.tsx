@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, View, Text, Platform } from 'react-native';
 import { WHITE } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { formatIosTimeInput, formatTime } from '../res/utilFunctions';
+import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
 
 interface Props {
   children: ReactChild;
@@ -13,7 +13,7 @@ interface Props {
 
 export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }: Props) => {
   const [values, setValues] = useState<{ title: string; value: string | undefined }[]>([]);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(roundDate(new Date()));
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
