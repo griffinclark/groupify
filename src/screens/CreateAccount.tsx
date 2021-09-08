@@ -8,6 +8,7 @@ import { background, TEAL } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: {
@@ -137,95 +138,97 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
     >
       <Screen style={{ backgroundColor: background }}>
-        <Icon
-          style={{ alignSelf: 'flex-start', marginLeft: 20 }}
-          name="arrow-left"
-          type="font-awesome"
-          size={30}
-          onPress={() => navigation.navigate('Login', {})}
-        />
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-          {route.params.step === 'create' && (
-            <View style={styles.container}>
-              <View>
-                <Text style={styles.title}>Create Account</Text>
-                <FormInput
-                  autoFocus={false}
-                  returnKeyNext={true}
-                  label="First Name"
-                  onChangeText={(value) => {
-                    setFirstName(value.trim());
-                  }}
-                />
-                <FormInput
-                  autoFocus={false}
-                  returnKeyNext={true}
-                  label="Last Name"
-                  onChangeText={(value) => {
-                    setLastName(value.trim());
-                  }}
-                />
-                <FormInput
-                  returnKeyNext={true}
-                  value={phone}
-                  label="Phone Number"
-                  onChangeText={(value) => {
-                    setPhone(formatPhoneNumber(value));
-                  }}
-                />
-                <FormInput returnKeyNext={true} label="Password" onChangeText={setPassword} secureTextEntry={true} />
-                <FormInput
-                  submit={signUp}
-                  returnKeyNext={false}
-                  label="Confirm Password"
-                  onChangeText={setConfirmPassword}
-                  secureTextEntry={true}
-                />
-                {error && <Alert status="error" message={error} />}
+        <ScrollView>
+          <Icon
+            style={{ alignSelf: 'flex-start', marginLeft: 20 }}
+            name="arrow-left"
+            type="font-awesome"
+            size={30}
+            onPress={() => navigation.navigate('Login', {})}
+          />
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+            {route.params.step === 'create' && (
+              <View style={styles.container}>
+                <View>
+                  <Text style={styles.title}>Create Account</Text>
+                  <FormInput
+                    autoFocus={false}
+                    returnKeyNext={true}
+                    label="First Name"
+                    onChangeText={(value) => {
+                      setFirstName(value.trim());
+                    }}
+                  />
+                  <FormInput
+                    autoFocus={false}
+                    returnKeyNext={true}
+                    label="Last Name"
+                    onChangeText={(value) => {
+                      setLastName(value.trim());
+                    }}
+                  />
+                  <FormInput
+                    returnKeyNext={true}
+                    value={phone}
+                    label="Phone Number"
+                    onChangeText={(value) => {
+                      setPhone(formatPhoneNumber(value));
+                    }}
+                  />
+                  <FormInput returnKeyNext={true} label="Password" onChangeText={setPassword} secureTextEntry={true} />
+                  <FormInput
+                    submit={signUp}
+                    returnKeyNext={false}
+                    label="Confirm Password"
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry={true}
+                  />
+                  {error && <Alert status="error" message={error} />}
+                </View>
+                <View style={{ margin: 20 }}>
+                  <Button title="Next" onPress={signUp} disabled={disabled} />
+                </View>
               </View>
-              <View style={{ margin: 20 }}>
-                <Button title="Next" onPress={signUp} disabled={disabled} />
+            )}
+            {route.params.step === 'validate' && (
+              <View style={styles.validateContainer}>
+                <Text style={styles.title}>Verify Your Phone Number</Text>
+                <View>
+                  <FormInput
+                    returnKeyNext={false}
+                    autoFocus={true}
+                    label="Verification Code"
+                    onChangeText={(value) => {
+                      setCode(value.trim());
+                    }}
+                    secureTextEntry={true}
+                  />
+                  {error && <Alert status="error" message={error} />}
+                  {success && <Alert status="success" message={success} />}
+                  <TouchableOpacity
+                    onPress={() => {
+                      try {
+                        console.log(route.params.phone);
+                        Auth.resendSignUp(route.params.phone);
+                        setSuccess('Sent new verification code');
+                        setError(undefined);
+                      } catch (err) {
+                        console.log(err);
+                        setError(err.message);
+                      }
+                    }}
+                    style={styles.buttonStyle}
+                  >
+                    <Text style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>Send New Verification Code</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ marginBottom: 30 }}>
+                  <Button title="Next" onPress={validateUser} disabled={disabled} />
+                </View>
               </View>
-            </View>
-          )}
-          {route.params.step === 'validate' && (
-            <View style={styles.validateContainer}>
-              <Text style={styles.title}>Verify Your Phone Number</Text>
-              <View>
-                <FormInput
-                  returnKeyNext={false}
-                  autoFocus={true}
-                  label="Verification Code"
-                  onChangeText={(value) => {
-                    setCode(value.trim());
-                  }}
-                  secureTextEntry={true}
-                />
-                {error && <Alert status="error" message={error} />}
-                {success && <Alert status="success" message={success} />}
-                <TouchableOpacity
-                  onPress={() => {
-                    try {
-                      console.log(route.params.phone);
-                      Auth.resendSignUp(route.params.phone);
-                      setSuccess('Sent new verification code');
-                      setError(undefined);
-                    } catch (err) {
-                      console.log(err);
-                      setError(err.message);
-                    }
-                  }}
-                  style={styles.buttonStyle}
-                >
-                  <Text style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>Send New Verification Code</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{ marginBottom: 30 }}>
-                <Button title="Next" onPress={validateUser} disabled={disabled} />
-              </View>
-            </View>
-          )}
-        </TouchableWithoutFeedback>
+            )}
+          </TouchableWithoutFeedback>
+        </ScrollView>
       </Screen>
     </KeyboardAvoidingView>
   );
