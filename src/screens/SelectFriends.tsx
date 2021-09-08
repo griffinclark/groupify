@@ -22,7 +22,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
-  const [menuItemSelected, setMenuItemSelected] = useState('friends');
+  const [menuItemSelected, setMenuItemSelected] = useState('contacts');
   const [eventObject, setEventObject] = useState({
     date: '',
     description: '',
@@ -164,7 +164,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
       </ImageBackground>
       <View style={styles.friendContainer}>
         <View style={styles.menu}>
-          <View style={menuItemSelected === 'friends' && styles.itemSelectedContainer}>
+          {/* <View style={menuItemSelected === 'friends' && styles.itemSelectedContainer}>
             <Text
               style={[
                 menuItemSelected === 'friends' ? styles.menuItemSelected : styles.menuItemNotSelected,
@@ -174,7 +174,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
             >
               FRIENDS
             </Text>
-          </View>
+          </View> */}
           <View style={menuItemSelected === 'contacts' && styles.itemSelectedContainer}>
             <Text
               style={[
