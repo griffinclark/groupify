@@ -45,7 +45,7 @@ on ${event.date ? event.date : '[date not specified]'} \
 at ${event.location ? event.location : '[location not specified]'}. \
 ${event.description} \
 \nHope to see you there! \
-\nYou can download Groupify on the app store!`,
+\nYou can download Groupify on the app store! \nhttps://cntr.click/14fV4hQ`,
     );
   };
 
