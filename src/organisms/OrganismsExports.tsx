@@ -5,5 +5,15 @@ import { MediumDataDisplay } from './MediumDataDisplay';
 import { NextPlan } from './NextPlan';
 import { InvitedPreview } from './InvitedPreview';
 import { CreatedPlans } from './CreatedPlans';
+import { ContactContainer } from './ContactContainer';
 
-export { DataDisplay, FriendList, MiniDataDisplay, MediumDataDisplay, NextPlan, InvitedPreview, CreatedPlans };
+export {
+  DataDisplay,
+  FriendList,
+  MiniDataDisplay,
+  MediumDataDisplay,
+  NextPlan,
+  InvitedPreview,
+  CreatedPlans,
+  ContactContainer,
+};

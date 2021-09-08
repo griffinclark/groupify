@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, FlatList } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
-import { ContactTile } from '../molecules/MoleculesExports';
 import { Button, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { FriendsContainer } from '../organisms/FriendContainer';
+import { ContactContainer } from '../organisms/ContactContainer';
 
 interface Props {
   navigation: {
@@ -59,22 +59,6 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
     }
   };
 
-  const addSelectedContact = (contact: Contact) => {
-    setSelectedContacts((selectedContacts) => [...selectedContacts, contact]);
-  };
-
-  const removeSelectedContact = (contact: Contact) => {
-    let index = 0;
-    for (let i = 0; i < selectedContacts.length; i++) {
-      if (selectedContacts[i].id === contact.id) {
-        index = i;
-        break;
-      }
-    }
-    selectedContacts.splice(index, 1);
-    setSelectedContacts(selectedContacts.slice(0));
-  };
-
   const loadContacts = async () => {
     const importedContacts = await getAllImportedContacts();
     setContacts(importedContacts);
@@ -93,21 +77,6 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         const textLowercase = text.toLowerCase();
         return contactLowercase.indexOf(textLowercase) > -1;
       }),
-    );
-  };
-
-  interface renderContactProps {
-    item: Contact;
-  }
-
-  const renderContact = ({ item }: renderContactProps) => {
-    return (
-      <ContactTile
-        friend={item}
-        addUser={addSelectedContact}
-        removeUser={removeSelectedContact}
-        isSelected={selectedContacts.find((contact) => contact.id)}
-      />
     );
   };
 
@@ -189,7 +158,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         </View>
         <View style={{ flex: 1 }}>
           {menuItemSelected === 'friends' && (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, justifyContent: 'space-between' }}>
               <Text style={styles.text}>Send your friends an in app notification!</Text>
               {friends.length > 0 ? (
                 <View style={styles.friendBubbleContainer}>
@@ -206,29 +175,21 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           )}
           {menuItemSelected === 'contacts' && (
             <View style={styles.contactsContainer}>
-              <View>
+              <View style={{ flex: 1 }}>
                 <Text style={styles.text}>Invite more friends to hang out together!</Text>
                 <SearchBar onInputChange={searchFriends} />
+                <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
               </View>
-              <View style={styles.flatlistContainer}>
-                <FlatList
-                  data={filteredContacts}
-                  renderItem={renderContact}
-                  ListEmptyComponent={() => (
-                    <View style={styles.title}>
-                      <Text>No Friends Found</Text>
-                    </View>
-                  )}
+              <View style={{ margin: 10 }}>
+                <Button
+                  title={selectedContacts.length === 0 ? 'Skip' : 'Next'}
+                  onPress={sendContactMessage}
+                  disabled={selectedFriends.length === 0 && selectedContacts.length === 0 ? true : false}
                 />
+                {selectedContacts.length === 0 && selectedFriends.length === 0 && (
+                  <Text style={styles.error}>Select a friend to continue!</Text>
+                )}
               </View>
-              <Button
-                title={selectedContacts.length === 0 ? 'Skip' : 'Next'}
-                onPress={sendContactMessage}
-                disabled={selectedFriends.length === 0 && selectedContacts.length === 0 ? true : false}
-              />
-              {selectedContacts.length === 0 && selectedFriends.length === 0 && (
-                <Text style={styles.error}>Select a friend to continue!</Text>
-              )}
             </View>
           )}
         </View>
@@ -325,14 +286,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
   },
-  flatlistContainer: {
-    flexDirection: 'column',
-    width: '100%',
-    height: '40%',
-    marginVertical: 10,
-  },
   contactsContainer: {
     display: 'flex',
+    flex: 1,
     justifyContent: 'space-between',
   },
   error: {
