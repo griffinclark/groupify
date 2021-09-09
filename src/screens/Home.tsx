@@ -10,6 +10,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Image } from 'react-native-elements/dist/image/Image';
 
 interface Props {
   navigation: {
@@ -112,23 +113,29 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                   <CreatedPlans navigation={navigation} userPlans={userPlans} />
                 </View>
               )}
+              <View style={{ height: 50 }} />
             </View>
           ) : (
-            <View style={styles.title}>
+            <View style={styles.noPlan}>
               <Text style={styles.noPlanText}>
                 Welcome to your plan dashboard. This is where you will see a round-up of plans you’ve created, and
                 things you&apos;re invited to.
               </Text>
-              <Text style={[styles.noPlanText, { textAlign: 'center', marginTop: '95%' }]}>
-                Lets create one together!
-              </Text>
-              <Text style={[styles.noPlanText, { textAlign: 'center', width: '70%' }]}>
-                Create your first plan with the button below
-              </Text>
+              <View style={{ width: '100%', alignItems: 'center' }}>
+                <Image
+                  source={require('../../assets/homepage-graphic.png')}
+                  style={{ width: 335, height: 280 }}
+                  resizeMode={'contain'}
+                />
+              </View>
+              <View>
+                <Text style={[styles.noPlanText, { textAlign: 'center', width: '70%' }]}>
+                  Create your first plan with the button below
+                </Text>
+              </View>
             </View>
           )}
         </View>
-        <View style={{ height: 100 }}></View>
       </ScrollView>
       <View style={styles.navbar}>
         <HomeNavBar user={currentUser} navigation={navigation} plan={userPlans[0] ? userPlans[0] : invitedPlans[0]} />
@@ -155,12 +162,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   feedContainer: {
-    flex: 10,
+    height: '118%',
   },
-  title: {
+  noPlan: {
     flex: 1,
-    height: '100%',
-    flexDirection: 'column',
     justifyContent: 'space-between',
   },
   label: {
@@ -171,15 +176,6 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     marginBottom: 5,
   },
-  button: {
-    flex: 1.5,
-    justifyContent: 'center',
-  },
-  selector: {
-    marginLeft: 15,
-    textDecorationLine: 'underline',
-    color: TEAL,
-  },
   invitedPlans: {
     backgroundColor: 'white',
   },
@@ -189,6 +185,6 @@ const styles = StyleSheet.create({
     lineHeight: 28.6,
     width: '90%',
     alignSelf: 'center',
-    marginVertical: 15,
+    marginVertical: 10,
   },
 });

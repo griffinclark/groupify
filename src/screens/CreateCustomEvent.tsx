@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
-import { Screen, FormButton, MeepForm } from '../atoms/AtomsExports';
+import { Screen, FormButton, MeepForm, Alert } from '../atoms/AtomsExports';
 import { Text } from 'react-native-elements';
 import { Image, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -34,6 +34,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     eventLocation: string | undefined;
     eventDescription: string | undefined;
   }>({ eventName: planTitle, eventDate: '', eventTime: '', eventLocation: planAddress, eventDescription: 'hey' });
+  const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
     if (route.params.data) {
@@ -52,6 +53,18 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   }) => {
     const image: string = photo ? loadPhoto(photo)?.props.source.uri : '';
     const id = uuid.v4();
+    if (!values.eventName) {
+      setError('Please add a name to your plan');
+      return;
+    }
+    if (!values.eventLocation) {
+      setError('Please add a location to your plan');
+      return;
+    }
+    if (!values.eventDescription) {
+      setError('Please add a description to your plan');
+      return;
+    }
     navigation.navigate('SelectFriends', {
       currentUser: route.params.currentUser,
       data: {
@@ -86,7 +99,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
   const inputFields: { title: string; placeholder: string; settings?: string; value?: string }[] = [
     {
       title: 'Name',
-      placeholder: '',
+      placeholder: 'name',
       settings: 'default',
       value: route.params.data ? route.params.data.eventData.title : '',
     },
@@ -110,7 +123,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     },
     {
       title: 'Description',
-      placeholder: '',
+      placeholder: 'description',
       settings: 'default',
       value: '',
     },
@@ -144,6 +157,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
           <View>{loadPhoto(photo)}</View>
           <MeepForm InputList={inputFields} updatedValues={(value) => setValues(value)}>
             <FormButton title="Next" onPress={() => onFormSubmit(updatedValues)} />
+            {error && <Alert status="error" message={error} />}
           </MeepForm>
         </ScrollView>
       </Screen>

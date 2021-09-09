@@ -201,6 +201,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
