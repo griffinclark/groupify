@@ -140,7 +140,7 @@ export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
           renderItem={renderUser}
           ListEmptyComponent={() => (
             <View style={styles.listContainer}>
-              <import>No Users Found</import>
+              <AppText>No Users Found</AppText>
             </View>
           )}
         />

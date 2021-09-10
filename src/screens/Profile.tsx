@@ -1,6 +1,6 @@
 import { Auth, DataStore } from 'aws-amplify';
 import React from 'react';
-import { Linking, StyleSheet, Text, View } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AppText, Screen } from '../atoms/AtomsExports';

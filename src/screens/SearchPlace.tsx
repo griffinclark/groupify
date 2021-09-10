@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Dimensions, StyleSheet, View, TouchableOpacity } from 'react-native';
 import MapView, { LatLng, Marker, Point, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';

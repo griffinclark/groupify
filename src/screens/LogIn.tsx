@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: '500',
     fontSize: 20,
-    maxWidth: '100vw',
   },
   textTeal: {
     color: TEAL,
