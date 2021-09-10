@@ -128,7 +128,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           </View>
         </View>
         <View style={styles.title}>
-          <Text style={styles.titleText}>Invite friends to join plan...</Text>
+          <AppText style={styles.titleText}>Invite friends to join plan...</AppText>
         </View>
       </ImageBackground>
       <View style={styles.friendContainer}>
@@ -145,7 +145,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
             </Text>
           </View> */}
           <View style={menuItemSelected === 'contacts' && styles.itemSelectedContainer}>
-            <Text
+            <AppText
               style={[
                 menuItemSelected === 'contacts' ? styles.menuItemSelected : styles.menuItemNotSelected,
                 styles.menuItem,
@@ -153,13 +153,13 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
               onPress={() => menuSelection('contacts')}
             >
               CONTACTS
-            </Text>
+            </AppText>
           </View>
         </View>
         <View style={{ flex: 1 }}>
           {menuItemSelected === 'friends' && (
             <View style={{ flex: 1, justifyContent: 'space-between' }}>
-              <Text style={styles.text}>Send your friends an in app notification!</Text>
+              <AppText style={styles.text}>Send your friends an in app notification!</AppText>
               {friends.length > 0 ? (
                 <View style={styles.friendBubbleContainer}>
                   <FriendsContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
@@ -176,7 +176,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           {menuItemSelected === 'contacts' && (
             <View style={styles.contactsContainer}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.text}>Invite more friends to hang out together!</Text>
+                <AppText style={styles.text}>Invite more friends to hang out together!</AppText>
                 <SearchBar onInputChange={searchFriends} />
                 <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
               </View>
@@ -187,7 +187,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
                   disabled={selectedFriends.length === 0 && selectedContacts.length === 0 ? true : false}
                 />
                 {selectedContacts.length === 0 && selectedFriends.length === 0 && (
-                  <Text style={styles.error}>Select a friend to continue!</Text>
+                  <AppText style={styles.error}>Select a friend to continue!</AppText>
                 )}
               </View>
             </View>

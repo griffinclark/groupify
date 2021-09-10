@@ -13,7 +13,7 @@ interface Props {
 export const FriendList: React.FC<Props> = ({ friends, title, style }: Props) => {
   return (
     <View style={[styles.outer, style]}>
-      {title && <Text style={styles.friendTitle}>{title}</Text>}
+      {title && <AppText style={styles.friendTitle}>{title}</AppText>}
       <ScrollView
         style={styles.scrollContainer}
         contentContainerStyle={styles.friendContainer}

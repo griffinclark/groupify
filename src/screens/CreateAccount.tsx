@@ -1,5 +1,5 @@
 import { RoutePropParams } from '../res/root-navigation';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Screen, FormInput, Button, Alert, AppText } from '../atoms/AtomsExports';
