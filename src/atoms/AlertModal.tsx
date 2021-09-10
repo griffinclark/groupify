@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TEAL, WHITE } from '../res/styles/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AppText } from './AtomsExports';
+import { AppText } from './AppText';
 
 interface Props {
   message: string;

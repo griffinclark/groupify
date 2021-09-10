@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: '#BE8C2C',
     margin: 15,
+    maxHeight: '40%',
   },
   footer: {
     position: 'absolute',

@@ -74,42 +74,42 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
       </View>
       {photos ? photos : null}
       <View style={styles.wholeTextContainer}>
-        <AppText style={styles.placeName}>{props.name}</AppText>
-        <AppText style={styles.placeAddress}>{props.address}</AppText>
+        <AppText maxFontSizeMultiplier={1} style={styles.placeName}>{props.name}</AppText>
+        <AppText maxFontSizeMultiplier={1} style={styles.placeAddress}>{props.address}</AppText>
         <View style={styles.bottomTextContainer}>
           {props.openHours ? (
             <ScrollView style={styles.openHoursContainer}>
-              <AppText style={styles.openHoursTitle}>Opening Hours</AppText>
-              <AppText style={styles.openHoursText}>{props.openHours?.map((value) => value + '\n')}</AppText>
+              <AppText maxFontSizeMultiplier={1} style={styles.openHoursTitle}>Opening Hours</AppText>
+              <AppText maxFontSizeMultiplier={1} style={styles.openHoursText}>{props.openHours?.map((value) => value + '\n')}</AppText>
             </ScrollView>
           ) : null}
           <View style={styles.detailsContainer}>
             <View>
               {props.rating ? (
-                <AppText style={styles.placeDetails}>
+                <AppText maxFontSizeMultiplier={1} style={styles.placeDetails}>
                   {props.rating ? `${props.rating} / 5 stars\n` : null}
                   {props.userRatings ? `${props.userRatings} ratings` : null}
                 </AppText>
               ) : null}
-              <AppText style={styles.placeDetails}>
+              <AppText maxFontSizeMultiplier={1} style={styles.placeDetails}>
                 {props.priceLevel ? `${'$'.repeat(props.priceLevel)}   |   ` : ''}
                 {`${props.distance} away`}
               </AppText>
-              <AppText>
+              <AppText maxFontSizeMultiplier={1}>
                 <Image
                   source={{
                     uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Purple-car.svg/1221px-Purple-car.svg.png',
                   }}
                   style={{ height: 10, width: 14 }}
                 />
-                <AppText> {`${props.duration} drive`}</AppText>
+                <AppText maxFontSizeMultiplier={1}> {`${props.duration} drive`}</AppText>
               </AppText>
               {props.openNow !== undefined ? (
-                <AppText>
+                <AppText maxFontSizeMultiplier={1}>
                   {props.openNow ? (
-                    <AppText style={{ color: 'green' }}>Open</AppText>
+                    <AppText maxFontSizeMultiplier={1} style={{ color: 'green' }}>Open</AppText>
                   ) : (
-                    <AppText style={{ color: 'red' }}>Closed</AppText>
+                    <AppText maxFontSizeMultiplier={1} style={{ color: 'red' }}>Closed</AppText>
                   )}
                 </AppText>
               ) : null}

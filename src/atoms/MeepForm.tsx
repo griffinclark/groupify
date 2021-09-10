@@ -107,6 +107,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
               value={currentDate}
               mode={'date'}
               display={'default'}
+              style={{ padding: 10 }}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
             />
           )}
@@ -183,6 +184,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
         <View key={item.title}>
           <AppText style={styles.text}>{item.title}</AppText>
           <TextInput
+            maxFontSizeMultiplier={1.5}
             value={getValue(item.title)}
             style={styles.textInputBody}
             onChangeText={(e) => setValue(e, item)}
