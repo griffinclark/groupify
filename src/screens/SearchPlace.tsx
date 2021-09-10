@@ -10,7 +10,8 @@ import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { mapStyles } from '../res/styles/MapStyles';
 import { RoutePropParams } from '../res/root-navigation';
 import { TEAL } from '../res/styles/Colors';
-import { AppText, Button } from '../atoms/AtomsExports';
+import { Button } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   navigation: {

@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { GREY_1, WHITE } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
-import { AppText } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   plan: Plan;

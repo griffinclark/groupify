@@ -18,7 +18,6 @@ export const AppText: React.FC<Props> = ({
   onPress,
   style,
 }: Props) => {
-  console.log(typeof children);
   return (
     <Text
       maxFontSizeMultiplier={maxFontSizeMultiplier}

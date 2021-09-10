@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GREY_2, RED, WHITE } from '../res/styles/Colors';
-import { AppText } from './AtomsExports';
+import { AppText } from './AppText';
 
 interface Props {
   status: 'error' | 'success';

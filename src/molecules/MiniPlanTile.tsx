@@ -4,7 +4,7 @@ import { GREY_1, WHITE, POST_SPACING, TEAL } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
 import { Image } from 'react-native-elements';
-import { AppText } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   plan: Plan;

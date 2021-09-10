@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { GOLD, GREY_5 } from '../res/styles/Colors';
-import { AppText } from './AtomsExports';
+import { AppText } from './AppText';
 
 interface Props {
   onChangeText: React.Dispatch<string>;

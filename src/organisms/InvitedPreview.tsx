@@ -5,7 +5,8 @@ import { Plan } from '../models';
 import { MiniPlanTile } from '../molecules/MiniPlanTile';
 import { GREY_4, TEAL } from '../res/styles/Colors';
 import { loadInviteeStatus } from '../res/utilFunctions';
-import { AppText, ViewAll } from '../atoms/AtomsExports';
+import { ViewAll } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   invitedPlans: Plan[];

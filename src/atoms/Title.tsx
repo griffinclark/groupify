@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { AppText } from './AtomsExports';
+import { AppText } from './AppText';
 
 interface Props {
   style?: Record<string, unknown>;

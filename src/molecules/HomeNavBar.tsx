@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { GOLD, TEAL, WHITE } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { User, Plan } from '../models';
-import { AppText } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   user?: User;

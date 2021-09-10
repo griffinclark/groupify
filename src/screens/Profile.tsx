@@ -3,7 +3,8 @@ import React from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AppText, Screen } from '../atoms/AtomsExports';
+import { Screen } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 import { MediumPlanTile } from '../molecules/MediumPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
 

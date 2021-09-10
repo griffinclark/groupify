@@ -4,7 +4,7 @@ import { DK_PURPLE, GREY_5, POST_SPACING } from '../res/styles/Colors';
 import { FriendList } from '../organisms/FriendList';
 import { Plan } from '../models';
 import { formatTime, formatDate } from '../res/utilFunctions';
-import { AppText } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   plan: Plan;

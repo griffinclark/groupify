@@ -10,7 +10,8 @@ import {
   getAllImportedContacts,
   storeImportedContact,
 } from '../res/storageFunctions';
-import { Button, Title, Screen, SearchBar, AlertModal, AppText } from '../atoms/AtomsExports';
+import { Button, Title, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { AntDesign } from '@expo/vector-icons';

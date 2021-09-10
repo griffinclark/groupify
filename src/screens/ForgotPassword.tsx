@@ -4,11 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { Keyboard, View, StyleSheet } from 'react-native';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Alert, AppText, Button, FormInput, Screen } from '../atoms/AtomsExports';
+import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { background } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
 import { AntDesign } from '@expo/vector-icons';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   navigation: {

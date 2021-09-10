@@ -2,7 +2,7 @@ import React from 'react';
 import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, WHITE, TEAL } from '../res/styles/Colors';
-import { AppText } from './AtomsExports';
+import { AppText } from './AppText';
 
 interface Props {
   onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;

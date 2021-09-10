@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet, GestureResponderEvent, Image } from
 import { GREY_1, WHITE, POST_SPACING } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { formatTime, formatDate, loadPhoto } from '../res/utilFunctions';
-import { AppText } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   plan: Plan;
