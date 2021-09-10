@@ -6,10 +6,10 @@ import { getAllImportedContacts } from '../res/storageFunctions';
 import { Button, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
+//import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { FriendsContainer } from '../organisms/FriendContainer';
 import { ContactContainer } from '../organisms/ContactContainer';
-import { GREY_3, GREY_4, WHITE, TEAL, background } from '../res/styles/Colors';
+import { GREY_3, GREY_4, WHITE, TEAL } from '../res/styles/Colors';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -194,22 +194,21 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
                 <SearchBar onInputChange={searchFriends} />
                 <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
               </View>
-              
-                <TouchableOpacity
-                  onPress={sendContactMessage}
-                  disabled={selectedFriends.length === 0 && selectedContacts.length === 0 ? true : false}
-                >
-                  {selectedContacts.length === 0 ? (
+
+              <TouchableOpacity
+                onPress={sendContactMessage}
+                disabled={selectedFriends.length === 0 && selectedContacts.length === 0 ? true : false}
+              >
+                {selectedContacts.length === 0 ? (
                   <>
                     <Text style={styles.navTextDisable}>Skip</Text>
                     <Text style={styles.error}>Select a friend to continue!</Text>
                   </>
-                  ) : (
-                    <Text style={styles.navTextEnable}>Next</Text>
-                  )}
-                </TouchableOpacity>
-              </View>
-            
+                ) : (
+                  <Text style={styles.navTextEnable}>Next</Text>
+                )}
+              </TouchableOpacity>
+            </View>
           )}
         </View>
       </View>
@@ -342,8 +341,8 @@ const styles = StyleSheet.create({
   },
   navTextDisable: {
     fontSize: 24,
-    padding:10,
-    textAlign:'center',
+    padding: 10,
+    textAlign: 'center',
     alignSelf: 'center',
     backgroundColor: GREY_4,
     color: GREY_3,
@@ -358,8 +357,8 @@ const styles = StyleSheet.create({
   },
   navTextEnable: {
     fontSize: 24,
-    padding:10,
-    textAlign:'center',
+    padding: 10,
+    textAlign: 'center',
     alignSelf: 'center',
     backgroundColor: TEAL,
     color: WHITE,
