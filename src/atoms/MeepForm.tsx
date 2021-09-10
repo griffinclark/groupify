@@ -4,7 +4,7 @@ import { WHITE } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
-import { AppText } from './AtomsExports';
+import { AppText } from './AppText';
 
 interface Props {
   children: ReactChild;

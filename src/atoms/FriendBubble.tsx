@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { User } from '../models';
-import { AppText } from './AtomsExports';
+import { AppText } from './AppText';
 
 interface Props {
   friend: User;

@@ -7,7 +7,7 @@ import { Plan } from '../models';
 import { Invitee, Status, User } from '../models';
 import { GOLD, GREY_0, GREY_4, TEAL } from '../res/styles/Colors';
 import { formatDayOfWeekDate, formatTime, loadPhoto } from '../res/utilFunctions';
-import { AppText } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   plan: Plan;

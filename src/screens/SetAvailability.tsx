@@ -3,7 +3,8 @@ import { View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-nat
 import { DataStore } from '@aws-amplify/datastore';
 import { Availability, User } from '../models';
 import { RoutePropParams } from '../res/root-navigation';
-import { AppText, Screen, Button, Title } from '../atoms/AtomsExports';
+import { Screen, Button, Title } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { GOLD, TEAL, GREY_0 } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';

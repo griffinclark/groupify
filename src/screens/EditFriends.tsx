@@ -4,12 +4,13 @@ import { Icon, SearchBar } from 'react-native-elements';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
 import { DEFAULT_CONTACT_IMAGE, GREY_5 } from '../res/styles/Colors';
-import { AppText, Button, Title, Screen } from '../atoms/AtomsExports';
+import { Button, Title, Screen } from '../atoms/AtomsExports';
 import { FriendList } from '../organisms/OrganismsExports';
 import { AndroidContactTile, Navbar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from 'aws-amplify';
 import { Invitee, User } from '../models';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   navigation: {

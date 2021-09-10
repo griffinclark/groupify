@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, WHITE } from '../res/styles/Colors';
-import { AppText } from './AtomsExports';
+import { AppText } from './AppText';
 
 interface Props {
   onPress: (ev?: React.FormEvent<HTMLFormElement>) => void;

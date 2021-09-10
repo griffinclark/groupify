@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { DK_PURPLE, GREY_3, WHITE } from '../res/styles/Colors';
 import { Invitee } from '../models';
-import { AppText } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   friends?: (Invitee | null)[];

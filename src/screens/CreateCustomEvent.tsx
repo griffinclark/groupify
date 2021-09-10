@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
-import { Screen, FormButton, MeepForm, Alert, AppText } from '../atoms/AtomsExports';
+import { Screen, FormButton, MeepForm, Alert } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 import { Image, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import Qs from 'qs';

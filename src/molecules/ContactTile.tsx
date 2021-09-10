@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Contact } from '../res/dataModels';
-import { AppText } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   isSelected?: boolean;

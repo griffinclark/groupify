@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { background, GREY_5 } from '../res/styles/Colors';
-import { AppText, Button, Title, Screen } from '../atoms/AtomsExports';
+import { Button, Title, Screen } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
 import { RoutePropParams } from '../res/root-navigation';
 import { getCurrentUser } from '../res/utilFunctions';
 import { User } from '../models';
