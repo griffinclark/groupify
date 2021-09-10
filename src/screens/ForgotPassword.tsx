@@ -2,13 +2,13 @@ import { Auth } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, View, StyleSheet } from 'react-native';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Alert, AppText, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { background } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
+import { AntDesign } from '@expo/vector-icons';
 
 interface Props {
   navigation: {
@@ -85,14 +85,14 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
 
   return (
     <Screen style={{ backgroundColor: background }}>
-      <Icon
-        style={{ position: 'relative', bottom: 50, left: 100 }}
-        name="arrow-left"
+      <AntDesign
+        style={{ position: 'relative', marginLeft: 20 }}
+        name="left"
         type="font-awesome"
         size={30}
         onPress={() => navigation.navigate('Login', {})}
       />
-      <View style={{ alignSelf: 'center', marginTop: 80, marginBottom: 20 }}>
+      <View style={{ alignSelf: 'center', marginTop: 50, marginBottom: 25 }}>
         <Image style={styles.logo} source={require('../../assets/logo.png')} />
       </View>
       {route.params.step === 'phone' && (

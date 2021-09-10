@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
-import { Icon } from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
@@ -14,6 +13,7 @@ import {
 import { Button, Title, Screen, SearchBar, AlertModal, AppText } from '../atoms/AtomsExports';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
+import { AntDesign } from '@expo/vector-icons';
 
 interface Props {
   navigation: {
@@ -127,7 +127,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
-            <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
+            <AntDesign name="left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
             <Title>Contacts</Title>
             <AppText style={{ color: 'white' }}>blank</AppText>
           </View>

@@ -5,10 +5,11 @@ import { Auth } from 'aws-amplify';
 import { Screen, FormInput, Button, Alert, AppText } from '../atoms/AtomsExports';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { background, TEAL } from '../res/styles/Colors';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
+//import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
+import { AntDesign } from '@expo/vector-icons';
 
 interface Props {
   navigation: {
@@ -135,9 +136,9 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Screen style={{ backgroundColor: background }}>
         <ScrollView>
-          <Icon
+          <AntDesign
             style={{ alignSelf: 'flex-start', marginLeft: 20 }}
-            name="arrow-left"
+            name="left"
             type="font-awesome"
             size={30}
             onPress={() => navigation.navigate('Login', {})}
@@ -241,7 +242,7 @@ const styles = StyleSheet.create({
   title: {
     margin: 20,
     color: TEAL,
-    fontSize: 32,
+    fontSize: 30,
     fontWeight: '400',
   },
   buttonStyle: {
