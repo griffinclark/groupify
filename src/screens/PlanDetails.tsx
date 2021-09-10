@@ -1,7 +1,7 @@
 import { DataStore, Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Linking, Platform } from 'react-native';
-import { Screen, Button } from '../atoms/AtomsExports';
+import { StyleSheet, View, TouchableOpacity, Image, FlatList, Linking, Platform } from 'react-native';
+import { AppText, Screen, Button } from '../atoms/AtomsExports';
 import { formatTime, convertDateStringToDate, loadPhoto } from '../res/utilFunctions';
 import { TEAL, GREY_4, GOLD, GREY_8 } from '../res/styles/Colors';
 import { Plan, User, Invitee, Status } from '../models';
@@ -71,7 +71,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     }
     return (
       <View style={[styles.sphere, { backgroundColor: backgroundColor }]}>
-        <Text style={styles.initial}>{item.name.slice(0, 1)}</Text>
+        <AppText style={styles.initial}>{item.name.slice(0, 1)}</AppText>
       </View>
     );
   };
@@ -119,34 +119,34 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     <Screen>
       <View style={styles.titleContainer}>
         <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
-        <Text style={styles.title}>{plan.title}</Text>
+        <AppText style={styles.title}>{plan.title}</AppText>
       </View>
       {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : null}
       <View style={styles.container}>
         <View style={styles.hostContainer}>
-          <Text style={styles.hostName}>{hostName}</Text>
-          <Text style={styles.descTitle}>Host</Text>
+          <AppText style={styles.hostName}>{hostName}</AppText>
+          <AppText style={styles.descTitle}>Host</AppText>
         </View>
 
         <View style={styles.detailsContainer}>
           <View style={styles.details}>
-            {plan.date && <Text>{convertDateStringToDate(plan.date).toDateString()}</Text>}
-            {plan.time && <Text>{formatTime(plan.time)}</Text>}
-            <Text style={styles.descTitle}>Date</Text>
-            <TouchableOpacity>{/* <Text style={styles.evText4}>Add to calendar</Text> */}</TouchableOpacity>
+            {plan.date && <AppText>{convertDateStringToDate(plan.date).toDateString()}</AppText>}
+            {plan.time && <AppText>{formatTime(plan.time)}</AppText>}
+            <AppText style={styles.descTitle}>Date</AppText>
+            <TouchableOpacity>{/* <AppText style={styles.evText4}>Add to calendar</AppText> */}</TouchableOpacity>
           </View>
           <View>
-            <Text style={{ maxWidth: 150, flexWrap: 'wrap' }}>{plan.title}</Text>
-            <Text style={[styles.descTitle]}>Location</Text>
+            <AppText style={{ maxWidth: 150, flexWrap: 'wrap' }}>{plan.title}</AppText>
+            <AppText style={styles.descTitle}>Location</AppText>
             <TouchableOpacity onPress={() => plan.location && linkToMaps(plan.location)}>
-              <Text style={{ color: TEAL }}>View map</Text>
+              <AppText style={{ color: TEAL }}>View map</AppText>
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.description}>
-          <Text>{plan.description}</Text>
-          <Text style={styles.descTitle}>Description</Text>
+          <AppText>{plan.description}</AppText>
+          <AppText style={styles.descTitle}>Description</AppText>
         </View>
 
         <View style={styles.inviteeList}>
@@ -155,14 +155,14 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
             renderItem={renderInvitee}
             ListEmptyComponent={() => (
               <View>
-                <Text style={styles.title}>No Attendees Yet</Text>
+                <AppText style={styles.title}>No Attendees Yet</AppText>
               </View>
             )}
             horizontal={true}
           />
-          <Text style={styles.descTitle}>Attendees</Text>
+          <AppText style={styles.descTitle}>Attendees</AppText>
           <TouchableOpacity onPress={() => navigation.navigate('InviteeList', { plan: plan })}>
-            <Text style={styles.viewAll}>View All</Text>
+            <AppText style={styles.viewAll}>View All</AppText>
           </TouchableOpacity>
         </View>
       </View>

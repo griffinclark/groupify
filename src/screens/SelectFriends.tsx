@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, View, ImageBackground } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
-import { Button, SearchBar } from '../atoms/AtomsExports';
+import { AppText, Button, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -115,16 +115,16 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           </View>
         </View>
         <View style={styles.title}>
-          <Text style={styles.titleText}>Send your new plan to your friends</Text>
+          <AppText style={styles.titleText}>Send your new plan to your friends</AppText>
         </View>
         <View style={styles.body}>
           <View style={styles.eventInfo}>
-            <Text style={styles.planInfo}>{eventObject.title}</Text>
-            <Text style={styles.planInfo}>{eventObject.date}</Text>
-            <Text style={styles.planInfo}>{eventObject.time}</Text>
-            <Text numberOfLines={1} style={styles.planInfo}>
+            <AppText style={styles.planInfo}>{eventObject.title}</AppText>
+            <AppText style={styles.planInfo}>{eventObject.date}</AppText>
+            <AppText style={styles.planInfo}>{eventObject.time}</AppText>
+            <AppText numberOfLines={1} style={styles.planInfo}>
               {eventObject.location}
-            </Text>
+            </AppText>
           </View>
         </View>
         <View style={styles.title}>

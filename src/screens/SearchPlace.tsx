@@ -10,7 +10,7 @@ import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { mapStyles } from '../res/styles/MapStyles';
 import { RoutePropParams } from '../res/root-navigation';
 import { TEAL } from '../res/styles/Colors';
-import { Button } from '../atoms/AtomsExports';
+import { AppText, Button } from '../atoms/AtomsExports';
 
 interface Props {
   navigation: {
@@ -226,7 +226,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
       {mapPopupOpen ? (
         <View style={styles.popup}>
           <View style={styles.mapPopup}>
-            <Text style={styles.mapPopupText}>Select or search for a location on the map for your plan.</Text>
+            <AppText style={styles.mapPopupText}>Select or search for a location on the map for your plan.</AppText>
             <Button title="Okay" onPress={() => setMapPopupOpen(false)} />
           </View>
         </View>
@@ -237,7 +237,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
           navigation.navigate('CreateCustomEvent', { currentUser: route.params.currentUser });
         }}
       >
-        <Text style={styles.skipText}>Skip</Text>
+        <AppText style={styles.skipText}>Skip</AppText>
       </TouchableOpacity>
       <View style={styles.searchBarContainer}>{/* X button on the right to clear input field */}</View>
       {placeCard ? placeCard : null}

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { GREY_1, WHITE } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
+import { AppText } from '../atoms/AtomsExports';
 
 interface Props {
   plan: Plan;
@@ -32,9 +33,9 @@ export const CreatedPlanTile: React.FC<Props> = ({ plan, navigation, destination
       <View style={styles.rootContainer}>
         {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : null}
         <View style={styles.textContainer}>
-          <Text style={styles.title}>{plan.title}</Text>
+          <AppText style={styles.title}>{plan.title}</AppText>
           <View style={styles.infoItemRow}>
-            <Text style={styles.infoItem}>Date: {plan.date ? formatDayOfWeekDate(plan.date) : ''}</Text>
+            <AppText style={styles.infoItem}>Date: {plan.date ? formatDayOfWeekDate(plan.date) : ''}</AppText>
           </View>
         </View>
       </View>

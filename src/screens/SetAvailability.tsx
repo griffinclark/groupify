@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { DataStore } from '@aws-amplify/datastore';
 import { Availability, User } from '../models';
 import { RoutePropParams } from '../res/root-navigation';
-import { Screen, Button, Title } from '../atoms/AtomsExports';
+import { AppText, Screen, Button, Title } from '../atoms/AtomsExports';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { GOLD, TEAL, GREY_0 } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -106,10 +106,10 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
           setShowTimePicker(true);
         }}
       >
-        <Text style={styles.time}>
-          {dayAndTime.endsWith('End') ? <Text style={{ color: GREY_0 }}>{'  to  '}</Text> : null}
+        <AppText style={styles.time}>
+          {dayAndTime.endsWith('End') ? <AppText style={{ color: GREY_0 }}>{'  to  '}</AppText> : null}
           {formatTime(eval(dayAndTime))}
-        </Text>
+        </AppText>
       </TouchableOpacity>
     );
   };
@@ -163,52 +163,52 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
           <Title>Availability</Title>
           <View style={styles.availabilityContainer}>
             <View style={styles.dayContainer}>
-              <Text style={styles.day}>Sunday</Text>
+              <AppText style={styles.day}>Sunday</AppText>
               <View style={styles.timeSlot}>
-                <Text>{renderTimeString('timeSunStart')} </Text>
-                <Text>{renderTimeString('timeSunEnd')}</Text>
+                <AppText>{renderTimeString('timeSunStart')} </AppText>
+                <AppText>{renderTimeString('timeSunEnd')}</AppText>
               </View>
             </View>
             <View style={styles.dayContainer}>
-              <Text style={styles.day}>Monday</Text>
+              <AppText style={styles.day}>Monday</AppText>
               <View style={styles.timeSlot}>
-                <Text>{renderTimeString('timeMonStart')}</Text>
-                <Text>{renderTimeString('timeMonEnd')}</Text>
+                <AppText>{renderTimeString('timeMonStart')}</AppText>
+                <AppText>{renderTimeString('timeMonEnd')}</AppText>
               </View>
             </View>
             <View style={styles.dayContainer}>
-              <Text style={styles.day}>Tuesday</Text>
+              <AppText style={styles.day}>Tuesday</AppText>
               <View style={styles.timeSlot}>
-                <Text>{renderTimeString('timeTuesStart')}</Text>
-                <Text>{renderTimeString('timeTuesEnd')}</Text>
+                <AppText>{renderTimeString('timeTuesStart')}</AppText>
+                <AppText>{renderTimeString('timeTuesEnd')}</AppText>
               </View>
             </View>
             <View style={styles.dayContainer}>
-              <Text style={styles.day}>Wednesday</Text>
+              <AppText style={styles.day}>Wednesday</AppText>
               <View style={styles.timeSlot}>
-                <Text>{renderTimeString('timeWedStart')}</Text>
-                <Text>{renderTimeString('timeWedEnd')}</Text>
+                <AppText>{renderTimeString('timeWedStart')}</AppText>
+                <AppText>{renderTimeString('timeWedEnd')}</AppText>
               </View>
             </View>
             <View style={styles.dayContainer}>
-              <Text style={styles.day}>Thursday</Text>
+              <AppText style={styles.day}>Thursday</AppText>
               <View style={styles.timeSlot}>
-                <Text>{renderTimeString('timeThursStart')}</Text>
-                <Text>{renderTimeString('timeThursEnd')}</Text>
+                <AppText>{renderTimeString('timeThursStart')}</AppText>
+                <AppText>{renderTimeString('timeThursEnd')}</AppText>
               </View>
             </View>
             <View style={styles.dayContainer}>
-              <Text style={styles.day}>Friday</Text>
+              <AppText style={styles.day}>Friday</AppText>
               <View style={styles.timeSlot}>
-                <Text>{renderTimeString('timeFriStart')}</Text>
-                <Text>{renderTimeString('timeFriEnd')}</Text>
+                <AppText>{renderTimeString('timeFriStart')}</AppText>
+                <AppText>{renderTimeString('timeFriEnd')}</AppText>
               </View>
             </View>
             <View style={styles.dayContainer}>
-              <Text style={styles.day}>Saturday</Text>
+              <AppText style={styles.day}>Saturday</AppText>
               <View style={styles.timeSlot}>
-                <Text>{renderTimeString('timeSatStart')}</Text>
-                <Text>{renderTimeString('timeSatEnd')}</Text>
+                <AppText>{renderTimeString('timeSatStart')}</AppText>
+                <AppText>{renderTimeString('timeSatEnd')}</AppText>
               </View>
             </View>
           </View>

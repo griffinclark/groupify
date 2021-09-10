@@ -3,7 +3,7 @@ import React from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Screen } from '../atoms/AtomsExports';
+import { AppText, Screen } from '../atoms/AtomsExports';
 import { MediumPlanTile } from '../molecules/MediumPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
 
@@ -52,9 +52,9 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
         <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Home', {})} />
         <View style={styles.details}>
           <View style={styles.userPhoto}>
-            <Text style={styles.text}>{currentUser.name.substring(0, 1)}</Text>
+            <AppText style={styles.text}>{currentUser.name.substring(0, 1)}</AppText>
           </View>
-          <Text style={styles.textName}>{currentUser.name}</Text>
+          <AppText style={styles.textName}>{currentUser.name}</AppText>
         </View>
         <Icon
           name="logout"
@@ -83,7 +83,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
           style={styles.userActivity}
         >
           <View style={styles.selector}>
-            <Text style={styles.planTitle}>Invites/Plans</Text>
+            <AppText style={styles.planTitle}>Invites/Plans</AppText>
             <Icon name="chevron-forward-outline" size={30} type="ionicon" />
           </View>
           {currentUserPlan ? (
@@ -92,33 +92,33 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
             </View>
           ) : (
             <View style={{ alignItems: 'center', padding: 20 }}>
-              <Text style={{ fontSize: 20, fontWeight: '200' }}>Looks like you don&apos;t have any plans.</Text>
-              <Text style={{ fontSize: 20, fontWeight: '200' }}>Lets create one together! </Text>
+              <AppText style={{ fontSize: 20, fontWeight: '200' }}>Looks like you don&apos;t have any plans.</AppText>
+              <AppText style={{ fontSize: 20, fontWeight: '200' }}>Lets create one together! </AppText>
             </View>
           )}
 
           {/*
           <View style={styles.availability}>
             <View style={styles.availabilityDays}>
-              <Text style={styles.availabilityText}>Sunday</Text>
-              <Text style={styles.availabilityText}>
-                <Text style={{ color: '#31A59F' }}>{sundayAvailabilityStart}</Text> to{' '}
-                <Text style={{ color: '#31A59F' }}>{sundayAvailabilityEnd}</Text>
-              </Text>
+              <AppText style={styles.availabilityText}>Sunday</AppText>
+              <AppText style={styles.availabilityText}>
+                <AppText style={{ color: '#31A59F' }}>{sundayAvailabilityStart}</AppText> to{' '}
+                <AppText style={{ color: '#31A59F' }}>{sundayAvailabilityEnd}</AppText>
+              </AppText>
             </View>
             <View style={styles.availabilityDays}>
-              <Text style={styles.availabilityText}>Monday</Text>
-              <Text style={styles.availabilityText}>
-                <Text style={{ color: '#31A59F' }}>{mondayAvailabilityStart}</Text> to{' '}
-                <Text style={{ color: '#31A59F' }}>{mondayAvailabilityEnd}</Text>
-              </Text>
+              <AppText style={styles.availabilityText}>Monday</AppText>
+              <AppText style={styles.availabilityText}>
+                <AppText style={{ color: '#31A59F' }}>{mondayAvailabilityStart}</AppText> to{' '}
+                <AppText style={{ color: '#31A59F' }}>{mondayAvailabilityEnd}</AppText>
+              </AppText>
             </View>
             <View style={styles.availabilityDays}>
-              <Text style={styles.availabilityText}>Tuesday</Text>
-              <Text style={styles.availabilityText}>
-                <Text style={{ color: '#31A59F' }}>{tuesdayAvailabilityStart}</Text> to{' '}
-                <Text style={{ color: '#31A59F' }}>{tuesdayAvailabilityEnd}</Text>
-              </Text>
+              <AppText style={styles.availabilityText}>Tuesday</AppText>
+              <AppText style={styles.availabilityText}>
+                <AppText style={{ color: '#31A59F' }}>{tuesdayAvailabilityStart}</AppText> to{' '}
+                <AppText style={{ color: '#31A59F' }}>{tuesdayAvailabilityEnd}</AppText>
+              </AppText>
             </View>
           </View>
           */}
@@ -131,16 +131,16 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
           }}
           style={styles.bugReport}
         >
-          <Text style={{ fontSize: 18 }}>Edit Friends</Text>
+          <AppText style={{ fontSize: 18 }}>Edit Friends</AppText>
         </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => Linking.openURL('https://forms.gle/ysqh1hg5NhisEAcM7')}
           style={styles.bugReport}
         >
-          <Text style={{ fontSize: 18 }}>Submit Bug Report</Text>
+          <AppText style={{ fontSize: 18 }}>Submit Bug Report</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('ImportContacts', {})} style={styles.bugReport}>
-          <Text style={{ fontSize: 18 }}>Import Contacts</Text>
+          <AppText style={{ fontSize: 18 }}>Import Contacts</AppText>
         </TouchableOpacity>
       </View>
     </Screen>

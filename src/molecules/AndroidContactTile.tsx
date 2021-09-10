@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { CircularImageDisplay, CheckBox } from '../atoms/AtomsExports';
+import { View, TouchableOpacity } from 'react-native';
+import { AppText, CircularImageDisplay, CheckBox } from '../atoms/AtomsExports';
 import { StyleSheet } from 'react-native';
 import { TEST_IMAGE_URL, GRAY_DARK } from '../res/styles/Colors';
 import { Contact } from '../res/dataModels';
@@ -42,7 +42,7 @@ export const AndroidContactTile: React.FC<Props> = ({
           {imageURL ? <CircularImageDisplay imageURI={imageURL} /> : <CircularImageDisplay imageURI={TEST_IMAGE_URL} />}
         </View>
         <View>
-          <Text style={checked ? styles.nameSelected : styles.nameNotSelected}> {firstName} </Text>
+          <AppText style={checked ? styles.nameSelected : styles.nameNotSelected}> {firstName} </AppText>
         </View>
         <View style={styles.checkboxContainer}>
           <CheckBox isSelected={checked} onValueChange={onPress} />

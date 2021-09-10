@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { GREY_2, RED, WHITE } from '../res/styles/Colors';
+import { AppText } from './AtomsExports';
 
 interface Props {
   status: 'error' | 'success';
@@ -9,7 +10,7 @@ interface Props {
 export const Alert: React.FC<Props> = ({ status, message }: Props) => {
   return (
     <View style={[styles.container, styles[status]]}>
-      <Text style={styles.text}>{message}</Text>
+      <AppText style={styles.text}>{message}</AppText>
     </View>
   );
 };

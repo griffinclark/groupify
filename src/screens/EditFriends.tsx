@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Icon, SearchBar } from 'react-native-elements';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
 import { DEFAULT_CONTACT_IMAGE, GREY_5 } from '../res/styles/Colors';
-import { Button, Title, Screen } from '../atoms/AtomsExports';
+import { AppText, Button, Title, Screen } from '../atoms/AtomsExports';
 import { FriendList } from '../organisms/OrganismsExports';
 import { AndroidContactTile, Navbar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
@@ -140,7 +140,7 @@ export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
           renderItem={renderUser}
           ListEmptyComponent={() => (
             <View style={styles.listContainer}>
-              <Text>No Users Found</Text>
+              <import>No Users Found</import>
             </View>
           )}
         />

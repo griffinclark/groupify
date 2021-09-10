@@ -7,6 +7,7 @@ import { Plan } from '../models';
 import { Invitee, Status, User } from '../models';
 import { GOLD, GREY_0, GREY_4, TEAL } from '../res/styles/Colors';
 import { formatDayOfWeekDate, formatTime, loadPhoto } from '../res/utilFunctions';
+import { AppText } from '../atoms/AtomsExports';
 
 interface Props {
   plan: Plan;
@@ -52,7 +53,7 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
     }
     return (
       <View style={[styles.sphere, { backgroundColor: backgroundColor }]}>
-        <Text style={styles.initial}>{item.name.slice(0, 1)}</Text>
+        <AppText style={styles.initial}>{item.name.slice(0, 1)}</AppText>
       </View>
     );
   };
@@ -66,26 +67,26 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
         {photoURI ? (
           <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover">
             <View style={styles.dateContainer}>
-              <Text style={styles.date}>{plan.date && formatDayOfWeekDate(plan.date, true)}</Text>
+              <AppText style={styles.date}>{plan.date && formatDayOfWeekDate(plan.date, true)}</AppText>
             </View>
           </Image>
         ) : null}
-        <Text style={{ fontWeight: '400', fontSize: 12, marginVertical: 6 }}>Host: {hostName}</Text>
-        <Text style={{ fontWeight: '400', fontSize: 20 }}>{plan.description ? plan.description : null}</Text>
+        <AppText style={{ fontWeight: '400', fontSize: 12, marginVertical: 6 }}>Host: {hostName}</AppText>
+        <AppText style={{ fontWeight: '400', fontSize: 20 }}>{plan.description ? plan.description : null}</AppText>
         <View style={{ marginVertical: 20 }}>
-          <Text style={{ fontWeight: '700', fontSize: 12 }}>DETAILS</Text>
-          <Text style={{ fontSize: 12, fontWeight: '400', marginVertical: 4 }}>
+          <AppText style={{ fontWeight: '700', fontSize: 12 }}>DETAILS</AppText>
+          <AppText style={{ fontSize: 12, fontWeight: '400', marginVertical: 4 }}>
             Date: {plan.date && formatDayOfWeekDate(plan.date)} Time: {plan.time && formatTime(plan.time)}
-          </Text>
-          <Text style={{ fontSize: 12, fontWeight: '400' }}>Where: {plan.title}</Text>
+          </AppText>
+          <AppText style={{ fontSize: 12, fontWeight: '400' }}>Where: {plan.title}</AppText>
         </View>
-        <Text style={{ fontSize: 12, fontWeight: '700' }}>ATTENDING</Text>
+        <AppText style={{ fontSize: 12, fontWeight: '700' }}>ATTENDING</AppText>
         <FlatList
           data={invitees}
           renderItem={renderInvitee}
           ListEmptyComponent={() => (
             <View>
-              <Text style={styles.title}>No Attendees Yet</Text>
+              <AppText style={styles.title}>No Attendees Yet</AppText>
             </View>
           )}
           horizontal={true}

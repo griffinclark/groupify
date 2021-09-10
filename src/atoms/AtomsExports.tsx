@@ -16,6 +16,7 @@ import { MeepForm } from './MeepForm';
 import { ViewAll } from './ViewAll';
 import { AlertModal } from './AlertModal';
 import { Alert } from './Alert';
+import { AppText } from './AppText';
 
 export {
   Button,
@@ -36,4 +37,5 @@ export {
   ViewAll,
   AlertModal,
   Alert,
+  AppText,
 };

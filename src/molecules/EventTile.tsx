@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { DK_PURPLE, GREY_5, POST_SPACING } from '../res/styles/Colors';
 import { FriendList } from '../organisms/FriendList';
 import { Plan } from '../models';
 import { formatTime, formatDate } from '../res/utilFunctions';
+import { AppText } from '../atoms/AtomsExports';
 
 interface Props {
   plan: Plan;
@@ -13,17 +13,17 @@ interface Props {
 export const EventTile: React.FC<Props> = ({ plan }: Props) => {
   return (
     <View style={styles.rootContainer}>
-      <Text style={styles.title}>{plan.title}</Text>
-      <Text>{plan.description}</Text>
+      <AppText style={styles.title}>{plan.title}</AppText>
+      <AppText>{plan.description}</AppText>
       <View style={styles.infoContainer}>
         <View style={styles.infoItem}>
-          <Text style={styles.label}>When</Text>
-          <Text>{plan.date ? formatDate(plan.date) : ''}</Text>
-          <Text>{plan.time ? formatTime(plan.time) : ''}</Text>
+          <AppText style={styles.label}>When</AppText>
+          <AppText>{plan.date ? formatDate(plan.date) : ''}</AppText>
+          <AppText>{plan.time ? formatTime(plan.time) : ''}</AppText>
         </View>
         <View style={styles.infoItem}>
-          <Text style={styles.label}>Where</Text>
-          <Text>{plan.location}</Text>
+          <AppText style={styles.label}>Where</AppText>
+          <AppText>{plan.location}</AppText>
         </View>
       </View>
       <FriendList title="Invited Friends" friends={plan.invitees} />

@@ -46,6 +46,7 @@
     "react-native-contacts": "^6.0.5",
     "react-native-date-picker": "^3.3.2",
     "react-native-elements": "^3.4.1",
+    "react-native-expo-viewport-units": "^0.0.8",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-google-places-autocomplete": "^2.2.0",
     "react-native-maps": "0.27.1",

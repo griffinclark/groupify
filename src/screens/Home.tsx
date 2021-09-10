@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { background, GREY_0, TEAL } from './../res/styles/Colors';
 import { getCurrentUser, isFuturePlan, loadInviteeStatus, sortPlansByDate } from './../res/utilFunctions';
-import { Screen } from '../atoms/AtomsExports';
+import { AppText, Screen } from '../atoms/AtomsExports';
 import { NextPlan, InvitedPreview, CreatedPlans } from '../organisms/OrganismsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
@@ -89,27 +89,27 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     <Screen style={{ backgroundColor: background }}>
       <ScrollView>
         <View style={styles.header}>
-          <Text style={[globalStyles.superTitle, styles.greeting]}>{createGreeting()}</Text>
+          <AppText style={[globalStyles.superTitle, styles.greeting]}>{createGreeting()}</AppText>
           <View></View>
         </View>
         <View style={styles.feedContainer}>
           {userPlans.concat(invitedPlans).length > 0 ? (
             <View>
               <View>
-                <Text style={styles.label}>COMING UP NEXT</Text>
+                <AppText style={styles.label}>COMING UP NEXT</AppText>
                 <NextPlan navigation={navigation} plan={userPlans.concat(invitedPlans)[0]} />
               </View>
               <View style={globalStyles.miniSpacer}></View>
               {invitedPlans.length > 0 && pendingInvitedPlans && (
                 <View style={styles.invitedPlans}>
-                  <Text style={styles.label}>YOU&apos;RE INVITED...</Text>
+                  <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
                   <InvitedPreview navigation={navigation} invitedPlans={invitedPlans} />
                   <View style={globalStyles.miniSpacer}></View>
                 </View>
               )}
               {userPlans.length > 0 && (
                 <View>
-                  <Text style={styles.label}>CREATED PLANS</Text>
+                  <AppText style={styles.label}>CREATED PLANS</AppText>
                   <CreatedPlans navigation={navigation} userPlans={userPlans} />
                 </View>
               )}
@@ -117,10 +117,10 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
             </View>
           ) : (
             <View style={styles.noPlan}>
-              <Text style={styles.noPlanText}>
+              <AppText style={styles.noPlanText}>
                 Welcome to your plan dashboard. This is where you will see a round-up of plans you’ve created, and
                 things you&apos;re invited to.
-              </Text>
+              </AppText>
               <View style={{ width: '100%', alignItems: 'center' }}>
                 <Image
                   source={require('../../assets/homepage-graphic.png')}
@@ -129,9 +129,9 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                 />
               </View>
               <View>
-                <Text style={[styles.noPlanText, { textAlign: 'center', width: '70%' }]}>
+                <AppText style={[styles.noPlanText, { textAlign: 'center', width: '70%' }]}>
                   Create your first plan with the button below
-                </Text>
+                </AppText>
               </View>
             </View>
           )}

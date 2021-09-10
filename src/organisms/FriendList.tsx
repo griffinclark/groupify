@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { DK_PURPLE, GREY_3, WHITE } from '../res/styles/Colors';
 import { Invitee } from '../models';
+import { AppText } from '../atoms/AtomsExports';
 
 interface Props {
   friends?: (Invitee | null)[];
@@ -20,7 +21,7 @@ export const FriendList: React.FC<Props> = ({ friends, title, style }: Props) =>
       >
         {friends?.map((friend) => (
           <View style={styles.friend} key={friend?.id}>
-            <Text style={styles.friendText}>{friend?.name}</Text>
+            <AppText style={styles.friendText}>{friend?.name}</AppText>
           </View>
         ))}
       </ScrollView>

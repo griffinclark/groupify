@@ -1,7 +1,8 @@
 import React from 'react';
-import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, Text, View } from 'react-native';
+import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, WHITE, TEAL } from '../res/styles/Colors';
+import { AppText } from './AtomsExports';
 
 interface Props {
   onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;
@@ -23,16 +24,16 @@ export const Button: React.FC<Props> = ({ onPress, title, disabled = false, cont
           disabled ? buttonStyles.disabledButton : {},
         ]}
       >
-        <Text
+        <AppText
           style={[
             buttonStyles.enabledButton,
-            buttonStyle,
+            // buttonStyle,
             buttonStyles.text,
             disabled ? buttonStyles.disabledButton : {},
           ]}
         >
           {title}
-        </Text>
+        </AppText>
       </TouchableOpacity>
     </View>
   );

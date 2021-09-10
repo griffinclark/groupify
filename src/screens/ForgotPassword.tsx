@@ -1,11 +1,11 @@
 import { Auth } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Text, View, StyleSheet } from 'react-native';
+import { Keyboard, View, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
+import { Alert, AppText, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { background } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
@@ -98,7 +98,7 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
       {route.params.step === 'phone' && (
         <View>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-            <Text style={styles.title}>Forgot Password</Text>
+            <AppText style={styles.title}>Forgot Password</AppText>
             <FormInput
               returnKeyNext={true}
               label="Phone Number"
@@ -113,7 +113,7 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
       {route.params.step === 'password' && (
         <View>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-            <Text style={styles.title}>Verification/New Password</Text>
+            <AppText style={styles.title}>Verification/New Password</AppText>
             <FormInput
               returnKeyNext={true}
               label="Verification Code"

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
@@ -11,7 +11,7 @@ import {
   getAllImportedContacts,
   storeImportedContact,
 } from '../res/storageFunctions';
-import { Button, Title, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
+import { Button, Title, Screen, SearchBar, AlertModal, AppText } from '../atoms/AtomsExports';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 
@@ -129,7 +129,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
           <View style={styles.navbar}>
             <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
             <Title>Contacts</Title>
-            <Text style={{ color: 'white' }}>blank</Text>
+            <AppText style={{ color: 'white' }}>blank</AppText>
           </View>
           <SearchBar onInputChange={searchContacts} />
           <View style={styles.flatListContainer}>
@@ -143,7 +143,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
               renderItem={renderContact}
               ListEmptyComponent={() => (
                 <View style={styles.listContainer}>
-                  <Text>No Contacts Found</Text>
+                  <AppText>No Contacts Found</AppText>
                 </View>
               )}
             />
