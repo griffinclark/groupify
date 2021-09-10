@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { NativeSyntheticEvent, NativeTouchEvent, Text } from 'react-native';
 
 import { TextStyles } from '../res/styles/TextStyles';
 
 interface Props {
-  children: string | any;
+  children: string | ReactNode;
   maxFontSizeMultiplier?: number;
   numberOfLines?: number;
   onPress?: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;

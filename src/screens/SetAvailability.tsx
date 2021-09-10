@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { DataStore } from '@aws-amplify/datastore';
 import { Availability, User } from '../models';
 import { RoutePropParams } from '../res/root-navigation';
@@ -13,6 +12,7 @@ import { formatTime } from '../res/utilFunctions';
 interface Props {
   navigation: {
     navigate: (ev: string, a?: { currentUser: User }) => void;
+    goBack: () => void;
   };
   route: RoutePropParams;
 }
@@ -84,19 +84,19 @@ export const SetAvailability: React.FC<Props> = ({ navigation, route }: Props) =
     }
   };
 
-  const timePicker = (time: Date, setTime: React.Dispatch<React.SetStateAction<Date>>) => {
-    return (
-      <DateTimePicker
-        value={time}
-        mode={'time'}
-        display="default"
-        onChange={(event: unknown, selectedTime: Date | undefined) => {
-          setShowTimePicker(false);
-          setTime(selectedTime || time);
-        }}
-      />
-    );
-  };
+  // const timePicker = (time: Date, setTime: React.Dispatch<React.SetStateAction<Date>>) => {
+  //   return (
+  //     <DateTimePicker
+  //       value={time}
+  //       mode={'time'}
+  //       display="default"
+  //       onChange={(event: unknown, selectedTime: Date | undefined) => {
+  //         setShowTimePicker(false);
+  //         setTime(selectedTime || time);
+  //       }}
+  //     />
+  //   );
+  // };
 
   const renderTimeString = (dayAndTime: string) => {
     return (

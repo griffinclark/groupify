@@ -74,13 +74,21 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
       </View>
       {photos ? photos : null}
       <View style={styles.wholeTextContainer}>
-        <AppText maxFontSizeMultiplier={1} style={styles.placeName}>{props.name}</AppText>
-        <AppText maxFontSizeMultiplier={1} style={styles.placeAddress}>{props.address}</AppText>
+        <AppText maxFontSizeMultiplier={1} style={styles.placeName}>
+          {props.name}
+        </AppText>
+        <AppText maxFontSizeMultiplier={1} style={styles.placeAddress}>
+          {props.address}
+        </AppText>
         <View style={styles.bottomTextContainer}>
           {props.openHours ? (
             <ScrollView style={styles.openHoursContainer}>
-              <AppText maxFontSizeMultiplier={1} style={styles.openHoursTitle}>Opening Hours</AppText>
-              <AppText maxFontSizeMultiplier={1} style={styles.openHoursText}>{props.openHours?.map((value) => value + '\n')}</AppText>
+              <AppText maxFontSizeMultiplier={1} style={styles.openHoursTitle}>
+                Opening Hours
+              </AppText>
+              <AppText maxFontSizeMultiplier={1} style={styles.openHoursText}>
+                {props.openHours?.map((value) => value + '\n')}
+              </AppText>
             </ScrollView>
           ) : null}
           <View style={styles.detailsContainer}>
@@ -107,9 +115,13 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
               {props.openNow !== undefined ? (
                 <AppText maxFontSizeMultiplier={1}>
                   {props.openNow ? (
-                    <AppText maxFontSizeMultiplier={1} style={{ color: 'green' }}>Open</AppText>
+                    <AppText maxFontSizeMultiplier={1} style={{ color: 'green' }}>
+                      Open
+                    </AppText>
                   ) : (
-                    <AppText maxFontSizeMultiplier={1} style={{ color: 'red' }}>Closed</AppText>
+                    <AppText maxFontSizeMultiplier={1} style={{ color: 'red' }}>
+                      Closed
+                    </AppText>
                   )}
                 </AppText>
               ) : null}
