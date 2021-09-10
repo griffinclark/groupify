@@ -80,7 +80,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     if (currentUser) {
       const firstName = currentUser.name.includes(' ')
         ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
-        : currentUser?.name;
+        : currentUser.name;
       return `Hello, ${firstName}!`;
     }
   };

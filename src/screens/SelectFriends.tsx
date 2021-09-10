@@ -3,12 +3,11 @@ import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
-import { Button, SearchBar } from '../atoms/AtomsExports';
+import { Button, SearchBar, Alert } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
 //import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { FriendsContainer } from '../organisms/FriendContainer';
-import { ContactContainer } from '../organisms/ContactContainer';
+import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
 import { GREY_3, GREY_4, WHITE, TEAL } from '../res/styles/Colors';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -176,7 +175,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
               <Text style={styles.text}>Send your friends an in app notification!</Text>
               {friends.length > 0 ? (
                 <View style={styles.friendBubbleContainer}>
-                  <FriendsContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
+                  <FriendContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
                 </View>
               ) : null}
               <View style={{ marginBottom: 27, alignSelf: 'center' }}>
@@ -194,18 +193,12 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
                 <SearchBar onInputChange={searchFriends} />
                 <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
               </View>
-
-              <TouchableOpacity
-                onPress={sendContactMessage}
-                disabled={selectedFriends.length === 0 && selectedContacts.length === 0 ? true : false}
-              >
-                {selectedContacts.length === 0 ? (
-                  <>
-                    <Text style={styles.navTextDisable}>Skip</Text>
-                    <Text style={styles.error}>Select a friend to continue!</Text>
-                  </>
+              {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a friend to continue'} />}
+              <TouchableOpacity onPress={sendContactMessage} disabled={selectedContacts.length === 0 ? true : false}>
+                {selectedContacts.length > 0 ? (
+                  <Text style={[styles.navText, { backgroundColor: TEAL, color: WHITE }]}>Next</Text>
                 ) : (
-                  <Text style={styles.navTextEnable}>Next</Text>
+                  <Text style={[styles.navText, { backgroundColor: GREY_4, color: GREY_3 }]}>Next</Text>
                 )}
               </TouchableOpacity>
             </View>
@@ -261,11 +254,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-  /* eventInfo: {
-    backgroundColor: '#D9B139',
-    padding: 20,
-    borderRadius: 15,
-  },*/
   planInfoTitle: {
     fontSize: 20,
     margin: 5,
@@ -339,29 +327,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'red',
   },
-  navTextDisable: {
+  navText: {
     fontSize: 24,
     padding: 10,
     textAlign: 'center',
     alignSelf: 'center',
-    backgroundColor: GREY_4,
-    color: GREY_3,
-    borderColor: GREY_4,
-    width: '100%',
-    height: 55,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 30,
-  },
-  navTextEnable: {
-    fontSize: 24,
-    padding: 10,
-    textAlign: 'center',
-    alignSelf: 'center',
-    backgroundColor: TEAL,
-    color: WHITE,
     width: '100%',
     height: 75,
     display: 'flex',

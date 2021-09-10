@@ -6,6 +6,7 @@ import { NextPlan } from './NextPlan';
 import { InvitedPreview } from './InvitedPreview';
 import { CreatedPlans } from './CreatedPlans';
 import { ContactContainer } from './ContactContainer';
+import { FriendContainer } from './FriendContainer';
 
 export {
   DataDisplay,
@@ -16,4 +17,5 @@ export {
   InvitedPreview,
   CreatedPlans,
   ContactContainer,
+  FriendContainer,
 };

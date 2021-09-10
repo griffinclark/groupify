@@ -9,7 +9,7 @@ interface Props {
   adjustSelectedFriends: (friends: User[]) => void;
 }
 
-export const FriendsContainer: React.FC<Props> = ({ friends, adjustSelectedFriends }: Props) => {
+export const FriendContainer: React.FC<Props> = ({ friends, adjustSelectedFriends }: Props) => {
   const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
 
   useEffect(() => {
