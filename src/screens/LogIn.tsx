@@ -4,10 +4,10 @@ import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
 import { Contact } from '../res/dataModels';
-import { Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
+import { Alert, AppText, FormInput, Button, Screen } from '../atoms/AtomsExports';
 import { User } from '../models';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Keyboard, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import { background, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Image } from 'react-native-elements/dist/image/Image';
@@ -137,7 +137,7 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
         <Image style={styles.logo} source={require('../../assets/logo.png')} />
       </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-        <Text style={styles.title}>Log In</Text>
+        <AppText style={styles.title}>Log In</AppText>
         <FormInput
           returnKeyNext={true}
           label="Phone Number"
@@ -155,23 +155,23 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
           style={{ alignSelf: 'center' }}
           onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
         >
-          <Text style={{ color: TEAL }}>Forgot password?</Text>
+          <AppText style={styles.textTeal}>Forgot password?</AppText>
         </TouchableOpacity>
         {error && <Alert status="error" message={error} />}
       </TouchableWithoutFeedback>
       <View style={styles.createAccount}>
-        <Text style={styles.text}>
+        <AppText style={styles.text}>
           Don&apos;t have an account? Create one
-          <Text
-            style={[styles.text, { color: TEAL }]}
+          <AppText
+            style={styles.textTeal}
             onPress={async () => {
               navigation.navigate('CreateAccount', {});
             }}
           >
             {' '}
             here
-          </Text>
-        </Text>
+          </AppText>
+        </AppText>
       </View>
       <View style={{ flex: 1 }}>
         <Button title="Log In" onPress={logIn} disabled={disabled} />
@@ -196,6 +196,11 @@ const styles = StyleSheet.create({
     marginVertical: 40,
   },
   text: {
+    fontWeight: '500',
+    fontSize: 20,
+  },
+  textTeal: {
+    color: TEAL,
     fontWeight: '500',
     fontSize: 20,
   },

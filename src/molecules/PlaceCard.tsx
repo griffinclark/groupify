@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Qs from 'qs';
-import { StyleSheet, View, Text, Image, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
+import { StyleSheet, View, Image, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
 import { GREY_1 } from '../res/styles/Colors';
-import { Button } from '../atoms/AtomsExports';
+import { AppText, Button } from '../atoms/AtomsExports';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 interface Props {
@@ -74,44 +74,56 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
       </View>
       {photos ? photos : null}
       <View style={styles.wholeTextContainer}>
-        <Text style={styles.placeName}>{props.name}</Text>
-        <Text style={styles.placeAddress}>{props.address}</Text>
+        <AppText maxFontSizeMultiplier={1} style={styles.placeName}>
+          {props.name}
+        </AppText>
+        <AppText maxFontSizeMultiplier={1} style={styles.placeAddress}>
+          {props.address}
+        </AppText>
         <View style={styles.bottomTextContainer}>
           {props.openHours ? (
             <ScrollView style={styles.openHoursContainer}>
-              <Text style={styles.openHoursTitle}>Opening Hours</Text>
-              <Text style={styles.openHoursText}>{props.openHours?.map((value) => value + '\n')}</Text>
+              <AppText maxFontSizeMultiplier={1} style={styles.openHoursTitle}>
+                Opening Hours
+              </AppText>
+              <AppText maxFontSizeMultiplier={1} style={styles.openHoursText}>
+                {props.openHours?.map((value) => value + '\n')}
+              </AppText>
             </ScrollView>
           ) : null}
           <View style={styles.detailsContainer}>
             <View>
               {props.rating ? (
-                <Text style={styles.placeDetails}>
+                <AppText maxFontSizeMultiplier={1} style={styles.placeDetails}>
                   {props.rating ? `${props.rating} / 5 stars\n` : null}
                   {props.userRatings ? `${props.userRatings} ratings` : null}
-                </Text>
+                </AppText>
               ) : null}
-              <Text style={styles.placeDetails}>
+              <AppText maxFontSizeMultiplier={1} style={styles.placeDetails}>
                 {props.priceLevel ? `${'$'.repeat(props.priceLevel)}   |   ` : ''}
                 {`${props.distance} away`}
-              </Text>
-              <Text>
+              </AppText>
+              <AppText maxFontSizeMultiplier={1}>
                 <Image
                   source={{
                     uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Purple-car.svg/1221px-Purple-car.svg.png',
                   }}
                   style={{ height: 10, width: 14 }}
                 />
-                <Text> {`${props.duration} drive`}</Text>
-              </Text>
+                <AppText maxFontSizeMultiplier={1}> {`${props.duration} drive`}</AppText>
+              </AppText>
               {props.openNow !== undefined ? (
-                <Text>
+                <AppText maxFontSizeMultiplier={1}>
                   {props.openNow ? (
-                    <Text style={{ color: 'green' }}>Open</Text>
+                    <AppText maxFontSizeMultiplier={1} style={{ color: 'green' }}>
+                      Open
+                    </AppText>
                   ) : (
-                    <Text style={{ color: 'red' }}>Closed</Text>
+                    <AppText maxFontSizeMultiplier={1} style={{ color: 'red' }}>
+                      Closed
+                    </AppText>
                   )}
-                </Text>
+                </AppText>
               ) : null}
             </View>
             <Button onPress={props.onButtonPress} title={'Select Location'} />

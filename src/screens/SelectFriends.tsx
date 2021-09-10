@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, View, ImageBackground } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
-import { Button, SearchBar, Alert } from '../atoms/AtomsExports';
+import { AppText, Button, SearchBar, Alert } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
 //import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -119,28 +119,29 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
             </View>
           </View>
           <View style={styles.title}>
-            <Text style={styles.titleText}>Edit Event Details</Text>
+            <AppText style={styles.titleText}>Edit Event Details</AppText>
           </View>
           <View style={styles.icon}>
             <AntDesign name="closecircle" size={30} color="white" onPress={() => navigation.navigate('Home')} />
           </View>
         </View>
+
         <View style={styles.body}>
-          <Text style={styles.planInfoTitle}>{eventObject.title}</Text>
+          <AppText style={styles.planInfoTitle}>{eventObject.title}</AppText>
           <View style={styles.rowContainer}>
             <View style={styles.calendar}>
               <MaterialCommunityIcons name="calendar-blank" size={24} color="white" style={styles.calendarIcon} />
             </View>
-            <Text style={styles.planInfo}>{eventObject.date}</Text>
-            <Text style={styles.planInfo}>{eventObject.time}</Text>
+            <AppText style={styles.planInfo}>{eventObject.date}</AppText>
+            <AppText style={styles.planInfo}>{eventObject.time}</AppText>
           </View>
           <View style={styles.rowContainer}>
             <View style={styles.calendar}>
               <AntDesign name="enviromento" size={24} color="white" />
             </View>
-            <Text numberOfLines={1} style={styles.planInfo}>
+            <AppText numberOfLines={1} style={styles.planInfo}>
               {eventObject.location}
-            </Text>
+            </AppText>
           </View>
         </View>
       </ImageBackground>
@@ -158,7 +159,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
             </Text>
           </View> */}
           <View style={menuItemSelected === 'contacts' && styles.itemSelectedContainer}>
-            <Text
+            <AppText
               style={[
                 menuItemSelected === 'contacts' ? styles.menuItemSelected : styles.menuItemNotSelected,
                 styles.menuItem,
@@ -166,13 +167,13 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
               onPress={() => menuSelection('contacts')}
             >
               CONTACTS
-            </Text>
+            </AppText>
           </View>
         </View>
         <View style={{ flex: 1 }}>
           {menuItemSelected === 'friends' && (
             <View style={{ flex: 1, justifyContent: 'space-between' }}>
-              <Text style={styles.text}>Send your friends an in app notification!</Text>
+              <AppText style={styles.text}>Send your friends an in app notification!</AppText>
               {friends.length > 0 ? (
                 <View style={styles.friendBubbleContainer}>
                   <FriendContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
@@ -189,16 +190,16 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
           {menuItemSelected === 'contacts' && (
             <View style={styles.contactsContainer}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.text}>Who would you like to invite?</Text>
+                <AppText style={styles.text}>Who would you like to invite?</AppText>
                 <SearchBar onInputChange={searchFriends} />
                 <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
               </View>
               {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a friend to continue'} />}
               <TouchableOpacity onPress={sendContactMessage} disabled={selectedContacts.length === 0 ? true : false}>
                 {selectedContacts.length > 0 ? (
-                  <Text style={[styles.navText, { backgroundColor: TEAL, color: WHITE }]}>Next</Text>
+                  <AppText style={[styles.navText, { backgroundColor: TEAL, color: WHITE }]}>Next</AppText>
                 ) : (
-                  <Text style={[styles.navText, { backgroundColor: GREY_4, color: GREY_3 }]}>Next</Text>
+                  <AppText style={[styles.navText, { backgroundColor: GREY_4, color: GREY_3 }]}>Next</AppText>
                 )}
               </TouchableOpacity>
             </View>

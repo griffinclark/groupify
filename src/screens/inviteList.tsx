@@ -1,8 +1,8 @@
 import { DataStore } from 'aws-amplify';
 import Qs from 'qs';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
-import { Screen } from '../atoms/AtomsExports';
+import { StyleSheet, View, Image, FlatList } from 'react-native';
+import { AppText, Screen } from '../atoms/AtomsExports';
 import { TEAL, WHITE, GREY_0, GREY_4, GOLD } from '../res/styles/Colors';
 import { Plan, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -61,9 +61,9 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
           <View style={[styles.sphere, { backgroundColor: backgroundColor, marginRight: 10 }]}>
-            <Text style={styles.initial}>{item.name.slice(0, 1)}</Text>
+            <AppText style={styles.initial}>{item.name.slice(0, 1)}</AppText>
           </View>
-          <Text>{item.name}</Text>
+          <AppText>{item.name}</AppText>
         </View>
         <View
           style={
@@ -74,7 +74,7 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
               : [styles.status, { borderColor: GREY_0 }]
           }
         >
-          <Text
+          <AppText
             style={
               item.status === Status.ACCEPTED
                 ? styles.acceptedText
@@ -84,7 +84,7 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
             }
           >
             {item.status === Status.ACCEPTED ? 'Accepted' : item.status === Status.PENDING ? 'Pending' : 'Declined'}
-          </Text>
+          </AppText>
         </View>
       </View>
     );
@@ -100,20 +100,20 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
             size={30}
             onPress={() => navigation.navigate('PlanDetails', {})}
           />
-          <Text style={styles.title}>{plan.title}</Text>
+          <AppText style={styles.title}>{plan.title}</AppText>
         </View>
         <View style={styles.image}>
           <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" />
         </View>
       </View>
       <View style={{ flex: 2, padding: 20 }}>
-        <Text style={styles.hostName}>Attendees</Text>
+        <AppText style={styles.hostName}>Attendees</AppText>
         <FlatList
           data={invitees}
           renderItem={renderInvitee}
           ListEmptyComponent={() => (
             <View style={styles.title}>
-              <Text>No Attendees Yet</Text>
+              <AppText>No Attendees Yet</AppText>
             </View>
           )}
         />

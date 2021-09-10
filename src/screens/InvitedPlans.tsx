@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { GREY_0, TEAL } from './../res/styles/Colors';
 import { convertDateStringToDate, getCurrentUser, isFuturePlan, sortPlansByDate } from './../res/utilFunctions';
-import { Screen } from '../atoms/AtomsExports';
+import { AppText, Screen } from '../atoms/AtomsExports';
 import { MediumDataDisplay } from '../organisms/OrganismsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
@@ -106,7 +106,7 @@ export const InvitedPlans: React.FC<Props> = ({ navigation }: Props) => {
         <View style={styles.icon}>
           <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
         </View>
-        <Text style={[globalStyles.superTitle, styles.greeting]}>Your Invites</Text>
+        <AppText style={[globalStyles.superTitle, styles.greeting]}>Your Invites</AppText>
         <View style={styles.icon}>
           <Icon name="refresh" type="font-awesome" size={30} color={TEAL} onPress={() => loadPlans()} />
         </View>
@@ -114,18 +114,18 @@ export const InvitedPlans: React.FC<Props> = ({ navigation }: Props) => {
       <View style={styles.feedContainer}>
         {upcomingPlans.concat(pendingInvites).length > 0 ? (
           <ScrollView>
-            <Text style={styles.label}>This Week</Text>
+            <AppText style={styles.label}>This Week</AppText>
             <MediumDataDisplay data={upcomingPlans} navigation={navigation} />
             <View style={globalStyles.miniSpacer}></View>
-            <Text style={styles.label}>Pending Invites</Text>
+            <AppText style={styles.label}>Pending Invites</AppText>
             <MediumDataDisplay data={pendingInvites} navigation={navigation} />
             <View style={globalStyles.miniSpacer}></View>
-            <Text style={styles.label}>Past Plans</Text>
+            <AppText style={styles.label}>Past Plans</AppText>
             <MediumDataDisplay data={pastPlans} navigation={navigation} />
           </ScrollView>
         ) : (
           <View style={styles.title}>
-            <Text style={globalStyles.superTitle}>When you get invited to a plan, it will show up here</Text>
+            <AppText style={globalStyles.superTitle}>When you get invited to a plan, it will show up here</AppText>
           </View>
         )}
       </View>

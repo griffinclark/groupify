@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { User } from '../models';
+import { AppText } from './AtomsExports';
 
 interface Props {
   friend: User;
@@ -34,9 +35,9 @@ export const FriendBubble: React.FC<Props> = ({ friend, addUser, removeUser, sel
   return (
     <TouchableOpacity onPress={handlePress} style={styles.container}>
       <View style={[selected ? styles.sphereSelected : styles.sphere]}>
-        <Text style={styles.firstInitial}>{firstInitial}</Text>
+        <AppText style={styles.firstInitial}>{firstInitial}</AppText>
       </View>
-      <Text style={styles.firstName}>{firstName}</Text>
+      <AppText style={styles.firstName}>{firstName}</AppText>
     </TouchableOpacity>
   );
 };

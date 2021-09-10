@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { AppText } from '../atoms/AtomsExports';
 
 import { TEAL, WHITE } from '../res/styles/Colors';
 
@@ -26,13 +27,13 @@ export const ContactsModal: React.FC<Props> = ({
   return (
     <View style={styles.modalContainer}>
       <View style={[styles.modal, modalStyle]}>
-        <Text style={[styles.modalText, textStyle]}>Are you sure you don&apos;t want to import contacts?</Text>
+        <AppText style={[styles.modalText, textStyle]}>Are you sure you don&apos;t want to import contacts?</AppText>
         <View style={[styles.buttons, buttonStyle]}>
           <TouchableOpacity onPress={handleConfirm} style={[styles.button, styles.yesButton]}>
-            <Text style={[styles.buttonText, styles.yesButtonText]}>Yes</Text>
+            <AppText style={[styles.buttonText, styles.yesButtonText]}>Yes</AppText>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleCloseModal} style={[styles.button, styles.backButton]}>
-            <Text style={[styles.buttonText, styles.backButtonText, buttonTextStyle]}>Back</Text>
+            <AppText style={[styles.buttonText, styles.backButtonText, buttonTextStyle]}>Back</AppText>
           </TouchableOpacity>
         </View>
       </View>

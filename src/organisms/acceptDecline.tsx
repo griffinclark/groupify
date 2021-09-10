@@ -1,6 +1,6 @@
 // import React, { useEffect, useState } from 'react';
 // import { StyleSheet, View, Text, SafeAreaView, TouchableOpacity, Pressable, Image } from 'react-native';
-// import { Screen, Button, NavButton } from '../atoms/AtomsExports';
+// import { AppText, Screen, Button, NavButton } from '../atoms/AtomsExports';
 // import { RoutePropParams } from '../res/root-navigation';
 // import { Auth } from 'aws-amplify';
 
@@ -23,38 +23,38 @@
 //   return (
 //     <Screen>
 //       <View style={{ top: 38, flexDirection: 'row', justifyContent: 'space-between' }}>
-//         <Text style={{ fontSize: 25, color: '#31A59F', left: 20, fontWeight: 'bold' }}>Sabrina Cafe</Text>
+//         <AppText style={{ fontSize: 25, color: '#31A59F', left: 20, fontWeight: 'bold' }}>Sabrina Cafe</AppText>
 //         <Pressable onPress={() => navigation.navigate('Attendees')}>
-//           <Text style={{ color: '#31A59F', top: 5, fontWeight: 'bold', right: 11 }}>Back To Home</Text>
+//           <AppText style={{ color: '#31A59F', top: 5, fontWeight: 'bold', right: 11 }}>Back To Home</AppText>
 //         </Pressable>
 //       </View>
 
 //       {/* <Image style={styles.inviteImg} source={require('../../assets/pain.png')} /> */}
 //       <View>
-//         <Text style={styles.hostName}>Chelsea James</Text>
-//         <Text style={styles.hostNameSmall}>Host</Text>
+//         <AppText style={styles.hostName}>Chelsea James</AppText>
+//         <AppText style={styles.hostNameSmall}>Host</AppText>
 //       </View>
 
 //       <View style={{ left: 20, top: 150 }}>
-//         <Text>Tues, July 20, 2021.</Text>
-//         <Text>12:00 PM - 2:00 PM</Text>
-//         <Text style={styles.evText3}>Date</Text>
+//         <AppText>Tues, July 20, 2021.</AppText>
+//         <AppText>12:00 PM - 2:00 PM</AppText>
+//         <AppText style={styles.evText3}>Date</AppText>
 //         <TouchableOpacity style={{ height: 25 }} onPress={pressed}>
-//           <Text style={styles.evText4}>Add to calendar</Text>
+//           <AppText style={styles.evText4}>Add to calendar</AppText>
 //         </TouchableOpacity>
 //       </View>
 
 //       <View style={{ left: 180, top: 70, width: 180 }}>
-//         <Text>Festival Hotel and suite'</Text>
-//         <Text style={[styles.evText3]}>Location</Text>
+//         <AppText>Festival Hotel and suite'</AppText>
+//         <AppText style={styles.evText3}>Location</AppText>
 //         <TouchableOpacity style={{ height: 25 }} onPress={pressed}>
-//           <Text style={{ color: '#31A59F' }}>View map</Text>
+//           <AppText style={{ color: '#31A59F' }}>View map</AppText>
 //         </TouchableOpacity>
 //       </View>
 
 //       <View style={{ top: 130 }}>
-//         <Text>Join me for lunch at Sabrina's cafe.</Text>
-//         <Text style={styles.desc1}>Description</Text>
+//         <AppText>Join me for lunch at Sabrina's cafe.</AppText>
+//         <AppText style={styles.desc1}>Description</AppText>
 //       </View>
 
 //       <View style={{ top: 240, flexDirection: 'row', justifyContent: 'space-around' }}>

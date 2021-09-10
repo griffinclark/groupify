@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TEAL, WHITE } from '../res/styles/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { AppText } from './AppText';
 
 interface Props {
   message: string;
@@ -12,13 +13,13 @@ export const AlertModal: React.FC<Props> = ({ message, onConfirm, onReject }: Pr
   return (
     <View style={styles.popup}>
       <View style={styles.container}>
-        <Text style={styles.text}>{message}</Text>
+        <AppText style={styles.text}>{message}</AppText>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={onConfirm}>
-            <Text style={[styles.buttonText, { color: TEAL }]}>Yes</Text>
+            <AppText style={[styles.buttonText, { color: TEAL }]}>Yes</AppText>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.button, { backgroundColor: TEAL }]} onPress={onReject}>
-            <Text style={[styles.buttonText, { color: 'white' }]}>Back</Text>
+            <AppText style={[styles.buttonText, { color: 'white' }]}>Back</AppText>
           </TouchableOpacity>
         </View>
       </View>

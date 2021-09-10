@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { AppText } from './AtomsExports';
 
 interface Props {
   style?: Record<string, unknown>;
@@ -7,7 +8,7 @@ interface Props {
 }
 
 export const Title: React.FC<Props> = (props: Props) => {
-  return <Text style={[styles.title, props.style]}>{props.children}</Text>;
+  return <AppText style={[styles.title, props.style]}>{props.children}</AppText>;
 };
 
 const styles = StyleSheet.create({

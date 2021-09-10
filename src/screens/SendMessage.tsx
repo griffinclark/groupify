@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, View, Text, StyleSheet, FlatList, ImageBackground } from 'react-native';
+import { ActivityIndicator, View, StyleSheet, FlatList, ImageBackground } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Event, Contact } from '../res/dataModels';
 import { TEAL } from '../res/styles/Colors';
 import { API, Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
-import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
+import { AppText, Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
 import { Icon } from 'react-native-elements';
 import { Plan, Status, Invitee } from '../models';
 import { sendPushNotification } from '../res/notifications';
@@ -182,7 +182,7 @@ ${event.description} \
         <View style={styles.bubble}>
           <Icon size={30} color={'white'} name="check" type="entypo" />
         </View>
-        <Text style={styles.name}>{item.name}</Text>
+        <AppText style={styles.name}>{item.name}</AppText>
       </View>
     );
   };
@@ -205,33 +205,33 @@ ${event.description} \
           style={styles.backgroundImage}
         >
           <View style={styles.overlay} />
-          <Text style={styles.titleText}>Plan Details...</Text>
+          <AppText style={styles.titleText}>Plan Details...</AppText>
           <View style={styles.body}>
             <View style={styles.eventInfo}>
-              <Text style={styles.planInfo}>{event.title}</Text>
-              <Text style={styles.planInfo}>{event.date}</Text>
-              <Text style={styles.planInfo}>{event.time}</Text>
-              <Text numberOfLines={1} style={styles.planInfo}>
+              <AppText style={styles.planInfo}>{event.title}</AppText>
+              <AppText style={styles.planInfo}>{event.date}</AppText>
+              <AppText style={styles.planInfo}>{event.time}</AppText>
+              <AppText numberOfLines={1} style={styles.planInfo}>
                 {event.location}
-              </Text>
+              </AppText>
             </View>
           </View>
         </ImageBackground>
       )}
       {event.contacts.length > 0 && (
         <>
-          <Text style={styles.text}>Message to friends</Text>
+          <AppText style={styles.text}>Message to friends</AppText>
           <View style={styles.message}>
             <MultiLineTextInput enabled={editMessage} inputText={message} setText={setMessage} placeholder={''} />
           </View>
           <Button title="Edit Note" onPress={() => setEditMessage(!editMessage)} />
-          <Text style={styles.text}>Sending text message to...</Text>
+          <AppText style={styles.text}>Sending text message to...</AppText>
           <FlatList
             data={event.contacts}
             renderItem={contactList}
             ListEmptyComponent={() => (
               <View style={styles.title}>
-                <Text>No Contacts Invited</Text>
+                <AppText>No Contacts Invited</AppText>
               </View>
             )}
             style={event.friends.length !== 0 ? { maxHeight: '20%' } : { maxHeight: '42%' }}
@@ -240,13 +240,13 @@ ${event.description} \
       )}
       {event.friends.length > 0 && (
         <View style={{ flex: 1 }}>
-          <Text style={styles.text}>Inviting friends to plan...</Text>
+          <AppText style={styles.text}>Inviting friends to plan...</AppText>
           <FlatList
             data={event.friends}
             renderItem={contactList}
             ListEmptyComponent={() => (
               <View style={styles.title}>
-                <Text>No Friends Invited</Text>
+                <AppText>No Friends Invited</AppText>
               </View>
             )}
             style={{ maxHeight: '60%' }}
@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: '#BE8C2C',
     margin: 15,
+    maxHeight: '40%',
   },
   footer: {
     position: 'absolute',

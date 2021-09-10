@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TEAL } from '../res/styles/Colors';
+import { AppText } from './AtomsExports';
 
 interface Props {
   navigation: {
@@ -13,7 +14,7 @@ interface Props {
 export const ViewAll: React.FC<Props> = ({ navigation, destination }: Props) => {
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate(destination, {})}>
-      <Text style={styles.text}>SEE ALL</Text>
+      <AppText style={styles.text}>SEE ALL</AppText>
     </TouchableOpacity>
   );
 };

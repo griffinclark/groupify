@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Contact } from '../res/dataModels';
+import { AppText } from '../atoms/AtomsExports';
 
 interface Props {
   isSelected?: boolean;
@@ -38,9 +39,9 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
     <View style={styles.container}>
       <View style={styles.nameContainer}>
         <View style={styles.bubble}>
-          <Text style={{ fontSize: 20 }}>{firstInitial}</Text>
+          <AppText style={{ fontSize: 20 }}>{firstInitial}</AppText>
         </View>
-        <Text style={styles.name}>{friend.name}</Text>
+        <AppText style={styles.name}>{friend.name}</AppText>
       </View>
       <TouchableOpacity style={selected ? styles.buttonSelected : styles.button} onPress={handlePress}>
         {selected && <Icon size={32} containerStyle={styles.icon} color={'white'} name="check" type="entypo" />}

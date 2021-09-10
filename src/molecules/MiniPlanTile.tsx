@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
 import { GREY_1, WHITE, POST_SPACING, TEAL } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
 import { Image } from 'react-native-elements';
+import { AppText } from '../atoms/AtomsExports';
 
 interface Props {
   plan: Plan;
@@ -26,9 +27,9 @@ export const MiniPlanTile: React.FC<Props> = ({ plan, onPress }: Props) => {
       <View style={styles.rootContainer}>
         <Image style={{ width: 89, height: 63, borderRadius: 5, marginRight: 5 }} source={{ uri: photoURI }} />
         <View>
-          <Text style={styles.title}>{plan.title}</Text>
+          <AppText style={styles.title}>{plan.title}</AppText>
           <View style={styles.infoItemRow}>
-            <Text style={styles.infoItem}>Date: {plan.date ? formatDayOfWeekDate(plan.date) : ''}</Text>
+            <AppText style={styles.infoItem}>Date: {plan.date ? formatDayOfWeekDate(plan.date) : ''}</AppText>
           </View>
         </View>
       </View>

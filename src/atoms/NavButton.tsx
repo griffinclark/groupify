@@ -1,7 +1,8 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Text, StyleSheet, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
+import { StyleSheet, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import { WHITE } from '../res/styles/Colors';
+import { AppText } from './AtomsExports';
 
 interface Props {
   onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;
@@ -10,7 +11,7 @@ interface Props {
 export const NavButton: React.FC<Props> = ({ onPress, title }: Props) => {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.text}>{title}</Text>
+      <AppText style={styles.text}>{title}</AppText>
     </TouchableOpacity>
   );
 };

@@ -1,9 +1,10 @@
 import React, { ReactChild, useEffect, useState } from 'react';
-import { StyleSheet, TextInput, View, Text, Platform } from 'react-native';
+import { StyleSheet, TextInput, View, Platform } from 'react-native';
 import { WHITE } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
+import { AppText } from './AtomsExports';
 
 interface Props {
   children: ReactChild;
@@ -99,19 +100,22 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
     if (item.settings === 'date') {
       return (
         <View key={item.title}>
-          <Text style={styles.text}>{item.title}</Text>
+          <AppText style={styles.text}>{item.title}</AppText>
           {showDatePicker && (
             <DateTimePicker
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'date'}
               display={'default'}
+              style={{ padding: 10 }}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
             />
           )}
           {Platform.OS === 'android' && (
             <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-              <Text style={styles.dateTime}>{currentDate ? currentDate.toLocaleDateString() : 'no date selected'}</Text>
+              <AppText style={styles.dateTime}>
+                {currentDate ? currentDate.toLocaleDateString() : 'no date selected'}
+              </AppText>
             </TouchableOpacity>
           )}
           {Platform.OS === 'ios' && (
@@ -131,7 +135,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
     if (item.settings === 'time') {
       return (
         <View key={item.title}>
-          <Text style={styles.text}>{item.title}</Text>
+          <AppText style={styles.text}>{item.title}</AppText>
           {showTimePicker && (
             <DateTimePicker
               testID={'dateTimePicker'}
@@ -143,7 +147,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
           )}
           {Platform.OS === 'android' && (
             <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-              <Text style={styles.dateTime}>{currentDate ? formatTime(currentDate) : 'no time selected'}</Text>
+              <AppText style={styles.dateTime}>{currentDate ? formatTime(currentDate) : 'no time selected'}</AppText>
             </TouchableOpacity>
           )}
           {Platform.OS === 'ios' && (
@@ -163,7 +167,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
     if (item.settings === 'password') {
       return (
         <View key={item.title}>
-          <Text style={styles.text}>{item.title}</Text>
+          <AppText style={styles.text}>{item.title}</AppText>
           <TextInput
             style={styles.textInputBody}
             onChangeText={(e) => setValue(e, item)}
@@ -178,8 +182,9 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
     if (item.settings === 'default') {
       return (
         <View key={item.title}>
-          <Text style={styles.text}>{item.title}</Text>
+          <AppText style={styles.text}>{item.title}</AppText>
           <TextInput
+            maxFontSizeMultiplier={1.5}
             value={getValue(item.title)}
             style={styles.textInputBody}
             onChangeText={(e) => setValue(e, item)}

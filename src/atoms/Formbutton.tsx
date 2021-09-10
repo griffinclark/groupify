@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, WHITE } from '../res/styles/Colors';
+import { AppText } from './AtomsExports';
 
 interface Props {
   onPress: (ev?: React.FormEvent<HTMLFormElement>) => void;
@@ -20,9 +21,9 @@ export const FormButton: React.FC<Props> = ({ onPress, title, disabled = false }
         disabled={disabled}
         style={[buttonStyles.button, disabled ? buttonStyles.disabledButton : buttonStyles.enabledButton]}
       >
-        <Text style={[buttonStyles.text, disabled ? buttonStyles.disabledButton : buttonStyles.enabledButton]}>
+        <AppText style={[buttonStyles.text, disabled ? buttonStyles.disabledButton : buttonStyles.enabledButton]}>
           {title}
-        </Text>
+        </AppText>
       </TouchableOpacity>
     </View>
   );

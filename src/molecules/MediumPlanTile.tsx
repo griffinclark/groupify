@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent, Image } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, GestureResponderEvent, Image } from 'react-native';
 import { GREY_1, WHITE, POST_SPACING } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { formatTime, formatDate, loadPhoto } from '../res/utilFunctions';
+import { AppText } from '../atoms/AtomsExports';
 
 interface Props {
   plan: Plan;
@@ -25,10 +26,10 @@ export const MediumPlanTile: React.FC<Props> = ({ plan, onPress }: Props) => {
       <View style={styles.rootContainer}>
         {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : null}
         <View style={styles.textContainer}>
-          <Text style={styles.title}>{plan.title}</Text>
+          <AppText style={styles.title}>{plan.title}</AppText>
           <View style={styles.infoItemRow}>
-            <Text style={styles.infoItem}>{plan.date ? formatDate(plan.date) : ''}</Text>
-            <Text>{plan.time ? formatTime(plan.time) : ''}</Text>
+            <AppText style={styles.infoItem}>{plan.date ? formatDate(plan.date) : ''}</AppText>
+            <AppText>{plan.time ? formatTime(plan.time) : ''}</AppText>
           </View>
         </View>
       </View>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
-import { Screen, FormButton, MeepForm, Alert } from '../atoms/AtomsExports';
-import { Text } from 'react-native-elements';
+import { Screen, FormButton, MeepForm, Alert, AppText } from '../atoms/AtomsExports';
 import { Image, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import Qs from 'qs';
@@ -152,7 +151,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
               onPress={() => navigation.navigate('SearchPlace', {})}
               style={styles.back}
             />
-            <Text style={styles.title}>New Plan</Text>
+            <AppText style={styles.title}>New Plan</AppText>
           </View>
           <View>{loadPhoto(photo)}</View>
           <MeepForm InputList={inputFields} updatedValues={(value) => setValues(value)}>

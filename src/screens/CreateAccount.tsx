@@ -1,8 +1,8 @@
 import { RoutePropParams } from '../res/root-navigation';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
+import { Screen, FormInput, Button, Alert, AppText } from '../atoms/AtomsExports';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { background, TEAL } from '../res/styles/Colors';
 //import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -147,7 +147,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             {route.params.step === 'create' && (
               <View style={styles.container}>
                 <View>
-                  <Text style={styles.title}>Create Account</Text>
+                  <AppText style={styles.title}>Create Account</AppText>
                   <FormInput
                     autoFocus={false}
                     returnKeyNext={true}
@@ -189,7 +189,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             )}
             {route.params.step === 'validate' && (
               <View style={styles.validateContainer}>
-                <Text style={styles.title}>Verify Your Phone Number</Text>
+                <AppText style={styles.title}>Verify Your Phone Number</AppText>
                 <View>
                   <FormInput
                     returnKeyNext={false}
@@ -216,7 +216,9 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     }}
                     style={styles.buttonStyle}
                   >
-                    <Text style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>Send New Verification Code</Text>
+                    <AppText style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>
+                      Send New Verification Code
+                    </AppText>
                   </TouchableOpacity>
                 </View>
                 <View style={{ marginBottom: 30 }}>
