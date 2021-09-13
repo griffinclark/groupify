@@ -65,6 +65,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
       setError('Please add a description to your plan');
       return;
     }
+    console.log(values.eventTime);
     navigation.navigate('SelectFriends', {
       currentUser: route.params.currentUser,
       data: {
