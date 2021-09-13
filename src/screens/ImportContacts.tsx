@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Linking, Platform } from 'react-native';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
@@ -144,7 +144,17 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
               renderItem={renderContact}
               ListEmptyComponent={() => (
                 <View style={styles.listContainer}>
-                  <AppText>No Contacts Found</AppText>
+                  <AppText style={{ fontSize: 20, textAlign: 'center' }}>
+                    Add friends from your contact list to make plans!
+                  </AppText>
+                  <Button
+                    onPress={() => {
+                      if (Platform.OS === 'ios') {
+                        Linking.openURL('app-settings:');
+                      }
+                    }}
+                    title={'Allow Access'}
+                  />
                 </View>
               )}
             />
@@ -183,7 +193,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50,
+    marginTop: 150,
+    marginHorizontal: 80,
   },
   contactContainer: {
     color: 'purple',

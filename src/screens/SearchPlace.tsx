@@ -222,6 +222,16 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
               borderRadius: 15,
             },
           }}
+          renderRow={(rowData) => {
+            const title = rowData.structured_formatting.main_text;
+            const address = rowData.structured_formatting.secondary_text;
+            return (
+              <View>
+                <AppText style={{ fontSize: 14, fontWeight: '700' }}>{title}</AppText>
+                <AppText style={{ fontSize: 14 }}>{address}</AppText>
+              </View>
+            );
+          }}
         />
       </View>
       {mapPopupOpen ? (
