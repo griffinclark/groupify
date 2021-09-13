@@ -203,7 +203,13 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
         {mapMarker ? mapMarker : null}
       </MapView>
       <View style={styles.navbar}>
-        <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Home', {})} />
+        <Icon
+          name="arrow-left"
+          type="font-awesome"
+          size={30}
+          onPress={() => navigation.navigate('Home', {})}
+          style={{ marginTop: 7.5 }}
+        />
         <View style={{ padding: 10 }} />
         <GooglePlacesAutocomplete
           placeholder="Search"
@@ -221,6 +227,16 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
             textInput: {
               borderRadius: 15,
             },
+          }}
+          renderRow={(rowData) => {
+            const title = rowData.structured_formatting.main_text;
+            const address = rowData.structured_formatting.secondary_text;
+            return (
+              <View>
+                <AppText style={{ fontSize: 14, fontWeight: '700' }}>{title}</AppText>
+                <AppText style={{ fontSize: 14 }}>{address}</AppText>
+              </View>
+            );
           }}
         />
       </View>
@@ -268,7 +284,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
   container: {
     flex: 1,
