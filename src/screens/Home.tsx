@@ -109,12 +109,11 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                 </View>
               )}
               {userPlans.length > 0 && (
-                <View>
+                <View style={{ height: 340 }}>
                   <AppText style={styles.label}>CREATED PLANS</AppText>
                   <CreatedPlans navigation={navigation} userPlans={userPlans} />
                 </View>
               )}
-              <View style={{ height: 50 }} />
             </View>
           ) : (
             <View style={styles.noPlan}>
