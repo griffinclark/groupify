@@ -42,7 +42,6 @@ export const App: React.FC = () => {
         console.log('user not signed in');
         console.log(err);
         (await hasLoggedIn()) ? setInitialScreen('Login') : setInitialScreen('CreateAccount');
-        setInitialScreen('Login');
       }
     };
     checkAuth();
