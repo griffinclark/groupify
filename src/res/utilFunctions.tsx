@@ -132,9 +132,9 @@ export const formatDatabaseTime = (time: string): string => {
       return newTime;
     }
     if (meridian === 'PM') {
-      let hour = time.substring(0, 2);
-      hour = parseInt(hour) + 12;
-      const newTime = hour + ':' + time.substring(3, 5) + ':' + '00';
+      let hour = parseInt(time.substring(0, 2));
+      hour = hour + 12;
+      const newTime = hour + ':' + time.substring(3, 5);
       return newTime;
     }
   }
@@ -142,12 +142,13 @@ export const formatDatabaseTime = (time: string): string => {
     const meridian = time.substring(6, 8);
     if (meridian === 'AM') {
       const newTime = time.substring(0, 5);
+      console.log(newTime);
       return newTime;
     }
     if (meridian === 'PM') {
-      let hour = time.substring(0, 2);
-      hour = 12 ? parseInt(hour) - 12 : parseInt(hour) + 12;
-      const newTime = hour + '0' + ':' + time.substring(3, 5) + ':' + '00';
+      let hour = parseInt(time.substring(0, 2));
+      hour === 12 ? (hour -= 12) : (hour += 12);
+      const newTime = hour + ':' + time.substring(3, 5);
       return newTime;
     }
   }
