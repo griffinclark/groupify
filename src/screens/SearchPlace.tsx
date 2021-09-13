@@ -203,7 +203,13 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
         {mapMarker ? mapMarker : null}
       </MapView>
       <View style={styles.navbar}>
-        <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Home', {})} />
+        <Icon
+          name="arrow-left"
+          type="font-awesome"
+          size={30}
+          onPress={() => navigation.navigate('Home', {})}
+          style={{ marginTop: 7.5 }}
+        />
         <View style={{ padding: 10 }} />
         <GooglePlacesAutocomplete
           placeholder="Search"
