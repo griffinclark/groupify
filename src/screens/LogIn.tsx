@@ -176,7 +176,9 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
             here
           </AppText>
         </AppText>
-        {route.params.accountCreated === 'success' && <Alert status={'success'} message={'Account successfully created!'} />}
+        {route.params.accountCreated === 'success' && (
+          <Alert status={'success'} message={'Account successfully created!'} />
+        )}
       </View>
       <View style={{ flex: 1 }}>
         <Button title="Log In" onPress={logIn} disabled={disabled} />
