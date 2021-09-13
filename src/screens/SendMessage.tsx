@@ -9,7 +9,7 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { Icon } from 'react-native-elements';
-import { Plan, Status, Invitee } from '../models';
+import { Plan, Status, Invitee, User } from '../models';
 import { sendPushNotification } from '../res/notifications';
 import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
 
@@ -23,6 +23,7 @@ interface Props {
 
 export const SendMessage: React.FC<Props> = ({ navigation, route }: Props) => {
   const event: Event = route.params.data.eventData;
+  const currentUser: User = route.params.currentUser;
   const [message, setMessage] = useState<string>('Loading Message...');
   const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -137,6 +138,17 @@ ${event.description} \
         inviteeList.push(invitee);
       }
     }
+
+    const userInvitee = await DataStore.save(
+      new Invitee({
+        name: currentUser.name,
+        phoneNumber: currentUser.phoneNumber,
+        status: Status.ACCEPTED,
+        pushToken: currentUser.pushToken,
+        plan: newPlan,
+      }),
+    );
+    inviteeList.push(userInvitee);
 
     //FIXME: plan invitee not being updated properly
     await DataStore.save(
