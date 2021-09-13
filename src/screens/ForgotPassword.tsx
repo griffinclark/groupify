@@ -1,9 +1,9 @@
 import { Auth } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, View, StyleSheet } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, View, StyleSheet } from 'react-native';
 import { Image } from 'react-native-elements/dist/image/Image';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { background } from '../res/styles/Colors';
@@ -85,55 +85,64 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
   };
 
   return (
-    <Screen style={{ backgroundColor: background }}>
-      <AntDesign
-        style={{ position: 'relative', marginLeft: 20 }}
-        name="left"
-        type="font-awesome"
-        size={30}
-        onPress={() => navigation.navigate('Login', {})}
-      />
-      <View style={{ alignSelf: 'center', marginTop: 50, marginBottom: 25 }}>
-        <Image style={styles.logo} source={require('../../assets/logo.png')} />
-      </View>
-      {route.params.step === 'phone' && (
-        <View>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-            <AppText style={styles.title}>Forgot Password</AppText>
-            <FormInput
-              returnKeyNext={true}
-              label="Phone Number"
-              value={phone}
-              onChangeText={(number) => setPhone(formatPhoneNumber(number))}
-            />
-            {error && <Alert status="error" message={error} />}
-            <Button title="Next" onPress={confirmUserPhone} />
-          </TouchableWithoutFeedback>
-        </View>
-      )}
-      {route.params.step === 'password' && (
-        <View>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-            <AppText style={styles.title}>Verification/New Password</AppText>
-            <FormInput
-              returnKeyNext={true}
-              label="Verification Code"
-              onChangeText={setVerificationCode}
-              secureTextEntry={false}
-            />
-            <FormInput returnKeyNext={true} label="New Password" onChangeText={setNewPassword} secureTextEntry={true} />
-            <FormInput
-              returnKeyNext={false}
-              label="Confirm New Password"
-              onChangeText={setConfirmNewPassword}
-              secureTextEntry={true}
-            />
-            {error && <Alert status="error" message={error} />}
-            <Button title="Next" onPress={confirmResetPassword} />
-          </TouchableWithoutFeedback>
-        </View>
-      )}
-    </Screen>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Screen style={{ backgroundColor: background }}>
+        <ScrollView>
+          <AntDesign
+            style={{ position: 'relative', marginLeft: 20 }}
+            name="left"
+            type="font-awesome"
+            size={30}
+            onPress={() => navigation.navigate('Login', {})}
+          />
+          <View style={{ alignSelf: 'center', marginTop: 50, marginBottom: 25 }}>
+            <Image style={styles.logo} source={require('../../assets/logo.png')} />
+          </View>
+          {route.params.step === 'phone' && (
+            <View>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+                <AppText style={styles.title}>Forgot Password</AppText>
+                <FormInput
+                  returnKeyNext={true}
+                  label="Phone Number"
+                  value={phone}
+                  onChangeText={(number) => setPhone(formatPhoneNumber(number))}
+                />
+                {error && <Alert status="error" message={error} />}
+                <Button title="Next" onPress={confirmUserPhone} />
+              </TouchableWithoutFeedback>
+            </View>
+          )}
+          {route.params.step === 'password' && (
+            <View>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+                <AppText style={styles.title}>Verification/New Password</AppText>
+                <FormInput
+                  returnKeyNext={true}
+                  label="Verification Code"
+                  onChangeText={setVerificationCode}
+                  secureTextEntry={false}
+                />
+                <FormInput
+                  returnKeyNext={true}
+                  label="New Password"
+                  onChangeText={setNewPassword}
+                  secureTextEntry={true}
+                />
+                <FormInput
+                  returnKeyNext={false}
+                  label="Confirm New Password"
+                  onChangeText={setConfirmNewPassword}
+                  secureTextEntry={true}
+                />
+                {error && <Alert status="error" message={error} />}
+                <Button title="Next" onPress={confirmResetPassword} />
+              </TouchableWithoutFeedback>
+            </View>
+          )}
+        </ScrollView>
+      </Screen>
+    </KeyboardAvoidingView>
   );
 };
 
