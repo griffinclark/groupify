@@ -52,10 +52,12 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
   const registerUser = async (): Promise<User> => {
     await registerForPushNotifications();
     const token = await getExpoPushToken();
+    console.log(token);
     const userInfo = await Auth.currentUserInfo();
     const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     if (users.length > 0) {
       const user = users[0];
+      console.log(user.pushToken);
       if (user.pushToken !== token) {
         console.log('Existing User: Updating users pushToken');
         await DataStore.save(

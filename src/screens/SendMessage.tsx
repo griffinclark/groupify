@@ -58,16 +58,6 @@ ${event.description} \
     return newNumber;
   };
 
-  const pushEvent = async (friends: Contact[], message: string): Promise<void> => {
-    const util = PhoneNumberUtil.getInstance();
-    const attendees = friends.map((friend) => {
-      const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
-      return util.format(num, PhoneNumberFormat.E164);
-    });
-    const obj = { attendees: attendees, content: message };
-    console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
-  };
-
   const createConfirmAlert = (): void => {
     getUserName();
     TwoButtonAlert({
@@ -79,17 +69,14 @@ ${event.description} \
     });
   };
 
-  const createErrorAlert = (friends: Contact[], message: string): void => {
+  const createErrorAlert = (): void => {
     TwoButtonAlert({
       title: 'Notice',
       message:
         'At least one of the friends you invited does not have a phone number. That friend will not receive a text.',
       button1Text: 'Go back',
       button2Text: 'Create Event Anyways',
-      button2OnPress: async () => {
-        navigation.push('Home');
-        await pushEvent(friends, message);
-      },
+      button2OnPress: onPressSend,
     });
   };
 
@@ -156,15 +143,41 @@ ${event.description} \
         item.invitees = inviteeList;
       }),
     );
-
     const name = await getUserName();
-    for (const invitee of inviteeList) {
-      if (invitee.pushToken) {
-        sendPushNotification(invitee.pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+
+    //Decide whether or not an invitee is a user
+    //if so send notification, if not send text
+    const nonUsers = [];
+    for (let i = 0; i < inviteeList.length; i++) {
+      const invitee = inviteeList[i];
+      const user = await DataStore.query(User, (user) => user.phoneNumber('eq', invitee.phoneNumber));
+      if (user) {
+        console.log(invitee);
+        if (invitee.pushToken) {
+          sendPushNotification(invitee.pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+        }
+      } else {
+        nonUsers.push(invitee);
       }
     }
+    pushEvent(nonUsers, message);
+    // for (const invitee of inviteeList) {
+    //   if (invitee.pushToken) {
+    //     sendPushNotification(invitee.pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+    //   }
+    // }
 
-    console.log(newPlan);
+    // console.log(newPlan);
+  };
+
+  const pushEvent = async (friends: Invitee[], message: string): Promise<void> => {
+    const util = PhoneNumberUtil.getInstance();
+    const attendees = friends.map((friend) => {
+      const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+      return util.format(num, PhoneNumberFormat.E164);
+    });
+    const obj = { attendees: attendees, content: message };
+    console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
   };
 
   const onPressSend = async (): Promise<void> => {
@@ -172,13 +185,13 @@ ${event.description} \
     try {
       await storeInvitees();
       if (event.contacts.length > 0) {
-        await pushEvent(event.contacts, message);
+        // await pushEvent(event.contacts, message);
       }
       navigation.push('Home');
     } catch (err) {
       console.log(err);
       if (err.message === 'The string supplied did not seem to be a phone number') {
-        createErrorAlert(event.contacts, message);
+        createErrorAlert();
       }
     } finally {
       setIsLoading(false);
