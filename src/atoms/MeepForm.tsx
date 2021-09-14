@@ -107,7 +107,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
               value={currentDate}
               mode={'date'}
               display={'default'}
-              style={{ padding: 10 }}
+              style={{ height: 55, padding: 10 }}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
             />
           )}
@@ -120,7 +120,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
           )}
           {Platform.OS === 'ios' && (
             <DateTimePicker
-              style={{ marginTop: 5 }}
+              style={{ height: 55, marginTop: 5 }}
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'date'}
@@ -152,7 +152,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
           )}
           {Platform.OS === 'ios' && (
             <DateTimePicker
-              style={{ marginTop: 5 }}
+              style={{ height: 55, marginTop: 5 }}
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'time'}
