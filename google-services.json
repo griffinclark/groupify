@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "268591507162",
+    "firebase_url": "https://warm-actor-316520-default-rtdb.firebaseio.com",
     "project_id": "warm-actor-316520",
     "storage_bucket": "warm-actor-316520.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "268591507162-8demcvp029prulb895uju5lj5l892n95.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "268591507162-d0135carb3j1knhll5i1rurnk7j7tvaq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.munchkinlabs.meep"
+              }
             }
           ]
         }
