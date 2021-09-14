@@ -33,12 +33,15 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
   const [pendingInvitedPlans, setPendingInvitedPlans] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User>();
+  const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
+    setPendingInvitedPlans(false);
     const awaitUser = async () => {
       const user = await getCurrentUser();
       setCurrentUser(user);
       loadPlans(user);
+      setTrigger(!trigger);
     };
     awaitUser();
   }, []);
