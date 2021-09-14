@@ -121,7 +121,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const validateUser = async () => {
     try {
       await Auth.confirmSignUp(route.params.phone, validationCode);
-      navigation.navigate('Login', {});
+      navigation.navigate('Login', { accountCreated: 'success' });
     } catch (err) {
       console.log('Error: ', err);
       setError(err.message);
