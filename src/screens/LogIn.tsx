@@ -176,7 +176,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
             here
           </AppText>
         </AppText>
-        {route.params.accountCreated === 'success' && (
+        {route.params && route.params.accountCreated === 'success' && (
           <Alert status={'success'} message={'Account successfully created!'} />
         )}
       </View>
