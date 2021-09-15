@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { GREY_2, RED, WHITE } from '../res/styles/Colors';
+import { RED, TEAL, WHITE } from '../res/styles/Colors';
 import { AppText } from './AppText';
 
 interface Props {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: RED,
   },
   success: {
-    backgroundColor: GREY_2,
+    backgroundColor: TEAL,
   },
   container: {
     padding: 10,
