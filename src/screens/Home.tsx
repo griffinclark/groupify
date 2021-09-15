@@ -37,7 +37,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   useEffect(() => {
     const awaitUser = async () => {
       const user = await getCurrentUser();
-      console.log(user);
       setCurrentUser(user);
       loadPlans(user);
     };
