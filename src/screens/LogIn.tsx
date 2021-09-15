@@ -99,12 +99,14 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           navigation.navigate('Home', { userID: user.id });
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {
         navigation.navigate('CreateAccount', { step: 'validate', phone: formatPhone });
       } else if (err.code == 'InvalidParameterException' && err.message.includes('Incorrect·username·or·password.')) {
         setError('Incorrect username or password.');
+      } else if (err.code == 'InvalidParameterException' && err.message.includes('2 validation errors detected')) {
+        setError('User does not exist');
       } else {
         setError(err.message);
       }
@@ -133,7 +135,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       setDisabled(true);
     }
   }, [phone, password]);
-  console.log(route);
 
   return (
     <Screen style={{ backgroundColor: background, justifyContent: 'space-evenly' }}>
