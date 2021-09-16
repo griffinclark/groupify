@@ -87,7 +87,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
         }),
       );
       const host = await DataStore.query(User, plan.creatorID);
-      if (host) {
+      if (host && phoneNumber !== host.phoneNumber) {
         const userName = (await Auth.currentUserInfo()).attributes.name;
         sendPushNotification(host.pushToken, `${userName} has accepted your invite!`, 'Tap to open the app', {});
       }

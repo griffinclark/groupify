@@ -148,13 +148,12 @@ ${event.description} \
     //Decide whether or not an invitee is a user
     //if so send notification, if not send text
     const nonUsers = [];
-    const pushNotificationRegex = /ExponentPushToken\[.{22}]/;
+    const pushTokenRegex = /ExponentPushToken\[.{22}]/;
     for (let i = 0; i < inviteeList.length; i++) {
       const invitee = inviteeList[i];
       const user = await DataStore.query(User, (user) => user.phoneNumber('eq', invitee.phoneNumber));
       if (user.length > 0) {
-        if(pushNotificationRegex.test(user[0].pushToken) && user[0].pushToken != currentUser.pushToken){
-          console.log("This invitee gets a notificaiton: " + invitee.name);
+        if(pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken){
           sendPushNotification(user[0].pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
         }
       } else {

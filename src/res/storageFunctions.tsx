@@ -116,3 +116,21 @@ export const clearAllEvents: () => Promise<void> = async () => {
   }
   console.log('All events cleared:', keys);
 };
+
+export const setUserPushToken: (token: string) => Promise<void> = async (token: string) => {
+  try {
+    await AsyncStorage.setItem('pushToken', token);
+  } catch (e) {
+    console.log('Error storing pushToken');
+  }
+};
+
+export const getUserPushToken: () => Promise<string> = async () => {
+  try {
+    let token = await AsyncStorage.getItem('pushToken');
+    return token;
+  } catch (e) {
+    console.log('Error getting pushToken');
+    return "";
+  }
+};

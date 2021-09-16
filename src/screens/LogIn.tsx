@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
-import { getAllImportedContacts } from '../res/storageFunctions';
+import { getAllImportedContacts, getUserPushToken, setUserPushToken } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
 import { Contact } from '../res/dataModels';
 import { Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
@@ -51,29 +51,32 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
 
   const registerUser = async (): Promise<User> => {
     await registerForPushNotifications();
-    const token = await getExpoPushToken();
-    console.log(token);
+    const token = await getUserPushToken();
     const userInfo = await Auth.currentUserInfo();
     const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     if (users.length > 0) {
       const user = users[0];
-      console.log(user.pushToken);
-      if (user.pushToken !== token) {
+      const pushTokenRegex = /ExponentPushToken\[.{22}]/;
+      if (!pushTokenRegex.test(token) || !pushTokenRegex.test(user.pushToken) || user.pushToken !== token) {
         console.log('Existing User: Updating users pushToken');
+        const newToken = await getExpoPushToken();
+        await(setUserPushToken(newToken));
         await DataStore.save(
           User.copyOf(user, (updated) => {
-            updated.pushToken = token;
+            updated.pushToken = newToken;
           }),
         );
       }
       return user;
     } else {
       console.log('New User: Adding user to database');
+      const newToken = await getExpoPushToken();;
+      await(setUserPushToken(newToken));
       const newUser = await DataStore.save(
         new User({
           phoneNumber: userInfo.attributes.phone_number,
           name: userInfo.attributes.name,
-          pushToken: token,
+          pushToken: newToken,
           friends: [],
         }),
       );
