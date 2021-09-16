@@ -28,6 +28,7 @@
       }
     },
     "android": {
+	  "googleServicesFile": "./google-services.json",
       "package": "com.munchkinlabs.meep",
       "versionCode": 5,
       "config": {
