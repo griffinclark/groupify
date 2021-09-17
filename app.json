@@ -13,15 +13,13 @@
     "orientation": "portrait",
     "splash": {
       "image": "./assets/Create_Account.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.munchkinlabs.meep",
@@ -29,7 +27,7 @@
         "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
         "NSLocationWhenInUseUsageDescription": "Accessing your location will allow you to view places near you."
       },
-      "buildNumber": "1.5.2",
+      "buildNumber": "1.5.4",
       "config": {
         "googleMapsApiKey": "AIzaSyChCbEsnEsDQ3qJklY72r9PSTNMuRnY7Rw"
       },
@@ -38,13 +36,12 @@
     "android": {
 	  "googleServicesFile": "./google-services.json",
       "package": "com.munchkinlabs.meep",
-      "versionCode": 4,
+      "versionCode": 5,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAjyWqzciMARyactNXDfNhesz6Z4k4zNbo"
         }
       },
-      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png",
