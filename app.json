@@ -1,20 +1,27 @@
 {
   "expo": {
     "name": "Groupify",
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/perf",
+      "@react-native-firebase/crashlytics"
+    ],
     "icon": "./assets/groupify_icon_official.png",
     "slug": "groupify",
-    "sdkVersion": "40.0.0",
-    "version": "1.5.4",
+    "sdkVersion": "41.0.0",
+    "version": "1.5.2",
     "orientation": "portrait",
     "splash": {
       "image": "./assets/Create_Account.png",
-      "resizeMode": "cover",
+      "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.munchkinlabs.meep",
@@ -22,26 +29,31 @@
         "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
         "NSLocationWhenInUseUsageDescription": "Accessing your location will allow you to view places near you."
       },
-      "buildNumber": "1.5.4",
+      "buildNumber": "1.5.2",
       "config": {
         "googleMapsApiKey": "AIzaSyChCbEsnEsDQ3qJklY72r9PSTNMuRnY7Rw"
-      }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
 	  "googleServicesFile": "./google-services.json",
       "package": "com.munchkinlabs.meep",
-      "versionCode": 5,
+      "versionCode": 4,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAjyWqzciMARyactNXDfNhesz6Z4k4zNbo"
         }
-      }
+      },
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyAuD1H1EdLihk07TYvGLdJF-h-J0YAyGuA",
+          "measurementId": "G-BQR5LDWWZ1"
+        }
+      }
     }
-  },
-  "android": {
-    "googleServicesFile": "./google-services.json"
   }
 }
