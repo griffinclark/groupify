@@ -52,7 +52,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            navigation.navigate('SearchPlace', { currentUser: user });
+            navigation.navigate('PlanCreate', { currentUser: user });
           }}
         >
           <Icon name="plus-circle" type="font-awesome" size={50} color={'white'} />

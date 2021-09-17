@@ -9,6 +9,7 @@ interface Props {
   title: string;
   disabled?: boolean;
 }
+
 export const FormButton: React.FC<Props> = ({ onPress, title, disabled = false }: Props) => {
   const handlePress = () => {
     onPress();

@@ -2,6 +2,7 @@ import { Alert } from './Alert';
 import { AlertModal } from './AlertModal';
 import { AppText } from './AppText';
 import { AppTextInput } from './AppTextInput';
+import { BottomButton } from './BottomButton';
 import { Button } from './Button';
 import { CircularImageDisplay } from './CircularImageDisplay';
 import { CheckBox } from './CheckBox';
@@ -25,6 +26,7 @@ export {
   AlertModal,
   AppText,
   AppTextInput,
+  BottomButton,
   Button,
   CircularImageDisplay,
   CheckBox,

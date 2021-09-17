@@ -10,7 +10,8 @@ interface Props {
   maxFontSizeMultiplier?: number;
   onChangeText: (e: string) => void;
   placeholder?: string | undefined;
-  value: string | undefined;
+  secureTextEntry?: boolean;
+  value?: string | undefined;
 }
 
 export const AppTextInput: React.FC<Props> = ({
@@ -19,6 +20,7 @@ export const AppTextInput: React.FC<Props> = ({
   maxFontSizeMultiplier = 1.5,
   onChangeText,
   placeholder,
+  secureTextEntry = false,
   value,
 }: Props) => {
   const [selected, setSelected] = useState<boolean>(false);
@@ -33,6 +35,7 @@ export const AppTextInput: React.FC<Props> = ({
         onFocus={() => setSelected(true)}
         maxFontSizeMultiplier={maxFontSizeMultiplier}
         placeholder={placeholder}
+        secureTextEntry={secureTextEntry}
         style={[styles.textInput, selected ? styles.selected : null]}
         value={value}
       />
