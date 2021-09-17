@@ -9,7 +9,7 @@
     "icon": "./assets/groupify_icon_official.png",
     "slug": "groupify",
     "sdkVersion": "41.0.0",
-    "version": "1.5.2",
+    "version": "1.5.4",
     "orientation": "portrait",
     "splash": {
       "image": "./assets/Create_Account.png",
@@ -27,7 +27,7 @@
         "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
         "NSLocationWhenInUseUsageDescription": "Accessing your location will allow you to view places near you."
       },
-      "buildNumber": "1.5.4",
+      "buildNumber": "1.5.2",
       "config": {
         "googleMapsApiKey": "AIzaSyChCbEsnEsDQ3qJklY72r9PSTNMuRnY7Rw"
       },
