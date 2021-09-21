@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
 import { AppText, Screen, BottomButton, MeepForm, Alert, Navbar } from '../atoms/AtomsExports';
-import { Image, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { User } from '../models';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
 
 import { TEAL } from '../res/styles/Colors';
 
@@ -33,8 +34,9 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
     eventTime: string | undefined;
     eventLocation: string | undefined;
     eventDescription: string | undefined;
-  }>({ eventName: planTitle, eventDate: '', eventTime: '', eventLocation: planAddress, eventDescription: 'hey' });
+  }>({ eventName: planTitle, eventDate: '', eventTime: '', eventLocation: planAddress, eventDescription: '' });
   const [error, setError] = useState<string | undefined>();
+  const [currentDate, setCurrentDate] = useState(roundDate(new Date()));
   const [disabled, setDisabled] = useState<boolean>(true);
 
   useEffect(() => {
@@ -43,6 +45,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
       setPlanAddress(route.params.data.eventData.location);
       //   setPhoto(route.params.data.eventData.imageURL);
     }
+    checkDisabled();
   }, []);
 
   const onFormSubmit = (values: {
@@ -58,10 +61,10 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
       setError('Please add a name to your plan');
       return;
     }
-    if (!values.eventLocation) {
-      setError('Please add a location to your plan');
-      return;
-    }
+    // if (!values.eventLocation) {
+    //   setError('Please add a location to your plan');
+    //   return;
+    // }
     if (!values.eventDescription) {
       setError('Please add a description to your plan');
       return;
@@ -125,13 +128,23 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
       eventDescription: value[3].value,
       eventLocation: value[4].value,
     };
+
     setUpdatedValues(values);
-    // checkDisabled();
+    checkDisabled();
   };
 
-  // const checkDisabled = () => {
-  //   console.log(updatedValues);
-  // };
+  const checkDisabled = () => {
+    const { eventName, eventDate, eventTime, eventDescription } = updatedValues;
+    console.log(eventName);
+    console.log(eventDate);
+    console.log(eventTime);
+    console.log(eventDescription);
+    if (eventName && eventDate && eventTime && eventDescription) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -141,7 +154,10 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
 
           {/* <View>{loadPhoto(photo)}</View> */}
           <MeepForm InputList={inputFields} updatedValues={(value) => setValues(value)}>
-            <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('SearchPlace', {})}>
+            <TouchableOpacity
+              style={styles.mapLink}
+              onPress={() => navigation.navigate('PlanMap', { updatedValues: (value: string) => setValues(value) })}
+            >
               <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} />
               <AppText style={styles.mapText}>Find address using the map</AppText>
             </TouchableOpacity>

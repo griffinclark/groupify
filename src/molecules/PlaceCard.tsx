@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Qs from 'qs';
-import { StyleSheet, View, Image, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
-import { GREY_1 } from '../res/styles/Colors';
+import { StyleSheet, View, Image, FlatList, StyleProp, ViewStyle } from 'react-native';
+import { GREY_1, YELLOW } from '../res/styles/Colors';
 import { Button } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -62,74 +62,73 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
     }
   };
 
+  const renderStars = () => {
+    if (!props.rating) return null;
+
+    const arr = Array(5).fill('#c4c4c4');
+    const star = Math.floor(props.rating);
+    let i = 0;
+    while (i < star) {
+      arr[i] = YELLOW;
+      i++;
+    }
+
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        {arr.map((ele, idx) => (
+          <Icon color={ele} key={idx} name="star" type="font-awesome" size={16} />
+        ))}
+      </View>
+    );
+  };
+
+  const displayHour = (str: string) => {
+    const arr = str.split(/:00|:| /);
+    const day = arr.shift();
+
+    return `${day} ${arr.join('')}`;
+  };
+
   return (
     <View style={[styles.defaultContainer, props.style]}>
-      <View style={{ alignSelf: 'flex-start' }}>
-        <Icon
-          name="close-o"
-          type="evilicon"
-          style={{ paddingVertical: 4 }}
-          size={40}
-          onPress={() => props.onCloseButtonPress()}
-        />
-      </View>
       {photos ? photos : null}
       <View style={styles.wholeTextContainer}>
         <AppText maxFontSizeMultiplier={1} style={styles.placeName}>
           {props.name}
         </AppText>
+        <View style={styles.midDetails}>
+          {props.rating && renderStars()}
+          <AppText style={{ fontSize: 12 }}>{props.userRatings && `${props.userRatings} Reviews`}</AppText>
+          <AppText style={{ fontSize: 12 }}>{props.priceLevel && `${'$'.repeat(props.priceLevel)}`}</AppText>
+        </View>
         <AppText maxFontSizeMultiplier={1} style={styles.placeAddress}>
           {props.address}
         </AppText>
-        <View style={styles.bottomTextContainer}>
-          {props.openHours ? (
-            <ScrollView style={styles.openHoursContainer}>
-              <AppText maxFontSizeMultiplier={1} style={styles.openHoursTitle}>
-                Opening Hours
-              </AppText>
-              <AppText maxFontSizeMultiplier={1} style={styles.openHoursText}>
-                {props.openHours?.map((value) => value + '\n')}
-              </AppText>
-            </ScrollView>
-          ) : null}
-          <View style={styles.detailsContainer}>
-            <View>
-              {props.rating ? (
-                <AppText maxFontSizeMultiplier={1} style={styles.placeDetails}>
-                  {props.rating ? `${props.rating} / 5 stars\n` : null}
-                  {props.userRatings ? `${props.userRatings} ratings` : null}
-                </AppText>
-              ) : null}
-              <AppText maxFontSizeMultiplier={1} style={styles.placeDetails}>
-                {props.priceLevel ? `${'$'.repeat(props.priceLevel)}   |   ` : ''}
-                {`${props.distance} away`}
-              </AppText>
-              <AppText maxFontSizeMultiplier={1}>
-                <Image
-                  source={{
-                    uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Purple-car.svg/1221px-Purple-car.svg.png',
-                  }}
-                  style={{ height: 10, width: 14 }}
-                />
-                <AppText maxFontSizeMultiplier={1}> {`${props.duration} drive`}</AppText>
-              </AppText>
-              {props.openNow !== undefined ? (
-                <AppText maxFontSizeMultiplier={1}>
-                  {props.openNow ? (
-                    <AppText maxFontSizeMultiplier={1} style={{ color: 'green' }}>
-                      Open
-                    </AppText>
-                  ) : (
-                    <AppText maxFontSizeMultiplier={1} style={{ color: 'red' }}>
-                      Closed
-                    </AppText>
-                  )}
-                </AppText>
-              ) : null}
+        {props.openHours ? (
+          <View style={styles.openHoursContainer}>
+            <AppText maxFontSizeMultiplier={1} style={styles.openHoursTitle}>
+              Hours:
+            </AppText>
+
+            <View style={styles.openHours}>
+              <View style={{ marginRight: 28 }}>
+                {props.openHours.slice(0, 5).map((value, idx) => (
+                  <AppText key={idx} maxFontSizeMultiplier={1} style={styles.openHoursText}>
+                    {displayHour(value)}
+                  </AppText>
+                ))}
+              </View>
+              <View>
+                {props.openHours.slice(5, 7).map((value, idx) => (
+                  <AppText key={idx} maxFontSizeMultiplier={1} style={styles.openHoursText}>
+                    {displayHour(value)}
+                  </AppText>
+                ))}
+              </View>
             </View>
-            <Button onPress={props.onButtonPress} title={'Select Location'} />
           </View>
-        </View>
+        ) : null}
+        <Button containerStyle={styles.button} onPress={props.onButtonPress} title={'Add Location'} />
       </View>
     </View>
   );
@@ -147,49 +146,49 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    height: 10,
+    height: 120,
   },
   image: {
-    height: 100,
+    height: 120,
     width: 150,
   },
   wholeTextContainer: {
     flex: 2.5,
-    margin: 10,
+    marginBottom: 20,
+    marginHorizontal: 20,
+    marginTop: 10,
   },
   placeName: {
     fontWeight: 'bold',
     fontSize: 20,
+    marginVertical: 5,
+  },
+  midDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+    width: 210,
   },
   placeAddress: {
     fontSize: 12,
-    marginBottom: 10,
-    fontWeight: '200',
+    marginBottom: 20,
+    fontWeight: '300',
   },
-  bottomTextContainer: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  openHoursContainer: {
-    flex: 1,
-    marginRight: 20,
-  },
+  openHoursContainer: {},
   openHoursTitle: {
-    fontSize: 15,
-    textDecorationLine: 'underline',
-    color: GREY_1,
-    marginBottom: 5,
+    fontSize: 12,
+    marginBottom: 7,
+  },
+  openHours: {
+    flexDirection: 'row',
   },
   openHoursText: {
     fontSize: 12,
-    color: GREY_1,
+    marginBottom: 10,
   },
-  detailsContainer: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  placeDetails: {
-    fontSize: 14,
-    color: GREY_1,
+  button: {
+    alignItems: 'flex-end',
+    marginTop: 40,
+    width: '100%',
   },
 });

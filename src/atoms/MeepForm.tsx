@@ -168,7 +168,7 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
               themeVariant={'light'}
             />
           )}
-          <View style={{ height: 15 }} />
+          {/* <View style={{ height: 15 }} /> */}
         </View>
       );
     }
@@ -210,8 +210,8 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    flex: 1,
-    justifyContent: 'space-between',
+    // flex: 1,
+    justifyContent: 'flex-start',
   },
   formContainer: {
     padding: 20,
@@ -227,10 +227,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     opacity: 1,
-    // marginVerticle: 10,
+    marginVertical: 10,
     flex: 1,
     height: 43,
-    // marginTop: 5,
   },
   text: {
     marginTop: 10,

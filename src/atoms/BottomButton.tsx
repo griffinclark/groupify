@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TEAL, WHITE } from '../res/styles/Colors';
+import { GREY_4, TEAL, WHITE } from '../res/styles/Colors';
 import { AppText } from './AppText';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 
 export const BottomButton: React.FC<Props> = ({ onPress, title, disabled = false }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress} disabled={disabled} style={styles.button}>
+    <TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.button, disabled ? styles.disabled : '']}>
       <AppText style={styles.text}>{title}</AppText>
     </TouchableOpacity>
   );
@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
     height: 55,
     justifyContent: 'center',
     width: '100%',
+  },
+  disabled: {
+    backgroundColor: GREY_4,
   },
   text: {
     color: WHITE,

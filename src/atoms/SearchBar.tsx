@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { TEAL } from '../res/styles/Colors';
 
 interface Props {
   onInputChange: (input: string) => void;
+  placeholder?: string;
 }
 
-export const SearchBar: React.FC<Props> = ({ onInputChange }: Props) => {
+export const SearchBar: React.FC<Props> = ({ onInputChange, placeholder = 'search' }: Props) => {
   const [input, setInput] = useState('');
 
   useEffect(() => {
@@ -16,10 +18,10 @@ export const SearchBar: React.FC<Props> = ({ onInputChange }: Props) => {
   return (
     <View>
       <View style={styles.searchSection}>
-        <Icon style={styles.searchIcon} name="search" type="material" size={20} color="#000" />
+        <Icon style={styles.searchIcon} name="search" type="material" size={20} color={TEAL} />
         <TextInput
           style={styles.input}
-          placeholder="search"
+          placeholder={placeholder}
           onChangeText={(e) => setInput(e)}
           underlineColorAndroid="transparent"
         />
@@ -36,9 +38,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderColor: '#757474',
+    borderColor: '#C5C5C5',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 5,
   },
   searchIcon: {
     paddingHorizontal: 10,
