@@ -25,8 +25,8 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   //   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   //   const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
 
-  const [planTitle, setPlanTitle] = useState('');
-  const [planAddress, setPlanAddress] = useState('');
+  // const [planTitle, setPlanTitle] = useState('');
+  // const [planAddress, setPlanAddress] = useState('');
   //   const [photo, setPhoto] = useState('');
   const [updatedValues, setUpdatedValues] = useState<{
     eventName: string | undefined;
@@ -34,19 +34,25 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
     eventTime: string | undefined;
     eventLocation: string | undefined;
     eventDescription: string | undefined;
-  }>({ eventName: planTitle, eventDate: '', eventTime: '', eventLocation: planAddress, eventDescription: '' });
+  }>({ eventName: '', eventDate: '', eventTime: '', eventLocation: '', eventDescription: '' });
   const [error, setError] = useState<string | undefined>();
   const [currentDate, setCurrentDate] = useState(roundDate(new Date()));
   const [disabled, setDisabled] = useState<boolean>(true);
 
   useEffect(() => {
     if (route.params.data) {
-      setPlanTitle(route.params.data.eventData.title);
-      setPlanAddress(route.params.data.eventData.location);
+      // setPlanTitle(route.params.data.eventData.title);
+      // setPlanAddress(route.params.data.eventData.location);
       //   setPhoto(route.params.data.eventData.imageURL);
+
+      if (route.params.data.eventData.location) {
+        console.log('----');
+        inputFields[4].value = route.params.data.eventData.location;
+        console.log(inputFields);
+      }
     }
     checkDisabled();
-  }, []);
+  }, [route.params.data]);
 
   const onFormSubmit = (values: {
     eventName: string | undefined;
@@ -98,13 +104,16 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Date *',
       placeholder: 'MM/DD/YYYY',
       settings: 'date',
-      value: '',
+      value: currentDate.toLocaleDateString(),
     },
     {
       title: 'Time *',
       placeholder: 'H:MM PM',
       settings: 'time',
-      value: '',
+      value:
+        Platform.OS === 'android'
+          ? formatTime(currentDate.toLocaleTimeString())
+          : formatIosTimeInput(currentDate.toLocaleTimeString()),
     },
     {
       title: 'Description *',
@@ -135,10 +144,6 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const checkDisabled = () => {
     const { eventName, eventDate, eventTime, eventDescription } = updatedValues;
-    console.log(eventName);
-    console.log(eventDate);
-    console.log(eventTime);
-    console.log(eventDescription);
     if (eventName && eventDate && eventTime && eventDescription) {
       setDisabled(false);
     } else {
@@ -154,16 +159,13 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
 
           {/* <View>{loadPhoto(photo)}</View> */}
           <MeepForm InputList={inputFields} updatedValues={(value) => setValues(value)}>
-            <TouchableOpacity
-              style={styles.mapLink}
-              onPress={() => navigation.navigate('PlanMap', { updatedValues: (value: string) => setValues(value) })}
-            >
+            <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', {})}>
               <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} />
               <AppText style={styles.mapText}>Find address using the map</AppText>
             </TouchableOpacity>
           </MeepForm>
           {error && <Alert status="error" message={error} />}
-          <BottomButton title="Invite Friends" onPress={() => onFormSubmit(updatedValues)} />
+          <BottomButton disabled={disabled} title="Invite Friends" onPress={() => onFormSubmit(updatedValues)} />
         </ScrollView>
       </Screen>
     </KeyboardAvoidingView>

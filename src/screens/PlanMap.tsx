@@ -169,8 +169,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   const onButtonPress = (title: string, address: string, placeId: string, photo: string) => {
-    console.log('Location');
-    console.log(location);
     navigation.navigate('PlanCreate', {
       currentUser: route.params.currentUser,
       data: {
