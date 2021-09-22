@@ -140,9 +140,9 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           rating={moreDetails.rating ? moreDetails.rating : undefined}
           userRatings={moreDetails.user_ratings_total ? moreDetails.user_ratings_total : undefined}
           priceLevel={moreDetails.price_level ? moreDetails.price_level : undefined}
-          distance={distanceInfo ? distanceInfo.distance : undefined}
-          duration={distanceInfo ? distanceInfo.duration : undefined}
-          openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
+          // distance={distanceInfo ? distanceInfo.distance : undefined}
+          // duration={distanceInfo ? distanceInfo.duration : undefined}
+          // openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
           onButtonPress={() =>
