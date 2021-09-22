@@ -4,6 +4,7 @@ import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Contact } from '../res/dataModels';
 import { AppText } from '../atoms/AppText';
+import { GREY_8 } from '../res/styles/Colors';
 
 interface Props {
   isSelected?: boolean;
@@ -44,7 +45,10 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
         <View style={styles.bubble}>
           <AppText style={{ fontSize: 20 }}>{firstInitial}</AppText>
         </View>
-        <AppText style={styles.name}>{friend.name}</AppText>
+        <View>
+          <AppText style={styles.name}>{friend.name}</AppText>
+          <AppText style={styles.phone}>{friend.phoneNumber}</AppText>
+        </View>
       </View>
       <TouchableOpacity style={selected ? styles.buttonSelected : styles.button} onPress={handlePress}>
         {selected && <Icon size={32} containerStyle={styles.icon} color={'white'} name="check" type="entypo" />}
@@ -66,6 +70,13 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 15,
     marginLeft: 10,
+    flexWrap: 'wrap',
+    maxWidth: 220,
+  },
+  phone: {
+    fontSize: 12,
+    marginLeft: 10,
+    color: GREY_8,
   },
   bubble: {
     width: 60,
