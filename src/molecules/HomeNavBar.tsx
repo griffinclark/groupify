@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { GOLD, TEAL, WHITE } from '../res/styles/Colors';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { TEAL, WHITE } from '../res/styles/Colors';
 import { User, Plan } from '../models';
 import { AppText } from '../atoms/AppText';
-import Announce from '../../assets/Announce.svg';
+import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
 
 interface Props {
   user?: User;
@@ -17,9 +16,10 @@ interface Props {
 
 export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: Props) => {
   return (
-    <View style={{ width: '100%' }}>
+    <View style={{ width: '100%', alignItems: 'center' }}>
       <View style={[styles.nav, style]}>
         <TouchableOpacity
+          style={{ width: '33%' }}
           onPress={() => {
             navigation?.navigate('InvitedPlans', {
               currentUser: user,
@@ -27,25 +27,26 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
             });
           }}
         >
-          <Announce width={48} height={48} />
-          <Icon name="megaphone-outline" size={50} type="ionicon" color={'white'} />
+          <AnnounceIcon />
           <AppText style={styles.text}>Notifications</AppText>
         </TouchableOpacity>
         <TouchableOpacity
+          style={{ width: '33%' }}
           onPress={() => {
             navigation.navigate('SearchPlace', { currentUser: user });
           }}
         >
-          <Icon name="plus-circle" type="font-awesome" size={50} color={'white'} />
+          <CreatePlanIcon />
           <AppText style={styles.text}>Create Plan</AppText>
         </TouchableOpacity>
         <TouchableOpacity
+          style={{ width: '33%' }}
           onPress={() => {
             navigation?.navigate('Profile', { currentUser: user, currentUserPlan: plan });
           }}
         >
-          <Icon name="user" size={50} type="antdesign" color={'white'} />
-          <AppText style={styles.text}>Profile</AppText>
+          <SettingsIcon />
+          <AppText style={styles.text}>Settings</AppText>
         </TouchableOpacity>
       </View>
     </View>
@@ -53,29 +54,19 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
 };
 
 const styles = StyleSheet.create({
-  planOptions: {
-    alignItems: 'center',
-    backgroundColor: WHITE,
-    borderColor: GOLD,
-    borderRadius: 20,
-    borderWidth: 1,
-    paddingHorizontal: '7%',
-    paddingBottom: '10%',
-    padding: 10,
-  },
   nav: {
     width: '100%',
-    height: 100,
-    display: 'flex',
+    height: 80,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
     backgroundColor: TEAL,
   },
   text: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '700',
     marginTop: 10,
     color: WHITE,
+    textAlign: 'center',
   },
 });

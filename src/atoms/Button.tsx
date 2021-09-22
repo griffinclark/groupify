@@ -10,8 +10,16 @@ interface Props {
   disabled?: boolean;
   containerStyle?: Record<string, unknown>;
   buttonStyle?: Record<string, unknown>;
+  textStyle?: Record<string, unknown>;
 }
-export const Button: React.FC<Props> = ({ onPress, title, disabled = false, containerStyle, buttonStyle }: Props) => {
+export const Button: React.FC<Props> = ({
+  onPress,
+  title,
+  disabled = false,
+  containerStyle,
+  buttonStyle,
+  textStyle,
+}: Props) => {
   return (
     <View style={[buttonStyles.container, containerStyle]}>
       <TouchableOpacity
@@ -27,7 +35,7 @@ export const Button: React.FC<Props> = ({ onPress, title, disabled = false, cont
         <AppText
           style={[
             buttonStyles.enabledButton,
-            // buttonStyle,
+            textStyle ? textStyle : { fontSize: 16 },
             buttonStyles.text,
             disabled ? buttonStyles.disabledButton : {},
           ]}
@@ -55,7 +63,6 @@ export const buttonStyles = StyleSheet.create({
   },
   text: {
     fontWeight: 'bold',
-    fontSize: 16,
     borderWidth: 0,
   },
   enabledButton: {
