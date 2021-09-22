@@ -40,8 +40,12 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
 
       <View style={styles.flatListContainer}>
         <AppText style={{ fontSize: 20, paddingBottom: 20 }}>{createGreeting()}</AppText>
-        <Image source={require('../../assets/Contacts-Graphic.png')} style={{ width: '100%', height: 186 }} />
-        <AppText style={{ fontSize: 20, marginBottom: 240, paddingTop: 20 }}>
+        <Image
+          source={require('../../assets/Contacts-Graphic.png')}
+          style={{ height: 186, width: '100%' }}
+          resizeMode="contain"
+        />
+        <AppText style={{ fontSize: 20, marginBottom: '25%', paddingTop: 20 }}>
           From your contact list, please select all people you’d like to import into Groupify.*
         </AppText>
 

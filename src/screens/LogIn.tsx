@@ -13,6 +13,7 @@ import { background, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Image } from 'react-native-elements/dist/image/Image';
 import * as SecureStore from 'expo-secure-store';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
   navigation: {
@@ -26,9 +27,10 @@ interface Props {
     navigate: (ev: string, {}) => void;
     push: (ev: string, e: { email: string; step: string }) => void;
   };
+  route: RoutePropParams;
 }
 
-export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
+export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   const [phone, setPhone] = useState('');
   const [formatPhone, setFormatPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -102,12 +104,14 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
           navigation.navigate('Home', { userID: user.id });
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {
         navigation.navigate('CreateAccount', { step: 'validate', phone: formatPhone });
       } else if (err.code == 'InvalidParameterException' && err.message.includes('Incorrect·username·or·password.')) {
         setError('Incorrect username or password.');
+      } else if (err.code == 'InvalidParameterException' && err.message.includes('2 validation errors detected')) {
+        setError('User does not exist');
       } else {
         setError(err.message);
       }
@@ -178,6 +182,9 @@ export const LogIn: React.FC<Props> = ({ navigation }: Props) => {
             here
           </AppText>
         </AppText>
+        {route.params && route.params.accountCreated === 'success' && (
+          <Alert status={'success'} message={'Account successfully created!'} />
+        )}
       </View>
       <View style={{ flex: 1 }}>
         <Button title="Log In" onPress={logIn} disabled={disabled} />

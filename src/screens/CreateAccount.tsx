@@ -15,6 +15,7 @@ import { AntDesign } from '@expo/vector-icons';
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
+    goBack: () => void;
     push: (ev: string, e: { phone: string; step: string }) => void;
   };
   route: RoutePropParams;
@@ -95,7 +96,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       console.log('user successfully created');
       setError(undefined);
       navigation.push('CreateAccount', { step: 'validate', phone: formatPhone });
-    } catch (err) {
+    } catch (err: any) {
       console.log('Error: ', err);
       if (err.code == 'InvalidParameterException') {
         if (err.message == 'Username should be an email.') {
@@ -121,8 +122,8 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const validateUser = async () => {
     try {
       await Auth.confirmSignUp(route.params.phone, validationCode);
-      navigation.navigate('Login', {});
-    } catch (err) {
+      navigation.navigate('Login', { accountCreated: 'success' });
+    } catch (err: any) {
       console.log('Error: ', err);
       setError(err.message);
       setSuccess(undefined);
@@ -142,7 +143,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             name="left"
             type="font-awesome"
             size={30}
-            onPress={() => navigation.navigate('Login', {})}
+            onPress={() => navigation.goBack()}
           />
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
             {route.params.step === 'create' && (
@@ -210,7 +211,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                         Auth.resendSignUp(route.params.phone);
                         setSuccess('Sent new verification code');
                         setError(undefined);
-                      } catch (err) {
+                      } catch (err: any) {
                         console.log(err);
                         setError(err.message);
                       }

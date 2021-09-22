@@ -7,16 +7,14 @@
     "version": "1.5.4",
     "orientation": "portrait",
     "splash": {
-      "image": "./assets/Create_Account.png",
-      "resizeMode": "contain",
+      "image": "./assets/SplashScreen.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.munchkinlabs.meep",
@@ -30,6 +28,7 @@
       }
     },
     "android": {
+	  "googleServicesFile": "./google-services.json",
       "package": "com.munchkinlabs.meep",
       "versionCode": 5,
       "config": {

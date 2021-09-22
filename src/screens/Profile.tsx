@@ -63,13 +63,13 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
           size={30}
           onPress={async () => {
             try {
+              console.log('Attempting to sign out');
               await DataStore.clear();
               await DataStore.stop();
               await DataStore.start();
-              await Auth.signOut();
-              console.log(route.params.currentUser);
+              await Auth.signOut({ global: true });
               console.log('Successfully signed out');
-              navigation.navigate('Login', { currentUser: null });
+              navigation.navigate('Welcome', { currentUser: null });
             } catch (err) {
               console.log('error signing out...', err);
             }
