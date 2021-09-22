@@ -16,7 +16,6 @@ interface Props {
 }
 
 export const Navbar: React.FC<Props> = ({ data = {}, location, navigation, title }: Props) => {
-  console.log(navigation);
   return (
     <View style={styles.navbar}>
       <Icon
