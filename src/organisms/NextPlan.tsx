@@ -19,7 +19,8 @@ interface Props {
 export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
   const [photoURI, setPhotoURI] = useState('');
   const [hostName, setHostName] = useState('');
-  const [invitees, setInvitees] = useState<Invitee[]>([]);
+  const [acceptedInvitees, setAcceptedInvitees] = useState<Invitee[]>([]);
+  const [pendingInvitees, setPendingInvitees] = useState<Invitee[]>([]);
 
   useEffect(() => {
     getHost(plan.creatorID);
@@ -41,7 +42,19 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
 
   const loadInvitees = async () => {
     const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
-    setInvitees(invitees);
+    const accepted = [];
+    const pending = [];
+    for (let i = 0; i < invitees.length; i++) {
+      const invitee = invitees[i];
+      if (invitee.status === 'ACCEPTED') {
+        accepted.push(invitee);
+      }
+      if (invitee.status === 'PENDING') {
+        pending.push(invitee);
+      }
+    }
+    setAcceptedInvitees(accepted);
+    setPendingInvitees(pending);
   };
 
   const renderInvitee = ({ item }: { item: Invitee }) => {
@@ -80,17 +93,34 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
           </AppText>
           <AppText style={{ fontSize: 12, fontWeight: '400' }}>Where: {plan.title}</AppText>
         </View>
-        <AppText style={{ fontSize: 12, fontWeight: '700' }}>ATTENDING</AppText>
-        <FlatList
-          data={invitees}
-          renderItem={renderInvitee}
-          ListEmptyComponent={() => (
-            <View>
-              <AppText style={styles.title}>No Attendees Yet</AppText>
-            </View>
-          )}
-          horizontal={true}
-        />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View>
+            <AppText style={{ fontSize: 12, fontWeight: '700' }}>ACCEPTED INVITES</AppText>
+            <FlatList
+              data={acceptedInvitees}
+              renderItem={renderInvitee}
+              ListEmptyComponent={() => (
+                <View>
+                  <AppText style={styles.title}>No accepted invitees</AppText>
+                </View>
+              )}
+              horizontal={true}
+            />
+          </View>
+          <View>
+            <AppText style={{ fontSize: 12, fontWeight: '700' }}>PENDING INVITES</AppText>
+            <FlatList
+              data={pendingInvitees}
+              renderItem={renderInvitee}
+              ListEmptyComponent={() => (
+                <View>
+                  <AppText style={styles.title}>No pending invitees</AppText>
+                </View>
+              )}
+              horizontal={true}
+            />
+          </View>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -126,7 +156,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 40,
-    margin: 5,
+    margin: 3,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -136,12 +166,12 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '400',
     color: TEAL,
     flexWrap: 'wrap',
     maxWidth: 250,
-    textAlign: 'right',
+    textAlign: 'left',
   },
   date: {
     fontWeight: '400',
