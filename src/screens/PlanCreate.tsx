@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
 import { AppText, Screen, BottomButton, MeepForm, Alert, Navbar } from '../atoms/AtomsExports';
-import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { User } from '../models';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -131,16 +131,18 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Screen>
-        <ScrollView contentContainerStyle={{ flexDirection: 'column' }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
           <Navbar location={'Home'} navigation={navigation} title={'Create a Plan'} />
           {/* <View>{loadPhoto(photo)}</View> */}
-          <MeepForm inputList={inputFields}>
-            <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', {})}>
-              <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} />
-              <AppText style={styles.mapText}>Find address using the map</AppText>
-            </TouchableOpacity>
-          </MeepForm>
-          {error && <Alert status="error" message={error} />}
+          <View style={{ flexGrow: 1 }}>
+            <MeepForm inputList={inputFields}>
+              <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', {})}>
+                <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} />
+                <AppText style={styles.mapText}>Find address using the map</AppText>
+              </TouchableOpacity>
+            </MeepForm>
+            {error && <Alert status="error" message={error} />}
+          </View>
           <BottomButton disabled={disabled} title="Invite Friends" onPress={onFormSubmit} />
         </ScrollView>
       </Screen>
