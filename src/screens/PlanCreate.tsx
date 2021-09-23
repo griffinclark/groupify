@@ -32,19 +32,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   const [disabled, setDisabled] = useState<boolean>(true);
   const currentDate = roundDate(new Date());
 
-  // Set initail time/date
-  useEffect(() => {
-    if (route.params.data) {
-      const date = currentDate.toLocaleDateString();
-      setDate(date);
-
-      const time =
-        Platform.OS === 'android'
-          ? formatTime(currentDate.toLocaleTimeString())
-          : formatIosTimeInput(currentDate.toLocaleTimeString());
-      setTime(time);
-    }
-  }, []);
+  console.log('TIME +++' + time);
 
   // Check if required fields are full
   useEffect(() => {
@@ -62,12 +50,18 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [route.params.data]);
 
   const onFormSubmit = () => {
-    // const image: string = photo ? loadPhoto(photo)?.props.source.uri : '';
     const id = uuid.v4();
     if (!name) {
       setError('Please add a name to your plan');
       return;
     }
+
+    console.log(time || 'what');
+    console.log(
+      'time === ' + time || Platform.OS === 'android'
+        ? formatTime(currentDate.toLocaleTimeString())
+        : formatIosTimeInput(currentDate.toLocaleTimeString()),
+    );
 
     navigation.navigate('SelectFriends', {
       currentUser: route.params.currentUser,
@@ -75,8 +69,11 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
         eventData: {
           uuid: id,
           title: name,
-          date: date,
-          time: time,
+          date: date || currentDate.toLocaleDateString(),
+          time:
+            time || Platform.OS === 'android'
+              ? formatTime(currentDate.toLocaleTimeString())
+              : formatIosTimeInput(currentDate.toLocaleTimeString()),
           location: location,
           description: description,
           imageURL: photo || '',
@@ -141,9 +138,8 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Screen>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
+        <ScrollView contentContainerStyle={{ flexDirection: 'column' }}>
           <Navbar location={'Home'} navigation={navigation} title={'Create a Plan'} />
-
           {/* <View>{loadPhoto(photo)}</View> */}
           <MeepForm inputList={inputFields}>
             <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', {})}>

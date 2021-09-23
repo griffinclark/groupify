@@ -11,7 +11,7 @@ import { mapStyles } from '../res/styles/MapStyles';
 import { RoutePropParams } from '../res/root-navigation';
 import { TEAL } from '../res/styles/Colors';
 import { Button } from '../atoms/AtomsExports';
-import { Image } from 'react-native-elements/dist/image/Image';
+
 import { AppText } from '../atoms/AppText';
 import { WHITE } from '../res/styles/Colors';
 
@@ -61,6 +61,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   const [placeCard, setPlaceCard] = useState<JSX.Element>();
   const [sessionToken, setSessionToken] = useState(uuidv4());
   const [mapPopupOpen, setMapPopupOpen] = useState(true);
+  const [markerImg, setMarkerImg] = useState();
 
   useEffect(() => {
     (async () => {
@@ -107,13 +108,8 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
             latitude: detail.geometry.location.lat,
             longitude: detail.geometry.location.lng,
           }}
-        >
-          <Image
-            source={require('../../assets/MapMarker.png')}
-            style={{ width: 48, height: 66 }}
-            // resizeMode={'contain'}
-          />
-        </Marker>,
+          icon={require('../../assets/MapMarker.png')}
+        />,
       );
 
       if (markerRef && markerRef.current) {
@@ -210,6 +206,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
       </MapView>
 
       <View style={styles.navbar}>
+        <View style={styles.navbarBackground} />
         <Icon
           name="chevron-left"
           type="font-awesome"
@@ -236,7 +233,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
               borderRadius: 5,
               borderWidth: 1,
               marginRight: 20,
-              //   position: 'absolute',
+              marginTop: 20,
             },
           }}
           renderRow={(rowData) => {
@@ -288,17 +285,21 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
   },
   navbar: {
-    alignItems: 'center',
-    backgroundColor: WHITE,
     flexDirection: 'row',
-    height: 83,
     position: 'absolute',
     top: 0,
+    width: '100%',
+  },
+  navbarBackground: {
+    backgroundColor: WHITE,
+    height: 83,
+    position: 'absolute',
     width: '100%',
   },
   navbarIcon: {
     marginLeft: 27,
     marginRight: 35,
+    marginTop: 28,
   },
   container: {
     flex: 1,
