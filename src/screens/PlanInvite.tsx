@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
-import { Alert, AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/AtomsExports';
+import { Alert, AppText, BottomButton, Button, Navbar, Screen, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
 //import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -40,6 +40,8 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     setEventObject(route.params.data.eventData);
     getFriends();
   }, []);
+
+  console.log(eventObject);
 
   const getFriends = async () => {
     const user = await DataStore.query(User, (user) => user.id('contains', route.params.currentUser.id));
@@ -107,16 +109,17 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   return (
-    <View style={styles.screen}>
-      <Navbar location={'PlanCreate'} navigation={navigation} title={'Invite Friends'} />
+    <Screen>
+      <View style={styles.screen}>
+        <Navbar location={'PlanCreate'} navigation={navigation} title={'Invite Friends'} />
 
-      <View style={styles.title}>
-        <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}</AppText>
-      </View>
+        <View style={styles.title}>
+          <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}</AppText>
+        </View>
 
-      <View style={styles.friendContainer}>
-        <View style={styles.menu}>
-          {/* <View style={menuItemSelected === 'friends' && styles.itemSelectedContainer}>
+        <View style={styles.friendContainer}>
+          <View style={styles.menu}>
+            {/* <View style={menuItemSelected === 'friends' && styles.itemSelectedContainer}>
             <Text
               style={[
                 menuItemSelected === 'friends' ? styles.menuItemSelected : styles.menuItemNotSelected,
@@ -127,74 +130,79 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
               FRIENDS
             </Text>
           </View> */}
-          <View
-            style={[
-              menuItemSelected === 'contacts' ? styles.menuItemSelectedContainer : styles.menuItemNotSelectedContainer,
-              styles.menuItemContainer,
-            ]}
-          >
-            <AppText
+            <View
               style={[
-                menuItemSelected === 'contacts' ? styles.menuItemSelected : styles.menuItemNotSelected,
-                styles.menuItem,
+                menuItemSelected === 'contacts'
+                  ? styles.menuItemSelectedContainer
+                  : styles.menuItemNotSelectedContainer,
+                styles.menuItemContainer,
               ]}
-              onPress={() => menuSelection('contacts')}
             >
-              CONTACTS
-            </AppText>
-          </View>
-          <View style={[styles.menuItemNotSelectedContainer, styles.menuItemContainer]} />
-        </View>
-
-        <View style={{ flex: 1 }}>
-          {menuItemSelected === 'friends' && (
-            <View style={{ flex: 1, justifyContent: 'space-between' }}>
-              {friends.length > 0 ? (
-                <View style={styles.friendBubbleContainer}>
-                  <FriendContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
-                </View>
-              ) : null}
-              <View style={{ marginBottom: 27, alignSelf: 'center' }}>
-                <Button
-                  title={selectedFriends.length === 0 ? 'Skip' : 'Next'}
-                  onPress={() => setMenuItemSelected('contacts')}
-                />
-              </View>
+              <AppText
+                style={[
+                  menuItemSelected === 'contacts' ? styles.menuItemSelected : styles.menuItemNotSelected,
+                  styles.menuItem,
+                ]}
+                onPress={() => menuSelection('contacts')}
+              >
+                CONTACTS
+              </AppText>
             </View>
-          )}
+            <View style={[styles.menuItemNotSelectedContainer, styles.menuItemContainer]} />
+          </View>
 
-          {menuItemSelected === 'contacts' && (
-            <View style={styles.contactsContainer}>
-              <View style={styles.searchbar}>
-                <SearchBar onInputChange={searchFriends} placeholder="Search for Friends to Invite" />
-                <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
+          <View style={{ flex: 1 }}>
+            {menuItemSelected === 'friends' && (
+              <View style={{ flex: 1, justifyContent: 'space-between' }}>
+                {friends.length > 0 ? (
+                  <View style={styles.friendBubbleContainer}>
+                    <FriendContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
+                  </View>
+                ) : null}
+                <View style={{ marginBottom: 27, alignSelf: 'center' }}>
+                  <Button
+                    title={selectedFriends.length === 0 ? 'Skip' : 'Next'}
+                    onPress={() => setMenuItemSelected('contacts')}
+                  />
+                </View>
               </View>
-              {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a friend to continue'} />}
-              {/* <TouchableOpacity onPress={sendContactMessage} disabled={selectedContacts.length === 0 ? true : false}>
+            )}
+
+            {menuItemSelected === 'contacts' && (
+              <View style={styles.contactsContainer}>
+                <View style={styles.searchbar}>
+                  <SearchBar onInputChange={searchFriends} placeholder="Search for Friends to Invite" />
+                  <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
+                </View>
+                {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a friend to continue'} />}
+                {/* <TouchableOpacity onPress={sendContactMessage} disabled={selectedContacts.length === 0 ? true : false}>
                 {selectedContacts.length > 0 ? (
                   <AppText style={[styles.navText, { backgroundColor: TEAL, color: WHITE }]}>Next</AppText>
                 ) : (
                   <AppText style={[styles.navText, { backgroundColor: GREY_4, color: GREY_3 }]}>Next</AppText>
                 )}
               </TouchableOpacity> */}
-            </View>
-          )}
+              </View>
+            )}
+          </View>
         </View>
-      </View>
 
-      <BottomButton
-        disabled={selectedContacts.length == 0 ? true : false}
-        title="Preview Plan"
-        onPress={sendContactMessage}
-      />
-    </View>
+        <BottomButton
+          disabled={selectedContacts.length == 0 ? true : false}
+          title="Preview Plan"
+          onPress={sendContactMessage}
+        />
+      </View>
+    </Screen>
   );
 };
-
+//
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: 'white',
+    flexGrow: 1,
+    justifyContent: 'space-between',
   },
   title: {
     marginTop: 27,
