@@ -102,9 +102,29 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation }: Pr
           <AppText style={[styles.selectorText, { color: acceptedSelected ? TEAL : GREY_4 }]}>ACCEPTED</AppText>
         </TouchableOpacity>
       </View>
-      {pendingSelected && pendingPlans}
-      {acceptedSelected && acceptedPlans}
-      <ViewAll navigation={navigation} destination={'InvitedPlans'} />
+      {pendingSelected &&
+        (pendingPlans.length > 0 ? (
+          pendingPlans
+        ) : (
+          <View style={{ padding: 30 }}>
+            <AppText style={{ textAlign: 'center', fontSize: 20 }}>No pending plans at the moment.</AppText>
+            <TouchableOpacity onPress={() => navigation.navigate('SearchPlace', {})}>
+              <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL, marginTop: 30 }}>You can create one!</AppText>
+            </TouchableOpacity>
+          </View>
+        ))}
+      {acceptedSelected &&
+        (acceptedPlans.length > 0 ? (
+          acceptedPlans
+        ) : (
+          <View style={{ padding: 20, marginHorizontal: 30 }}>
+            <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>Looks like you have no upcoming plans</AppText>
+          </View>
+        ))}
+
+      {(acceptedPlans.length > 0 || pendingPlans.length > 0) && (
+        <ViewAll navigation={navigation} destination={'InvitedPlans'} />
+      )}
     </View>
   );
 };
