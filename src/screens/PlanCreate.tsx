@@ -32,8 +32,6 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   const [disabled, setDisabled] = useState<boolean>(true);
   const currentDate = roundDate(new Date());
 
-  console.log('TIME +++' + time);
-
   // Check if required fields are full
   useEffect(() => {
     checkDisabled();
@@ -56,24 +54,19 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
       return;
     }
 
-    console.log(time || 'what');
-    console.log(
-      'time === ' + time || Platform.OS === 'android'
-        ? formatTime(currentDate.toLocaleTimeString())
-        : formatIosTimeInput(currentDate.toLocaleTimeString()),
-    );
-
     navigation.navigate('SelectFriends', {
       currentUser: route.params.currentUser,
       data: {
         eventData: {
           uuid: id,
           title: name,
-          date: date || currentDate.toLocaleDateString(),
-          time:
-            time || Platform.OS === 'android'
-              ? formatTime(currentDate.toLocaleTimeString())
-              : formatIosTimeInput(currentDate.toLocaleTimeString()),
+          // date: date || currentDate.toLocaleDateString(),
+          // time:
+          //   time || Platform.OS === 'android'
+          //     ? formatTime(currentDate.toLocaleTimeString())
+          //     : formatIosTimeInput(currentDate.toLocaleTimeString()),
+          date: date,
+          time: time,
           location: location,
           description: description,
           imageURL: photo || '',

@@ -21,7 +21,6 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [currentDate, setCurrentDate] = useState(roundDate(new Date()));
-  const [currentTime, setCurrentTime] = useState(roundDate(new Date()));
 
   const onDateChange = (
     event: Event,
@@ -30,7 +29,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
   ) => {
     if (item.settings === 'time') {
       setShowTimePicker(false);
-      setCurrentTime(selectedDate);
+      setCurrentDate(selectedDate);
       if (Platform.OS === 'android') {
         const newTime = formatTime(selectedDate.toLocaleTimeString());
         item.func(newTime);
@@ -98,7 +97,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
             <DateTimePicker
               style={styles.dateTimePicker}
               testID={'dateTimePicker'}
-              value={currentTime}
+              value={currentDate}
               mode={'time'}
               display={'default'}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
@@ -108,14 +107,14 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
           )}
           {Platform.OS === 'android' && (
             <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-              <AppText style={styles.dateTime}>{currentTime ? formatTime(currentTime) : 'no time selected'}</AppText>
+              <AppText style={styles.dateTime}>{currentDate ? formatTime(currentDate) : 'no time selected'}</AppText>
             </TouchableOpacity>
           )}
           {Platform.OS === 'ios' && (
             <DateTimePicker
               style={styles.dateTimePicker}
               testID={'dateTimePicker'}
-              value={currentTime}
+              value={currentDate}
               mode={'time'}
               display={'default'}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
