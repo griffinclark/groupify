@@ -1,5 +1,6 @@
 import Svg, { Path } from 'react-native-svg';
 import React from 'react';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const MapLinkIcon: React.FC = () => {
   return (

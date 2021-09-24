@@ -5,51 +5,13 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "test": "jest",
-    "test:watch": "npm run test --watch",
-    "test:ci": "npm run test --coverage",
-    "test:badges": "npm run test:ci  && jest-coverage-badges --input coverage/coverage-summary.json --output __badges__"
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "jest": {
-    "testEnvironment": "jsdom",
     "preset": "jest-expo",
-    "globals": {
-      "ts-jest": {
-        "tsconfig": {
-          "jsx": "react"
-        }
-      }
-    },
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js",
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testMatch": [
-      "**/?(*.)+(spec|test).ts?(x)"
-    ],
-    "collectCoverageFrom": [
-      "**/*.{ts,tsx}",
-      "!**/coverage/**",
-      "!**/node_modules/**",
-      "!**/babel.config.js",
-      "!**/jest.setup.js"
-    ],
-    "moduleFileExtensions": [
-      "tsx",
-      "ts",
-      "js"
-    ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base)"
-    ],
-    "coverageReporters": [
-      "json-summary",
-      "text",
-      "lcov"
-    ],
-    "setupFiles": [
-      "<rootDir>/node_modules/react-native-gesture-handler/jestSetup.js"
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
     ]
   },
   "dependencies": {
@@ -60,22 +22,26 @@
     "@react-native-community/checkbox": "^0.5.7",
     "@react-native-community/datetimepicker": "3.0.4",
     "@react-native-community/netinfo": "5.9.7",
-    "@react-navigation/native": "^5.9.3",
+    "@react-native-firebase/app": "^12.8.0",
+    "@react-native-firebase/crashlytics": "^12.8.0",
+    "@react-native-firebase/perf": "^12.8.0",
+    "@react-navigation/native": "^6.0.2",
     "@react-navigation/stack": "^5.14.3",
     "@types/google-libphonenumber": "^7.4.20",
     "aws-amplify": "^3.3.26",
     "expo": "^40.0.1",
     "expo-checkbox": "~1.0.0",
     "expo-contacts": "~8.6.0",
-    "expo-firebase-analytics": "^4.1.0",
-    "expo-font": "~8.4.0",
+    "expo-firebase-analytics": "~4.0.2",
+    "expo-firebase-core": "~3.0.0",
     "expo-image-picker": "~9.2.0",
     "expo-location": "~10.0.0",
     "expo-notifications": "~0.8.2",
     "expo-secure-store": "~9.3.0",
     "expo-splash-screen": "~0.8.1",
     "expo-status-bar": "~1.0.3",
-    "expo-updates": "~0.4.0",
+    "expo-updates": "~0.5.4",
+    "firebase": "8.2.3",
     "formik": "^2.2.6",
     "google-libphonenumber": "^3.2.19",
     "qs": "^6.10.1",
@@ -97,21 +63,18 @@
     "react-native-unimodules": "~0.12.0",
     "react-native-uuid": "^2.0.0",
     "react-native-web": "~0.13.12",
-    "react-test-render": "^1.1.2",
     "rn-sliding-up-panel": "^2.4.5",
     "unirest": "^0.6.0",
     "uuid": "^3.4.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
-    "@testing-library/react-native": "^7.2.0",
-    "@types/jest": "^27.0.2",
+    "@types/jest": "^26.0.22",
     "@types/qs": "^6.9.6",
     "@types/react": "~16.9.35",
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
     "@types/react-native-check-box": "^2.1.1",
-    "@types/react-test-renderer": "^17.0.1",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
@@ -122,12 +85,10 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-unused-imports": "^1.1.1",
-    "jest": "^26.6.3",
-    "jest-coverage-badges": "^1.1.2",
-    "jest-expo": "^42.1.0",
+    "jest": "~25.2.6",
+    "jest-expo": "^40.0.2",
     "prettier": "^2.3.0",
-    "react-test-renderer": "16.14.0",
-    "ts-jest": "^26.5.5",
+    "react-test-renderer": "^17.0.2",
     "typescript": "~4.0.0"
   },
   "private": true,

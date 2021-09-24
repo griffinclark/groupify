@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { TEAL } from '../res/styles/Colors';
+import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 
 interface Props {
   onInputChange: (input: string) => void;
@@ -18,7 +17,7 @@ export const SearchBar: React.FC<Props> = ({ onInputChange, placeholder = 'searc
   return (
     <View>
       <View style={styles.searchSection}>
-        <Icon style={styles.searchIcon} name="search" type="material" size={20} color={TEAL} />
+        <MagnifyingGlassIcon />
         <TextInput
           style={styles.input}
           placeholder={placeholder}
@@ -41,14 +40,12 @@ const styles = StyleSheet.create({
     borderColor: '#C5C5C5',
     borderWidth: 1,
     borderRadius: 5,
-  },
-  searchIcon: {
     paddingHorizontal: 10,
   },
   input: {
     flex: 1,
     paddingRight: 10,
-    paddingLeft: 0,
+    marginLeft: 5,
     color: '#424242',
   },
 });
