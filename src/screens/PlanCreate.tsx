@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { User } from '../models';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
+import { MapLinkIcon } from '../../assets/Icons/IconExports';
 
 import { TEAL } from '../res/styles/Colors';
 
@@ -137,7 +138,8 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
           <View style={{ flexGrow: 1 }}>
             <MeepForm inputList={inputFields}>
               <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', {})}>
-                <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} />
+                {/* <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} /> */}
+                <MapLinkIcon />
                 <AppText style={styles.mapText}>Find address using the map</AppText>
               </TouchableOpacity>
             </MeepForm>

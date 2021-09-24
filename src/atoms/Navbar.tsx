@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 import { AppText } from './AppText';
+import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { TEAL } from '../res/styles/Colors';
 
 interface Props {
@@ -18,10 +18,7 @@ interface Props {
 export const Navbar: React.FC<Props> = ({ data = {}, location, navigation, title }: Props) => {
   return (
     <View style={styles.navbar}>
-      <Icon
-        name="chevron-left"
-        type="font-awesome"
-        size={30}
+      <BackChevronIcon
         onPress={() => {
           navigation.navigate(location, data);
         }}
