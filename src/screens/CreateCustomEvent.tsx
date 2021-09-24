@@ -7,6 +7,7 @@ import { Icon } from 'react-native-elements/dist/icons/Icon';
 import Qs from 'qs';
 import { User } from '../models';
 import { ScrollView } from 'react-native-gesture-handler';
+import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
   navigation: {
@@ -81,6 +82,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
         },
       },
     });
+    await Analytics.logEvent('submit_create_event', {});
   };
 
   const loadPhoto = (photoReference: string) => {

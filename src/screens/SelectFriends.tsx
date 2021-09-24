@@ -103,6 +103,7 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
         },
       },
     });
+    await Analytics.logEvent('send_message_on_create_event', {});
   };
 
   const menuSelection = (item: string) => {

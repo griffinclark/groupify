@@ -14,6 +14,7 @@ import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Image } from 'react-native-elements/dist/image/Image';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
+import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
   navigation: {
@@ -89,6 +90,9 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       setSecureStoreItem('phone', phone);
       setSecureStoreItem('password', password);
       console.log('successfully signed in');
+
+      await Analytics.logEvent('login', {});
+
       const user = await registerUser();
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
