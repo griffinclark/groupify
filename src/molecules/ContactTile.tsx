@@ -14,6 +14,7 @@ interface Props {
 
 export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSelected = false }: Props) => {
   const [selected, setSelected] = useState(false);
+  const [firstInitial, setFirstInitial] = useState('');
 
   const handlePress = () => {
     if (!selected) {
@@ -32,9 +33,11 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
     } else {
       setSelected(false);
     }
+    if (friend.name) {
+      setFirstInitial(friend.name.slice(0, 1));
+    }
   }, []);
 
-  const firstInitial = friend.name.slice(0, 1);
   return (
     <View style={styles.container}>
       <View style={styles.nameContainer}>

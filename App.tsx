@@ -8,7 +8,6 @@ import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import { User } from './src/models';
-import * as SecureStore from 'expo-secure-store';
 
 Amplify.configure(awsconfig);
 
@@ -17,11 +16,6 @@ export const App: React.FC = () => {
   const [userID, setUserID] = useState('');
   LogBox.ignoreLogs(['source.uri should not be an empty string']);
   LogBox.ignoreLogs(['Setting a timer']);
-
-  const hasLoggedIn = async (): Promise<boolean> => {
-    const savedPhone = await SecureStore.getItemAsync('phone');
-    return savedPhone ? true : false;
-  };
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -41,7 +35,7 @@ export const App: React.FC = () => {
       } catch (err) {
         console.log('user not signed in');
         console.log(err);
-        (await hasLoggedIn()) ? setInitialScreen('Login') : setInitialScreen('CreateAccount');
+        setInitialScreen('Welcome');
       }
     };
     checkAuth();
