@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, ActivityIndicator, Linking, Platform } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Linking, Platform, Keyboard } from 'react-native';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
@@ -134,29 +134,31 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
           </View>
           <SearchBar onInputChange={searchContacts} />
           <View style={styles.flatListContainer}>
-            {state === State.Loading ? (
-              <View>
-                <ActivityIndicator size="large" color="#bad555" />
-              </View>
-            ) : null}
             <FlatList
+              onScrollBeginDrag={Keyboard.dismiss}
               data={filteredContacts.length > 0 ? filteredContacts : contacts}
               renderItem={renderContact}
-              ListEmptyComponent={() => (
-                <View style={styles.listContainer}>
-                  <AppText style={{ fontSize: 20, textAlign: 'center' }}>
-                    Add friends from your contact list to make plans!
-                  </AppText>
-                  <Button
-                    onPress={() => {
-                      if (Platform.OS === 'ios') {
-                        Linking.openURL('app-settings:');
-                      }
-                    }}
-                    title={'Allow Access'}
-                  />
-                </View>
-              )}
+              ListEmptyComponent={() =>
+                state === State.Loading ? (
+                  <View style={{ marginTop: '60%' }}>
+                    <ActivityIndicator size="large" color="#bad555" />
+                  </View>
+                ) : (
+                  <View style={styles.listContainer}>
+                    <AppText style={{ fontSize: 20, textAlign: 'center' }}>
+                      Add friends from your contact list to make plans!
+                    </AppText>
+                    <Button
+                      onPress={() => {
+                        if (Platform.OS === 'ios') {
+                          Linking.openURL('app-settings:');
+                        }
+                      }}
+                      title={'Allow Access'}
+                    />
+                  </View>
+                )
+              }
             />
           </View>
         </View>
