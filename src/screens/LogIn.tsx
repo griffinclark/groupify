@@ -14,7 +14,6 @@ import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Image } from 'react-native-elements/dist/image/Image';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
-import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
   navigation: {
@@ -85,36 +84,34 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const logIn = async () => {
     setError(undefined);
-    try {
-      await Auth.signIn(formatPhone, password);
-      setSecureStoreItem('phone', phone);
-      setSecureStoreItem('password', password);
-      console.log('successfully signed in');
-
-      await Analytics.logEvent('login', {});
-
-      const user = await registerUser();
-      const contacts: Contact[] = await getAllImportedContacts();
-      if (contacts.length === 0) {
-        navigation.navigate('ImportContactDetails', {});
-      } else {
-        if (user.id) {
-          console.log(user);
-          navigation.navigate('Home', { userID: user.id });
-        }
-      }
-    } catch (err: any) {
-      console.log('error signing in...', err);
-      if (err.code == 'UserNotConfirmedException') {
-        navigation.navigate('CreateAccount', { step: 'validate', phone: formatPhone });
-      } else if (err.code == 'InvalidParameterException' && err.message.includes('Incorrect·username·or·password.')) {
-        setError('Incorrect username or password.');
-      } else if (err.code == 'InvalidParameterException' && err.message.includes('2 validation errors detected')) {
-        setError('User does not exist');
-      } else {
-        setError(err.message);
-      }
-    }
+    navigation.navigate('Home', { userID: '669d681e-7dbe-47e2-ad1c-4c894074366a' });
+    // try {
+    //   await Auth.signIn(formatPhone, password);
+    //   setSecureStoreItem('phone', phone);
+    //   setSecureStoreItem('password', password);
+    //   console.log('successfully signed in');
+    //   const user = await registerUser();
+    //   const contacts: Contact[] = await getAllImportedContacts();
+    //   if (contacts.length === 0) {
+    //     navigation.navigate('ImportContactDetails', {});
+    //   } else {
+    //     if (user.id) {
+    //       console.log(user);
+    //       navigation.navigate('Home', { userID: user.id });
+    //     }
+    //   }
+    // } catch (err: any) {
+    //   console.log('error signing in...', err);
+    //   if (err.code == 'UserNotConfirmedException') {
+    //     navigation.navigate('CreateAccount', { step: 'validate', phone: formatPhone });
+    //   } else if (err.code == 'InvalidParameterException' && err.message.includes('Incorrect·username·or·password.')) {
+    //     setError('Incorrect username or password.');
+    //   } else if (err.code == 'InvalidParameterException' && err.message.includes('2 validation errors detected')) {
+    //     setError('User does not exist');
+    //   } else {
+    //     setError(err.message);
+    //   }
+    // }
   };
 
   const getSecureStoreItems = async (): Promise<void> => {

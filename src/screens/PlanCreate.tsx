@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
-import { AppText, BottomButton, MeepForm, Alert, Navbar } from '../atoms/AtomsExports';
+import { AppText, Screen, BottomButton, MeepForm, Alert, Navbar } from '../atoms/AtomsExports';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { User } from '../models';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
 import { MapLinkIcon } from '../../assets/Icons/IconExports';
-import Constants from 'expo-constants';
+
 import { TEAL } from '../res/styles/Colors';
-import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
-  route: RoutePropParams;
+  route: {
+    params: {
+      currentUser: User;
+      data: { eventData: { title: string; location: string; imageURL: string; placeId: string } };
+    };
+  };
 }
 
 export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
@@ -55,12 +61,13 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
         eventData: {
           uuid: id,
           title: name,
-          date: date ? date : currentDate.toLocaleDateString(),
-          time: time
-            ? time
-            : Platform.OS === 'android'
-            ? formatTime(currentDate.toLocaleTimeString())
-            : formatIosTimeInput(currentDate.toLocaleTimeString()),
+          // date: date || currentDate.toLocaleDateString(),
+          // time:
+          //   time || Platform.OS === 'android'
+          //     ? formatTime(currentDate.toLocaleTimeString())
+          //     : formatIosTimeInput(currentDate.toLocaleTimeString()),
+          date: date,
+          time: time,
           location: location,
           description: description,
           imageURL: photo || '',
@@ -123,34 +130,24 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: 'white' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      {/* <Screen> */}
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          paddingTop: Constants.statusBarHeight,
-        }}
-      >
-        <Navbar location={'Home'} navigation={navigation} title={'Create a Plan'} />
-        {/* <View>{loadPhoto(photo)}</View> */}
-        <View style={{ flexGrow: 1 }}>
-          <MeepForm inputList={inputFields}>
-            <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', {})}>
-              {/* <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} /> */}
-              <MapLinkIcon />
-              <AppText style={styles.mapText}>Find address using the map</AppText>
-            </TouchableOpacity>
-          </MeepForm>
-          {error && <Alert status="error" message={error} />}
-        </View>
-        <BottomButton disabled={disabled} title="Invite Friends" onPress={onFormSubmit} />
-      </ScrollView>
-      {/* </Screen> */}
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Screen>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
+          <Navbar location={'Home'} navigation={navigation} title={'Create a Plan'} />
+          {/* <View>{loadPhoto(photo)}</View> */}
+          <View style={{ flexGrow: 1 }}>
+            <MeepForm inputList={inputFields}>
+              <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', {})}>
+                {/* <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} /> */}
+                <MapLinkIcon />
+                <AppText style={styles.mapText}>Find address using the map</AppText>
+              </TouchableOpacity>
+            </MeepForm>
+            {error && <Alert status="error" message={error} />}
+          </View>
+          <BottomButton disabled={disabled} title="Invite Friends" onPress={onFormSubmit} />
+        </ScrollView>
+      </Screen>
     </KeyboardAvoidingView>
   );
 };
