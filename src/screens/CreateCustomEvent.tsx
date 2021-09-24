@@ -45,7 +45,7 @@ export const CreateCustomEvent: React.FC<Props> = ({ navigation, route }: Props)
     }
   }, []);
 
-  const onFormSubmit = (values: {
+  const onFormSubmit = async (values: {
     eventName: string | undefined;
     eventDate: string | undefined;
     eventTime: string | undefined;
