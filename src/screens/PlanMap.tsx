@@ -12,7 +12,8 @@ import { RoutePropParams } from '../res/root-navigation';
 import { TEAL } from '../res/styles/Colors';
 import { Button } from '../atoms/AtomsExports';
 
-import { AppText } from '../atoms/AppText';
+import { AppText, Screen } from '../atoms/AtomsExports';
+import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { WHITE } from '../res/styles/Colors';
 
 interface Props {
@@ -190,6 +191,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     setMapMarker(undefined);
   };
   return (
+    // <Screen>
     <View style={styles.container}>
       {/* TODO: Show categories */}
       {/* TODO: Show multiple markers */}
@@ -207,13 +209,10 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
 
       <View style={styles.navbar}>
         <View style={styles.navbarBackground} />
-        <Icon
-          name="chevron-left"
-          type="font-awesome"
-          size={30}
-          onPress={() => navigation.navigate('PlanCreate', {})}
-          style={styles.navbarIcon}
-        />
+
+        <View style={styles.navbarIcon}>
+          <BackChevronIcon onPress={() => navigation.navigate('PlanCreate', {})} />
+        </View>
 
         <GooglePlacesAutocomplete
           placeholder="Search"
@@ -268,6 +267,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
       <View style={styles.searchBarContainer}>X button on the right to clear input field</View> */}
       {placeCard ? placeCard : null}
     </View>
+    /* </Screen> */
   );
 };
 
@@ -289,10 +289,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '100%',
+
+    paddingTop: 15,
   },
   navbarBackground: {
     backgroundColor: WHITE,
-    height: 83,
+    // height: 83,
+    height: 98,
     position: 'absolute',
     width: '100%',
   },
@@ -303,6 +306,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    // paddingTop: 15,
   },
   skip: {
     position: 'absolute',
