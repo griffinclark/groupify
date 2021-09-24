@@ -69,7 +69,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
               await DataStore.start();
               await Auth.signOut({ global: true });
               console.log('Successfully signed out');
-              navigation.navigate('Login', { currentUser: null });
+              navigation.navigate('Welcome', { currentUser: null });
             } catch (err) {
               console.log('error signing out...', err);
             }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { background, GREY_0, TEAL } from './../res/styles/Colors';
-import { getCurrentUser, isFuturePlan, loadInviteeStatus, sortPlansByDate } from './../res/utilFunctions';
+import { getCurrentUser, isFuturePlan, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { NextPlan, InvitedPreview, CreatedPlans } from '../organisms/OrganismsExports';
@@ -31,12 +31,10 @@ interface Props {
 export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [userPlans, setUserPlans] = useState<Plan[]>([]);
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
-  const [pendingInvitedPlans, setPendingInvitedPlans] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User>();
   const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
-    setPendingInvitedPlans(false);
     const awaitUser = async () => {
       const user = await getCurrentUser();
       setCurrentUser(user);
@@ -61,14 +59,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     setUserPlans(sortPlansByDate(userCreatedPlans));
     setInvitedPlans(sortPlansByDate(invitedPlans));
     console.log('Finished loading plans');
-    for (let i = 0; i < invitedPlans.length; i++) {
-      const plan = invitedPlans[i];
-      const status = await loadInviteeStatus(plan);
-      if (status === 'ACCEPTED' || status === 'PENDING') {
-        setPendingInvitedPlans(true);
-        break;
-      }
-    }
   };
 
   const removePastPlans = (plans: Plan[]) => {
@@ -104,19 +94,15 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                 <NextPlan navigation={navigation} plan={userPlans.concat(invitedPlans)[0]} />
               </View>
               <View style={globalStyles.miniSpacer}></View>
-              {invitedPlans.length > 0 && pendingInvitedPlans && (
-                <View style={styles.invitedPlans}>
-                  <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
-                  <InvitedPreview navigation={navigation} invitedPlans={invitedPlans} />
-                  <View style={globalStyles.miniSpacer}></View>
-                </View>
-              )}
-              {userPlans.length > 0 && (
-                <View style={{ height: 340 }}>
-                  <AppText style={styles.label}>CREATED PLANS</AppText>
-                  <CreatedPlans navigation={navigation} userPlans={userPlans} />
-                </View>
-              )}
+              <View>
+                <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
+                <InvitedPreview navigation={navigation} invitedPlans={invitedPlans} />
+                <View style={globalStyles.miniSpacer}></View>
+              </View>
+              <View style={{ height: 360 }}>
+                <AppText style={styles.label}>CREATED PLANS</AppText>
+                <CreatedPlans navigation={navigation} userPlans={userPlans} />
+              </View>
             </View>
           ) : (
             <View style={styles.noPlan}>
@@ -178,9 +164,6 @@ const styles = StyleSheet.create({
     color: GREY_0,
     marginLeft: '5%',
     marginBottom: 5,
-  },
-  invitedPlans: {
-    backgroundColor: 'white',
   },
   noPlanText: {
     fontSize: 20,
