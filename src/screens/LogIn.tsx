@@ -90,6 +90,9 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       setSecureStoreItem('phone', phone);
       setSecureStoreItem('password', password);
       console.log('successfully signed in');
+
+      await Analytics.logEvent('login', {});
+
       const user = await registerUser();
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {

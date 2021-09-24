@@ -16,7 +16,6 @@ import * as Analytics from 'expo-firebase-analytics';
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
-    goBack: () => void;
     push: (ev: string, e: { phone: string; step: string }) => void;
   };
   route: RoutePropParams;
@@ -98,7 +97,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       setError(undefined);
       navigation.push('CreateAccount', { step: 'validate', phone: formatPhone });
       await Analytics.logEvent('sign_up', {});
-    } catch (err: any) {
+    } catch (err) {
       console.log('Error: ', err);
       if (err.code == 'InvalidParameterException') {
         if (err.message == 'Username should be an email.') {
@@ -125,7 +124,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     try {
       await Auth.confirmSignUp(route.params.phone, validationCode);
       navigation.navigate('Login', { accountCreated: 'success' });
-    } catch (err: any) {
+    } catch (err) {
       console.log('Error: ', err);
       setError(err.message);
       setSuccess(undefined);
@@ -137,11 +136,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      testID="WelcomeScreen"
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Screen style={{ backgroundColor: background }}>
         <ScrollView>
           <AntDesign
@@ -149,7 +144,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             name="left"
             type="font-awesome"
             size={30}
-            onPress={() => navigation.navigate('Welcome', {})}
+            onPress={() => navigation.navigate('Login', {})}
           />
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
             {route.params.step === 'create' && (
@@ -217,7 +212,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                         Auth.resendSignUp(route.params.phone);
                         setSuccess('Sent new verification code');
                         setError(undefined);
-                      } catch (err: any) {
+                      } catch (err) {
                         console.log(err);
                         setError(err.message);
                       }
