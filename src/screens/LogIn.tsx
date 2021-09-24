@@ -9,7 +9,7 @@ import { AppText } from '../atoms/AppText';
 import { User } from '../models';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Keyboard, StyleSheet, View } from 'react-native';
-import { background, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Image } from 'react-native-elements/dist/image/Image';
 import * as SecureStore from 'expo-secure-store';
@@ -137,12 +137,12 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [phone, password]);
 
   return (
-    <Screen style={{ backgroundColor: background, justifyContent: 'space-evenly' }}>
-      <View style={{ alignSelf: 'center', flex: 1, marginTop: 80 }}>
-        <Image style={styles.logo} source={require('../../assets/logo.png')} />
+    <Screen style={{ backgroundColor: WHITE, justifyContent: 'space-evenly' }}>
+      <View style={{ alignSelf: 'center', flex: 1, marginLeft: 50, paddingBottom: 110 }}>
+        <Image style={styles.logoBackground} source={require('../../assets/Login_Background.png')} />
+        <Image style={styles.logo} source={require('../../assets/Splash_Logo.png')} />
       </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-        <AppText style={styles.title}>Log In</AppText>
         <FormInput
           returnKeyNext={true}
           label="Phone Number"
@@ -165,17 +165,14 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
         {error && <Alert status="error" message={error} />}
       </TouchableWithoutFeedback>
       <View style={styles.createAccount}>
-        <AppText style={styles.text}>
-          Don&apos;t have an account? Create one
-          <AppText
-            style={styles.textTeal}
-            onPress={async () => {
-              navigation.navigate('CreateAccount', {});
-            }}
-          >
-            {' '}
-            here
-          </AppText>
+        <AppText style={styles.text}>Don&apos;t have an account?</AppText>
+        <AppText
+          style={styles.textTeal}
+          onPress={async () => {
+            navigation.navigate('CreateAccount', {});
+          }}
+        >
+          Create one today!
         </AppText>
         {route.params && route.params.accountCreated === 'success' && (
           <Alert status={'success'} message={'Account successfully created!'} />
@@ -195,8 +192,12 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   logo: {
-    width: 318,
-    height: 98,
+    width: 334,
+    height: 107,
+  },
+  logoBackground: {
+    width: 376,
+    height: 158,
   },
   createAccount: {
     flex: 1,
@@ -208,6 +209,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   textTeal: {
+    marginLeft: 20,
     color: TEAL,
     fontWeight: '500',
     fontSize: 20,

@@ -3,7 +3,7 @@ import { StyleSheet, View, ActivityIndicator, Linking, Platform } from 'react-na
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
-import { background, GREY_5 } from '../res/styles/Colors';
+import { WHITE, GREY_5, TEAL } from '../res/styles/Colors';
 import {
   deleteAllImportedContacts,
   deleteImportedContactFromID,
@@ -15,6 +15,7 @@ import { AppText } from '../atoms/AppText';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { AntDesign } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: {
@@ -37,6 +38,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [removedContacts, setRemovedContacts] = useState<Contact[]>([]);
   const [state, setState] = useState<State>(State.Empty);
   const [openModal, setOpenModal] = useState(false);
+  const [showRespondOptions, setShowRespondOptions] = useState(false);
 
   useEffect(() => {
     setState(State.Loading);
@@ -81,6 +83,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const loadImportedContacts = async () => {
     await getAllImportedContacts().then((contacts) => {
       setAddedContacts(contacts);
+      setShowRespondOptions(true);
     });
   };
 
@@ -124,7 +127,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   return (
-    <Screen style={{ backgroundColor: background }}>
+    <Screen style={{ backgroundColor: WHITE }}>
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
@@ -160,6 +163,37 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
             />
           </View>
         </View>
+        {showRespondOptions ? (
+          <View style={styles.planResponse}>
+            <TouchableOpacity onPress={() => setOpenModal(true)}>
+              <AppText style={styles.skipStyle}>Skip</AppText>
+            </TouchableOpacity>
+            {addedContacts.length > 0 ? (
+              <Button
+                title={'Import Contacts'}
+                onPress={async () => {
+                  await deleteAllImportedContacts();
+                  await storeSelectedContacts();
+                  navigation.navigate('Home');
+                }}
+                disabled={addedContacts.length < 0}
+              />
+            ) : (
+              <Button
+                title={'Import Contacts'}
+                onPress={async () => {
+                  await deleteAllImportedContacts();
+                  await storeSelectedContacts();
+                  navigation.navigate('Home');
+                }}
+                disabled={true}
+              />
+            )}
+          </View>
+        ) : (
+          <View></View>
+        )}
+        {/*
         {addedContacts.length > 0 ? (
           <View>
             <Button
@@ -175,13 +209,13 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
           <View>
             <Button title="Skip" onPress={() => setOpenModal(true)} />
           </View>
-        )}
+        )}*/}
       </View>
       {openModal && (
         <AlertModal
           onConfirm={() => navigation.navigate('Home')}
           onReject={() => setOpenModal(false)}
-          message="Are you sure you don't want to import contacts?"
+          message="Are you sure you don't want to import contacts? You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later "
         />
       )}
     </Screen>
@@ -216,5 +250,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 20,
+  },
+  planResponse: {
+    flexDirection: 'row',
+    width: '50%',
+    alignItems: 'center',
+  },
+  skipStyle: {
+    paddingHorizontal: 15,
+    marginHorizontal: 50,
+    color: TEAL,
+    fontWeight: 'bold',
+    fontSize: 20,
   },
 });

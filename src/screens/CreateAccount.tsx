@@ -5,7 +5,7 @@ import { Auth } from 'aws-amplify';
 import { Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { background, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL } from '../res/styles/Colors';
 //import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
@@ -135,20 +135,22 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Screen style={{ backgroundColor: background }}>
+      <Screen style={{ backgroundColor: WHITE }}>
         <ScrollView>
-          <AntDesign
-            style={{ alignSelf: 'flex-start', marginLeft: 20 }}
-            name="left"
-            type="font-awesome"
-            size={30}
-            onPress={() => navigation.navigate('Login', {})}
-          />
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
             {route.params.step === 'create' && (
               <View style={styles.container}>
                 <View>
-                  <AppText style={styles.title}>Create Account</AppText>
+                  <View style={{ flexDirection: 'row', paddingBottom: 20 }}>
+                    <AntDesign
+                      style={{ alignSelf: 'flex-start', marginLeft: 20 }}
+                      name="left"
+                      type="font-awesome"
+                      size={30}
+                      onPress={() => navigation.navigate('Login', {})}
+                    />
+                    <AppText style={styles.title}>Create Account</AppText>
+                  </View>
                   <FormInput
                     autoFocus={false}
                     returnKeyNext={true}
@@ -190,7 +192,17 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             )}
             {route.params.step === 'validate' && (
               <View style={styles.validateContainer}>
-                <AppText style={styles.title}>Verify Your Phone Number</AppText>
+                <View style={{ flexDirection: 'row', paddingBottom: 20 }}>
+                  <AntDesign
+                    style={{ alignSelf: 'flex-start', marginLeft: 20 }}
+                    name="left"
+                    type="font-awesome"
+                    size={30}
+                    onPress={() => navigation.navigate('CreateAccount', {})}
+                  />
+                  <AppText style={styles.title}>Verify Phone Number</AppText>
+                </View>
+                <AppText style={styles.details}>Please enter the verification code you received.</AppText>
                 <View>
                   <FormInput
                     returnKeyNext={false}
@@ -220,9 +232,9 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     <AppText style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>
                       Send New Verification Code
                     </AppText>
-                  </TouchableOpacity>
+                  </TouchableOpacity> 
                 </View>
-                <View style={{ marginBottom: 30 }}>
+                <View style={{ Bottom: 0 }}>
                   <Button title="Next" onPress={validateUser} disabled={disabled} />
                 </View>
               </View>
@@ -241,7 +253,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    margin: 20,
+    marginLeft: 50,
     color: TEAL,
     fontSize: 30,
     fontWeight: '400',
@@ -259,5 +271,13 @@ const styles = StyleSheet.create({
   validateContainer: {
     justifyContent: 'space-between',
     height: '100%',
+  },
+  details: {
+    display: 'flex',
+    marginTop: 40,
+    marginLeft: 20,
+    paddingBottom: 70,
+    position: 'absolute',
+    fontSize: 16,
   },
 });
