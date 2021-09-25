@@ -4,12 +4,7 @@ import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
 import { background, GREY_5 } from '../res/styles/Colors';
-import {
-  deleteAllImportedContacts,
-  deleteImportedContactFromID,
-  getAllImportedContacts,
-  storeImportedContact,
-} from '../res/storageFunctions';
+import { deleteImportedContactFromID, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
 import { Button, Title, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { ContactTile } from '../molecules/MoleculesExports';
@@ -34,7 +29,6 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [addedContacts, setAddedContacts] = useState<Contact[]>([]);
-  const [removedContacts, setRemovedContacts] = useState<Contact[]>([]);
   const [state, setState] = useState<State>(State.Empty);
   const [openModal, setOpenModal] = useState(false);
 
@@ -44,16 +38,17 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
     loadImportedContacts();
   }, []);
 
-  const addSelectedContact = (newContact: Contact) => {
-    const id = addedContacts.find((contact) => contact.id === newContact.id);
-    if (id) {
-      return;
-    }
-    setAddedContacts((addedContacts) => [...addedContacts, newContact]);
+  //Everytime a contact is selected it adds it to local storage on the spot
+  //Same thing when a contact is unselected
+  //Much better than the previous way I had this working
+  const addSelectedContact = async (newContact: Contact) => {
+    await storeImportedContact(newContact);
+    loadImportedContacts();
   };
 
-  const removeSelectedContact = (newContact: Contact) => {
-    setRemovedContacts((removedContacts) => [...removedContacts, newContact]);
+  const removeSelectedContact = async (newContact: Contact) => {
+    await deleteImportedContactFromID(newContact.id);
+    loadImportedContacts();
   };
 
   const loadContacts = async () => {
@@ -81,6 +76,8 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const loadImportedContacts = async () => {
     await getAllImportedContacts().then((contacts) => {
       setAddedContacts(contacts);
+      if (contacts.length > 0) {
+      }
     });
   };
 
@@ -112,16 +109,6 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       isSelected={addedContacts.find((contact) => contact.id === item.id)}
     />
   );
-
-  const storeSelectedContacts = async () => {
-    console.log(addedContacts, 'removed', removedContacts);
-    for (const contact of addedContacts) {
-      await storeImportedContact(contact);
-    }
-    for (const contact of removedContacts) {
-      await deleteImportedContactFromID(contact.id);
-    }
-  };
 
   return (
     <Screen style={{ backgroundColor: background }}>
@@ -167,8 +154,8 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
             <Button
               title="Save Contacts"
               onPress={async () => {
-                await deleteAllImportedContacts();
-                await storeSelectedContacts();
+                // await deleteAllImportedContacts();
+                // await storeSelectedContacts();
                 navigation.navigate('Home');
               }}
             />
