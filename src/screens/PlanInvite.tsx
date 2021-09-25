@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { Alert, AppText, BottomButton, Button, Navbar, Screen, SearchBar } from '../atoms/AtomsExports';
-import { DataStore } from '@aws-amplify/datastore';
+import { Auth, DataStore } from 'aws-amplify';
 import { User } from '../models';
-//import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
+import { PlanTextMessage } from '../molecules/PlanTextMessage';
 import { TEAL } from '../res/styles/Colors';
 
 interface Props {
@@ -35,13 +35,14 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   });
   const [friends, setFriends] = useState<User[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
+  const [message, setMessage] = useState<string>('');
+
   useEffect(() => {
     loadContacts();
     setEventObject(route.params.data.eventData);
     getFriends();
+    createInitialMessage();
   }, []);
-
-  console.log(eventObject);
 
   const getFriends = async () => {
     const user = await DataStore.query(User, (user) => user.id('contains', route.params.currentUser.id));
@@ -98,6 +99,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           placeId: event.placeId,
           friends: selectedFriends,
           contacts: selectedContacts,
+          message: message,
         },
       },
     });
@@ -106,6 +108,22 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const menuSelection = (item: string) => {
     setMenuItemSelected(item);
+  };
+
+  const createInitialMessage = async (): Promise<void> => {
+    const event = route.params.data.eventData;
+    const userInfo = await Auth.currentUserInfo();
+    const name = userInfo.attributes.name;
+
+    setMessage(
+      `Hey, ${name} is inviting you \
+to '${event.title ? event.title : '[plan title not specified]'}' \
+at ${event.time ? event.time : '[time not specified]'} \
+on ${event.date ? event.date : '[date not specified]'} \
+at ${event.location ? event.location : '[location not specified]'}. \
+${event.description} \
+\nHope to see you there! \n`,
+    );
   };
 
   return (
@@ -169,20 +187,27 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
             )}
 
             {menuItemSelected === 'contacts' && (
-              <View style={styles.contactsContainer}>
-                <View style={styles.searchbar}>
-                  <SearchBar onInputChange={searchFriends} placeholder="Search for Friends to Invite" />
-                  <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
-                </View>
-                {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a friend to continue'} />}
-                {/* <TouchableOpacity onPress={sendContactMessage} disabled={selectedContacts.length === 0 ? true : false}>
+              <ScrollView>
+                <View style={styles.contactsContainer}>
+                  <PlanTextMessage
+                    label="Once you create this event, we will send out a text message to your contacts who haven’t joined the app yet as shown below. Feel free to edit:"
+                    onChangeText={(e) => setMessage(e)}
+                    text={message}
+                  />
+                  <View style={styles.searchbar}>
+                    <SearchBar onInputChange={searchFriends} placeholder="Search for Contacts to Invite" />
+                    <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
+                  </View>
+                  {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a contact to continue'} />}
+                  {/* <TouchableOpacity onPress={sendContactMessage} disabled={selectedContacts.length === 0 ? true : false}>
                 {selectedContacts.length > 0 ? (
                   <AppText style={[styles.navText, { backgroundColor: TEAL, color: WHITE }]}>Next</AppText>
                 ) : (
                   <AppText style={[styles.navText, { backgroundColor: GREY_4, color: GREY_3 }]}>Next</AppText>
                 )}
               </TouchableOpacity> */}
-              </View>
+                </View>
+              </ScrollView>
             )}
           </View>
         </View>
@@ -234,7 +259,8 @@ const styles = StyleSheet.create({
     borderBottomColor: TEAL,
   },
   menuItemNotSelectedContainer: {
-    borderBottomColor: '#E5E5E5',
+    // borderBottomColor: '#E5E5E5',
+    borderBottomColor: TEAL,
   },
   menuItem: {
     fontSize: 16,
