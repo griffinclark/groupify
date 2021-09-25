@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Qs from 'qs';
-import { Animated, StyleSheet, View, Image, FlatList, StyleProp, ViewStyle, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, Image, FlatList, StyleProp, ViewStyle } from 'react-native';
 import { WHITE, YELLOW } from '../res/styles/Colors';
 import { Button } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
-import SlidingUpPanel, { SlidingUpPanelAnimationConfig } from 'rn-sliding-up-panel';
+import SlidingUpPanel from 'rn-sliding-up-panel';
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -138,9 +138,7 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
           </View>
         </View>
       </SlidingUpPanel>
-      {/* <View style={styles.buttonContainer}> */}
       <Button containerStyle={styles.button} onPress={props.onButtonPress} title={'Add Location'} />
-      {/* </View> */}
     </View>
   );
 };

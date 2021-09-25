@@ -14,7 +14,6 @@ import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Image } from 'react-native-elements/dist/image/Image';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
-import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
   navigation: {
@@ -83,16 +82,14 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const logIn = async (): Promise<void> => {
+  const logIn = async () => {
     setError(undefined);
+    // navigation.navigate('Home', { userID: '669d681e-7dbe-47e2-ad1c-4c894074366a' });
     try {
       await Auth.signIn(formatPhone, password);
       setSecureStoreItem('phone', phone);
       setSecureStoreItem('password', password);
       console.log('successfully signed in');
-
-      await Analytics.logEvent('login', {});
-
       const user = await registerUser();
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
@@ -103,7 +100,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           navigation.navigate('Home', { userID: user.id });
         }
       }
-      await Analytics.logEvent('login', { userId: user.id });
     } catch (err: any) {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {
@@ -143,7 +139,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen style={{ backgroundColor: background, justifyContent: 'space-evenly' }}>
-      <View style={{ alignSelf: 'center', flex: 1, marginTop: 80 }} testID="LoginScreen">
+      <View style={{ alignSelf: 'center', flex: 1, marginTop: 80 }}>
         <Image style={styles.logo} source={require('../../assets/logo.png')} />
       </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
