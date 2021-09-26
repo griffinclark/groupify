@@ -27,7 +27,7 @@ interface Props {
 export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   const event: Event = route.params.data.eventData;
   const currentUser: User = route.params.currentUser;
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [setIsLoading] = useState<boolean>(false);
   const [planTitle] = useState('');
   const [planAddress] = useState('');
   const [planDate] = useState('');
@@ -35,7 +35,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   const [planDescription] = useState('');
   const [message, setMessage] = useState<string>('Loading Message...');
   const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
-  const [updatedValues, setUpdatedValues] = useState<{
+  const [setUpdatedValues] = useState<{
     eventName: string | undefined;
     eventDate: string | undefined;
     eventTime: string | undefined;
