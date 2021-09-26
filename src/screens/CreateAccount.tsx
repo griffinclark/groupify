@@ -233,7 +233,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     <AppText style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>
                       Send New Verification Code
                     </AppText>
-                  </TouchableOpacity> 
+                  </TouchableOpacity>
                 </View>
                 <View style={{ Bottom: 0 }}>
                   <Button title="Next" onPress={validateUser} disabled={disabled} />
