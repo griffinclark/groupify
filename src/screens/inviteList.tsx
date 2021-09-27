@@ -99,7 +99,7 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
             name="arrow-left"
             type="font-awesome"
             size={30}
-            onPress={() => navigation.navigate('PlanDetails', {})}
+            onPress={() => navigation.navigate('PlanDetails', { plan: plan })}
           />
           <AppText style={styles.title}>{plan.title}</AppText>
         </View>

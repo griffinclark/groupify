@@ -1,59 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Event, Contact } from '../res/dataModels';
+import { Contact } from '../res/dataModels';
 
-// Functions for storing user events
-
-export const storeUserEvent: (uuid: Event) => Promise<void> = async (event: Event) => {
+export const setFavoriteContacts: (contacts: Contact[]) => Promise<void> = async (contacts: Contact[]) => {
   try {
-    const userEventsString = await AsyncStorage.getItem('user_events');
-    const userEvents: Event[] = userEventsString !== null ? JSON.parse(userEventsString) : [];
-    userEvents.push(event);
-    await AsyncStorage.setItem('user_events', JSON.stringify(userEvents));
+    await AsyncStorage.setItem('user_favorite_friend', JSON.stringify(contacts));
   } catch (e) {
-    console.log('Error storing user events');
+    console.log(e);
   }
 };
 
-export const getAllUserEvents: () => Promise<Event[]> = async () => {
+export const getFavoriteContacts: () => Promise<Contact[]> = async () => {
   try {
-    const userEventsString = await AsyncStorage.getItem('user_events');
-    const userEvents: Event[] = userEventsString !== null ? JSON.parse(userEventsString) : [];
-    return userEvents;
+    const result = await AsyncStorage.getItem('user_favorite_friend');
+    const favorites: Contact[] = result ? JSON.parse(result) : [];
+    return favorites;
   } catch (e) {
-    console.log('Error getting events');
+    console.log(e);
     return [];
-  }
-};
-
-export const getUserEventFromUUID: (uuid: string) => Promise<Event | undefined> = async (uuid: string) => {
-  try {
-    const userEventsString = await AsyncStorage.getItem('user_events');
-    const userEvents: Event[] = userEventsString !== null ? JSON.parse(userEventsString) : [];
-    for (const e of userEvents) {
-      if (e.uuid === uuid) {
-        return e;
-      }
-    }
-    console.log('there is no event with this uuid');
-  } catch (e) {
-    console.log('Error getting an event');
-  }
-};
-
-export const deleteUserEventFromUUID: (uuid: string) => Promise<void> = async (uuid: string) => {
-  try {
-    const userEventsString = await AsyncStorage.getItem('user_events');
-    const userEvents: Event[] = userEventsString !== null ? JSON.parse(userEventsString) : [];
-    for (let i = 0; i < userEvents.length; i++) {
-      if (userEvents[i].uuid === uuid) {
-        userEvents.splice(i, 1);
-        await AsyncStorage.setItem('user_events', JSON.stringify(userEvents));
-        return;
-      }
-    }
-    console.log('there is no event with this uuid');
-  } catch (e) {
-    console.log('Error deleting an event');
   }
 };
 
@@ -78,10 +41,6 @@ export const storeImportedContact: (contact: Contact) => Promise<void> = async (
   }
 };
 
-// export const eventObject: () => Promise<void> = async () => {
-
-// };
-
 export const deleteImportedContactFromID: (id: string) => Promise<void> = async (id: string) => {
   try {
     const userFriends: Contact[] = await getAllImportedContacts();
@@ -104,15 +63,4 @@ export const deleteAllImportedContacts: () => Promise<void> = async () => {
   } catch (e) {
     console.log('error deleting all imported contacts');
   }
-};
-
-export const clearAllEvents: () => Promise<void> = async () => {
-  let keys: string[] = [];
-  try {
-    await AsyncStorage.removeItem('user_events');
-    keys = await AsyncStorage.getAllKeys();
-  } catch (e) {
-    // read key error
-  }
-  console.log('All events cleared:', keys);
 };
