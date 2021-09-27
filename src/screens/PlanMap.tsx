@@ -1,20 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView, { LatLng, Marker, Point, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { v4 as uuidv4 } from 'uuid';
 import { PlaceCard } from '../molecules/MoleculesExports';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { mapStyles } from '../res/styles/MapStyles';
 import { RoutePropParams } from '../res/root-navigation';
-import { TEAL } from '../res/styles/Colors';
-import { Button } from '../atoms/AtomsExports';
+import Constants from 'expo-constants';
 
-import { AppText, Screen } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AtomsExports';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
-import { WHITE } from '../res/styles/Colors';
+import { TEAL, WHITE } from '../res/styles/Colors';
 
 interface Props {
   navigation: {
@@ -306,7 +304,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // paddingTop: 15,
+    paddingTop: Constants.statusBarHeight,
   },
   skip: {
     position: 'absolute',
