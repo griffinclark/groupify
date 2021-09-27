@@ -1,10 +1,11 @@
 import React, { ReactChild, useState } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
-import { BLACK, WHITE } from '../res/styles/Colors';
+import { BLACK } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
-import { AppText, AppTextInput } from './AtomsExports';
+import { AppText } from './AppText';
+import { AppTextInput } from './AppTextInput';
 
 interface Props {
   children: ReactChild;
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
   dateTimePicker: {
     borderRadius: 5,
     borderColor: '#C5C5C5',
-    borderWidth: 1,
+    // borderWidth: 1,
     marginVertical: 10,
     height: 43,
   },

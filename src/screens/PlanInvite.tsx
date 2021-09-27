@@ -45,6 +45,8 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     createInitialMessage();
   }, []);
 
+  console.log(message);
+
   const getFriends = async () => {
     const user = await DataStore.query(User, (user) => user.id('contains', route.params.currentUser.id));
     const userFriends = user[0].friends;
@@ -116,15 +118,16 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     const userInfo = await Auth.currentUserInfo();
     const name = userInfo.attributes.name;
 
-    setMessage(
-      `Hey, ${name} is inviting you \
-to '${event.title ? event.title : '[plan title not specified]'}' \
-at ${event.time ? event.time : '[time not specified]'} \
-on ${event.date ? event.date : '[date not specified]'} \
-at ${event.location ? event.location : '[location not specified]'}. \
-${event.description} \
-\nHope to see you there! \n`,
-    );
+    const initMessage =
+      `Hey, ${name} is inviting you ` +
+      `to '${event.title}'` +
+      `${event.time ? ' at ' + event.time : ''}` +
+      `${event.date ? ' on ' + event.date : ''}` +
+      `${event.location ? ' at ' + event.location : ''}` +
+      `${event.description}` +
+      '. Hope to see you there!';
+
+    setMessage(initMessage);
   };
 
   return (
