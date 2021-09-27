@@ -4,9 +4,6 @@
 - Node.JS 14
 - Globally install the following Node packages: `expo-cli` `@aws-amplify/cli` `yarn`
 
-
-Isaac Was Here, Isaac was Here, Isaac Was Here, Isaac Was Here, Isaac was Herf, Isacc was Here, IIIISSAAAAAAAAACCCCCCCC
-
 ## Getting started:
 - Clone the repo
 - Run `expo register` in the repo root to create an account

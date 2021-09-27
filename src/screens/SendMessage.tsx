@@ -124,11 +124,6 @@ ${event.description} \
       }
     }
 
-    /*
-i dont know about you but I am feeling 22, everything will be alright you keep me next to you.  You don't know about me, but I bet you want too, everything will be alright if we just dancing like we are 22
-ScumISAAXCCCCC Isaac Isaac,  of the earth cmon, nah nah nah nah nah, nah nah nah nah nah nah, scum of the earth let's go.  We up dead,bleeding red, and world that doesn't exist yeah, hey I am blled hey I am screaming scum of the earth come on
-    */
-
     for (const friend of event.friends) {
       if (friend.phoneNumber !== 'No phone number found') {
         const invitee = await DataStore.save(
@@ -164,7 +159,6 @@ ScumISAAXCCCCC Isaac Isaac,  of the earth cmon, nah nah nah nah nah, nah nah nah
 
     const name = await getUserName();
     for (const invitee of inviteeList) {
-      console.log(invitee);
       if (invitee.pushToken) {
         sendPushNotification(invitee.pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
       }

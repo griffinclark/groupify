@@ -116,7 +116,9 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
           <View style={{ padding: 30 }}>
             <AppText style={{ textAlign: 'center', fontSize: 20 }}>No pending plans at the moment.</AppText>
             <TouchableOpacity onPress={() => navigation.navigate('SearchPlace', {})}>
-              <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL, marginTop: 30 }}>You can create one!</AppText>
+              <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL, marginTop: 30 }}>
+                You can create one!
+              </AppText>
             </TouchableOpacity>
           </View>
         ))}
@@ -125,7 +127,9 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
           acceptedPlans
         ) : (
           <View style={{ padding: 20, marginHorizontal: 30 }}>
-            <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>Looks like you have no upcoming plans</AppText>
+            <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>
+              Looks like you have no upcoming plans
+            </AppText>
           </View>
         ))}
 
