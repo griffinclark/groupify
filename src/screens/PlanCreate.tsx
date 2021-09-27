@@ -10,6 +10,7 @@ import { MapLinkIcon } from '../../assets/Icons/IconExports';
 import Constants from 'expo-constants';
 
 import { TEAL } from '../res/styles/Colors';
+import { DataStoreClass } from '@aws-amplify/datastore';
 
 interface Props {
   navigation: {
@@ -49,6 +50,9 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   }, [route.params.data]);
 
+  console.log(date);
+  console.log(time);
+
   const onFormSubmit = () => {
     const id = uuid.v4();
     if (!name) {
@@ -56,18 +60,21 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
       return;
     }
 
+    const newTime =
+      time || Platform.OS === 'android'
+        ? formatTime(currentDate.toLocaleTimeString())
+        : formatIosTimeInput(currentDate.toLocaleTimeString());
+
+    console.log('date ===== ' + date);
+    console.log('time ===== ' + newTime);
+
     navigation.navigate('SelectFriends', {
       currentUser: route.params.currentUser,
       data: {
         eventData: {
           uuid: id,
           title: name,
-          // date: date || currentDate.toLocaleDateString(),
-          // time:
-          //   time || Platform.OS === 'android'
-          //     ? formatTime(currentDate.toLocaleTimeString())
-          //     : formatIosTimeInput(currentDate.toLocaleTimeString()),
-          date: date,
+          date: date || currentDate.toLocaleDateString(),
           time: time,
           location: location,
           description: description,
