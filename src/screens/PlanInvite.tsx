@@ -45,8 +45,6 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     createInitialMessage();
   }, []);
 
-  console.log(message);
-
   const getFriends = async () => {
     const user = await DataStore.query(User, (user) => user.id('contains', route.params.currentUser.id));
     const userFriends = user[0].friends;
@@ -86,7 +84,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     );
   };
 
-  const sendContactMessage = async () => {
+  const sendContactMessage = () => {
     const event = route.params.data.eventData;
     navigation.navigate('SendMessage', {
       currentUser: route.params.currentUser,
