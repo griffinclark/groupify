@@ -29,16 +29,27 @@ const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 export const PlaceCard: React.FC<Props> = (props: Props) => {
   const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
   const [photos, setPhotos] = useState<JSX.Element>();
+  const [top, setTop] = useState<number>(400);
+  const [bottom, setBottom] = useState<number>(275);
+
   const draggableRange = {
-    top: props.openHours ? 400 : 275,
-    bottom: 275,
+    top: top,
+    bottom: bottom,
   };
 
   useEffect(() => {
     if (props.photos) {
       loadImages();
+      const newBottom = 275;
+      setBottom(newBottom);
+      const newTop = props.openHours ? 400 : 275;
+      setTop(newTop);
     } else {
       setPhotos(undefined);
+      const newBottom = props.openHours ? 280 : 155;
+      setBottom(newBottom);
+      const newTop = props.openHours ? 280 : 155;
+      setTop(newTop);
     }
   }, [props.photos]);
 
@@ -71,7 +82,7 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
     if (!props.rating) return null;
 
     const arr = Array(5).fill('#c4c4c4');
-    const star = Math.floor(props.rating);
+    const star = Math.round(props.rating);
     let i = 0;
     while (i < star) {
       arr[i] = YELLOW;

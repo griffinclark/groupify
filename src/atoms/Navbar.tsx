@@ -32,9 +32,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     color: TEAL,
-    textAlign: 'center',
+    // textAlign: 'center',
     fontWeight: '400',
     flex: 1,
+    marginLeft: 18,
   },
   navbar: {
     flexDirection: 'row',

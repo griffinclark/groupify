@@ -59,8 +59,8 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   const markerRef = useRef<Marker>(null);
   const [placeCard, setPlaceCard] = useState<JSX.Element>();
   const [sessionToken, setSessionToken] = useState(uuidv4());
-  const [mapPopupOpen, setMapPopupOpen] = useState(true);
-  const [markerImg, setMarkerImg] = useState();
+  // const [mapPopupOpen, setMapPopupOpen] = useState(true);
+  // const [markerImg, setMarkerImg] = useState();
 
   useEffect(() => {
     (async () => {
@@ -230,7 +230,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
               borderRadius: 5,
               borderWidth: 1,
               marginRight: 20,
-              marginTop: 20,
+              marginTop: Constants.statusBarHeight - 15,
             },
           }}
           renderRow={(rowData) => {
@@ -269,6 +269,8 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   );
 };
 
+console.log(Constants.statusBarHeight);
+
 const styles = StyleSheet.create({
   searchBarContainer: {
     position: 'absolute',
@@ -293,14 +295,15 @@ const styles = StyleSheet.create({
   navbarBackground: {
     backgroundColor: WHITE,
     // height: 83,
-    height: 98,
+    // height: 98,
+    height: Constants.statusBarHeight + 60,
     position: 'absolute',
     width: '100%',
   },
   navbarIcon: {
     marginLeft: 27,
     marginRight: 35,
-    marginTop: 28,
+    marginTop: Constants.statusBarHeight - 10,
   },
   container: {
     flex: 1,
