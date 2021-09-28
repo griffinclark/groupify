@@ -53,5 +53,6 @@ const styles = StyleSheet.create({
   },
   container: {
     overflow: 'scroll',
+    marginBottom: 45,
   },
 });

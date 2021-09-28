@@ -8,7 +8,7 @@ import { Auth, DataStore } from 'aws-amplify';
 import { User } from '../models';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
 import { PlanTextMessage } from '../molecules/PlanTextMessage';
-import { TEAL } from '../res/styles/Colors';
+import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
 import Constants from 'expo-constants';
 
 interface Props {
@@ -164,7 +164,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
               CONTACTS
             </AppText>
           </View>
-          <View style={[styles.menuItemNotSelectedContainer, styles.menuItemContainer]} />
+          {/* <View style={[styles.menuItemNotSelectedContainer, styles.menuItemContainer]} /> */}
         </View>
 
         <View style={{ flex: 1 }}>
@@ -185,31 +185,27 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           )}
 
           {menuItemSelected === 'contacts' && (
-            <ScrollView>
-              <View style={styles.contactsContainer}>
-                <PlanTextMessage
-                  label="Once you create this event, we will send out a text message to your contacts who haven’t joined the app yet as shown below. Feel free to edit:"
-                  onChangeText={(e) => setMessage(e)}
-                  text={message}
-                />
-                <View style={styles.searchbar}>
-                  <SearchBar onInputChange={searchFriends} placeholder="Search for Contacts to Invite" />
+            <>
+              <PlanTextMessage
+                label="Once you create this event, we will send out a text message to your contacts who haven’t joined the app yet as shown below. Feel free to edit:"
+                onChangeText={(e) => setMessage(e)}
+                text={message}
+              />
+              <View style={{ paddingVertical: 30, borderBottomWidth: 0.75, borderBottomColor: GRAY_LIGHT }}>
+                <SearchBar onInputChange={searchFriends} placeholder="Search for Contacts to Invite" />
+              </View>
+              <ScrollView>
+                <View style={styles.contactsContainer}>
                   <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
                 </View>
-                {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a contact to continue'} />}
-                {/* <TouchableOpacity onPress={sendContactMessage} disabled={selectedContacts.length === 0 ? true : false}>
-                {selectedContacts.length > 0 ? (
-                  <AppText style={[styles.navText, { backgroundColor: TEAL, color: WHITE }]}>Next</AppText>
-                ) : (
-                  <AppText style={[styles.navText, { backgroundColor: GREY_4, color: GREY_3 }]}>Next</AppText>
-                )}
-              </TouchableOpacity> */}
-              </View>
-            </ScrollView>
+              </ScrollView>
+            </>
           )}
         </View>
       </View>
-
+      <View style={{ position: 'absolute', bottom: 50, width: '100%', alignSelf: 'center' }}>
+        {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a contact to continue'} />}
+      </View>
       <BottomButton
         disabled={selectedContacts.length == 0 ? true : false}
         title="Preview Plan"
@@ -251,7 +247,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 3,
     paddingBottom: 13,
-    width: '50%',
+    width: '100%',
   },
   menuItemSelectedContainer: {
     borderBottomColor: TEAL,
@@ -273,10 +269,6 @@ const styles = StyleSheet.create({
   body: {
     marginHorizontal: 20,
     justifyContent: 'space-between',
-  },
-  searchbar: {
-    flex: 1,
-    marginTop: 30,
   },
   friendBubbleContainer: {
     flexDirection: 'row',
