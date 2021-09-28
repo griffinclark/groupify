@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
-import { AppText, Screen, BottomButton, MeepForm, Alert, Navbar } from '../atoms/AtomsExports';
+import { AppText, BottomButton, MeepForm, Alert, Navbar } from '../atoms/AtomsExports';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { User } from '../models';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
 import { MapLinkIcon } from '../../assets/Icons/IconExports';
