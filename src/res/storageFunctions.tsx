@@ -125,7 +125,7 @@ export const setUserPushToken: (token: string) => Promise<void> = async (token: 
   }
 };
 
-export const getUserPushToken: () => Promise<string> = async () => {
+export const getUserPushToken: () => Promise<string | null> = async () => {
   try {
     let token = await AsyncStorage.getItem('pushToken');
     return token;

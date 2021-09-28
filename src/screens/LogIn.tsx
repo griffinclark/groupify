@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Auth } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts, getUserPushToken, setUserPushToken } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
@@ -14,6 +14,7 @@ import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Image } from 'react-native-elements/dist/image/Image';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
+import * as queries from '../graphql/queries';
 
 interface Props {
   navigation: {
@@ -55,7 +56,8 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     await registerForPushNotifications();
     const token = await getUserPushToken();
     const userInfo = await Auth.currentUserInfo();
-    const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
+    const userQuery = await API.graphql({ query: queries.usersByPhoneNumber, variables: {phoneNumber: userInfo.attributes.phone_number}});
+    const users = userQuery.data.usersByPhoneNumber.items;
     if (users.length > 0) {
       const user = users[0];
       const pushTokenRegex = /ExponentPushToken\[.{22}]/;
@@ -77,6 +79,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       const newUser = await DataStore.save(
         new User({
           phoneNumber: userInfo.attributes.phone_number,
+          email: 'placeHolder@temporaryWorkAround.com',
           name: userInfo.attributes.name,
           pushToken: newToken,
           friends: [],

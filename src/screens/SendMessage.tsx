@@ -12,6 +12,7 @@ import { Icon } from 'react-native-elements';
 import { Plan, Status, Invitee, User } from '../models';
 import { sendPushNotification } from '../res/notifications';
 import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
+import * as queries from '../graphql/queries';
 
 interface Props {
   navigation: {
@@ -151,8 +152,10 @@ ${event.description} \
     const pushTokenRegex = /ExponentPushToken\[.{22}]/;
     for (let i = 0; i < inviteeList.length; i++) {
       const invitee = inviteeList[i];
-      const user = await DataStore.query(User, (user) => user.phoneNumber('eq', invitee.phoneNumber));
+      const userQuery = await API.graphql({ query: queries.usersByPhoneNumber, variables: {phoneNumber: invitee.phoneNumber}})
+      const user = userQuery.data.usersByPhoneNumber.items;
       if (user.length > 0) {
+        console.log(user[0].pushToken);
         if(pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken){
           sendPushNotification(user[0].pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
         }
