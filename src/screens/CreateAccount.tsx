@@ -143,7 +143,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             name="left"
             type="font-awesome"
             size={30}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate('Welcome', {})}
           />
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
             {route.params.step === 'create' && (
