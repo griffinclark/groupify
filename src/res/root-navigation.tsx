@@ -2,8 +2,7 @@ import React from 'react';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import { Home } from '../screens/Home';
-import { SelectFriends } from '../screens/SelectFriends';
-import { CreateCustomEvent } from '../screens/CreateCustomEvent';
+import { PlanInvite } from '../screens/PlanInvite';
 import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
@@ -12,8 +11,9 @@ import { SendMessage } from '../screens/SendMessage';
 import { SetAvailability } from '../screens/SetAvailability';
 import { EditFriends } from '../screens/EditFriends';
 import { Contact } from './dataModels';
-import { SearchPlace } from '../screens/SearchPlace';
+import { PlanMap } from '../screens/PlanMap';
 import { PlanDetails } from '../screens/PlanDetails';
+import { PlanCreate } from '../screens/PlanCreate';
 import { InvitedPlans } from '../screens/InvitedPlans';
 import { InviteeList } from '../screens/inviteList';
 // import { Attendees } from '../organisms/attendees';
@@ -63,9 +63,10 @@ interface RootProps {
 const Stack = createStackNavigator();
 export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParams }: RootProps) => {
   console.log('Initial route: ' + initialRoute);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={initialRoute}>
+      <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ animationEnabled: false }}>
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccount}
@@ -74,14 +75,14 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         />
         <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} initialParams={initialParams} options={{ headerShown: false }} />
-        <Stack.Screen name="SelectFriends" component={SelectFriends} options={{ headerShown: false }} />
-        <Stack.Screen name="CreateCustomEvent" component={CreateCustomEvent} options={{ headerShown: false }} />
+        <Stack.Screen name="SelectFriends" component={PlanInvite} options={{ headerShown: false }} />
+        <Stack.Screen name="PlanCreate" component={PlanCreate} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContactDetails" component={ImportContactDetails} options={{ headerShown: false }} />
         <Stack.Screen name="SendMessage" component={SendMessage} options={{ headerShown: false }} />
         <Stack.Screen name="SetAvailability" component={SetAvailability} options={{ headerShown: false }} />
         <Stack.Screen name="EditFriends" component={EditFriends} options={{ headerShown: false }} />
-        <Stack.Screen name="SearchPlace" component={SearchPlace} options={{ headerShown: false }} />
+        <Stack.Screen name="PlanMap" component={PlanMap} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name="PlanDetails" component={PlanDetails} options={{ headerShown: false }} />
         <Stack.Screen name="InvitedPlans" component={InvitedPlans} options={{ headerShown: false }} />

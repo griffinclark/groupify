@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView, { LatLng, Marker, Point, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { v4 as uuidv4 } from 'uuid';
 import { PlaceCard } from '../molecules/MoleculesExports';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { mapStyles } from '../res/styles/MapStyles';
 import { RoutePropParams } from '../res/root-navigation';
-import { TEAL } from '../res/styles/Colors';
-import { Button } from '../atoms/AtomsExports';
-import { AppText } from '../atoms/AppText';
+import Constants from 'expo-constants';
+
+import { AppText } from '../atoms/AtomsExports';
+import { BackChevronIcon } from '../../assets/Icons/BackChevron';
+import { TEAL, WHITE } from '../res/styles/Colors';
 
 interface Props {
   navigation: {
@@ -43,7 +44,7 @@ interface POI {
   name: string;
 }
 
-export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
+export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
@@ -58,7 +59,8 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
   const markerRef = useRef<Marker>(null);
   const [placeCard, setPlaceCard] = useState<JSX.Element>();
   const [sessionToken, setSessionToken] = useState(uuidv4());
-  const [mapPopupOpen, setMapPopupOpen] = useState(true);
+  // const [mapPopupOpen, setMapPopupOpen] = useState(true);
+  // const [markerImg, setMarkerImg] = useState();
 
   useEffect(() => {
     (async () => {
@@ -105,10 +107,10 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
             latitude: detail.geometry.location.lat,
             longitude: detail.geometry.location.lng,
           }}
-          title={detail.name}
-          description={detail.formatted_address}
+          icon={require('../../assets/MapMarker.png')}
         />,
       );
+
       if (markerRef && markerRef.current) {
         markerRef.current.showCallout();
       }
@@ -127,15 +129,15 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
       ).catch((error) => console.log(error));
       setPlaceCard(
         <PlaceCard
-          style={{ height: height }}
+          //   style={{ height: height }}
           name={detail.name}
           address={detail.formatted_address}
           rating={moreDetails.rating ? moreDetails.rating : undefined}
           userRatings={moreDetails.user_ratings_total ? moreDetails.user_ratings_total : undefined}
           priceLevel={moreDetails.price_level ? moreDetails.price_level : undefined}
-          distance={distanceInfo ? distanceInfo.distance : undefined}
-          duration={distanceInfo ? distanceInfo.duration : undefined}
-          openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
+          // distance={distanceInfo ? distanceInfo.distance : undefined}
+          // duration={distanceInfo ? distanceInfo.duration : undefined}
+          // openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
           onButtonPress={() =>
@@ -162,7 +164,7 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   const onButtonPress = (title: string, address: string, placeId: string, photo: string) => {
-    navigation.navigate('CreateCustomEvent', {
+    navigation.navigate('PlanCreate', {
       currentUser: route.params.currentUser,
       data: {
         eventData: {
@@ -186,8 +188,8 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
     setPlaceCard(undefined);
     setMapMarker(undefined);
   };
-
   return (
+    // <Screen>
     <View style={styles.container}>
       {/* TODO: Show categories */}
       {/* TODO: Show multiple markers */}
@@ -202,15 +204,14 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
       >
         {mapMarker ? mapMarker : null}
       </MapView>
+
       <View style={styles.navbar}>
-        <Icon
-          name="arrow-left"
-          type="font-awesome"
-          size={30}
-          onPress={() => navigation.navigate('Home', {})}
-          style={{ marginTop: 7.5 }}
-        />
-        <View style={{ padding: 10 }} />
+        <View style={styles.navbarBackground} />
+
+        <View style={styles.navbarIcon}>
+          <BackChevronIcon onPress={() => navigation.navigate('PlanCreate', {})} />
+        </View>
+
         <GooglePlacesAutocomplete
           placeholder="Search"
           query={{
@@ -225,14 +226,18 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
           enablePoweredByContainer={false}
           styles={{
             textInput: {
-              borderRadius: 15,
+              borderColor: '#C5C5C5',
+              borderRadius: 5,
+              borderWidth: 1,
+              marginRight: 20,
+              marginTop: Constants.statusBarHeight - 15,
             },
           }}
           renderRow={(rowData) => {
             const title = rowData.structured_formatting.main_text;
             const address = rowData.structured_formatting.secondary_text;
             return (
-              <View>
+              <View style={{ position: 'absolute' }}>
                 <AppText style={{ fontSize: 14, fontWeight: '700' }}>{title}</AppText>
                 <AppText style={{ fontSize: 14 }}>{address}</AppText>
               </View>
@@ -240,7 +245,8 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
           }}
         />
       </View>
-      {mapPopupOpen ? (
+
+      {/* {mapPopupOpen ? (
         <View style={styles.popup}>
           <View style={styles.mapPopup}>
             <AppText style={styles.mapPopupText}>Select or search for a location on the map for your plan.</AppText>
@@ -256,11 +262,14 @@ export const SearchPlace: React.FC<Props> = ({ navigation, route }: Props) => {
       >
         <AppText style={styles.skipText}>Skip</AppText>
       </TouchableOpacity>
-      <View style={styles.searchBarContainer}>{/* X button on the right to clear input field */}</View>
+      <View style={styles.searchBarContainer}>X button on the right to clear input field</View> */}
       {placeCard ? placeCard : null}
     </View>
+    /* </Screen> */
   );
 };
+
+console.log(Constants.statusBarHeight);
 
 const styles = StyleSheet.create({
   searchBarContainer: {
@@ -276,17 +285,29 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
   },
   navbar: {
-    position: 'absolute',
-    top: 50,
-    paddingHorizontal: 5,
-    display: 'flex',
-    alignSelf: 'center',
-    width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+
+    paddingTop: 15,
+  },
+  navbarBackground: {
+    backgroundColor: WHITE,
+    // height: 83,
+    // height: 98,
+    height: Constants.statusBarHeight + 60,
+    position: 'absolute',
+    width: '100%',
+  },
+  navbarIcon: {
+    marginLeft: 27,
+    marginRight: 35,
+    marginTop: Constants.statusBarHeight - 10,
   },
   container: {
     flex: 1,
+    // paddingTop: Constants.statusBarHeight,
   },
   skip: {
     position: 'absolute',
