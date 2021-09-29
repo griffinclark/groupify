@@ -133,7 +133,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
       <Navbar location={'PlanCreate'} navigation={navigation} title={'Invite Friends'} />
 
       <View style={styles.title}>
-        <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}</AppText>
+        <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}?</AppText>
       </View>
 
       <View style={styles.friendContainer}>
