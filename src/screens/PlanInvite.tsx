@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
@@ -185,21 +185,26 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           )}
 
           {menuItemSelected === 'contacts' && (
-            <>
-              <PlanTextMessage
-                label="Once you create this event, we will send out a text message to your contacts who haven’t joined the app yet as shown below. Feel free to edit:"
-                onChangeText={(e) => setMessage(e)}
-                text={message}
-              />
+            <ScrollView>
+              <View>
+                <PlanTextMessage
+                  label="Once you create this event, we will send out a text message to your contacts who haven’t joined the app yet as shown below. Feel free to edit:"
+                  onChangeText={(e) => setMessage(e)}
+                  text={message}
+                />
+              </View>
               <View style={{ paddingVertical: 30, borderBottomWidth: 0.75, borderBottomColor: GRAY_LIGHT }}>
                 <SearchBar onInputChange={searchFriends} placeholder="Search for Contacts to Invite" />
               </View>
-              <ScrollView>
-                <View style={styles.contactsContainer}>
-                  <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
-                </View>
-              </ScrollView>
-            </>
+
+              <View style={styles.contactsScrollContainer}>
+                <ScrollView>
+                  <View style={styles.contactsContainer}>
+                    <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
+                  </View>
+                </ScrollView>
+              </View>
+            </ScrollView>
           )}
         </View>
       </View>
@@ -216,6 +221,9 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
 };
 //
 const styles = StyleSheet.create({
+  contactsScrollContainer: {
+    height: Dimensions.get('window').height - Constants.statusBarHeight - 340,
+  },
   screen: {
     flex: 1,
     backgroundColor: 'white',
