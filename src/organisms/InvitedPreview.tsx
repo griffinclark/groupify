@@ -13,70 +13,77 @@ interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
+  reload: boolean;
 }
 
-export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation }: Props) => {
+export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, reload }: Props) => {
   const [pendingSelected, setPendingSelected] = useState(false);
   const [acceptedSelected, setAcceptedSelected] = useState(true);
-  const [pendingPlans, setPendingPlans] = useState([]);
-  const [acceptedPlans, setAcceptedPlans] = useState([]);
+  const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
+  const [acceptedPlans, setAcceptedPlans] = useState<Plan[]>([]);
 
   useEffect(() => {
     getPendingPlans();
     getAcceptedPlans();
-  }, []);
+  }, [reload]);
 
   const getPendingPlans = () => {
+    setPendingPlans([]);
     let x = 0;
-    for (let i = 0; i < invitedPlans.length; i++) {
-      if (pendingPlans.length >= 3) {
-        break;
-      }
-      const plan = invitedPlans[i];
-      loadInviteeStatus(plan).then((result) => {
-        if (result === 'PENDING') {
-          x++;
-          const newPlan = [
-            <MiniPlanTile
-              key={plan.id}
-              plan={plan}
-              onPress={() => {
-                navigation.navigate('PlanDetails', { plan: plan });
-              }}
-            />,
-          ];
-          if (x <= 3) {
-            setPendingPlans((pendingPlans) => [...pendingPlans, newPlan]);
-          }
+    if (pendingPlans.length == 0) {
+      for (let i = 0; i < invitedPlans.length; i++) {
+        if (pendingPlans.length >= 3) {
+          break;
         }
-      });
+        const plan = invitedPlans[i];
+        loadInviteeStatus(plan).then((result) => {
+          if (result === 'PENDING') {
+            x++;
+            const newPlan = [
+              <MiniPlanTile
+                key={plan.id}
+                plan={plan}
+                onPress={() => {
+                  navigation.navigate('PlanDetails', { plan: plan });
+                }}
+              />,
+            ];
+            if (x <= 3) {
+              setPendingPlans((pendingPlans) => [...pendingPlans, newPlan]);
+            }
+          }
+        });
+      }
     }
   };
 
   const getAcceptedPlans = async () => {
+    setAcceptedPlans([]);
     let x = 0;
-    for (let i = 0; i < invitedPlans.length; i++) {
-      if (acceptedPlans.length >= 3) {
-        break;
-      }
-      const plan = invitedPlans[i];
-      loadInviteeStatus(plan).then((result) => {
-        if (result === 'ACCEPTED') {
-          x++;
-          const newPlan = [
-            <MiniPlanTile
-              key={plan.id}
-              plan={plan}
-              onPress={() => {
-                navigation.navigate('PlanDetails', { plan: plan });
-              }}
-            />,
-          ];
-          if (x <= 3) {
-            setAcceptedPlans((acceptedPlans) => [...acceptedPlans, newPlan]);
-          }
+    if (acceptedPlans.length == 0) {
+      for (let i = 0; i < invitedPlans.length; i++) {
+        if (acceptedPlans.length >= 3) {
+          break;
         }
-      });
+        const plan = invitedPlans[i];
+        loadInviteeStatus(plan).then((result) => {
+          if (result === 'ACCEPTED') {
+            x++;
+            const newPlan = [
+              <MiniPlanTile
+                key={plan.id}
+                plan={plan}
+                onPress={() => {
+                  navigation.navigate('PlanDetails', { plan: plan });
+                }}
+              />,
+            ];
+            if (x <= 3) {
+              setAcceptedPlans((acceptedPlans) => [...acceptedPlans, newPlan]);
+            }
+          }
+        });
+      }
     }
   };
 
@@ -109,7 +116,9 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation }: Pr
           <View style={{ padding: 30 }}>
             <AppText style={{ textAlign: 'center', fontSize: 20 }}>No pending plans at the moment.</AppText>
             <TouchableOpacity onPress={() => navigation.navigate('SearchPlace', {})}>
-              <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL, marginTop: 30 }}>You can create one!</AppText>
+              <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL, marginTop: 30 }}>
+                You can create one!
+              </AppText>
             </TouchableOpacity>
           </View>
         ))}
@@ -118,7 +127,9 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation }: Pr
           acceptedPlans
         ) : (
           <View style={{ padding: 20, marginHorizontal: 30 }}>
-            <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>Looks like you have no upcoming plans</AppText>
+            <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>
+              Looks like you have no upcoming plans
+            </AppText>
           </View>
         ))}
 

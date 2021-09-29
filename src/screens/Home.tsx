@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { RefreshControl, StyleSheet, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { background, GREY_0, TEAL } from './../res/styles/Colors';
 import { getCurrentUser, isFuturePlan, sortPlansByDate } from './../res/utilFunctions';
@@ -33,6 +33,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
   const [trigger, setTrigger] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -42,7 +43,13 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       setTrigger(!trigger);
     };
     awaitUser();
-  }, []);
+  }, [refreshing]);
+
+  const onHomeRefresh = () => {
+    setRefreshing(true);
+    loadPlans(currentUser).then(() => setRefreshing(false));
+    setTrigger(!trigger);
+  };
 
   const loadPlans = async (user: User) => {
     console.log('Loading plans');
@@ -81,7 +88,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <Screen style={{ backgroundColor: background }}>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
         <View style={styles.header}>
           <AppText style={[globalStyles.superTitle, styles.greeting]}>{createGreeting()}</AppText>
           <View></View>
@@ -91,12 +98,12 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
             <View>
               <View>
                 <AppText style={styles.label}>COMING UP NEXT</AppText>
-                <NextPlan navigation={navigation} plan={userPlans.concat(invitedPlans)[0]} />
+                <NextPlan reload={trigger} navigation={navigation} plan={userPlans.concat(invitedPlans)[0]} />
               </View>
               <View style={globalStyles.miniSpacer}></View>
               <View>
                 <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
-                <InvitedPreview navigation={navigation} invitedPlans={invitedPlans} />
+                <InvitedPreview reload={trigger} navigation={navigation} invitedPlans={invitedPlans} />
                 <View style={globalStyles.miniSpacer}></View>
               </View>
               <View style={{ height: 360 }}>

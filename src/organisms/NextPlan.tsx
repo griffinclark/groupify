@@ -14,9 +14,10 @@ interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
+  reload: boolean;
 }
 
-export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
+export const NextPlan: React.FC<Props> = ({ plan, navigation, reload }: Props) => {
   const [photoURI, setPhotoURI] = useState('');
   const [hostName, setHostName] = useState('');
   const [acceptedInvitees, setAcceptedInvitees] = useState<Invitee[]>([]);
@@ -30,7 +31,7 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
         setPhotoURI(await loadPhoto(plan.placeID));
       }
     })();
-  }, []);
+  }, [reload]);
 
   const getHost = async (id: string) => {
     const user = await DataStore.query(User, id);
