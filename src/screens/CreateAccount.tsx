@@ -6,11 +6,9 @@ import { Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { WHITE, TEAL } from '../res/styles/Colors';
-//import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
-import { AntDesign } from '@expo/vector-icons';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 
 interface Props {

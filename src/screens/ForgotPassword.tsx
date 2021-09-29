@@ -7,7 +7,6 @@ import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { WHITE, TEAL } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
-import { AntDesign } from '@expo/vector-icons';
 import { AppText } from '../atoms/AppText';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 
