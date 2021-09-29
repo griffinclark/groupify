@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { WHITE, GREY_5, TEAL } from '../res/styles/Colors';
-import { Button, Title, Screen, AlertModal } from '../atoms/AtomsExports';
+import { WHITE, TEAL } from '../res/styles/Colors';
+import { Button, Screen, AlertModal } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { RoutePropParams } from '../res/root-navigation';
 import { getCurrentUser } from '../res/utilFunctions';
