@@ -19,13 +19,11 @@ interface Props {
 export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
   const [openModal, setOpenModal] = useState(false);
-  const [showRespondOptions, setShowRespondOptions] = useState(false);
 
   useEffect(() => {
     const awaitUser = async () => {
       const user = await getCurrentUser();
       setCurrentUser(user);
-      setShowRespondOptions(true);
     };
     awaitUser();
   }, []);
