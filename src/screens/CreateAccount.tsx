@@ -186,7 +186,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                   />
                   {error && <Alert status="error" message={error} />}
                 </View>
-                <View style={{ margin: 20 }}>
+                <View style={{ paddingTop: 200 }}>
                   <Button title="Next" onPress={signUp} disabled={disabled} />
                 </View>
               </View>
@@ -203,39 +203,41 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                   />
                   <AppText style={styles.title}>Verify Phone Number</AppText>
                 </View>
-                <AppText style={styles.details}>Please enter the verification code you received.</AppText>
                 <View>
-                  <FormInput
-                    returnKeyNext={false}
-                    autoFocus={true}
-                    label="Verification Code"
-                    onChangeText={(value) => {
-                      setCode(value.trim());
-                    }}
-                    secureTextEntry={true}
-                  />
-                  {error && <Alert status="error" message={error} />}
-                  {success && <Alert status="success" message={success} />}
-                  <TouchableOpacity
-                    onPress={() => {
-                      try {
-                        console.log(route.params.phone);
-                        Auth.resendSignUp(route.params.phone);
-                        setSuccess('Sent new verification code');
-                        setError(undefined);
-                      } catch (err: any) {
-                        console.log(err);
-                        setError(err.message);
-                      }
-                    }}
-                    style={styles.buttonStyle}
-                  >
-                    <AppText style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>
-                      Send New Verification Code
-                    </AppText>
-                  </TouchableOpacity> 
+                  <AppText style={styles.details}>Please enter the verification code you received.</AppText>
+                  <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+                    <FormInput
+                      returnKeyNext={false}
+                      autoFocus={true}
+                      label="Verification Code"
+                      onChangeText={(value) => {
+                        setCode(value.trim());
+                      }}
+                      secureTextEntry={true}
+                    />
+                    {error && <Alert status="error" message={error} />}
+                    {success && <Alert status="success" message={success} />}
+                    <TouchableOpacity
+                      onPress={() => {
+                        try {
+                          console.log(route.params.phone);
+                          Auth.resendSignUp(route.params.phone);
+                          setSuccess('Sent new verification code');
+                          setError(undefined);
+                        } catch (err: any) {
+                          console.log(err);
+                          setError(err.message);
+                        }
+                      }}
+                      style={styles.buttonStyle}
+                    >
+                      <AppText style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>
+                        Send New Verification Code
+                      </AppText>
+                    </TouchableOpacity>
+                  </TouchableWithoutFeedback>
                 </View>
-                <View style={{ Bottom: 0 }}>
+                <View style={{ paddingTop: 250 }}>
                   <Button title="Next" onPress={validateUser} disabled={disabled} />
                 </View>
               </View>
@@ -271,14 +273,11 @@ const styles = StyleSheet.create({
   },
   validateContainer: {
     justifyContent: 'space-between',
-    height: '100%',
   },
   details: {
-    display: 'flex',
-    marginTop: 40,
+    fontSize: 20,
     marginLeft: 20,
-    paddingBottom: 70,
-    position: 'absolute',
-    fontSize: 16,
+    paddingBottom: 50,
+    paddingTop: 20,
   },
 });

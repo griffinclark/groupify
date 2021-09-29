@@ -14,6 +14,7 @@ import { Plan, Status, Invitee, User } from '../models';
 import { sendPushNotification } from '../res/notifications';
 import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import uuid from 'uuid';
 
 interface Props {
   navigation: {
@@ -35,6 +36,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   const [planDescription] = useState('');
   const [message, setMessage] = useState<string>('Loading Message...');
   const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
+  const [error, setError] = useState<string | undefined>();
   const [updatedValues, setUpdatedValues] = useState<{
     eventName: string | undefined;
     eventDate: string | undefined;
@@ -86,37 +88,27 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     },
   ];
 
-  const setValues = (value: { title: string; value: string | undefined }[]) => {
-    const values = {
-      eventName: value[0].value,
-      eventDate: value[1].value,
-      eventTime: value[2].value,
-      eventLocation: value[3].value,
-      eventDescription: value[4].value,
-    };
-    setUpdatedValues(values);
-  };
-
   const getUserName = async (): Promise<string> => {
     const userInfo = await Auth.currentUserInfo();
     return userInfo.attributes.name;
   };
 
-  const formatPhoneNumber = (friend: Contact) => {
-    const util = PhoneNumberUtil.getInstance();
-    const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
-    const newNumber = util.format(num, PhoneNumberFormat.E164);
-    return newNumber;
-  };
-
-  const pushEvent = async (friends: Contact[], message: string): Promise<void> => {
-    const util = PhoneNumberUtil.getInstance();
-    const attendees = friends.map((friend) => {
-      const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
-      return util.format(num, PhoneNumberFormat.E164);
-    });
-    const obj = { attendees: attendees, content: message };
-    console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
+  const onPressSend = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      await storeInvitees();
+      if (event.contacts.length > 0) {
+        await pushEvent(event.contacts, message);
+      }
+      navigation.push('Home');
+    } catch (err) {
+      console.log(err);
+      if (err.message === 'The string supplied did not seem to be a phone number') {
+        createErrorAlert(event.contacts, message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const createConfirmAlert = (): void => {
@@ -142,6 +134,51 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         await pushEvent(friends, message);
       },
     });
+  };
+
+  const formatPhoneNumber = (friend: Contact) => {
+    const util = PhoneNumberUtil.getInstance();
+    const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+    const newNumber = util.format(num, PhoneNumberFormat.E164);
+    return newNumber;
+  };
+
+  const pushEvent = async (friends: Contact[], message: string): Promise<void> => {
+    const util = PhoneNumberUtil.getInstance();
+    const attendees = friends.map((friend) => {
+      const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+      return util.format(num, PhoneNumberFormat.E164);
+    });
+    const obj = { attendees: attendees, content: message };
+    console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
+  };
+
+  const setValues = (value: { title: string; value: string | undefined }[]) => {
+    const values = {
+      eventName: value[0].value,
+      eventDate: value[1].value,
+      eventTime: value[2].value,
+      eventLocation: value[3].value,
+      eventDescription: value[4].value,
+    };
+    if (!values.eventName) {
+      setError('Please add a name to your plan');
+      return;
+    }
+    if (!values.eventLocation) {
+      setError('Please add a location to your plan');
+      return;
+    }
+    if (!values.eventDescription) {
+      setError('Please add a description to your plan');
+      return;
+    }
+    route.params.data.eventData.title = values.eventName;
+    route.params.data.eventData.description = values.eventDescription;
+    route.params.data.eventData.location = values.eventLocation;
+    route.params.data.eventData.date = values.eventDate;
+    route.params.data.eventData.time = values.eventTime;
+    setUpdatedValues(values);
   };
 
   const storeInvitees = async () => {
@@ -218,24 +255,6 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     console.log(newPlan);
   };
 
-  const onPressSend = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      await storeInvitees();
-      if (event.contacts.length > 0) {
-        await pushEvent(event.contacts, message);
-      }
-      navigation.push('Home');
-    } catch (err) {
-      console.log(err);
-      if (err.message === 'The string supplied did not seem to be a phone number') {
-        createErrorAlert(event.contacts, message);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   interface renderContactProps {
     item: Contact;
   }
@@ -250,7 +269,6 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       </View>
     );
   };
-
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Screen style={{ backgroundColor: WHITE }}>
