@@ -3,19 +3,14 @@ import { StyleSheet, View, ActivityIndicator, Linking, Platform, Keyboard } from
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
-import { WHITE, GREY_5, TEAL } from '../res/styles/Colors';
-import {
-  deleteAllImportedContacts,
-  deleteImportedContactFromID,
-  getAllImportedContacts,
-  storeImportedContact,
-} from '../res/storageFunctions';
-import { Button, Title, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
+import { WHITE, TEAL } from '../res/styles/Colors';
+import { deleteImportedContactFromID, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
+import { Button, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 
 interface Props {
   navigation: {
@@ -37,7 +32,6 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [addedContacts, setAddedContacts] = useState<Contact[]>([]);
   const [state, setState] = useState<State>(State.Empty);
   const [openModal, setOpenModal] = useState(false);
-  const [showRespondOptions, setShowRespondOptions] = useState(false);
 
   useEffect(() => {
     setState(State.Loading);
@@ -83,7 +77,6 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const loadImportedContacts = async () => {
     await getAllImportedContacts().then((contacts) => {
       setAddedContacts(contacts);
-      setShowRespondOptions(true);
       if (contacts.length > 0) {
       }
     });
@@ -114,18 +107,17 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       addUser={addSelectedContact}
       removeUser={removeSelectedContact}
       friend={item}
-      isSelected={addedContacts.find((contact) => contact.id === item.id)}
+      isSelected={addedContacts.find((contact) => contact.id === item.id) === undefined ? false : true}
     />
   );
 
   return (
     <Screen style={{ backgroundColor: WHITE }}>
-      <View style={{ flex: 1, justifyContent: 'space-between' }}>
+      <View style={{ flex: 1, paddingHorizontal: 20, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
-            <AntDesign name="left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
-            <Title>Contacts</Title>
-            <AppText style={{ color: 'white' }}>blank</AppText>
+            <BackChevronIcon onPress={() => navigation.navigate('ImportContactDetails', {})} />
+            <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL, marginLeft: 15 }}>Select Contacts</AppText>
           </View>
           <SearchBar onInputChange={searchContacts} />
           <View style={styles.flatListContainer}>
@@ -157,53 +149,19 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
             />
           </View>
         </View>
-        {showRespondOptions ? (
-          <View style={styles.planResponse}>
-            <TouchableOpacity onPress={() => setOpenModal(true)}>
-              <AppText style={styles.skipStyle}>Skip</AppText>
-            </TouchableOpacity>
-            {addedContacts.length > 0 ? (
-              <Button
-                title={'Import Contacts'}
-                onPress={async () => {
-                  await deleteAllImportedContacts();
-                  await storeSelectedContacts();
-                  navigation.navigate('Home');
-                }}
-                disabled={addedContacts.length < 0}
-              />
-            ) : (
-              <Button
-                title={'Import Contacts'}
-                onPress={async () => {
-                  await deleteAllImportedContacts();
-                  await storeSelectedContacts();
-                  navigation.navigate('Home');
-                }}
-                disabled={true}
-              />
-            )}
-          </View>
-        ) : (
-          <View></View>
-        )}
-        {/*
-        {addedContacts.length > 0 ? (
-          <View>
-            <Button
-              title="Save Contacts"
-              onPress={async () => {
-                // await deleteAllImportedContacts();
-                // await storeSelectedContacts();
-                navigation.navigate('Home');
-              }}
-            />
-          </View>
-        ) : (
-          <View>
-            <Button title="Skip" onPress={() => setOpenModal(true)} />
-          </View>
-        )}*/}
+        <View style={styles.planResponse}>
+          <TouchableOpacity onPress={() => setOpenModal(true)}>
+            <AppText style={styles.skipStyle}>Skip</AppText>
+          </TouchableOpacity>
+          <Button
+            buttonStyle={{ width: 210 }}
+            title={'Import Contacts'}
+            onPress={async () => {
+              navigation.navigate('Home');
+            }}
+            disabled={addedContacts.length === 0 ? true : false}
+          />
+        </View>
       </View>
       {openModal && (
         <AlertModal
@@ -222,39 +180,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 150,
-    marginHorizontal: 80,
-  },
-  contactContainer: {
-    color: 'purple',
-    fontWeight: 'bold',
-    fontSize: 26,
+    marginHorizontal: 60,
   },
   flatListContainer: {
     flexGrow: 1,
     flex: 1,
     marginVertical: 15,
   },
-  friendContainer: {
-    backgroundColor: GREY_5,
-    borderRadius: 10,
-    padding: 10,
-  },
   navbar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 20,
+    marginBottom: 30,
   },
   planResponse: {
+    marginHorizontal: '5%',
     flexDirection: 'row',
-    width: '50%',
+    width: '100%',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   skipStyle: {
-    paddingHorizontal: 15,
-    marginHorizontal: 50,
     color: TEAL,
-    fontWeight: 'bold',
+    fontWeight: '900',
     fontSize: 20,
   },
 });

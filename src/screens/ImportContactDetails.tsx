@@ -40,45 +40,42 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
   };
   return (
     <Screen style={{ backgroundColor: WHITE }}>
-      <Title>Import Contacts</Title>
+      <View style={{ flex: 1, paddingHorizontal: 20 }}>
+        <AppText style={{ fontWeight: '330', fontSize: 30, color: TEAL }}>Import Contacts</AppText>
 
-      <View style={styles.flatListContainer}>
-        <AppText style={{ fontSize: 20, paddingBottom: 20 }}>{createGreeting()}</AppText>
-        <Image
-          source={require('../../assets/Contacts-Graphic.png')}
-          style={{ height: 186, width: '100%' }}
-          resizeMode="contain"
-        />
-        <AppText style={{ fontSize: 20, marginBottom: '25%', paddingTop: 20 }}>
-          From your contact list, please select all people you’d like to import into Groupify.*
-        </AppText>
+        <View style={styles.flatListContainer}>
+          <AppText style={{ fontSize: 20, paddingBottom: 20 }}>{createGreeting()}</AppText>
+          <Image
+            source={require('../../assets/Contacts-Graphic.png')}
+            style={{ height: 186, width: '100%' }}
+            resizeMode="contain"
+          />
+          <AppText style={{ fontSize: 20, marginBottom: 40, paddingTop: 20 }}>
+            From your contact list, please select all people you’d like to import into Groupify.*
+          </AppText>
 
-        <AppText style={{ alignSelf: 'center', paddingBottom: 20 }}>
-          *You can always edit your contact list later.{' '}
-        </AppText>
-      </View>
-      {showRespondOptions ? (
+          <AppText style={{ alignSelf: 'center' }}>*You can always edit your contact list later. </AppText>
+        </View>
         <View style={styles.planResponse}>
           <TouchableOpacity onPress={() => setOpenModal(true)}>
             <AppText style={styles.skipStyle}>Skip</AppText>
           </TouchableOpacity>
           <Button
+            buttonStyle={{ width: 210 }}
             title={'Select Contacts'}
             onPress={() => {
               navigation.navigate('ImportContacts');
             }}
           />
         </View>
-      ) : (
-        <View></View>
-      )}
-      {openModal && (
-        <AlertModal
-          onConfirm={() => navigation.navigate('Home')}
-          onReject={() => setOpenModal(false)}
-          message="Are you sure you don't want to import contacts? You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later "
-        />
-      )}
+        {openModal && (
+          <AlertModal
+            onConfirm={() => navigation.navigate('Home')}
+            onReject={() => setOpenModal(false)}
+            message="Are you sure you don't want to import contacts? You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later "
+          />
+        )}
+      </View>
     </Screen>
   );
 };
@@ -88,35 +85,22 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 20,
   },
-  contactContainer: {
-    color: 'purple',
-    fontWeight: 'bold',
-    fontSize: 26,
-  },
   flatListContainer: {
     flexGrow: 1,
     flex: 1,
-    padding: 10,
-    paddingTop: 10,
-    paddingBottom: 20,
-  },
-  friendContainer: {
-    backgroundColor: GREY_5,
-    borderRadius: 10,
-    padding: 10,
+    paddingTop: 20,
+    paddingBottom: 30,
   },
   planResponse: {
+    marginHorizontal: '5%',
     flexDirection: 'row',
-    width: '50%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   skipStyle: {
-    borderRadius: 20,
-    paddingVertical: 10,
-    marginVertical: 10,
-    paddingHorizontal: 15,
-    marginHorizontal: 50,
     color: TEAL,
-    fontWeight: 'bold',
+    fontWeight: '900',
     fontSize: 20,
   },
 });
