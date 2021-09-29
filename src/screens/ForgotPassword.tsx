@@ -2,14 +2,14 @@ import { Auth } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, View, StyleSheet } from 'react-native';
-import { Image } from 'react-native-elements/dist/image/Image';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { background } from '../res/styles/Colors';
+import { WHITE, TEAL } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
 import { AntDesign } from '@expo/vector-icons';
 import { AppText } from '../atoms/AppText';
+import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 
 interface Props {
   navigation: {
@@ -86,37 +86,28 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Screen style={{ backgroundColor: background }}>
+      <Screen style={{ backgroundColor: WHITE }}>
         <ScrollView>
-          <AntDesign
-            style={{ position: 'relative', marginLeft: 20 }}
-            name="left"
-            type="font-awesome"
-            size={30}
-            onPress={() => navigation.navigate('Login', {})}
-          />
-          <View style={{ alignSelf: 'center', marginTop: 50, marginBottom: 25 }}>
-            <Image style={styles.logo} source={require('../../assets/logo.png')} />
+          <View style={{ flexDirection: 'row', paddingBottom: 20, marginHorizontal: 20 }}>
+            <BackChevronIcon onPress={() => navigation.navigate('Login', {})} />
+            <AppText style={styles.title}>Forgot Password</AppText>
           </View>
           {route.params.step === 'phone' && (
-            <View>
-              <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-                <AppText style={styles.title}>Forgot Password</AppText>
-                <FormInput
-                  returnKeyNext={true}
-                  label="Phone Number"
-                  value={phone}
-                  onChangeText={(number) => setPhone(formatPhoneNumber(number))}
-                />
-                {error && <Alert status="error" message={error} />}
-                <Button title="Next" onPress={confirmUserPhone} />
-              </TouchableWithoutFeedback>
-            </View>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+              <AppText style={styles.details}>Please enter your phone number.</AppText>
+              <FormInput
+                returnKeyNext={true}
+                label="Phone Number"
+                value={phone}
+                onChangeText={(number) => setPhone(formatPhoneNumber(number))}
+              />
+              {error && <Alert status="error" message={error} />}
+            </TouchableWithoutFeedback>
           )}
           {route.params.step === 'password' && (
             <View>
               <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-                <AppText style={styles.title}>Verification/New Password</AppText>
+                <AppText style={styles.title2}>Verification/New Password</AppText>
                 <FormInput
                   returnKeyNext={true}
                   label="Verification Code"
@@ -136,11 +127,11 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
                   secureTextEntry={true}
                 />
                 {error && <Alert status="error" message={error} />}
-                <Button title="Next" onPress={confirmResetPassword} />
               </TouchableWithoutFeedback>
             </View>
           )}
         </ScrollView>
+        <Button title="Next" onPress={route.params.step === 'phone' ? confirmUserPhone : confirmResetPassword} />
       </Screen>
     </KeyboardAvoidingView>
   );
@@ -148,9 +139,22 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
 
 const styles = StyleSheet.create({
   title: {
-    margin: 20,
+    marginLeft: 15,
+    color: TEAL,
     fontSize: 30,
-    fontWeight: '500',
+    fontWeight: '400',
+    paddingBottom: 20,
+  },
+  title2: {
+    marginLeft: 20,
+    fontSize: 30,
+    fontWeight: '400',
+    paddingBottom: 20,
+  },
+  details: {
+    fontSize: 30,
+    marginLeft: 20,
+    paddingBottom: 20,
   },
   logo: {
     width: 318,
