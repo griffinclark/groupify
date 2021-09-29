@@ -14,7 +14,6 @@ import { Plan, Status, Invitee, User } from '../models';
 import { sendPushNotification } from '../res/notifications';
 import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
-import uuid from 'uuid';
 
 interface Props {
   navigation: {
