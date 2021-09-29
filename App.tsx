@@ -8,8 +8,17 @@ import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import { User } from './src/models';
+import * as Notifications from 'expo-notifications';
 
 Amplify.configure(awsconfig);
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 export const App: React.FC = () => {
   const [initalScreen, setInitialScreen] = useState('');
