@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { fireEvent, render } from '@testing-library/react-native';
 import { Welcome } from '../Welcome';
 
 const mockProp = {
@@ -10,20 +10,26 @@ const mockProp = {
   },
 };
 
-// describe('Welcome Screen', () => {
-//   it('renders correctly', () => {
-//     const { getByText } = render(<Welcome {...mockProp} />);
-//     const text = getByText('Don&apos;t have an account?');
-//     expect(text.length).toBe(1);
-//   });
+describe('Welcome Screen', () => {
+  const { getAllByText } = render(<Welcome {...mockProp} />);
+  const loginButton = getAllByText('Log In');
+  const signupButton = getAllByText('Sign Up');
 
-//   // it('navigates to login page', () => {});
+  it('renders correctly', () => {
+    /* eslint-disable */
+    const text = getAllByText("Don't have an account?");
+    /* eslint-enable */
 
-//   // it('navigates to create account', () => {});
-// });
-
-describe('example', () => {
-  it('is what it is', () => {
-    expect('abc').toBe('abc');
+    expect(text).toHaveLength(1);
+    expect(loginButton).toHaveLength(1);
+    expect(signupButton).toHaveLength(1);
   });
+
+  it('navigates to login page', () => {
+    console.log(loginButton);
+
+    // fireEvent.press(loginButton);
+  });
+
+  // it('navigates to create account', () => {});
 });
