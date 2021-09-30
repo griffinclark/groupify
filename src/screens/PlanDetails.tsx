@@ -1,13 +1,14 @@
 import { DataStore, Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, FlatList, Linking, Platform } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, FlatList, Linking, Platform } from 'react-native';
 import { Screen, Button } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
-import { formatTime, convertDateStringToDate, loadPhoto } from '../res/utilFunctions';
-import { TEAL, GREY_4, GOLD, GREY_8 } from '../res/styles/Colors';
+import { formatTime, convertDateStringToDate, loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
+import { TEAL, GREY_4, GOLD, GREY_8, GRAY_LIGHT } from '../res/styles/Colors';
 import { Plan, User, Invitee, Status } from '../models';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { sendPushNotification } from '../res/notifications';
+import { BackChevronIcon } from '../../assets/Icons/BackChevron';
+import { Image } from 'react-native-elements';
 
 interface Props {
   navigation: {
@@ -119,10 +120,27 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View style={styles.titleContainer}>
-        <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
-        <AppText style={styles.title}>{plan.title}</AppText>
+        <BackChevronIcon onPress={() => navigation.goBack()} />
+        <AppText style={styles.title}>Plan Details</AppText>
       </View>
-      {photoURI ? <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover" /> : null}
+      <View style={styles.bodyContainer}>
+        {photoURI ? (
+          <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover">
+            <View style={styles.imageDetailContainer}>
+              <AppText style={styles.imageDetail}>
+                {formatDayOfWeekDate(plan.date).toString().substring(formatDayOfWeekDate(plan.date).toString().indexOf(' ') + 1)}
+              </AppText>
+            </View>
+            <View style={styles.imageDetailContainer}>
+              <AppText style={styles.imageDetail}>{formatTime(plan.time)}</AppText>
+            </View>
+            <View style={styles.imageDetailContainer}>
+              <AppText style={styles.imageDetail}>{plan.title}</AppText>
+            </View>
+          </Image>
+        ) : null}
+        {plan.description ? <AppText>{plan.description}</AppText> : null}
+      </View>
       <View style={styles.container}>
         <View style={styles.hostContainer}>
           <AppText style={styles.hostName}>{hostName}</AppText>
@@ -188,10 +206,45 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    height: 200,
-    width: '100%',
+  title: {
+    paddingLeft: 15,
+    fontSize: 30,
+    fontWeight: '400',
+    color: TEAL,
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 10,
+    paddingHorizontal: 15,
+    borderBottomWidth: 2,
+    borderColor: GRAY_LIGHT,
+  },
+  image: {
+    height: 182,
+    width: '100%',
+    borderRadius: 5,
+    justifyContent: 'center',
+    paddingRight: 6,
+    alignItems: 'flex-end',
+  },
+  bodyContainer: {
+    marginTop: 30,
+    width: '85%',
+    alignSelf: 'center',
+  },
+  imageDetail: {
+    fontSize: 20,
+    textAlign: 'right',
+  },
+  imageDetailContainer: {
+    backgroundColor: TEAL,
+    padding: 10,
+    margin: 6,
+    borderRadius: 5,
+  },
+
+
   sphere: {
     backgroundColor: TEAL,
     width: 40,
@@ -200,21 +253,6 @@ const styles = StyleSheet.create({
     margin: 5,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '400',
-    color: TEAL,
-    flexWrap: 'wrap',
-    maxWidth: 250,
-    textAlign: 'right',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 15,
   },
   hostName: {
     fontSize: 20,

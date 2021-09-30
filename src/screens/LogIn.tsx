@@ -52,19 +52,19 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [phone]);
 
   const registerUser = async (): Promise<User> => {
-    await registerForPushNotifications();
-    const token = await getExpoPushToken();
+    // await registerForPushNotifications();
+    // const token = await getExpoPushToken();
     const userInfo = await Auth.currentUserInfo();
     const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     if (users.length > 0) {
       const user = users[0];
       if (user.pushToken !== token) {
         console.log('Existing User: Updating users pushToken');
-        await DataStore.save(
-          User.copyOf(user, (updated) => {
-            updated.pushToken = token;
-          }),
-        );
+        // await DataStore.save(
+        //   User.copyOf(user, (updated) => {
+        //     updated.pushToken = token;
+        //   }),
+        // );
       }
       return user;
     } else {
@@ -73,7 +73,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
         new User({
           phoneNumber: userInfo.attributes.phone_number,
           name: userInfo.attributes.name,
-          pushToken: token,
+          // pushToken: token,
           friends: [],
         }),
       );

@@ -194,10 +194,11 @@ export const loadPhoto = async (placeID: string): Promise<string> => {
 };
 
 //retrieves the current user
+//userInfo.attributes.phone_number
 export const getCurrentUser = async (): Promise<User> => {
   const userInfo = await Auth.currentUserInfo();
   if (userInfo) {
-    const user = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
+    const user = await DataStore.query(User, (user) => user.phoneNumber('eq', '+19495472131'));
     if (user) {
       return user[0];
     }
