@@ -58,14 +58,14 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     if (users.length > 0) {
       const user = users[0];
-      if (user.pushToken !== token) {
-        console.log('Existing User: Updating users pushToken');
-        // await DataStore.save(
-        //   User.copyOf(user, (updated) => {
-        //     updated.pushToken = token;
-        //   }),
-        // );
-      }
+      // if (user.pushToken !== token) {
+      //   console.log('Existing User: Updating users pushToken');
+      //   await DataStore.save(
+      //     User.copyOf(user, (updated) => {
+      //       updated.pushToken = token;
+      //     }),
+      //   );
+      // }
       return user;
     } else {
       console.log('New User: Adding user to database');

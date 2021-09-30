@@ -1,10 +1,10 @@
 import { DataStore, Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList, Linking, Platform } from 'react-native';
-import { Screen, Button } from '../atoms/AtomsExports';
+import { StyleSheet, View, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { formatTime, convertDateStringToDate, loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
-import { TEAL, GREY_4, GOLD, GREY_8, GRAY_LIGHT } from '../res/styles/Colors';
+import { TEAL, GREY_4, GOLD, GRAY_LIGHT } from '../res/styles/Colors';
 import { Plan, User, Invitee, Status } from '../models';
 import { sendPushNotification } from '../res/notifications';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
@@ -28,8 +28,8 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   const [invitees, setInvitees] = useState<Invitee[]>([]);
   const [userInvitee, setUserInvitee] = useState<Invitee>();
   const [photoURI, setPhotoURI] = useState('');
-  const [showRespondOptions, setShowRespondOptions] = useState(false);
   const [refreshAttendeeList, setRefreshAttendeeList] = useState(false);
+  const [selectorOption, setSelectorOption] = useState('ACCEPTED');
 
   useEffect(() => {
     setPlanHost(plan.creatorID);
@@ -58,7 +58,6 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     for (const invitee of invitees) {
       if (invitee.phoneNumber === userInfo.attributes.phone_number) {
         setUserInvitee(invitee);
-        setShowRespondOptions(true);
         break;
       }
     }
@@ -71,11 +70,18 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     } else if (item.status === Status.DECLINED) {
       backgroundColor = GREY_4;
     }
-    return (
-      <View style={[styles.sphere, { backgroundColor: backgroundColor }]}>
-        <AppText style={styles.initial}>{item.name.slice(0, 1)}</AppText>
-      </View>
-    );
+    if (selectorOption === item.status) {
+      return (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={[styles.sphere, { backgroundColor: backgroundColor }]}>
+            <AppText style={{ fontSize: 24, fontWeight: '700', color: 'white' }}>{item.name.slice(0, 1)}</AppText>
+          </View>
+          <AppText style={{ fontSize: 18 }}>{item.name}</AppText>
+        </View>
+      );
+    } else {
+      return null;
+    }
   };
 
   const respondToPlan = async (accept: boolean) => {
@@ -102,20 +108,20 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     setRefreshAttendeeList(!refreshAttendeeList);
   };
 
-  const linkToMaps = (location: string) => {
-    const url = Platform.select({
-      ios: `maps:0,0?q=${location}`,
-      android: `geo:0,0?q=${location}`,
-    });
+  // const linkToMaps = (location: string) => {
+  //   const url = Platform.select({
+  //     ios: `maps:0,0?q=${location}`,
+  //     android: `geo:0,0?q=${location}`,
+  //   });
 
-    try {
-      if (url) {
-        Linking.openURL(url);
-      }
-    } catch (error) {
-      console.log('No location found');
-    }
-  };
+  //   try {
+  //     if (url) {
+  //       Linking.openURL(url);
+  //     }
+  //   } catch (error) {
+  //     console.log('No location found');
+  //   }
+  // };
 
   return (
     <Screen>
@@ -123,84 +129,90 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
         <BackChevronIcon onPress={() => navigation.goBack()} />
         <AppText style={styles.title}>Plan Details</AppText>
       </View>
-      <View style={styles.bodyContainer}>
-        {photoURI ? (
-          <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover">
-            <View style={styles.imageDetailContainer}>
-              <AppText style={styles.imageDetail}>
-                {formatDayOfWeekDate(plan.date).toString().substring(formatDayOfWeekDate(plan.date).toString().indexOf(' ') + 1)}
-              </AppText>
-            </View>
-            <View style={styles.imageDetailContainer}>
-              <AppText style={styles.imageDetail}>{formatTime(plan.time)}</AppText>
-            </View>
-            <View style={styles.imageDetailContainer}>
-              <AppText style={styles.imageDetail}>{plan.title}</AppText>
-            </View>
-          </Image>
-        ) : null}
-        {plan.description ? <AppText>{plan.description}</AppText> : null}
-      </View>
-      <View style={styles.container}>
-        <View style={styles.hostContainer}>
-          <AppText style={styles.hostName}>{hostName}</AppText>
-          <AppText style={styles.descTitle}>Host</AppText>
+      <ScrollView>
+        <View style={styles.bodyContainer}>
+          {photoURI ? (
+            <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover">
+              <View style={styles.imageDetailContainer}>
+                <AppText style={styles.imageDetail}>
+                  {plan.date &&
+                    formatDayOfWeekDate(plan.date)
+                      .toString()
+                      .substring(formatDayOfWeekDate(plan.date).toString().indexOf(' ') + 1)}
+                </AppText>
+              </View>
+              <View style={styles.imageDetailContainer}>
+                <AppText style={styles.imageDetail}>{plan.time && formatTime(plan.time)}</AppText>
+              </View>
+              <View style={styles.imageDetailContainer}>
+                <AppText style={styles.imageDetail}>{plan.title}</AppText>
+              </View>
+            </Image>
+          ) : null}
+          {plan.description ? <AppText style={styles.description}>{plan.description}</AppText> : null}
+          <AppText style={{ fontSize: 18, fontWeight: '700', marginBottom: 10 }}>
+            Host:{'   '}
+            <AppText style={{ fontWeight: '400' }}>{hostName}</AppText>
+          </AppText>
+          <AppText style={{ fontSize: 16, fontWeight: '700', paddingBottom: 10 }}>Date: </AppText>
+          <AppText style={{ fontWeight: '400', marginLeft: 60, marginTop: -27, paddingBottom: 15 }}>
+            {plan.date && convertDateStringToDate(plan.date).toDateString()}
+            {'\n'}
+            {plan.time && formatTime(plan.time)}
+          </AppText>
+          <AppText style={{ fontSize: 16, fontWeight: '700' }}>Where: </AppText>
+          <AppText style={{ fontWeight: '400', marginLeft: 60, marginTop: -17 }}>
+            {plan.title}
+            {'\n'}
+            {plan.location?.substring(0, plan.location.indexOf(',') + 1)}
+            {'\n'}
+            {plan.location?.substring(plan.location.indexOf(',') + 1)}
+          </AppText>
         </View>
-
-        <View style={styles.detailsContainer}>
-          <View style={styles.details}>
-            {plan.date && <AppText>{convertDateStringToDate(plan.date).toDateString()}</AppText>}
-            {plan.time && <AppText>{formatTime(plan.time)}</AppText>}
-            <AppText style={styles.descTitle}>Date</AppText>
-            <TouchableOpacity>{/* <AppText style={styles.evText4}>Add to calendar</AppText> */}</TouchableOpacity>
-          </View>
-          <View>
-            <AppText style={{ maxWidth: 150, flexWrap: 'wrap' }}>{plan.title}</AppText>
-            <AppText style={styles.descTitle}>Location</AppText>
-            <TouchableOpacity onPress={() => plan.location && linkToMaps(plan.location)}>
-              <AppText style={{ color: TEAL }}>View map</AppText>
+        <View style={styles.inviteeListContainer}>
+          <View style={styles.selector}>
+            <TouchableOpacity
+              onPress={() => setSelectorOption('ACCEPTED')}
+              style={[styles.selectorOption, selectorOption == 'ACCEPTED' ? styles.active : styles.inactive]}
+            >
+              <AppText
+                style={[
+                  { fontSize: 16, fontWeight: '700' },
+                  selectorOption == 'ACCEPTED' ? styles.activeText : styles.inactiveText,
+                ]}
+              >
+                ACCEPTED
+              </AppText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setSelectorOption('PENDING')}
+              style={[styles.selectorOption, selectorOption == 'PENDING' ? styles.active : styles.inactive]}
+            >
+              <AppText
+                style={[
+                  { fontSize: 16, fontWeight: '700' },
+                  selectorOption == 'PENDING' ? styles.activeText : styles.inactiveText,
+                ]}
+              >
+                PENDING
+              </AppText>
             </TouchableOpacity>
           </View>
-        </View>
-
-        <View style={styles.description}>
-          <AppText>{plan.description}</AppText>
-          <AppText style={styles.descTitle}>Description</AppText>
-        </View>
-
-        <View style={styles.inviteeList}>
-          <FlatList
-            data={invitees}
-            renderItem={renderInvitee}
-            ListEmptyComponent={() => (
-              <View>
-                <AppText style={styles.title}>No Attendees Yet</AppText>
-              </View>
-            )}
-            horizontal={true}
-          />
-          <AppText style={styles.descTitle}>Attendees</AppText>
-          <TouchableOpacity onPress={() => navigation.navigate('InviteeList', { plan: plan })}>
-            <AppText style={styles.viewAll}>View All</AppText>
+          <View style={styles.flatlist}>
+            <FlatList data={invitees} renderItem={renderInvitee} />
+          </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true);
+            }}
+          >
+            <AppText style={{ fontSize: 20, fontWeight: '700', color: TEAL }}>
+              {userInvitee?.status === 'ACCEPTED' ? 'Decline Plan?' : 'Accept Plan?'}
+            </AppText>
           </TouchableOpacity>
         </View>
-      </View>
-      {showRespondOptions ? (
-        <View style={styles.planResponse}>
-          <Button
-            title={userInvitee?.status === Status.DECLINED ? 'Declined' : 'Decline'}
-            onPress={() => respondToPlan(false)}
-            disabled={userInvitee?.status === Status.DECLINED}
-          />
-          <Button
-            title={userInvitee?.status === Status.ACCEPTED ? 'Accepted' : 'Accept'}
-            onPress={() => respondToPlan(true)}
-            disabled={userInvitee?.status === Status.ACCEPTED}
-          />
-        </View>
-      ) : (
-        <View></View>
-      )}
+      </ScrollView>
     </Screen>
   );
 };
@@ -232,6 +244,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     width: '85%',
     alignSelf: 'center',
+    marginBottom: 40,
   },
   imageDetail: {
     fontSize: 20,
@@ -243,61 +256,61 @@ const styles = StyleSheet.create({
     margin: 6,
     borderRadius: 5,
   },
-
-
-  sphere: {
-    backgroundColor: TEAL,
-    width: 40,
-    height: 40,
-    borderRadius: 40,
-    margin: 5,
-    alignItems: 'center',
+  description: {
+    fontSize: 20,
+    marginTop: 15,
+    marginBottom: 8,
+  },
+  inviteeListContainer: {
+    flex: 1,
+  },
+  selector: {
+    flexDirection: 'row',
     justifyContent: 'center',
   },
-  hostName: {
-    fontSize: 20,
-    fontWeight: '400',
+  selectorOption: {
+    paddingBottom: 5,
+    borderBottomWidth: 3,
+    width: '42.5%',
+    alignItems: 'center',
   },
-  descTitle: {
-    fontWeight: '400',
-    fontSize: 12,
-    color: GREY_8,
-    marginVertical: 5,
+  active: {
+    borderBottomColor: TEAL,
   },
-  hostContainer: {
-    flex: 1,
-  },
-  detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flex: 1,
-  },
-  details: {
-    flexDirection: 'column',
-  },
-  description: {
-    flex: 1,
-  },
-  container: {
-    flex: 5,
-    marginHorizontal: 25,
-    marginVertical: 20,
-  },
-  inviteeList: {
-    flex: 1,
-  },
-  viewAll: {
+  activeText: {
     color: TEAL,
   },
-  planResponse: {
-    flexDirection: 'row',
-    width: '50%',
-    flex: 1,
-    alignItems: 'flex-end',
+  inactive: {
+    borderBottomColor: '#E5E5E5',
   },
-  initial: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: 'white',
+  inactiveText: {
+    color: '#8B8B8B',
+  },
+  sphere: {
+    width: 54,
+    height: 54,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+    marginRight: 15,
+  },
+  flatlist: {
+    width: '85%',
+    alignSelf: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E1E1E1',
+    paddingVertical: 15,
+  },
+  button: {
+    width: 156,
+    height: 49,
+    borderWidth: 2,
+    borderColor: TEAL,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 40,
+    alignSelf: 'center',
+    marginTop: 10,
   },
 });
