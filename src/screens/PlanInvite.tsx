@@ -127,6 +127,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     setMessage(initMessage);
   };
 
+  /* Contact items displayed as 'friends' temporary until friend section finished */
   return (
     <View style={styles.screen}>
       <Navbar location={'PlanCreate'} navigation={navigation} title={'Invite Friends'} />
@@ -161,7 +162,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
               ]}
               onPress={() => menuSelection('contacts')}
             >
-              CONTACTS
+              FRIENDS
             </AppText>
           </View>
           {/* <View style={[styles.menuItemNotSelectedContainer, styles.menuItemContainer]} /> */}
@@ -194,7 +195,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
                 />
               </View>
               <View style={{ paddingVertical: 30, borderBottomWidth: 0.75, borderBottomColor: GRAY_LIGHT }}>
-                <SearchBar onInputChange={searchFriends} placeholder="Search for Contacts to Invite" />
+                <SearchBar onInputChange={searchFriends} placeholder="Search for Friends to Invite" />
               </View>
 
               <View style={styles.contactsScrollContainer}>

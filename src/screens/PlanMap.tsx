@@ -6,7 +6,6 @@ import { LocationAccuracy } from 'expo-location';
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { v4 as uuidv4 } from 'uuid';
 import { PlaceCard } from '../molecules/MoleculesExports';
-import { mapStyles } from '../res/styles/MapStyles';
 import { RoutePropParams } from '../res/root-navigation';
 import Constants from 'expo-constants';
 
@@ -114,19 +113,19 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
       if (markerRef && markerRef.current) {
         markerRef.current.showCallout();
       }
-      let height: string;
-      if (moreDetails.photos) {
-        if (moreDetails.photos.length > 5) {
-          moreDetails.photos = moreDetails.photos.slice(0, 5);
-        }
-        height = '45%';
-      } else {
-        height = '30%';
-      }
-      const distanceInfo = await getDistanceAndDuration(
-        `${userLocation.latitude},${userLocation.longitude}`,
-        detail.place_id,
-      ).catch((error) => console.log(error));
+      // let height: string;
+      // if (moreDetails.photos) {
+      //   if (moreDetails.photos.length > 5) {
+      //     moreDetails.photos = moreDetails.photos.slice(0, 5);
+      //   }
+      //   height = '45%';
+      // } else {
+      //   height = '30%';
+      // }
+      // const distanceInfo = await getDistanceAndDuration(
+      //   `${userLocation.latitude},${userLocation.longitude}`,
+      //   detail.place_id,
+      // ).catch((error) => console.log(error));
       setPlaceCard(
         <PlaceCard
           //   style={{ height: height }}
@@ -199,7 +198,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         region={region}
         onPoiClick={(event) => onPoiPress(event.nativeEvent)}
         style={styles.map}
-        customMapStyle={mapStyles}
+        // customMapStyle={mapStyles}
         onPress={clearMarkers}
       >
         {mapMarker ? mapMarker : null}
