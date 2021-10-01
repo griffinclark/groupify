@@ -140,7 +140,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
         {/* <View>{loadPhoto(photo)}</View> */}
         <View style={{ flexGrow: 1 }}>
           <MeepForm inputList={inputFields}>
-            <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', { currentUser: route.params.currentUser })}>
+            <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', {})}>
               {/* <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} /> */}
               <MapLinkIcon />
               <AppText style={styles.mapText}>Find address using the map</AppText>
