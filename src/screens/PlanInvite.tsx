@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { Alert, AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/AtomsExports';
-import { Auth, DataStore } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
+//import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
-import { PlanTextMessage } from '../molecules/PlanTextMessage';
-import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
-import Constants from 'expo-constants';
-import * as Analytics from 'expo-firebase-analytics';
+import { TEAL } from '../res/styles/Colors';
 
 interface Props {
   navigation: {
@@ -37,13 +35,10 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   });
   const [friends, setFriends] = useState<User[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
-  const [message, setMessage] = useState<string>('');
-
   useEffect(() => {
     loadContacts();
     setEventObject(route.params.data.eventData);
     getFriends();
-    createInitialMessage();
   }, []);
 
   const getFriends = async () => {
@@ -101,7 +96,6 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           placeId: event.placeId,
           friends: selectedFriends,
           contacts: selectedContacts,
-          message: message,
         },
       },
     });
@@ -112,29 +106,12 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     setMenuItemSelected(item);
   };
 
-  const createInitialMessage = async (): Promise<void> => {
-    const event = route.params.data.eventData;
-    const userInfo = await Auth.currentUserInfo();
-    const name = userInfo.attributes.name;
-
-    const initMessage =
-      `Hey, ${name} is inviting you ` +
-      `to '${event.title}'` +
-      `${event.time ? ' at ' + event.time : ''}` +
-      `${event.date ? ' on ' + event.date : ''}` +
-      `${event.location ? ' at ' + event.location : ''}` +
-      `${event.description}` +
-      '. Hope to see you there!';
-
-    setMessage(initMessage);
-  };
-
   return (
     <View style={styles.screen}>
       <Navbar location={'PlanCreate'} navigation={navigation} title={'Invite Friends'} />
 
       <View style={styles.title}>
-        <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}?</AppText>
+        <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}</AppText>
       </View>
 
       <View style={styles.friendContainer}>
@@ -166,7 +143,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
               CONTACTS
             </AppText>
           </View>
-          {/* <View style={[styles.menuItemNotSelectedContainer, styles.menuItemContainer]} /> */}
+          <View style={[styles.menuItemNotSelectedContainer, styles.menuItemContainer]} />
         </View>
 
         <View style={{ flex: 1 }}>
@@ -187,32 +164,24 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           )}
 
           {menuItemSelected === 'contacts' && (
-            <ScrollView>
-              <View>
-                <PlanTextMessage
-                  label="Once you create this event, we will send out a text message to your contacts who haven’t joined the app yet as shown below. Feel free to edit:"
-                  onChangeText={(e) => setMessage(e)}
-                  text={message}
-                />
+            <View style={styles.contactsContainer}>
+              <View style={styles.searchbar}>
+                <SearchBar onInputChange={searchFriends} placeholder="Search for Friends to Invite" />
+                <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
               </View>
-              <View style={{ paddingVertical: 30, borderBottomWidth: 0.75, borderBottomColor: GRAY_LIGHT }}>
-                <SearchBar onInputChange={searchFriends} placeholder="Search for Contacts to Invite" />
-              </View>
-
-              <View style={styles.contactsScrollContainer}>
-                <ScrollView>
-                  <View style={styles.contactsContainer}>
-                    <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
-                  </View>
-                </ScrollView>
-              </View>
-            </ScrollView>
+              {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a friend to continue'} />}
+              {/* <TouchableOpacity onPress={sendContactMessage} disabled={selectedContacts.length === 0 ? true : false}>
+                {selectedContacts.length > 0 ? (
+                  <AppText style={[styles.navText, { backgroundColor: TEAL, color: WHITE }]}>Next</AppText>
+                ) : (
+                  <AppText style={[styles.navText, { backgroundColor: GREY_4, color: GREY_3 }]}>Next</AppText>
+                )}
+              </TouchableOpacity> */}
+            </View>
           )}
         </View>
       </View>
-      <View style={{ position: 'absolute', bottom: 50, width: '100%', alignSelf: 'center' }}>
-        {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a contact to continue'} />}
-      </View>
+
       <BottomButton
         disabled={selectedContacts.length == 0 ? true : false}
         title="Preview Plan"
@@ -221,17 +190,11 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     </View>
   );
 };
-//
+
 const styles = StyleSheet.create({
-  contactsScrollContainer: {
-    height: Dimensions.get('window').height - Constants.statusBarHeight - 340,
-  },
   screen: {
     flex: 1,
     backgroundColor: 'white',
-    flexGrow: 1,
-    justifyContent: 'space-between',
-    paddingTop: Constants.statusBarHeight,
   },
   title: {
     marginTop: 27,
@@ -257,14 +220,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 3,
     paddingBottom: 13,
-    width: '100%',
+    width: '50%',
   },
   menuItemSelectedContainer: {
     borderBottomColor: TEAL,
   },
   menuItemNotSelectedContainer: {
-    // borderBottomColor: '#E5E5E5',
-    borderBottomColor: TEAL,
+    borderBottomColor: '#E5E5E5',
   },
   menuItem: {
     fontSize: 16,
@@ -279,6 +241,10 @@ const styles = StyleSheet.create({
   body: {
     marginHorizontal: 20,
     justifyContent: 'space-between',
+  },
+  searchbar: {
+    flex: 1,
+    marginTop: 30,
   },
   friendBubbleContainer: {
     flexDirection: 'row',

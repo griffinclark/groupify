@@ -11,9 +11,8 @@ import { mapStyles } from '../res/styles/MapStyles';
 import { RoutePropParams } from '../res/root-navigation';
 import { TEAL } from '../res/styles/Colors';
 import { Button } from '../atoms/AtomsExports';
-
-import { AppText, Screen } from '../atoms/AtomsExports';
-import { BackChevronIcon } from '../../assets/Icons/BackChevron';
+import { Image } from 'react-native-elements/dist/image/Image';
+import { AppText } from '../atoms/AppText';
 import { WHITE } from '../res/styles/Colors';
 
 interface Props {
@@ -62,7 +61,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   const [placeCard, setPlaceCard] = useState<JSX.Element>();
   const [sessionToken, setSessionToken] = useState(uuidv4());
   const [mapPopupOpen, setMapPopupOpen] = useState(true);
-  const [markerImg, setMarkerImg] = useState();
 
   useEffect(() => {
     (async () => {
@@ -109,8 +107,13 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
             latitude: detail.geometry.location.lat,
             longitude: detail.geometry.location.lng,
           }}
-          icon={require('../../assets/MapMarker.png')}
-        />,
+        >
+          <Image
+            source={require('../../assets/MapMarker.png')}
+            style={{ width: 48, height: 66 }}
+            // resizeMode={'contain'}
+          />
+        </Marker>,
       );
 
       if (markerRef && markerRef.current) {
@@ -137,9 +140,9 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           rating={moreDetails.rating ? moreDetails.rating : undefined}
           userRatings={moreDetails.user_ratings_total ? moreDetails.user_ratings_total : undefined}
           priceLevel={moreDetails.price_level ? moreDetails.price_level : undefined}
-          // distance={distanceInfo ? distanceInfo.distance : undefined}
-          // duration={distanceInfo ? distanceInfo.duration : undefined}
-          // openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
+          distance={distanceInfo ? distanceInfo.distance : undefined}
+          duration={distanceInfo ? distanceInfo.duration : undefined}
+          openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
           onButtonPress={() =>
@@ -166,6 +169,8 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   const onButtonPress = (title: string, address: string, placeId: string, photo: string) => {
+    console.log('Location');
+    console.log(location);
     navigation.navigate('PlanCreate', {
       currentUser: route.params.currentUser,
       data: {
@@ -191,7 +196,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     setMapMarker(undefined);
   };
   return (
-    // <Screen>
     <View style={styles.container}>
       {/* TODO: Show categories */}
       {/* TODO: Show multiple markers */}
@@ -208,11 +212,13 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
       </MapView>
 
       <View style={styles.navbar}>
-        <View style={styles.navbarBackground} />
-
-        <View style={styles.navbarIcon}>
-          <BackChevronIcon onPress={() => navigation.navigate('PlanCreate', {})} />
-        </View>
+        <Icon
+          name="chevron-left"
+          type="font-awesome"
+          size={30}
+          onPress={() => navigation.navigate('PlanCreate', {})}
+          style={styles.navbarIcon}
+        />
 
         <GooglePlacesAutocomplete
           placeholder="Search"
@@ -232,7 +238,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
               borderRadius: 5,
               borderWidth: 1,
               marginRight: 20,
-              marginTop: 20,
+              //   position: 'absolute',
             },
           }}
           renderRow={(rowData) => {
@@ -267,7 +273,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
       <View style={styles.searchBarContainer}>X button on the right to clear input field</View> */}
       {placeCard ? placeCard : null}
     </View>
-    /* </Screen> */
   );
 };
 
@@ -285,28 +290,20 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
   },
   navbar: {
+    alignItems: 'center',
+    backgroundColor: WHITE,
     flexDirection: 'row',
+    height: 83,
     position: 'absolute',
     top: 0,
-    width: '100%',
-
-    paddingTop: 15,
-  },
-  navbarBackground: {
-    backgroundColor: WHITE,
-    // height: 83,
-    height: 98,
-    position: 'absolute',
     width: '100%',
   },
   navbarIcon: {
     marginLeft: 27,
     marginRight: 35,
-    marginTop: 28,
   },
   container: {
     flex: 1,
-    // paddingTop: 15,
   },
   skip: {
     position: 'absolute',
