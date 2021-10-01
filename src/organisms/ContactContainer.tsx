@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   friendsList: {
     display: 'flex',
     flex: 1,
+    marginTop: 20,
   },
   container: {
     overflow: 'scroll',

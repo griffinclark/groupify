@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
-import { Button, SearchBar, Alert } from '../atoms/AtomsExports';
-import { AppText } from '../atoms/AppText';
+import { Alert, AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/AtomsExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../models';
 //import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
-import { GREY_3, GREY_4, WHITE, TEAL } from '../res/styles/Colors';
-import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TEAL } from '../res/styles/Colors';
 
 interface Props {
   navigation: {
@@ -22,7 +18,7 @@ interface Props {
   route: RoutePropParams;
 }
 
-export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => {
+export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
@@ -112,41 +108,12 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
 
   return (
     <View style={styles.screen}>
-      <ImageBackground source={{ uri: eventObject.imageURL || '' }} style={styles.backgroundImage}>
-        <View style={styles.overlay} />
-        <View style={styles.header}>
-          <View style={styles.rowContainer}>
-            <View style={styles.icon}>
-              <AntDesign name="leftcircle" size={30} color="white" onPress={() => navigation.goBack()} />
-            </View>
-          </View>
-          <View style={styles.title}>
-            <AppText style={styles.titleText}>Edit Event Details</AppText>
-          </View>
-          <View style={styles.icon}>
-            <AntDesign name="closecircle" size={30} color="white" onPress={() => navigation.navigate('Home')} />
-          </View>
-        </View>
+      <Navbar location={'PlanCreate'} navigation={navigation} title={'Invite Friends'} />
 
-        <View style={styles.body}>
-          <AppText style={styles.planInfoTitle}>{eventObject.title}</AppText>
-          <View style={styles.rowContainer}>
-            <View style={styles.calendar}>
-              <MaterialCommunityIcons name="calendar-blank" size={24} color="white" style={styles.calendarIcon} />
-            </View>
-            <AppText style={styles.planInfo}>{eventObject.date}</AppText>
-            <AppText style={styles.planInfo}>{eventObject.time}</AppText>
-          </View>
-          <View style={styles.rowContainer}>
-            <View style={styles.calendar}>
-              <AntDesign name="enviromento" size={24} color="white" />
-            </View>
-            <AppText numberOfLines={1} style={styles.planInfo}>
-              {eventObject.location}
-            </AppText>
-          </View>
-        </View>
-      </ImageBackground>
+      <View style={styles.title}>
+        <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}</AppText>
+      </View>
+
       <View style={styles.friendContainer}>
         <View style={styles.menu}>
           {/* <View style={menuItemSelected === 'friends' && styles.itemSelectedContainer}>
@@ -160,7 +127,12 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
               FRIENDS
             </Text>
           </View> */}
-          <View style={menuItemSelected === 'contacts' && styles.itemSelectedContainer}>
+          <View
+            style={[
+              menuItemSelected === 'contacts' ? styles.menuItemSelectedContainer : styles.menuItemNotSelectedContainer,
+              styles.menuItemContainer,
+            ]}
+          >
             <AppText
               style={[
                 menuItemSelected === 'contacts' ? styles.menuItemSelected : styles.menuItemNotSelected,
@@ -171,11 +143,12 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
               CONTACTS
             </AppText>
           </View>
+          <View style={[styles.menuItemNotSelectedContainer, styles.menuItemContainer]} />
         </View>
+
         <View style={{ flex: 1 }}>
           {menuItemSelected === 'friends' && (
             <View style={{ flex: 1, justifyContent: 'space-between' }}>
-              <AppText style={styles.text}>Send your friends an in app notification!</AppText>
               {friends.length > 0 ? (
                 <View style={styles.friendBubbleContainer}>
                   <FriendContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
@@ -189,25 +162,31 @@ export const SelectFriends: React.FC<Props> = ({ navigation, route }: Props) => 
               </View>
             </View>
           )}
+
           {menuItemSelected === 'contacts' && (
             <View style={styles.contactsContainer}>
-              <View style={{ flex: 1 }}>
-                <AppText style={styles.text}>Who would you like to invite?</AppText>
-                <SearchBar onInputChange={searchFriends} />
+              <View style={styles.searchbar}>
+                <SearchBar onInputChange={searchFriends} placeholder="Search for Friends to Invite" />
                 <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
               </View>
               {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a friend to continue'} />}
-              <TouchableOpacity onPress={sendContactMessage} disabled={selectedContacts.length === 0 ? true : false}>
+              {/* <TouchableOpacity onPress={sendContactMessage} disabled={selectedContacts.length === 0 ? true : false}>
                 {selectedContacts.length > 0 ? (
                   <AppText style={[styles.navText, { backgroundColor: TEAL, color: WHITE }]}>Next</AppText>
                 ) : (
                   <AppText style={[styles.navText, { backgroundColor: GREY_4, color: GREY_3 }]}>Next</AppText>
                 )}
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           )}
         </View>
       </View>
+
+      <BottomButton
+        disabled={selectedContacts.length == 0 ? true : false}
+        title="Preview Plan"
+        onPress={sendContactMessage}
+      />
     </View>
   );
 };
@@ -217,105 +196,55 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 20,
+  title: {
+    marginTop: 27,
+    marginHorizontal: 63,
   },
-  icon: {
-    top: 20,
-  },
-  backgroundImage: {
-    width: '100%',
-    height: '100%',
-    flex: 1,
-    justifyContent: 'space-evenly',
+  titleText: {
+    fontSize: 20,
+    lineHeight: 23,
+    textAlign: 'center',
   },
   rowContainer: {
     flexDirection: 'row',
   },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    backgroundColor: 'black',
-    opacity: 0.25,
-  },
-  calendar: {
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 30,
-    height: 30,
-  },
-  calendarIcon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  planInfoTitle: {
-    fontSize: 20,
-    margin: 5,
-    fontWeight: '400',
-    color: 'white',
-  },
-  planInfo: {
-    fontSize: 16,
-    margin: 5,
-    fontWeight: '400',
-    color: 'white',
-  },
   friendContainer: {
     flex: 3,
   },
-  title: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: 20,
-  },
-  titleText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: 'white',
-    textAlign: 'left',
-  },
-  body: {
-    marginHorizontal: 30,
-    justifyContent: 'space-between',
-  },
   menu: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    paddingBottom: 6,
-    height: 50,
-    paddingLeft: 20,
-    borderBottomWidth: 3,
-    borderColor: 'gray',
+    borderColor: '#8B8B8B',
+    marginTop: 30,
   },
-  itemSelectedContainer: {
+  menuItemContainer: {
+    alignItems: 'center',
     borderBottomWidth: 3,
-    borderBottomColor: '#32A59F',
+    paddingBottom: 13,
+    width: '50%',
+  },
+  menuItemSelectedContainer: {
+    borderBottomColor: TEAL,
+  },
+  menuItemNotSelectedContainer: {
+    borderBottomColor: '#E5E5E5',
   },
   menuItem: {
-    marginHorizontal: 15,
-    fontSize: 14,
-    paddingBottom: 4,
-  },
-  menuItemSelected: {
-    color: '#32A59F',
+    fontSize: 16,
     fontWeight: '700',
   },
-  menuItemNotSelected: {
-    color: 'gray',
+  menuItemSelected: {
+    color: TEAL,
   },
-  text: {
-    textAlign: 'center',
-    padding: 30,
-    fontSize: 20,
+  menuItemNotSelected: {
+    color: '#8B8B8B',
+  },
+  body: {
+    marginHorizontal: 20,
+    justifyContent: 'space-between',
+  },
+  searchbar: {
+    flex: 1,
+    marginTop: 30,
   },
   friendBubbleContainer: {
     flexDirection: 'row',
@@ -329,18 +258,5 @@ const styles = StyleSheet.create({
   error: {
     textAlign: 'center',
     color: 'red',
-  },
-  navText: {
-    fontSize: 24,
-    padding: 10,
-    textAlign: 'center',
-    alignSelf: 'center',
-    width: '100%',
-    height: 75,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 30,
   },
 });

@@ -1,10 +1,10 @@
 import React, { ReactChild, useEffect, useState } from 'react';
-import { StyleSheet, TextInput, View, Platform } from 'react-native';
-import { WHITE } from '../res/styles/Colors';
+import { StyleSheet, View, Platform } from 'react-native';
+import { BLACK, WHITE } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
-import { AppText } from './AppText';
+import { AppText, AppTextInput } from './AtomsExports';
 
 interface Props {
   children: ReactChild;
@@ -107,8 +107,10 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
               value={currentDate}
               mode={'date'}
               display={'default'}
-              style={{ height: 55, padding: 10 }}
+              style={styles.dateTimePicker}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              textColor={BLACK}
+              themeVariant={'light'}
             />
           )}
           {Platform.OS === 'android' && (
@@ -120,15 +122,16 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
           )}
           {Platform.OS === 'ios' && (
             <DateTimePicker
-              style={{ height: 55, marginTop: 5 }}
+              style={styles.dateTimePicker}
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'date'}
               display={'default'}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              textColor={BLACK}
+              themeVariant={'light'}
             />
           )}
-          <View style={{ height: 15 }} />
         </View>
       );
     }
@@ -138,11 +141,14 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
           <AppText style={styles.text}>{item.title}</AppText>
           {showTimePicker && (
             <DateTimePicker
+              style={styles.dateTimePicker}
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'time'}
               display={'default'}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              textColor={BLACK}
+              themeVariant={'light'}
             />
           )}
           {Platform.OS === 'android' && (
@@ -152,46 +158,42 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
           )}
           {Platform.OS === 'ios' && (
             <DateTimePicker
-              style={{ height: 55, marginTop: 5 }}
+              style={styles.dateTimePicker}
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'time'}
               display={'default'}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              textColor={BLACK}
+              themeVariant={'light'}
             />
           )}
-          <View style={{ height: 15 }} />
+          {/* <View style={{ height: 15 }} /> */}
         </View>
       );
     }
     if (item.settings === 'password') {
       return (
         <View key={item.title}>
-          <AppText style={styles.text}>{item.title}</AppText>
-          <TextInput
-            style={styles.textInputBody}
+          <AppTextInput
+            label={item.title}
             onChangeText={(e) => setValue(e, item)}
             placeholder={item.placeholder}
             secureTextEntry={true}
             autoFocus={true}
           />
-          <View style={{ height: 15 }} />
         </View>
       );
     }
     if (item.settings === 'default') {
       return (
         <View key={item.title}>
-          <AppText style={styles.text}>{item.title}</AppText>
-          <TextInput
-            maxFontSizeMultiplier={1.5}
-            value={getValue(item.title)}
-            style={styles.textInputBody}
+          <AppTextInput
+            label={item.title}
             onChangeText={(e) => setValue(e, item)}
             placeholder={item.placeholder}
-            autoFocus={true}
+            value={getValue(item.title)}
           />
-          <View style={{ height: 15 }} />
         </View>
       );
     }
@@ -206,19 +208,10 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
 };
 
 const styles = StyleSheet.create({
-  textInputBody: {
-    fontSize: 18,
-    backgroundColor: WHITE,
-    borderRadius: 10,
-    borderColor: '#BE8C2C',
-    borderWidth: 1.5,
-    padding: 8,
-    marginTop: 5,
-  },
   container: {
     width: '100%',
-    flex: 1,
-    justifyContent: 'space-between',
+    // flex: 1,
+    justifyContent: 'flex-start',
   },
   formContainer: {
     padding: 20,
@@ -226,8 +219,20 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
   },
+  dateTimePicker: {
+    fontSize: 18,
+    backgroundColor: WHITE,
+    borderRadius: 5,
+    borderColor: '#C5C5C5',
+    borderWidth: 1,
+    padding: 8,
+    opacity: 1,
+    marginVertical: 10,
+    flex: 1,
+    height: 43,
+  },
   text: {
-    marginTop: 4,
+    marginTop: 10,
     fontSize: 16,
   },
   dateTime: {
