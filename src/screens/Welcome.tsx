@@ -16,6 +16,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
       style={{ width: '100%', height: '100%' }}
       resizeMode={'cover'}
       source={require('../../assets/SplashScreen.png')}
+      testID="WelcomeScreen"
     >
       <View style={{ flexDirection: 'column', justifyContent: 'center', flex: 1, marginBottom: '15%' }}>
         <Button
