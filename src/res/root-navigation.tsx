@@ -11,9 +11,10 @@ import { SendMessage } from '../screens/SendMessage';
 import { SetAvailability } from '../screens/SetAvailability';
 import { EditFriends } from '../screens/EditFriends';
 import { Contact } from './dataModels';
-import { PlanMap } from '../screens/PlanMap';
-import { PlanDetails } from '../screens/PlanDetails';
 import { PlanCreate } from '../screens/PlanCreate';
+import { PlanDetails } from '../screens/PlanDetails';
+import { PlanIndex } from '../screens/PlanIndex';
+import { PlanMap } from '../screens/PlanMap';
 import { InvitedPlans } from '../screens/InvitedPlans';
 import { InviteeList } from '../screens/inviteList';
 // import { Attendees } from '../organisms/attendees';
@@ -76,15 +77,16 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} initialParams={initialParams} options={{ headerShown: false }} />
         <Stack.Screen name="SelectFriends" component={PlanInvite} options={{ headerShown: false }} />
-        <Stack.Screen name="PlanCreate" component={PlanCreate} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContactDetails" component={ImportContactDetails} options={{ headerShown: false }} />
         <Stack.Screen name="SendMessage" component={SendMessage} options={{ headerShown: false }} />
         <Stack.Screen name="SetAvailability" component={SetAvailability} options={{ headerShown: false }} />
         <Stack.Screen name="EditFriends" component={EditFriends} options={{ headerShown: false }} />
+        <Stack.Screen name="PlanCreate" component={PlanCreate} options={{ headerShown: false }} />
+        <Stack.Screen name="PlanDetails" component={PlanDetails} options={{ headerShown: false }} />
+        <Stack.Screen name="PlanIndex" component={PlanIndex} options={{ headerShown: false }} />
         <Stack.Screen name="PlanMap" component={PlanMap} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
-        <Stack.Screen name="PlanDetails" component={PlanDetails} options={{ headerShown: false }} />
         <Stack.Screen name="InvitedPlans" component={InvitedPlans} options={{ headerShown: false }} />
         <Stack.Screen name="InviteeList" component={InviteeList} options={{ headerShown: false }} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
