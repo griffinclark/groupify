@@ -199,7 +199,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         region={region}
         onPoiClick={(event) => onPoiPress(event.nativeEvent)}
         style={styles.map}
-        customMapStyle={mapStyles}
+        // customMapStyle={mapStyles}
         onPress={clearMarkers}
       >
         {mapMarker ? mapMarker : null}
