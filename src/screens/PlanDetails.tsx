@@ -4,7 +4,7 @@ import { StyleSheet, View, TouchableOpacity, FlatList, ScrollView } from 'react-
 import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { formatTime, convertDateStringToDate, loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
-import { TEAL, GREY_4, GOLD, GRAY_LIGHT } from '../res/styles/Colors';
+import { TEAL, GRAY_LIGHT } from '../res/styles/Colors';
 import { Plan, User, Invitee, Status } from '../models';
 import { sendPushNotification } from '../res/notifications';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
@@ -32,7 +32,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   const [selectorOption, setSelectorOption] = useState('ACCEPTED');
 
   useEffect(() => {
-    setPlanHost(plan.creatorID);
+    getPlanHost(plan.creatorID);
     (async () => {
       if (plan.placeID) {
         setPhotoURI(await loadPhoto(plan.placeID));
@@ -44,7 +44,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     loadInvitees();
   }, [refreshAttendeeList]);
 
-  const setPlanHost = async (id: string) => {
+  const getPlanHost = async (id: string) => {
     const user = await DataStore.query(User, id);
     if (user) {
       setHostName(user.name);
@@ -64,11 +64,11 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   const renderInvitee = ({ item }: { item: Invitee }) => {
-    let backgroundColor = GOLD;
+    let backgroundColor = '#969393';
     if (item.status === Status.ACCEPTED) {
       backgroundColor = TEAL;
     } else if (item.status === Status.DECLINED) {
-      backgroundColor = GREY_4;
+      backgroundColor = '#969393';
     }
     if (selectorOption === item.status) {
       return (
@@ -108,21 +108,6 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     setRefreshAttendeeList(!refreshAttendeeList);
   };
 
-  // const linkToMaps = (location: string) => {
-  //   const url = Platform.select({
-  //     ios: `maps:0,0?q=${location}`,
-  //     android: `geo:0,0?q=${location}`,
-  //   });
-
-  //   try {
-  //     if (url) {
-  //       Linking.openURL(url);
-  //     }
-  //   } catch (error) {
-  //     console.log('No location found');
-  //   }
-  // };
-
   return (
     <Screen>
       <View style={styles.titleContainer}>
@@ -149,25 +134,47 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
               </View>
             </Image>
           ) : null}
-          {plan.description ? <AppText style={styles.description}>{plan.description}</AppText> : null}
-          <AppText style={{ fontSize: 18, fontWeight: '700', marginBottom: 10 }}>
-            Host:{'   '}
-            <AppText style={{ fontWeight: '400' }}>{hostName}</AppText>
-          </AppText>
+          {plan.description ? (
+            <AppText
+              style={{
+                fontSize: 20,
+                marginTop: 15,
+                marginBottom: 25,
+              }}
+            >
+              {plan.description}
+            </AppText>
+          ) : null}
+          <AppText style={{ fontSize: 18, fontWeight: '700', paddingBottom: 35 }}>Host:</AppText>
+          <View
+            style={{ marginLeft: 75, marginTop: -75, flexDirection: 'row', alignItems: 'center', marginBottom: 30 }}
+          >
+            <View style={[styles.sphere, { backgroundColor: TEAL }]}>
+              <AppText style={{ fontSize: 24, fontWeight: '700', color: 'white' }}>{hostName.slice(0, 1)}</AppText>
+            </View>
+            <AppText style={{ fontSize: 18 }}>{hostName}</AppText>
+          </View>
           <AppText style={{ fontSize: 16, fontWeight: '700', paddingBottom: 10 }}>Date: </AppText>
-          <AppText style={{ fontWeight: '400', marginLeft: 60, marginTop: -27, paddingBottom: 15 }}>
+          <AppText style={{ fontWeight: '400', marginLeft: 75, marginTop: -30, paddingBottom: 25, lineHeight: 22.88 }}>
             {plan.date && convertDateStringToDate(plan.date).toDateString()}
             {'\n'}
             {plan.time && formatTime(plan.time)}
           </AppText>
-          <AppText style={{ fontSize: 16, fontWeight: '700' }}>Where: </AppText>
-          <AppText style={{ fontWeight: '400', marginLeft: 60, marginTop: -17 }}>
-            {plan.title}
-            {'\n'}
-            {plan.location?.substring(0, plan.location.indexOf(',') + 1)}
-            {'\n'}
-            {plan.location?.substring(plan.location.indexOf(',') + 1)}
-          </AppText>
+          {plan.location && (
+            <>
+              <AppText style={{ fontSize: 16, fontWeight: '700' }}>Where: </AppText>
+              <AppText
+                style={{ fontWeight: '400', marginLeft: 75, marginTop: -20, paddingBottom: 25, lineHeight: 22.88 }}
+              >
+                {plan.title}
+                {'\n'}
+                {plan.location?.substring(0, plan.location.indexOf(',') + 1)}
+                {'\n'}
+                {plan.location?.substring(plan.location.indexOf(',') + 2)}
+              </AppText>
+            </>
+          )}
+          <AppText style={{ fontSize: 16, fontWeight: '700' }}>Who&apos;s going?</AppText>
         </View>
         <View style={styles.inviteeListContainer}>
           <View style={styles.selector}>
@@ -208,7 +215,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
             }}
           >
             <AppText style={{ fontSize: 20, fontWeight: '700', color: TEAL }}>
-              {userInvitee?.status === 'ACCEPTED' ? 'Decline Plan?' : 'Accept Plan?'}
+              {userInvitee?.status === 'ACCEPTED' ? 'Decline this plan' : 'Accept Plan?'}
             </AppText>
           </TouchableOpacity>
         </View>
@@ -233,7 +240,7 @@ const styles = StyleSheet.create({
     borderColor: GRAY_LIGHT,
   },
   image: {
-    height: 182,
+    height: 150,
     width: '100%',
     borderRadius: 5,
     justifyContent: 'center',
@@ -244,22 +251,19 @@ const styles = StyleSheet.create({
     marginTop: 30,
     width: '85%',
     alignSelf: 'center',
-    marginBottom: 40,
+    marginBottom: 30,
   },
   imageDetail: {
     fontSize: 20,
+    paddingHorizontal: 5,
     textAlign: 'right',
+    color: 'white',
   },
   imageDetailContainer: {
     backgroundColor: TEAL,
-    padding: 10,
+    padding: 5,
     margin: 6,
     borderRadius: 5,
-  },
-  description: {
-    fontSize: 20,
-    marginTop: 15,
-    marginBottom: 8,
   },
   inviteeListContainer: {
     flex: 1,
@@ -287,8 +291,8 @@ const styles = StyleSheet.create({
     color: '#8B8B8B',
   },
   sphere: {
-    width: 54,
-    height: 54,
+    width: 40,
+    height: 40,
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
@@ -303,7 +307,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   button: {
-    width: 156,
+    width: 182,
     height: 49,
     borderWidth: 2,
     borderColor: TEAL,
