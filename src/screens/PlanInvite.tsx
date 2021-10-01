@@ -10,6 +10,7 @@ import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports
 import { PlanTextMessage } from '../molecules/PlanTextMessage';
 import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
 import Constants from 'expo-constants';
+import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
   navigation: {
@@ -84,7 +85,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     );
   };
 
-  const sendContactMessage = () => {
+  const sendContactMessage = async () => {
     const event = route.params.data.eventData;
     navigation.navigate('SendMessage', {
       currentUser: route.params.currentUser,
