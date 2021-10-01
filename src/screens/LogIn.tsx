@@ -138,7 +138,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen style={{ backgroundColor: WHITE, height: '100%', justifyContent: 'space-between' }}>
-      <View style={{ alignItems: 'center' }}>
+      <View style={{ alignSelf: 'center', flex: 1, marginTop: 80 }} testID="LoginScreen">
         <Image style={styles.logoBackground} source={require('../../assets/Login_Background.png')} />
         <Image style={styles.logo} source={require('../../assets/Splash_Logo.png')} />
       </View>
