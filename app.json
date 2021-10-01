@@ -25,7 +25,8 @@
       "buildNumber": "1.5.4",
       "config": {
         "googleMapsApiKey": "AIzaSyChCbEsnEsDQ3qJklY72r9PSTNMuRnY7Rw"
-      }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
 	  "googleServicesFile": "./google-services.json",
@@ -38,10 +39,13 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyAuD1H1EdLihk07TYvGLdJF-h-J0YAyGuA",
+          "measurementId": "G-BQR5LDWWZ1"
+        }
+      }
     }
-  },
-  "android": {
-    "googleServicesFile": "./google-services.json"
   }
 }

@@ -8,6 +8,7 @@ import { MapLinkIcon } from '../../assets/Icons/IconExports';
 import Constants from 'expo-constants';
 import { TEAL } from '../res/styles/Colors';
 import { RoutePropParams } from '../res/root-navigation';
+import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
   navigation: {
@@ -42,7 +43,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   }, [route.params.data]);
 
-  const onFormSubmit = () => {
+  const onFormSubmit = async () => {
     const id = uuid.v4();
     if (!name) {
       setError('Please add a name to your plan');
@@ -68,6 +69,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
         },
       },
     });
+    await Analytics.logEvent('submit_create_event_to_friends', {userId: user.id});
   };
 
   const inputFields: {
