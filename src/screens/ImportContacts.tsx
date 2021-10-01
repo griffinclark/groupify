@@ -44,7 +44,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const addSelectedContact = async (newContact: Contact) => {
     await storeImportedContact(newContact);
     loadImportedContacts();
-    await Analytics.logEvent('import_contacts', {userId: user.id});
+    await Analytics.logEvent('import_contacts', { userId: user.id });
   };
 
   const removeSelectedContact = async (newContact: Contact) => {

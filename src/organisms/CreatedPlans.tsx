@@ -34,7 +34,7 @@ export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans }: Props) 
             When you create a plan, you will see them here. Create a plan to start building your experiences!
           </AppText>
           <TouchableOpacity onPress={() => navigation.navigate('SearchPlace', {})}>
-            <Image style={{ width: 216, height: 168 }} source={require('../../assets/CreatePlanGraphic.png')}/>
+            <Image style={{ width: 216, height: 168 }} source={require('../../assets/CreatePlanGraphic.png')} />
           </TouchableOpacity>
         </View>
       )}

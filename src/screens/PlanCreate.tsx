@@ -69,7 +69,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
         },
       },
     });
-    await Analytics.logEvent('submit_create_event_to_friends', {userId: user.id});
+    await Analytics.logEvent('submit_create_event_to_friends', { userId: user.id });
   };
 
   const inputFields: {

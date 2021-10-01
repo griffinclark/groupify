@@ -83,7 +83,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const logIn = async ():Promise<void>  => {
+  const logIn = async (): Promise<void> => {
     setError(undefined);
     try {
       await Auth.signIn(formatPhone, password);
@@ -100,7 +100,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           navigation.navigate('Home', { userID: user.id });
         }
       }
-      await Analytics.logEvent('login', {userId: user.id});
+      await Analytics.logEvent('login', { userId: user.id });
     } catch (err: any) {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {
