@@ -59,17 +59,17 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
         title: element.title,
         value: element.value,
       });
-      if (itemsArray[i].title === 'Date') {
-        itemsArray[i].value = currentDate.toLocaleDateString();
-      }
-      if (itemsArray[i].title === 'Time') {
-        if (Platform.OS === 'android') {
-          itemsArray[i].value = formatTime(currentDate.toLocaleTimeString());
-        }
-        if (Platform.OS === 'ios') {
-          itemsArray[i].value = formatIosTimeInput(currentDate.toLocaleTimeString());
-        }
-      }
+      // if (itemsArray[i].title === 'Date') {
+      //   itemsArray[i].value = currentDate.toLocaleDateString();
+      // }
+      // if (itemsArray[i].title === 'Time') {
+      //   if (Platform.OS === 'android') {
+      //     itemsArray[i].value = formatTime(currentDate.toLocaleTimeString());
+      //   }
+      //   if (Platform.OS === 'ios') {
+      //     itemsArray[i].value = formatIosTimeInput(currentDate.toLocaleTimeString());
+      //   }
+      // }
     }
     setValues(itemsArray);
     updatedValues(itemsArray);
