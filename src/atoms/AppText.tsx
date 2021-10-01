@@ -20,7 +20,7 @@ export const AppText: React.FC<Props> = ({
   style,
 }: Props) => {
   const [fontsLoaded] = useFonts({
-    'Brandon-Grotesque': require('../../assets/fonts/brandon/Brandon_reg.otf'),
+    'Brandon-Grotesque': require('../../assets/fonts/Brandon_reg.otf'),
   });
 
   if (!fontsLoaded) return null;
@@ -30,7 +30,6 @@ export const AppText: React.FC<Props> = ({
       numberOfLines={numberOfLines}
       onPress={onPress}
       style={[TextStyles, { fontFamily: 'Brandon-Grotesque' }, style]}
-      // style={[TextStyles, style]}
     >
       {children}
     </Text>
