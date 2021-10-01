@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { AppText, BottomButton, MeepForm, TwoButtonAlert, Navbar, MultiLineTextInput } from '../atoms/AtomsExports';
-import { KeyboardAvoidingView, Platform, StyleSheet, View, FlatList } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import Constants from 'expo-constants';
-import { GREY_8, TEAL } from '../res/styles/Colors';
+import React, { useState } from 'react';
+import { StyleSheet, View, Platform, KeyboardAvoidingView, FlatList } from 'react-native';
+import { MeepForm, MultiLineTextInput, TwoButtonAlert, Navbar, BottomButton } from '../atoms/AtomsExports';
+import { AppText } from '../atoms/AppText';
+import { TEAL, GREY_8 } from '../res/styles/Colors';
+import { ScrollView } from 'react-native-gesture-handler';
 import { RoutePropParams } from '../res/root-navigation';
-import { Contact } from 'expo-contacts';
-import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import { Event, Contact } from '../res/dataModels';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { API, Auth, DataStore } from 'aws-amplify';
-import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
 import { Plan, Status, Invitee, User } from '../models';
 import { sendPushNotification } from '../res/notifications';
+import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
+import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import Constants from 'expo-constants';
 
 interface Props {
   navigation: {
@@ -19,46 +21,19 @@ interface Props {
     goBack: () => void;
   };
   route: RoutePropParams;
-  friend: Contact;
 }
 
 export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
-  const event = route.params.data.eventData;
+  const event: Event = route.params.data.eventData;
   const currentUser: User = route.params.currentUser;
-  const [name, setName] = useState<string>('');
+  const [, setIsLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('Loading Message...');
+  const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
+  const [, setName] = useState<string>('');
   const [, setDate] = useState<string>('');
   const [, setTime] = useState<string>('');
   const [, setDescription] = useState<string>('');
   const [, setLocation] = useState<string>('');
-  const [, setPhoto] = useState<string>('');
-  const [, setDisabled] = useState<boolean>(true);
-  const [message, setMessage] = useState<string>('');
-  const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
-  const [, setIsLoading] = useState<boolean>(false);
-
-  // Check if required fields are full
-  useEffect(() => {
-    checkDisabled();
-  }, [name]);
-
-  // Update location or photo
-  useEffect(() => {
-    if (route.params.data && route.params.data.eventData.location) {
-      setLocation(route.params.data.eventData.location);
-    }
-    if (route.params.data && route.params.data.eventData.imageURL) {
-      setPhoto(route.params.data.eventData.imageURL);
-    }
-  }, [route.params.data]);
-
-  const checkDisabled = () => {
-    if (name) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  };
-
   const inputFields: {
     title: string;
     placeholder: string;
@@ -71,7 +46,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Plan Name *',
       placeholder: '',
       settings: 'default',
-      value: event.title,
+      value: route.params.data ? route.params.data.eventData.title : '',
       func: setName,
       disabled: true,
     },
@@ -79,7 +54,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Date *',
       placeholder: 'MM/DD/YYYY',
       settings: 'default',
-      value: event.date,
+      value: route.params.data ? route.params.data.eventData.date : '',
       func: setDate,
       disabled: true,
     },
@@ -87,7 +62,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Time *',
       placeholder: 'H:MM PM',
       settings: 'default',
-      value: event.time,
+      value: route.params.data ? route.params.data.eventData.time : '',
       func: setTime,
       disabled: true,
     },
@@ -95,7 +70,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Description',
       placeholder: '',
       settings: 'default',
-      value: event.description,
+      value: route.params.data ? route.params.data.eventData.description : '',
       func: setDescription,
       disabled: true,
     },
@@ -103,32 +78,32 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Address',
       placeholder: '',
       settings: 'default',
-      value: event.location,
+      value: route.params.data ? route.params.data.eventData.location : '',
       func: setLocation,
       disabled: true,
     },
   ];
+
   const getUserName = async (): Promise<string> => {
     const userInfo = await Auth.currentUserInfo();
     return userInfo.attributes.name;
   };
 
-  const onPressSend = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      await storeInvitees();
-      if (event.contacts.length > 0) {
-        await pushEvent(event.contacts, message);
-      }
-      navigation.push('Home');
-    } catch (err) {
-      console.log(err);
-      if (err.message === 'The string supplied did not seem to be a phone number') {
-        createErrorAlert(event.contacts, message);
-      }
-    } finally {
-      setIsLoading(false);
-    }
+  const formatPhoneNumber = (friend: Contact) => {
+    const util = PhoneNumberUtil.getInstance();
+    const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+    const newNumber = util.format(num, PhoneNumberFormat.E164);
+    return newNumber;
+  };
+
+  const pushEvent = async (friends: Contact[], message: string): Promise<void> => {
+    const util = PhoneNumberUtil.getInstance();
+    const attendees = friends.map((friend) => {
+      const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+      return util.format(num, PhoneNumberFormat.E164);
+    });
+    const obj = { attendees: attendees, content: message };
+    console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
   };
 
   const createConfirmAlert = (): void => {
@@ -154,23 +129,6 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         await pushEvent(friends, message);
       },
     });
-  };
-
-  const formatPhoneNumber = (friend: Contact) => {
-    const util = PhoneNumberUtil.getInstance();
-    const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
-    const newNumber = util.format(num, PhoneNumberFormat.E164);
-    return newNumber;
-  };
-
-  const pushEvent = async (friends: Contact[], message: string): Promise<void> => {
-    const util = PhoneNumberUtil.getInstance();
-    const attendees = friends.map((friend) => {
-      const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
-      return util.format(num, PhoneNumberFormat.E164);
-    });
-    const obj = { attendees: attendees, content: message };
-    console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
   };
 
   const storeInvitees = async () => {
@@ -247,6 +205,24 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     console.log(newPlan);
   };
 
+  const onPressSend = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      await storeInvitees();
+      if (event.contacts.length > 0) {
+        await pushEvent(event.contacts, message);
+      }
+      navigation.push('Home');
+    } catch (err) {
+      console.log(err);
+      if (err.message === 'The string supplied did not seem to be a phone number') {
+        createErrorAlert(event.contacts, message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   interface renderContactProps {
     item: Contact;
   }
@@ -278,7 +254,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
           paddingTop: Constants.statusBarHeight,
         }}
       >
-        <Navbar location={'PlanCreate'} navigation={navigation} title={'Confirm'} />
+        <Navbar location={'PlanInvite'} navigation={navigation} title={'Confirm'} />
         <AppText style={styles.titleText}>
           Almost done! Please confirm all details are correct, and that you’ve invited all you want. You can always come
           back and edit this event at a later time.
@@ -288,9 +264,20 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
           <MeepForm inputList={inputFields}></MeepForm>
           <AppText style={styles.details}>Invitees</AppText>
 
-          <View style={styles.contactsContainer}>
-            <FlatList data={event.contacts} renderItem={contactList} />
-          </View>
+          {event.contacts.length > 0 && (
+            <>
+              <FlatList
+                data={event.contacts}
+                renderItem={contactList}
+                ListEmptyComponent={() => (
+                  <View style={styles.titleText}>
+                    <AppText>No Contacts Invited</AppText>
+                  </View>
+                )}
+                style={event.friends.length !== 0 ? { maxHeight: '20%' } : { maxHeight: '42%' }}
+              />
+            </>
+          )}
 
           <AppText style={styles.details}>Contacts invited, who will receive a text message:</AppText>
           <View style={styles.message}>
@@ -300,11 +287,20 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
             <AppText style={styles.mapText}>Edit Note</AppText>
           </TouchableOpacity>
         </View>
-
-        <View style={styles.contactsContainer}>
-          <FlatList data={event.contacts} renderItem={contactList} />
-        </View>
-
+        {event.contacts.length > 0 && (
+          <>
+            <FlatList
+              data={event.contacts}
+              renderItem={contactList}
+              ListEmptyComponent={() => (
+                <View style={styles.titleText}>
+                  <AppText>No Contacts Invited</AppText>
+                </View>
+              )}
+              style={event.friends.length !== 0 ? { maxHeight: '20%' } : { maxHeight: '42%' }}
+            />
+          </>
+        )}
         <BottomButton title="Confirm and Create Event" onPress={createConfirmAlert} />
       </ScrollView>
       {/* </Screen> */}

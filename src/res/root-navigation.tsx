@@ -76,7 +76,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         />
         <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} initialParams={initialParams} options={{ headerShown: false }} />
-        <Stack.Screen name="SelectFriends" component={PlanInvite} options={{ headerShown: false }} />
+        <Stack.Screen name="PlanInvite" component={PlanInvite} options={{ headerShown: false }} />
         <Stack.Screen name="PlanCreate" component={PlanCreate} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContactDetails" component={ImportContactDetails} options={{ headerShown: false }} />

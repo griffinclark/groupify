@@ -49,7 +49,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
       return;
     }
 
-    navigation.navigate('SelectFriends', {
+    navigation.navigate('PlanInvite', {
       currentUser: route.params.currentUser,
       data: {
         eventData: {

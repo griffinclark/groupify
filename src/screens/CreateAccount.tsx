@@ -134,7 +134,11 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      testID="WelcomeScreen"
+    >
       <Screen style={{ backgroundColor: WHITE, height: Dimensions.get('screen').height }}>
         <ScrollView>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
