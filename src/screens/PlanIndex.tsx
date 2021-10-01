@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, ScrollView, StyleSheet, View } from 'react-native';
-import { RoutePropParams } from '../res/root-navigation';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { DataStore } from '@aws-amplify/datastore';
 
 import { AppText, Navbar } from '../atoms/AtomsExports';
@@ -12,9 +11,7 @@ import { background, TEAL } from '../res/styles/Colors';
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
-    goBack: () => void;
   };
-  route: RoutePropParams;
 }
 
 export const PlanIndex: React.FC<Props> = ({ navigation }: Props) => {
@@ -62,7 +59,7 @@ export const PlanIndex: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   return (
-    <View style={styles.planIndexContainer}>
+    <View testID="PlanIndexScreen" style={styles.planIndexContainer}>
       <ScrollView>
         <Navbar location={'Home'} navigation={navigation} title={'All Plans'} />
         <View style={styles.tabs}>
