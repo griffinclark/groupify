@@ -13,7 +13,8 @@ interface Props {
   onChangeText: (e: string) => void;
   placeholder?: string | undefined;
   secureTextEntry?: boolean;
-  textStyle?: Record<string, unknown> | Array<Record<string, unknown>>;
+  // textStyle?: Record<string, unknown> | Array<Record<string, unknown>>;
+  textStyle?: any;
   value?: string | undefined;
 }
 

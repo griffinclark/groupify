@@ -12,7 +12,7 @@ interface Props {
 
 export const BottomButton: React.FC<Props> = ({ onPress, title, disabled = false }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.button, disabled ? styles.disabled : '']}>
+    <TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.button, disabled ? styles.disabled : null]}>
       <AppText style={styles.text}>{title}</AppText>
     </TouchableOpacity>
   );
