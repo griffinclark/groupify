@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { NativeSyntheticEvent, NativeTouchEvent, Text } from 'react-native';
+import { useFonts } from 'expo-font';
 
 import { TextStyles } from '../res/styles/TextStyles';
 
@@ -18,12 +19,18 @@ export const AppText: React.FC<Props> = ({
   onPress,
   style,
 }: Props) => {
+  const [fontsLoaded] = useFonts({
+    'Brandon-Grotesque': require('../../assets/fonts/brandon/Brandon_reg.otf'),
+  });
+
+  if (!fontsLoaded) return null;
   return (
     <Text
       maxFontSizeMultiplier={maxFontSizeMultiplier}
       numberOfLines={numberOfLines}
       onPress={onPress}
-      style={[TextStyles, style]}
+      style={[TextStyles, { fontFamily: 'Brandon-Grotesque' }, style]}
+      // style={[TextStyles, style]}
     >
       {children}
     </Text>
