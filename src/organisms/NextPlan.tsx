@@ -86,7 +86,7 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation, reload }: Props) =
           </Image>
         ) : null}
         <View style={{ width: '90%', alignSelf: 'center' }}>
-          <AppText style={{ fontWeight: '400', fontSize: 12, marginVertical: 6 }}>Host: {hostName}</AppText>
+          <AppText style={{ fontWeight: '400', fontSize: 12, marginVertical: 12 }}>Host: {hostName}</AppText>
           <AppText style={{ fontWeight: '400', fontSize: 20 }}>{plan.description ? plan.description : null}</AppText>
           <View style={{ marginVertical: 20 }}>
             <AppText style={{ fontWeight: '700', fontSize: 12 }}>DETAILS</AppText>
@@ -95,7 +95,7 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation, reload }: Props) =
             </AppText>
             <AppText style={{ fontSize: 12, fontWeight: '400' }}>Where: {plan.title}</AppText>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
             <View>
               <AppText style={{ fontSize: 12, fontWeight: '700' }}>ACCEPTED INVITES</AppText>
               <FlatList
