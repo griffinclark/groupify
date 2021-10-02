@@ -13,10 +13,10 @@ export const BackChevronIcon: React.FC<Props> = ({ onPress }: Props) => {
         <Path
           d="M16.875 2L1.875 17L16.875 32"
           stroke="black"
-          stroke-width="3"
-          stroke-miterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="3"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </Svg>
     </TouchableOpacity>

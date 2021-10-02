@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Plan } from '../models';
 import { MiniPlanTile } from '../molecules/MiniPlanTile';
-import { GREY_4, TEAL } from '../res/styles/Colors';
+import { background, GREY_4, TEAL } from '../res/styles/Colors';
 import { loadInviteeStatus } from '../res/utilFunctions';
 import { ViewAll } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
@@ -91,7 +91,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
     <View style={styles.container}>
       <View style={styles.selector}>
         <TouchableOpacity
-          style={[styles.selectorItem, { borderBottomColor: pendingSelected ? TEAL : 'white' }]}
+          style={[styles.selectorItem, { borderBottomColor: pendingSelected ? TEAL : background }]}
           onPress={() => {
             setPendingSelected(true);
             setAcceptedSelected(false);
@@ -100,7 +100,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
           <AppText style={[styles.selectorText, { color: pendingSelected ? TEAL : GREY_4 }]}>PENDING</AppText>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.selectorItem, { borderBottomColor: acceptedSelected ? TEAL : 'white' }]}
+          style={[styles.selectorItem, { borderBottomColor: acceptedSelected ? TEAL : background }]}
           onPress={() => {
             setAcceptedSelected(true);
             setPendingSelected(false);

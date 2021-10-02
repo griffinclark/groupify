@@ -142,13 +142,13 @@ export const formatDatabaseTime = (time: string): string => {
     const meridian = time.substring(6, 8);
     if (meridian === 'AM') {
       const newTime = time.substring(0, 5);
-      console.log(newTime);
       return newTime;
     }
     if (meridian === 'PM') {
       let hour = parseInt(time.substring(0, 2));
       hour === 12 ? (hour -= 12) : (hour += 12);
-      const newTime = hour + ':' + time.substring(3, 5);
+      let newTime = hour + ':' + time.substring(3, 5);
+      newTime == '0:00' ? (newTime = '0' + newTime) : null;
       return newTime;
     }
   }
