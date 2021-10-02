@@ -31,7 +31,7 @@ export const SearchBar: React.FC<Props> = ({ onInputChange, placeholder = 'searc
 
 const styles = StyleSheet.create({
   searchSection: {
-    width: '85%',
+    width: '100%',
     height: 45,
     flexDirection: 'row',
     justifyContent: 'center',

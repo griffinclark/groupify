@@ -217,7 +217,7 @@ export const formatPhoneNumber = (phone: string): string => {
   if (phoneNumberLength < 11) {
     return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   }
-  if (phoneNumberLength == 11) {
+  if (phoneNumberLength >= 11) {
     return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   }
   return phoneNumber;
