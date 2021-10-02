@@ -228,7 +228,6 @@ const styles = StyleSheet.create({
   title: {
     paddingLeft: 15,
     fontSize: 30,
-    fontWeight: '400',
     color: TEAL,
   },
   titleContainer: {
