@@ -19,7 +19,7 @@ describe('Welcome Screen', () => {
 
   it('renders correctly', () => {
     /* eslint-disable */
-    const text = getAllByText("Don't have an account?");
+    const text = getAllByText('Don\'t have an account?');
     /* eslint-enable */
     const loginButton = getAllByText('Log In');
     const signupButton = getAllByText('Sign Up');
