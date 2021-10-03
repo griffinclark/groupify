@@ -14,6 +14,7 @@ import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Image } from 'react-native-elements/dist/image/Image';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
+import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
   navigation: {
@@ -100,6 +101,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           navigation.navigate('Home', { userID: user.id });
         }
       }
+      await Analytics.logEvent('log_in', { userID: user.id });
     } catch (err: any) {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {
