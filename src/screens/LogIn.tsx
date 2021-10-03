@@ -56,7 +56,10 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     await registerForPushNotifications();
     const token = await getUserPushToken();
     const userInfo = await Auth.currentUserInfo();
-    const userQuery = await API.graphql({ query: queries.usersByPhoneNumber, variables: {phoneNumber: userInfo.attributes.phone_number}});
+    const userQuery = await API.graphql({
+      query: queries.usersByPhoneNumber,
+      variables: {phoneNumber: userInfo.attributes.phone_number},
+    });
     const users = userQuery.data.usersByPhoneNumber.items;
     if (users.length > 0) {
       const user = users[0];
@@ -64,7 +67,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       if (!pushTokenRegex.test(token) || !pushTokenRegex.test(user.pushToken) || user.pushToken !== token) {
         console.log('Existing User: Updating users pushToken');
         const newToken = await getExpoPushToken();
-        await(setUserPushToken(newToken));
+        await setUserPushToken(newToken);
         await DataStore.save(
           User.copyOf(user, (updated) => {
             updated.pushToken = newToken;
@@ -74,7 +77,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       return user;
     } else {
       console.log('New User: Adding user to database');
-      const newToken = await getExpoPushToken();;
+      const newToken = await getExpoPushToken();
       await(setUserPushToken(newToken));
       const newUser = await DataStore.save(
         new User({

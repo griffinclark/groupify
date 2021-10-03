@@ -127,10 +127,10 @@ export const setUserPushToken: (token: string) => Promise<void> = async (token: 
 
 export const getUserPushToken: () => Promise<string | null> = async () => {
   try {
-    let token = await AsyncStorage.getItem('pushToken');
+    const token = await AsyncStorage.getItem('pushToken');
     return token;
   } catch (e) {
     console.log('Error getting pushToken');
-    return "";
+    return '';
   }
 };

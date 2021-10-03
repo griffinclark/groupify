@@ -152,7 +152,10 @@ ${event.description} \
     const pushTokenRegex = /ExponentPushToken\[.{22}]/;
     for (let i = 0; i < inviteeList.length; i++) {
       const invitee = inviteeList[i];
-      const userQuery = await API.graphql({ query: queries.usersByPhoneNumber, variables: {phoneNumber: invitee.phoneNumber}})
+      const userQuery = await API.graphql({
+        query: queries.usersByPhoneNumber,
+        variables: {phoneNumber: invitee.phoneNumber},
+      });
       const user = userQuery.data.usersByPhoneNumber.items;
       if (user.length > 0) {
         console.log(user[0].pushToken);
