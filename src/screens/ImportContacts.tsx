@@ -11,6 +11,7 @@ import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
+import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
   navigation: {
@@ -45,6 +46,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const addSelectedContact = async (newContact: Contact) => {
     await storeImportedContact(newContact);
     loadImportedContacts();
+    await Analytics.logEvent('import_contacts', {});
   };
 
   const removeSelectedContact = async (newContact: Contact) => {

@@ -10,6 +10,7 @@ import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
+import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
   navigation: {
@@ -95,6 +96,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       console.log('user successfully created');
       setError(undefined);
       navigation.push('CreateAccount', { step: 'validate', phone: formatPhone });
+      await Analytics.logEvent('sign_up', {});
     } catch (err: any) {
       console.log('Error: ', err);
       if (err.code == 'InvalidParameterException') {

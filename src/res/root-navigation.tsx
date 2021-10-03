@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Analytics from 'expo-firebase-analytics';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import { Home } from '../screens/Home';
@@ -66,7 +67,21 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
   console.log('Initial route: ' + initialRoute);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      onReady={async () => {
+        await Analytics.setCurrentScreen(initialRoute);
+        await Analytics.logEvent(`Page_${initialRoute}`, {});
+      }}
+      onStateChange={async (state) => {
+        console.log(state);
+        if (!state) return null;
+        const newRoute = state.routes[state.routes.length - 1].name;
+        if (typeof newRoute === 'string') {
+            await Analytics.setCurrentScreen(newRoute);
+            await Analytics.logEvent(`Page_${newRoute}`, {});
+        }
+      }}
+    >
       <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ animationEnabled: false }}>
         <Stack.Screen
           name="CreateAccount"
