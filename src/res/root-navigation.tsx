@@ -77,8 +77,8 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         if (!state) return null;
         const newRoute = state.routes[state.routes.length - 1].name;
         if (typeof newRoute === 'string') {
-            await Analytics.setCurrentScreen(newRoute);
-            await Analytics.logEvent(`Page_${newRoute}`, {});
+          await Analytics.setCurrentScreen(newRoute);
+          await Analytics.logEvent(`Page_${newRoute}`, {});
         }
       }}
     >
