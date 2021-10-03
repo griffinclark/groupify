@@ -55,7 +55,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
       return;
     }
 
-    navigation.navigate('SelectFriends', {
+    navigation.navigate('PlanInvite', {
       currentUser: route.params.currentUser,
       data: {
         eventData: {
@@ -130,24 +130,37 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Screen>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
-          <Navbar location={'Home'} navigation={navigation} title={'Create a Plan'} />
-          {/* <View>{loadPhoto(photo)}</View> */}
-          <View style={{ flexGrow: 1 }}>
-            <MeepForm inputList={inputFields}>
-              <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', {})}>
-                {/* <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} /> */}
-                <MapLinkIcon />
-                <AppText style={styles.mapText}>Find address using the map</AppText>
-              </TouchableOpacity>
-            </MeepForm>
-            {error && <Alert status="error" message={error} />}
-          </View>
-          <BottomButton disabled={disabled} title="Invite Friends" onPress={onFormSubmit} />
-        </ScrollView>
-      </Screen>
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: 'white' }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      {/* <Screen> */}
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'space-between',
+          flexDirection: 'column',
+          paddingTop: Constants.statusBarHeight,
+        }}
+      >
+        <Navbar location={'Home'} navigation={navigation} title={'Create a Plan'} />
+        {/* <View>{loadPhoto(photo)}</View> */}
+        <View style={{ flexGrow: 1 }}>
+          <MeepForm inputList={inputFields}>
+            <TouchableOpacity
+              style={styles.mapLink}
+              onPress={() => navigation.navigate('PlanMap', { currentUser: route.params.currentUser })}
+            >
+              {/* <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} /> */}
+              <MapLinkIcon />
+              <AppText style={styles.mapText}>Find address using the map</AppText>
+            </TouchableOpacity>
+          </MeepForm>
+          {error && <Alert status="error" message={error} />}
+        </View>
+        <BottomButton disabled={disabled} title="Invite Friends" onPress={onFormSubmit} />
+      </ScrollView>
+      {/* </Screen> */}
     </KeyboardAvoidingView>
   );
 };

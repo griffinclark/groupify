@@ -1,17 +1,16 @@
 import { RoutePropParams } from '../res/root-navigation';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { Dimensions, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { background, TEAL } from '../res/styles/Colors';
-//import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
-import { AntDesign } from '@expo/vector-icons';
 import * as Analytics from 'expo-firebase-analytics';
+import { BackChevronIcon } from '../../assets/Icons/IconExports';
 
 interface Props {
   navigation: {
@@ -136,21 +135,21 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Screen style={{ backgroundColor: background }}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      testID="WelcomeScreen"
+    >
+      <Screen style={{ backgroundColor: WHITE, height: Dimensions.get('screen').height }}>
         <ScrollView>
-          <AntDesign
-            style={{ alignSelf: 'flex-start', marginLeft: 20 }}
-            name="left"
-            type="font-awesome"
-            size={30}
-            onPress={() => navigation.navigate('Login', {})}
-          />
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
             {route.params.step === 'create' && (
-              <View style={styles.container}>
+              <View>
                 <View>
-                  <AppText style={styles.title}>Create Account</AppText>
+                  <View style={{ flexDirection: 'row', paddingBottom: 20, marginHorizontal: 20 }}>
+                    <BackChevronIcon onPress={() => navigation.navigate('Welcome', {})} />
+                    <AppText style={styles.title}>Create Account</AppText>
+                  </View>
                   <FormInput
                     autoFocus={false}
                     returnKeyNext={true}
@@ -185,65 +184,63 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                   />
                   {error && <Alert status="error" message={error} />}
                 </View>
-                <View style={{ margin: 20 }}>
-                  <Button title="Next" onPress={signUp} disabled={disabled} />
-                </View>
               </View>
             )}
             {route.params.step === 'validate' && (
               <View style={styles.validateContainer}>
-                <AppText style={styles.title}>Verify Your Phone Number</AppText>
                 <View>
-                  <FormInput
-                    returnKeyNext={false}
-                    autoFocus={true}
-                    label="Verification Code"
-                    onChangeText={(value) => {
-                      setCode(value.trim());
-                    }}
-                    secureTextEntry={true}
-                  />
-                  {error && <Alert status="error" message={error} />}
-                  {success && <Alert status="success" message={success} />}
-                  <TouchableOpacity
-                    onPress={() => {
-                      try {
-                        console.log(route.params.phone);
-                        Auth.resendSignUp(route.params.phone);
-                        setSuccess('Sent new verification code');
-                        setError(undefined);
-                      } catch (err) {
-                        console.log(err);
-                        setError(err.message);
-                      }
-                    }}
-                    style={styles.buttonStyle}
-                  >
-                    <AppText style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>
-                      Send New Verification Code
-                    </AppText>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ marginBottom: 30 }}>
-                  <Button title="Next" onPress={validateUser} disabled={disabled} />
+                  <View style={{ flexDirection: 'row', paddingBottom: 20 }}>
+                    <BackChevronIcon onPress={() => navigation.navigate('Welcome', {})} />
+                    <AppText style={styles.title}>Verify Phone Number</AppText>
+                  </View>
+                  <View>
+                    <AppText style={styles.details}>Please enter the verification code you received.</AppText>
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+                      <FormInput
+                        returnKeyNext={false}
+                        autoFocus={true}
+                        label="Verification Code"
+                        onChangeText={(value) => {
+                          setCode(value.trim());
+                        }}
+                        secureTextEntry={true}
+                      />
+                      {error && <Alert status="error" message={error} />}
+                      {success && <Alert status="success" message={success} />}
+                      <TouchableOpacity
+                        onPress={() => {
+                          try {
+                            console.log(route.params.phone);
+                            Auth.resendSignUp(route.params.phone);
+                            setSuccess('Sent new verification code');
+                            setError(undefined);
+                          } catch (err: any) {
+                            console.log(err);
+                            setError(err.message);
+                          }
+                        }}
+                        style={styles.buttonStyle}
+                      >
+                        <AppText style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>
+                          Send New Verification Code
+                        </AppText>
+                      </TouchableOpacity>
+                    </TouchableWithoutFeedback>
+                  </View>
                 </View>
               </View>
             )}
           </TouchableWithoutFeedback>
         </ScrollView>
+        <Button title="Next" onPress={route.params.step === 'validate' ? validateUser : signUp} disabled={disabled} />
       </Screen>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    height: '100%',
-    justifyContent: 'space-between',
-  },
   title: {
-    margin: 20,
+    marginLeft: 15,
     color: TEAL,
     fontSize: 30,
     fontWeight: '400',
@@ -259,7 +256,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   validateContainer: {
+    height: Dimensions.get('screen').height - 75,
+    marginHorizontal: 20,
     justifyContent: 'space-between',
-    height: '100%',
+  },
+  details: {
+    fontSize: 20,
+    paddingBottom: 50,
+    paddingTop: 20,
   },
 });

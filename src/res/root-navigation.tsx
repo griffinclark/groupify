@@ -17,6 +17,7 @@ import { PlanDetails } from '../screens/PlanDetails';
 import { PlanCreate } from '../screens/PlanCreate';
 import { InvitedPlans } from '../screens/InvitedPlans';
 import { InviteeList } from '../screens/inviteList';
+import { ConfirmPlan } from '../screens/ConfirmPlan';
 // import { Attendees } from '../organisms/attendees';
 // import { AcceptDecline } from '../organisms/acceptDecline';
 import { User, Plan } from '../models';
@@ -90,11 +91,12 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         />
         <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} initialParams={initialParams} options={{ headerShown: false }} />
-        <Stack.Screen name="SelectFriends" component={PlanInvite} options={{ headerShown: false }} />
+        <Stack.Screen name="PlanInvite" component={PlanInvite} options={{ headerShown: false }} />
         <Stack.Screen name="PlanCreate" component={PlanCreate} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContactDetails" component={ImportContactDetails} options={{ headerShown: false }} />
         <Stack.Screen name="SendMessage" component={SendMessage} options={{ headerShown: false }} />
+        <Stack.Screen name="ConfirmPlan" component={ConfirmPlan} options={{ headerShown: false }} />
         <Stack.Screen name="SetAvailability" component={SetAvailability} options={{ headerShown: false }} />
         <Stack.Screen name="EditFriends" component={EditFriends} options={{ headerShown: false }} />
         <Stack.Screen name="PlanMap" component={PlanMap} options={{ headerShown: false }} />
