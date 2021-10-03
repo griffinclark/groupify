@@ -8,22 +8,24 @@ import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/I
 interface Props {
   user?: User;
   style?: Record<string, unknown>;
-  plan: Plan;
+  invitedPlans: Plan[];
+  userPlans: Plan[];
   navigation: {
     navigate: (ev: string, {}) => void;
   };
 }
 
-export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: Props) => {
+export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPlans, navigation }: Props) => {
   return (
     <View style={{ width: '100%', alignItems: 'center' }}>
       <View style={[styles.nav, style]}>
         <TouchableOpacity
           style={{ width: '33%' }}
           onPress={() => {
-            navigation?.navigate('InvitedPlans', {
+            navigation?.navigate('ViewPlans', {
               currentUser: user,
-              currentUserPlan: plan,
+              userPlans: userPlans,
+              invitedPlans: invitedPlans,
             });
           }}
         >
@@ -42,7 +44,10 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
         <TouchableOpacity
           style={{ width: '33%' }}
           onPress={() => {
-            navigation?.navigate('Profile', { currentUser: user, currentUserPlan: plan });
+            navigation?.navigate('Profile', {
+              currentUser: user,
+              currentUserPlan: userPlans[0] ? userPlans[0] : invitedPlans[0],
+            });
           }}
         >
           <SettingsIcon />

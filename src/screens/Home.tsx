@@ -134,7 +134,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
         </View>
       </ScrollView>
       <View style={styles.navbar}>
-        <HomeNavBar user={currentUser} navigation={navigation} plan={userPlans[0] ? userPlans[0] : invitedPlans[0]} />
+        <HomeNavBar user={currentUser} navigation={navigation} userPlans={userPlans} invitedPlans={invitedPlans} />
       </View>
     </Screen>
   );

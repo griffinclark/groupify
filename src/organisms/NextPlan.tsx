@@ -1,13 +1,13 @@
 import { DataStore } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Image } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Plan } from '../models';
-import { Invitee, Status, User } from '../models';
-import { GOLD, GREY_0, GREY_4, TEAL } from '../res/styles/Colors';
+import { Plan, User } from '../models';
+import { GREY_0, TEAL } from '../res/styles/Colors';
 import { formatDayOfWeekDate, formatTime, loadPhoto } from '../res/utilFunctions';
 import { AppText } from '../atoms/AppText';
+import { InviteePreviewTile } from '../molecules/InviteePreviewTile';
 
 interface Props {
   plan: Plan;
@@ -20,12 +20,9 @@ interface Props {
 export const NextPlan: React.FC<Props> = ({ plan, navigation, reload }: Props) => {
   const [photoURI, setPhotoURI] = useState('');
   const [hostName, setHostName] = useState('');
-  const [acceptedInvitees, setAcceptedInvitees] = useState<Invitee[]>([]);
-  const [pendingInvitees, setPendingInvitees] = useState<Invitee[]>([]);
 
   useEffect(() => {
     getHost(plan.creatorID);
-    loadInvitees();
     (async () => {
       if (plan.placeID) {
         setPhotoURI(await loadPhoto(plan.placeID));
@@ -39,37 +36,6 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation, reload }: Props) =
       setHostName(user.name);
       return user.name;
     }
-  };
-
-  const loadInvitees = async () => {
-    const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
-    const accepted = [];
-    const pending = [];
-    for (let i = 0; i < invitees.length; i++) {
-      const invitee = invitees[i];
-      if (invitee.status === 'ACCEPTED') {
-        accepted.push(invitee);
-      }
-      if (invitee.status === 'PENDING') {
-        pending.push(invitee);
-      }
-    }
-    setAcceptedInvitees(accepted);
-    setPendingInvitees(pending);
-  };
-
-  const renderInvitee = ({ item }: { item: Invitee }) => {
-    let backgroundColor = GOLD;
-    if (item.status === Status.ACCEPTED) {
-      backgroundColor = TEAL;
-    } else if (item.status === Status.DECLINED) {
-      backgroundColor = GREY_4;
-    }
-    return (
-      <View style={[styles.sphere, { backgroundColor: backgroundColor }]}>
-        <AppText style={styles.initial}>{item.name.slice(0, 1)}</AppText>
-      </View>
-    );
   };
 
   return (
@@ -95,34 +61,7 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation, reload }: Props) =
             </AppText>
             <AppText style={{ fontSize: 12, fontWeight: '400' }}>Where: {plan.title}</AppText>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-            <View>
-              <AppText style={{ fontSize: 12, fontWeight: '700' }}>ACCEPTED INVITES</AppText>
-              <FlatList
-                data={acceptedInvitees}
-                renderItem={renderInvitee}
-                ListEmptyComponent={() => (
-                  <View>
-                    <AppText style={styles.title}>No accepted invitees</AppText>
-                  </View>
-                )}
-                horizontal={true}
-              />
-            </View>
-            <View>
-              <AppText style={{ fontSize: 12, fontWeight: '700', marginRight: '20%' }}>PENDING INVITES</AppText>
-              <FlatList
-                data={pendingInvitees}
-                renderItem={renderInvitee}
-                ListEmptyComponent={() => (
-                  <View>
-                    <AppText style={styles.title}>No pending invitees</AppText>
-                  </View>
-                )}
-                horizontal={true}
-              />
-            </View>
-          </View>
+          <InviteePreviewTile plan={plan} />
         </View>
       </View>
     </TouchableOpacity>
@@ -153,28 +92,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 15,
     color: GREY_0,
-  },
-  sphere: {
-    backgroundColor: TEAL,
-    width: 40,
-    height: 40,
-    borderRadius: 40,
-    margin: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  initial: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: 'white',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '400',
-    color: TEAL,
-    flexWrap: 'wrap',
-    maxWidth: 250,
-    textAlign: 'left',
   },
   date: {
     fontWeight: '400',

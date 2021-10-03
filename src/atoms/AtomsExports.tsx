@@ -20,6 +20,7 @@ import { Title } from './Title';
 import { TwoButtonAlert } from './TwoButtonAlert';
 import { SearchBar } from './SearchBar';
 import { ViewAll } from './ViewAll';
+import { PlanImageTile } from './PlanImageTile';
 
 export {
   Alert,
@@ -44,4 +45,5 @@ export {
   Title,
   TwoButtonAlert,
   ViewAll,
+  PlanImageTile,
 };
