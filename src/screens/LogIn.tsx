@@ -59,7 +59,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     const userInfo = await Auth.currentUserInfo();
     const userQuery = await API.graphql({
       query: queries.usersByPhoneNumber,
-      variables: {phoneNumber: userInfo.attributes.phone_number},
+      variables: { phoneNumber: userInfo.attributes.phone_number },
     });
     const users = userQuery.data.usersByPhoneNumber.items;
     if (users.length > 0) {
@@ -79,7 +79,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     } else {
       console.log('New User: Adding user to database');
       const newToken = await getExpoPushToken();
-      await(setUserPushToken(newToken));
+      await setUserPushToken(newToken);
       const newUser = await DataStore.save(
         new User({
           phoneNumber: userInfo.attributes.phone_number,
@@ -112,6 +112,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
         }
       }
       await Analytics.logEvent('login', { userId: user.id });
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {

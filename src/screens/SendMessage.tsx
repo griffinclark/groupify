@@ -154,12 +154,12 @@ ${event.description} \
       const invitee = inviteeList[i];
       const userQuery = await API.graphql({
         query: queries.usersByPhoneNumber,
-        variables: {phoneNumber: invitee.phoneNumber},
+        variables: { phoneNumber: invitee.phoneNumber },
       });
       const user = userQuery.data.usersByPhoneNumber.items;
       if (user.length > 0) {
         console.log(user[0].pushToken);
-        if(pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken){
+        if (pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken) {
           sendPushNotification(user[0].pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
         }
       } else {
