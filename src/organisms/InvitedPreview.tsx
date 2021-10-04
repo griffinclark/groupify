@@ -24,6 +24,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
   const [acceptedPlans, setAcceptedPlans] = useState<Plan[]>([]);
 
   useEffect(() => {
+    console.log('hit');
     getPendingPlans();
     getAcceptedPlans();
   }, [reload]);
@@ -66,6 +67,8 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
         if (acceptedPlans.length >= 3) {
           break;
         }
+
+        console.log(invitedPlans[i]);
         const plan = invitedPlans[i];
         loadInviteeStatus(plan).then((result) => {
           if (result === 'ACCEPTED') {
