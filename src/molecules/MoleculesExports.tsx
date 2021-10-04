@@ -8,6 +8,9 @@ import { MiniPlanTile } from './MiniPlanTile';
 import { Navbar } from './Navbar';
 import { PlaceCard } from './PlaceCard';
 import { CreatedPlanTile } from './CreatedPlanTile';
+import { PlanDetailsTile } from './PlanDetailsTile';
+import { InviteePreviewTile } from './InviteePreviewTile';
+import { Details } from './Details';
 
 export {
   AndroidContactTile,
@@ -20,4 +23,7 @@ export {
   MiniPlanTile,
   MediumPlanTile,
   CreatedPlanTile,
+  PlanDetailsTile,
+  InviteePreviewTile,
+  Details,
 };
