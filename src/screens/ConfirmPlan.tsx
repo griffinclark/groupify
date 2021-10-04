@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Platform, KeyboardAvoidingView, FlatList } from 'react-native';
-import { MeepForm, MultiLineTextInput, TwoButtonAlert, Navbar, BottomButton } from '../atoms/AtomsExports';
+import { MeepForm, TwoButtonAlert, Navbar, BottomButton } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { TEAL, GREY_8 } from '../res/styles/Colors';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -13,6 +13,7 @@ import { sendPushNotification } from '../res/notifications';
 import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import Constants from 'expo-constants';
+import { PlanTextMessage } from '../molecules/PlanTextMessage';
 
 interface Props {
   navigation: {
@@ -83,6 +84,15 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       disabled: true,
     },
   ];
+
+  useEffect(() => {
+    createInitialMessage();
+  }, []);
+  const createInitialMessage = async (): Promise<void> => {
+    const event = route.params.data.eventData;
+    const initMessage = event.message;
+    setMessage(initMessage);
+  };
 
   const getUserName = async (): Promise<string> => {
     const userInfo = await Auth.currentUserInfo();
@@ -278,11 +288,11 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
               />
             </>
           )}
-
-          <AppText style={styles.details}>Contacts invited, who will receive a text message:</AppText>
-          <View style={styles.message}>
-            <MultiLineTextInput enabled={editMessage} inputText={event.message} setText={setMessage} placeholder={''} />
-          </View>
+          <PlanTextMessage
+            label="Contacts invited, who will receive a text message:"
+            onChangeText={(e) => setMessage(e)}
+            text={message}
+          />
           <TouchableOpacity onPress={() => setEditMessage(!editMessage)}>
             <AppText style={styles.mapText}>Edit Note</AppText>
           </TouchableOpacity>
@@ -312,7 +322,7 @@ const styles = StyleSheet.create({
   mapText: {
     color: TEAL,
     fontSize: 16,
-    marginLeft: 10,
+    margin: 20,
   },
   details: {
     fontSize: 16,
