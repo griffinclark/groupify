@@ -5,7 +5,6 @@ import { AppText } from '../atoms/AppText';
 import { convertDateStringToDate, formatTime } from '../res/utilFunctions';
 import { TEAL } from '../res/styles/Colors';
 import { DataStore } from '@aws-amplify/datastore';
-import { Details } from './Details';
 
 interface Props {
   plan: Plan;
