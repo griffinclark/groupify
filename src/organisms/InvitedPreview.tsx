@@ -10,13 +10,14 @@ import { AppText } from '../atoms/AppText';
 
 interface Props {
   invitedPlans: Plan[];
+  userPlans: Plan[];
   navigation: {
     navigate: (ev: string, {}) => void;
   };
   reload: boolean;
 }
 
-export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, reload }: Props) => {
+export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, reload, userPlans }: Props) => {
   const [pendingSelected, setPendingSelected] = useState(false);
   const [acceptedSelected, setAcceptedSelected] = useState(true);
   const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
@@ -115,7 +116,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
         ) : (
           <View style={{ padding: 30 }}>
             <AppText style={{ textAlign: 'center', fontSize: 20 }}>No pending plans at the moment.</AppText>
-            <TouchableOpacity onPress={() => navigation.navigate('SearchPlace', {})}>
+            <TouchableOpacity onPress={() => navigation.navigate('PlanCreate', {})}>
               <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL, marginTop: 30 }}>
                 You can create one!
               </AppText>
@@ -134,7 +135,14 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
         ))}
 
       {(acceptedPlans.length > 0 || pendingPlans.length > 0) && (
-        <ViewAll navigation={navigation} destination={'InvitedPlans'} />
+        <ViewAll
+          navigation={navigation}
+          destination={'ViewPlans'}
+          payload={{
+            userPlans: userPlans,
+            invitedPlans: invitedPlans,
+          }}
+        />
       )}
     </View>
   );

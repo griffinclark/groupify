@@ -103,12 +103,17 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
               <View style={globalStyles.miniSpacer}></View>
               <View>
                 <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
-                <InvitedPreview reload={trigger} navigation={navigation} invitedPlans={invitedPlans} />
+                <InvitedPreview
+                  reload={trigger}
+                  navigation={navigation}
+                  invitedPlans={invitedPlans}
+                  userPlans={userPlans}
+                />
                 <View style={globalStyles.miniSpacer}></View>
               </View>
               <View style={{ height: 360 }}>
                 <AppText style={styles.label}>CREATED PLANS</AppText>
-                <CreatedPlans navigation={navigation} userPlans={userPlans} />
+                <CreatedPlans navigation={navigation} userPlans={userPlans} invitedPlans={invitedPlans} />
               </View>
             </View>
           ) : (
@@ -134,7 +139,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
         </View>
       </ScrollView>
       <View style={styles.navbar}>
-        <HomeNavBar user={currentUser} navigation={navigation} plan={userPlans[0] ? userPlans[0] : invitedPlans[0]} />
+        <HomeNavBar user={currentUser} navigation={navigation} userPlans={userPlans} invitedPlans={invitedPlans} />
       </View>
     </Screen>
   );

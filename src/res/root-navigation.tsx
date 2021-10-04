@@ -24,6 +24,7 @@ import { User, Plan } from '../models';
 import { Profile } from '../screens/Profile';
 import { ForgotPassword } from '../screens/ForgotPassword';
 import { Welcome } from '../screens/Welcome';
+import { PlanIndex } from '../screens/PlanIndex';
 
 export type RoutePropParams = {
   params: {
@@ -33,6 +34,9 @@ export type RoutePropParams = {
     email: string;
     step: string;
     phone: string;
+    invitedPlans: Plan[];
+    userPlans: Plan[];
+    option: string;
     data: {
       eventData: {
         friends: User[];
@@ -73,7 +77,6 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         await Analytics.logEvent(`Page_${initialRoute}`, {});
       }}
       onStateChange={async (state) => {
-        console.log(state);
         if (!state) return null;
         const newRoute = state.routes[state.routes.length - 1].name;
         if (typeof newRoute === 'string') {
@@ -106,6 +109,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="InviteeList" component={InviteeList} options={{ headerShown: false }} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+        <Stack.Screen name="ViewPlans" component={PlanIndex} options={{ headerShown: false }} />
 
         {/* <Stack.Screen name="Attendees" component={Attendees} options={{ headerShown: false }} />
         <Stack.Screen name="AcceptDecline" component={AcceptDecline} options={{ headerShown: false }} /> */}

@@ -22,7 +22,7 @@ interface Props {
 }
 
 export const SendMessage: React.FC<Props> = ({ navigation, route }: Props) => {
-  const event: Event = route.params.data.eventData;
+  const plan: Event = route.params.data.eventData;
   const currentUser: User = route.params.currentUser;
   const [message, setMessage] = useState<string>('Loading Message...');
   const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
@@ -41,11 +41,11 @@ export const SendMessage: React.FC<Props> = ({ navigation, route }: Props) => {
     const name = await getUserName();
     setMessage(
       `Hey, ${name} is inviting you \
-to '${event.title ? event.title : '[plan title not specified]'}' \
-at ${event.time ? event.time : '[time not specified]'} \
-on ${event.date ? event.date : '[date not specified]'} \
-at ${event.location ? event.location : '[location not specified]'}. \
-${event.description} \
+to '${plan.title ? plan.title : '[plan title not specified]'}' \
+at ${plan.time ? plan.time : '[time not specified]'} \
+on ${plan.date ? plan.date : '[date not specified]'} \
+at ${plan.location ? plan.location : '[location not specified]'}. \
+${plan.description} \
 \nHope to see you there! \
 \nYou can download Groupify on the app store! \nhttps://cntr.click/14fV4hQ`,
     );
@@ -94,22 +94,22 @@ ${event.description} \
   };
 
   const storeInvitees = async () => {
-    const date = route.params.data.eventData.date;
-    const time = route.params.data.eventData.time;
+    const date = plan.date;
+    const time = plan.time;
     const newPlan = await DataStore.save(
       new Plan({
-        title: event.title,
-        description: event.description,
-        location: event.location,
-        placeID: event.placeId,
+        title: plan.title,
+        description: plan.description,
+        location: plan.location,
+        placeID: plan.placeId,
         date: formatDatabaseDate(date),
         time: formatDatabaseTime(time),
-        creatorID: route.params.currentUser.id,
+        creatorID: currentUser.id,
       }),
     );
 
     const inviteeList: Invitee[] = [];
-    for (const contact of event.contacts) {
+    for (const contact of plan.contacts) {
       if (contact.phoneNumber !== 'No phone number found') {
         const invitee = await DataStore.save(
           new Invitee({
@@ -124,7 +124,7 @@ ${event.description} \
       }
     }
 
-    for (const friend of event.friends) {
+    for (const friend of plan.friends) {
       if (friend.phoneNumber !== 'No phone number found') {
         const invitee = await DataStore.save(
           new Invitee({
@@ -171,14 +171,14 @@ ${event.description} \
     setIsLoading(true);
     try {
       await storeInvitees();
-      if (event.contacts.length > 0) {
-        await pushEvent(event.contacts, message);
+      if (plan.contacts.length > 0) {
+        await pushEvent(plan.contacts, message);
       }
       navigation.push('Home');
     } catch (err) {
       console.log(err);
       if (err.message === 'The string supplied did not seem to be a phone number') {
-        createErrorAlert(event.contacts, message);
+        createErrorAlert(plan.contacts, message);
       }
     } finally {
       setIsLoading(false);
@@ -211,27 +211,27 @@ ${event.description} \
           style={styles.back}
         />
       </View>
-      {event.contacts.length == 0 && event.friends.length > 0 && (
+      {plan.contacts.length == 0 && plan.friends.length > 0 && (
         <ImageBackground
           imageStyle={{ borderRadius: 15 }}
-          source={{ uri: event.imageURL }}
+          source={{ uri: plan.imageURL }}
           style={styles.backgroundImage}
         >
           <View style={styles.overlay} />
           <AppText style={styles.titleText}>Plan Details...</AppText>
           <View style={styles.body}>
             <View style={styles.eventInfo}>
-              <AppText style={styles.planInfo}>{event.title}</AppText>
-              <AppText style={styles.planInfo}>{event.date}</AppText>
-              <AppText style={styles.planInfo}>{event.time}</AppText>
+              <AppText style={styles.planInfo}>{plan.title}</AppText>
+              <AppText style={styles.planInfo}>{plan.date}</AppText>
+              <AppText style={styles.planInfo}>{plan.time}</AppText>
               <AppText numberOfLines={1} style={styles.planInfo}>
-                {event.location}
+                {plan.location}
               </AppText>
             </View>
           </View>
         </ImageBackground>
       )}
-      {event.contacts.length > 0 && (
+      {plan.contacts.length > 0 && (
         <>
           <AppText style={styles.text}>Message to friends</AppText>
           <View style={styles.message}>
@@ -240,22 +240,22 @@ ${event.description} \
           <Button title="Edit Note" onPress={() => setEditMessage(!editMessage)} />
           <AppText style={styles.text}>Sending text message to...</AppText>
           <FlatList
-            data={event.contacts}
+            data={plan.contacts}
             renderItem={contactList}
             ListEmptyComponent={() => (
               <View style={styles.title}>
                 <AppText>No Contacts Invited</AppText>
               </View>
             )}
-            style={event.friends.length !== 0 ? { maxHeight: '20%' } : { maxHeight: '42%' }}
+            style={plan.friends.length !== 0 ? { maxHeight: '20%' } : { maxHeight: '42%' }}
           />
         </>
       )}
-      {event.friends.length > 0 && (
+      {plan.friends.length > 0 && (
         <View style={{ flex: 1 }}>
           <AppText style={styles.text}>Inviting friends to plan...</AppText>
           <FlatList
-            data={event.friends}
+            data={plan.friends}
             renderItem={contactList}
             ListEmptyComponent={() => (
               <View style={styles.title}>

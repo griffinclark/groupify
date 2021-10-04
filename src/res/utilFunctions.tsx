@@ -1,8 +1,9 @@
-import { Invitee, Plan, User } from '../models';
+import { Invitee, Plan, Status, User } from '../models';
 import Qs from 'qs';
 import { Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Platform } from 'react-native';
+import { sendPushNotification } from './notifications';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
@@ -304,4 +305,31 @@ export const roundDate = (date: Date): Date => {
   date.setMinutes(0);
   date.setHours(hours);
   return date;
+};
+
+//Allows user to accept (true) or decline (false) a plan
+export const respondToPlan = async (accept: boolean, plan: Plan): Promise<void> => {
+  const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
+  // const invitee = invitees.filter((invitee) => invitee.phoneNumber === phoneNumber)[0];
+  const invitee = (await DataStore.query(Invitee)).filter(
+    (invitee) => invitee.plan?.id === plan.id && invitee.phoneNumber === phoneNumber,
+  )[0];
+  if (accept) {
+    await DataStore.save(
+      Invitee.copyOf(invitee, (updated) => {
+        updated.status = Status.ACCEPTED;
+      }),
+    );
+    const host = await DataStore.query(User, plan.creatorID);
+    if (host) {
+      const userName = (await Auth.currentUserInfo()).attributes.name;
+      sendPushNotification(host.pushToken, `${userName} has accepted your invite!`, 'Tap to open the app', {});
+    }
+  } else {
+    await DataStore.save(
+      Invitee.copyOf(invitee, (updated) => {
+        updated.status = Status.DECLINED;
+      }),
+    );
+  }
 };

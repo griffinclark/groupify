@@ -1,14 +1,13 @@
 import { DataStore, Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, ScrollView } from 'react-native';
-import { Screen } from '../atoms/AtomsExports';
-import { AppText } from '../atoms/AppText';
-import { formatTime, convertDateStringToDate, loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
+import { Screen, AppText, PlanImageTile } from '../atoms/AtomsExports';
 import { TEAL, GRAY_LIGHT } from '../res/styles/Colors';
-import { Plan, User, Invitee, Status } from '../models';
-import { sendPushNotification } from '../res/notifications';
+import { Plan, Invitee, Status } from '../models';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
-import { Image } from 'react-native-elements';
+import { PlanDetailsTile, Details } from '../molecules/MoleculesExports';
+import { WhiteButton } from '../atoms/WhiteButton';
+import { respondToPlan } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
@@ -24,32 +23,14 @@ interface Props {
 
 export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   const plan = route.params.plan;
-  const [hostName, setHostName] = useState('');
   const [invitees, setInvitees] = useState<Invitee[]>([]);
   const [userInvitee, setUserInvitee] = useState<Invitee>();
-  const [photoURI, setPhotoURI] = useState('');
   const [refreshAttendeeList, setRefreshAttendeeList] = useState(false);
   const [selectorOption, setSelectorOption] = useState('ACCEPTED');
 
   useEffect(() => {
-    getPlanHost(plan.creatorID);
-    (async () => {
-      if (plan.placeID) {
-        setPhotoURI(await loadPhoto(plan.placeID));
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
     loadInvitees();
   }, [refreshAttendeeList]);
-
-  const getPlanHost = async (id: string) => {
-    const user = await DataStore.query(User, id);
-    if (user) {
-      setHostName(user.name);
-    }
-  };
 
   const loadInvitees = async () => {
     const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
@@ -84,30 +65,6 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const respondToPlan = async (accept: boolean) => {
-    const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
-    const invitee = invitees.filter((invitee) => invitee.phoneNumber === phoneNumber)[0];
-    if (accept) {
-      await DataStore.save(
-        Invitee.copyOf(invitee, (updated) => {
-          updated.status = Status.ACCEPTED;
-        }),
-      );
-      const host = await DataStore.query(User, plan.creatorID);
-      if (host) {
-        const userName = (await Auth.currentUserInfo()).attributes.name;
-        sendPushNotification(host.pushToken, `${userName} has accepted your invite!`, 'Tap to open the app', {});
-      }
-    } else {
-      await DataStore.save(
-        Invitee.copyOf(invitee, (updated) => {
-          updated.status = Status.DECLINED;
-        }),
-      );
-    }
-    setRefreshAttendeeList(!refreshAttendeeList);
-  };
-
   return (
     <Screen>
       <View style={styles.titleContainer}>
@@ -116,64 +73,9 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
       </View>
       <ScrollView>
         <View style={styles.bodyContainer}>
-          {photoURI ? (
-            <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover">
-              <View style={styles.imageDetailContainer}>
-                <AppText style={styles.imageDetail}>
-                  {plan.date &&
-                    formatDayOfWeekDate(plan.date)
-                      .toString()
-                      .substring(formatDayOfWeekDate(plan.date).toString().indexOf(' ') + 1)}
-                </AppText>
-              </View>
-              <View style={styles.imageDetailContainer}>
-                <AppText style={styles.imageDetail}>{plan.time && formatTime(plan.time)}</AppText>
-              </View>
-              <View style={styles.imageDetailContainer}>
-                <AppText style={styles.imageDetail}>{plan.title}</AppText>
-              </View>
-            </Image>
-          ) : null}
-          {plan.description ? (
-            <AppText
-              style={{
-                fontSize: 20,
-                marginTop: 15,
-                marginBottom: 25,
-              }}
-            >
-              {plan.description}
-            </AppText>
-          ) : null}
-          <AppText style={{ fontSize: 18, fontWeight: '700', paddingBottom: 35 }}>Host:</AppText>
-          <View
-            style={{ marginLeft: 75, marginTop: -75, flexDirection: 'row', alignItems: 'center', marginBottom: 30 }}
-          >
-            <View style={[styles.sphere, { backgroundColor: TEAL }]}>
-              <AppText style={{ fontSize: 24, fontWeight: '700', color: 'white' }}>{hostName.slice(0, 1)}</AppText>
-            </View>
-            <AppText style={{ fontSize: 18 }}>{hostName}</AppText>
-          </View>
-          <AppText style={{ fontSize: 16, fontWeight: '700', paddingBottom: 10 }}>Date: </AppText>
-          <AppText style={{ fontWeight: '400', marginLeft: 75, marginTop: -30, paddingBottom: 25, lineHeight: 22.88 }}>
-            {plan.date && convertDateStringToDate(plan.date).toDateString()}
-            {'\n'}
-            {plan.time && formatTime(plan.time)}
-          </AppText>
-          {plan.location && (
-            <>
-              <AppText style={{ fontSize: 16, fontWeight: '700' }}>Where: </AppText>
-              <AppText
-                style={{ fontWeight: '400', marginLeft: 75, marginTop: -20, paddingBottom: 25, lineHeight: 22.88 }}
-              >
-                {plan.title}
-                {'\n'}
-                {plan.location?.substring(0, plan.location.indexOf(',') + 1)}
-                {'\n'}
-                {plan.location?.substring(plan.location.indexOf(',') + 2)}
-              </AppText>
-            </>
-          )}
+          <PlanImageTile plan={plan} />
+          <Details plan={plan} />
+          <PlanDetailsTile plan={plan} />
           <AppText style={{ fontSize: 16, fontWeight: '700' }}>Who&apos;s going?</AppText>
         </View>
         <View style={styles.inviteeListContainer}>
@@ -208,16 +110,16 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
           <View style={styles.flatlist}>
             <FlatList data={invitees} renderItem={renderInvitee} />
           </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true);
-            }}
-          >
-            <AppText style={{ fontSize: 20, fontWeight: '700', color: TEAL }}>
-              {userInvitee?.status === 'ACCEPTED' ? 'Decline this plan' : 'Accept Plan?'}
-            </AppText>
-          </TouchableOpacity>
+          <View style={{ alignSelf: 'center' }}>
+            <WhiteButton
+              text={userInvitee?.status === 'ACCEPTED' ? 'Decline this plan' : 'Accept Plan?'}
+              onPress={() => {
+                respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true, plan).then(() => {
+                  setRefreshAttendeeList(!refreshAttendeeList);
+                });
+              }}
+            />
+          </View>
         </View>
       </ScrollView>
     </Screen>
@@ -238,31 +140,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: GRAY_LIGHT,
   },
-  image: {
-    height: 150,
-    width: '100%',
-    borderRadius: 5,
-    justifyContent: 'center',
-    paddingRight: 6,
-    alignItems: 'flex-end',
-  },
   bodyContainer: {
     marginTop: 30,
     width: '85%',
     alignSelf: 'center',
     marginBottom: 30,
-  },
-  imageDetail: {
-    fontSize: 20,
-    paddingHorizontal: 5,
-    textAlign: 'right',
-    color: 'white',
-  },
-  imageDetailContainer: {
-    backgroundColor: TEAL,
-    padding: 5,
-    margin: 6,
-    borderRadius: 5,
   },
   inviteeListContainer: {
     flex: 1,

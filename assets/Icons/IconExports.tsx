@@ -4,5 +4,16 @@ import { CreatePlanIcon } from './CreatePlan';
 import { MagnifyingGlassIcon } from './MagnifyingGlass';
 import { MapLinkIcon } from './MapLink';
 import { SettingsIcon } from './Settings';
+import { DownArrow } from './DownArrow';
+import { UpArrow } from './UpArrow';
 
-export { AnnounceIcon, BackChevronIcon, CreatePlanIcon, MagnifyingGlassIcon, MapLinkIcon, SettingsIcon };
+export {
+  AnnounceIcon,
+  BackChevronIcon,
+  CreatePlanIcon,
+  MagnifyingGlassIcon,
+  MapLinkIcon,
+  SettingsIcon,
+  DownArrow,
+  UpArrow,
+};

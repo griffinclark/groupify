@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { ScrollView } from 'react-native-gesture-handler';
-import { AppText } from '../atoms/AppText';
+import { AppText, ViewAll } from '../atoms/AtomsExports';
 import { Plan } from '../models';
 import { CreatedPlanTile } from '../molecules/CreatedPlanTile';
 
@@ -11,9 +11,10 @@ interface Props {
     navigate: (ev: string, {}) => void;
   };
   userPlans: Plan[];
+  invitedPlans: Plan[];
 }
 
-export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans }: Props) => {
+export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans, invitedPlans }: Props) => {
   const getUserPlans = () => {
     const plans = [];
     for (let i = 0; i < userPlans.length; i++) {
@@ -33,14 +34,22 @@ export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans }: Props) 
           <AppText style={{ fontSize: 16, lineHeight: 22.88, marginVertical: 15 }}>
             When you create a plan, you will see them here. Create a plan to start building your experiences!
           </AppText>
-          <TouchableOpacity onPress={() => navigation.navigate('SearchPlace', {})}>
-            <Image style={{ width: 216, height: 168 }} source={require('../../assets/CreatePlanGraphic.png')}/>
+          <TouchableOpacity onPress={() => navigation.navigate('PlanCreate', {})}>
+            <Image style={{ width: 216, height: 168 }} source={require('../../assets/CreatePlanGraphic.png')} />
           </TouchableOpacity>
         </View>
       )}
-      {/* <View style={styles.viewContainer}>
-        <ViewAll navigation={navigation} destination={''} />
-      </View> */}
+      <View style={styles.viewContainer}>
+        <ViewAll
+          navigation={navigation}
+          destination={'ViewPlans'}
+          payload={{
+            userPlans: userPlans,
+            invitedPlans: invitedPlans,
+            option: 'created',
+          }}
+        />
+      </View>
     </View>
   );
 };
