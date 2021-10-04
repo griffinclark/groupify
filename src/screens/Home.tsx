@@ -36,7 +36,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    console.log('home');
     const awaitUser = async () => {
       const user = await getCurrentUser();
       setCurrentUser(user);
