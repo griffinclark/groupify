@@ -145,7 +145,8 @@ export const formatDatabaseTime = (time: string): string => {
     if (meridian === 'PM') {
       let hour = parseInt(time.substring(0, 2));
       hour === 12 ? (hour -= 12) : (hour += 12);
-      const newTime = hour + ':' + time.substring(3, 5);
+      let newTime = hour + ':' + time.substring(3, 5);
+      newTime == '0:00' ? (newTime = '0' + newTime) : null;
       return newTime;
     }
   }
@@ -214,7 +215,7 @@ export const formatPhoneNumber = (phone: string): string => {
   if (phoneNumberLength < 11) {
     return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   }
-  if (phoneNumberLength == 11) {
+  if (phoneNumberLength >= 11) {
     return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   }
   return phoneNumber;

@@ -1,102 +1,57 @@
-import React, { ReactChild, useEffect, useState } from 'react';
-import { StyleSheet, TextInput, View, Platform } from 'react-native';
-import { WHITE } from '../res/styles/Colors';
+import React, { ReactChild, useState } from 'react';
+import { StyleSheet, View, Platform } from 'react-native';
+import { BLACK } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
 import { AppText } from './AppText';
+import { AppTextInput } from './AppTextInput';
 
 interface Props {
   children: ReactChild;
-  InputList: { title: string; placeholder: string; settings?: string; value?: string }[];
-  updatedValues: (e: { title: string; value: string | undefined }[]) => void;
+  inputList: {
+    title: string;
+    placeholder: string;
+    settings?: string;
+    value?: string;
+    func: React.Dispatch<React.SetStateAction<string>>;
+  }[];
 }
 
-export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }: Props) => {
-  const [values, setValues] = useState<{ title: string; value: string | undefined }[]>([]);
-  const [currentDate, setCurrentDate] = useState(roundDate(new Date()));
+export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [currentDate, setCurrentDate] = useState(roundDate(new Date()));
 
   const onDateChange = (
     event: Event,
-    selectedDate: Date = currentDate,
-    item: { title: string; placeholder: string; settings?: string },
+    selectedDate: Date,
+    item: { title: string; placeholder: string; settings?: string; func: React.Dispatch<React.SetStateAction<string>> },
   ) => {
-    for (let i = 0; i < values.length; i++) {
-      const element = values[i];
-      if (element.title == item.title) {
-        if (item.settings === 'time') {
-          setShowTimePicker(false);
-          setCurrentDate(selectedDate);
-          if (Platform.OS === 'android') {
-            element.value = formatTime(selectedDate.toLocaleTimeString());
-            updatedValues(values);
-            return;
-          }
-          if (Platform.OS === 'ios') {
-            element.value = formatIosTimeInput(selectedDate.toLocaleTimeString());
-            updatedValues(values);
-            return;
-          }
-        }
-        if (item.settings === 'date') {
-          setShowDatePicker(false);
-          setCurrentDate(selectedDate);
-          element.value = selectedDate.toLocaleDateString();
-          updatedValues(values);
-          return;
-        }
+    if (item.settings === 'time') {
+      setShowTimePicker(false);
+      setCurrentDate(selectedDate);
+      if (Platform.OS === 'android') {
+        const newTime = formatTime(selectedDate.toLocaleTimeString());
+        item.func(newTime);
+        return;
       }
-    }
-  };
-
-  useEffect(() => {
-    const itemsArray: { title: string; value: string | undefined }[] = [];
-    for (let i = 0; i < InputList.length; i++) {
-      const element = InputList[i];
-      itemsArray.push({
-        title: element.title,
-        value: element.value,
-      });
-      if (itemsArray[i].title === 'Date') {
-        itemsArray[i].value = currentDate.toLocaleDateString();
-      }
-      if (itemsArray[i].title === 'Time') {
-        if (Platform.OS === 'android') {
-          itemsArray[i].value = formatTime(currentDate.toLocaleTimeString());
-        }
-        if (Platform.OS === 'ios') {
-          itemsArray[i].value = formatIosTimeInput(currentDate.toLocaleTimeString());
-        }
-      }
-    }
-    setValues(itemsArray);
-    updatedValues(itemsArray);
-  }, []);
-
-  const getValue = (title: string) => {
-    for (let i = 0; i < values.length; i++) {
-      const element = values[i];
-      if (element.title == title) {
-        const value = values[i].value;
-        return value;
-      }
-    }
-  };
-
-  const setValue = (e: string, item: { title: string; placeholder: string }) => {
-    for (let i = 0; i < values.length; i++) {
-      const element = values[i];
-      if (element.title == item.title) {
-        element.value = e;
-        updatedValues(values);
+      if (Platform.OS === 'ios') {
+        const newTime = formatIosTimeInput(selectedDate.toLocaleTimeString());
+        item.func(newTime);
         return;
       }
     }
+    if (item.settings === 'date') {
+      setShowDatePicker(false);
+      setCurrentDate(selectedDate);
+      const newDate = selectedDate.toLocaleDateString();
+      item.func(newDate);
+      return;
+    }
   };
 
-  const ListItems = InputList.map((item) => {
+  const ListItems = inputList.map((item) => {
     if (item.settings === 'date') {
       return (
         <View key={item.title}>
@@ -107,8 +62,10 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
               value={currentDate}
               mode={'date'}
               display={'default'}
-              style={{ height: 55, padding: 10 }}
+              style={styles.dateTimePicker}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              textColor={BLACK}
+              themeVariant={'light'}
             />
           )}
           {Platform.OS === 'android' && (
@@ -120,15 +77,16 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
           )}
           {Platform.OS === 'ios' && (
             <DateTimePicker
-              style={{ height: 55, marginTop: 5 }}
+              style={styles.dateTimePicker}
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'date'}
               display={'default'}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              textColor={BLACK}
+              themeVariant={'light'}
             />
           )}
-          <View style={{ height: 15 }} />
         </View>
       );
     }
@@ -138,11 +96,14 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
           <AppText style={styles.text}>{item.title}</AppText>
           {showTimePicker && (
             <DateTimePicker
+              style={styles.dateTimePicker}
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'time'}
               display={'default'}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              textColor={BLACK}
+              themeVariant={'light'}
             />
           )}
           {Platform.OS === 'android' && (
@@ -152,46 +113,42 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
           )}
           {Platform.OS === 'ios' && (
             <DateTimePicker
-              style={{ height: 55, marginTop: 5 }}
+              style={styles.dateTimePicker}
               testID={'dateTimePicker'}
               value={currentDate}
               mode={'time'}
               display={'default'}
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              textColor={BLACK}
+              themeVariant={'dark'}
             />
           )}
-          <View style={{ height: 15 }} />
+          {/* <View style={{ height: 15 }} /> */}
         </View>
       );
     }
-    if (item.settings === 'password') {
-      return (
-        <View key={item.title}>
-          <AppText style={styles.text}>{item.title}</AppText>
-          <TextInput
-            style={styles.textInputBody}
-            onChangeText={(e) => setValue(e, item)}
-            placeholder={item.placeholder}
-            secureTextEntry={true}
-            autoFocus={true}
-          />
-          <View style={{ height: 15 }} />
-        </View>
-      );
-    }
+    // if (item.settings === 'password') {
+    //   return (
+    //     <View key={item.title}>
+    //       <AppTextInput
+    //         label={item.title}
+    //         onChangeText={(e) => item.func(e)}
+    //         placeholder={item.placeholder}
+    //         secureTextEntry={true}
+    //         autoFocus={true}
+    //       />
+    //     </View>
+    //   );
+    // }
     if (item.settings === 'default') {
       return (
         <View key={item.title}>
-          <AppText style={styles.text}>{item.title}</AppText>
-          <TextInput
-            maxFontSizeMultiplier={1.5}
-            value={getValue(item.title)}
-            style={styles.textInputBody}
-            onChangeText={(e) => setValue(e, item)}
+          <AppTextInput
+            label={item.title}
+            onChangeText={(e) => item.func(e)}
             placeholder={item.placeholder}
-            autoFocus={true}
+            value={item.value}
           />
-          <View style={{ height: 15 }} />
         </View>
       );
     }
@@ -206,28 +163,26 @@ export const MeepForm: React.FC<Props> = ({ children, InputList, updatedValues }
 };
 
 const styles = StyleSheet.create({
-  textInputBody: {
-    fontSize: 18,
-    backgroundColor: WHITE,
-    borderRadius: 10,
-    borderColor: '#BE8C2C',
-    borderWidth: 1.5,
-    padding: 8,
-    marginTop: 5,
-  },
   container: {
     width: '100%',
-    flex: 1,
-    justifyContent: 'space-between',
+    // flex: 1,
+    justifyContent: 'flex-start',
   },
   formContainer: {
     padding: 20,
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     width: '100%',
   },
+  dateTimePicker: {
+    borderRadius: 5,
+    borderColor: '#C5C5C5',
+    // borderWidth: 1,
+    marginVertical: 10,
+    height: 43,
+  },
   text: {
-    marginTop: 4,
+    marginTop: 10,
     fontSize: 16,
   },
   dateTime: {

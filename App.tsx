@@ -37,7 +37,7 @@ export const App: React.FC = () => {
         setUserID(user.id);
         const contacts: Contact[] = await getAllImportedContacts();
         if (contacts.length === 0) {
-          setInitialScreen('ImportContacDetails');
+          setInitialScreen('ImportContactDetails');
         } else {
           setInitialScreen('Home');
         }

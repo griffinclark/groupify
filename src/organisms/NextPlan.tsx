@@ -14,9 +14,10 @@ interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
+  reload: boolean;
 }
 
-export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
+export const NextPlan: React.FC<Props> = ({ plan, navigation, reload }: Props) => {
   const [photoURI, setPhotoURI] = useState('');
   const [hostName, setHostName] = useState('');
   const [acceptedInvitees, setAcceptedInvitees] = useState<Invitee[]>([]);
@@ -30,7 +31,7 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
         setPhotoURI(await loadPhoto(plan.placeID));
       }
     })();
-  }, []);
+  }, [reload]);
 
   const getHost = async (id: string) => {
     const user = await DataStore.query(User, id);
@@ -84,41 +85,43 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation }: Props) => {
             </View>
           </Image>
         ) : null}
-        <AppText style={{ fontWeight: '400', fontSize: 12, marginVertical: 6 }}>Host: {hostName}</AppText>
-        <AppText style={{ fontWeight: '400', fontSize: 20 }}>{plan.description ? plan.description : null}</AppText>
-        <View style={{ marginVertical: 20 }}>
-          <AppText style={{ fontWeight: '700', fontSize: 12 }}>DETAILS</AppText>
-          <AppText style={{ fontSize: 12, fontWeight: '400', marginVertical: 4 }}>
-            Date: {plan.date && formatDayOfWeekDate(plan.date)} Time: {plan.time && formatTime(plan.time)}
-          </AppText>
-          <AppText style={{ fontSize: 12, fontWeight: '400' }}>Where: {plan.title}</AppText>
-        </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <View>
-            <AppText style={{ fontSize: 12, fontWeight: '700' }}>ACCEPTED INVITES</AppText>
-            <FlatList
-              data={acceptedInvitees}
-              renderItem={renderInvitee}
-              ListEmptyComponent={() => (
-                <View>
-                  <AppText style={styles.title}>No accepted invitees</AppText>
-                </View>
-              )}
-              horizontal={true}
-            />
+        <View style={{ width: '90%', alignSelf: 'center' }}>
+          <AppText style={{ fontWeight: '400', fontSize: 12, marginVertical: 12 }}>Host: {hostName}</AppText>
+          <AppText style={{ fontWeight: '400', fontSize: 20 }}>{plan.description ? plan.description : null}</AppText>
+          <View style={{ marginVertical: 20 }}>
+            <AppText style={{ fontWeight: '700', fontSize: 12 }}>DETAILS</AppText>
+            <AppText style={{ fontSize: 12, fontWeight: '400', marginVertical: 4 }}>
+              Date: {plan.date && formatDayOfWeekDate(plan.date)} Time: {plan.time && formatTime(plan.time)}
+            </AppText>
+            <AppText style={{ fontSize: 12, fontWeight: '400' }}>Where: {plan.title}</AppText>
           </View>
-          <View>
-            <AppText style={{ fontSize: 12, fontWeight: '700' }}>PENDING INVITES</AppText>
-            <FlatList
-              data={pendingInvitees}
-              renderItem={renderInvitee}
-              ListEmptyComponent={() => (
-                <View>
-                  <AppText style={styles.title}>No pending invitees</AppText>
-                </View>
-              )}
-              horizontal={true}
-            />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+            <View>
+              <AppText style={{ fontSize: 12, fontWeight: '700' }}>ACCEPTED INVITES</AppText>
+              <FlatList
+                data={acceptedInvitees}
+                renderItem={renderInvitee}
+                ListEmptyComponent={() => (
+                  <View>
+                    <AppText style={styles.title}>No accepted invitees</AppText>
+                  </View>
+                )}
+                horizontal={true}
+              />
+            </View>
+            <View>
+              <AppText style={{ fontSize: 12, fontWeight: '700', marginRight: '20%' }}>PENDING INVITES</AppText>
+              <FlatList
+                data={pendingInvitees}
+                renderItem={renderInvitee}
+                ListEmptyComponent={() => (
+                  <View>
+                    <AppText style={styles.title}>No pending invitees</AppText>
+                  </View>
+                )}
+                horizontal={true}
+              />
+            </View>
           </View>
         </View>
       </View>

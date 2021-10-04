@@ -3,13 +3,15 @@ import { StyleSheet, View, ActivityIndicator, Linking, Platform, Keyboard } from
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
-import { background, GREY_5 } from '../res/styles/Colors';
+import { WHITE, TEAL } from '../res/styles/Colors';
 import { deleteImportedContactFromID, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
-import { Button, Title, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
+import { Button, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { AntDesign } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { BackChevronIcon } from '../../assets/Icons/BackChevron';
+import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
   navigation: {
@@ -44,6 +46,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const addSelectedContact = async (newContact: Contact) => {
     await storeImportedContact(newContact);
     loadImportedContacts();
+    await Analytics.logEvent('import_contacts', {});
   };
 
   const removeSelectedContact = async (newContact: Contact) => {
@@ -106,18 +109,17 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       addUser={addSelectedContact}
       removeUser={removeSelectedContact}
       friend={item}
-      isSelected={addedContacts.find((contact) => contact.id === item.id)}
+      isSelected={addedContacts.find((contact) => contact.id === item.id) === undefined ? false : true}
     />
   );
 
   return (
-    <Screen style={{ backgroundColor: background }}>
-      <View style={{ flex: 1, justifyContent: 'space-between' }}>
+    <Screen style={{ backgroundColor: WHITE }}>
+      <View style={{ flex: 1, paddingHorizontal: 20, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
-            <AntDesign name="left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
-            <Title>Contacts</Title>
-            <AppText style={{ color: 'white' }}>blank</AppText>
+            <BackChevronIcon onPress={() => navigation.navigate('ImportContactDetails', {})} />
+            <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL, marginLeft: 15 }}>Select Contacts</AppText>
           </View>
           <SearchBar onInputChange={searchContacts} />
           <View style={styles.flatListContainer}>
@@ -149,28 +151,25 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
             />
           </View>
         </View>
-        {addedContacts.length > 0 ? (
-          <View>
-            <Button
-              title="Save Contacts"
-              onPress={async () => {
-                // await deleteAllImportedContacts();
-                // await storeSelectedContacts();
-                navigation.navigate('Home');
-              }}
-            />
-          </View>
-        ) : (
-          <View>
-            <Button title="Skip" onPress={() => setOpenModal(true)} />
-          </View>
-        )}
+        <View style={styles.planResponse}>
+          <TouchableOpacity onPress={() => setOpenModal(true)}>
+            <AppText style={styles.skipStyle}>Skip</AppText>
+          </TouchableOpacity>
+          <Button
+            buttonStyle={{ width: 210 }}
+            title={'Import Contacts'}
+            onPress={async () => {
+              navigation.navigate('Home');
+            }}
+            disabled={addedContacts.length === 0 ? true : false}
+          />
+        </View>
       </View>
       {openModal && (
         <AlertModal
           onConfirm={() => navigation.navigate('Home')}
           onReject={() => setOpenModal(false)}
-          message="Are you sure you don't want to import contacts?"
+          message="Are you sure you don't want to import contacts? You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later "
         />
       )}
     </Screen>
@@ -183,27 +182,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 150,
-    marginHorizontal: 80,
-  },
-  contactContainer: {
-    color: 'purple',
-    fontWeight: 'bold',
-    fontSize: 26,
+    marginHorizontal: 60,
   },
   flatListContainer: {
     flexGrow: 1,
     flex: 1,
     marginVertical: 15,
   },
-  friendContainer: {
-    backgroundColor: GREY_5,
-    borderRadius: 10,
-    padding: 10,
-  },
   navbar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 20,
+    marginBottom: 30,
+  },
+  planResponse: {
+    marginHorizontal: '5%',
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  skipStyle: {
+    color: TEAL,
+    fontWeight: '900',
+    fontSize: 20,
   },
 });

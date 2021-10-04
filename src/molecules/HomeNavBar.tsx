@@ -33,7 +33,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, plan, navigation }: P
         <TouchableOpacity
           style={{ width: '33%' }}
           onPress={() => {
-            navigation.navigate('SearchPlace', { currentUser: user });
+            navigation.navigate('PlanCreate', { currentUser: user });
           }}
         >
           <CreatePlanIcon />

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { background, GREY_5 } from '../res/styles/Colors';
-import { Button, Title, Screen } from '../atoms/AtomsExports';
+import { WHITE, TEAL } from '../res/styles/Colors';
+import { Button, Screen, AlertModal } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { RoutePropParams } from '../res/root-navigation';
 import { getCurrentUser } from '../res/utilFunctions';
 import { User } from '../models';
 import { Image } from 'react-native-elements/dist/image/Image';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: {
@@ -17,6 +18,7 @@ interface Props {
 
 export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -35,32 +37,42 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
     }
   };
   return (
-    <Screen style={{ backgroundColor: background }}>
-      <Title>Import Contacts</Title>
+    <Screen style={{ backgroundColor: WHITE }}>
+      <View style={{ flex: 1, paddingHorizontal: 20 }}>
+        <AppText style={{ fontWeight: '330', fontSize: 30, color: TEAL }}>Import Contacts</AppText>
 
-      <View style={styles.flatListContainer}>
-        <AppText style={{ fontSize: 20, paddingBottom: 20 }}>{createGreeting()}</AppText>
-        <Image
-          source={require('../../assets/Contacts-Graphic.png')}
-          style={{ height: 186, width: '100%' }}
-          resizeMode="contain"
-        />
-        <AppText style={{ fontSize: 20, marginBottom: '25%', paddingTop: 20 }}>
-          From your contact list, please select all people you’d like to import into Groupify.*
-        </AppText>
+        <View style={styles.flatListContainer}>
+          <AppText style={{ fontSize: 20, paddingBottom: 20 }}>{createGreeting()}</AppText>
+          <Image
+            source={require('../../assets/Contacts-Graphic.png')}
+            style={{ height: 186, width: '100%' }}
+            resizeMode="contain"
+          />
+          <AppText style={{ fontSize: 20, marginBottom: 40, paddingTop: 20 }}>
+            From your contact list, please select all people you’d like to import into Groupify.*
+          </AppText>
 
-        <AppText style={{ alignSelf: 'center', paddingBottom: 20 }}>
-          *You can always edit your contact list later.{' '}
-        </AppText>
-      </View>
-
-      <View style={styles.footer}>
-        <Button
-          title="Select Contacts"
-          onPress={() => {
-            navigation.navigate('ImportContacts');
-          }}
-        />
+          <AppText style={{ alignSelf: 'center' }}>*You can always edit your contact list later. </AppText>
+        </View>
+        <View style={styles.planResponse}>
+          <TouchableOpacity onPress={() => setOpenModal(true)}>
+            <AppText style={styles.skipStyle}>Skip</AppText>
+          </TouchableOpacity>
+          <Button
+            buttonStyle={{ width: 210 }}
+            title={'Select Contacts'}
+            onPress={() => {
+              navigation.navigate('ImportContacts');
+            }}
+          />
+        </View>
+        {openModal && (
+          <AlertModal
+            onConfirm={() => navigation.navigate('Home')}
+            onReject={() => setOpenModal(false)}
+            message="Are you sure you don't want to import contacts? You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later "
+          />
+        )}
       </View>
     </Screen>
   );
@@ -71,29 +83,22 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 20,
   },
-  contactContainer: {
-    color: 'purple',
-    fontWeight: 'bold',
-    fontSize: 26,
-  },
   flatListContainer: {
     flexGrow: 1,
     flex: 1,
-    padding: 10,
-    paddingTop: 10,
-    paddingBottom: 20,
+    paddingTop: 20,
+    paddingBottom: 30,
   },
-  friendContainer: {
-    backgroundColor: GREY_5,
-    borderRadius: 10,
-    padding: 10,
-  },
-
-  footer: {
-    bottom: 0,
-    textAlignVertical: 'center',
+  planResponse: {
+    marginHorizontal: '5%',
+    flexDirection: 'row',
+    width: '100%',
     alignItems: 'center',
-    display: 'flex',
     justifyContent: 'space-between',
+  },
+  skipStyle: {
+    color: TEAL,
+    fontWeight: '900',
+    fontSize: 20,
   },
 });
