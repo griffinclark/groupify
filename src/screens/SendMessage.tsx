@@ -194,6 +194,7 @@ ${plan.description} \
         await pushEvent(plan.contacts, message);
       }
       navigation.push('Home');
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log(err);
       if (err.message === 'The string supplied did not seem to be a phone number') {

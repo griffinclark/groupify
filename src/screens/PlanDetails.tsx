@@ -65,30 +65,6 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const respondToPlan = async (accept: boolean) => {
-    const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
-    const invitee = invitees.filter((invitee) => invitee.phoneNumber === phoneNumber)[0];
-    if (accept) {
-      await DataStore.save(
-        Invitee.copyOf(invitee, (updated) => {
-          updated.status = Status.ACCEPTED;
-        }),
-      );
-      const host = await DataStore.query(User, plan.creatorID);
-      if (host && phoneNumber !== host.phoneNumber) {
-        const userName = (await Auth.currentUserInfo()).attributes.name;
-        sendPushNotification(host.pushToken, `${userName} has accepted your invite!`, 'Tap to open the app', {});
-      }
-    } else {
-      await DataStore.save(
-        Invitee.copyOf(invitee, (updated) => {
-          updated.status = Status.DECLINED;
-        }),
-      );
-    }
-    setRefreshAttendeeList(!refreshAttendeeList);
-  };
-
   return (
     <Screen>
       <View style={styles.titleContainer}>
