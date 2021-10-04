@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Platform, KeyboardAvoidingView, FlatList } from 'react-native';
-import { MeepForm, MultiLineTextInput, TwoButtonAlert, Navbar, BottomButton } from '../atoms/AtomsExports';
+import { MeepForm, TwoButtonAlert, Navbar, BottomButton } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { TEAL, GREY_8 } from '../res/styles/Colors';
 import { ScrollView } from 'react-native-gesture-handler';
