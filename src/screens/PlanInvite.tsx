@@ -54,7 +54,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
         const friendId = userFriends[i];
         if (friendId) {
           const friend = await DataStore.query(User, friendId);
-          friendList.push(friend);
+          if (friend) friendList.push(friend);
         }
       }
     }

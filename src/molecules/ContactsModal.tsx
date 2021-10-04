@@ -27,13 +27,17 @@ export const ContactsModal: React.FC<Props> = ({
   return (
     <View style={styles.modalContainer}>
       <View style={[styles.modal, modalStyle]}>
-        <AppText style={[styles.modalText, textStyle]}>Are you sure you don&apos;t want to import contacts?</AppText>
+        <AppText style={[styles.modalText, textStyle ? textStyle : {}]}>
+          Are you sure you don&apos;t want to import contacts?
+        </AppText>
         <View style={[styles.buttons, buttonStyle]}>
           <TouchableOpacity onPress={handleConfirm} style={[styles.button, styles.yesButton]}>
             <AppText style={[styles.buttonText, styles.yesButtonText]}>Yes</AppText>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleCloseModal} style={[styles.button, styles.backButton]}>
-            <AppText style={[styles.buttonText, styles.backButtonText, buttonTextStyle]}>Back</AppText>
+            <AppText style={[styles.buttonText, styles.backButtonText, buttonTextStyle ? buttonTextStyle : {}]}>
+              Back
+            </AppText>
           </TouchableOpacity>
         </View>
       </View>

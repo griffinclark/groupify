@@ -48,7 +48,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
 
   const onHomeRefresh = () => {
     setRefreshing(true);
-    loadPlans(currentUser).then(() => setRefreshing(false));
+    if (currentUser) loadPlans(currentUser).then(() => setRefreshing(false));
     setTrigger(!trigger);
   };
 

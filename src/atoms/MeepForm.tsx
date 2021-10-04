@@ -63,7 +63,10 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               mode={'date'}
               display={'default'}
               style={styles.dateTimePicker}
+              /* eslint-disable */
+              // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              /* eslint-enable */
               textColor={BLACK}
               themeVariant={'light'}
             />
@@ -82,7 +85,10 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               value={currentDate}
               mode={'date'}
               display={'default'}
+              /* eslint-disable */
+              // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              /* eslint-enable */
               textColor={BLACK}
               themeVariant={'light'}
             />
@@ -101,7 +107,10 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               value={currentDate}
               mode={'time'}
               display={'default'}
+              /* eslint-disable */
+              // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              /* eslint-enable */
               textColor={BLACK}
               themeVariant={'light'}
             />
@@ -118,7 +127,10 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               value={currentDate}
               mode={'time'}
               display={'default'}
+              /* eslint-disable */
+              // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
+              /* eslint-enable */
               textColor={BLACK}
               themeVariant={'dark'}
             />

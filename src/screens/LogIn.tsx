@@ -73,6 +73,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       const newUser = await DataStore.save(
         new User({
           phoneNumber: userInfo.attributes.phone_number,
+          email: userInfo.attributes.email,
           name: userInfo.attributes.name,
           pushToken: token,
           friends: [],

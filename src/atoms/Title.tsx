@@ -7,8 +7,8 @@ interface Props {
   children?: string;
 }
 
-export const Title: React.FC<Props> = (props: Props) => {
-  return <AppText style={[styles.title, props.style]}>{props.children}</AppText>;
+export const Title: React.FC<Props> = ({ style, children }: Props) => {
+  return <AppText style={[styles.title, style ? style : {}]}>{children}</AppText>;
 };
 
 const styles = StyleSheet.create({
