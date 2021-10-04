@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { Screen, AppText, PlanImageTile } from '../atoms/AtomsExports';
 import { TEAL, GRAY_LIGHT } from '../res/styles/Colors';
-import { Plan, User, Invitee, Status } from '../models';
-import { sendPushNotification } from '../res/notifications';
+import { Plan, Invitee, Status } from '../models';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
-import { PlanDetailsTile } from '../molecules/MoleculesExports';
+import { PlanDetailsTile, Details } from '../molecules/MoleculesExports';
 import { WhiteButton } from '../atoms/WhiteButton';
+import { respondToPlan } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
@@ -65,30 +65,6 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const respondToPlan = async (accept: boolean) => {
-    const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
-    const invitee = invitees.filter((invitee) => invitee.phoneNumber === phoneNumber)[0];
-    if (accept) {
-      await DataStore.save(
-        Invitee.copyOf(invitee, (updated) => {
-          updated.status = Status.ACCEPTED;
-        }),
-      );
-      const host = await DataStore.query(User, plan.creatorID);
-      if (host) {
-        const userName = (await Auth.currentUserInfo()).attributes.name;
-        sendPushNotification(host.pushToken, `${userName} has accepted your invite!`, 'Tap to open the app', {});
-      }
-    } else {
-      await DataStore.save(
-        Invitee.copyOf(invitee, (updated) => {
-          updated.status = Status.DECLINED;
-        }),
-      );
-    }
-    setRefreshAttendeeList(!refreshAttendeeList);
-  };
-
   return (
     <Screen>
       <View style={styles.titleContainer}>
@@ -98,6 +74,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
       <ScrollView>
         <View style={styles.bodyContainer}>
           <PlanImageTile plan={plan} />
+          <Details plan={plan} />
           <PlanDetailsTile plan={plan} />
           <AppText style={{ fontSize: 16, fontWeight: '700' }}>Who&apos;s going?</AppText>
         </View>
@@ -137,7 +114,9 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
             <WhiteButton
               text={userInvitee?.status === 'ACCEPTED' ? 'Decline this plan' : 'Accept Plan?'}
               onPress={() => {
-                respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true);
+                respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true, plan).then(() => {
+                  setRefreshAttendeeList(!refreshAttendeeList);
+                });
               }}
             />
           </View>

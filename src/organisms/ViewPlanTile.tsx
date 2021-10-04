@@ -4,9 +4,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { DownArrow, UpArrow } from '../../assets/Icons/IconExports';
 import { PlanImageTile, WhiteButton, AppText } from '../atoms/AtomsExports';
 import { Plan } from '../models';
-import { InviteePreviewTile, PlanDetailsTile } from '../molecules/MoleculesExports';
+import { InviteePreviewTile, PlanDetailsTile, Details } from '../molecules/MoleculesExports';
 import { background, TEAL } from '../res/styles/Colors';
-import { loadInviteeStatus } from '../res/utilFunctions';
+import { loadInviteeStatus, respondToPlan } from '../res/utilFunctions';
 
 interface Props {
   plan: Plan;
@@ -18,6 +18,7 @@ interface Props {
 export const ViewPlanTile: React.FC<Props> = ({ plan, navigation }: Props) => {
   const [extendedDetails, setExtendedDetails] = useState(false);
   const [userStatus, setUserStatus] = useState('');
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const getStatus = async () => {
@@ -25,17 +26,20 @@ export const ViewPlanTile: React.FC<Props> = ({ plan, navigation }: Props) => {
       setUserStatus(status);
     };
     getStatus();
-  }, []);
+  }, [reload]);
 
   return (
     <View style={{ backgroundColor: userStatus === 'PENDING' ? background : 'white' }}>
       <View style={styles.container}>
-        <View style={{ height: !extendedDetails ? 205 : 560, overflow: 'hidden' }}>
+        <View>
           <PlanImageTile plan={plan} />
-          <View>
-            <PlanDetailsTile plan={plan} />
-            <InviteePreviewTile plan={plan} />
-          </View>
+          <Details plan={plan} />
+          {extendedDetails && (
+            <>
+              <PlanDetailsTile plan={plan} />
+              <InviteePreviewTile plan={plan} reload={reload} />
+            </>
+          )}
         </View>
         <View
           style={{
@@ -58,11 +62,19 @@ export const ViewPlanTile: React.FC<Props> = ({ plan, navigation }: Props) => {
         )}
         {userStatus === 'PENDING' && (
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <WhiteButton style={styles.button} onPress={() => console.log('hey')} text={'Decline'} />
+            <WhiteButton
+              style={styles.button}
+              onPress={() => {
+                respondToPlan(false, plan).then(() => setReload(!reload));
+              }}
+              text={'Decline'}
+            />
             <WhiteButton
               style={[styles.button, { backgroundColor: TEAL }]}
-              textStyles={styles.acceptButton}
-              onPress={() => console.log('hey')}
+              textStyles={{ color: 'white' }}
+              onPress={() => {
+                respondToPlan(true, plan).then(() => setReload(!reload));
+              }}
               text={'Accept'}
             />
           </View>
@@ -89,8 +101,5 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 147,
-  },
-  acceptButton: {
-    color: 'white',
   },
 });

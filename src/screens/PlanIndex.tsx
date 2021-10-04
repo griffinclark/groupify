@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
-  const [tab, setTab] = useState('invited');
+  const [tab, setTab] = useState(route.params.option || 'invited');
   const [currentUser, setCurrentUser] = useState<User>();
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
   const [userPlans, setUserPlans] = useState<Plan[]>([]);

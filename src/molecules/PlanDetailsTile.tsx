@@ -5,38 +5,28 @@ import { AppText } from '../atoms/AppText';
 import { convertDateStringToDate, formatTime } from '../res/utilFunctions';
 import { TEAL } from '../res/styles/Colors';
 import { DataStore } from '@aws-amplify/datastore';
+import { Details } from './Details';
 
 interface Props {
   plan: Plan;
 }
 
 export const PlanDetailsTile: React.FC<Props> = ({ plan }: Props) => {
-  const [hostName, setHostName] = useState('');
+  const [hostName, setHostName] = useState('Loading');
 
   useEffect(() => {
     getPlanHost(plan.creatorID);
   }, []);
 
   const getPlanHost = async (id: string) => {
-    const user = await DataStore.query(User, id);
-    if (user) {
-      setHostName(user.name);
+    const user = await DataStore.query(User, (user) => user.id('eq', id));
+    if (user[0]) {
+      setHostName(user[0].name);
     }
   };
 
   return (
     <View>
-      {plan.description ? (
-        <AppText
-          style={{
-            fontSize: 20,
-            marginTop: 15,
-            marginBottom: 25,
-          }}
-        >
-          {plan.description}
-        </AppText>
-      ) : null}
       <AppText style={{ fontSize: 18, fontWeight: '700', paddingBottom: 35 }}>Host:</AppText>
       <View style={{ marginLeft: 75, marginTop: -75, flexDirection: 'row', alignItems: 'center', marginBottom: 30 }}>
         <View style={[styles.sphere, { backgroundColor: TEAL }]}>

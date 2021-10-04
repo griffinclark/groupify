@@ -7,15 +7,16 @@ import { TEAL } from '../res/styles/Colors';
 
 interface Props {
   plan: Plan;
+  reload?: boolean;
 }
 
-export const InviteePreviewTile: React.FC<Props> = ({ plan }: Props) => {
+export const InviteePreviewTile: React.FC<Props> = ({ plan, reload }: Props) => {
   const [acceptedInvitees, setAcceptedInvitees] = useState<Invitee[]>([]);
   const [pendingInvitees, setPendingInvitees] = useState<Invitee[]>([]);
 
   useEffect(() => {
     loadInvitees();
-  }, []);
+  }, [reload]);
 
   const loadInvitees = async () => {
     const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);

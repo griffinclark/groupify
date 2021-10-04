@@ -9,11 +9,12 @@ interface Props {
     navigate: (ev: string, {}) => void;
   };
   destination: string;
+  payload?: Record<string, unknown>;
 }
 
-export const ViewAll: React.FC<Props> = ({ navigation, destination }: Props) => {
+export const ViewAll: React.FC<Props> = ({ navigation, destination, payload }: Props) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate(destination, {})}>
+    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate(destination, payload ? payload : {})}>
       <AppText style={styles.text}>SEE ALL</AppText>
     </TouchableOpacity>
   );

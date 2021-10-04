@@ -10,6 +10,7 @@ import { PlaceCard } from './PlaceCard';
 import { CreatedPlanTile } from './CreatedPlanTile';
 import { PlanDetailsTile } from './PlanDetailsTile';
 import { InviteePreviewTile } from './InviteePreviewTile';
+import { Details } from './Details';
 
 export {
   AndroidContactTile,
@@ -24,4 +25,5 @@ export {
   CreatedPlanTile,
   PlanDetailsTile,
   InviteePreviewTile,
+  Details,
 };

@@ -23,7 +23,6 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
           style={{ width: '33%' }}
           onPress={() => {
             navigation?.navigate('ViewPlans', {
-              currentUser: user,
               userPlans: userPlans,
               invitedPlans: invitedPlans,
             });

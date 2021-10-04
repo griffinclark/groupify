@@ -36,6 +36,7 @@ export type RoutePropParams = {
     phone: string;
     invitedPlans: Plan[];
     userPlans: Plan[];
+    option: string;
     data: {
       eventData: {
         friends: User[];
