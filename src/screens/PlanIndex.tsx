@@ -136,7 +136,11 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
         </View>
         <View style={styles.plans}>
-          <FlatList data={tab === 'invited' ? invitedPlans : userPlans} renderItem={renderPlanTile} />
+          <FlatList
+            data={tab === 'invited' ? invitedPlans : userPlans}
+            renderItem={renderPlanTile}
+            style={{ marginBottom: 40 }}
+          />
         </View>
       </View>
       <View style={styles.navbar}>
