@@ -118,7 +118,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       <View style={{ flex: 1, paddingHorizontal: 20, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
-            <BackChevronIcon onPress={() => navigation.navigate('ImportContactDetails', {})} />
+            <BackChevronIcon onPress={() => navigation.navigate('ImportContactDetails')} />
             <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL, marginLeft: 15 }}>Select Contacts</AppText>
           </View>
           <SearchBar onInputChange={searchContacts} />
@@ -167,9 +167,12 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       </View>
       {openModal && (
         <AlertModal
-          onConfirm={() => navigation.navigate('Home')}
-          onReject={() => setOpenModal(false)}
-          message="Are you sure you don't want to import contacts? You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later "
+          button1Text="Yes"
+          button2Text="Close"
+          message2="You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later. "
+          onButton1Press={() => navigation.navigate('Home')}
+          onButton2Press={() => setOpenModal(false)}
+          message="Are you sure you don't want to import contacts? "
         />
       )}
     </Screen>

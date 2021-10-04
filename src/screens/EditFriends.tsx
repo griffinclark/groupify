@@ -47,13 +47,15 @@ export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
         for (const friendID of friendIDs) {
           if (friendID) {
             const friend = await DataStore.query(User, friendID);
-            // console.log(friend);
             if (friend) {
               friends.push(friend);
             }
           }
         }
+        /* eslint-disable */
+        // @ts-expect-error
         setFriends(friends);
+        /* eslint-enable */
       }
     }
   };
@@ -70,7 +72,10 @@ export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
   );
 
   const addUser = (user: Contact | User) => {
-    setFriends((friends) => [...friends, { id: user.id, name: user.name }]);
+    setFriends((friends) => [
+      ...friends,
+      { id: user.id, name: user.name, phoneNumber: user.phoneNumber, status: 'PENDING' },
+    ]);
   };
 
   const removeUser = (user: Contact | User) => {
@@ -120,12 +125,16 @@ export const EditFriends: React.FC<Props> = ({ navigation, route }: Props) => {
       </Navbar>
       <Title>Add Friends</Title>
       <SearchBar
-        lightTheme="true"
+        lightTheme={true}
         placeholder="Search by name, phone number, email"
-        onChangeText={(text) => {
+        // type definition is broken in the latest version of react-native-elements
+        /* eslint-disable */
+        // @ts-expect-error
+        onChangeText={(text: string) => {
           setQuery(text);
           searchUsers(query);
         }}
+        /* eslint-enable */
         onSubmitEditing={() => searchUsers(query)}
         value={query}
         platform="default"

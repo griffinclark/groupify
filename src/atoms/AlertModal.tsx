@@ -1,25 +1,40 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { TEAL, WHITE } from '../res/styles/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AppText } from './AppText';
 
 interface Props {
   message: string;
-  onConfirm: () => void;
-  onReject: () => void;
+  message2?: string;
+  onButton2Press?: () => void;
+  onButton1Press: () => void;
+  button1Text: string;
+  button2Text?: string;
 }
-export const AlertModal: React.FC<Props> = ({ message, onConfirm, onReject }: Props) => {
+export const AlertModal: React.FC<Props> = ({
+  message,
+  message2,
+  onButton2Press,
+  onButton1Press,
+  button1Text,
+  button2Text,
+}: Props) => {
   return (
     <View style={styles.popup}>
       <View style={styles.container}>
-        <AppText style={styles.text}>{message}</AppText>
+        <View>
+          <AppText style={styles.text1}>{message}</AppText>
+          {message2 ? <AppText style={styles.text2}>{message2}</AppText> : null}
+        </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={onConfirm}>
-            <AppText style={[styles.buttonText, { color: TEAL }]}>Yes</AppText>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, { backgroundColor: TEAL }]} onPress={onReject}>
-            <AppText style={[styles.buttonText, { color: 'white' }]}>Back</AppText>
+          {button2Text ? (
+            <TouchableOpacity style={styles.button} onPress={onButton2Press}>
+              <AppText style={[styles.buttonText, { color: TEAL }]}>{button2Text}</AppText>
+            </TouchableOpacity>
+          ) : null}
+          <TouchableOpacity style={[styles.button, { backgroundColor: TEAL }]} onPress={onButton1Press}>
+            <AppText style={[styles.buttonText, { color: 'white' }]}>{button1Text}</AppText>
           </TouchableOpacity>
         </View>
       </View>
@@ -35,17 +50,24 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: 20,
     position: 'absolute',
-    top: '35%',
+    top: '30%',
     backgroundColor: WHITE,
     borderWidth: 1,
     borderRadius: 30,
     justifyContent: 'space-between',
   },
-  text: {
-    fontWeight: '500',
+  text1: {
     fontSize: 20,
+    lineHeight: 28.6,
     textAlign: 'center',
-    margin: 30,
+    marginHorizontal: 20,
+  },
+  text2: {
+    fontWeight: '500',
+    fontSize: 16,
+    textAlign: 'center',
+    marginHorizontal: 15,
+    marginTop: 20,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -65,8 +87,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   popup: {
-    width: '100%',
-    height: '110%',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
     backgroundColor: 'rgba(52, 52, 52, 0.7)',
     position: 'absolute',
   },

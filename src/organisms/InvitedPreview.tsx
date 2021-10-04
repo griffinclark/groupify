@@ -66,6 +66,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
         if (acceptedPlans.length >= 3) {
           break;
         }
+
         const plan = invitedPlans[i];
         loadInviteeStatus(plan).then((result) => {
           if (result === 'ACCEPTED') {
