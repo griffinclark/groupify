@@ -223,7 +223,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         await pushEvent(event.contacts, message);
       }
       navigation.push('Home');
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       if (err.message === 'The string supplied did not seem to be a phone number') {
         createErrorAlert(event.contacts, message);

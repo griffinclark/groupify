@@ -45,7 +45,7 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
         setError(undefined);
         navigation.push('ForgotPassword', { step: 'password', phone: formatPhone });
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'UserNotFoundException') {
         setError('User not found');
       } else {

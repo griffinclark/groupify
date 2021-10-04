@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView, { LatLng, Marker, Point, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
-import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { v4 as uuidv4 } from 'uuid';
 import { PlaceCard } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
@@ -89,7 +89,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     })();
   }, []);
 
-  const onResultPress = async (data: GooglePlaceData, detail: GooglePlaceDetail | null) => {
+  const onResultPress = async (detail: GooglePlaceDetail | null) => {
     const moreDetails = detail as GooglePlaceDetailExtended;
     setSessionToken(uuidv4());
     if (detail) {
@@ -180,7 +180,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${poi.placeId}&key=${GOOGLE_PLACES_API_KEY}`;
     const response = await fetch(search);
     const detail = await response.json();
-    onResultPress(poi, detail.result);
+    onResultPress(detail.result);
   };
 
   const clearMarkers = () => {
@@ -222,7 +222,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
             radius: 1000, // meters
           }}
           fetchDetails={true}
-          onPress={onResultPress}
+          onPress={(data, detail) => onResultPress(detail)}
           onFail={(error) => console.log(error)}
           enablePoweredByContainer={false}
           styles={{

@@ -118,7 +118,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       <View style={{ flex: 1, paddingHorizontal: 20, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
-            <BackChevronIcon onPress={() => navigation.navigate('ImportContactDetails', {})} />
+            <BackChevronIcon onPress={() => navigation.navigate('ImportContactDetails')} />
             <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL, marginLeft: 15 }}>Select Contacts</AppText>
           </View>
           <SearchBar onInputChange={searchContacts} />

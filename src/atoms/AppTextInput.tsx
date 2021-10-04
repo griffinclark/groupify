@@ -13,7 +13,7 @@ interface Props {
   onChangeText: (e: string) => void;
   placeholder?: string | undefined;
   secureTextEntry?: boolean;
-  textStyle?: Record<string, unknown> | Array<Record<string, unknown>>;
+  textStyle?: Record<string, unknown>;
   value?: string | undefined;
 }
 
@@ -33,7 +33,7 @@ export const AppTextInput: React.FC<Props> = ({
 
   return (
     <View>
-      {label && <AppText style={[styles.label, textStyle]}>{label}</AppText>}
+      {label && <AppText style={[styles.label, textStyle ? textStyle : {}]}>{label}</AppText>}
       <TextInput
         autoFocus={autoFocus}
         onBlur={() => setSelected(false)}

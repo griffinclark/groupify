@@ -37,6 +37,7 @@ export type RoutePropParams = {
     invitedPlans: Plan[];
     userPlans: Plan[];
     option: string;
+    accountCreated: string;
     data: {
       eventData: {
         friends: User[];
