@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { AppText, Navbar, Screen, AlertModal } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/HomeNavBar';
-import { formatDayOfWeekDate, formatTime, getCurrentUser, loadInviteeStatus, respondToPlan } from './../res/utilFunctions';
+import {
+  formatDayOfWeekDate,
+  formatTime,
+  getCurrentUser,
+  loadInviteeStatus,
+  respondToPlan,
+} from './../res/utilFunctions';
 import { User, Plan } from '../models';
 import { TEAL } from '../res/styles/Colors';
 import { ViewPlanTile } from '../organisms/ViewPlanTile';
