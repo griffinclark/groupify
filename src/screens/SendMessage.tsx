@@ -27,7 +27,6 @@ export const SendMessage: React.FC<Props> = ({ navigation, route }: Props) => {
   const [message, setMessage] = useState<string>('Loading Message...');
   const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  console.log('hey')
 
   useEffect(() => {
     createInitialMessage();

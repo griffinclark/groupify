@@ -44,7 +44,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
         <TouchableOpacity
           style={{ width: '33%' }}
           onPress={() => {
-            navigation?.navigate('Profile', {
+            navigation.navigate('Profile', {
               currentUser: user,
               currentUserPlan: userPlans[0] ? userPlans[0] : invitedPlans[0],
             });

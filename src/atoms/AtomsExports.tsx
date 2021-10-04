@@ -21,6 +21,7 @@ import { TwoButtonAlert } from './TwoButtonAlert';
 import { SearchBar } from './SearchBar';
 import { ViewAll } from './ViewAll';
 import { PlanImageTile } from './PlanImageTile';
+import { WhiteButton } from './WhiteButton';
 
 export {
   Alert,
@@ -46,4 +47,5 @@ export {
   TwoButtonAlert,
   ViewAll,
   PlanImageTile,
+  WhiteButton,
 };

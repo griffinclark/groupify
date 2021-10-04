@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import { AppText, Navbar, Screen } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/HomeNavBar';
@@ -37,11 +37,7 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
   }
 
   const renderPlanTile = ({ item }: RenderItemProps) => {
-    return (
-      <View>
-        <ViewPlanTile plan={item} />
-      </View>
-    );
+    return <ViewPlanTile navigation={navigation} plan={item} />;
   };
 
   return (
@@ -66,15 +62,9 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
             </AppText>
           </View>
         </View>
-        <ScrollView>
-          <View style={styles.plans}>
-            <FlatList
-              data={tab === 'invited' ? invitedPlans : userPlans}
-              renderItem={renderPlanTile}
-              keyExtractor={(item: Plan) => item.id}
-            />
-          </View>
-        </ScrollView>
+        <View style={styles.plans}>
+          <FlatList data={tab === 'invited' ? invitedPlans : userPlans} renderItem={renderPlanTile} />
+        </View>
       </View>
       <View style={styles.navbar}>
         <HomeNavBar user={currentUser} navigation={navigation} invitedPlans={invitedPlans} userPlans={userPlans} />
@@ -118,7 +108,6 @@ const styles = StyleSheet.create({
   },
   plans: {
     flex: 1,
-    minHeight: Dimensions.get('window').height,
     width: '100%',
   },
   navbar: {

@@ -7,6 +7,7 @@ import { Plan, User, Invitee, Status } from '../models';
 import { sendPushNotification } from '../res/notifications';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { PlanDetailsTile } from '../molecules/MoleculesExports';
+import { WhiteButton } from '../atoms/WhiteButton';
 
 interface Props {
   navigation: {
@@ -132,16 +133,14 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
           <View style={styles.flatlist}>
             <FlatList data={invitees} renderItem={renderInvitee} />
           </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true);
-            }}
-          >
-            <AppText style={{ fontSize: 20, fontWeight: '700', color: TEAL }}>
-              {userInvitee?.status === 'ACCEPTED' ? 'Decline this plan' : 'Accept Plan?'}
-            </AppText>
-          </TouchableOpacity>
+          <View style={{ alignSelf: 'center' }}>
+            <WhiteButton
+              text={userInvitee?.status === 'ACCEPTED' ? 'Decline this plan' : 'Accept Plan?'}
+              onPress={() => {
+                respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true);
+              }}
+            />
+          </View>
         </View>
       </ScrollView>
     </Screen>

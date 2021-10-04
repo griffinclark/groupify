@@ -15,14 +15,13 @@ export const InviteePreviewTile: React.FC<Props> = ({ plan }: Props) => {
 
   useEffect(() => {
     loadInvitees();
-  });
+  }, []);
 
   const loadInvitees = async () => {
     const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
     const accepted = [];
     const pending = [];
-    for (let i = 0; i < invitees.length; i++) {
-      const invitee = invitees[i];
+    for (const invitee of invitees) {
       if (invitee.status === 'ACCEPTED') {
         accepted.push(invitee);
       }
@@ -44,29 +43,21 @@ export const InviteePreviewTile: React.FC<Props> = ({ plan }: Props) => {
 
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-      <View>
+      <View style={{ maxWidth: '50%' }}>
         <AppText style={{ fontSize: 12, fontWeight: '700' }}>ACCEPTED INVITES</AppText>
         <FlatList
           data={acceptedInvitees}
           renderItem={renderInvitee}
-          ListEmptyComponent={() => (
-            <View>
-              <AppText style={styles.title}>No accepted invitees</AppText>
-            </View>
-          )}
+          ListEmptyComponent={() => <AppText style={styles.title}>No accepted invitees</AppText>}
           horizontal={true}
         />
       </View>
-      <View>
+      <View style={{ maxWidth: '50%' }}>
         <AppText style={{ fontSize: 12, fontWeight: '700', marginRight: '20%' }}>PENDING INVITES</AppText>
         <FlatList
           data={pendingInvitees}
           renderItem={renderInvitee}
-          ListEmptyComponent={() => (
-            <View>
-              <AppText style={styles.title}>No pending invitees</AppText>
-            </View>
-          )}
+          ListEmptyComponent={() => <AppText style={styles.title}>No pending invitees</AppText>}
           horizontal={true}
         />
       </View>
