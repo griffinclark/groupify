@@ -167,9 +167,12 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       </View>
       {openModal && (
         <AlertModal
-          onConfirm={() => navigation.navigate('Home')}
-          onReject={() => setOpenModal(false)}
-          message="Are you sure you don't want to import contacts? You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later "
+          button1Text="Yes"
+          button2Text="Close"
+          message2="You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later. "
+          onButton1Press={() => navigation.navigate('Home')}
+          onButton2Press={() => setOpenModal(false)}
+          message="Are you sure you don't want to import contacts? "
         />
       )}
     </Screen>

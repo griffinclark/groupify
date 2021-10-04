@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-
-import { AppText, Navbar, Screen } from '../atoms/AtomsExports';
+import { AppText, Navbar, Screen, AlertModal } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/HomeNavBar';
-import { getCurrentUser } from './../res/utilFunctions';
+import { formatDayOfWeekDate, formatTime, getCurrentUser, loadInviteeStatus, respondToPlan } from './../res/utilFunctions';
 import { User, Plan } from '../models';
 import { TEAL } from '../res/styles/Colors';
 import { ViewPlanTile } from '../organisms/ViewPlanTile';
@@ -21,23 +20,91 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
   const [userPlans, setUserPlans] = useState<Plan[]>([]);
+  const [modal, setModal] = useState(<View style={{ display: 'none' }} />);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const awaitUser = async () => {
       const user = await getCurrentUser();
       setCurrentUser(user);
-      setInvitedPlans(route.params.invitedPlans);
+      reorder(route.params.invitedPlans);
       setUserPlans(route.params.userPlans);
     };
     awaitUser();
-  }, []);
+  }, [reload]);
 
+  const reorder = (plans: Plan[]) => {
+    const notificationList: Plan[] = [];
+    const list: Plan[] = [];
+    for (const plan of plans) {
+      loadInviteeStatus(plan).then((status) => {
+        if (status === 'PENDING') {
+          notificationList.push(plan);
+        } else {
+          list.push(plan);
+        }
+        setInvitedPlans(notificationList.concat(list));
+      });
+    }
+  };
   interface RenderItemProps {
     item: Plan;
   }
 
   const renderPlanTile = ({ item }: RenderItemProps) => {
-    return <ViewPlanTile navigation={navigation} plan={item} />;
+    return <ViewPlanTile reload={reload} navigation={navigation} plan={item} modal={modals} />;
+  };
+
+  const modals = (payload: string, plan: Plan) => {
+    if (payload === 'accept') {
+      setModal(
+        <AlertModal
+          onButton1Press={() => {
+            setModal(<View style={{ display: 'none' }} />);
+            respondToPlan(true, plan).then(() => setReload(!reload));
+          }}
+          button1Text="Woot!"
+          message="You’ve accepted an invite!"
+          message2={`${plan.description}\n${plan.date && formatDayOfWeekDate(plan.date)}\n${
+            plan.time && formatTime(plan.time)
+          }`}
+        />,
+      );
+    }
+    if (payload === 'reject') {
+      setModal(
+        <AlertModal
+          onButton1Press={() => {
+            setConfirmRejectModal(plan);
+          }}
+          onButton2Press={() => {
+            setModal(<View style={{ display: 'none' }} />);
+          }}
+          button1Text="Yes, Decline"
+          button2Text="No"
+          message="Are you sure you’d like to decline this invitation?"
+          message2={`${plan.description}\n${plan.date && formatDayOfWeekDate(plan.date)}\n${
+            plan.time && formatTime(plan.time)
+          }`}
+        />,
+      );
+    }
+  };
+
+  const setConfirmRejectModal = (plan: Plan) => {
+    setModal(
+      <AlertModal
+        onButton1Press={() => {
+          respondToPlan(false, plan).then(() => setReload(!reload));
+          setModal(<View style={{ display: 'none' }} />);
+        }}
+        button1Text="Okay"
+        message="Invite has been declined."
+        message2={`${plan.description}\n${plan.date && formatDayOfWeekDate(plan.date)}\n${
+          plan.time && formatTime(plan.time)
+        }`}
+      />,
+    );
   };
 
   return (
@@ -69,6 +136,7 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
       <View style={styles.navbar}>
         <HomeNavBar user={currentUser} navigation={navigation} invitedPlans={invitedPlans} userPlans={userPlans} />
       </View>
+      {modal ? modal : null}
     </Screen>
   );
 };

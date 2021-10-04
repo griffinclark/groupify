@@ -6,19 +6,20 @@ import { PlanImageTile, WhiteButton, AppText } from '../atoms/AtomsExports';
 import { Plan } from '../models';
 import { InviteePreviewTile, PlanDetailsTile, Details } from '../molecules/MoleculesExports';
 import { background, TEAL } from '../res/styles/Colors';
-import { loadInviteeStatus, respondToPlan } from '../res/utilFunctions';
+import { loadInviteeStatus } from '../res/utilFunctions';
 
 interface Props {
   plan: Plan;
   navigation: {
     navigate: (ev: string, {}) => void;
   };
+  modal: (payload: string, plan: Plan) => void;
+  reload: boolean;
 }
 
-export const ViewPlanTile: React.FC<Props> = ({ plan, navigation }: Props) => {
+export const ViewPlanTile: React.FC<Props> = ({ plan, navigation, modal, reload }: Props) => {
   const [extendedDetails, setExtendedDetails] = useState(false);
   const [userStatus, setUserStatus] = useState('');
-  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const getStatus = async () => {
@@ -65,7 +66,7 @@ export const ViewPlanTile: React.FC<Props> = ({ plan, navigation }: Props) => {
             <WhiteButton
               style={styles.button}
               onPress={() => {
-                respondToPlan(false, plan).then(() => setReload(!reload));
+                modal('reject', plan);
               }}
               text={'Decline'}
             />
@@ -73,7 +74,7 @@ export const ViewPlanTile: React.FC<Props> = ({ plan, navigation }: Props) => {
               style={[styles.button, { backgroundColor: TEAL }]}
               textStyles={{ color: 'white' }}
               onPress={() => {
-                respondToPlan(true, plan).then(() => setReload(!reload));
+                modal('accept', plan);
               }}
               text={'Accept'}
             />
