@@ -11,11 +11,9 @@ import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture
 import { ImageBackground, Keyboard, StyleSheet, View } from 'react-native';
 import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
-import { Image } from 'react-native-elements/dist/image/Image';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
-import { BackgroundImage } from 'react-native-elements/dist/config';
 
 interface Props {
   navigation: {
