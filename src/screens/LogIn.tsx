@@ -56,15 +56,18 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     await registerForPushNotifications();
     const token = await getUserPushToken();
     const userInfo = await Auth.currentUserInfo();
-    const userQuery = await API.graphql({
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    const userQuery: any = await API.graphql({
       query: queries.usersByPhoneNumber,
       variables: { phoneNumber: userInfo.attributes.phone_number },
     });
+    console.log(typeof userQuery);
     const users = userQuery.data.usersByPhoneNumber.items;
+    console.log('users', userQuery);
     if (users.length > 0) {
       const user = users[0];
       const pushTokenRegex = /ExponentPushToken\[.{22}]/;
-      if (!pushTokenRegex.test(token) || !pushTokenRegex.test(user.pushToken) || user.pushToken !== token) {
+      if (token && (!pushTokenRegex.test(token) || !pushTokenRegex.test(user.pushToken) || user.pushToken !== token)) {
         console.log('Existing User: Updating users pushToken');
         const newToken = await getExpoPushToken();
         await setUserPushToken(newToken);
