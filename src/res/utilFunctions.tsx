@@ -91,10 +91,8 @@ export const convertDateStringToDate = (date: string): Date => {
 //formats date to be accepted by the database
 export const formatDatabaseDate = (date: string): string => {
   if (Platform.OS === 'android') {
-    console.log(date);
     if (date.length === 8) {
       const newDate = 20 + date.substring(6, 8) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
-      console.log(newDate);
       return newDate;
     }
   }

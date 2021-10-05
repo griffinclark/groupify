@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Auth } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
-import { getAllImportedContacts } from '../res/storageFunctions';
+import { getAllImportedContacts, getUserPushToken, setUserPushToken } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
 import { Contact } from '../res/dataModels';
 import { Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
@@ -13,6 +13,7 @@ import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
+import * as queries from '../graphql/queries';
 import * as Analytics from 'expo-firebase-analytics';
 
 interface Props {
@@ -53,28 +54,37 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const registerUser = async (): Promise<User> => {
     await registerForPushNotifications();
-    const token = await getExpoPushToken();
+    const token = await getUserPushToken();
     const userInfo = await Auth.currentUserInfo();
-    const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
+    const userQuery = await API.graphql({
+      query: queries.usersByPhoneNumber,
+      variables: { phoneNumber: userInfo.attributes.phone_number },
+    });
+    const users = userQuery.data.usersByPhoneNumber.items;
     if (users.length > 0) {
       const user = users[0];
-      if (user.pushToken !== token) {
+      const pushTokenRegex = /ExponentPushToken\[.{22}]/;
+      if (!pushTokenRegex.test(token) || !pushTokenRegex.test(user.pushToken) || user.pushToken !== token) {
         console.log('Existing User: Updating users pushToken');
+        const newToken = await getExpoPushToken();
+        await setUserPushToken(newToken);
         await DataStore.save(
           User.copyOf(user, (updated) => {
-            updated.pushToken = token;
+            updated.pushToken = newToken;
           }),
         );
       }
       return user;
     } else {
       console.log('New User: Adding user to database');
+      const newToken = await getExpoPushToken();
+      await setUserPushToken(newToken);
       const newUser = await DataStore.save(
         new User({
           phoneNumber: userInfo.attributes.phone_number,
-          email: 'email@test.com',
+          email: 'placeHolder@temporaryWorkAround.com',
           name: userInfo.attributes.name,
-          pushToken: token,
+          pushToken: newToken,
           friends: [],
         }),
       );
@@ -101,6 +111,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
         }
       }
       await Analytics.logEvent('login', { userId: user.id });
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {

@@ -12,6 +12,7 @@ import { Icon } from 'react-native-elements';
 import { Plan, Status, Invitee, User } from '../models';
 import { sendPushNotification } from '../res/notifications';
 import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
+import * as queries from '../graphql/queries';
 
 interface Props {
   navigation: {
@@ -58,16 +59,6 @@ ${plan.description} \
     return newNumber;
   };
 
-  const pushEvent = async (friends: Contact[], message: string): Promise<void> => {
-    const util = PhoneNumberUtil.getInstance();
-    const attendees = friends.map((friend) => {
-      const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
-      return util.format(num, PhoneNumberFormat.E164);
-    });
-    const obj = { attendees: attendees, content: message };
-    console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
-  };
-
   const createConfirmAlert = (): void => {
     getUserName();
     TwoButtonAlert({
@@ -79,17 +70,14 @@ ${plan.description} \
     });
   };
 
-  const createErrorAlert = (friends: Contact[], message: string): void => {
+  const createErrorAlert = (): void => {
     TwoButtonAlert({
       title: 'Notice',
       message:
         'At least one of the friends you invited does not have a phone number. That friend will not receive a text.',
       button1Text: 'Go back',
       button2Text: 'Create Event Anyways',
-      button2OnPress: async () => {
-        navigation.push('Home');
-        await pushEvent(friends, message);
-      },
+      button2OnPress: onPressSend,
     });
   };
 
@@ -156,15 +144,46 @@ ${plan.description} \
         item.invitees = inviteeList;
       }),
     );
-
     const name = await getUserName();
-    for (const invitee of inviteeList) {
-      if (invitee.pushToken) {
-        sendPushNotification(invitee.pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+
+    //Decide whether or not an invitee is a user
+    //if so send notification, if not send text
+    const nonUsers = [];
+    const pushTokenRegex = /ExponentPushToken\[.{22}]/;
+    for (let i = 0; i < inviteeList.length; i++) {
+      const invitee = inviteeList[i];
+      const userQuery = await API.graphql({
+        query: queries.usersByPhoneNumber,
+        variables: { phoneNumber: invitee.phoneNumber },
+      });
+      const user = userQuery.data.usersByPhoneNumber.items;
+      if (user.length > 0) {
+        console.log(user[0].pushToken);
+        if (pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken) {
+          sendPushNotification(user[0].pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+        }
+      } else {
+        nonUsers.push(invitee);
       }
     }
+    pushEvent(nonUsers, message);
+    // for (const invitee of inviteeList) {
+    //   if (invitee.pushToken) {
+    //     sendPushNotification(invitee.pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+    //   }
+    // }
 
-    console.log(newPlan);
+    // console.log(newPlan);
+  };
+
+  const pushEvent = async (friends: Invitee[], message: string): Promise<void> => {
+    const util = PhoneNumberUtil.getInstance();
+    const attendees = friends.map((friend) => {
+      const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+      return util.format(num, PhoneNumberFormat.E164);
+    });
+    const obj = { attendees: attendees, content: message };
+    console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
   };
 
   const onPressSend = async (): Promise<void> => {
@@ -175,6 +194,7 @@ ${plan.description} \
         await pushEvent(plan.contacts, message);
       }
       navigation.push('Home');
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log(err);
       if (err.message === 'The string supplied did not seem to be a phone number') {
