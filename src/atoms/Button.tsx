@@ -11,6 +11,7 @@ interface Props {
   containerStyle?: Record<string, unknown>;
   buttonStyle?: Record<string, unknown>;
   textStyle?: Record<string, unknown>;
+  testID?: string;
 }
 export const Button: React.FC<Props> = ({
   onPress,
@@ -19,9 +20,10 @@ export const Button: React.FC<Props> = ({
   containerStyle,
   buttonStyle,
   textStyle,
+  testID,
 }: Props) => {
   return (
-    <View style={[buttonStyles.container, containerStyle]}>
+    <View style={[buttonStyles.container, containerStyle]} testID={testID}>
       <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
