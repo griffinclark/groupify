@@ -8,10 +8,9 @@ import { Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { User } from '../models';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import { ImageBackground, Keyboard, StyleSheet, View } from 'react-native';
 import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
-import { Image } from 'react-native-elements/dist/image/Image';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
 import * as queries from '../graphql/queries';
@@ -152,31 +151,33 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen style={{ backgroundColor: WHITE, height: '100%', justifyContent: 'space-between' }}>
-      <View style={{ alignSelf: 'center', flex: 1, marginTop: 80 }} testID="LoginScreen">
-        <Image style={styles.logoBackground} source={require('../../assets/Login_Background.png')} />
-        <Image style={styles.logo} source={require('../../assets/Splash_Logo.png')} />
-      </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-        <FormInput
-          returnKeyNext={true}
-          label="Phone Number"
-          value={phone}
-          onChangeText={(number) => setPhone(formatPhoneNumber(number))}
-        />
-        <FormInput
-          returnKeyNext={false}
-          label="Password"
-          onChangeText={setPassword}
-          secureTextEntry={true}
-          value={password}
-        />
-        <TouchableOpacity
-          style={{ alignSelf: 'center' }}
-          onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
-        >
-          <AppText style={styles.textTeal}>Forgot password?</AppText>
-        </TouchableOpacity>
-        {error && <Alert status="error" message={error} />}
+        <View style={{ alignSelf: 'center', flex: 1, marginTop: 20 }} testID="LoginScreen">
+          <ImageBackground style={styles.logoBackground} source={require('../../assets/Login_Background.png')} />
+          <ImageBackground style={styles.logo} source={require('../../assets/Splash_Logo.png')} />
+        </View>
+        <View style={{ marginTop: 250 }}>
+          <FormInput
+            returnKeyNext={true}
+            label="Phone Number"
+            value={phone}
+            onChangeText={(number) => setPhone(formatPhoneNumber(number))}
+          />
+          <FormInput
+            returnKeyNext={false}
+            label="Password"
+            onChangeText={setPassword}
+            secureTextEntry={true}
+            value={password}
+          />
+          <TouchableOpacity
+            style={{ alignSelf: 'center' }}
+            onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
+          >
+            <AppText style={styles.textTeal}>Forgot password?</AppText>
+          </TouchableOpacity>
+          {error && <Alert status="error" message={error} />}
+        </View>
       </TouchableWithoutFeedback>
       <View style={styles.createAccount}>
         <AppText style={styles.text}>Don&apos;t have an account?</AppText>

@@ -24,6 +24,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
           buttonStyle={{ width: 335, borderRadius: 25 }}
           title={'Log In'}
           onPress={() => navigation.navigate('Login', {})}
+          testID="WelcomeLoginButton"
         />
         <View style={{ marginTop: 20 }}>
           <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>Don&apos;t have an account?</AppText>
@@ -32,6 +33,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
             textStyle={{ color: TEAL, backgroundColor: 'white', fontSize: 20 }}
             title={'Sign Up'}
             onPress={() => navigation.navigate('CreateAccount', {})}
+            testID="WelcomeCreateButton"
           />
         </View>
       </View>
