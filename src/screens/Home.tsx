@@ -32,24 +32,20 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [userPlans, setUserPlans] = useState<Plan[]>([]);
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
-  const [trigger, setTrigger] = useState(false);
+  const [trigger1, setTrigger1] = useState(false);
+  const [trigger2, setTrigger2] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const awaitUser = async () => {
       const user = await getCurrentUser();
+      setRefreshing(true);
       setCurrentUser(user);
       loadPlans(user);
-      setTrigger(!trigger);
+      setTrigger2(!trigger2);
     };
     awaitUser();
-  }, [refreshing]);
-
-  const onHomeRefresh = () => {
-    setRefreshing(true);
-    if (currentUser) loadPlans(currentUser).then(() => setRefreshing(false));
-    setTrigger(!trigger);
-  };
+  }, [trigger1]);
 
   const loadPlans = async (user: User) => {
     console.log('Loading plans');
@@ -88,7 +84,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <Screen style={{ backgroundColor: background }}>
-      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => setTrigger1(!trigger1)} />}>
         <View style={styles.header}>
           <AppText style={[globalStyles.superTitle, styles.greeting]}>{createGreeting()}</AppText>
           <View></View>
@@ -98,13 +94,13 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
             <View>
               <View>
                 <AppText style={styles.label}>COMING UP NEXT</AppText>
-                <NextPlan reload={trigger} navigation={navigation} plan={userPlans.concat(invitedPlans)[0]} />
+                <NextPlan reload={trigger2} navigation={navigation} plan={userPlans.concat(invitedPlans)[0]} />
               </View>
               <View style={globalStyles.miniSpacer}></View>
               <View>
                 <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
                 <InvitedPreview
-                  reload={trigger}
+                  reload={trigger2}
                   navigation={navigation}
                   invitedPlans={invitedPlans}
                   userPlans={userPlans}

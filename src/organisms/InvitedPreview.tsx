@@ -20,8 +20,8 @@ interface Props {
 export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, reload, userPlans }: Props) => {
   const [pendingSelected, setPendingSelected] = useState(false);
   const [acceptedSelected, setAcceptedSelected] = useState(true);
-  const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
-  const [acceptedPlans, setAcceptedPlans] = useState<Plan[]>([]);
+  const [pendingPlans, setPendingPlans] = useState<JSX.Element[]>([]);
+  const [acceptedPlans, setAcceptedPlans] = useState<JSX.Element[]>([]);
 
   useEffect(() => {
     getPendingPlans();
@@ -29,64 +29,53 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
   }, [reload]);
 
   const getPendingPlans = () => {
-    setPendingPlans([]);
-    let x = 0;
-    if (pendingPlans.length == 0) {
-      for (let i = 0; i < invitedPlans.length; i++) {
-        if (pendingPlans.length >= 3) {
-          break;
+    const newPendingPlans: JSX.Element[] = [];
+
+    let i = 0;
+    while (i < invitedPlans.length && newPendingPlans.length < 3) {
+      const plan = invitedPlans[i];
+      loadInviteeStatus(plan).then((result) => {
+        if (result === 'Pending') {
+          const newPlan = (
+            <MiniPlanTile
+              key={plan.id}
+              plan={plan}
+              onPress={() => {
+                navigation.navigate('PlanDetails', { plan: plan });
+              }}
+            />
+          );
+          newPendingPlans.push(newPlan);
         }
-        const plan = invitedPlans[i];
-        loadInviteeStatus(plan).then((result) => {
-          if (result === 'PENDING') {
-            x++;
-            const newPlan = [
-              <MiniPlanTile
-                key={plan.id}
-                plan={plan}
-                onPress={() => {
-                  navigation.navigate('PlanDetails', { plan: plan });
-                }}
-              />,
-            ];
-            if (x <= 3) {
-              setPendingPlans((pendingPlans) => [...pendingPlans, newPlan]);
-            }
-          }
-        });
-      }
+        i++;
+      });
     }
+    setPendingPlans(newPendingPlans);
   };
 
   const getAcceptedPlans = async () => {
-    setAcceptedPlans([]);
-    let x = 0;
-    if (acceptedPlans.length == 0) {
-      for (let i = 0; i < invitedPlans.length; i++) {
-        if (acceptedPlans.length >= 3) {
-          break;
-        }
+    const newAcceptedPlans: JSX.Element[] = [];
 
-        const plan = invitedPlans[i];
-        loadInviteeStatus(plan).then((result) => {
-          if (result === 'ACCEPTED') {
-            x++;
-            const newPlan = [
-              <MiniPlanTile
-                key={plan.id}
-                plan={plan}
-                onPress={() => {
-                  navigation.navigate('PlanDetails', { plan: plan });
-                }}
-              />,
-            ];
-            if (x <= 3) {
-              setAcceptedPlans((acceptedPlans) => [...acceptedPlans, newPlan]);
-            }
-          }
-        });
-      }
+    let i = 0;
+    while (i < invitedPlans.length && newAcceptedPlans.length < 3) {
+      const plan = invitedPlans[i];
+      loadInviteeStatus(plan).then((result) => {
+        if (result === 'ACCEPTED') {
+          const newPlan = (
+            <MiniPlanTile
+              key={plan.id}
+              plan={plan}
+              onPress={() => {
+                navigation.navigate('PlanDetails', { plan: plan });
+              }}
+            />
+          );
+          newAcceptedPlans.push(newPlan);
+        }
+        i++;
+      });
     }
+    setAcceptedPlans(newAcceptedPlans);
   };
 
   return (
