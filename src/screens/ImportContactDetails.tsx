@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WHITE, TEAL } from '../res/styles/Colors';
-import { Button, Screen, AlertModal } from '../atoms/AtomsExports';
+import { Button, Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { RoutePropParams } from '../res/root-navigation';
 import { getCurrentUser } from '../res/utilFunctions';
 import { User } from '../models';
 import { Image } from 'react-native-elements/dist/image/Image';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: {
-    navigate: (ev: string) => void;
+    navigate: (ev: string, {}) => void;
   };
   route: RoutePropParams;
 }
 
 export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
-  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -55,24 +53,14 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
           <AppText style={{ alignSelf: 'center' }}>*You can always edit your contact list later. </AppText>
         </View>
         <View style={styles.planResponse}>
-          <TouchableOpacity onPress={() => setOpenModal(true)}>
-            <AppText style={styles.skipStyle}>Skip</AppText>
-          </TouchableOpacity>
           <Button
             buttonStyle={{ width: 210 }}
-            title={'Select Contacts'}
+            title={'Import Contacts'}
             onPress={() => {
-              navigation.navigate('ImportContacts');
+              navigation.navigate('ImportContacts', { last: 'ImportContactDetails' });
             }}
           />
         </View>
-        {openModal && (
-          <AlertModal
-            onConfirm={() => navigation.navigate('Home')}
-            onReject={() => setOpenModal(false)}
-            message="Are you sure you don't want to import contacts? You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later "
-          />
-        )}
       </View>
     </Screen>
   );
@@ -90,15 +78,9 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   planResponse: {
-    marginHorizontal: '5%',
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  skipStyle: {
-    color: TEAL,
-    fontWeight: '900',
-    fontSize: 20,
   },
 });
