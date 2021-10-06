@@ -45,7 +45,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
           );
           newPendingPlans.push(newPlan);
           if (newPendingPlans.length === 3) {
-            setPendingPlans(newPendingPlans);
+            setPendingPlans(newPendingPlans.slice(0, 3));
           }
         }
       });
@@ -69,7 +69,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
           );
           newAcceptedPlans.push(newPlan);
           if (newAcceptedPlans.length === 3) {
-            setAcceptedPlans(newAcceptedPlans);
+            setAcceptedPlans(newAcceptedPlans.slice(0, 3));
           }
         }
       });
