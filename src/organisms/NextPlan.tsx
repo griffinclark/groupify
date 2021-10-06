@@ -13,6 +13,7 @@ interface Props {
   plan: Plan;
   navigation: {
     navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
   };
   reload: boolean;
 }
@@ -39,10 +40,7 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation, reload }: Props) =
   };
 
   return (
-    <TouchableOpacity
-      style={{ paddingVertical: 10 }}
-      onPress={() => navigation.navigate('PlanDetails', { plan: plan })}
-    >
+    <TouchableOpacity style={{ paddingVertical: 10 }} onPress={() => navigation.push('PlanDetails', { plan: plan })}>
       <View style={styles.planContainer}>
         {photoURI ? (
           <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover">

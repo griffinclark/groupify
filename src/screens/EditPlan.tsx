@@ -18,6 +18,7 @@ import {
 
 interface Props {
   navigation: {
+    push: (ev: string) => void;
     navigate: (ev: string, {}) => void;
   };
   route: RoutePropParams;
@@ -36,11 +37,16 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [disabled, setDisabled] = useState<boolean>(true);
   const currentDate = roundDate(new Date());
+  const [dateChanged, setDateChanged] = useState(false);
 
   // Check if required fields are full
   useEffect(() => {
     checkDisabled();
   }, [name]);
+
+  useEffect(() => {
+    date != route.params.currentUserPlan.date ? setDateChanged(true) : setDateChanged(false);
+  }, [date]);
 
   // Update location or photo
   useEffect(() => {
@@ -48,7 +54,7 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       setLocation(route.params.data.eventData.location);
     }
   }, [route.params.data]);
-
+  //formatDatabaseDate(date)
   const onFormSubmit = async () => {
     if (!name) {
       setError('Please add a name to your plan');
@@ -58,7 +64,7 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     await DataStore.save(
       Plan.copyOf(original[0], (updated) => {
         updated.title = name;
-        updated.date = formatDatabaseDate(date ? date : currentDate.toLocaleDateString());
+        updated.date = dateChanged ? formatDatabaseDate(date) : route.params.currentUserPlan.date;
         updated.time = formatDatabaseTime(
           time
             ? time
@@ -74,7 +80,7 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         updated.creatorID = route.params.currentUserPlan.creatorID;
       }),
     );
-    navigation.navigate('PlanDetails', { plan: route.params.currentUserPlan });
+    navigation.push('Home');
   };
 
   const inputFields: {

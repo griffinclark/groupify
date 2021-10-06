@@ -13,10 +13,12 @@ interface Props {
   navigation: {
     goBack: () => void;
     navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
   };
   route: {
     params: {
       plan: Plan;
+      step: string;
     };
   };
 }
@@ -32,7 +34,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   useEffect(() => {
     loadInvitees();
     isCreator();
-  }, [refreshAttendeeList]);
+  }, [refreshAttendeeList, route.params.step]);
 
   const loadInvitees = async () => {
     const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
@@ -123,7 +125,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
             {planCreator ? (
               <WhiteButton
                 onPress={() => {
-                  navigation.navigate('Home', {});
+                  navigation.push('Home', {});
                   DataStore.delete(Plan, (currentPlan) => currentPlan.id('eq', plan.id));
                 }}
                 text={'Cancel Plan'}
