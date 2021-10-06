@@ -152,7 +152,8 @@ ${plan.description} \
     const pushTokenRegex = /ExponentPushToken\[.{22}]/;
     for (let i = 0; i < inviteeList.length; i++) {
       const invitee = inviteeList[i];
-      const userQuery = await API.graphql({
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+      const userQuery: any = await API.graphql({
         query: queries.usersByPhoneNumber,
         variables: { phoneNumber: invitee.phoneNumber },
       });
