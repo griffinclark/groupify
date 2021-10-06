@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Image } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Plan, User } from '../models';
+import { Plan } from '../models';
 import { GREY_0, TEAL } from '../res/styles/Colors';
 import { formatDayOfWeekDate, formatTime, loadPhoto } from '../res/utilFunctions';
 import { AppText } from '../atoms/AppText';
