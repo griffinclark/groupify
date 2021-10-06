@@ -27,7 +27,7 @@ enum State {
   Done,
 }
 
-export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
+export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [addedContacts, setAddedContacts] = useState<Contact[]>([]);
@@ -65,7 +65,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
           image: contact.image,
           phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
         }));
-        contacts.sort((c1, c2) => {
+        contacts.sort((c1, c2): any => {
           if (c1.name && c2.name) {
             return c1.name.toLowerCase() < c2.name.toLowerCase() ? -1 : 1;
           }
@@ -118,7 +118,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
       <View style={{ flex: 1, paddingHorizontal: 20, justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
-            <BackChevronIcon onPress={() => navigation.navigate('ImportContactDetails')} />
+            <BackChevronIcon onPress={() => navigation.navigate(route.params.last)} />
             <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL, marginLeft: 15 }}>Select Contacts</AppText>
           </View>
           <SearchBar onInputChange={searchContacts} />
