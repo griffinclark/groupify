@@ -130,7 +130,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   /* Contact items displayed as 'friends' temporary until friend section finished */
   return (
     <View style={styles.screen}>
-      <Navbar location={'PlanCreate'} navigation={navigation} title={'Invite Friends'} />
+      <Navbar location={'PlanCreate'} navigation={navigation} data={route.params} title={'Invite Friends'} />
 
       <View style={styles.title}>
         <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}?</AppText>

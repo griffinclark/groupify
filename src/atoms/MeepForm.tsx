@@ -8,7 +8,7 @@ import { AppText } from './AppText';
 import { AppTextInput } from './AppTextInput';
 
 interface Props {
-  children: ReactChild;
+  children?: ReactChild;
   inputList: {
     title: string;
     placeholder: string;
