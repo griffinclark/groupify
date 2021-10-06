@@ -84,7 +84,23 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     );
   };
 
+  const formatContacts = (arr: Contact[]) => {
+    const formattedArr: Contact[] = [];
+    let i = 1;
+    arr.forEach((contact) => {
+      if (contact.name) {
+        formattedArr.push(contact);
+      } else {
+        contact.name = `Guest ${i}`;
+        i++;
+        formattedArr.push(contact);
+      }
+    });
+    return formattedArr;
+  };
+
   const sendContactMessage = async () => {
+    const formattedContacts = formatContacts(selectedContacts);
     const event = route.params.data.eventData;
     navigation.navigate('ConfirmPlan', {
       currentUser: route.params.currentUser,
@@ -99,7 +115,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           imageURL: event.imageURL,
           placeId: event.placeId,
           friends: selectedFriends,
-          contacts: selectedContacts,
+          contacts: formattedContacts,
           message: message,
         },
       },
