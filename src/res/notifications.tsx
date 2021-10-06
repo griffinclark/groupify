@@ -33,6 +33,11 @@ export const getExpoPushToken = async (): Promise<string> => {
   return token;
 };
 
+export const getBadgeCount = async (): Promise<number> => {
+  const badgeCount = await Notifications.getBadgeCountAsync();
+  return badgeCount;
+};
+
 export const sendPushNotification = async (
   expoPushToken: string,
   title: string,
