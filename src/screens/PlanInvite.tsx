@@ -4,12 +4,13 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { Alert, AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/AtomsExports';
-import { Auth, DataStore } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import { User } from '../models';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
 import { PlanTextMessage } from '../molecules/PlanTextMessage';
 import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
 import Constants from 'expo-constants';
+import * as queries from '../graphql/queries';
 
 interface Props {
   navigation: {
@@ -46,14 +47,23 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   }, []);
 
   const getFriends = async () => {
-    const user = await DataStore.query(User, (user) => user.id('contains', route.params.currentUser.id));
-    const userFriends = user[0].friends;
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    const userQuery: any = await API.graphql({
+      query: queries.getUser,
+      variables: { id: route.params.currentUser.id },
+    });
+    const userFriends = userQuery.data.getUser.friends;
     const friendList = [];
     if (userFriends) {
       for (let i = 0; i < userFriends.length; i++) {
         const friendId = userFriends[i];
         if (friendId) {
-          const friend = await DataStore.query(User, friendId);
+          // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+          const friendQuery: any = await API.graphql({
+            query: queries.getUser,
+            variables: { id: friendId },
+          });
+          const friend = friendQuery.data.getUser;
           if (friend) friendList.push(friend);
         }
       }
@@ -84,7 +94,23 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     );
   };
 
+  const formatContacts = (arr: Contact[]) => {
+    const formattedArr: Contact[] = [];
+    let i = 1;
+    arr.forEach((contact) => {
+      if (contact.name) {
+        formattedArr.push(contact);
+      } else {
+        contact.name = `Guest ${i}`;
+        i++;
+        formattedArr.push(contact);
+      }
+    });
+    return formattedArr;
+  };
+
   const sendContactMessage = async () => {
+    const formattedContacts = formatContacts(selectedContacts);
     const event = route.params.data.eventData;
     navigation.navigate('ConfirmPlan', {
       currentUser: route.params.currentUser,
@@ -99,7 +125,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           imageURL: event.imageURL,
           placeId: event.placeId,
           friends: selectedFriends,
-          contacts: selectedContacts,
+          contacts: formattedContacts,
           message: message,
         },
       },
@@ -130,7 +156,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   /* Contact items displayed as 'friends' temporary until friend section finished */
   return (
     <View style={styles.screen}>
-      <Navbar location={'PlanCreate'} navigation={navigation} title={'Invite Friends'} />
+      <Navbar location={'PlanCreate'} navigation={navigation} data={route.params} title={'Invite Friends'} />
 
       <View style={styles.title}>
         <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}?</AppText>

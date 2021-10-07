@@ -37,6 +37,7 @@ export type RoutePropParams = {
     userPlans: Plan[];
     option: string;
     accountCreated: string;
+    last: string;
     data: {
       eventData: {
         friends: User[];
@@ -51,6 +52,7 @@ export type RoutePropParams = {
         location: string;
         showImage: string;
         placeId: string;
+        message: string;
       };
     };
   };

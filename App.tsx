@@ -3,12 +3,11 @@ import { LogBox, Text, View } from 'react-native';
 import { globalStyles } from './src/res/styles/GlobalStyles';
 import { RootNavigation } from './src/res/root-navigation';
 import awsconfig from './src/aws-exports';
-import Amplify, { Auth } from 'aws-amplify';
-import { DataStore } from '@aws-amplify/datastore';
+import Amplify, { API, Auth } from 'aws-amplify';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
-import { User } from './src/models';
 import * as Notifications from 'expo-notifications';
+import * as queries from './src/graphql/queries';
 
 Amplify.configure(awsconfig);
 
@@ -16,7 +15,7 @@ Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: true,
-    shouldSetBadge: false,
+    shouldSetBadge: true,
   }),
 });
 
@@ -32,7 +31,12 @@ export const App: React.FC = () => {
         await Auth.currentAuthenticatedUser();
         console.log('user is signed in');
         const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
-        const users = await DataStore.query(User, (user) => user.phoneNumber('eq', phoneNumber));
+        // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+        const userQuery: any = await API.graphql({
+          query: queries.usersByPhoneNumber,
+          variables: { phoneNumber: phoneNumber },
+        });
+        const users = userQuery.data.usersByPhoneNumber.items;
         const user = users[0];
         setUserID(user.id);
         const contacts: Contact[] = await getAllImportedContacts();

@@ -140,7 +140,10 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
         >
           <AppText style={{ fontSize: 18 }}>Submit Bug Report</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ImportContacts', {})} style={styles.bugReport}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ImportContacts', { last: 'Profile' })}
+          style={styles.bugReport}
+        >
           <AppText style={{ fontSize: 18 }}>Import Contacts</AppText>
         </TouchableOpacity>
       </View>
