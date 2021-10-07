@@ -212,18 +212,10 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           )}
 
           {menuItemSelected === 'contacts' && (
-            <ScrollView>
-              <View>
-                <PlanTextMessage
-                  label="Once you create this event, we will send out a text message to your contacts who haven’t joined the app yet as shown below. Feel free to edit:"
-                  onChangeText={(e) => setMessage(e)}
-                  text={message}
-                />
-              </View>
+            <View style={{ marginHorizontal: 20 }}>
               <View style={{ paddingVertical: 30, borderBottomWidth: 0.75, borderBottomColor: GRAY_LIGHT }}>
                 <SearchBar onInputChange={searchFriends} placeholder="Search for Friends to Invite" />
               </View>
-
               <View style={styles.contactsScrollContainer}>
                 <ScrollView>
                   <View style={styles.contactsContainer}>
@@ -231,7 +223,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
                   </View>
                 </ScrollView>
               </View>
-            </ScrollView>
+            </View>
           )}
         </View>
       </View>
