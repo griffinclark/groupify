@@ -7,6 +7,7 @@ import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { MediumPlanTile } from '../molecules/MediumPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
+import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 
 interface Props {
   navigation: {
@@ -50,7 +51,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View style={styles.detailContainer}>
-        <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.navigate('Home', {})} />
+        <BackChevronIcon onPress={() => navigation.navigate('Home', {})} />
         <View style={styles.details}>
           <View style={styles.userPhoto}>
             <AppText style={styles.text}>{currentUser.name.substring(0, 1)}</AppText>
@@ -79,7 +80,11 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
       <View style={styles.bodyContainer}>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate(currentUserPlan ? 'InvitedPlans' : 'SearchPlace', { currentUser: currentUser })
+            navigation.navigate(currentUserPlan ? 'ViewPlans' : 'PlanCreate', {
+              currentUser: currentUser,
+              userPlans: route.params.userPlans,
+              invitedPlans: route.params.invitedPlans,
+            })
           }
           style={styles.userActivity}
         >

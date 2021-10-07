@@ -136,34 +136,39 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: 'white' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      {/* <Screen> */}
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          paddingTop: Constants.statusBarHeight,
-        }}
+    <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1, backgroundColor: 'white' }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <Navbar location={'PlanDetails'} navigation={navigation} title={'Edit Plan'} />
-        {/* <View>{loadPhoto(photo)}</View> */}
-        <View style={{ flexGrow: 1 }}>
-          <MeepForm inputList={inputFields}>
-            <TouchableOpacity style={styles.mapLink} onPress={() => navigation.navigate('PlanMap', { option: 'edit' })}>
-              <MapLinkIcon />
-              <AppText style={styles.mapText}>Find address using the map</AppText>
-            </TouchableOpacity>
-          </MeepForm>
-          {error && <Alert status="error" message={error} />}
-        </View>
-        <BottomButton disabled={disabled} title="Save Plan" onPress={onFormSubmit} />
-      </ScrollView>
-      {/* </Screen> */}
-    </KeyboardAvoidingView>
+        {/* <Screen> */}
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+            paddingTop: Constants.statusBarHeight,
+          }}
+        >
+          <Navbar location={'PlanDetails'} navigation={navigation} title={'Edit Plan'} />
+          {/* <View>{loadPhoto(photo)}</View> */}
+          <View style={{ flexGrow: 1 }}>
+            <MeepForm inputList={inputFields}>
+              <TouchableOpacity
+                style={styles.mapLink}
+                onPress={() => navigation.navigate('PlanMap', { option: 'edit' })}
+              >
+                <MapLinkIcon />
+                <AppText style={styles.mapText}>Find address using the map</AppText>
+              </TouchableOpacity>
+            </MeepForm>
+            {error && <Alert status="error" message={error} />}
+          </View>
+        </ScrollView>
+        {/* </Screen> */}
+      </KeyboardAvoidingView>
+      <BottomButton disabled={disabled} title="Save Plan" onPress={onFormSubmit} />
+    </View>
   );
 };
 
