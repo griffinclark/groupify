@@ -208,9 +208,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         <View style={styles.navbarBackground} />
 
         <View style={styles.navbarIcon}>
-          <BackChevronIcon
-            onPress={() => navigation.navigate('PlanCreate', { currentUser: route.params.currentUser })}
-          />
+          <BackChevronIcon onPress={() => navigation.navigate('PlanCreate', route.params)} />
         </View>
 
         <GooglePlacesAutocomplete

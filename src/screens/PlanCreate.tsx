@@ -33,15 +33,45 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
     checkDisabled();
   }, [name]);
 
-  // Update location or photo
+  // Update state from params
   useEffect(() => {
-    if (route.params.data && route.params.data.eventData.location) {
-      setLocation(route.params.data.eventData.location);
-    }
-    if (route.params.data && route.params.data.eventData.imageURL) {
-      setPhoto(route.params.data.eventData.imageURL);
+    if (route.params.data) {
+      const { data } = route.params;
+      if (data.eventData.title && data.eventData.title != name) {
+        setName(data.eventData.title);
+      }
+      if (data.eventData.date && data.eventData.date != date) {
+        setDate(data.eventData.title);
+      }
+      if (data.eventData.time && data.eventData.time != time) {
+        setTime(data.eventData.time);
+      }
+      if (data.eventData.description && data.eventData.description != description) {
+        setDescription(data.eventData.description);
+      }
+      if (data.eventData.location && data.eventData.location != location) {
+        setLocation(data.eventData.location);
+      }
+      if (data.eventData.imageURL && data.eventData.imageURL != photo) {
+        setPhoto(data.eventData.imageURL);
+      }
     }
   }, [route.params.data]);
+
+  const resetFields = () => {
+    setName('');
+    setDate(currentDate.toLocaleDateString());
+    setTime(
+      Platform.OS === 'android'
+        ? formatTime(currentDate.toLocaleTimeString())
+        : formatIosTimeInput(currentDate.toLocaleTimeString()),
+    );
+    setDescription('');
+    setLocation('');
+    setPhoto('');
+    setError(undefined);
+    setDisabled(true);
+  };
 
   const onFormSubmit = async () => {
     const id = uuid.v4();
@@ -69,6 +99,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
         },
       },
     });
+    resetFields();
     await Analytics.logEvent('submit_create_event_to_friends', { userId: id });
   };
 
