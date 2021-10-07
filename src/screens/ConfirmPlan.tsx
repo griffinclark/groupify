@@ -116,6 +116,112 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
   };
 
+    // const storeInvitees = async () => {
+  //   const date = plan.date;
+  //   const time = plan.time;
+  //   const newPlan = await DataStore.save(
+  //     new Plan({
+  //       title: plan.title,
+  //       description: plan.description,
+  //       location: plan.location,
+  //       placeID: plan.placeId,
+  //       date: formatDatabaseDate(date),
+  //       time: formatDatabaseTime(time),
+  //       creatorID: currentUser.id,
+  //     }),
+  //   );
+
+  //   const inviteeList: Invitee[] = [];
+  //   for (const contact of plan.contacts) {
+  //     if (contact.phoneNumber !== 'No phone number found') {
+  //       const invitee = await DataStore.save(
+  //         new Invitee({
+  //           name: contact.name,
+  //           phoneNumber: formatPhoneNumber(contact),
+  //           status: Status.PENDING,
+  //           pushToken: '',
+  //           plan: newPlan,
+  //         }),
+  //       );
+  //       inviteeList.push(invitee);
+  //     }
+  //   }
+
+  //   for (const friend of plan.friends) {
+  //     if (friend.phoneNumber !== 'No phone number found') {
+  //       const invitee = await DataStore.save(
+  //         new Invitee({
+  //           name: friend.name,
+  //           phoneNumber: friend.phoneNumber,
+  //           status: Status.PENDING,
+  //           pushToken: friend.pushToken,
+  //           plan: newPlan,
+  //         }),
+  //       );
+  //       inviteeList.push(invitee);
+  //     }
+  //   }
+
+  //   const userInvitee = await DataStore.save(
+  //     new Invitee({
+  //       name: currentUser.name,
+  //       phoneNumber: currentUser.phoneNumber,
+  //       status: Status.ACCEPTED,
+  //       pushToken: currentUser.pushToken,
+  //       plan: newPlan,
+  //     }),
+  //   );
+  //   inviteeList.push(userInvitee);
+
+  //   //FIXME: plan invitee not being updated properly
+  //   await DataStore.save(
+  //     Plan.copyOf(newPlan, (item) => {
+  //       item.invitees = inviteeList;
+  //     }),
+  //   );
+  //   const name = await getUserName();
+
+  //   //Decide whether or not an invitee is a user
+  //   //if so send notification, if not send text
+  //   const nonUsers = [];
+  //   const pushTokenRegex = /ExponentPushToken\[.{22}]/;
+  //   for (let i = 0; i < inviteeList.length; i++) {
+  //     const invitee = inviteeList[i];
+  //     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  //     const userQuery: any = await API.graphql({
+  //       query: queries.usersByPhoneNumber,
+  //       variables: { phoneNumber: invitee.phoneNumber },
+  //     });
+  //     const user = userQuery.data.usersByPhoneNumber.items;
+  //     if (user.length > 0) {
+  //       console.log(user[0].pushToken);
+  //       if (pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken) {
+  //         sendPushNotification(user[0].pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+  //       }
+  //     } else {
+  //       nonUsers.push(invitee);
+  //     }
+  //   }
+  //   pushEvent(nonUsers, message);
+  //   // for (const invitee of inviteeList) {
+  //   //   if (invitee.pushToken) {
+  //   //     sendPushNotification(invitee.pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+  //   //   }
+  //   // }
+
+  //   // console.log(newPlan);
+  // };
+
+  // const pushEvent = async (friends: Invitee[], message: string): Promise<void> => {
+  //   const util = PhoneNumberUtil.getInstance();
+  //   const attendees = friends.map((friend) => {
+  //     const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+  //     return util.format(num, PhoneNumberFormat.E164);
+  //   });
+  //   const obj = { attendees: attendees, content: message };
+  //   console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
+  // };
+
   const createConfirmAlert = (): void => {
     getUserName();
     TwoButtonAlert({
