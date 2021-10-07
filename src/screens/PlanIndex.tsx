@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import { AppText, Navbar, Screen, AlertModal } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/HomeNavBar';
 import {
@@ -28,6 +28,7 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
   const [userPlans, setUserPlans] = useState<Plan[]>([]);
   const [modal, setModal] = useState(<View style={{ display: 'none' }} />);
   const [reload, setReload] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -35,6 +36,7 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
       setCurrentUser(user);
       reorder(route.params.invitedPlans);
       setUserPlans(route.params.userPlans);
+      setRefreshing(false);
     };
     awaitUser();
   }, [reload]);
@@ -113,6 +115,11 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
     );
   };
 
+  const onPlanIndexRefresh = () => {
+    setRefreshing(true);
+    setReload(!reload);
+  };
+
   return (
     <Screen>
       <View testID="PlanIndexScreen" style={styles.planIndexContainer}>
@@ -137,6 +144,7 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
         <View style={styles.plans}>
           <FlatList
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanIndexRefresh} />}
             data={tab === 'invited' ? invitedPlans : userPlans}
             renderItem={renderPlanTile}
             style={{ marginBottom: 40 }}
