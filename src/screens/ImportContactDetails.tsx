@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WHITE, TEAL } from '../res/styles/Colors';
-import { Button, Screen } from '../atoms/AtomsExports';
-import { AppText } from '../atoms/AppText';
+import { Button, Screen, AppText } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { getCurrentUser } from '../res/utilFunctions';
 import { User } from '../models';
@@ -61,16 +60,6 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
             }}
           />
         </View>
-        {openModal && (
-          <AlertModal
-            button1Text="Yes"
-            button2Text="Close"
-            message2="You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later. "
-            onButton1Press={() => navigation.navigate('Home')}
-            onButton2Press={() => setOpenModal(false)}
-            message="Are you sure you don't want to import contacts? "
-          />
-        )}
       </View>
     </Screen>
   );
