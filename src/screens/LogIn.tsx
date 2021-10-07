@@ -8,7 +8,7 @@ import { Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { User } from '../models';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { ImageBackground, Keyboard, StyleSheet, View } from 'react-native';
+import { ImageBackground, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
 import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
@@ -152,53 +152,57 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [phone, password]);
 
   return (
-    <Screen style={{ backgroundColor: WHITE, height: '100%', justifyContent: 'space-between' }}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-        <View style={{ alignSelf: 'center', flex: 1, marginTop: 20 }} testID="LoginScreen">
-          <ImageBackground style={styles.logoBackground} source={require('../../assets/Login_Background.png')} />
-          <ImageBackground style={styles.logo} source={require('../../assets/Splash_Logo.png')} />
+    <KeyboardAvoidingView>
+      <Screen style={{ backgroundColor: WHITE, height: '100%', justifyContent: 'space-between' }}>
+        <ScrollView>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+            <View style={{ alignSelf: 'center', flex: 1, marginTop: 20 }} testID="LoginScreen">
+              <ImageBackground style={styles.logoBackground} source={require('../../assets/Login_Background.png')} />
+              <ImageBackground style={styles.logo} source={require('../../assets/Splash_Logo.png')} />
+            </View>
+            <View>
+              <FormInput
+                returnKeyNext={true}
+                label="Phone Number"
+                value={phone}
+                onChangeText={(number) => setPhone(formatPhoneNumber(number))}
+              />
+              <FormInput
+                returnKeyNext={false}
+                label="Password"
+                onChangeText={setPassword}
+                secureTextEntry={true}
+                value={password}
+              />
+              <TouchableOpacity
+                style={{ alignSelf: 'center' }}
+                onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
+              >
+                <AppText style={styles.textTeal}>Forgot password?</AppText>
+              </TouchableOpacity>
+              {error && <Alert status="error" message={error} />}
+            </View>
+          </TouchableWithoutFeedback>
+          <View style={styles.createAccount}>
+            <AppText style={styles.text}>Don&apos;t have an account?</AppText>
+            <AppText
+              style={styles.textTeal}
+              onPress={async () => {
+                navigation.navigate('CreateAccount', {});
+              }}
+            >
+              Create one today!
+            </AppText>
+            {route.params && route.params.accountCreated === 'success' && (
+              <Alert status={'success'} message={'Account successfully created!'} />
+            )}
+          </View>
+        </ScrollView>
+        <View>
+          <Button title="Log In" onPress={logIn} disabled={disabled} />
         </View>
-        <View style={{ marginTop: 250 }}>
-          <FormInput
-            returnKeyNext={true}
-            label="Phone Number"
-            value={phone}
-            onChangeText={(number) => setPhone(formatPhoneNumber(number))}
-          />
-          <FormInput
-            returnKeyNext={false}
-            label="Password"
-            onChangeText={setPassword}
-            secureTextEntry={true}
-            value={password}
-          />
-          <TouchableOpacity
-            style={{ alignSelf: 'center' }}
-            onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
-          >
-            <AppText style={styles.textTeal}>Forgot password?</AppText>
-          </TouchableOpacity>
-          {error && <Alert status="error" message={error} />}
-        </View>
-      </TouchableWithoutFeedback>
-      <View style={styles.createAccount}>
-        <AppText style={styles.text}>Don&apos;t have an account?</AppText>
-        <AppText
-          style={styles.textTeal}
-          onPress={async () => {
-            navigation.navigate('CreateAccount', {});
-          }}
-        >
-          Create one today!
-        </AppText>
-        {route.params && route.params.accountCreated === 'success' && (
-          <Alert status={'success'} message={'Account successfully created!'} />
-        )}
-      </View>
-      <View>
-        <Button title="Log In" onPress={logIn} disabled={disabled} />
-      </View>
-    </Screen>
+      </Screen>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -221,7 +225,7 @@ const styles = StyleSheet.create({
   createAccount: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 20,
   },
   text: {
     fontWeight: '500',
