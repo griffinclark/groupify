@@ -1,13 +1,14 @@
-import { DataStore } from 'aws-amplify';
+import { API } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Image } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Plan, User } from '../models';
+import { Plan } from '../models';
 import { GREY_0, TEAL } from '../res/styles/Colors';
 import { formatDayOfWeekDate, formatTime, loadPhoto } from '../res/utilFunctions';
 import { AppText } from '../atoms/AppText';
 import { InviteePreviewTile } from '../molecules/InviteePreviewTile';
+import * as queries from '../graphql/queries';
 
 interface Props {
   plan: Plan;
@@ -31,7 +32,12 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation, reload }: Props) =
   }, [reload]);
 
   const getHost = async (id: string) => {
-    const user = await DataStore.query(User, id);
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    const userQuery: any = await API.graphql({
+      query: queries.getUser,
+      variables: { id: id },
+    });
+    const user = userQuery.data.getUser;
     if (user) {
       setHostName(user.name);
       return user.name;

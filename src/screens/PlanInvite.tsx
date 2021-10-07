@@ -4,12 +4,13 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { Alert, AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/AtomsExports';
-import { Auth, DataStore } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import { User } from '../models';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
 import { PlanTextMessage } from '../molecules/PlanTextMessage';
 import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
 import Constants from 'expo-constants';
+import * as queries from '../graphql/queries';
 
 interface Props {
   navigation: {
@@ -46,14 +47,23 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   }, []);
 
   const getFriends = async () => {
-    const user = await DataStore.query(User, (user) => user.id('contains', route.params.currentUser.id));
-    const userFriends = user[0].friends;
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    const userQuery: any = await API.graphql({
+      query: queries.getUser,
+      variables: { id: route.params.currentUser.id },
+    });
+    const userFriends = userQuery.data.getUser.friends;
     const friendList = [];
     if (userFriends) {
       for (let i = 0; i < userFriends.length; i++) {
         const friendId = userFriends[i];
         if (friendId) {
-          const friend = await DataStore.query(User, friendId);
+          // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+          const friendQuery: any = await API.graphql({
+            query: queries.getUser,
+            variables: { id: friendId },
+          });
+          const friend = friendQuery.data.getUser;
           if (friend) friendList.push(friend);
         }
       }

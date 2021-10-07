@@ -1,9 +1,10 @@
 import { Invitee, Plan, Status, User } from '../models';
 import Qs from 'qs';
-import { Auth, DataStore } from 'aws-amplify';
+import { API, Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Platform } from 'react-native';
 import { sendPushNotification } from './notifications';
+import * as queries from '../graphql/queries';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
@@ -196,7 +197,12 @@ export const loadPhoto = async (placeID: string): Promise<string> => {
 export const getCurrentUser = async (): Promise<User> => {
   const userInfo = await Auth.currentUserInfo();
   if (userInfo) {
-    const user = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    const userQuery: any = await API.graphql({
+      query: queries.usersByPhoneNumber,
+      variables: { phoneNumber: userInfo.attributes.phone_number },
+    });
+    const user = userQuery.data.usersByPhoneNumber.items;
     if (user) {
       return user[0];
     }
@@ -318,7 +324,12 @@ export const respondToPlan = async (accept: boolean, plan: Plan): Promise<void> 
         updated.status = Status.ACCEPTED;
       }),
     );
-    const host = await DataStore.query(User, plan.creatorID);
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    const hostQuery: any = await API.graphql({
+      query: queries.getUser,
+      variables: { id: plan.creatorID },
+    });
+    const host = hostQuery.data.getUser;
     if (host) {
       const userName = (await Auth.currentUserInfo()).attributes.name;
       sendPushNotification(host.pushToken, `${userName} has accepted your invite!`, 'Tap to open the app', {});

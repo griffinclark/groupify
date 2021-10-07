@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Plan, User } from '../models';
+import { Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { convertDateStringToDate, formatTime } from '../res/utilFunctions';
 import { TEAL } from '../res/styles/Colors';
-import { DataStore } from '@aws-amplify/datastore';
-
+import { API } from 'aws-amplify';
+import * as queries from '../graphql/queries';
 interface Props {
   plan: Plan;
 }
@@ -18,9 +18,14 @@ export const PlanDetailsTile: React.FC<Props> = ({ plan }: Props) => {
   }, []);
 
   const getPlanHost = async (id: string) => {
-    const user = await DataStore.query(User, (user) => user.id('eq', id));
-    if (user[0]) {
-      setHostName(user[0].name);
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    const userQuery: any = await API.graphql({
+      query: queries.getUser,
+      variables: { id: id },
+    });
+    const user = userQuery.data.getUser;
+    if (user) {
+      setHostName(user.name);
     }
   };
 
