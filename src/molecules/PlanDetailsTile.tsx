@@ -4,11 +4,10 @@ import { Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { convertDateStringToDate, formatTime } from '../res/utilFunctions';
 import { TEAL } from '../res/styles/Colors';
-import { DataStore } from '@aws-amplify/datastore';
 import { Edit } from '../../assets/Icons/IconExports';
 import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
-        
+
 interface Props {
   plan: Plan;
   creator: boolean;
