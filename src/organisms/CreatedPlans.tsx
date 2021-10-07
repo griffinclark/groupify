@@ -9,6 +9,7 @@ import { CreatedPlanTile } from '../molecules/CreatedPlanTile';
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
   };
   userPlans: Plan[];
   invitedPlans: Plan[];

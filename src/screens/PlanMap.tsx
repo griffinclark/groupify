@@ -58,8 +58,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   const markerRef = useRef<Marker>(null);
   const [placeCard, setPlaceCard] = useState<JSX.Element>();
   const [sessionToken, setSessionToken] = useState(uuidv4());
-  // const [mapPopupOpen, setMapPopupOpen] = useState(true);
-  // const [markerImg, setMarkerImg] = useState();
 
   useEffect(() => {
     (async () => {
@@ -113,30 +111,13 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
       if (markerRef && markerRef.current) {
         markerRef.current.showCallout();
       }
-      // let height: string;
-      // if (moreDetails.photos) {
-      //   if (moreDetails.photos.length > 5) {
-      //     moreDetails.photos = moreDetails.photos.slice(0, 5);
-      //   }
-      //   height = '45%';
-      // } else {
-      //   height = '30%';
-      // }
-      // const distanceInfo = await getDistanceAndDuration(
-      //   `${userLocation.latitude},${userLocation.longitude}`,
-      //   detail.place_id,
-      // ).catch((error) => console.log(error));
       setPlaceCard(
         <PlaceCard
-          //   style={{ height: height }}
           name={detail.name}
           address={detail.formatted_address}
           rating={moreDetails.rating ? moreDetails.rating : undefined}
           userRatings={moreDetails.user_ratings_total ? moreDetails.user_ratings_total : undefined}
           priceLevel={moreDetails.price_level ? moreDetails.price_level : undefined}
-          // distance={distanceInfo ? distanceInfo.distance : undefined}
-          // duration={distanceInfo ? distanceInfo.duration : undefined}
-          // openNow={moreDetails.opening_hours ? moreDetails.opening_hours.open_now : undefined}
           openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
           onButtonPress={() =>
@@ -153,27 +134,22 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const getDistanceAndDuration = async (origin: string, destination: string) => {
-    const mode = 'driving';
-    const units = 'imperial';
-    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=place_id:${destination}&key=${GOOGLE_PLACES_API_KEY}&mode=${mode}&units=${units}`;
-    const response = await fetch(url);
-    const json = await response.json();
-    return { distance: json.rows[0].elements[0].distance.text, duration: json.rows[0].elements[0].duration.text };
-  };
-
   const onButtonPress = (title: string, address: string, placeId: string, photo: string) => {
-    navigation.navigate('PlanCreate', {
-      currentUser: route.params.currentUser,
-      data: {
-        eventData: {
-          title: title,
-          location: address,
-          imageURL: photo,
-          placeId: placeId,
+    if (route.params.option === 'edit') {
+      navigation.navigate('EditPlan', { data: { eventData: { placeId: placeId, location: address } } });
+    } else {
+      navigation.navigate('PlanCreate', {
+        currentUser: route.params.currentUser,
+        data: {
+          eventData: {
+            title: title,
+            location: address,
+            imageURL: photo,
+            placeId: placeId,
+          },
         },
-      },
-    });
+      });
+    }
   };
 
   const onPoiPress = async (poi: POI) => {
@@ -244,24 +220,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           }}
         />
       </View>
-
-      {/* {mapPopupOpen ? (
-        <View style={styles.popup}>
-          <View style={styles.mapPopup}>
-            <AppText style={styles.mapPopupText}>Select or search for a location on the map for your plan.</AppText>
-            <Button title="Okay" onPress={() => setMapPopupOpen(false)} />
-          </View>
-        </View>
-      ) : null}
-      <TouchableOpacity
-        style={styles.skip}
-        onPress={() => {
-          navigation.navigate('CreateCustomEvent', { currentUser: route.params.currentUser });
-        }}
-      >
-        <AppText style={styles.skipText}>Skip</AppText>
-      </TouchableOpacity>
-      <View style={styles.searchBarContainer}>X button on the right to clear input field</View> */}
       {placeCard ? placeCard : null}
     </View>
     /* </Screen> */

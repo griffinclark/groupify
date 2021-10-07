@@ -4,13 +4,19 @@ import { Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { convertDateStringToDate, formatTime } from '../res/utilFunctions';
 import { TEAL } from '../res/styles/Colors';
+import { Edit } from '../../assets/Icons/IconExports';
 import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
+
 interface Props {
   plan: Plan;
+  creator: boolean;
+  navigation: {
+    navigate: (ev: string, {}) => void;
+  };
 }
 
-export const PlanDetailsTile: React.FC<Props> = ({ plan }: Props) => {
+export const PlanDetailsTile: React.FC<Props> = ({ plan, creator, navigation }: Props) => {
   const [hostName, setHostName] = useState('Loading');
 
   useEffect(() => {
@@ -32,11 +38,14 @@ export const PlanDetailsTile: React.FC<Props> = ({ plan }: Props) => {
   return (
     <View>
       <AppText style={{ fontSize: 18, fontWeight: '700', paddingBottom: 35 }}>Host:</AppText>
-      <View style={{ marginLeft: 75, marginTop: -75, flexDirection: 'row', alignItems: 'center', marginBottom: 30 }}>
-        <View style={[styles.sphere, { backgroundColor: TEAL }]}>
-          <AppText style={{ fontSize: 24, fontWeight: '700', color: 'white' }}>{hostName.slice(0, 1)}</AppText>
+      <View style={styles.nameRow}>
+        <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+          <View style={[styles.sphere, { backgroundColor: TEAL }]}>
+            <AppText style={{ fontSize: 24, fontWeight: '700', color: 'white' }}>{hostName.slice(0, 1)}</AppText>
+          </View>
+          <AppText style={{ fontSize: 18 }}>{hostName}</AppText>
         </View>
-        <AppText style={{ fontSize: 18 }}>{hostName}</AppText>
+        {creator && <Edit onPress={() => navigation.navigate('EditPlan', { currentUserPlan: plan })} />}
       </View>
       <AppText style={{ fontSize: 16, fontWeight: '700', paddingBottom: 10 }}>Date: </AppText>
       <AppText style={{ fontWeight: '400', marginLeft: 75, marginTop: -30, paddingBottom: 25, lineHeight: 22.88 }}>
@@ -44,7 +53,7 @@ export const PlanDetailsTile: React.FC<Props> = ({ plan }: Props) => {
         {'\n'}
         {plan.time && formatTime(plan.time)}
       </AppText>
-      {plan.location && (
+      {plan.location ? (
         <>
           <AppText style={{ fontSize: 16, fontWeight: '700' }}>Where: </AppText>
           <AppText style={{ fontWeight: '400', marginLeft: 75, marginTop: -20, paddingBottom: 25, lineHeight: 22.88 }}>
@@ -55,7 +64,7 @@ export const PlanDetailsTile: React.FC<Props> = ({ plan }: Props) => {
             {plan.location?.substring(plan.location.indexOf(',') + 2)}
           </AppText>
         </>
-      )}
+      ) : null}
     </View>
   );
 };
@@ -69,5 +78,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 10,
     marginRight: 15,
+  },
+  nameRow: {
+    marginLeft: 75,
+    marginTop: -75,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 30,
+    justifyContent: 'space-between',
   },
 });
