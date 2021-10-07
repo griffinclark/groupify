@@ -7,7 +7,6 @@ import { Alert, AppText, BottomButton, Button, Navbar, SearchBar } from '../atom
 import { API, Auth } from 'aws-amplify';
 import { User } from '../models';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
-import { PlanTextMessage } from '../molecules/PlanTextMessage';
 import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
 import Constants from 'expo-constants';
 import * as queries from '../graphql/queries';
