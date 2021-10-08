@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Platform, KeyboardAvoidingView, FlatList } from 'react-native';
+import { StyleSheet, View, Platform, KeyboardAvoidingView, FlatList, ActivityIndicator } from 'react-native';
 import { MeepForm, TwoButtonAlert, Navbar, BottomButton } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { TEAL, GREY_8 } from '../res/styles/Colors';
@@ -28,7 +28,7 @@ interface Props {
 export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   const event: Event = route.params.data.eventData;
   const currentUser: User = route.params.currentUser;
-  const [, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('Loading Message...');
   const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
   const [, setName] = useState<string>('');
@@ -309,7 +309,13 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         </ScrollView>
         {/* </Screen> */}
       </KeyboardAvoidingView>
-      <BottomButton title="Confirm and Create Event" onPress={createConfirmAlert} />
+      {isLoading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator color="black" size={'large'} />
+        </View>
+      ) : (
+        <BottomButton title="Confirm and Create Event" onPress={createConfirmAlert} />
+      )}
     </View>
   );
 };
@@ -378,5 +384,12 @@ const styles = StyleSheet.create({
     borderColor: '#BE8C2C',
     margin: 15,
     maxHeight: '40%',
+  },
+  loading: {
+    alignItems: 'center',
+    backgroundColor: TEAL,
+    height: 55,
+    justifyContent: 'center',
+    width: '100%',
   },
 });
