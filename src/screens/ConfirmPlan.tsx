@@ -273,22 +273,6 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
           {/* <View>{loadPhoto(photo)}</View> */}
           <View style={{ flexGrow: 1 }}>
             <MeepForm inputList={inputFields}></MeepForm>
-            <AppText style={styles.details}>Invitees</AppText>
-
-            {event.contacts.length > 0 && (
-              <>
-                <FlatList
-                  data={event.contacts}
-                  renderItem={contactList}
-                  ListEmptyComponent={() => (
-                    <View style={styles.titleText}>
-                      <AppText>No Contacts Invited</AppText>
-                    </View>
-                  )}
-                  style={event.friends.length !== 0 ? { maxHeight: '20%' } : { maxHeight: '42%' }}
-                />
-              </>
-            )}
             <PlanTextMessage
               label="Contacts invited, who will receive a text message:"
               onChangeText={(e) => setMessage(e)}

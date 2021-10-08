@@ -9,6 +9,7 @@ import { CreatedPlanTile } from '../molecules/CreatedPlanTile';
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
   };
   userPlans: Plan[];
   invitedPlans: Plan[];
@@ -26,9 +27,22 @@ export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans, invitedPl
   return (
     <View>
       {userPlans.length > 0 ? (
-        <ScrollView horizontal={true} style={styles.scrollContainer}>
-          {getUserPlans()}
-        </ScrollView>
+        <View>
+          <ScrollView horizontal={true} style={styles.scrollContainer}>
+            {getUserPlans()}
+          </ScrollView>
+          <View style={styles.viewContainer}>
+            <ViewAll
+              navigation={navigation}
+              destination={'ViewPlans'}
+              payload={{
+                userPlans: userPlans,
+                invitedPlans: invitedPlans,
+                option: 'created',
+              }}
+            />
+          </View>
+        </View>
       ) : (
         <View style={{ width: '90%', alignSelf: 'center' }}>
           <AppText style={{ fontSize: 16, lineHeight: 22.88, marginVertical: 15 }}>
@@ -39,17 +53,6 @@ export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans, invitedPl
           </TouchableOpacity>
         </View>
       )}
-      <View style={styles.viewContainer}>
-        <ViewAll
-          navigation={navigation}
-          destination={'ViewPlans'}
-          payload={{
-            userPlans: userPlans,
-            invitedPlans: invitedPlans,
-            option: 'created',
-          }}
-        />
-      </View>
     </View>
   );
 };

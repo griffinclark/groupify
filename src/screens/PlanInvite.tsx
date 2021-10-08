@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
@@ -10,6 +10,7 @@ import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports
 import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
 import Constants from 'expo-constants';
 import * as queries from '../graphql/queries';
+import * as SecureStore from 'expo-secure-store';
 
 interface Props {
   navigation: {
@@ -37,12 +38,14 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   const [friends, setFriends] = useState<User[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
   const [message, setMessage] = useState<string>('');
+  const [displayWarning, setDisplayWarning] = useState<boolean>(false);
 
   useEffect(() => {
     loadContacts();
     setEventObject(route.params.data.eventData);
     getFriends();
     createInitialMessage();
+    checkWarning();
   }, []);
 
   const getFriends = async () => {
@@ -152,15 +155,24 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     setMessage(initMessage);
   };
 
+  const checkWarning = async (): Promise<void> => {
+    const display = await SecureStore.getItemAsync('display');
+    if (!display) setDisplayWarning(true);
+  };
+
+  const disableWarning = async () => {
+    await SecureStore.setItemAsync('display', 'true');
+    setDisplayWarning(false);
+    console.log('hit');
+  };
+
   /* Contact items displayed as 'friends' temporary until friend section finished */
   return (
     <View style={styles.screen}>
       <Navbar location={'PlanCreate'} navigation={navigation} data={route.params} title={'Invite Friends'} />
-
       <View style={styles.title}>
         <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}?</AppText>
       </View>
-
       <View style={styles.friendContainer}>
         <View style={styles.menu}>
           {/* <View style={menuItemSelected === 'friends' && styles.itemSelectedContainer}>
@@ -226,9 +238,16 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           )}
         </View>
       </View>
-      <View style={{ position: 'absolute', bottom: 50, width: '100%', alignSelf: 'center' }}>
-        {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a contact to continue'} />}
-      </View>
+      {displayWarning && (
+        <TouchableWithoutFeedback
+          onPress={disableWarning}
+          style={{ position: 'absolute', bottom: 50, width: '100%', alignSelf: 'center' }}
+        >
+          <View>
+            {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a contact to continue'} />}
+          </View>
+        </TouchableWithoutFeedback>
+      )}
       <BottomButton
         disabled={selectedContacts.length == 0 ? true : false}
         title="Preview Plan"

@@ -7,16 +7,18 @@ import { Plan, Invitee, Status } from '../models';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { PlanDetailsTile, Details } from '../molecules/MoleculesExports';
 import { WhiteButton } from '../atoms/WhiteButton';
-import { respondToPlan } from '../res/utilFunctions';
+import { getCurrentUser, respondToPlan } from '../res/utilFunctions';
 
 interface Props {
   navigation: {
     goBack: () => void;
     navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
   };
   route: {
     params: {
       plan: Plan;
+      step: string;
     };
   };
 }
@@ -27,10 +29,12 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   const [userInvitee, setUserInvitee] = useState<Invitee>();
   const [refreshAttendeeList, setRefreshAttendeeList] = useState(false);
   const [selectorOption, setSelectorOption] = useState('ACCEPTED');
+  const [planCreator, setPlanCreator] = useState(false);
 
   useEffect(() => {
     loadInvitees();
-  }, [refreshAttendeeList]);
+    isCreator();
+  }, [refreshAttendeeList, route.params.step]);
 
   const loadInvitees = async () => {
     const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
@@ -41,6 +45,13 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
         setUserInvitee(invitee);
         break;
       }
+    }
+  };
+
+  const isCreator = async () => {
+    const user = await getCurrentUser();
+    if (user.id === plan.creatorID) {
+      setPlanCreator(true);
     }
   };
 
@@ -75,7 +86,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
         <View style={styles.bodyContainer}>
           <PlanImageTile plan={plan} />
           <Details plan={plan} />
-          <PlanDetailsTile plan={plan} />
+          <PlanDetailsTile navigation={navigation} creator={planCreator} plan={plan} />
           <AppText style={{ fontSize: 16, fontWeight: '700' }}>Who&apos;s going?</AppText>
         </View>
         <View style={styles.inviteeListContainer}>
@@ -111,14 +122,24 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
             <FlatList data={invitees} renderItem={renderInvitee} />
           </View>
           <View style={{ alignSelf: 'center' }}>
-            <WhiteButton
-              text={userInvitee?.status === 'ACCEPTED' ? 'Decline this plan' : 'Accept Plan?'}
-              onPress={() => {
-                respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true, plan).then(() => {
-                  setRefreshAttendeeList(!refreshAttendeeList);
-                });
-              }}
-            />
+            {planCreator ? (
+              <WhiteButton
+                onPress={() => {
+                  navigation.push('Home', {});
+                  DataStore.delete(Plan, (currentPlan) => currentPlan.id('eq', plan.id));
+                }}
+                text={'Cancel Plan'}
+              />
+            ) : (
+              <WhiteButton
+                text={userInvitee?.status === 'ACCEPTED' ? 'Decline this plan' : 'Accept Plan?'}
+                onPress={() => {
+                  respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true, plan).then(() => {
+                    setRefreshAttendeeList(!refreshAttendeeList);
+                  });
+                }}
+              />
+            )}
           </View>
         </View>
       </ScrollView>

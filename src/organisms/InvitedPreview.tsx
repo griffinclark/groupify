@@ -13,6 +13,7 @@ interface Props {
   userPlans: Plan[];
   navigation: {
     navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
   };
   reload: boolean;
 }
@@ -45,7 +46,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
           );
           newPendingPlans.push(newPlan);
           if (newPendingPlans.length === 3) {
-            setPendingPlans(newPendingPlans);
+            setPendingPlans(newPendingPlans.slice(0, 3));
           }
         }
       });
@@ -69,7 +70,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
           );
           newAcceptedPlans.push(newPlan);
           if (newAcceptedPlans.length === 3) {
-            setAcceptedPlans(newAcceptedPlans);
+            setAcceptedPlans(newAcceptedPlans.slice(0, 3));
           }
         }
       });
@@ -104,7 +105,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
         ) : (
           <View style={{ padding: 30 }}>
             <AppText style={{ textAlign: 'center', fontSize: 20 }}>No pending plans at the moment.</AppText>
-            <TouchableOpacity onPress={() => navigation.navigate('PlanCreate', {})}>
+            <TouchableOpacity onPress={() => navigation.push('PlanCreate', {})}>
               <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL, marginTop: 30 }}>
                 You can create one!
               </AppText>

@@ -63,7 +63,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     });
     console.log(typeof userQuery);
     const users = userQuery.data.usersByPhoneNumber.items;
-    console.log('users', userQuery);
     if (users.length > 0) {
       const user = users[0];
       const pushTokenRegex = /ExponentPushToken\[.{22}]/;
@@ -210,12 +209,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   logo: {
+    alignSelf: 'center',
     width: 334,
     height: 107,
   },
   logoBackground: {
     width: 376,
     height: 158,
+    alignSelf: 'center',
   },
   createAccount: {
     flex: 1,

@@ -9,6 +9,7 @@ interface Props {
   plan: Plan;
   navigation: {
     navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
   };
   destination: string;
 }
@@ -25,7 +26,7 @@ export const CreatedPlanTile: React.FC<Props> = ({ plan, navigation, destination
   }, []);
 
   const onPress = () => {
-    navigation.navigate(destination, { plan: plan });
+    navigation.push(destination, { plan: plan });
   };
 
   return (

@@ -6,6 +6,7 @@ import { MapLinkIcon } from './MapLink';
 import { SettingsIcon } from './Settings';
 import { DownArrow } from './DownArrow';
 import { UpArrow } from './UpArrow';
+import { Edit } from './Edit';
 
 export {
   AnnounceIcon,
@@ -16,4 +17,5 @@ export {
   SettingsIcon,
   DownArrow,
   UpArrow,
+  Edit,
 };

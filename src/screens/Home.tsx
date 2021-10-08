@@ -37,8 +37,10 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
+    console.log('hey');
     const awaitUser = async () => {
       const user = await getCurrentUser();
+      console.log(user);
       setCurrentUser(user);
       await loadPlans(user);
       setTrigger2(!trigger2);
