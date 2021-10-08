@@ -122,7 +122,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
           onButtonPress={() =>
             onButtonPress(
-              detail.name,
               detail.formatted_address,
               detail.place_id,
               moreDetails.photos ? moreDetails.photos[0].photo_reference : '',
@@ -134,7 +133,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const onButtonPress = (title: string, address: string, placeId: string, photo: string) => {
+  const onButtonPress = (address: string, placeId: string, photo: string) => {
     if (route.params.option === 'edit') {
       navigation.navigate('EditPlan', { data: { eventData: { placeId: placeId, location: address } } });
     } else {
@@ -142,7 +141,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         currentUser: route.params.currentUser,
         data: {
           eventData: {
-            title: title,
             location: address,
             imageURL: photo,
             placeId: placeId,
