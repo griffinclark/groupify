@@ -251,33 +251,39 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     );
   };
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: 'white' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      {/* <Screen> */}
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          paddingTop: Constants.statusBarHeight,
-        }}
+    <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1, backgroundColor: 'white' }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <Navbar location={'PlanInvite'} navigation={navigation} title={'Confirm'} />
-        <AppText style={styles.titleText}>
-          Almost done! Please confirm all details are correct, and that you’ve invited all you want. You can always come
-          back and edit this event at a later time.
-        </AppText>
-        {/* <View>{loadPhoto(photo)}</View> */}
-        <View style={{ flexGrow: 1 }}>
-          <MeepForm inputList={inputFields}></MeepForm>
-
-          {/* Will Eventually Render Friend List */}
-
-          {/* <AppText style={styles.details}>Invitees</AppText> */}
-          {/* {event.contacts.length > 0 && (
-            <>
+        {/* <Screen> */}
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+            paddingTop: Constants.statusBarHeight,
+          }}
+        >
+          <Navbar location={'PlanInvite'} navigation={navigation} title={'Confirm'} />
+          <AppText style={styles.titleText}>
+            Almost done! Please confirm all details are correct, and that you’ve invited all you want. You can always
+            come back and edit this event at a later time.
+          </AppText>
+          {/* <View>{loadPhoto(photo)}</View> */}
+          <View style={{ flexGrow: 1 }}>
+            <MeepForm inputList={inputFields}></MeepForm>
+            <PlanTextMessage
+              label="Contacts invited, who will receive a text message:"
+              onChangeText={(e) => setMessage(e)}
+              text={message}
+            />
+            <TouchableOpacity onPress={() => setEditMessage(!editMessage)}>
+              <AppText style={styles.mapText}>Edit Note</AppText>
+            </TouchableOpacity>
+          </View>
+          {event.contacts.length > 0 && (
+            <View style={{ minHeight: 200 }}>
               <FlatList
                 data={event.contacts}
                 renderItem={contactList}
@@ -288,36 +294,13 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
                 )}
                 style={event.friends.length !== 0 ? { maxHeight: '20%' } : { maxHeight: '42%' }}
               />
-            </>
-          )} */}
-
-          <PlanTextMessage
-            label="Contacts invited, who will receive a text message:"
-            onChangeText={(e) => setMessage(e)}
-            text={message}
-          />
-          <TouchableOpacity onPress={() => setEditMessage(!editMessage)}>
-            <AppText style={styles.mapText}>Edit Note</AppText>
-          </TouchableOpacity>
-        </View>
-        {event.contacts.length > 0 && (
-          <>
-            <FlatList
-              data={event.contacts}
-              renderItem={contactList}
-              ListEmptyComponent={() => (
-                <View style={styles.titleText}>
-                  <AppText>No Contacts Invited</AppText>
-                </View>
-              )}
-              style={event.friends.length !== 0 ? { maxHeight: '20%' } : { maxHeight: '42%' }}
-            />
-          </>
-        )}
-        <BottomButton title="Confirm and Create Event" onPress={createConfirmAlert} />
-      </ScrollView>
-      {/* </Screen> */}
-    </KeyboardAvoidingView>
+            </View>
+          )}
+        </ScrollView>
+        {/* </Screen> */}
+      </KeyboardAvoidingView>
+      <BottomButton title="Confirm and Create Event" onPress={createConfirmAlert} />
+    </View>
   );
 };
 
