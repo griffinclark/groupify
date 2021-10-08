@@ -8,6 +8,13 @@ import { CreatedPlanTile } from '../molecules/CreatedPlanTile';
 
 interface Props {
   navigation: {
+    CreateAccount: {
+      step: string;
+      email: string;
+    };
+    params: {
+      Login: string;
+    };
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
   };

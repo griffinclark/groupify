@@ -23,7 +23,7 @@ interface Props {
       Login: string;
     };
     navigate: (ev: string, {}) => void;
-    push: (ev: string, e: { email: string; step: string }) => void;
+    push: (ev: string, {}) => void;
   };
   route: RoutePropParams;
 }
@@ -88,6 +88,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       return `Hello, ${firstName}!`;
     }
   };
+  console.log(userPlans.concat(invitedPlans));
 
   return (
     <Screen style={{ backgroundColor: background }}>
@@ -114,7 +115,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                 />
                 <View style={globalStyles.miniSpacer}></View>
               </View>
-              <View style={{ height: 360 }}>
+              <View style={{ height: userPlans.length > 0 ? 360 : 420 }}>
                 <AppText style={styles.label}>CREATED PLANS</AppText>
                 <CreatedPlans navigation={navigation} userPlans={userPlans} invitedPlans={invitedPlans} />
               </View>

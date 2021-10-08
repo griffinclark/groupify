@@ -8,6 +8,13 @@ import { AppText } from '../atoms/AppText';
 interface Props {
   plan: Plan;
   navigation: {
+    CreateAccount: {
+      step: string;
+      email: string;
+    };
+    params: {
+      Login: string;
+    };
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
   };
