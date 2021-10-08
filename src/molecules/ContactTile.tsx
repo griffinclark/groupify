@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#C4C4C4',
     alignItems: 'center',
-    paddingVertical: 18,
+    justifyContent: 'center',
     borderRadius: 50,
   },
   nameContainer: {
