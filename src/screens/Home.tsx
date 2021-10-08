@@ -39,7 +39,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   useEffect(() => {
     const awaitUser = async () => {
       const user = await getCurrentUser();
-      console.log(user);
       setCurrentUser(user);
       await loadPlans(user);
       setTrigger2(!trigger2);
@@ -58,7 +57,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
 
     const userCreatedPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
-    console.log(invitees[0]);
     let invitedPlans = removePastPlans(
       invitees
         .map((invitee) => {
@@ -78,7 +76,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     const currentDate = new Date();
     return plans.filter((plan) => {
       if (plan.date && plan.time) {
-        return isFuturePlan(plan.date, currentDate);
+        return isFuturePlan(plan.date, plan.time, currentDate);
       }
     });
   };
@@ -91,7 +89,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       return `Hello, ${firstName}!`;
     }
   };
-  console.log(userPlans.concat(invitedPlans));
 
   return (
     <Screen style={{ backgroundColor: background }}>
