@@ -37,7 +37,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    console.log('hey');
     const awaitUser = async () => {
       const user = await getCurrentUser();
       console.log(user);
@@ -59,13 +58,17 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
 
     const userCreatedPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
-    const invitedPlans = removePastPlans(
+    console.log(invitees[0]);
+    let invitedPlans = removePastPlans(
       invitees
         .map((invitee) => {
           return invitee.plan;
         })
         .filter((item): item is Plan => item !== undefined),
     );
+
+    if (currentUser) invitedPlans = invitedPlans.filter((item): item is Plan => item.creatorID !== currentUser.id);
+
     setUserPlans(sortPlansByDate(userCreatedPlans));
     setInvitedPlans(sortPlansByDate(invitedPlans));
     console.log('Finished loading plans');

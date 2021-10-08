@@ -118,7 +118,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
         ) : (
           <View style={{ padding: 20, marginHorizontal: 30 }}>
             <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>
-              Looks like you have no upcoming plans
+              Looks like you haven&apos;t accepted any plans
             </AppText>
           </View>
         ))}
