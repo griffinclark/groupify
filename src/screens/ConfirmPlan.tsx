@@ -14,6 +14,7 @@ import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import Constants from 'expo-constants';
 import { PlanTextMessage } from '../molecules/PlanTextMessage';
+import * as queries from '../graphql/queries';
 
 interface Props {
   navigation: {
@@ -106,7 +107,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     return newNumber;
   };
 
-  const pushEvent = async (friends: Contact[], message: string): Promise<void> => {
+  const pushEvent = async (friends: Invitee[], message: string): Promise<void> => {
     const util = PhoneNumberUtil.getInstance();
     const attendees = friends.map((friend) => {
       const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
@@ -127,17 +128,14 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     });
   };
 
-  const createErrorAlert = (friends: Contact[], message: string): void => {
+  const createErrorAlert = (): void => {
     TwoButtonAlert({
       title: 'Notice',
       message:
         'At least one of the friends you invited does not have a phone number. That friend will not receive a text.',
       button1Text: 'Go back',
       button2Text: 'Create Event Anyways',
-      button2OnPress: async () => {
-        navigation.push('Home');
-        await pushEvent(friends, message);
-      },
+      button2OnPress: onPressSend,
     });
   };
 
@@ -206,11 +204,26 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     );
 
     const name = await getUserName();
-    for (const invitee of inviteeList) {
-      if (invitee.pushToken) {
-        sendPushNotification(invitee.pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+    const nonUsers = [];
+    const pushTokenRegex = /ExponentPushToken\[.{22}]/;
+    for (let i = 0; i < inviteeList.length; i++) {
+      const invitee = inviteeList[i];
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+      const userQuery: any = await API.graphql({
+        query: queries.usersByPhoneNumber,
+        variables: { phoneNumber: invitee.phoneNumber },
+      });
+      const user = userQuery.data.usersByPhoneNumber.items;
+      if (user.length > 0) {
+        console.log(user[0].pushToken);
+        if (pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken) {
+          sendPushNotification(user[0].pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+        }
+      } else {
+        nonUsers.push(invitee);
       }
     }
+    pushEvent(nonUsers, message);
 
     console.log(newPlan);
   };
@@ -219,14 +232,11 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     setIsLoading(true);
     try {
       await storeInvitees();
-      if (event.contacts.length > 0) {
-        await pushEvent(event.contacts, message);
-      }
       navigation.push('Home');
     } catch (err: any) {
       console.log(err);
       if (err.message === 'The string supplied did not seem to be a phone number') {
-        createErrorAlert(event.contacts, message);
+        createErrorAlert();
       }
     } finally {
       setIsLoading(false);
