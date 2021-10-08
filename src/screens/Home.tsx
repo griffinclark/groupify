@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { RefreshControl, StyleSheet, View } from 'react-native';
+import { RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { background, GREY_0, TEAL } from './../res/styles/Colors';
 import { getCurrentUser, isFuturePlan, sortPlansByDate } from './../res/utilFunctions';
@@ -125,10 +125,10 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
             </View>
           ) : (
             <View style={styles.noPlan}>
-              <AppText style={styles.noPlanText}>
+              <Text maxFontSizeMultiplier={1} style={styles.noPlanText}>
                 Welcome to your plan dashboard. This is where you will see a round-up of plans you’ve created, and
                 things you&apos;re invited to.
-              </AppText>
+              </Text>
               <View style={{ width: '100%', alignItems: 'center' }}>
                 <Image
                   source={require('../../assets/homepage-graphic.png')}
@@ -137,9 +137,9 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                 />
               </View>
               <View>
-                <AppText style={[styles.noPlanText, { textAlign: 'center', width: '70%' }]}>
+                <Text maxFontSizeMultiplier={1} style={[styles.noPlanText, { textAlign: 'center', width: '70%' }]}>
                   Create your first plan with the button below
-                </AppText>
+                </Text>
               </View>
             </View>
           )}
