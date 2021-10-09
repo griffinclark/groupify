@@ -69,7 +69,7 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
         <AlertModal
           onButton1Press={() => {
             setModal(<View style={{ display: 'none' }} />);
-            respondToPlan(true, plan).then(() => setReload(!reload));
+            // respondToPlan(true, plan).then(() => setReload(!reload));
           }}
           button1Text="Woot!"
           message="You’ve accepted an invite!"
