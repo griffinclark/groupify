@@ -33,12 +33,33 @@ export const ViewPlanTile: React.FC<Props> = ({ plan, navigation, modal, reload 
     <View style={{ backgroundColor: userStatus === 'PENDING' ? background : 'white' }}>
       <View style={styles.container}>
         <View>
-          <PlanImageTile plan={plan} />
-          <Details plan={plan} />
-          {extendedDetails && (
+          {plan.placeID ? (
             <>
-              <PlanDetailsTile plan={plan} />
-              <InviteePreviewTile plan={plan} reload={reload} />
+              <PlanImageTile plan={plan} />
+              <Details plan={plan} />
+              {extendedDetails && (
+                <>
+                  <PlanDetailsTile navigation={navigation} creator={false} plan={plan} />
+                  <InviteePreviewTile plan={plan} reload={reload} />
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <AppText maxFontSizeMultiplier={1} style={{ fontSize: 20 }}>
+                {plan.title}
+              </AppText>
+              {plan.description ? (
+                <AppText maxFontSizeMultiplier={1} style={{ fontSize: 14 }}>
+                  {plan.description}
+                </AppText>
+              ) : null}
+              <PlanDetailsTile navigation={navigation} creator={false} plan={plan} />
+              {extendedDetails && (
+                <>
+                  <InviteePreviewTile plan={plan} reload={reload} />
+                </>
+              )}
             </>
           )}
         </View>
