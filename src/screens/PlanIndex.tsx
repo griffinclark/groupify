@@ -73,9 +73,9 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
           }}
           button1Text="Woot!"
           message="You’ve accepted an invite!"
-          message2={`${plan.description}\n${plan.date && formatDayOfWeekDate(plan.date)}\n${
-            plan.time && formatTime(plan.time)
-          }`}
+          message2={`${plan.description ? plan.description : plan.title}\n${
+            plan.date && formatDayOfWeekDate(plan.date)
+          }\n${plan.time && formatTime(plan.time)}`}
         />,
       );
     }
