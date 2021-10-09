@@ -60,7 +60,7 @@ export const InvitedPlans: React.FC<Props> = ({ navigation }: Props) => {
     const currentDate = new Date();
     return plans.filter((plan) => {
       if (plan.date && plan.time) {
-        return !isFuturePlan(plan.date, currentDate);
+        return !isFuturePlan(plan.date, plan.time, currentDate);
       }
     });
   };
@@ -69,7 +69,7 @@ export const InvitedPlans: React.FC<Props> = ({ navigation }: Props) => {
     const currentDate = new Date();
     return plans.filter((plan) => {
       if (plan.date && plan.time) {
-        return isFuturePlan(plan.date, currentDate);
+        return isFuturePlan(plan.date, plan.time, currentDate);
       }
     });
   };

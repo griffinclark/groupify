@@ -239,34 +239,11 @@ export const amplifyPhoneFormat = (phone: string): string => {
 };
 
 //checks the current date against the plan date to determine if plan is in the future
-export const isFuturePlan = (date: string, currentDate: Date): boolean => {
-  if (convertDateStringToDate(date).getFullYear() > currentDate.getFullYear()) {
-    return true;
-  } else if (convertDateStringToDate(date).getFullYear() < currentDate.getFullYear()) {
-    return false;
-  } else {
-    if (convertDateStringToDate(date).getMonth() > currentDate.getMonth()) {
-      return true;
-    } else if (convertDateStringToDate(date).getMonth() < currentDate.getMonth()) {
-      return false;
-    } else {
-      if (
-        parseInt(date.substring(date.lastIndexOf('-') + 1)) <
-        parseInt(
-          currentDate
-            .toLocaleDateString()
-            .substring(
-              currentDate.toLocaleDateString().indexOf('/') + 1,
-              currentDate.toLocaleDateString().lastIndexOf('/'),
-            ),
-        )
-      ) {
-        return false;
-      } else {
-        return true;
-      }
-    }
-  }
+export const isFuturePlan = (date: string, time: string, currentDate: Date): boolean => {
+  const dateString = date + 'T' + time + ':00';
+  const planDate = new Date(dateString);
+
+  return currentDate < planDate ? true : false;
 };
 
 //determines if a plan is today
