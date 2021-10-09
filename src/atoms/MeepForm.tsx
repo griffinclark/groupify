@@ -32,7 +32,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
       setShowTimePicker(false);
       setCurrentDate(selectedDate);
       if (new Date() > selectedDate) {
-        Alert.alert('Past Time', 'Choose future Time', [{ text: 'OK', onPress: setCurrentDate(new Date()) }]);
+        Alert.alert('Past Time', 'Choose a future Time', [{ text: 'OK' }]);
       }
       if (Platform.OS === 'android') {
         const newTime = formatTime(selectedDate.toLocaleTimeString());
@@ -49,7 +49,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
       setShowDatePicker(false);
       setCurrentDate(selectedDate);
       if (new Date() > selectedDate) {
-        Alert.alert('Past Date', 'Choose future dates', [{ text: 'OK', onPress: setCurrentDate(new Date()) }]);
+        Alert.alert('Past Date', 'Choose a future Date', [{ text: 'OK' }]);
       }
       const newDate = selectedDate.toLocaleDateString();
       item.func(newDate);
