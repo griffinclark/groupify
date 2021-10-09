@@ -63,6 +63,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               mode={'date'}
               display={'default'}
               style={styles.dateTimePicker}
+              minDate={new Date()}
               /* eslint-disable */
               // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
@@ -85,6 +86,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               value={currentDate}
               mode={'date'}
               display={'default'}
+              minimumDate={new Date()}
               /* eslint-disable */
               // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
@@ -107,6 +109,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               value={currentDate}
               mode={'time'}
               display={'default'}
+              minimumDate={new Date()}
               /* eslint-disable */
               // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
@@ -127,6 +130,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               value={currentDate}
               mode={'time'}
               display={'default'}
+              minimumDate={new Date()}
               /* eslint-disable */
               // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
