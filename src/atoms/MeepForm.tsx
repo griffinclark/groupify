@@ -1,5 +1,5 @@
 import React, { ReactChild, useState } from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, Alert } from 'react-native';
 import { BLACK } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -31,6 +31,9 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
     if (item.settings === 'time') {
       setShowTimePicker(false);
       setCurrentDate(selectedDate);
+      if (new Date() > selectedDate) {
+        Alert.alert('Please select a future Time', '', [{ text: 'OK' }]);
+      }
       if (Platform.OS === 'android') {
         const newTime = formatTime(selectedDate.toLocaleTimeString());
         item.func(newTime);
@@ -45,6 +48,9 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
     if (item.settings === 'date') {
       setShowDatePicker(false);
       setCurrentDate(selectedDate);
+      if (new Date() > selectedDate) {
+        Alert.alert('Please select a future Date', '', [{ text: 'OK' }]);
+      }
       const newDate = selectedDate.toLocaleDateString();
       item.func(newDate);
       return;
@@ -63,6 +69,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               mode={'date'}
               display={'default'}
               style={styles.dateTimePicker}
+              minimumDate={new Date()}
               /* eslint-disable */
               // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
@@ -85,6 +92,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               value={currentDate}
               mode={'date'}
               display={'default'}
+              minimumDate={new Date()}
               /* eslint-disable */
               // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
@@ -107,6 +115,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               value={currentDate}
               mode={'time'}
               display={'default'}
+              minimumDate={new Date()}
               /* eslint-disable */
               // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
@@ -127,6 +136,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               value={currentDate}
               mode={'time'}
               display={'default'}
+              minimumDate={new Date()}
               /* eslint-disable */
               // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
@@ -135,23 +145,9 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               themeVariant={'dark'}
             />
           )}
-          {/* <View style={{ height: 15 }} /> */}
         </View>
       );
     }
-    // if (item.settings === 'password') {
-    //   return (
-    //     <View key={item.title}>
-    //       <AppTextInput
-    //         label={item.title}
-    //         onChangeText={(e) => item.func(e)}
-    //         placeholder={item.placeholder}
-    //         secureTextEntry={true}
-    //         autoFocus={true}
-    //       />
-    //     </View>
-    //   );
-    // }
     if (item.settings === 'default') {
       return (
         <View key={item.title}>
