@@ -13,7 +13,7 @@ interface Props {
 export const WhiteButton: React.FC<Props> = ({ onPress, text, style, textStyles }: Props) => {
   return (
     <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-      <Text maxFontSizeMultiplier={1.5} style={[styles.text, textStyles]}>
+      <Text maxFontSizeMultiplier={1.2} style={[styles.text, textStyles]}>
         {text}
       </Text>
     </TouchableOpacity>
