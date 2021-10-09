@@ -1,5 +1,5 @@
 import React, { ReactChild, useState } from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, Alert } from 'react-native';
 import { BLACK } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -31,6 +31,9 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
     if (item.settings === 'time') {
       setShowTimePicker(false);
       setCurrentDate(selectedDate);
+      if (new Date() > selectedDate) {
+        Alert.alert('Past Time', 'Choose future Time', [{ text: 'OK', onPress: setCurrentDate(new Date()) }]);
+      }
       if (Platform.OS === 'android') {
         const newTime = formatTime(selectedDate.toLocaleTimeString());
         item.func(newTime);
@@ -45,6 +48,9 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
     if (item.settings === 'date') {
       setShowDatePicker(false);
       setCurrentDate(selectedDate);
+      if (new Date() > selectedDate) {
+        Alert.alert('Past Date', 'Choose future dates', [{ text: 'OK', onPress: setCurrentDate(new Date()) }]);
+      }
       const newDate = selectedDate.toLocaleDateString();
       item.func(newDate);
       return;
@@ -63,7 +69,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               mode={'date'}
               display={'default'}
               style={styles.dateTimePicker}
-              minDate={new Date()}
+              minimumDate={new Date()}
               /* eslint-disable */
               // @ts-expect-error
               onChange={(event: Event, date: Date) => onDateChange(event, date, item)}
