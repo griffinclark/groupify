@@ -24,17 +24,27 @@ export const AlertModal: React.FC<Props> = ({
     <View style={styles.popup}>
       <View style={styles.container}>
         <View>
-          <AppText style={styles.text1}>{message}</AppText>
-          {message2 ? <AppText style={styles.text2}>{message2}</AppText> : null}
+          <AppText maxFontSizeMultiplier={1} style={styles.text1}>
+            {message}
+          </AppText>
+          {message2 ? (
+            <AppText maxFontSizeMultiplier={1} style={styles.text2}>
+              {message2}
+            </AppText>
+          ) : null}
         </View>
         <View style={styles.buttonContainer}>
           {button2Text ? (
             <TouchableOpacity style={styles.button} onPress={onButton2Press}>
-              <AppText style={[styles.buttonText, { color: TEAL }]}>{button2Text}</AppText>
+              <AppText maxFontSizeMultiplier={1} style={[styles.buttonText, { color: TEAL }]}>
+                {button2Text}
+              </AppText>
             </TouchableOpacity>
           ) : null}
           <TouchableOpacity style={[styles.button, { backgroundColor: TEAL }]} onPress={onButton1Press}>
-            <AppText style={[styles.buttonText, { color: 'white' }]}>{button1Text}</AppText>
+            <AppText maxFontSizeMultiplier={1} style={[styles.buttonText, { color: 'white' }]}>
+              {button1Text}
+            </AppText>
           </TouchableOpacity>
         </View>
       </View>
