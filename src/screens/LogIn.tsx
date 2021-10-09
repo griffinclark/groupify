@@ -120,10 +120,19 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
         navigation.navigate('CreateAccount', { step: 'validate', phone: formatPhone });
       } else if (err.code == 'InvalidParameterException' && err.message.includes('Incorrect·username·or·password.')) {
         setError('Incorrect username or password.');
+      } else if (
+        err.code == 'InvalidParameterException' &&
+        err.message.includes('Member must satisfy regular expression pattern')
+      ) {
+        setError('Please enter a valid phone number');
       } else if (err.code == 'InvalidParameterException' && err.message.includes('2 validation errors detected')) {
         setError('User does not exist');
       } else {
-        setError(err.message);
+        if (err.code === 'UserNotFoundException' && formatPhone.length <= 11) {
+          setError('Please enter a valid phone number');
+        } else {
+          setError(err.message);
+        }
       }
     }
   };
