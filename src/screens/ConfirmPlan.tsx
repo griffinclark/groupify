@@ -284,7 +284,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
           <View style={{ flexGrow: 1 }}>
             <MeepForm inputList={inputFields}></MeepForm>
             <PlanTextMessage
-              label="Contacts invited, who will receive a text message:"
+              label="Friends who don’t have Groupify yet will receive the following message:"
               onChangeText={(e) => setMessage(e)}
               text={message}
             />
