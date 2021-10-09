@@ -32,7 +32,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
       setShowTimePicker(false);
       setCurrentDate(selectedDate);
       if (new Date() > selectedDate) {
-        Alert.alert('Past Time', 'Choose a future Time', [{ text: 'OK' }]);
+        Alert.alert('Please select a future Time', '', [{ text: 'OK' }]);
       }
       if (Platform.OS === 'android') {
         const newTime = formatTime(selectedDate.toLocaleTimeString());
@@ -49,7 +49,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
       setShowDatePicker(false);
       setCurrentDate(selectedDate);
       if (new Date() > selectedDate) {
-        Alert.alert('Past Date', 'Choose a future Date', [{ text: 'OK' }]);
+        Alert.alert('Please select a future Date', '', [{ text: 'OK' }]);
       }
       const newDate = selectedDate.toLocaleDateString();
       item.func(newDate);
@@ -145,23 +145,9 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
               themeVariant={'dark'}
             />
           )}
-          {/* <View style={{ height: 15 }} /> */}
         </View>
       );
     }
-    // if (item.settings === 'password') {
-    //   return (
-    //     <View key={item.title}>
-    //       <AppTextInput
-    //         label={item.title}
-    //         onChangeText={(e) => item.func(e)}
-    //         placeholder={item.placeholder}
-    //         secureTextEntry={true}
-    //         autoFocus={true}
-    //       />
-    //     </View>
-    //   );
-    // }
     if (item.settings === 'default') {
       return (
         <View key={item.title}>
