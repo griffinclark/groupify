@@ -97,6 +97,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       setError(undefined);
       navigation.push('CreateAccount', { step: 'validate', phone: formatPhone });
       await Analytics.logEvent('sign_up', {});
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log('Error: ', err);
       if (err.code == 'InvalidParameterException') {
@@ -124,6 +125,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     try {
       await Auth.confirmSignUp(route.params.phone, validationCode);
       navigation.navigate('Login', { accountCreated: 'success' });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log('Error: ', err);
       setError(err.message);
@@ -211,6 +213,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                             Auth.resendSignUp(route.params.phone);
                             setSuccess('Sent new verification code');
                             setError(undefined);
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           } catch (err: any) {
                             console.log(err);
                             setError(err.message);
