@@ -26,7 +26,7 @@ interface Props {
       Login: string;
     };
     navigate: (ev: string, {}) => void;
-    push: (ev: string, e: { email: string; step: string }) => void;
+    push: (ev: string, {}) => void;
   };
   route: RoutePropParams;
 }
@@ -109,7 +109,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       } else {
         if (user.id) {
           console.log(user);
-          navigation.navigate('Home', { userID: user.id });
+          navigation.push('Home', { userID: user.id });
         }
       }
       await Analytics.logEvent('login', { userId: user.id });
