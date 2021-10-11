@@ -92,6 +92,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       return `Hello, ${firstName}!`;
     }
   };
+  console.log(upcomingPlans, invitedPlans);
 
   return (
     <Screen style={{ backgroundColor: background }}>
@@ -106,11 +107,11 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
             <View></View>
           </View>
           <View style={styles.feedContainer}>
-            {userPlans.concat(invitedPlans).length > 0 ? (
+            {(upcomingPlans.length > 0 || invitedPlans.length) > 0 ? (
               <View>
                 <View>
                   <AppText style={styles.label}>COMING UP NEXT</AppText>
-                  <NextPlan reload={trigger2} navigation={navigation} plan={userPlans.concat(invitedPlans)[0]} />
+                  <NextPlan reload={trigger2} navigation={navigation} plan={upcomingPlans[0]} />
                 </View>
                 <View style={globalStyles.miniSpacer}></View>
                 <View>
