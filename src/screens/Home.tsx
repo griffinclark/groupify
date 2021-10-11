@@ -92,7 +92,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       return `Hello, ${firstName}!`;
     }
   };
-  console.log(upcomingPlans, invitedPlans);
 
   return (
     <Screen style={{ backgroundColor: background }}>
@@ -109,19 +108,25 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
           <View style={styles.feedContainer}>
             {(upcomingPlans.length > 0 || invitedPlans.length) > 0 ? (
               <View>
-                <View>
-                  <AppText style={styles.label}>COMING UP NEXT</AppText>
-                  <NextPlan reload={trigger2} navigation={navigation} plan={upcomingPlans[0]} />
-                </View>
+                {upcomingPlans.length > 0 && (
+                  <View>
+                    <AppText style={styles.label}>COMING UP NEXT</AppText>
+                    <NextPlan reload={trigger2} navigation={navigation} plan={upcomingPlans[0]} />
+                  </View>
+                )}
                 <View style={globalStyles.miniSpacer}></View>
                 <View>
-                  <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
-                  <InvitedPreview
-                    reload={trigger2}
-                    navigation={navigation}
-                    invitedPlans={invitedPlans}
-                    userPlans={userPlans}
-                  />
+                  {invitedPlans.length > 0 && (
+                    <>
+                      <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
+                      <InvitedPreview
+                        reload={trigger2}
+                        navigation={navigation}
+                        invitedPlans={invitedPlans}
+                        userPlans={userPlans}
+                      />
+                    </>
+                  )}
                   <View style={globalStyles.miniSpacer}></View>
                 </View>
                 <View style={{ height: userPlans.length > 0 ? 360 : 420 }}>

@@ -19,8 +19,8 @@ interface Props {
 }
 
 export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, reload, userPlans }: Props) => {
-  const [pendingSelected, setPendingSelected] = useState(false);
-  const [acceptedSelected, setAcceptedSelected] = useState(true);
+  const [pendingSelected, setPendingSelected] = useState(true);
+  const [acceptedSelected, setAcceptedSelected] = useState(false);
   const [pendingPlans, setPendingPlans] = useState<JSX.Element[]>([]);
   const [acceptedPlans, setAcceptedPlans] = useState<JSX.Element[]>([]);
 
