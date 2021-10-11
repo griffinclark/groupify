@@ -1,6 +1,6 @@
 import { DataStore, Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, FlatList, ScrollView, RefreshControl } from 'react-native';
 import { Screen, AppText, PlanImageTile } from '../atoms/AtomsExports';
 import { TEAL, GRAY_LIGHT } from '../res/styles/Colors';
 import { Plan, Invitee, Status } from '../models';
@@ -30,11 +30,17 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   const [refreshAttendeeList, setRefreshAttendeeList] = useState(false);
   const [selectorOption, setSelectorOption] = useState('ACCEPTED');
   const [planCreator, setPlanCreator] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     loadInvitees();
     isCreator();
   }, [refreshAttendeeList]);
+
+  const onPlanDetailsRefresh = () => {
+    setRefreshing(true);
+    setRefreshAttendeeList(!refreshAttendeeList);
+  };
 
   const loadInvitees = async () => {
     const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
@@ -46,6 +52,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
         break;
       }
     }
+    setRefreshing(false);
   };
 
   const isCreator = async () => {
@@ -86,7 +93,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
         />
         <AppText style={styles.title}>Plan Details</AppText>
       </View>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanDetailsRefresh} />}>
         <View style={styles.bodyContainer}>
           <PlanImageTile plan={plan} />
           <Details plan={plan} />
