@@ -102,7 +102,9 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       ) : (
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
           <View style={styles.header}>
-            <AppText style={[globalStyles.superTitle, styles.greeting]}>{createGreeting()}</AppText>
+            <AppText maxFontSizeMultiplier={1} style={[globalStyles.superTitle, styles.greeting]}>
+              {createGreeting()}
+            </AppText>
             <View></View>
           </View>
           <View style={styles.feedContainer}>
