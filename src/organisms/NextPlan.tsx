@@ -57,7 +57,7 @@ export const NextPlan: React.FC<Props> = ({ plan, navigation, reload }: Props) =
         ) : null}
         <View style={{ width: '90%', alignSelf: 'center' }}>
           <AppText style={{ fontWeight: '400', fontSize: 12, marginVertical: 12 }}>Host: {hostName}</AppText>
-          <AppText style={{ fontWeight: '400', fontSize: 20 }}>{plan.description ? plan.description : null}</AppText>
+          <AppText style={{ fontWeight: '400', fontSize: 20 }}>{plan.title ? plan.title : null}</AppText>
           <View style={{ marginVertical: 20 }}>
             <AppText style={{ fontWeight: '700', fontSize: 12 }}>DETAILS</AppText>
             <AppText style={{ fontSize: 12, fontWeight: '400', marginVertical: 4 }}>
