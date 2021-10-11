@@ -92,7 +92,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       return `Hello, ${firstName}!`;
     }
   };
-  console.log(upcomingPlans, invitedPlans);
 
   return (
     <Screen style={{ backgroundColor: background }}>

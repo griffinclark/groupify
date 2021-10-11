@@ -41,7 +41,9 @@ export const PlanDetailsTile: React.FC<Props> = ({ plan, creator, navigation }: 
       <View style={styles.nameRow}>
         <View style={{ alignItems: 'center', flexDirection: 'row' }}>
           <View style={[styles.sphere, { backgroundColor: TEAL }]}>
-            <AppText style={{ fontSize: 24, fontWeight: '700', color: 'white' }}>{hostName.slice(0, 1)}</AppText>
+            <AppText maxFontSizeMultiplier={1} style={{ fontSize: 24, fontWeight: '700', color: 'white' }}>
+              {hostName.slice(0, 1)}
+            </AppText>
           </View>
           <AppText style={{ fontSize: 18 }}>{hostName}</AppText>
         </View>
