@@ -182,7 +182,11 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         <View style={styles.navbarBackground} />
 
         <View style={styles.navbarIcon}>
-          <BackChevronIcon onPress={() => navigation.navigate('PlanCreate', route.params)} />
+          {route.params.option === 'edit' ? (
+            <BackChevronIcon onPress={() => navigation.navigate('EditPlan', {})} />
+          ) : (
+            <BackChevronIcon onPress={() => navigation.navigate('PlanCreate', route.params)} />
+          )}
         </View>
 
         <GooglePlacesAutocomplete
