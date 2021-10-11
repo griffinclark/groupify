@@ -20,7 +20,9 @@ export const Details: React.FC<Props> = ({ plan }: Props) => {
         >
           {plan.description}
         </AppText>
-      ) : null}
+      ) : (
+        <View style={{ height: 15 }} />
+      )}
     </View>
   );
 };
