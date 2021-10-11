@@ -76,7 +76,7 @@ export const ViewPlanTile: React.FC<Props> = ({ plan, navigation, modal, reload 
         </View>
         {extendedDetails && (
           <TouchableOpacity
-            onPress={() => navigation.navigate('PlanDetails', { plan: plan })}
+            onPress={() => navigation.navigate('PlanDetails', { plan: plan, step: 'ViewPlans' })}
             style={{ alignSelf: 'center', paddingTop: 10 }}
           >
             <AppText style={{ fontSize: 20, color: TEAL }}>View Full Plan</AppText>

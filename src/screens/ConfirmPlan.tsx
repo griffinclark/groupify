@@ -233,6 +233,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     try {
       await storeInvitees();
       navigation.push('Home');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log(err);
       if (err.message === 'The string supplied did not seem to be a phone number') {

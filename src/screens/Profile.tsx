@@ -80,11 +80,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
       <View style={styles.bodyContainer}>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate(currentUserPlan ? 'ViewPlans' : 'PlanCreate', {
-              currentUser: currentUser,
-              userPlans: route.params.userPlans,
-              invitedPlans: route.params.invitedPlans,
-            })
+            navigation.navigate(currentUserPlan ? 'ViewPlans' : 'PlanCreate', { currentUser: currentUser })
           }
           style={styles.userActivity}
         >

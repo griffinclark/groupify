@@ -319,3 +319,12 @@ export const respondToPlan = async (accept: boolean, plan: Plan): Promise<void> 
     );
   }
 };
+
+export const removePastPlans = (plans: Plan[]): Plan[] => {
+  const currentDate = new Date();
+  return plans.filter((plan) => {
+    if (plan.date && plan.time) {
+      return isFuturePlan(plan.date, plan.time, currentDate);
+    }
+  });
+};
