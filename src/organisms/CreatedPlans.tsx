@@ -56,7 +56,7 @@ export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans, invitedPl
           <AppText style={{ fontSize: 16, lineHeight: 22.88, marginVertical: 15 }}>
             When you create a plan, you will see them here. Create a plan to start building your experiences!
           </AppText>
-          <TouchableOpacity onPress={() => navigation.navigate('PlanCreate', { currentUser: user })}>
+          <TouchableOpacity onPress={() => navigation.push('PlanCreate', { currentUser: user })}>
             <Image style={{ width: 216, height: 168 }} source={require('../../assets/CreatePlanGraphic.png')} />
           </TouchableOpacity>
         </View>

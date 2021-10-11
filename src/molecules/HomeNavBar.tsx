@@ -12,6 +12,7 @@ interface Props {
   userPlans: Plan[];
   navigation: {
     navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
   };
 }
 
@@ -31,7 +32,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
         <TouchableOpacity
           style={{ width: '33%' }}
           onPress={() => {
-            navigation.navigate('PlanCreate', { currentUser: user });
+            navigation.push('PlanCreate', { currentUser: user });
           }}
         >
           <CreatePlanIcon />
