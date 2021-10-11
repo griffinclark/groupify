@@ -294,7 +294,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
             </TouchableOpacity>
           </View>
           {event.contacts.length > 0 && (
-            <View style={{ minHeight: 200 }}>
+            <View>
               <FlatList
                 data={event.contacts}
                 renderItem={contactList}
@@ -303,7 +303,6 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
                     <AppText>No Contacts Invited</AppText>
                   </View>
                 )}
-                style={event.friends.length !== 0 ? { maxHeight: '20%' } : { maxHeight: '42%' }}
               />
             </View>
           )}
