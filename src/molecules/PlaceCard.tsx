@@ -29,7 +29,7 @@ const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 export const PlaceCard: React.FC<Props> = (props: Props) => {
   const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
   const [photos, setPhotos] = useState<JSX.Element>();
-  const [top, setTop] = useState<number>(400);
+  const [top, setTop] = useState<number>(455);
   const [bottom, setBottom] = useState<number>(275);
 
   const draggableRange = {
@@ -42,13 +42,13 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
       loadImages();
       const newBottom = 275;
       setBottom(newBottom);
-      const newTop = props.openHours ? 400 : 275;
+      const newTop = props.openHours ? 455 : 275;
       setTop(newTop);
     } else {
       setPhotos(undefined);
-      const newBottom = props.openHours ? 280 : 155;
+      const newBottom = props.openHours ? 170 : 155;
       setBottom(newBottom);
-      const newTop = props.openHours ? 280 : 155;
+      const newTop = props.openHours ? 325 : 155;
       setTop(newTop);
     }
   }, [props.photos]);
