@@ -209,6 +209,15 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
               marginRight: 20,
               marginTop: Constants.statusBarHeight - 15,
             },
+            row: {
+              padding: 30,
+              alignItems: 'center',
+            },
+            listView: {
+              marginHorizontal: 10,
+              marginLeft: -25,
+              width: 500,
+            },
           }}
           renderRow={(rowData) => {
             const title = rowData.structured_formatting.main_text;

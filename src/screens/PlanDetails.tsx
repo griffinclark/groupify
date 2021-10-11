@@ -73,7 +73,9 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
       return (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={[styles.sphere, { backgroundColor: backgroundColor }]}>
-            <AppText style={{ fontSize: 24, fontWeight: '700', color: 'white' }}>{item.name.slice(0, 1)}</AppText>
+            <AppText maxFontSizeMultiplier={1} style={{ fontSize: 24, fontWeight: '700', color: 'white' }}>
+              {item.name.slice(0, 1)}
+            </AppText>
           </View>
           <AppText style={{ fontSize: 18 }}>{item.name}</AppText>
         </View>
@@ -143,7 +145,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
               />
             ) : (
               <WhiteButton
-                text={userInvitee?.status === 'ACCEPTED' ? 'Decline this plan' : 'Accept Plan?'}
+                text={userInvitee?.status === 'ACCEPTED' ? 'Decline this plan' : 'Accept Plan'}
                 onPress={() => {
                   respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true, plan).then(() => {
                     setRefreshAttendeeList(!refreshAttendeeList);

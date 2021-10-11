@@ -25,7 +25,7 @@ export const PlanImageTile: React.FC<Props> = ({ plan }: Props) => {
       {photoURI ? (
         <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover">
           <View style={styles.imageDetailContainer}>
-            <AppText style={styles.imageDetail}>
+            <AppText maxFontSizeMultiplier={1} style={styles.imageDetail}>
               {plan.date &&
                 formatDayOfWeekDate(plan.date)
                   .toString()
@@ -33,10 +33,14 @@ export const PlanImageTile: React.FC<Props> = ({ plan }: Props) => {
             </AppText>
           </View>
           <View style={styles.imageDetailContainer}>
-            <AppText style={styles.imageDetail}>{plan.time && formatTime(plan.time)}</AppText>
+            <AppText maxFontSizeMultiplier={1} style={styles.imageDetail}>
+              {plan.time && formatTime(plan.time)}
+            </AppText>
           </View>
           <View style={styles.imageDetailContainer}>
-            <AppText style={styles.imageDetail}>{plan.title}</AppText>
+            <AppText maxFontSizeMultiplier={1} style={styles.imageDetail}>
+              {plan.title}
+            </AppText>
           </View>
         </Image>
       ) : null}
