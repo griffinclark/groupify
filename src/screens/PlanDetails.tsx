@@ -136,6 +136,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
                 onPress={() => {
                   respondToPlan(userInvitee?.status === 'ACCEPTED' ? false : true, plan).then(() => {
                     setRefreshAttendeeList(!refreshAttendeeList);
+                    navigation.push('Home', {});
                   });
                 }}
               />

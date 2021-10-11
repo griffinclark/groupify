@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { background, GREY_0, TEAL } from './../res/styles/Colors';
-import { getCurrentUser, isFuturePlan, sortPlansByDate } from './../res/utilFunctions';
+import { getCurrentUser, isFuturePlan, loadInviteeStatus, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { NextPlan, InvitedPreview, CreatedPlans } from '../organisms/OrganismsExports';
@@ -31,6 +31,7 @@ interface Props {
 export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [userPlans, setUserPlans] = useState<Plan[]>([]);
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
+  const [upcomingPlans, setUpcomingPlans] = useState<Plan[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
   const [trigger1, setTrigger1] = useState(false);
   const [trigger2, setTrigger2] = useState(false);
@@ -64,9 +65,18 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
         })
         .filter((item): item is Plan => item !== undefined),
     );
-
+    const upcoming = removePastPlans(invitedPlans);
     if (currentUser) invitedPlans = invitedPlans.filter((item): item is Plan => item.creatorID !== currentUser.id);
 
+    const accepted = [];
+    for (const plan of upcoming) {
+      const status = await loadInviteeStatus(plan);
+      if (status === 'ACCEPTED') {
+        accepted.push(plan);
+      }
+    }
+
+    setUpcomingPlans(sortPlansByDate(accepted));
     setUserPlans(sortPlansByDate(userCreatedPlans));
     setInvitedPlans(sortPlansByDate(invitedPlans));
     console.log('Finished loading plans');
@@ -98,11 +108,11 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
           <View></View>
         </View>
         <View style={styles.feedContainer}>
-          {userPlans.concat(invitedPlans).length > 0 ? (
+          {upcomingPlans.length > 0 ? (
             <View>
               <View>
                 <AppText style={styles.label}>COMING UP NEXT</AppText>
-                <NextPlan reload={trigger2} navigation={navigation} plan={userPlans.concat(invitedPlans)[0]} />
+                <NextPlan reload={trigger2} navigation={navigation} plan={upcomingPlans[0]} />
               </View>
               <View style={globalStyles.miniSpacer}></View>
               <View>
