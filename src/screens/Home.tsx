@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { background, GREY_0, TEAL } from './../res/styles/Colors';
-import { getCurrentUser, isFuturePlan, loadInviteeStatus, sortPlansByDate } from './../res/utilFunctions';
+import { getCurrentUser, loadInviteeStatus, removePastPlans, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { NextPlan, InvitedPreview, CreatedPlans } from '../organisms/OrganismsExports';
@@ -36,6 +36,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [trigger1, setTrigger1] = useState(false);
   const [trigger2, setTrigger2] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [state, setState] = useState('loading');
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -44,6 +45,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       await loadPlans(user);
       setTrigger2(!trigger2);
       setRefreshing(false);
+      setState('done');
     };
     awaitUser();
   }, [trigger1]);
@@ -82,15 +84,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     console.log('Finished loading plans');
   };
 
-  const removePastPlans = (plans: Plan[]) => {
-    const currentDate = new Date();
-    return plans.filter((plan) => {
-      if (plan.date && plan.time) {
-        return isFuturePlan(plan.date, plan.time, currentDate);
-      }
-    });
-  };
-
   const createGreeting = () => {
     if (currentUser) {
       const firstName = currentUser.name.includes(' ')
@@ -99,59 +92,72 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       return `Hello, ${firstName}!`;
     }
   };
+  console.log(upcomingPlans, invitedPlans);
 
   return (
     <Screen style={{ backgroundColor: background }}>
-      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
-        <View style={styles.header}>
-          <AppText style={[globalStyles.superTitle, styles.greeting]}>{createGreeting()}</AppText>
-          <View></View>
+      {state === 'loading' ? (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator size={'large'} />
         </View>
-        <View style={styles.feedContainer}>
-          {upcomingPlans.length > 0 ? (
-            <View>
+      ) : (
+        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
+          <View style={styles.header}>
+            <AppText style={[globalStyles.superTitle, styles.greeting]}>{createGreeting()}</AppText>
+            <View></View>
+          </View>
+          <View style={styles.feedContainer}>
+            {(upcomingPlans.length > 0 || invitedPlans.length) > 0 ? (
               <View>
-                <AppText style={styles.label}>COMING UP NEXT</AppText>
-                <NextPlan reload={trigger2} navigation={navigation} plan={upcomingPlans[0]} />
-              </View>
-              <View style={globalStyles.miniSpacer}></View>
-              <View>
-                <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
-                <InvitedPreview
-                  reload={trigger2}
-                  navigation={navigation}
-                  invitedPlans={invitedPlans}
-                  userPlans={userPlans}
-                />
+                <View>
+                  <AppText style={styles.label}>COMING UP NEXT</AppText>
+                  <NextPlan reload={trigger2} navigation={navigation} plan={upcomingPlans[0]} />
+                </View>
                 <View style={globalStyles.miniSpacer}></View>
+                <View>
+                  <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
+                  <InvitedPreview
+                    reload={trigger2}
+                    navigation={navigation}
+                    invitedPlans={invitedPlans}
+                    userPlans={userPlans}
+                  />
+                  <View style={globalStyles.miniSpacer}></View>
+                </View>
+                <View style={{ height: userPlans.length > 0 ? 360 : 420 }}>
+                  <AppText style={styles.label}>CREATED PLANS</AppText>
+                  <CreatedPlans
+                    user={currentUser}
+                    navigation={navigation}
+                    userPlans={userPlans}
+                    invitedPlans={invitedPlans}
+                  />
+                </View>
               </View>
-              <View style={{ height: userPlans.length > 0 ? 360 : 420 }}>
-                <AppText style={styles.label}>CREATED PLANS</AppText>
-                <CreatedPlans navigation={navigation} userPlans={userPlans} invitedPlans={invitedPlans} />
-              </View>
-            </View>
-          ) : (
-            <View style={styles.noPlan}>
-              <Text maxFontSizeMultiplier={1} style={styles.noPlanText}>
-                Welcome to your plan dashboard. This is where you will see a round-up of plans you’ve created, and
-                things you&apos;re invited to.
-              </Text>
-              <View style={{ width: '100%', alignItems: 'center' }}>
-                <Image
-                  source={require('../../assets/homepage-graphic.png')}
-                  style={{ width: 335, height: 280 }}
-                  resizeMode={'contain'}
-                />
-              </View>
-              <View>
-                <Text maxFontSizeMultiplier={1} style={[styles.noPlanText, { textAlign: 'center', width: '70%' }]}>
-                  Create your first plan with the button below
+            ) : (
+              <View style={styles.noPlan}>
+                <Text maxFontSizeMultiplier={1} style={styles.noPlanText}>
+                  Welcome to your plan dashboard. This is where you will see a round-up of plans you’ve created, and
+                  things you&apos;re invited to.
                 </Text>
+                <View style={{ width: '100%', alignItems: 'center' }}>
+                  <Image
+                    source={require('../../assets/homepage-graphic.png')}
+                    style={{ width: 335, height: 280 }}
+                    resizeMode={'contain'}
+                  />
+                </View>
+                <View>
+                  <Text maxFontSizeMultiplier={1} style={[styles.noPlanText, { textAlign: 'center', width: '70%' }]}>
+                    Create your first plan with the button below
+                  </Text>
+                </View>
               </View>
-            </View>
-          )}
-        </View>
-      </ScrollView>
+            )}
+          </View>
+        </ScrollView>
+      )}
+
       <View style={styles.navbar}>
         <HomeNavBar user={currentUser} navigation={navigation} userPlans={userPlans} invitedPlans={invitedPlans} />
       </View>

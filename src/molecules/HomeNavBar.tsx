@@ -22,10 +22,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
         <TouchableOpacity
           style={{ width: '33%' }}
           onPress={() => {
-            navigation?.navigate('ViewPlans', {
-              userPlans: userPlans,
-              invitedPlans: invitedPlans,
-            });
+            navigation.navigate('ViewPlans', {});
           }}
         >
           <AnnounceIcon />
@@ -46,8 +43,6 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
             navigation.navigate('Profile', {
               currentUser: user,
               currentUserPlan: userPlans[0] ? userPlans[0] : invitedPlans[0],
-              userPlans: userPlans,
-              invitedPlans: invitedPlans,
             });
           }}
         >

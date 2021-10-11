@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Image } from 'react-native-elements/dist/image/Image';
 import { ScrollView } from 'react-native-gesture-handler';
 import { AppText, ViewAll } from '../atoms/AtomsExports';
-import { Plan } from '../models';
+import { Plan, User } from '../models';
 import { CreatedPlanTile } from '../molecules/CreatedPlanTile';
 
 interface Props {
@@ -20,9 +20,10 @@ interface Props {
   };
   userPlans: Plan[];
   invitedPlans: Plan[];
+  user?: User;
 }
 
-export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans, invitedPlans }: Props) => {
+export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans, invitedPlans, user }: Props) => {
   const getUserPlans = () => {
     const plans = [];
     for (let i = 0; i < userPlans.length; i++) {
@@ -55,7 +56,7 @@ export const CreatedPlans: React.FC<Props> = ({ navigation, userPlans, invitedPl
           <AppText style={{ fontSize: 16, lineHeight: 22.88, marginVertical: 15 }}>
             When you create a plan, you will see them here. Create a plan to start building your experiences!
           </AppText>
-          <TouchableOpacity onPress={() => navigation.navigate('PlanCreate', {})}>
+          <TouchableOpacity onPress={() => navigation.navigate('PlanCreate', { currentUser: user })}>
             <Image style={{ width: 216, height: 168 }} source={require('../../assets/CreatePlanGraphic.png')} />
           </TouchableOpacity>
         </View>

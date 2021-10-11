@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import { AppText, Navbar, Screen, AlertModal } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/HomeNavBar';
 import {
@@ -7,12 +7,15 @@ import {
   formatTime,
   getCurrentUser,
   loadInviteeStatus,
+  removePastPlans,
   respondToPlan,
+  sortPlansByDate,
 } from './../res/utilFunctions';
-import { User, Plan } from '../models';
+import { User, Plan, Invitee } from '../models';
 import { TEAL } from '../res/styles/Colors';
 import { ViewPlanTile } from '../organisms/ViewPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
+import { DataStore } from '@aws-amplify/datastore';
 
 interface Props {
   navigation: {
@@ -29,17 +32,38 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
   const [modal, setModal] = useState(<View style={{ display: 'none' }} />);
   const [reload, setReload] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [state, setState] = useState('loading');
 
   useEffect(() => {
     const awaitUser = async () => {
       const user = await getCurrentUser();
       setCurrentUser(user);
-      reorder(route.params.invitedPlans);
-      setUserPlans(route.params.userPlans);
+      loadPlans(user);
       setRefreshing(false);
+      setState('done');
     };
     awaitUser();
   }, [reload]);
+
+  const loadPlans = async (user: User) => {
+    console.log('Loading plans');
+
+    const userCreatedPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
+    const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
+    let invitedPlans = removePastPlans(
+      invitees
+        .map((invitee) => {
+          return invitee.plan;
+        })
+        .filter((item): item is Plan => item !== undefined),
+    );
+
+    if (currentUser) invitedPlans = invitedPlans.filter((item): item is Plan => item.creatorID !== currentUser.id);
+
+    setUserPlans(sortPlansByDate(userCreatedPlans));
+    reorder(sortPlansByDate(invitedPlans));
+    console.log('Finished loading plans');
+  };
 
   const reorder = (plans: Plan[]) => {
     const notificationList: Plan[] = [];
@@ -142,14 +166,20 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
             </AppText>
           </View>
         </View>
-        <View style={styles.plans}>
-          <FlatList
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanIndexRefresh} />}
-            data={tab === 'invited' ? invitedPlans : userPlans}
-            renderItem={renderPlanTile}
-            style={{ marginBottom: 40 }}
-          />
-        </View>
+        {state === 'loading' ? (
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <ActivityIndicator size={'large'} />
+          </View>
+        ) : (
+          <View style={styles.plans}>
+            <FlatList
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanIndexRefresh} />}
+              data={tab === 'invited' ? invitedPlans : userPlans}
+              renderItem={renderPlanTile}
+              style={{ marginBottom: 40 }}
+            />
+          </View>
+        )}
       </View>
       <View style={styles.navbar}>
         <HomeNavBar user={currentUser} navigation={navigation} invitedPlans={invitedPlans} userPlans={userPlans} />

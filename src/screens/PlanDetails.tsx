@@ -34,7 +34,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   useEffect(() => {
     loadInvitees();
     isCreator();
-  }, [refreshAttendeeList, route.params.step]);
+  }, [refreshAttendeeList]);
 
   const loadInvitees = async () => {
     const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
@@ -79,7 +79,11 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View style={styles.titleContainer}>
-        <BackChevronIcon onPress={() => navigation.goBack()} />
+        <BackChevronIcon
+          onPress={() => {
+            navigation.push(route.params.step ? route.params.step : 'Home', {});
+          }}
+        />
         <AppText style={styles.title}>Plan Details</AppText>
       </View>
       <ScrollView>
