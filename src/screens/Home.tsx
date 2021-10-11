@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { background, GREY_0, TEAL } from './../res/styles/Colors';
-import { getCurrentUser, removePastPlans, sortPlansByDate } from './../res/utilFunctions';
+import { getCurrentUser, loadInviteeStatus, removePastPlans, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { NextPlan, InvitedPreview, CreatedPlans } from '../organisms/OrganismsExports';
@@ -31,6 +31,7 @@ interface Props {
 export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [userPlans, setUserPlans] = useState<Plan[]>([]);
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
+  const [upcomingPlans, setUpcomingPlans] = useState<Plan[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
   const [trigger1, setTrigger1] = useState(false);
   const [trigger2, setTrigger2] = useState(false);
@@ -66,9 +67,18 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
         })
         .filter((item): item is Plan => item !== undefined),
     );
-
+    const upcoming = removePastPlans(invitedPlans);
     if (currentUser) invitedPlans = invitedPlans.filter((item): item is Plan => item.creatorID !== currentUser.id);
 
+    const accepted = [];
+    for (const plan of upcoming) {
+      const status = await loadInviteeStatus(plan);
+      if (status === 'ACCEPTED') {
+        accepted.push(plan);
+      }
+    }
+
+    setUpcomingPlans(sortPlansByDate(accepted));
     setUserPlans(sortPlansByDate(userCreatedPlans));
     setInvitedPlans(sortPlansByDate(invitedPlans));
     console.log('Finished loading plans');
