@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
   },
   plans: {
     // flex: 1,
+    paddingBottom: 120,
     width: '100%',
   },
   navbar: {
