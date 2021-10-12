@@ -10799,6 +10799,11 @@ rn-sliding-up-panel@^2.4.5:
     clamp "^1.0.1"
     prop-types "^15.7.2"
 
+rn-swipe-gestures@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/rn-swipe-gestures/-/rn-swipe-gestures-1.0.3.tgz#bf7abca6e8d1f74e723a7ea1ed674eb5109ee5b3"
+  integrity sha512-K6AkQGh6Em8bY2usOj57Tv+D2b4xn7EgzySTHz/mrseaaCv5xw1O/uI5i4cldEKFPS6LY739Ko1zZlzlHvXzQw==
+
 rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.npmjs.org/rsvp/-/rsvp-4.8.5.tgz"

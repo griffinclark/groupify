@@ -16,6 +16,7 @@ import { TEAL } from '../res/styles/Colors';
 import { ViewPlanTile } from '../organisms/ViewPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
+import GestureRecognizerView from 'rn-swipe-gestures';
 
 interface Props {
   navigation: {
@@ -171,14 +172,23 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
             <ActivityIndicator size={'large'} />
           </View>
         ) : (
-          <View style={styles.plans}>
-            <FlatList
-              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanIndexRefresh} />}
-              data={tab === 'invited' ? invitedPlans : userPlans}
-              renderItem={renderPlanTile}
-              style={{ marginBottom: 40 }}
-            />
-          </View>
+          <GestureRecognizerView
+            /* eslint-disable */
+            // @ts-expect-error
+            config={{ detectSwipeDown: false, detectSwipeUp: false }}
+            /* eslint-enable */
+            onSwipeLeft={() => setTab('created')}
+            onSwipeRight={() => setTab('invited')}
+          >
+            <View style={styles.plans}>
+              <FlatList
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanIndexRefresh} />}
+                data={tab === 'invited' ? invitedPlans : userPlans}
+                renderItem={renderPlanTile}
+                style={{ marginBottom: 40 }}
+              />
+            </View>
+          </GestureRecognizerView>
         )}
       </View>
       <View style={styles.navbar}>
@@ -223,7 +233,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   plans: {
-    flex: 1,
+    // flex: 1,
+    paddingBottom: 120,
     width: '100%',
   },
   navbar: {
