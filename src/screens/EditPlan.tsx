@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { AppText, BottomButton, MeepForm, Alert, Navbar } from '../atoms/AtomsExports';
+import { AppText, BottomButton, MeepForm, Alert, Screen } from '../atoms/AtomsExports';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { MapLinkIcon } from '../../assets/Icons/IconExports';
+import { BackChevronIcon, MapLinkIcon } from '../../assets/Icons/IconExports';
 import Constants from 'expo-constants';
 import { TEAL } from '../res/styles/Colors';
 import { RoutePropParams } from '../res/root-navigation';
@@ -141,31 +141,34 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         style={{ flex: 1, backgroundColor: 'white' }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        {/* <Screen> */}
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            paddingTop: Constants.statusBarHeight,
-          }}
-        >
-          <Navbar location={'PlanDetails'} navigation={navigation} title={'Edit Plan'} />
-          {/* <View>{loadPhoto(photo)}</View> */}
-          <View style={{ flexGrow: 1 }}>
-            <MeepForm inputList={inputFields}>
-              <TouchableOpacity
-                style={styles.mapLink}
-                onPress={() => navigation.navigate('PlanMap', { option: 'edit' })}
-              >
-                <MapLinkIcon />
-                <AppText style={styles.mapText}>Find address using the map</AppText>
-              </TouchableOpacity>
-            </MeepForm>
-            {error && <Alert status="error" message={error} />}
+        <Screen>
+          <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
+            <BackChevronIcon onPress={() => navigation.navigate('PlanDetails', {})} />
+            <AppText style={styles.title}>Edit Plan</AppText>
           </View>
-        </ScrollView>
-        {/* </Screen> */}
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: 'space-between',
+              flexDirection: 'column',
+              paddingTop: Constants.statusBarHeight - 340,
+            }}
+          >
+            {/* <View>{loadPhoto(photo)}</View> */}
+            <View style={{ flexGrow: 1 }}>
+              <MeepForm inputList={inputFields}>
+                <TouchableOpacity
+                  style={styles.mapLink}
+                  onPress={() => navigation.navigate('PlanMap', { option: 'edit' })}
+                >
+                  <MapLinkIcon />
+                  <AppText style={styles.mapText}>Find address using the map</AppText>
+                </TouchableOpacity>
+              </MeepForm>
+              {error && <Alert status="error" message={error} />}
+            </View>
+          </ScrollView>
+        </Screen>
       </KeyboardAvoidingView>
       <BottomButton disabled={disabled} title="Save Plan" onPress={onFormSubmit} />
     </View>
@@ -184,5 +187,10 @@ const styles = StyleSheet.create({
     color: TEAL,
     fontSize: 16,
     marginLeft: 10,
+  },
+  title: {
+    paddingLeft: 15,
+    fontSize: 30,
+    color: TEAL,
   },
 });

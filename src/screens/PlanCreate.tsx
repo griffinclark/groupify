@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
-import { AppText, BottomButton, MeepForm, Alert, Navbar } from '../atoms/AtomsExports';
+import { AppText, BottomButton, MeepForm, Alert, Screen } from '../atoms/AtomsExports';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
-import { MapLinkIcon } from '../../assets/Icons/IconExports';
+import { BackChevronIcon, MapLinkIcon } from '../../assets/Icons/IconExports';
 import Constants from 'expo-constants';
 import { TEAL } from '../res/styles/Colors';
 import { RoutePropParams } from '../res/root-navigation';
@@ -13,6 +13,7 @@ import * as Analytics from 'expo-firebase-analytics';
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
   };
   route: RoutePropParams;
 }
@@ -161,32 +162,35 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
         style={{ flex: 1, backgroundColor: 'white' }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        {/* <Screen> */}
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            paddingTop: Constants.statusBarHeight,
-          }}
-        >
-          <Navbar location={'Home'} navigation={navigation} title={'Create a Plan'} />
-          {/* <View>{loadPhoto(photo)}</View> */}
-          <View style={{ flexGrow: 1 }}>
-            <MeepForm inputList={inputFields}>
-              <TouchableOpacity
-                style={styles.mapLink}
-                onPress={() => navigation.navigate('PlanMap', { currentUser: route.params.currentUser })}
-              >
-                {/* <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} /> */}
-                <MapLinkIcon />
-                <AppText style={styles.mapText}>Find address using the map</AppText>
-              </TouchableOpacity>
-            </MeepForm>
-            {error && <Alert status="error" message={error} />}
+        <Screen>
+          <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
+            <BackChevronIcon onPress={() => navigation.navigate('Home', {})} />
+            <AppText style={styles.title}>Create a Plan</AppText>
           </View>
-        </ScrollView>
-        {/* </Screen> */}
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: 'space-between',
+              flexDirection: 'column',
+              paddingTop: Constants.statusBarHeight - 340,
+            }}
+          >
+            {/* <View>{loadPhoto(photo)}</View> */}
+            <View style={{ flexGrow: 1 }}>
+              <MeepForm inputList={inputFields}>
+                <TouchableOpacity
+                  style={styles.mapLink}
+                  onPress={() => navigation.navigate('PlanMap', { currentUser: route.params.currentUser })}
+                >
+                  {/* <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} /> */}
+                  <MapLinkIcon />
+                  <AppText style={styles.mapText}>Find address using the map</AppText>
+                </TouchableOpacity>
+              </MeepForm>
+              {error && <Alert status="error" message={error} />}
+            </View>
+          </ScrollView>
+        </Screen>
       </KeyboardAvoidingView>
       <BottomButton disabled={disabled} title="Invite Friends" onPress={onFormSubmit} />
     </View>
@@ -205,5 +209,10 @@ const styles = StyleSheet.create({
     color: TEAL,
     fontSize: 16,
     marginLeft: 10,
+  },
+  title: {
+    paddingLeft: 15,
+    fontSize: 30,
+    color: TEAL,
   },
 });
