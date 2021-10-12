@@ -66,6 +66,7 @@
     "aws-amplify": "^3.3.26",
     "expo": "^40.0.1",
     "expo-checkbox": "~1.0.0",
+    "expo-clipboard": "~1.0.1",
     "expo-contacts": "~8.6.0",
     "expo-firebase-analytics": "^4.1.0",
     "expo-font": "~8.4.0",
