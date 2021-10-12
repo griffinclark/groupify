@@ -9,7 +9,8 @@
     "test": "jest",
     "test:watch": "npm run test --watch",
     "test:ci": "npm run test --coverage",
-    "test:badges": "npm run test:ci  && jest-coverage-badges --input coverage/coverage-summary.json --output __badges__"
+    "test:badges": "npm run test:ci  && jest-coverage-badges --input coverage/coverage-summary.json --output __badges__",
+    "postinstall": "patch-package"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -78,6 +79,8 @@
     "expo-updates": "~0.4.0",
     "formik": "^2.2.6",
     "google-libphonenumber": "^3.2.19",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
     "qs": "^6.10.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
