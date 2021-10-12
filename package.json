@@ -99,6 +99,7 @@
     "react-native-web": "~0.13.12",
     "react-test-render": "^1.1.2",
     "rn-sliding-up-panel": "^2.4.5",
+    "rn-swipe-gestures": "^1.0.3",
     "unirest": "^0.6.0",
     "uuid": "^3.4.0"
   },
