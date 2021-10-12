@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Platform, KeyboardAvoidingView, FlatList, ActivityIndicator } from 'react-native';
-import { MeepForm, TwoButtonAlert, Navbar, BottomButton } from '../atoms/AtomsExports';
+import { MeepForm, TwoButtonAlert, BottomButton, Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { TEAL, GREY_8 } from '../res/styles/Colors';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -15,6 +15,7 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import Constants from 'expo-constants';
 import { PlanTextMessage } from '../molecules/PlanTextMessage';
 import * as queries from '../graphql/queries';
+import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 
 interface Props {
   navigation: {
@@ -267,47 +268,50 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         style={{ flex: 1, backgroundColor: 'white' }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        {/* <Screen> */}
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            paddingTop: Constants.statusBarHeight,
-          }}
-        >
-          <Navbar location={'PlanInvite'} navigation={navigation} title={'Confirm'} />
-          <AppText style={styles.titleText}>
-            Almost done! Please confirm all details are correct, and that you’ve invited all you want. You can always
-            come back and edit this event at a later time.
-          </AppText>
-          {/* <View>{loadPhoto(photo)}</View> */}
-          <View style={{ flexGrow: 1 }}>
-            <MeepForm inputList={inputFields}></MeepForm>
-            <PlanTextMessage
-              label="Friends who don’t have Groupify yet will receive the following message:"
-              onChangeText={(e) => setMessage(e)}
-              text={message}
-            />
-            <TouchableOpacity onPress={() => setEditMessage(!editMessage)}>
-              <AppText style={styles.mapText}>Edit Note</AppText>
-            </TouchableOpacity>
+        <Screen>
+          <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
+            <BackChevronIcon onPress={() => navigation.navigate('PlanInvite', {})} />
+            <AppText style={styles.title}>Confirm</AppText>
           </View>
-          {event.contacts.length > 0 && (
-            <View>
-              <FlatList
-                data={event.contacts}
-                renderItem={contactList}
-                ListEmptyComponent={() => (
-                  <View style={styles.titleText}>
-                    <AppText>No Contacts Invited</AppText>
-                  </View>
-                )}
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: 'space-between',
+              flexDirection: 'column',
+              paddingTop: Constants.statusBarHeight - 340,
+            }}
+          >
+            <AppText style={styles.titleText}>
+              Almost done! Please confirm all details are correct, and that you’ve invited all you want. You can always
+              come back and edit this event at a later time.
+            </AppText>
+            {/* <View>{loadPhoto(photo)}</View> */}
+            <View style={{ flexGrow: 1 }}>
+              <MeepForm inputList={inputFields}></MeepForm>
+              <PlanTextMessage
+                label="Friends who don’t have Groupify yet will receive the following message:"
+                onChangeText={(e) => setMessage(e)}
+                text={message}
               />
+              <TouchableOpacity onPress={() => setEditMessage(!editMessage)}>
+                <AppText style={styles.mapText}>Edit Note</AppText>
+              </TouchableOpacity>
             </View>
-          )}
-        </ScrollView>
-        {/* </Screen> */}
+            {event.contacts.length > 0 && (
+              <View>
+                <FlatList
+                  data={event.contacts}
+                  renderItem={contactList}
+                  ListEmptyComponent={() => (
+                    <View style={styles.titleText}>
+                      <AppText>No Contacts Invited</AppText>
+                    </View>
+                  )}
+                />
+              </View>
+            )}
+          </ScrollView>
+        </Screen>
       </KeyboardAvoidingView>
       {isLoading ? (
         <View style={styles.loading}>
@@ -391,5 +395,10 @@ const styles = StyleSheet.create({
     height: 55,
     justifyContent: 'center',
     width: '100%',
+  },
+  title: {
+    paddingLeft: 15,
+    fontSize: 30,
+    color: TEAL,
   },
 });
