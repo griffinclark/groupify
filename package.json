@@ -9,8 +9,7 @@
     "test": "jest",
     "test:watch": "npm run test --watch",
     "test:ci": "npm run test --coverage",
-    "test:badges": "npm run test:ci  && jest-coverage-badges --input coverage/coverage-summary.json --output __badges__",
-    "postinstall": "patch-package"
+    "test:badges": "npm run test:ci  && jest-coverage-badges --input coverage/coverage-summary.json --output __badges__"
   },
   "jest": {
     "testEnvironment": "jsdom",
