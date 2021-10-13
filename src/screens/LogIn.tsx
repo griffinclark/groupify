@@ -8,7 +8,7 @@ import { Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { User } from '../models';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { ImageBackground, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
+import { ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
@@ -161,7 +161,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [phone, password]);
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Screen style={{ backgroundColor: WHITE, height: '100%', justifyContent: 'space-between' }}>
         <ScrollView>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
