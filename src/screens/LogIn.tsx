@@ -161,8 +161,8 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [phone, password]);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Screen style={{ backgroundColor: WHITE, height: '100%', justifyContent: 'space-between' }}>
+    <Screen style={{ backgroundColor: WHITE, height: '100%', justifyContent: 'space-between' }}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
             <View style={{ alignSelf: 'center', flex: 1, marginTop: 20 }} testID="LoginScreen">
@@ -207,11 +207,11 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
             )}
           </View>
         </ScrollView>
-        <View>
-          <Button title="Log In" onPress={logIn} disabled={disabled} />
-        </View>
-      </Screen>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+      <View>
+        <Button title="Log In" onPress={logIn} disabled={disabled} />
+      </View>
+    </Screen>
   );
 };
 
