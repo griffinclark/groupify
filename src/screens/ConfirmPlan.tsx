@@ -90,9 +90,27 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   useEffect(() => {
     createInitialMessage();
   }, []);
+
   const createInitialMessage = async (): Promise<void> => {
     const event = route.params.data.eventData;
-    const initMessage = event.message;
+    const userInfo = await Auth.currentUserInfo();
+    const name = userInfo.attributes.name;
+
+    // const initMessage =
+    //   `Hey, ${name} is inviting you ` +
+    //   `to '${event.title}'` +
+    //   `${event.time ? ' at ' + event.time : ''}` +
+    //   `${event.date ? ' on ' + event.date : ''}` +
+    //   `${event.location ? ' at ' + event.location : ''}` +
+    //   `${event.description}` +
+    //   '. Hope to see you there!';
+
+    const initMessage =
+      'Hey, ' +
+      `you\'ve been invited to a plan by ${name}! ` +
+      'Download Groupify to view it here: ' +
+      'https://apps.apple.com/us/app/groupify-make-a-plan/id1566937955';
+
     setMessage(initMessage);
   };
 

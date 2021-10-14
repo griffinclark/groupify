@@ -4,7 +4,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { Alert, AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/AtomsExports';
-import { API, Auth } from 'aws-amplify';
+import { API } from 'aws-amplify';
 import { User } from '../models';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
 import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
@@ -37,14 +37,12 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   });
   const [friends, setFriends] = useState<User[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
-  const [message, setMessage] = useState<string>('');
   const [displayWarning, setDisplayWarning] = useState<boolean>(false);
 
   useEffect(() => {
     loadContacts();
     setEventObject(route.params.data.eventData);
     getFriends();
-    createInitialMessage();
     checkWarning();
   }, []);
 
@@ -128,7 +126,6 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           placeId: event.placeId,
           friends: selectedFriends,
           contacts: formattedContacts,
-          message: message,
         },
       },
     });
@@ -136,23 +133,6 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const menuSelection = (item: string) => {
     setMenuItemSelected(item);
-  };
-
-  const createInitialMessage = async (): Promise<void> => {
-    const event = route.params.data.eventData;
-    const userInfo = await Auth.currentUserInfo();
-    const name = userInfo.attributes.name;
-
-    const initMessage =
-      `Hey, ${name} is inviting you ` +
-      `to '${event.title}'` +
-      `${event.time ? ' at ' + event.time : ''}` +
-      `${event.date ? ' on ' + event.date : ''}` +
-      `${event.location ? ' at ' + event.location : ''}` +
-      `${event.description}` +
-      '. Hope to see you there!';
-
-    setMessage(initMessage);
   };
 
   const checkWarning = async (): Promise<void> => {
