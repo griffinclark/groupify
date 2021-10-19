@@ -31,6 +31,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [addedContacts, setAddedContacts] = useState<Contact[]>([]);
+  const [currentSessionChanges, setCurrentSessionChanges] = useState(false);
   const [state, setState] = useState<State>(State.Empty);
   const [openModal, setOpenModal] = useState(false);
 
@@ -47,11 +48,13 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
     await storeImportedContact(newContact);
     loadImportedContacts();
     await Analytics.logEvent('import_contacts', {});
+    setCurrentSessionChanges(true);
   };
 
   const removeSelectedContact = async (newContact: Contact) => {
     await deleteImportedContactFromID(newContact.id);
     loadImportedContacts();
+    setCurrentSessionChanges(true);
   };
 
   const loadContacts = async () => {
@@ -161,7 +164,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
             onPress={async () => {
               navigation.navigate('Home');
             }}
-            disabled={addedContacts.length === 0 ? true : false}
+            disabled={currentSessionChanges ? false : true}
           />
         </View>
       </View>
