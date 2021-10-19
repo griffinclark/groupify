@@ -16,7 +16,20 @@ import { RoutePropParams } from '../res/root-navigation';
 import * as queries from '../graphql/queries';
 import * as Analytics from 'expo-firebase-analytics';
 
-interface Props {
+// const user = {
+//   "_deleted": undefined,
+//   "_lastChangedAt": undefined,
+//   "_version": undefined,
+//   "email": "placeHolder@temporaryWorkAround.com",
+//   "friends": Array [],
+//   "id": "x",
+//   "name": "User Two",
+//   "phoneNumber": "+15102057904",
+//   "pushToken": "ExponentPushToken[v_oSimNdzGmTwk4-N4i-jT]",
+//   "userAvailabilityId": null,
+// }
+
+export interface Props {
   navigation: {
     CreateAccount: {
       step: string;
@@ -103,6 +116,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       setSecureStoreItem('password', password);
       console.log('successfully signed in');
       const user = await registerUser();
+      console.log(user);
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
         navigation.navigate('ImportContactDetails', {});
@@ -165,7 +179,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-            <View style={{ alignSelf: 'center', flex: 1, marginTop: 20 }} testID="LoginScreen">
+            <View style={{ alignSelf: 'center', flex: 1, marginTop: 20 }} testID="LogInScreen">
               <ImageBackground style={styles.logoBackground} source={require('../../assets/Login_Background.png')} />
               <ImageBackground style={styles.logo} source={require('../../assets/Splash_Logo.png')} />
             </View>

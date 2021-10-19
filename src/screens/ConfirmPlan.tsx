@@ -17,7 +17,7 @@ import { PlanTextMessage } from '../molecules/PlanTextMessage';
 import * as queries from '../graphql/queries';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 
-interface Props {
+export interface Props {
   navigation: {
     navigate: (ev: string, a?: { data?: { prevAction?: string } }) => void;
     push: (ev: string) => void;

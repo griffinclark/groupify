@@ -24,7 +24,7 @@ export const renderWithNavigation = (
 ): any => {
   const App = () => (
     <NavigationContainer>
-      <Stack.Navigator {...navigatorConfig}>
+      <Stack.Navigator {...navigatorConfig} screenOptions={{ animationEnabled: false }}>
         <Stack.Screen {...screenConfig} name="TestNavigator" component={mainComponent} />
         {otherComponents && renderOtherComponents(otherComponents, screenConfig)}
       </Stack.Navigator>

@@ -11,7 +11,7 @@ projects:
         generatedFileName: ''
         docsFilePath: src/graphql
   MeepAPI:
-    schemaPath: src/graphql/schema.json
+    schemaPath: amplify/backend/api/MeepAPI/build/schema.graphql
     includes:
       - src/graphql/**/*.ts
     excludes:
