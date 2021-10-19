@@ -15,6 +15,7 @@
     "preset": "jest-expo",
     "globals": {
       "ts-jest": {
+        "compiler": "ttypescript",
         "tsconfig": {
           "jsx": "react"
         }
@@ -126,10 +127,13 @@
     "jest": "^26.4.0",
     "jest-coverage-badges": "^1.1.2",
     "jest-expo": "^42.1.0",
+    "jest-ts-auto-mock": "^2.0.0",
     "prettier": "^2.3.0",
     "react-test-renderer": "^16.14.0",
+    "ts-auto-mock": "^3.5.0",
     "ts-jest": "^26.5.4",
-    "typescript": "~4.0.0"
+    "ttypescript": "^1.5.12",
+    "typescript": "~4.3.5"
   },
   "private": true,
   "name": "meep",

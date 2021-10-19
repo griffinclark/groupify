@@ -1,3 +1,4 @@
+import 'jest-ts-auto-mock';
 import 'react-native-gesture-handler/jestSetup';
 
 jest.mock('react-native-reanimated', () => {

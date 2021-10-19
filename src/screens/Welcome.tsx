@@ -4,7 +4,7 @@ import { AppText } from '../atoms/AppText';
 import { Button } from '../atoms/Button';
 import { TEAL } from '../res/styles/Colors';
 
-interface Props {
+export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };

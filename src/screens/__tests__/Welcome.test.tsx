@@ -1,21 +1,15 @@
 import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
-import { Welcome } from '../Welcome';
+import { createMock } from 'ts-auto-mock';
+import { Props, Welcome } from '../Welcome';
 import { LogIn } from '../LogIn';
 import { CreateAccount } from '../CreateAccount';
 import { renderWithNavigation } from '../../testing/navigationHelper';
 
-const mockProp = {
-  navigation: {
-    navigate: () => {
-      console.log('navigate');
-    },
-  },
-};
-
+const mockProps = createMock<Props>();
 describe('Welcome Screen', () => {
   it('renders correctly', async () => {
-    const { getAllByText } = render(<Welcome {...mockProp} />);
+    const { getAllByText } = render(<Welcome {...mockProps} />);
 
     await waitFor(() => {
       /* eslint-disable */
