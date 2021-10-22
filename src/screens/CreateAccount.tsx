@@ -33,15 +33,16 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
+
   useEffect(() => {
-    if (route.params.step == 'create' && password && name && phone) {
+    if (route.params.step == 'create' && password && name && firstName && lastName && phone && confirmPassword) {
       setDisabled(false);
     } else if (route.params.step == 'validate' && validationCode) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [password, name, phone, formatPhone, validationCode]);
+  }, [password, firstName, lastName, name, phone, formatPhone, validationCode, confirmPassword]);
 
   useEffect(() => {
     setName(firstName + ' ' + lastName);
