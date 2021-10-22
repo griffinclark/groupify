@@ -1,12 +1,11 @@
 import React from 'react';
-import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import { cleanup, render, waitFor } from '@testing-library/react-native';
 import { createMock, createMockList } from 'ts-auto-mock';
-import { renderWithNavigation } from '../../testing/navigationHelper';
-// import { PlanInvite } from '../PlanInvite';
-import { Home } from '../Home';
+// import { renderWithNavigation } from '../../testing/navigationHelper';
+// import { Props as InviteProps, PlanInvite } from '../PlanInvite';
+// import { Props as HomeProps, Home } from '../Home';
 import { Props, ConfirmPlan } from '../ConfirmPlan';
 import { User } from '../../models';
-// import { Auth } from 'aws-amplify';
 
 const friends = ['friend1', 'friend2', 'friend3', 'friend4', 'friend5'];
 
@@ -44,6 +43,7 @@ const mockProps = createMock<Props>({
 
 describe('Welcome Screen', () => {
   describe('renders correctly', () => {
+    afterEach(cleanup);
     it('renders the screen', async () => {
       const { getByTestId } = render(<ConfirmPlan {...mockProps} />);
       await waitFor(() => {
@@ -98,36 +98,55 @@ describe('Welcome Screen', () => {
     });
   });
 
-  // describe('it displays and updates input fields', () => {
-  //   it('displays initial values', async () => {
+  // Mock functions
+  // describe('it handles create a plan', () => {
+  //   afterEach(cleanup);
+  //   it('calls createConfirmPlan', async () => {
+  //     const createConfirmAlert = (ConfirmPlan.prototype.createConfirmAlert = jest.fn());
   //     const { getByText } = render(<ConfirmPlan {...mockProps} />);
 
   //     await waitFor(() => {
-  //       // getByText('New Event');
-  //       getByText('12-12-12');
-  //       getByText('12:00');
-  //       getByText('Its an event');
-  //       getByText('store');
-  //       getByText(
-  //         'Hey ___, [username] is inviting you to [activity] at 12:00 pm on 03/20 at location. Hope to see you there!',
-  //       );
+  //       console.log(createConfirmAlert);
+  //       const button = getByText('Confirm and Create Event');
+  //       fireEvent.press(button);
+  //       expect(createConfirmAlert).toHaveBeenCalled();
   //     });
   //   });
+
+  // it('requires valid fields', async () => {
+  //   const emptyMockProps = createMock<Props>({
+  //     route: {
+  //       params: {
+  //         data: {
+  //           eventData: {
+  //             friends: mockFriends,
+  //             contacts: mockFriends,
+  //             uuid: 'string',
+  //             title: '',
+  //             imageURL: 'photo',
+  //             description: 'Its an event',
+  //             tags: ['tag'],
+  //             date: '',
+  //             time: '',
+  //             location: 'store',
+  //             showImage: 'image',
+  //             placeId: '1234',
+  //             message:
+  //               'Hey ___, [username] is inviting you to [activity] at 12:00 pm on 03/20 at location. Hope to see you there!',
+  //           },
+  //         },
+  //       },
+  //     },
+  //   });
+
+  //   const { getByText } = render(<ConfirmPlan {...emptyMockProps} />);
+  //   const createConfirmAlert = jest.fn();
+  //   const button = getByText('Confirm and Create Event');
+
+  //   await waitFor(() => {
+  //     fireEvent.press(button);
+  //     expect(createConfirmAlert).not.toHaveBeenCalled();
+  //   });
   // });
-
-  describe('navigates correctly', () => {
-    const otherComponents = [{ name: 'Home', component: Home }];
-    let wrapper: any;
-    beforeEach(() => {
-      // Example of calling wrapper with other screens
-      wrapper = renderWithNavigation(ConfirmPlan, otherComponents);
-    });
-
-    it('navigates back home', async () => {
-      await waitFor(() => {
-        fireEvent.press(wrapper.queryByTestId('ConfirmPlanBack'));
-        expect(wrapper.getByTestId('CreateAccountScreen')).toBeTruthy();
-      });
-    });
-  });
+  // });
 });

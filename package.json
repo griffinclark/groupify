@@ -6,7 +6,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-    "test": "jest",
+    "test": "jest --verbose",
     "test:watch": "npm run test --watch",
     "test:ci": "npm run test --coverage",
     "test:badges": "npm run test:ci  && jest-coverage-badges --input coverage/coverage-summary.json --output __badges__"

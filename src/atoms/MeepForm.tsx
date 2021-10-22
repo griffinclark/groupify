@@ -15,6 +15,7 @@ interface Props {
     settings?: string;
     value?: string;
     func: React.Dispatch<React.SetStateAction<string>>;
+    disabled?: boolean;
   }[];
 }
 
@@ -152,6 +153,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
       return (
         <View key={item.title}>
           <AppTextInput
+            editable={item.disabled ? false : true}
             label={item.title}
             onChangeText={(e) => item.func(e)}
             placeholder={item.placeholder}

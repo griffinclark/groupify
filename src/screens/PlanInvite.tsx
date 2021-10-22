@@ -12,7 +12,7 @@ import Constants from 'expo-constants';
 import * as queries from '../graphql/queries';
 import * as SecureStore from 'expo-secure-store';
 
-interface Props {
+export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;

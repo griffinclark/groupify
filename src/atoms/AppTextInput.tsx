@@ -6,6 +6,7 @@ import { GOLD, WHITE } from '../res/styles/Colors';
 
 interface Props {
   autoFocus?: boolean;
+  editable?: boolean;
   inputStyle?: Record<string, unknown> | Array<Record<string, unknown>>;
   label?: string;
   maxFontSizeMultiplier?: number;
@@ -19,6 +20,7 @@ interface Props {
 
 export const AppTextInput: React.FC<Props> = ({
   autoFocus = false,
+  editable = true,
   inputStyle,
   label,
   maxFontSizeMultiplier = 1.5,
@@ -36,6 +38,7 @@ export const AppTextInput: React.FC<Props> = ({
       {label && <AppText style={[styles.label, textStyle ? textStyle : {}]}>{label}</AppText>}
       <TextInput
         autoFocus={autoFocus}
+        editable={editable}
         onBlur={() => setSelected(false)}
         onChangeText={onChangeText}
         onFocus={() => setSelected(true)}
