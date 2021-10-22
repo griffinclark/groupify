@@ -210,20 +210,25 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
               marginTop: Constants.statusBarHeight - 15,
             },
             row: {
-              padding: 30,
-              alignItems: 'center',
+              padding: 8,
+              alignContent: 'center',
+              justifyContent: 'center',
+            },
+            seperator: {
+              height: 0.5,
             },
             listView: {
-              marginHorizontal: 10,
-              marginLeft: -25,
-              width: 500,
+              position: 'absolute',
+              top: 44 + Constants.statusBarHeight - 15,
+              right: 20,
+              left: 0,
             },
           }}
           renderRow={(rowData) => {
             const title = rowData.structured_formatting.main_text;
             const address = rowData.structured_formatting.secondary_text;
             return (
-              <View style={{ position: 'absolute' }}>
+              <View style={{ alignItems: 'center' }}>
                 <AppText style={{ fontSize: 14, fontWeight: '700' }}>{title}</AppText>
                 <AppText style={{ fontSize: 14 }}>{address}</AppText>
               </View>
@@ -236,8 +241,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     /* </Screen> */
   );
 };
-
-console.log(Constants.statusBarHeight);
 
 const styles = StyleSheet.create({
   searchBarContainer: {
