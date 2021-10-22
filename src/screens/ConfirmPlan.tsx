@@ -90,6 +90,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   useEffect(() => {
     createInitialMessage();
   }, []);
+
   const createInitialMessage = async (): Promise<void> => {
     const event = route.params.data.eventData;
     const initMessage = event.message;
@@ -250,7 +251,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   }
   const contactList = ({ item }: renderContactProps) => {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} testID="contact">
         <View style={styles.nameContainer}>
           <View style={styles.bubble}>
             <AppText style={{ fontSize: 20 }}>{item.name.slice(0, 1)}</AppText>
@@ -269,8 +270,8 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <Screen>
-          <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
-            <BackChevronIcon onPress={() => navigation.navigate('PlanInvite', {})} />
+          <View style={{ flexDirection: 'row', marginHorizontal: 20 }} testID="ConfirmPlanScreen">
+            <BackChevronIcon testID="ConfirmPlanBack" onPress={() => navigation.navigate('PlanInvite', {})} />
             <AppText style={styles.title}>Confirm</AppText>
           </View>
           <ScrollView
@@ -318,7 +319,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
           <ActivityIndicator color="black" size={'large'} />
         </View>
       ) : (
-        <BottomButton title="Confirm and Create Event" onPress={createConfirmAlert} />
+        <BottomButton testID="bottomButtom" title="Confirm and Create Event" onPress={createConfirmAlert} />
       )}
     </View>
   );

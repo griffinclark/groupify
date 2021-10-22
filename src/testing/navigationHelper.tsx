@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { render } from '@testing-library/react-native';
+import * as ShallowRenderer from 'react-test-renderer/shallow';
 
 const Stack = createStackNavigator();
 

@@ -44,6 +44,7 @@ export const AppTextInput: React.FC<Props> = ({
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
         style={[styles.textInput, selected ? styles.selected : null, inputStyle]}
+        testID="input"
         value={value}
       />
     </View>

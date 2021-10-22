@@ -13,7 +13,7 @@ import { User, Plan, Invitee } from '../models';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Image } from 'react-native-elements/dist/image/Image';
 
-interface Props {
+export interface Props {
   navigation: {
     CreateAccount: {
       step: string;
@@ -101,7 +101,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
         </View>
       ) : (
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
-          <View style={styles.header}>
+          <View style={styles.header} testID="HomeScreen">
             <AppText maxFontSizeMultiplier={1} style={[globalStyles.superTitle, styles.greeting]}>
               {createGreeting()}
             </AppText>

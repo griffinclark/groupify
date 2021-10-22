@@ -11,8 +11,6 @@ const mockProps = createMock<Props>();
 describe('Welcome Screen', () => {
   it('renders correctly', async () => {
     const { getAllByText } = render(<Welcome {...mockProps} />);
-    // debug(JSON.stringify(mockProps));
-    // console.log(JSON.stringify(mockProps));
     await waitFor(() => {
       /* eslint-disable */
       const text = getAllByText("Don't have an account?");
