@@ -35,7 +35,16 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const [success, setSuccess] = useState<string | undefined>();
 
   useEffect(() => {
-    if (route.params.step == 'create' && password && name && firstName && lastName && phone && confirmPassword) {
+    if (
+      route.params.step == 'create' &&
+      password &&
+      name &&
+      firstName &&
+      lastName &&
+      phone &&
+      phone.length === 14 &&
+      confirmPassword
+    ) {
       setDisabled(false);
     } else if (route.params.step == 'validate' && validationCode) {
       setDisabled(false);
