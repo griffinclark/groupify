@@ -12,7 +12,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import * as Analytics from 'expo-firebase-analytics';
 
-interface Props {
+export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
