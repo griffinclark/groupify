@@ -29,8 +29,8 @@ const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 export const PlaceCard: React.FC<Props> = (props: Props) => {
   const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
   const [photos, setPhotos] = useState<JSX.Element>();
-  const [top, setTop] = useState<number>(455);
-  const [bottom, setBottom] = useState<number>(275);
+  const [top, setTop] = useState<number>(465);
+  const [bottom, setBottom] = useState<number>(285);
 
   const draggableRange = {
     top: top,
@@ -40,9 +40,9 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     if (props.photos) {
       loadImages();
-      const newBottom = 275;
+      const newBottom = 285;
       setBottom(newBottom);
-      const newTop = props.openHours ? 455 : 275;
+      const newTop = props.openHours ? 465 : 285;
       setTop(newTop);
     } else {
       setPhotos(undefined);
@@ -149,7 +149,9 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
           </View>
         </View>
       </SlidingUpPanel>
-      <Button containerStyle={styles.button} onPress={props.onButtonPress} title={'Add Location'} />
+      <View style={styles.buttonContainer}>
+        <Button containerStyle={styles.button} onPress={props.onButtonPress} title={'Add Location'} />
+      </View>
     </View>
   );
 };
@@ -207,9 +209,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 10,
   },
+  buttonContainer: {
+    backgroundColor: WHITE,
+    paddingBottom: 10,
+    paddingTop: 1,
+  },
   button: {
     alignItems: 'flex-end',
-    backgroundColor: WHITE,
     paddingHorizontal: 20,
     width: '100%',
   },
