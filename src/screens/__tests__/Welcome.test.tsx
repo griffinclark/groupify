@@ -1,12 +1,13 @@
 import React from 'react';
-import { cleanup, render, waitFor } from '@testing-library/react-native';
+import { cleanup, render, waitFor, fireEvent } from '@testing-library/react-native';
 import { createMock } from 'ts-auto-mock';
 import { Props, Welcome } from '../Welcome';
-// import { Props as LogInProps, LogIn } from '../LogIn';
-// import { Props as CreateAccountProps, CreateAccount } from '../CreateAccount';
-// import { renderWithNavigation } from '../../testing/navigationHelper';
 
-const mockProps = createMock<Props>();
+const mockProps = createMock<Props>({
+  navigation: {
+    navigate: jest.fn(),
+  },
+});
 
 describe('Welcome Screen', () => {
   afterEach(cleanup);
@@ -24,40 +25,25 @@ describe('Welcome Screen', () => {
     });
   });
 
-  // Actual Navigation: Temporarily not working
-  // describe('navigates correctly', () => {
-  //   afterEach(cleanup);
-  //   // Example of other screens
-  //   const LogInmockProps = createMock<LogInProps>();
-  //   const CreateAccountMockProps = createMock<CreateAccountProps>();
-  //   const otherComponents = [
-  //     { name: 'Login', Component: LogIn, props: LogInmockProps },
-  //     { name: 'CreateAccount', Component: CreateAccount, props: CreateAccountMockProps },
-  //   ];
-  //   let wrapper: any;
-  //   beforeEach(() => {
-  //     // Example of calling wrapper with other screens
-  //     wrapper = renderWithNavigation(Welcome, mockProps, otherComponents);
-  //   });
-  //   it('renders welcome screen', async () => {
-  //     await waitFor(() => {
-  //       expect(wrapper.queryByTestId('WelcomeScreen')).toBeTruthy();
-  //     });
-  //   });
-  // Examples of test navigating to other screens sucessfully
-  // it('navigates to login page', async () => {
-  //   fireEvent.press(wrapper.getByTestId('WelcomeLoginButton'));
-  //   await waitFor(async () => {
-  // const loginScreen = await wrapper.getByTestId('LogInScreen');
-  // expect(loginScreen).toBeTruthy();
-  // wrapper.debug();
-  //   });
-  // });
-  // it('navigates to create account', async () => {
-  //   await waitFor(async () => {
-  //     fireEvent.press(wrapper.queryByTestId('WelcomeCreateButton'));
-  //     expect(wrapper.queryByTestId('CreateAccountScreen')).toBeTruthy();
-  //   });
-  // });
-  // });
+  describe('navigates correctly', () => {
+    it('navigates to login screen', async () => {
+      const { getByText } = render(<Welcome {...mockProps} />);
+
+      await waitFor(() => {
+        const loginButton = getByText('Log In');
+        fireEvent.press(loginButton);
+        expect(mockProps.navigation.navigate).toBeCalled();
+      });
+    });
+
+    it('navigates to create account screen', async () => {
+      const { getByText } = render(<Welcome {...mockProps} />);
+
+      await waitFor(() => {
+        const createButton = getByText('Sign Up');
+        fireEvent.press(createButton);
+        expect(mockProps.navigation.navigate).toBeCalledWith('CreateAccount', {});
+      });
+    });
+  });
 });
