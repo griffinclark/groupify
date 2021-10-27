@@ -43,7 +43,7 @@ const mockProps = createMock<Props>({
   },
 });
 
-describe('Welcome Screen', () => {
+describe('Confirm Plan Screen', () => {
   describe('renders correctly', () => {
     afterEach(cleanup);
     it('renders the screen', async () => {
@@ -81,9 +81,8 @@ describe('Welcome Screen', () => {
     });
 
     it('renders contacts list', async () => {
-      const { queryAllByTestId, getByText } = render(<ConfirmPlan {...mockProps} />);
+      const { getByText } = render(<ConfirmPlan {...mockProps} />);
       await waitFor(() => {
-        const contacts = queryAllByTestId('contact');
         getByText('friend1');
         getByText('friend2');
         getByText('friend3');

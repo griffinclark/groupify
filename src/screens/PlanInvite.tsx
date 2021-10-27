@@ -168,7 +168,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
 
   /* Contact items displayed as 'friends' temporary until friend section finished */
   return (
-    <View style={styles.screen}>
+    <View style={styles.screen} testID="PlanInviteScreen">
       <Navbar location={'PlanCreate'} navigation={navigation} data={route.params} title={'Invite Friends'} />
       <View style={styles.title}>
         <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}?</AppText>
@@ -256,7 +256,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     </View>
   );
 };
-//
+
 const styles = StyleSheet.create({
   contactsScrollContainer: {
     height: Dimensions.get('window').height - Constants.statusBarHeight - 340,
