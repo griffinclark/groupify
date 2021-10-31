@@ -22,6 +22,7 @@ export const Navbar: React.FC<Props> = ({ data = {}, location, navigation, title
         onPress={() => {
           navigation.navigate(location, data);
         }}
+        testID="BackIcon"
       />
       <AppText style={styles.title}>{title}</AppText>
     </View>

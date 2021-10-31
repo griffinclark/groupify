@@ -1,4 +1,4 @@
-export const mockAuth = {
+export const Auth = {
   currentUserInfo: jest.fn().mockImplementation(() => {
     return new Promise((resolve, reject) => {
       resolve({
