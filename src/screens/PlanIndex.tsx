@@ -12,11 +12,12 @@ import {
   sortPlansByDate,
 } from './../res/utilFunctions';
 import { User, Plan, Invitee } from '../models';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL, WHITE } from '../res/styles/Colors';
 import { ViewPlanTile } from '../organisms/ViewPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
 import GestureRecognizerView from 'rn-swipe-gestures';
+import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
 
 interface Props {
   navigation: {
@@ -168,32 +169,57 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
         </View>
         {state === 'loading' ? (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <ActivityIndicator size={'large'} />
-          </View>
+          <>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <ActivityIndicator size={'large'} />
+            </View>
+          </>
         ) : (
-          <GestureRecognizerView
+          <>
+            <GestureRecognizerView
             /* eslint-disable */
             // @ts-expect-error
             config={{ detectSwipeDown: false, detectSwipeUp: false }}
             /* eslint-enable */
-            onSwipeLeft={() => setTab('created')}
-            onSwipeRight={() => setTab('invited')}
-          >
-            <View style={styles.plans}>
-              <FlatList
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanIndexRefresh} />}
-                data={tab === 'invited' ? invitedPlans : userPlans}
-                renderItem={renderPlanTile}
-                style={{ marginBottom: 40 }}
-              />
-            </View>
-          </GestureRecognizerView>
+              onSwipeLeft={() => setTab('created')}
+              onSwipeRight={() => setTab('invited')}
+            >
+              <View style={styles.plans}>
+                <FlatList
+                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanIndexRefresh} />}
+                  data={tab === 'invited' ? invitedPlans : userPlans}
+                  renderItem={renderPlanTile}
+                  style={{ marginBottom: 40 }}
+                />
+              </View>
+            </GestureRecognizerView>
+          </>
         )}
       </View>
-      <View style={styles.navbar}>
-        <HomeNavBar user={currentUser} navigation={navigation} invitedPlans={invitedPlans} userPlans={userPlans} />
-      </View>
+      {state === 'loading' ? (
+        <View style={styles.navbar}>
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            <View style={styles.nav}>
+              <View style={styles.navalign}>
+                <AnnounceIcon />
+                <AppText style={styles.text}>Notifications</AppText>
+              </View>
+              <View style={styles.navalign}>
+                <CreatePlanIcon />
+                <AppText style={styles.text}>Create Plan</AppText>
+              </View>
+              <View style={styles.navalign}>
+                <SettingsIcon />
+                <AppText style={styles.text}>Settings</AppText>
+              </View>
+            </View>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.navbar}>
+          <HomeNavBar user={currentUser} navigation={navigation} invitedPlans={invitedPlans} userPlans={userPlans} />
+        </View>
+      )}
       {modal ? modal : null}
     </Screen>
   );
@@ -233,7 +259,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   plans: {
-    // flex: 1,
+    //flex: 1,
     paddingBottom: 120,
     width: '100%',
   },
@@ -242,4 +268,20 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignSelf: 'center',
   },
+  nav: {
+    width: '100%',
+    height: 80,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    backgroundColor: TEAL,
+  },
+  text: {
+    fontSize: 13,
+    fontWeight: '700',
+    marginTop: 10,
+    color: WHITE,
+    textAlign: 'center',
+  },
+  navalign: { flexDirection: 'column', width: '33%' },
 });
