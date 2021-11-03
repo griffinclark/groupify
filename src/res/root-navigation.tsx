@@ -24,6 +24,7 @@ import { ForgotPassword } from '../screens/ForgotPassword';
 import { Welcome } from '../screens/Welcome';
 import { PlanIndex } from '../screens/PlanIndex';
 import { EditPlan } from '../screens/EditPlan';
+import { ActivitySelector } from '../screens/ActivitySelector';
 
 export type RoutePropParams = {
   params: {
@@ -113,6 +114,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen name="ViewPlans" component={PlanIndex} options={{ headerShown: false }} />
         <Stack.Screen name="EditPlan" component={EditPlan} options={{ headerShown: false }} />
+        <Stack.Screen name="ActivitySelector" component={ActivitySelector} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

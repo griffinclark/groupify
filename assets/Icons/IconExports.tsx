@@ -7,6 +7,7 @@ import { SettingsIcon } from './Settings';
 import { DownArrow } from './DownArrow';
 import { UpArrow } from './UpArrow';
 import { Edit } from './Edit';
+import { SettingsCogIcon } from './SettingsCog';
 
 export {
   AnnounceIcon,
@@ -18,4 +19,5 @@ export {
   DownArrow,
   UpArrow,
   Edit,
+  SettingsCogIcon,
 };
