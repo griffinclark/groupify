@@ -1,79 +1,15 @@
 {
-  "staging": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-meep-staging-171906-authRole",
-      "UnauthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-staging-171906-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-staging-171906-authRole",
+      "AuthRoleName": "amplify-munchkinlabs-dev-24906-authRole",
+      "UnauthRoleArn": "arn:aws:iam::645463423180:role/amplify-munchkinlabs-dev-24906-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::645463423180:role/amplify-munchkinlabs-dev-24906-authRole",
       "Region": "us-west-2",
-      "DeploymentBucketName": "amplify-meep-staging-171906-deployment",
-      "UnauthRoleName": "amplify-meep-staging-171906-unauthRole",
-      "StackName": "amplify-meep-staging-171906",
-      "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-meep-staging-171906/ddedf4f0-90b2-11eb-b525-0ac403330061",
-      "AmplifyAppId": "dto2kcprsz7l",
-      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-meep-staging-171906-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
-    },
-    "categories": {
-      "function": {
-        "pushBroadcast": {
-          "deploymentBucketName": "amplify-meep-staging-171906-deployment",
-          "s3Key": "amplify-builds/pushBroadcast-33503676794b3151566c-build.zip"
-        }
-      },
-      "auth": {
-        "meep1767d49b1767d49b": {},
-        "Meep": {},
-        "meepAuth": {},
-        "groupify": {},
-        "meepcbd280d7": {},
-        "meepcb0c79efcb0c79ef": {}
-      }
-    }
-  },
-  "prod": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-meep-prod-230941-authRole",
-      "UnauthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-prod-230941-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-prod-230941-authRole",
-      "Region": "us-west-2",
-      "DeploymentBucketName": "amplify-meep-prod-230941-deployment",
-      "UnauthRoleName": "amplify-meep-prod-230941-unauthRole",
-      "StackName": "amplify-meep-prod-230941",
-      "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-meep-prod-230941/37a5a9a0-fcc6-11eb-ab5f-0abb512a1f57",
-      "AmplifyAppId": "dto2kcprsz7l"
-    },
-    "categories": {
-      "function": {
-        "pushBroadcast": {}
-      },
-      "auth": {
-        "groupify": {}
-      }
-    }
-  },
-  "prods": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-meep-prods-231759-authRole",
-      "UnauthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-prods-231759-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::645463423180:role/amplify-meep-prods-231759-authRole",
-      "Region": "us-west-2",
-      "DeploymentBucketName": "amplify-meep-prods-231759-deployment",
-      "UnauthRoleName": "amplify-meep-prods-231759-unauthRole",
-      "StackName": "amplify-meep-prods-231759",
-      "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-meep-prods-231759/60045440-fcc7-11eb-b1d5-06ed1cedafa1",
-      "AmplifyAppId": "dto2kcprsz7l"
-    },
-    "categories": {
-      "function": {
-        "pushBroadcast": {
-          "deploymentBucketName": "amplify-meep-prods-231759-deployment",
-          "s3Key": "amplify-builds/pushBroadcast-4d617a4a394770477577-build.zip"
-        },
-        "MyFunction": {}
-      },
-      "auth": {
-        "meep1767d49b1767d49b": {},
-        "Meep": {}
-      }
+      "DeploymentBucketName": "amplify-munchkinlabs-dev-24906-deployment",
+      "UnauthRoleName": "amplify-munchkinlabs-dev-24906-unauthRole",
+      "StackName": "amplify-munchkinlabs-dev-24906",
+      "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-munchkinlabs-dev-24906/69a6cc00-3d11-11ec-8752-065c86bf2b8f",
+      "AmplifyAppId": "d3e9cjhdj2sh2z"
     }
   }
 }

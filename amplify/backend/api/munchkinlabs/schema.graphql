@@ -1,0 +1,6 @@
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  plan: String
+  test: String
+  tested: String
+}
