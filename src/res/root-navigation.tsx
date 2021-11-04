@@ -88,7 +88,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         }
       }}
     >
-      <Stack.Navigator initialRouteName={'ActivitySelector'} screenOptions={{ animationEnabled: false }}>
+      <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ animationEnabled: false }}>
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccount}

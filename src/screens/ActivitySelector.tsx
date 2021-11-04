@@ -67,7 +67,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
       onSwipeLeft={() => handleSwipe('left')}
       onSwipeRight={() => handleSwipe('right')}
     >
-      <ScrollView>
+      <ScrollView testID="ActivitySelectorScreen">
         <Screen>
           <View style={styles.activitySelectorContainer}>
             <View style={styles.navbar}>

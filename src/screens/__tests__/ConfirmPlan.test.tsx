@@ -43,7 +43,7 @@ const mockProps = createMock<Props>({
   },
 });
 
-describe('Welcome Screen', () => {
+describe('Confirm Plan Screen', () => {
   describe('renders correctly', () => {
     afterEach(cleanup);
     it('renders the screen', async () => {
