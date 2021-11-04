@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { BackChevronIcon, SettingsCogIcon } from '../../assets/Icons/IconExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { AppText, Screen } from '../atoms/AtomsExports';
 import { User, Plan, Invitee } from '../models';
 import { getCurrentUser, removePastPlans } from './../res/utilFunctions';
 import { DataStore } from '@aws-amplify/datastore';
+import { ActivityModal } from '../molecules/ActivityModal';
+import GestureRecognizerView from 'rn-swipe-gestures';
 
 export interface Props {
   navigation: {
@@ -18,6 +20,8 @@ export interface Props {
 export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
   const [plan, setPlan] = useState<Plan>();
+  const [modal, setModal] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -44,79 +48,106 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
     awaitUser();
   }, []);
 
+  const handleSwipe = (dir: string) => {
+    if (modal) {
+      if (dir === 'left') {
+        setPage(2);
+      } else {
+        setPage(1);
+      }
+    }
+  };
+
   return (
-    <Screen>
-      <View style={styles.activitySelectorContainer}>
-        <View style={styles.navbar}>
-          <BackChevronIcon
-            onPress={() => {
-              navigation.goBack();
-            }}
-            height="15"
-            width="7.5"
-          />
-          <AppText style={styles.navbarText}>CREATE A PLAN</AppText>
-          <SettingsCogIcon
-            onPress={() => {
-              navigation.navigate('Profile', {
-                currentUser: currentUser,
-                currentUserPlan: plan,
-              });
-            }}
-          />
-        </View>
-        <View style={styles.description}>
-          <AppText style={styles.descriptionText}>What do you want to do today?</AppText>
-        </View>
-        <View style={styles.activitySelector}>
-          <View style={styles.activities}>
-            <TouchableOpacity style={styles.question}>
-              <AppText style={styles.questionText}>?</AppText>
-            </TouchableOpacity>
-
-            <View style={styles.activitiesRow}>
-              <TouchableOpacity>
-                <Image source={require('../../assets/activity-food.png')} />
-                <AppText style={styles.activityText}>Get Food</AppText>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image source={require('../../assets/activity-outside.png')} />
-                <AppText style={styles.activityText}>Go Outside</AppText>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image source={require('../../assets/activity-gym.png')} />
-                <AppText style={styles.activityText}>Get Fit</AppText>
-              </TouchableOpacity>
+    <GestureRecognizerView
+      /* eslint-disable */
+      // @ts-expect-error
+      config={{ detectSwipeDown: false, detectSwipeUp: false }}
+      /* eslint-enable */
+      onSwipeLeft={() => handleSwipe('left')}
+      onSwipeRight={() => handleSwipe('right')}
+    >
+      <ScrollView>
+        <Screen>
+          <View style={styles.activitySelectorContainer}>
+            <View style={styles.navbar}>
+              <BackChevronIcon
+                onPress={() => {
+                  navigation.goBack();
+                }}
+                height="15"
+                width="7.5"
+              />
+              <AppText style={styles.navbarText}>CREATE A PLAN</AppText>
+              <SettingsCogIcon
+                onPress={() => {
+                  navigation.navigate('Profile', {
+                    currentUser: currentUser,
+                    currentUserPlan: plan,
+                  });
+                }}
+              />
             </View>
-            <View style={styles.activitiesRow}>
-              <TouchableOpacity>
-                <Image source={require('../../assets/activity-shopping.png')} />
-                <AppText style={styles.activityText}>Get Shopping</AppText>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image source={require('../../assets/activity-coffee.png')} />
-                <AppText style={styles.activityText}>Get Coffee</AppText>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image source={require('../../assets/activity-relax.png')} />
-                <AppText style={styles.activityText}>Get Relaxed</AppText>
-              </TouchableOpacity>
+            <Image source={require('../../assets/activity-selector.png')} />
+            {/* <View style={styles.description}>
+            <AppText style={styles.descriptionText}>What do you want to do today?</AppText>
+          </View> */}
+            <View style={styles.activitySelector}>
+              <View style={styles.activities}>
+                <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
+                  <AppText style={styles.questionText}>?</AppText>
+                </TouchableOpacity>
+
+                <View style={styles.activitiesRow}>
+                  <TouchableOpacity>
+                    <Image source={require('../../assets/activity-food.png')} />
+                    <AppText style={styles.activityText}>Get Food</AppText>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Image source={require('../../assets/activity-outside.png')} />
+                    <AppText style={styles.activityText}>Go Outside</AppText>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Image source={require('../../assets/activity-gym.png')} />
+                    <AppText style={styles.activityText}>Get Fit</AppText>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.activitiesRow}>
+                  <TouchableOpacity>
+                    <Image source={require('../../assets/activity-shopping.png')} />
+                    <AppText style={styles.activityText}>Get Shopping</AppText>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Image source={require('../../assets/activity-coffee.png')} />
+                    <AppText style={styles.activityText}>Get Coffee</AppText>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Image source={require('../../assets/activity-relax.png')} />
+                    <AppText style={styles.activityText}>Get Relaxed</AppText>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View>
+                <View style={styles.dividerRow}>
+                  <View style={styles.divider} />
+                  <AppText style={styles.dividerText}>or</AppText>
+                  <View style={styles.divider} />
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('PlanCreate', { currentUser: currentUser });
+                  }}
+                >
+                  <AppText style={styles.activityLowerLink}>Plan Custom Event</AppText>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-
-          <View>
-            <View style={styles.dividerRow}>
-              <View style={styles.divider} />
-              <AppText style={styles.dividerText}>or</AppText>
-              <View style={styles.divider} />
-            </View>
-            <TouchableOpacity>
-              <AppText style={styles.activityLowerLink}>Plan Custom Event</AppText>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </Screen>
+          {modal && <ActivityModal modal={modal} setModal={setModal} page={page} />}
+        </Screen>
+      </ScrollView>
+    </GestureRecognizerView>
   );
 };
 
@@ -201,6 +232,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 29,
     marginTop: 20,
+    marginBottom: 46,
     textDecorationLine: 'underline',
     textAlign: 'center',
   },
