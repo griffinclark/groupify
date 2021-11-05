@@ -1,6 +1,61 @@
+type Plan @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String!
+  description: String
+  location: String
+  placeID: String
+  date: AWSDate
+  time: AWSTime
+  creatorID: ID!
+  creator: User @connection
+  arbitrations: [PlanArbitration] @connection(keyName: "byPlan", fields: ["id"])
+  Invitees: [Invitee] @connection(keyName: "byPlan", fields: ["id"])
+}
+
+type PlanArbitration @model @auth(rules: [{allow: public}]) @key(name: "byPlan", fields: ["planID"]) {
+  id: ID!
+  stat: Status
+  original_description: String
+  proposed_description: String
+  value_count: Int
+  planID: ID
+  createdBy: Invitee @connection
+  Plan: Plan @connection
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+type Invitee @model @auth(rules: [{allow: public}]) @key(name: "byPlan", fields: ["planID"]) {
+  id: ID!
+  name: String!
+  phoneNumber: AWSPhone!
+  status: Status!
+  pushToken: String
+  planID: ID
+  Plan: Plan @connection
+}
+
+type Availability @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Sunday: [AWSTime]
+  Monday: [AWSTime]
+  Tuesday: [AWSTime]
+  Wednesday: [AWSTime]
+  Thursday: [AWSTime]
+  Friday: [AWSTime]
+  Saturday: [AWSTime]
+}
+
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
-  plan: String
-  test: String
-  tested: String
+  phoneNumber: AWSPhone!
+  name: String!
+  pushToken: String!
+  friends: ID
+  Availability: Availability @connection
 }
+ 
