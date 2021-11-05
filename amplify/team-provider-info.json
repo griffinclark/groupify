@@ -10,6 +10,11 @@
       "StackName": "amplify-munchkinlabs-dev-24906",
       "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-munchkinlabs-dev-24906/69a6cc00-3d11-11ec-8752-065c86bf2b8f",
       "AmplifyAppId": "d3e9cjhdj2sh2z"
+    },
+    "categories": {
+      "auth": {
+        "munchkinlabse8bd279ee8bd279e": {}
+      }
     }
   }
 }
