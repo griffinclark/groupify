@@ -25,7 +25,7 @@ import { Welcome } from '../screens/Welcome';
 import { PlanIndex } from '../screens/PlanIndex';
 import { EditPlan } from '../screens/EditPlan';
 import { ActivitySelector } from '../screens/ActivitySelector';
-import { ActivityMap } from '../screens/ActivityMap';
+import { ActivityResults } from '../screens/ActivityResults';
 
 export type RoutePropParams = {
   params: {
@@ -116,7 +116,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="ViewPlans" component={PlanIndex} options={{ headerShown: false }} />
         <Stack.Screen name="EditPlan" component={EditPlan} options={{ headerShown: false }} />
         <Stack.Screen name="ActivitySelector" component={ActivitySelector} options={{ headerShown: false }} />
-        <Stack.Screen name="ActivityMap" component={ActivityMap} options={{ headerShown: false }} />
+        <Stack.Screen name="ActivityResults" component={ActivityResults} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -25,7 +25,7 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
   return (
     <View style={styles.activities}>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity onPress={() => handleActivity('food')}>
+        <TouchableOpacity onPress={() => handleActivity('restaurant')}>
           <Image source={require('../../assets/activity-food.png')} />
           <AppText style={styles.activityText}>Get Food</AppText>
         </TouchableOpacity>
@@ -98,7 +98,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
   }, []);
 
   const handleActivity = (activity: string) => {
-    navigation.navigate('ActivityMap', { activity: activity });
+    navigation.navigate('ActivityResults', { activity: activity });
   };
 
   return (
