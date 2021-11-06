@@ -17,11 +17,15 @@ export interface Props {
   route: RoutePropParams;
 }
 
-const PageOne: React.FC = () => {
+export interface PageProps {
+  handleActivity: (activity: string) => void;
+}
+
+const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
   return (
     <View style={styles.activities}>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleActivity('food')}>
           <Image source={require('../../assets/activity-food.png')} />
           <AppText style={styles.activityText}>Get Food</AppText>
         </TouchableOpacity>
@@ -52,7 +56,7 @@ const PageOne: React.FC = () => {
   );
 };
 
-const PageTwo: React.FC = () => {
+const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
   return (
     <View style={styles.activities}>
       <View style={styles.activitiesRow}>
@@ -93,6 +97,10 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
     awaitUser();
   }, []);
 
+  const handleActivity = (activity: string) => {
+    navigation.navigate('ActivityMap', { activity: activity });
+  };
+
   return (
     <GestureRecognizerView
       /* eslint-disable */
@@ -130,7 +138,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
                   <AppText style={styles.questionText}>?</AppText>
                 </TouchableOpacity>
 
-                {page === 1 ? <PageOne /> : <PageTwo />}
+                {page === 1 ? <PageOne handleActivity={handleActivity} /> : <PageTwo handleActivity={handleActivity} />}
 
                 <View style={styles.switch}>
                   <View style={page === 1 ? styles.active : styles.inactive} />
