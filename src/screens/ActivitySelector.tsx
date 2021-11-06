@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { BackChevronIcon, SettingsCogIcon } from '../../assets/Icons/IconExports';
+import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View, TextInput } from 'react-native';
+import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { AppText, Screen } from '../atoms/AtomsExports';
-import { User, Plan, Invitee } from '../models';
-import { getCurrentUser, removePastPlans } from './../res/utilFunctions';
-import { DataStore } from '@aws-amplify/datastore';
+import { User } from '../models';
+import { getCurrentUser } from './../res/utilFunctions';
 import { ActivityModal } from '../molecules/ActivityModal';
 import GestureRecognizerView from 'rn-swipe-gestures';
 
@@ -17,9 +16,70 @@ export interface Props {
   route: RoutePropParams;
 }
 
+const PageOne: React.FC = () => {
+  return (
+    <View style={styles.activities}>
+      <View style={styles.activitiesRow}>
+        <TouchableOpacity>
+          <Image source={require('../../assets/activity-food.png')} />
+          <AppText style={styles.activityText}>Get Food</AppText>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image source={require('../../assets/activity-outside.png')} />
+          <AppText style={styles.activityText}>Go Outside</AppText>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image source={require('../../assets/activity-gym.png')} />
+          <AppText style={styles.activityText}>Get Fit</AppText>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.activitiesRow}>
+        <TouchableOpacity>
+          <Image source={require('../../assets/activity-shopping.png')} />
+          <AppText style={styles.activityText}>Get Shopping</AppText>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image source={require('../../assets/activity-coffee.png')} />
+          <AppText style={styles.activityText}>Get Coffee</AppText>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image source={require('../../assets/activity-relax.png')} />
+          <AppText style={styles.activityText}>Get Relaxed</AppText>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const PageTwo: React.FC = () => {
+  return (
+    <View style={styles.activities}>
+      <View style={styles.activitiesRow}>
+        <TouchableOpacity>
+          <Image source={require('../../assets/activity-bar.png')} />
+          <AppText style={styles.activityText}>Nightlife</AppText>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image source={require('../../assets/activity-entertainment.png')} />
+          <AppText style={styles.activityText}>Entertainment</AppText>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image source={require('../../assets/activity-art.png')} />
+          <AppText style={styles.activityText}>Art & Culture</AppText>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.activitiesRow}>
+        <TouchableOpacity>
+          <Image source={require('../../assets/activity-fav.png')} />
+          <AppText style={styles.activityText}>Favorites</AppText>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
 export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
-  const [plan, setPlan] = useState<Plan>();
   const [modal, setModal] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
 
@@ -27,36 +87,9 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
     const awaitUser = async () => {
       const user = await getCurrentUser();
       setCurrentUser(user);
-
-      const userCreatedPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
-
-      if (userCreatedPlans[0]) {
-        setPlan(userCreatedPlans[0]);
-      } else {
-        const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
-        let invitedPlans = removePastPlans(
-          invitees
-            .map((invitee) => {
-              return invitee.plan;
-            })
-            .filter((item): item is Plan => item !== undefined),
-        );
-        if (currentUser) invitedPlans = invitedPlans.filter((item): item is Plan => item.creatorID !== currentUser.id);
-        setPlan(invitedPlans[0]);
-      }
     };
     awaitUser();
   }, []);
-
-  const handleSwipe = (dir: string) => {
-    if (modal) {
-      if (dir === 'left') {
-        setPage(2);
-      } else {
-        setPage(1);
-      }
-    }
-  };
 
   return (
     <GestureRecognizerView
@@ -64,8 +97,8 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
       // @ts-expect-error
       config={{ detectSwipeDown: false, detectSwipeUp: false }}
       /* eslint-enable */
-      onSwipeLeft={() => handleSwipe('left')}
-      onSwipeRight={() => handleSwipe('right')}
+      onSwipeLeft={() => setPage(2)}
+      onSwipeRight={() => setPage(1)}
     >
       <ScrollView testID="ActivitySelectorScreen">
         <Screen>
@@ -75,57 +108,28 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
                 onPress={() => {
                   navigation.goBack();
                 }}
-                height="15"
-                width="7.5"
               />
-              <AppText style={styles.navbarText}>CREATE A PLAN</AppText>
-              <SettingsCogIcon
-                onPress={() => {
-                  navigation.navigate('Profile', {
-                    currentUser: currentUser,
-                    currentUserPlan: plan,
-                  });
-                }}
-              />
+              <AppText style={styles.navbarText}>Activity Selector</AppText>
             </View>
-            <Image source={require('../../assets/activity-selector.png')} />
-            {/* <View style={styles.description}>
-            <AppText style={styles.descriptionText}>What do you want to do today?</AppText>
-          </View> */}
+            {/* <Image source={require('../../assets/activity-selector.png')} /> */}
+            <Image
+              style={{ position: 'absolute', top: -163, width: Dimensions.get('window').width, zIndex: -10 }}
+              source={require('../../assets/SplashScreen.png')}
+            />
+            <View style={styles.description}>
+              <AppText style={styles.descriptionText}>What do you want to do today?</AppText>
+              <TextInput placeholder="Search for Restaurants, Parks, ..." style={styles.input} />
+            </View>
             <View style={styles.activitySelector}>
-              <View style={styles.activities}>
-                <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
-                  <AppText style={styles.questionText}>?</AppText>
-                </TouchableOpacity>
+              <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
+                <AppText style={styles.questionText}>?</AppText>
+              </TouchableOpacity>
 
-                <View style={styles.activitiesRow}>
-                  <TouchableOpacity>
-                    <Image source={require('../../assets/activity-food.png')} />
-                    <AppText style={styles.activityText}>Get Food</AppText>
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Image source={require('../../assets/activity-outside.png')} />
-                    <AppText style={styles.activityText}>Go Outside</AppText>
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Image source={require('../../assets/activity-gym.png')} />
-                    <AppText style={styles.activityText}>Get Fit</AppText>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.activitiesRow}>
-                  <TouchableOpacity>
-                    <Image source={require('../../assets/activity-shopping.png')} />
-                    <AppText style={styles.activityText}>Get Shopping</AppText>
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Image source={require('../../assets/activity-coffee.png')} />
-                    <AppText style={styles.activityText}>Get Coffee</AppText>
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Image source={require('../../assets/activity-relax.png')} />
-                    <AppText style={styles.activityText}>Get Relaxed</AppText>
-                  </TouchableOpacity>
-                </View>
+              {page === 1 ? <PageOne /> : <PageTwo />}
+
+              <View style={styles.switch}>
+                <View style={page === 1 ? styles.active : styles.inactive} />
+                <View style={page === 1 ? styles.inactive : styles.active} />
               </View>
 
               <View>
@@ -134,17 +138,20 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
                   <AppText style={styles.dividerText}>or</AppText>
                   <View style={styles.divider} />
                 </View>
+
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('PlanCreate', { currentUser: currentUser });
                   }}
+                  style={styles.activityLowerLink}
                 >
-                  <AppText style={styles.activityLowerLink}>Plan Custom Event</AppText>
+                  <AppText style={styles.activityLowerLinkText}>Plan Custom Event!</AppText>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-          {modal && <ActivityModal modal={modal} setModal={setModal} page={page} />}
+
+          {modal && <ActivityModal modal={modal} setModal={setModal} />}
         </Screen>
       </ScrollView>
     </GestureRecognizerView>
@@ -152,35 +159,49 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
 };
 
 const styles = StyleSheet.create({
-  activitySelectorContainer: {},
+  activitySelectorContainer: {
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    minHeight: Dimensions.get('window').height,
+  },
   navbar: {
-    alignItems: 'center',
+    backgroundColor: '#fff',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     paddingVertical: 10,
-    borderBottomColor: 'rgba(139, 139, 139, .3)',
-    borderBottomWidth: 1,
+    height: 99,
   },
   navbarText: {
-    fontSize: 16,
+    fontSize: 30,
     fontWeight: '700',
-    lineHeight: 23,
+    color: '#31A59F',
+    marginTop: -4,
+    marginLeft: 18,
   },
   description: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 190,
-    paddingHorizontal: 50,
-
-    backgroundColor: 'salmon',
+    height: 140,
   },
   descriptionText: {
-    fontSize: 30,
-    lineHeight: 44,
+    fontSize: 24,
+    position: 'absolute',
+    top: -32,
   },
-  activitySelector: {},
-  activities: {},
+  activitySelector: {
+    backgroundColor: '#fff',
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    height: 38,
+    paddingLeft: 5,
+    marginBottom: 55,
+    width: 262,
+  },
+  activities: {
+    height: 379,
+  },
   question: {
     alignItems: 'center',
     backgroundColor: '#31A59F',
@@ -207,11 +228,29 @@ const styles = StyleSheet.create({
   },
   activityText: {
     fontSize: 20,
-    marginBottom: 15,
+    marginBottom: 19,
     marginTop: 10,
     textAlign: 'center',
   },
-  // activityLower: { backgroundColor: 'red' },
+  switch: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 23,
+  },
+  active: {
+    backgroundColor: '#31A59F',
+    borderRadius: 5.5,
+    height: 11,
+    marginHorizontal: 3,
+    width: 11,
+  },
+  inactive: {
+    backgroundColor: '#C4C4C4',
+    borderRadius: 5.5,
+    height: 11,
+    marginHorizontal: 3,
+    width: 11,
+  },
   dividerRow: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -225,15 +264,22 @@ const styles = StyleSheet.create({
   dividerText: {
     color: '#8b8b8b',
     fontSize: 24,
-    lineHeight: 34,
   },
   activityLowerLink: {
-    color: '#31A59F',
-    fontSize: 20,
-    lineHeight: 29,
+    alignSelf: 'center',
+    borderColor: '#31A59F',
+    borderRadius: 5,
+    borderWidth: 2,
     marginTop: 20,
     marginBottom: 46,
-    textDecorationLine: 'underline',
+    paddingVertical: 10,
+    width: 267,
+  },
+  activityLowerLinkText: {
+    color: '#31A59F',
+    fontSize: 20,
+    fontWeight: '700',
+    lineHeight: 29,
     textAlign: 'center',
   },
 });
