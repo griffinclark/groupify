@@ -68,12 +68,7 @@ const styles = StyleSheet.create({
     width: 322,
   },
   x: {
-    // alignSelf: 'flex-end',
     fontSize: 40,
-    // right: 20,
-    // top: -11,
-    // position: 'absolute',
-    // zIndex: 100,
   },
   modalHeader: {
     fontSize: 24,

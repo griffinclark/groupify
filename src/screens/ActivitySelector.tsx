@@ -7,6 +7,7 @@ import { User } from '../models';
 import { getCurrentUser } from './../res/utilFunctions';
 import { ActivityModal } from '../molecules/ActivityModal';
 import GestureRecognizerView from 'rn-swipe-gestures';
+import Constants from 'expo-constants';
 
 export interface Props {
   navigation: {
@@ -82,6 +83,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
   const [currentUser, setCurrentUser] = useState<User>();
   const [modal, setModal] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
+  const [background, setBackground] = useState<boolean>(false);
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -100,60 +102,72 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
       onSwipeLeft={() => setPage(2)}
       onSwipeRight={() => setPage(1)}
     >
-      <ScrollView testID="ActivitySelectorScreen">
-        <Screen>
-          <View style={styles.activitySelectorContainer}>
-            <View style={styles.navbar}>
-              <BackChevronIcon
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              />
-              <AppText style={styles.navbarText}>Activity Selector</AppText>
-            </View>
-            {/* <Image source={require('../../assets/activity-selector.png')} /> */}
-            <Image
-              style={{ position: 'absolute', top: -163, width: Dimensions.get('window').width, zIndex: -10 }}
-              source={require('../../assets/SplashScreen.png')}
-            />
-            <View style={styles.description}>
-              <AppText style={styles.descriptionText}>What do you want to do today?</AppText>
-              <TextInput placeholder="Search for Restaurants, Parks, ..." style={styles.input} />
-            </View>
-            <View style={styles.activitySelector}>
-              <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
-                <AppText style={styles.questionText}>?</AppText>
-              </TouchableOpacity>
-
-              {page === 1 ? <PageOne /> : <PageTwo />}
-
-              <View style={styles.switch}>
-                <View style={page === 1 ? styles.active : styles.inactive} />
-                <View style={page === 1 ? styles.inactive : styles.active} />
+      <View
+        style={{ position: 'absolute', width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+      >
+        <ScrollView testID="ActivitySelectorScreen">
+          <Screen>
+            <View style={styles.activitySelectorContainer}>
+              <View style={styles.navbar}>
+                <BackChevronIcon
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                />
+                <AppText style={styles.navbarText}>Activity Selector</AppText>
               </View>
+              {/* <Image source={require('../../assets/activity-selector.png')} /> */}
+              <Image
+                style={{ position: 'absolute', top: -163, width: Dimensions.get('window').width, zIndex: -10 }}
+                source={require('../../assets/SplashScreen.png')}
+              />
+              <View style={styles.description}>
+                <AppText style={styles.descriptionText}>What do you want to do today?</AppText>
+                {/* <TextInput placeholder="Search for Restaurants, Parks, ..." style={styles.input} /> */}
+              </View>
+              <View style={styles.activitySelector}>
+                <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
+                  <AppText style={styles.questionText}>?</AppText>
+                </TouchableOpacity>
 
-              <View>
-                <View style={styles.dividerRow}>
-                  <View style={styles.divider} />
-                  <AppText style={styles.dividerText}>or</AppText>
-                  <View style={styles.divider} />
+                {page === 1 ? <PageOne /> : <PageTwo />}
+
+                <View style={styles.switch}>
+                  <View style={page === 1 ? styles.active : styles.inactive} />
+                  <View style={page === 1 ? styles.inactive : styles.active} />
                 </View>
 
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('PlanCreate', { currentUser: currentUser });
-                  }}
-                  style={styles.activityLowerLink}
-                >
-                  <AppText style={styles.activityLowerLinkText}>Plan Custom Event!</AppText>
-                </TouchableOpacity>
+                <View>
+                  <View style={styles.dividerRow}>
+                    <View style={styles.divider} />
+                    <AppText style={styles.dividerText}>or</AppText>
+                    <View style={styles.divider} />
+                  </View>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('PlanCreate', { currentUser: currentUser });
+                    }}
+                    style={styles.activityLowerLink}
+                  >
+                    <AppText style={styles.activityLowerLinkText}>Plan Custom Event!</AppText>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
 
-          {modal && <ActivityModal modal={modal} setModal={setModal} />}
-        </Screen>
-      </ScrollView>
+            {modal && <ActivityModal modal={modal} setModal={setModal} />}
+            <View style={[background ? styles.inputBackground : styles.inputContainer]}>
+              <TextInput
+                placeholder="Search for Restaurants, Parks, ..."
+                onBlur={() => setBackground(false)}
+                onFocus={() => setBackground(true)}
+                style={styles.input}
+              />
+            </View>
+          </Screen>
+        </ScrollView>
+      </View>
     </GestureRecognizerView>
   );
 };
@@ -195,9 +209,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 5,
     height: 38,
-    paddingLeft: 5,
     marginBottom: 55,
+    paddingLeft: 5,
     width: 262,
+
+    marginTop: 125 + Constants.statusBarHeight,
+  },
+  inputContainer: {
+    alignSelf: 'center',
+    position: 'absolute',
+  },
+  inputBackground: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,.5)',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    top: 0,
+    // paddingTop: 125 + Constants.statusBarHeight,
   },
   activities: {
     height: 379,
