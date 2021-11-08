@@ -4,8 +4,10 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
+import { ActivityMapCard } from '../molecules/ActivityMapCard';
 
 export interface Props {
+  handleCreate: () => void;
   locations: any[];
   navigation: {
     navigate: (ev: string, {}) => void;
@@ -16,7 +18,7 @@ export interface Props {
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
-export const ActivityMap: React.FC<Props> = ({ locations, navigation, route }: Props) => {
+export const ActivityMap: React.FC<Props> = ({ handleCreate, locations, navigation, route }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
@@ -27,8 +29,7 @@ export const ActivityMap: React.FC<Props> = ({ locations, navigation, route }: P
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
   });
-
-  console.log(locations[0]);
+  const [card, setCard] = useState();
 
   useEffect(() => {
     (async () => {
@@ -69,9 +70,11 @@ export const ActivityMap: React.FC<Props> = ({ locations, navigation, route }: P
             }}
             icon={require('../../assets/MapMarker.png')}
             key={loc.place_id}
+            onPress={() => setCard(loc)}
           />
         ))}
       </MapView>
+      {card && <ActivityMapCard handleCreate={handleCreate} location={card} />}
     </View>
   );
 };
@@ -80,6 +83,6 @@ const styles = StyleSheet.create({
   container: {},
   map: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height - 150,
   },
 });

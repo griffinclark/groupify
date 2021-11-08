@@ -34,7 +34,6 @@ export const ActivityResults: React.FC<Props> = ({ activity, navigation, route }
   });
   const [page, setPage] = useState<string>('map');
   const [locations, setLocations] = useState([]);
-  console.log(locations[0]);
 
   useEffect(() => {
     if (userLocation.default) {
@@ -81,6 +80,10 @@ export const ActivityResults: React.FC<Props> = ({ activity, navigation, route }
     const response = await fetch(search);
     const detail = await response.json();
     setLocations(detail.results);
+  };
+
+  const handleCreate = () => {
+    console.log('hit');
   };
 
   return (
