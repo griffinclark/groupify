@@ -89,7 +89,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
         password,
         attributes: {
           phone_number: formatPhone,
-          name: name,
         },
       });
       setSecureStoreItem('phone', phone);
@@ -97,7 +96,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       console.log('user successfully created');
       setError(undefined);
       navigation.push('CreateAccount', { step: 'validate', phone: formatPhone });
-      await Analytics.logEvent('sign_up', {});
+      await Analytics.logEvent('sign_up');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log('Error: ', err);

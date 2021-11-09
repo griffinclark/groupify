@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "munchkinlabse8bd279e_identitypool_e8bd279e",
+    "identityPoolName": "munchkinlabse66814ed_identitypool_e66814ed",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "munchke8bd279e",
-    "userPoolName": "munchkinlabse8bd279e_userpool_e8bd279e",
+    "resourceNameTruncated": "munchke66814ed",
+    "userPoolName": "groupifyUserPool",
     "autoVerifiedAttributes": [
         "phone_number"
     ],
@@ -18,7 +18,6 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "name",
         "phone_number"
     ],
     "aliasAttributes": [],
@@ -30,10 +29,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "munchke8bd279e_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "groupie66814ed_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "e8bd279e",
-    "resourceName": "munchkinlabse8bd279ee8bd279e",
+    "sharedId": "e66814ed",
+    "resourceName": "groupifyAuth",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [

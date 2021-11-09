@@ -85,6 +85,7 @@ export declare class PlanArbitration {
   readonly Plan?: Plan;
   readonly createdAt?: string;
   readonly updatedAt?: string;
+  readonly planArbitrationsId?: string;
   constructor(init: ModelInit<PlanArbitration, PlanArbitrationMetaData>);
   static copyOf(source: PlanArbitration, mutator: (draft: MutableModel<PlanArbitration, PlanArbitrationMetaData>) => MutableModel<PlanArbitration, PlanArbitrationMetaData> | void): PlanArbitration;
 }
@@ -99,6 +100,7 @@ export declare class Invitee {
   readonly Plan?: Plan;
   readonly createdAt?: string;
   readonly updatedAt?: string;
+  readonly planInviteesId?: string;
   constructor(init: ModelInit<Invitee, InviteeMetaData>);
   static copyOf(source: Invitee, mutator: (draft: MutableModel<Invitee, InviteeMetaData>) => MutableModel<Invitee, InviteeMetaData> | void): Invitee;
 }

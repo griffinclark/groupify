@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "munchkinlabse8bd279ee8bd279e": {}
+        "munchkinlabse8bd279ee8bd279e": {},
+        "groupifyAuth": {}
       }
     }
   }
