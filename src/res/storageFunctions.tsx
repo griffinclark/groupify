@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Event, Contact } from '../res/dataModels';
+import { Event, Contact } from './dataModels';
 
 // Functions for storing user events
 

@@ -50,8 +50,21 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
           <AppText style={styles.phone}>{friend.phoneNumber}</AppText>
         </View>
       </View>
-      <TouchableOpacity style={selected ? styles.buttonSelected : styles.button} onPress={handlePress}>
-        {selected && <Icon size={32} containerStyle={styles.icon} color={'white'} name="check" type="entypo" />}
+      <TouchableOpacity
+        style={selected ? styles.buttonSelected : styles.button}
+        onPress={handlePress}
+        testID="ContactTile"
+      >
+        {selected && (
+          <Icon
+            testID="SelectedIcon"
+            size={32}
+            containerStyle={styles.icon}
+            color={'white'}
+            name="check"
+            type="entypo"
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
