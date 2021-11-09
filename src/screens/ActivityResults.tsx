@@ -14,13 +14,12 @@ export interface Props {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
-  activity: string;
   route: RoutePropParams;
 }
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
-export const ActivityResults: React.FC<Props> = ({ activity, navigation, route }: Props) => {
+export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
@@ -34,13 +33,15 @@ export const ActivityResults: React.FC<Props> = ({ activity, navigation, route }
   });
   const [page, setPage] = useState<string>('map');
   const [locations, setLocations] = useState([]);
+  const [title, setTitle] = useState<string>();
 
   useEffect(() => {
     if (userLocation.default) {
       getUserLocation();
     }
+    update();
     queryActivities();
-  }, [userLocation, activity]);
+  }, [userLocation, route.params.activity]);
 
   const getUserLocation = async () => {
     const { status } = await Location.requestPermissionsAsync();
@@ -69,12 +70,49 @@ export const ActivityResults: React.FC<Props> = ({ activity, navigation, route }
     }
   };
 
+  const update = () => {
+    switch (route.params.activity) {
+      case 'restaurant':
+        setTitle('Get Food');
+        break;
+      case 'park':
+        setTitle('Go Outside');
+        break;
+      case 'gym':
+        setTitle('Get Fit');
+        break;
+      case 'shopping':
+        setTitle('Go Shopping');
+        break;
+      case 'coffee':
+        setTitle('Go Shopping');
+        break;
+      case 'relax':
+        setTitle('Get Relaxed');
+        break;
+      case 'bar':
+        setTitle('Nightlife');
+        break;
+      case 'entertainment':
+        setTitle('Entertainment');
+        break;
+      case 'museum':
+        setTitle('Art & Culture');
+        break;
+      case 'favorites':
+        setTitle('Favorites');
+        break;
+      default:
+        setTitle('Search Results');
+    }
+  };
+
   const queryActivities = async () => {
     const search =
       'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
       `location=${userLocation.latitude},${userLocation.longitude}` +
       `&radius=${'3000'}` +
-      `&query=${activity}` +
+      `&query=${route.params.activity}` +
       `&key=${GOOGLE_PLACES_API_KEY}`;
 
     const response = await fetch(search);
@@ -96,7 +134,7 @@ export const ActivityResults: React.FC<Props> = ({ activity, navigation, route }
                 navigation.goBack();
               }}
             />
-            <AppText style={styles.navbarText}>Activity Map</AppText>
+            <AppText style={styles.navbarText}>{title}</AppText>
           </View>
           <TouchableOpacity>
             <AppText style={styles.favorites}>Favorites</AppText>

@@ -88,6 +88,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
   const [modal, setModal] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [background, setBackground] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -170,6 +171,8 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
                 placeholder="Search for Restaurants, Parks, ..."
                 onBlur={() => setBackground(false)}
                 onFocus={() => setBackground(true)}
+                onChangeText={(text) => setSearch(text)}
+                onSubmitEditing={() => handleActivity(search)}
                 style={styles.input}
               />
             </View>

@@ -19,7 +19,6 @@ interface Props {
 }
 
 export const ActivityCard: React.FC<Props> = ({ map, navigation, handleCreate, location }: Props) => {
-  console.log(location);
   const formatAddress = () => {
     if (!location.formatted_address) return null;
     const addressArr = location.formatted_address.split(',');

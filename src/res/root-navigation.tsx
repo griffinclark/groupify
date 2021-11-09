@@ -40,6 +40,7 @@ export type RoutePropParams = {
     option: string;
     accountCreated: string;
     last: string;
+    activity: string;
     data: {
       eventData: {
         friends: User[];
