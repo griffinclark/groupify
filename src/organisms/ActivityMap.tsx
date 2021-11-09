@@ -4,7 +4,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
-import { ActivityMapCard } from '../molecules/ActivityMapCard';
+import { ActivityCard } from '../molecules/ActivityCard';
 
 export interface Props {
   handleCreate: () => void;
@@ -15,8 +15,6 @@ export interface Props {
   };
   route: RoutePropParams;
 }
-
-const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
 export const ActivityMap: React.FC<Props> = ({ handleCreate, locations, navigation, route }: Props) => {
   const [userLocation, setUserLocation] = useState({
@@ -74,7 +72,11 @@ export const ActivityMap: React.FC<Props> = ({ handleCreate, locations, navigati
           />
         ))}
       </MapView>
-      {card && <ActivityMapCard handleCreate={handleCreate} location={card} />}
+      {card && (
+        <View style={{ position: 'absolute', bottom: 0 }}>
+          <ActivityCard route={route} navigation={navigation} handleCreate={handleCreate} location={card} map={true} />
+        </View>
+      )}
     </View>
   );
 };

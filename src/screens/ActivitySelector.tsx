@@ -29,25 +29,25 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <Image source={require('../../assets/activity-food.png')} />
           <AppText style={styles.activityText}>Get Food</AppText>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleActivity('park')}>
           <Image source={require('../../assets/activity-outside.png')} />
           <AppText style={styles.activityText}>Go Outside</AppText>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleActivity('gym')}>
           <Image source={require('../../assets/activity-gym.png')} />
           <AppText style={styles.activityText}>Get Fit</AppText>
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleActivity('shopping')}>
           <Image source={require('../../assets/activity-shopping.png')} />
           <AppText style={styles.activityText}>Get Shopping</AppText>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleActivity('coffee')}>
           <Image source={require('../../assets/activity-coffee.png')} />
           <AppText style={styles.activityText}>Get Coffee</AppText>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleActivity('relax')}>
           <Image source={require('../../assets/activity-relax.png')} />
           <AppText style={styles.activityText}>Get Relaxed</AppText>
         </TouchableOpacity>
@@ -60,21 +60,21 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
   return (
     <View style={styles.activities}>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleActivity('bar')}>
           <Image source={require('../../assets/activity-bar.png')} />
           <AppText style={styles.activityText}>Nightlife</AppText>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleActivity('entertainment')}>
           <Image source={require('../../assets/activity-entertainment.png')} />
           <AppText style={styles.activityText}>Entertainment</AppText>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleActivity('museum')}>
           <Image source={require('../../assets/activity-art.png')} />
           <AppText style={styles.activityText}>Art & Culture</AppText>
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleActivity('favorites')}>
           <Image source={require('../../assets/activity-fav.png')} />
           <AppText style={styles.activityText}>Favorites</AppText>
         </TouchableOpacity>

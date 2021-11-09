@@ -7,7 +7,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AppText';
 import { TEAL } from '../res/styles/Colors';
-import { ActivityMap } from '../organisms/ActivityMap';
+import { ActivityMap, ActivityList } from '../organisms/OrganismsExports';
 
 export interface Props {
   navigation: {
@@ -40,7 +40,7 @@ export const ActivityResults: React.FC<Props> = ({ activity, navigation, route }
       getUserLocation();
     }
     queryActivities();
-  }, [userLocation]);
+  }, [userLocation, activity]);
 
   const getUserLocation = async () => {
     const { status } = await Location.requestPermissionsAsync();
@@ -74,7 +74,7 @@ export const ActivityResults: React.FC<Props> = ({ activity, navigation, route }
       'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
       `location=${userLocation.latitude},${userLocation.longitude}` +
       `&radius=${'3000'}` +
-      `&query=${'restaurant'}` +
+      `&query=${activity}` +
       `&key=${GOOGLE_PLACES_API_KEY}`;
 
     const response = await fetch(search);
@@ -118,7 +118,11 @@ export const ActivityResults: React.FC<Props> = ({ activity, navigation, route }
         </View>
       </View>
 
-      <ActivityMap locations={locations} navigation={navigation} route={route} />
+      {page === 'map' ? (
+        <ActivityMap handleCreate={handleCreate} locations={locations} navigation={navigation} route={route} />
+      ) : (
+        <ActivityList handleCreate={handleCreate} locations={locations} navigation={navigation} route={route} />
+      )}
     </View>
   );
 };

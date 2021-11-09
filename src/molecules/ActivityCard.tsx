@@ -5,14 +5,23 @@ import { FavoriteIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AtomsExports';
 import { TEAL, YELLOW } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
   handleCreate: () => void;
   location: any;
+  map: boolean;
+  navigation: {
+    navigate: (ev: string, {}) => void;
+    goBack: () => void;
+  };
+  route: RoutePropParams;
 }
 
-export const ActivityMapCard: React.FC<Props> = ({ handleCreate, location }: Props) => {
+export const ActivityCard: React.FC<Props> = ({ map, navigation, handleCreate, location }: Props) => {
+  console.log(location);
   const formatAddress = () => {
+    if (!location.formatted_address) return null;
     const addressArr = location.formatted_address.split(',');
     const firstLine = addressArr.slice(0, -2);
     const lastLine = addressArr.slice(-2);
@@ -93,9 +102,16 @@ export const ActivityMapCard: React.FC<Props> = ({ handleCreate, location }: Pro
         </MapView>
         <FavoriteIcon favorited={false} />
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleCreate}>
-        <AppText style={styles.buttonText}>Create Plan</AppText>
-      </TouchableOpacity>
+      <View style={styles.cardBottom}>
+        {map != true && (
+          <TouchableOpacity style={styles.locationButton} onPress={handleCreate}>
+            <AppText style={styles.locationButtonText}>Show Location</AppText>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity style={styles.button} onPress={handleCreate}>
+          <AppText style={styles.buttonText}>Create Plan</AppText>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -103,8 +119,6 @@ export const ActivityMapCard: React.FC<Props> = ({ handleCreate, location }: Pro
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    position: 'absolute',
-    bottom: 0,
     height: 243,
     paddingTop: 18,
     paddingHorizontal: 13,
@@ -132,19 +146,37 @@ const styles = StyleSheet.create({
     marginLeft: 19,
     marginRight: 17,
   },
+  cardBottom: {
+    alignSelf: 'flex-end',
+    flexDirection: 'row',
+    marginRight: 32,
+    marginTop: 8,
+  },
   button: {
     alignItems: 'center',
-    alignSelf: 'flex-end',
     backgroundColor: TEAL,
     borderRadius: 5,
     justifyContent: 'center',
-    marginTop: 8,
-    marginRight: 32,
+    marginLeft: 16,
     height: 49,
     width: 150,
   },
   buttonText: {
     color: '#fff',
+    fontSize: 20,
+    fontWeight: '900',
+  },
+  locationButton: {
+    alignItems: 'center',
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: TEAL,
+    height: 49,
+    justifyContent: 'center',
+    width: 150,
+  },
+  locationButtonText: {
+    color: TEAL,
     fontSize: 20,
     fontWeight: '900',
   },
