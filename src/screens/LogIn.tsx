@@ -56,6 +56,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     await registerForPushNotifications();
     const token = await getUserPushToken();
     const userInfo = await Auth.currentUserInfo();
+    console.log('userInfo', userInfo);
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const userQuery: any = await API.graphql({
       query: queries.usersByPhoneNumber,
@@ -84,10 +85,9 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       const newUser = await DataStore.save(
         new User({
           phoneNumber: userInfo.attributes.phone_number,
-          email: 'placeHolder@temporaryWorkAround.com',
           name: userInfo.attributes.name,
           pushToken: newToken,
-          friends: [],
+          
         }),
       );
       console.log('Created new user:');
