@@ -6,6 +6,7 @@ import { ActivityCard } from '../molecules/ActivityCard';
 export interface Props {
   handleCreate: () => void;
   locations: any[];
+  favorites: any[];
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
@@ -13,13 +14,20 @@ export interface Props {
   route: RoutePropParams;
 }
 
-export const ActivityList: React.FC<Props> = ({ locations, handleCreate, navigation, route }: Props) => {
+export const ActivityList: React.FC<Props> = ({ favorites, locations, handleCreate, navigation, route }: Props) => {
   return (
     <View>
       <FlatList
         data={locations}
         renderItem={({ item }) => (
-          <ActivityCard handleCreate={handleCreate} navigation={navigation} location={item} route={route} map={false} />
+          <ActivityCard
+            favorites={favorites}
+            handleCreate={handleCreate}
+            navigation={navigation}
+            location={item}
+            route={route}
+            map={false}
+          />
         )}
         keyExtractor={(item) => item.place_id}
         ItemSeparatorComponent={() => <View style={styles.separator} />}

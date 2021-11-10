@@ -26,29 +26,41 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
     <View style={styles.activities}>
       <View style={styles.activitiesRow}>
         <TouchableOpacity onPress={() => handleActivity('restaurant')}>
-          <Image source={require('../../assets/activity-food.png')} />
+          <View style={styles.activitiesImageContainer}>
+            <Image style={styles.activitiesImage} source={require('../../assets/activity-food.png')} />
+          </View>
           <AppText style={styles.activityText}>Get Food</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('park')}>
-          <Image source={require('../../assets/activity-outside.png')} />
+          <View style={styles.activitiesImageContainer}>
+            <Image style={styles.activitiesImage} source={require('../../assets/activity-outside.png')} />
+          </View>
           <AppText style={styles.activityText}>Go Outside</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('gym')}>
-          <Image source={require('../../assets/activity-gym.png')} />
+          <View style={styles.activitiesImageContainer}>
+            <Image style={styles.activitiesImage} source={require('../../assets/activity-gym.png')} />
+          </View>
           <AppText style={styles.activityText}>Get Fit</AppText>
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
         <TouchableOpacity onPress={() => handleActivity('shopping')}>
-          <Image source={require('../../assets/activity-shopping.png')} />
+          <View style={styles.activitiesImageContainer}>
+            <Image style={styles.activitiesImage} source={require('../../assets/activity-shopping.png')} />
+          </View>
           <AppText style={styles.activityText}>Get Shopping</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('coffee')}>
-          <Image source={require('../../assets/activity-coffee.png')} />
+          <View style={styles.activitiesImageContainer}>
+            <Image style={styles.activitiesImage} source={require('../../assets/activity-coffee.png')} />
+          </View>
           <AppText style={styles.activityText}>Get Coffee</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('relax')}>
-          <Image source={require('../../assets/activity-relax.png')} />
+          <View style={styles.activitiesImageContainer}>
+            <Image style={styles.activitiesImage} source={require('../../assets/activity-relax.png')} />
+          </View>
           <AppText style={styles.activityText}>Get Relaxed</AppText>
         </TouchableOpacity>
       </View>
@@ -61,15 +73,21 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
     <View style={styles.activities}>
       <View style={styles.activitiesRow}>
         <TouchableOpacity onPress={() => handleActivity('bar')}>
-          <Image source={require('../../assets/activity-bar.png')} />
+          <View style={styles.activitiesImageContainer}>
+            <Image style={styles.activitiesImage} source={require('../../assets/activity-bar.png')} />
+          </View>
           <AppText style={styles.activityText}>Nightlife</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('entertainment')}>
-          <Image source={require('../../assets/activity-entertainment.png')} />
+          <View style={styles.activitiesImageContainer}>
+            <Image style={styles.activitiesImage} source={require('../../assets/activity-entertainment.png')} />
+          </View>
           <AppText style={styles.activityText}>Entertainment</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('museum')}>
-          <Image source={require('../../assets/activity-art.png')} />
+          <View style={styles.activitiesImageContainer}>
+            <Image style={styles.activitiesImage} source={require('../../assets/activity-art.png')} />
+          </View>
           <AppText style={styles.activityText}>Art & Culture</AppText>
         </TouchableOpacity>
       </View>
@@ -266,6 +284,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 30,
+  },
+  activitiesImageContainer: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderColor: '#31A59F',
+    borderRadius: 10,
+    borderWidth: 2,
+    height: 85,
+    paddingTop: 5,
+    width: 85,
+  },
+  activitiesImage: {
+    height: 70,
+    width: 70,
   },
   activityText: {
     fontSize: 20,

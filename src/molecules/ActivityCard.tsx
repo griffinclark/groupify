@@ -6,9 +6,11 @@ import { AppText } from '../atoms/AtomsExports';
 import { TEAL, YELLOW } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { RoutePropParams } from '../res/root-navigation';
+import * as SecureStore from 'expo-secure-store';
 
 interface Props {
   handleCreate: () => void;
+  favoirtes: any[];
   location: any;
   map: boolean;
   navigation: {
@@ -18,7 +20,7 @@ interface Props {
   route: RoutePropParams;
 }
 
-export const ActivityCard: React.FC<Props> = ({ map, navigation, handleCreate, location }: Props) => {
+export const ActivityCard: React.FC<Props> = ({ favoirtes, map, navigation, handleCreate, location }: Props) => {
   const formatAddress = () => {
     if (!location.formatted_address) return null;
     const addressArr = location.formatted_address.split(',');
@@ -65,6 +67,10 @@ export const ActivityCard: React.FC<Props> = ({ map, navigation, handleCreate, l
         ))}
       </View>
     );
+  };
+
+  const addFavorite = async (value: string): Promise<void> => {
+    return SecureStore.setItemAsync('favorites', value);
   };
 
   return (

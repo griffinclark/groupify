@@ -8,6 +8,7 @@ import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AppText';
 import { TEAL } from '../res/styles/Colors';
 import { ActivityMap, ActivityList } from '../organisms/OrganismsExports';
+import * as SecureStore from 'expo-secure-store';
 
 export interface Props {
   navigation: {
@@ -34,6 +35,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [page, setPage] = useState<string>('map');
   const [locations, setLocations] = useState([]);
   const [title, setTitle] = useState<string>();
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     if (userLocation.default) {
@@ -42,6 +44,10 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     update();
     queryActivities();
   }, [userLocation, route.params.activity]);
+
+  useEffect(() => {
+    getFavorites();
+  }, [favorites]);
 
   const getUserLocation = async () => {
     const { status } = await Location.requestPermissionsAsync();
@@ -120,6 +126,12 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     setLocations(detail.results);
   };
 
+  const getFavorites = async (): Promise<void> => {
+    const favorites = await SecureStore.getItemAsync('favorites');
+    console.log(favorites);
+    setFavorites([]);
+  };
+
   const handleCreate = () => {
     console.log('hit');
   };
@@ -157,9 +169,21 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
       </View>
 
       {page === 'map' ? (
-        <ActivityMap handleCreate={handleCreate} locations={locations} navigation={navigation} route={route} />
+        <ActivityMap
+          favorites={favorites}
+          handleCreate={handleCreate}
+          locations={locations}
+          navigation={navigation}
+          route={route}
+        />
       ) : (
-        <ActivityList handleCreate={handleCreate} locations={locations} navigation={navigation} route={route} />
+        <ActivityList
+          favorites={favorites}
+          handleCreate={handleCreate}
+          locations={locations}
+          navigation={navigation}
+          route={route}
+        />
       )}
     </View>
   );
