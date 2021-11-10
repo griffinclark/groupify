@@ -81,9 +81,8 @@ describe('Confirm Plan Screen', () => {
     });
 
     it('renders contacts list', async () => {
-      const { queryAllByTestId, getByText } = render(<ConfirmPlan {...mockProps} />);
+      const { getByText } = render(<ConfirmPlan {...mockProps} />);
       await waitFor(() => {
-        const contacts = queryAllByTestId('contact');
         getByText('friend1');
         getByText('friend2');
         getByText('friend3');

@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
-import { Alert, AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/AtomsExports';
+import { AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/AtomsExports';
 import { API, Auth } from 'aws-amplify';
 import { User } from '../models';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
 import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
 import Constants from 'expo-constants';
 import * as queries from '../graphql/queries';
-import * as SecureStore from 'expo-secure-store';
 
 export interface Props {
   navigation: {
@@ -45,7 +44,6 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     setEventObject(route.params.data.eventData);
     getFriends();
     createInitialMessage();
-    checkWarning();
   }, []);
 
   const getFriends = async () => {
@@ -155,20 +153,9 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     setMessage(initMessage);
   };
 
-  const checkWarning = async (): Promise<void> => {
-    const display = await SecureStore.getItemAsync('display');
-    if (!display) setDisplayWarning(true);
-  };
-
-  const disableWarning = async () => {
-    await SecureStore.setItemAsync('display', 'true');
-    setDisplayWarning(false);
-    console.log('hit');
-  };
-
   /* Contact items displayed as 'friends' temporary until friend section finished */
   return (
-    <View style={styles.screen}>
+    <View style={styles.screen} testID="PlanInviteScreen">
       <Navbar location={'PlanCreate'} navigation={navigation} data={route.params} title={'Invite Friends'} />
       <View style={styles.title}>
         <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}?</AppText>
@@ -238,16 +225,6 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           )}
         </View>
       </View>
-      {displayWarning && (
-        <TouchableWithoutFeedback
-          onPress={disableWarning}
-          style={{ position: 'absolute', bottom: 50, width: '100%', alignSelf: 'center' }}
-        >
-          <View>
-            {selectedContacts.length == 0 && <Alert status={'error'} message={'Select a contact to continue'} />}
-          </View>
-        </TouchableWithoutFeedback>
-      )}
       <BottomButton
         disabled={selectedContacts.length == 0 ? true : false}
         title="Preview Plan"
@@ -256,7 +233,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     </View>
   );
 };
-//
+
 const styles = StyleSheet.create({
   contactsScrollContainer: {
     height: Dimensions.get('window').height - Constants.statusBarHeight - 340,
