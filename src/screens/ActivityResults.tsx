@@ -128,7 +128,6 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
 
   const getFavorites = async (): Promise<void> => {
     const favorites = await SecureStore.getItemAsync('favorites');
-    console.log(favorites);
     setFavorites([]);
   };
 

@@ -72,19 +72,25 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
   return (
     <View style={styles.activities}>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity onPress={() => handleActivity('bar')}>
+        <TouchableOpacity onPress={() => handleActivity('bar')} style={{ width: Dimensions.get('window').width / 3 }}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-bar.png')} />
           </View>
           <AppText style={styles.activityText}>Nightlife</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleActivity('entertainment')}>
+        <TouchableOpacity
+          onPress={() => handleActivity('entertainment')}
+          style={{ width: Dimensions.get('window').width / 3 }}
+        >
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-entertainment.png')} />
           </View>
           <AppText style={styles.activityText}>Entertainment</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleActivity('museum')}>
+        <TouchableOpacity
+          onPress={() => handleActivity('museum')}
+          style={{ width: Dimensions.get('window').width / 3 }}
+        >
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-art.png')} />
           </View>

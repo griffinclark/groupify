@@ -9,6 +9,7 @@ import { ActivityCard } from '../molecules/ActivityCard';
 export interface Props {
   handleCreate: () => void;
   locations: any[];
+  favorites: any[];
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
@@ -16,7 +17,7 @@ export interface Props {
   route: RoutePropParams;
 }
 
-export const ActivityMap: React.FC<Props> = ({ handleCreate, locations, navigation, route }: Props) => {
+export const ActivityMap: React.FC<Props> = ({ favorites, handleCreate, locations, navigation, route }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
@@ -74,7 +75,14 @@ export const ActivityMap: React.FC<Props> = ({ handleCreate, locations, navigati
       </MapView>
       {card && (
         <View style={{ position: 'absolute', bottom: 0 }}>
-          <ActivityCard route={route} navigation={navigation} handleCreate={handleCreate} location={card} map={true} />
+          <ActivityCard
+            favorites={favorites}
+            route={route}
+            navigation={navigation}
+            handleCreate={handleCreate}
+            location={card}
+            map={true}
+          />
         </View>
       )}
     </View>
