@@ -11,7 +11,7 @@ export const ActivityModal: React.FC<Props> = ({ modal, setModal }: Props) => {
   if (!modal) return null;
   return (
     <View style={styles.modalContainer}>
-      <View style={styles.modal}>
+      <View style={styles.modal} testID="activityModal">
         <View style={{ right: 20, position: 'absolute', zIndex: 100 }}>
           <TouchableOpacity onPress={() => setModal(false)}>
             <AppText style={styles.x}>X</AppText>

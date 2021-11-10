@@ -10,7 +10,7 @@ import * as SecureStore from 'expo-secure-store';
 
 interface Props {
   handleCreate: () => void;
-  favoirtes: any[];
+  favorites: any[];
   location: any;
   map: boolean;
   navigation: {
@@ -20,7 +20,7 @@ interface Props {
   route: RoutePropParams;
 }
 
-export const ActivityCard: React.FC<Props> = ({ favoirtes, map, navigation, handleCreate, location }: Props) => {
+export const ActivityCard: React.FC<Props> = ({ favorites, map, navigation, handleCreate, location }: Props) => {
   const formatAddress = () => {
     if (!location.formatted_address) return null;
     const addressArr = location.formatted_address.split(',');

@@ -25,19 +25,19 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
   return (
     <View style={styles.activities}>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity onPress={() => handleActivity('restaurant')}>
+        <TouchableOpacity onPress={() => handleActivity('restaurant')} testID={'activity'}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-food.png')} />
           </View>
           <AppText style={styles.activityText}>Get Food</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleActivity('park')}>
+        <TouchableOpacity onPress={() => handleActivity('park')} testID={'activity'}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-outside.png')} />
           </View>
           <AppText style={styles.activityText}>Go Outside</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleActivity('gym')}>
+        <TouchableOpacity onPress={() => handleActivity('gym')} testID={'activity'}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-gym.png')} />
           </View>
@@ -45,19 +45,19 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity onPress={() => handleActivity('shopping')}>
+        <TouchableOpacity onPress={() => handleActivity('shopping')} testID={'activity'}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-shopping.png')} />
           </View>
           <AppText style={styles.activityText}>Get Shopping</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleActivity('coffee')}>
+        <TouchableOpacity onPress={() => handleActivity('coffee')} testID={'activity'}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-coffee.png')} />
           </View>
           <AppText style={styles.activityText}>Get Coffee</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleActivity('relax')}>
+        <TouchableOpacity onPress={() => handleActivity('relax')} testID={'activity'}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-relax.png')} />
           </View>
@@ -72,7 +72,11 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
   return (
     <View style={styles.activities}>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity onPress={() => handleActivity('bar')} style={{ width: Dimensions.get('window').width / 3 }}>
+        <TouchableOpacity
+          onPress={() => handleActivity('bar')}
+          style={{ width: Dimensions.get('window').width / 3 }}
+          testID={'activity'}
+        >
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-bar.png')} />
           </View>
@@ -81,6 +85,7 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
         <TouchableOpacity
           onPress={() => handleActivity('entertainment')}
           style={{ width: Dimensions.get('window').width / 3 }}
+          testID={'activity'}
         >
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-entertainment.png')} />
@@ -90,6 +95,7 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
         <TouchableOpacity
           onPress={() => handleActivity('museum')}
           style={{ width: Dimensions.get('window').width / 3 }}
+          testID={'activity'}
         >
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-art.png')} />
@@ -98,7 +104,7 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity onPress={() => handleActivity('favorites')}>
+        <TouchableOpacity onPress={() => handleActivity('favorites')} testID={'activity'}>
           <Image source={require('../../assets/activity-fav.png')} />
           <AppText style={styles.activityText}>Favorites</AppText>
         </TouchableOpacity>
@@ -135,74 +141,71 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
       onSwipeLeft={() => setPage(2)}
       onSwipeRight={() => setPage(1)}
     >
-      <View
-        style={{ position: 'absolute', width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-      >
-        <ScrollView testID="ActivitySelectorScreen">
-          <Screen>
-            <View style={styles.activitySelectorContainer}>
-              <View style={styles.navbar}>
-                <BackChevronIcon
+      <ScrollView testID="ActivitySelectorScreen">
+        <Screen>
+          <View style={styles.activitySelectorContainer}>
+            <View style={styles.navbar}>
+              <BackChevronIcon
+                onPress={() => {
+                  navigation.goBack();
+                }}
+                testID="back"
+              />
+              <AppText style={styles.navbarText}>Activity Selector</AppText>
+            </View>
+            {/* <Image source={require('../../assets/activity-selector.png')} /> */}
+            <Image
+              style={{ position: 'absolute', top: -163, width: Dimensions.get('window').width, zIndex: -10 }}
+              source={require('../../assets/SplashScreen.png')}
+            />
+            <View style={styles.description}>
+              <AppText style={styles.descriptionText}>What do you want to do today?</AppText>
+              {/* <TextInput placeholder="Search for Restaurants, Parks, ..." style={styles.input} /> */}
+            </View>
+            <View style={styles.activitySelector}>
+              <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
+                <AppText style={styles.questionText}>?</AppText>
+              </TouchableOpacity>
+
+              {page === 1 ? <PageOne handleActivity={handleActivity} /> : <PageTwo handleActivity={handleActivity} />}
+
+              <View style={styles.switch}>
+                <View style={page === 1 ? styles.active : styles.inactive} />
+                <View style={page === 1 ? styles.inactive : styles.active} />
+              </View>
+
+              <View>
+                <View style={styles.dividerRow}>
+                  <View style={styles.divider} testID="divider" />
+                  <AppText style={styles.dividerText}>or</AppText>
+                  <View style={styles.divider} testID="divider" />
+                </View>
+
+                <TouchableOpacity
                   onPress={() => {
-                    navigation.goBack();
+                    navigation.navigate('PlanCreate', { currentUser: currentUser });
                   }}
-                />
-                <AppText style={styles.navbarText}>Activity Selector</AppText>
-              </View>
-              {/* <Image source={require('../../assets/activity-selector.png')} /> */}
-              <Image
-                style={{ position: 'absolute', top: -163, width: Dimensions.get('window').width, zIndex: -10 }}
-                source={require('../../assets/SplashScreen.png')}
-              />
-              <View style={styles.description}>
-                <AppText style={styles.descriptionText}>What do you want to do today?</AppText>
-                {/* <TextInput placeholder="Search for Restaurants, Parks, ..." style={styles.input} /> */}
-              </View>
-              <View style={styles.activitySelector}>
-                <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
-                  <AppText style={styles.questionText}>?</AppText>
+                  style={styles.activityLowerLink}
+                >
+                  <AppText style={styles.activityLowerLinkText}>Plan Custom Event!</AppText>
                 </TouchableOpacity>
-
-                {page === 1 ? <PageOne handleActivity={handleActivity} /> : <PageTwo handleActivity={handleActivity} />}
-
-                <View style={styles.switch}>
-                  <View style={page === 1 ? styles.active : styles.inactive} />
-                  <View style={page === 1 ? styles.inactive : styles.active} />
-                </View>
-
-                <View>
-                  <View style={styles.dividerRow}>
-                    <View style={styles.divider} />
-                    <AppText style={styles.dividerText}>or</AppText>
-                    <View style={styles.divider} />
-                  </View>
-
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('PlanCreate', { currentUser: currentUser });
-                    }}
-                    style={styles.activityLowerLink}
-                  >
-                    <AppText style={styles.activityLowerLinkText}>Plan Custom Event!</AppText>
-                  </TouchableOpacity>
-                </View>
               </View>
             </View>
+          </View>
 
-            {modal && <ActivityModal modal={modal} setModal={setModal} />}
-            <View style={[background ? styles.inputBackground : styles.inputContainer]}>
-              <TextInput
-                placeholder="Search for Restaurants, Parks, ..."
-                onBlur={() => setBackground(false)}
-                onFocus={() => setBackground(true)}
-                onChangeText={(text) => setSearch(text)}
-                onSubmitEditing={() => handleActivity(search)}
-                style={styles.input}
-              />
-            </View>
-          </Screen>
-        </ScrollView>
-      </View>
+          {modal && <ActivityModal modal={modal} setModal={setModal} />}
+          <View style={[background ? styles.inputBackground : styles.inputContainer]}>
+            <TextInput
+              placeholder="Search for Restaurants, Parks, ..."
+              onBlur={() => setBackground(false)}
+              onFocus={() => setBackground(true)}
+              onChangeText={(text) => setSearch(text)}
+              onSubmitEditing={() => handleActivity(search)}
+              style={styles.input}
+            />
+          </View>
+        </Screen>
+      </ScrollView>
     </GestureRecognizerView>
   );
 };

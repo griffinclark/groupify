@@ -18,3 +18,4 @@ jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 
 // Folders to mock
 jest.mock('../res/storageFunctions');
+jest.mock('../res/utilFunctions');
