@@ -121,7 +121,7 @@ describe('ActivitySelector Screen', () => {
         });
       });
       it('selects activity by button', async () => {
-        const { getByText, queryAllByTestId } = render(<ActivitySelector {...mockProps} />);
+        const { queryAllByTestId } = render(<ActivitySelector {...mockProps} />);
         await waitFor(() => {
           const activities = queryAllByTestId('activity');
           fireEvent.press(activities[0]);
