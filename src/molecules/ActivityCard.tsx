@@ -45,7 +45,6 @@ export const ActivityCard: React.FC<Props> = ({ favorites, map, navigation, hand
       str += '$';
       i++;
     }
-    console.log(str);
     return str;
   };
 

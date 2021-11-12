@@ -35,7 +35,9 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [page, setPage] = useState<string>('map');
   const [locations, setLocations] = useState([]);
   const [title, setTitle] = useState<string>();
+  const [image, setImage] = useState<string>('');
   const [favorites, setFavorites] = useState([]);
+  const [distance, setDistance] = useState<number>(50);
 
   useEffect(() => {
     if (userLocation.default) {
@@ -43,7 +45,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     }
     update();
     queryActivities();
-  }, [userLocation, route.params.activity]);
+  }, [userLocation, route.params.activity, distance]);
 
   useEffect(() => {
     getFavorites();
@@ -80,30 +82,39 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     switch (route.params.activity) {
       case 'restaurant':
         setTitle('Get Food');
+        setImage('food');
         break;
       case 'park':
         setTitle('Go Outside');
+        setImage('outside');
         break;
       case 'gym':
         setTitle('Get Fit');
+        setImage('gym');
         break;
       case 'shopping':
         setTitle('Go Shopping');
+        setImage('shopping');
         break;
       case 'coffee':
-        setTitle('Go Shopping');
+        setTitle('Get Coffee');
+        setImage('Coffee');
         break;
       case 'relax':
         setTitle('Get Relaxed');
+        setImage('relax');
         break;
       case 'bar':
         setTitle('Nightlife');
+        setImage('bar');
         break;
       case 'entertainment':
         setTitle('Entertainment');
+        setImage('entertainment');
         break;
       case 'museum':
         setTitle('Art & Culture');
+        setImage('art');
         break;
       case 'favorites':
         setTitle('Favorites');
@@ -114,10 +125,11 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   };
 
   const queryActivities = async () => {
+    const distanceMeters = 1609.34 * distance > 40000 ? 40000 : 1609.34 * distance;
     const search =
       'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
       `location=${userLocation.latitude},${userLocation.longitude}` +
-      `&radius=${'3000'}` +
+      `&radius=${distanceMeters}` +
       `&query=${route.params.activity}` +
       `&key=${GOOGLE_PLACES_API_KEY}`;
 
@@ -170,7 +182,9 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
       {page === 'map' ? (
         <ActivityMap
           favorites={favorites}
+          distance={distance}
           handleCreate={handleCreate}
+          image={image}
           locations={locations}
           navigation={navigation}
           route={route}
@@ -178,6 +192,8 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
       ) : (
         <ActivityList
           favorites={favorites}
+          distance={distance}
+          setDistance={setDistance}
           handleCreate={handleCreate}
           locations={locations}
           navigation={navigation}

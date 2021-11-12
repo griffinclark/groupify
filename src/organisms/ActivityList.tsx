@@ -1,12 +1,14 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
-import { ActivityCard } from '../molecules/ActivityCard';
+import { ActivityCard, ActivitySlider } from '../molecules/MoleculesExports';
 
 export interface Props {
   handleCreate: () => void;
   locations: any[];
   favorites: any[];
+  distance: number;
+  setDistance: any;
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
@@ -14,9 +16,18 @@ export interface Props {
   route: RoutePropParams;
 }
 
-export const ActivityList: React.FC<Props> = ({ favorites, locations, handleCreate, navigation, route }: Props) => {
+export const ActivityList: React.FC<Props> = ({
+  distance,
+  setDistance,
+  favorites,
+  locations,
+  handleCreate,
+  navigation,
+  route,
+}: Props) => {
   return (
     <View>
+      <ActivitySlider distance={distance} setDistance={setDistance} />
       <FlatList
         data={locations}
         renderItem={({ item }) => (
