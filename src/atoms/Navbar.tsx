@@ -17,11 +17,12 @@ interface Props {
 
 export const Navbar: React.FC<Props> = ({ data = {}, location, navigation, title }: Props) => {
   return (
-    <View style={styles.navbar}>
+    <View style={styles.navbar} testID="navbar">
       <BackChevronIcon
         onPress={() => {
           navigation.navigate(location, data);
         }}
+        testID="BackIcon"
       />
       <AppText style={styles.title}>{title}</AppText>
     </View>

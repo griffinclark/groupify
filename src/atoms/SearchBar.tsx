@@ -23,6 +23,7 @@ export const SearchBar: React.FC<Props> = ({ onInputChange, placeholder = 'searc
           placeholder={placeholder}
           onChangeText={(e) => setInput(e)}
           underlineColorAndroid="transparent"
+          testID="SearchBar"
         />
       </View>
     </View>

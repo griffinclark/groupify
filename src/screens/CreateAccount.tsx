@@ -12,7 +12,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import * as Analytics from 'expo-firebase-analytics';
 
-interface Props {
+export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
@@ -35,7 +35,16 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const [success, setSuccess] = useState<string | undefined>();
 
   useEffect(() => {
-    if (route.params.step == 'create' && password && name && firstName && lastName && phone && confirmPassword) {
+    if (
+      route.params.step == 'create' &&
+      password &&
+      name &&
+      firstName &&
+      lastName &&
+      phone &&
+      phone.length === 14 &&
+      confirmPassword
+    ) {
       setDisabled(false);
     } else if (route.params.step == 'validate' && validationCode) {
       setDisabled(false);
@@ -57,9 +66,11 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
     if (!phoneRegex.test(phone) && phoneNumber.length > 10) {
       setError('Invalid phone number');
+      clearError();
       return true;
     } else if (password.includes(' ')) {
       setError('Password cannot contain spaces');
+      clearError();
       return true;
     } else {
       return false;
@@ -73,14 +84,17 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     }
     if (password !== confirmPassword) {
       setError('Passwords do not match');
+      clearError();
       return;
     }
     if (!firstName) {
       setError('Please enter your first name');
+      clearError();
       return;
     }
     if (!lastName) {
       setError('Please enter your last name');
+      clearError();
       return;
     }
     try {
@@ -96,6 +110,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       setSecureStoreItem('password', password);
       console.log('user successfully created');
       setError(undefined);
+      clearError();
       navigation.push('CreateAccount', { step: 'validate', phone: formatPhone });
       await Analytics.logEvent('sign_up', {});
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -104,13 +119,17 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       if (err.code == 'InvalidParameterException') {
         if (err.message == 'Username should be an email.') {
           setError('Please enter a valid email');
+          clearError();
         } else if (err.message.includes('password')) {
           setError('Password must be at least 8 characters');
+          clearError();
         } else {
           setError(err.message);
+          clearError();
         }
       } else if (err.code == 'InvalidPasswordException') {
         setError('Password must be at least 8 characters');
+        clearError();
       } else if (
         err.code === 'UserLambdaValidationException' &&
         err.message == 'PreSignUp failed with error phoneNumber already exists!.'
@@ -118,6 +137,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
         err.message = 'phone number already exists';
       } else {
         setError(err.message);
+        clearError();
       }
     }
   };
@@ -130,12 +150,19 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
     } catch (err: any) {
       console.log('Error: ', err);
       setError(err.message);
+      clearError();
       setSuccess(undefined);
     }
   };
 
   const setSecureStoreItem = async (key: string, value: string): Promise<void> => {
     return SecureStore.setItemAsync(key, value);
+  };
+
+  const clearError = () => {
+    setTimeout(() => {
+      setError(undefined);
+    }, 3000);
   };
 
   return (
@@ -218,6 +245,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                           } catch (err: any) {
                             console.log(err);
                             setError(err.message);
+                            clearError();
                           }
                         }}
                         style={styles.buttonStyle}

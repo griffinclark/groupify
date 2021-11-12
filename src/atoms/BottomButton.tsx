@@ -8,11 +8,17 @@ interface Props {
   onPress: () => void;
   title: string;
   disabled?: boolean;
+  testID?: string;
 }
 
-export const BottomButton: React.FC<Props> = ({ onPress, title, disabled = false }: Props) => {
+export const BottomButton: React.FC<Props> = ({ onPress, title, disabled = false, testID }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.button, disabled ? styles.disabled : {}]}>
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={disabled}
+      style={[styles.button, disabled ? styles.disabled : {}]}
+      testID={testID}
+    >
       <AppText style={styles.text}>{title}</AppText>
     </TouchableOpacity>
   );

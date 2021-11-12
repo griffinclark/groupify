@@ -15,6 +15,7 @@ interface Props {
     settings?: string;
     value?: string;
     func: React.Dispatch<React.SetStateAction<string>>;
+    disabled?: boolean;
   }[];
 }
 
@@ -60,7 +61,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
   const ListItems = inputList.map((item) => {
     if (item.settings === 'date') {
       return (
-        <View key={item.title}>
+        <View key={item.title} testID="input">
           <AppText style={styles.text}>{item.title}</AppText>
           {showDatePicker && (
             <DateTimePicker
@@ -106,7 +107,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
     }
     if (item.settings === 'time') {
       return (
-        <View key={item.title}>
+        <View key={item.title} testID="input">
           <AppText style={styles.text}>{item.title}</AppText>
           {showTimePicker && (
             <DateTimePicker
@@ -152,6 +153,7 @@ export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
       return (
         <View key={item.title}>
           <AppTextInput
+            editable={item.disabled ? false : true}
             label={item.title}
             onChangeText={(e) => item.func(e)}
             placeholder={item.placeholder}

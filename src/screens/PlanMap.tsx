@@ -88,6 +88,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   }, []);
 
   const onResultPress = async (detail: GooglePlaceDetail | null) => {
+    console.log(detail.name);
     const moreDetails = detail as GooglePlaceDetailExtended;
     setSessionToken(uuidv4());
     if (detail) {
