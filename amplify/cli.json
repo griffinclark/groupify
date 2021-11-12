@@ -2,12 +2,14 @@
     "features": {
         "graphqltransformer": {
             "addmissingownerfields": true,
-            "improvepluralization": true,
+            "improvepluralization": false,
             "validatetypenamereservedwords": true,
             "useexperimentalpipelinedtransformer": false,
             "enableiterativegsiupdates": true,
             "secondarykeyasgsi": true,
-            "skipoverridemutationinputtypes": true
+            "skipoverridemutationinputtypes": true,
+            "transformerversion": 1,
+            "suppressschemamigrationprompt": true
         },
         "frontend-ios": {
             "enablexcodeintegration": true
@@ -16,7 +18,8 @@
             "enablecaseinsensitivity": true,
             "useinclusiveterminology": true,
             "breakcirculardependency": true,
-            "forcealiasattributes": false
+            "forcealiasattributes": false,
+            "useenabledmfas": true
         },
         "codegen": {
             "useappsyncmodelgenplugin": true,
