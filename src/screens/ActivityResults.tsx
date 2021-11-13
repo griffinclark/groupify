@@ -8,7 +8,7 @@ import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AppText';
 import { TEAL } from '../res/styles/Colors';
 import { ActivityMap, ActivityList } from '../organisms/OrganismsExports';
-import * as SecureStore from 'expo-secure-store';
+import { getCurrentUser } from './../res/utilFunctions';
 
 export interface Props {
   navigation: {
@@ -24,13 +24,13 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
-    default: true,
   }); // defaults to Los Angeles if user location is not provided
   const [region, setRegion] = useState({
     latitude: 41.878,
     longitude: -93.0977,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
+    latitudeDelta: 0.001,
+    longitudeDelta: 0.001,
+    default: true,
   });
   const [page, setPage] = useState<string>('map');
   const [locations, setLocations] = useState([]);
@@ -40,16 +40,12 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [distance, setDistance] = useState<number>(50);
 
   useEffect(() => {
-    if (userLocation.default) {
+    if (region.default) {
       getUserLocation();
     }
     update();
     queryActivities();
-  }, [userLocation, route.params.activity, distance]);
-
-  useEffect(() => {
-    getFavorites();
-  }, [favorites]);
+  }, [region, route.params.activity, distance]);
 
   const getUserLocation = async () => {
     const { status } = await Location.requestPermissionsAsync();
@@ -64,13 +60,13 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
         setUserLocation({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
-          default: false,
         });
         setRegion({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
-          latitudeDelta: region.latitudeDelta,
-          longitudeDelta: region.longitudeDelta,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+          default: false,
         });
       } catch (e) {
         console.log(e);
@@ -132,19 +128,21 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
       `&radius=${distanceMeters}` +
       `&query=${route.params.activity}` +
       `&key=${GOOGLE_PLACES_API_KEY}`;
-
     const response = await fetch(search);
     const detail = await response.json();
     setLocations(detail.results);
   };
 
-  const getFavorites = async (): Promise<void> => {
-    const favorites = await SecureStore.getItemAsync('favorites');
-    setFavorites([]);
-  };
-
-  const handleCreate = () => {
-    console.log('hit');
+  const handleCreate = async (loc: any) => {
+    const user = await getCurrentUser();
+    navigation.navigate('PlanCreate', {
+      currentUser: user,
+      data: {
+        eventData: {
+          location: loc.formatted_address,
+        },
+      },
+    });
   };
 
   return (
@@ -188,6 +186,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
           locations={locations}
           navigation={navigation}
           route={route}
+          region={region}
         />
       ) : (
         <ActivityList
@@ -195,6 +194,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
           distance={distance}
           setDistance={setDistance}
           handleCreate={handleCreate}
+          // image={image}
           locations={locations}
           navigation={navigation}
           route={route}

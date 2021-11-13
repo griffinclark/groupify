@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Constants from 'expo-constants';
-import * as Location from 'expo-location';
-import { LocationAccuracy } from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from '../molecules/ActivityCard';
 import { MapIcon } from '../../assets/Icons/IconExports';
@@ -11,9 +9,10 @@ import { MapIcon } from '../../assets/Icons/IconExports';
 export interface Props {
   distance: number;
   image: string;
-  handleCreate: () => void;
+  handleCreate: (loc: any) => void;
   locations: any[];
   favorites: any[];
+  region: any;
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
@@ -29,51 +28,23 @@ export const ActivityMap: React.FC<Props> = ({
   locations,
   navigation,
   route,
+  region,
 }: Props) => {
-  const [userLocation, setUserLocation] = useState({
-    latitude: 41.878,
-    longitude: -93.0977,
-  }); // defaults to Los Angeles if user location is not provided
-  const [region, setRegion] = useState({
-    latitude: 41.878,
-    longitude: -93.0977,
-    latitudeDelta: 0.1,
-    longitudeDelta: 0.1,
-  });
   const [card, setCard] = useState();
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-      } else {
-        try {
-          let location = await Location.getLastKnownPositionAsync();
-          if (location === null) {
-            location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Low });
-          }
-          setUserLocation({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          });
-          setRegion({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: region.latitudeDelta,
-            longitudeDelta: region.longitudeDelta,
-          });
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    })();
-  }, []);
 
   return (
     <View style={styles.container}>
-      <MapView provider={PROVIDER_GOOGLE} showsUserLocation={true} region={region} style={styles.map}>
-        {/* {image && */}
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        showsUserLocation={true}
+        region={{
+          latitude: region.latitude,
+          longitude: region.longitude,
+          latitudeDelta: region.latitudeDelta,
+          longitudeDelta: region.longitudeDelta,
+        }}
+        style={styles.map}
+      >
         {locations.map((loc) => (
           <Marker
             coordinate={{
@@ -83,6 +54,7 @@ export const ActivityMap: React.FC<Props> = ({
             icon={require('../../assets/MapMarker.png')}
             key={loc.place_id}
             onPress={() => setCard(loc)}
+            style={{ position: 'absolute' }}
           />
         ))}
       </MapView>
@@ -103,10 +75,19 @@ export const ActivityMap: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+  },
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height - (105 + Constants.statusBarHeight),
+
+    // position: 'absolute',
+    // top: 105 + Constants.statusBarHeight,
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
+    // flex: 1,
   },
   mapIcon: {
     alignSelf: 'center',

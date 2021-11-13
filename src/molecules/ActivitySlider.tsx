@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { AppText } from '../atoms/AtomsExports';
@@ -10,18 +10,11 @@ interface Props {
 }
 
 export const ActivitySlider: React.FC<Props> = ({ distance, setDistance }: Props) => {
-  // const [sliderValue, setSliderValue] = useState<number>(distance);
   const handleSlideDone = (val: number) => {
     const distances = [1, 5, 10, 15, 25, 50];
     const newDistance = distances[val];
     if (newDistance != distance) setDistance(newDistance);
   };
-
-  // const handleSlide = (val: number) => {
-  //   const distances = [1, 5, 10, 15, 25, 50];
-  //   setSliderValue(distances[val]);
-  // };
-
   return (
     <View style={styles.container}>
       <AppText style={styles.text}>Distance</AppText>
@@ -33,7 +26,6 @@ export const ActivitySlider: React.FC<Props> = ({ distance, setDistance }: Props
           minimumTrackTintColor={TEAL}
           onSlidingComplete={(val) => handleSlideDone(val)}
           style={styles.slider}
-          // onValueChange={(val) => handleSlide(val)}
           value={50}
         />
         <AppText style={styles.text}>{distance} mi</AppText>

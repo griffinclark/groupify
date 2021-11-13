@@ -4,7 +4,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard, ActivitySlider } from '../molecules/MoleculesExports';
 
 export interface Props {
-  handleCreate: () => void;
+  handleCreate: (loc: any) => void;
   locations: any[];
   favorites: any[];
   distance: number;

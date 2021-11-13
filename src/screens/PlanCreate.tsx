@@ -14,6 +14,7 @@ interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
+    goBack: () => void;
   };
   route: RoutePropParams;
 }
@@ -164,7 +165,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
       >
         <Screen>
           <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
-            <BackChevronIcon onPress={() => navigation.navigate('Home', {})} />
+            <BackChevronIcon onPress={() => navigation.goBack()} />
             <AppText style={styles.title}>Create a Plan</AppText>
           </View>
           <ScrollView

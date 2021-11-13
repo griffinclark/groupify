@@ -9,7 +9,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import * as SecureStore from 'expo-secure-store';
 
 interface Props {
-  handleCreate: () => void;
+  handleCreate: (loc: any) => void;
   favorites: any[];
   location: any;
   map: boolean;
@@ -112,7 +112,7 @@ export const ActivityCard: React.FC<Props> = ({ favorites, map, navigation, hand
             <AppText style={styles.locationButtonText}>Show Location</AppText>
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.button} onPress={handleCreate}>
+        <TouchableOpacity style={styles.button} onPress={() => handleCreate(location)}>
           <AppText style={styles.buttonText}>Create Plan</AppText>
         </TouchableOpacity>
       </View>
@@ -153,8 +153,10 @@ const styles = StyleSheet.create({
   cardBottom: {
     alignSelf: 'flex-end',
     flexDirection: 'row',
-    marginRight: 32,
-    marginTop: 8,
+    // marginTop: 8,
+    position: 'absolute',
+    bottom: 13,
+    right: 32,
   },
   button: {
     alignItems: 'center',
