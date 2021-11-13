@@ -8,7 +8,7 @@ import { MapIcon } from '../../assets/Icons/IconExports';
 
 export interface Props {
   distance: number;
-  image: string;
+  image: any;
   handleCreate: (loc: any) => void;
   locations: any[];
   favorites: any[];
@@ -51,11 +51,12 @@ export const ActivityMap: React.FC<Props> = ({
               latitude: loc.geometry.location.lat,
               longitude: loc.geometry.location.lng,
             }}
-            icon={require('../../assets/MapMarker.png')}
-            key={loc.place_id}
             onPress={() => setCard(loc)}
+            key={loc.place_id}
             style={{ position: 'absolute' }}
-          />
+          >
+            <MapIcon image={image} />
+          </Marker>
         ))}
       </MapView>
       {card && (
@@ -67,6 +68,7 @@ export const ActivityMap: React.FC<Props> = ({
             handleCreate={handleCreate}
             location={card}
             map={true}
+            image={image}
           />
         </View>
       )}

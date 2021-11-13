@@ -35,7 +35,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [page, setPage] = useState<string>('map');
   const [locations, setLocations] = useState([]);
   const [title, setTitle] = useState<string>();
-  const [image, setImage] = useState<string>('');
+  const [image, setImage] = useState<string>();
   const [favorites, setFavorites] = useState([]);
   const [distance, setDistance] = useState<number>(50);
 
@@ -48,7 +48,6 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   }, [userLocation, route.params.activity, distance]);
 
   useEffect(() => {
-    console.log('hit');
     setPage('map');
   }, [region]);
 
@@ -84,42 +83,52 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     switch (route.params.activity) {
       case 'restaurant':
         setTitle('Get Food');
-        setImage('food');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-food.png'));
         break;
       case 'park':
         setTitle('Go Outside');
-        setImage('outside');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-outside.png'));
         break;
       case 'gym':
         setTitle('Get Fit');
-        setImage('gym');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-gym.png'));
         break;
       case 'shopping':
         setTitle('Go Shopping');
-        setImage('shopping');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-shopping.png'));
         break;
       case 'coffee':
         setTitle('Get Coffee');
-        setImage('Coffee');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-coffee.png'));
         break;
       case 'relax':
         setTitle('Get Relaxed');
-        setImage('relax');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-relax.png'));
         break;
       case 'bar':
         setTitle('Nightlife');
-        setImage('bar');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-bar.png'));
         break;
       case 'entertainment':
         setTitle('Entertainment');
-        setImage('entertainment');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-entertainment.png'));
         break;
       case 'museum':
         setTitle('Art & Culture');
-        setImage('art');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-art.png'));
         break;
       case 'favorites':
-        setTitle('Favorites');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-fav.png'));
         break;
       default:
         setTitle('Search Results');
@@ -200,7 +209,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
           distance={distance}
           setDistance={setDistance}
           handleCreate={handleCreate}
-          // image={image}
+          image={image}
           locations={locations}
           navigation={navigation}
           route={route}

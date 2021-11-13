@@ -7,6 +7,7 @@ import { TEAL, YELLOW } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { RoutePropParams } from '../res/root-navigation';
 import * as SecureStore from 'expo-secure-store';
+import { MapIcon } from '../../assets/Icons/IconExports';
 
 interface Props {
   handleCreate: (loc: any) => void;
@@ -20,17 +21,10 @@ interface Props {
   route: RoutePropParams;
   setRegion?: any;
   region?: any;
+  image?: any;
 }
 
-export const ActivityCard: React.FC<Props> = ({
-  favorites,
-  map,
-  navigation,
-  handleCreate,
-  location,
-  setRegion,
-  region,
-}: Props) => {
+export const ActivityCard: React.FC<Props> = ({ favorites, map, handleCreate, location, setRegion, image }: Props) => {
   const formatAddress = () => {
     if (!location.formatted_address) return null;
     const addressArr = location.formatted_address.split(',');
@@ -107,7 +101,7 @@ export const ActivityCard: React.FC<Props> = ({
         <MapView
           provider={PROVIDER_GOOGLE}
           region={{
-            latitude: location.geometry.location.lat,
+            latitude: location.geometry.location.lat + 0.0005,
             longitude: location.geometry.location.lng,
             latitudeDelta: 0.002,
             longitudeDelta: 0.002,
@@ -123,7 +117,9 @@ export const ActivityCard: React.FC<Props> = ({
               latitude: location.geometry.location.lat,
               longitude: location.geometry.location.lng,
             }}
-          />
+          >
+            <MapIcon image={image} />
+          </Marker>
         </MapView>
         <FavoriteIcon favorited={false} />
       </View>

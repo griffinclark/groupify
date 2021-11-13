@@ -1,14 +1,28 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Image } from 'react-native';
 
 interface Props {
-  image: string;
+  image: any;
 }
 
 export const MapIcon: React.FC<Props> = ({ image }: Props) => {
-  if (!image || image.length < 1) return null;
-  const imageUrl = `../assets/activity-${image}.png`;
-  console.log(imageUrl);
-  return <View />;
-  // return <ImageBackground source={require(imageUrl)} style={{ flex: 1 }}></ImageBackground>;
+  return (
+    <ImageBackground source={require('../MapIcon.png')} style={styles.background}>
+      <Image source={image} style={styles.image} />
+    </ImageBackground>
+  );
 };
+
+const styles = StyleSheet.create({
+  background: {
+    // flex: 1,
+    height: 71,
+    alignItems: 'center',
+    width: 49,
+  },
+  image: {
+    height: 25,
+    marginTop: 10,
+    width: 25,
+  },
+});

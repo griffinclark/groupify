@@ -16,6 +16,7 @@ export interface Props {
   route: RoutePropParams;
   setRegion?: any;
   region: any;
+  image: any;
 }
 
 export const ActivityList: React.FC<Props> = ({
@@ -28,9 +29,10 @@ export const ActivityList: React.FC<Props> = ({
   route,
   setRegion,
   region,
+  image,
 }: Props) => {
   return (
-    <View>
+    <View style={{ paddingBottom: 200 }}>
       <ActivitySlider distance={distance} setDistance={setDistance} />
       <FlatList
         data={locations}
@@ -44,6 +46,7 @@ export const ActivityList: React.FC<Props> = ({
             map={false}
             setRegion={setRegion}
             region={region}
+            image={image}
           />
         )}
         keyExtractor={(item) => item.place_id}
