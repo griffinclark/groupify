@@ -14,6 +14,8 @@ export interface Props {
     goBack: () => void;
   };
   route: RoutePropParams;
+  setRegion?: any;
+  region: any;
 }
 
 export const ActivityList: React.FC<Props> = ({
@@ -24,6 +26,8 @@ export const ActivityList: React.FC<Props> = ({
   handleCreate,
   navigation,
   route,
+  setRegion,
+  region,
 }: Props) => {
   return (
     <View>
@@ -38,6 +42,8 @@ export const ActivityList: React.FC<Props> = ({
             location={item}
             route={route}
             map={false}
+            setRegion={setRegion}
+            region={region}
           />
         )}
         keyExtractor={(item) => item.place_id}

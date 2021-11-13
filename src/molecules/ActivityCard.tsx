@@ -18,9 +18,19 @@ interface Props {
     goBack: () => void;
   };
   route: RoutePropParams;
+  setRegion?: any;
+  region?: any;
 }
 
-export const ActivityCard: React.FC<Props> = ({ favorites, map, navigation, handleCreate, location }: Props) => {
+export const ActivityCard: React.FC<Props> = ({
+  favorites,
+  map,
+  navigation,
+  handleCreate,
+  location,
+  setRegion,
+  region,
+}: Props) => {
   const formatAddress = () => {
     if (!location.formatted_address) return null;
     const addressArr = location.formatted_address.split(',');
@@ -72,6 +82,17 @@ export const ActivityCard: React.FC<Props> = ({ favorites, map, navigation, hand
     return SecureStore.setItemAsync('favorites', value);
   };
 
+  const handleRegion = () => {
+    const newRegion = {
+      latitude: location.geometry.location.lat,
+      longitude: location.geometry.location.lng,
+      latitudeDelta: 0.001,
+      longitudeDelta: 0.001,
+      default: false,
+    };
+    setRegion(newRegion);
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.cardTop}>
@@ -108,7 +129,7 @@ export const ActivityCard: React.FC<Props> = ({ favorites, map, navigation, hand
       </View>
       <View style={styles.cardBottom}>
         {map != true && (
-          <TouchableOpacity style={styles.locationButton} onPress={handleCreate}>
+          <TouchableOpacity style={styles.locationButton} onPress={handleRegion}>
             <AppText style={styles.locationButtonText}>Show Location</AppText>
           </TouchableOpacity>
         )}

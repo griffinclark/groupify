@@ -45,7 +45,12 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     }
     update();
     queryActivities();
-  }, [region, route.params.activity, distance]);
+  }, [userLocation, route.params.activity, distance]);
+
+  useEffect(() => {
+    console.log('hit');
+    setPage('map');
+  }, [region]);
 
   const getUserLocation = async () => {
     const { status } = await Location.requestPermissionsAsync();
@@ -68,6 +73,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
           longitudeDelta: 0.01,
           default: false,
         });
+        queryActivities();
       } catch (e) {
         console.log(e);
       }
@@ -198,6 +204,8 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
           locations={locations}
           navigation={navigation}
           route={route}
+          setRegion={setRegion}
+          region={region}
         />
       )}
     </View>
