@@ -2,6 +2,7 @@ import React from 'react';
 import { ImageBackground, StyleSheet, Image } from 'react-native';
 
 interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image: any;
 }
 

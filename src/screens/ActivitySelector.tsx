@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View, TextInput } from 'react-native';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
-import { RoutePropParams } from '../res/root-navigation';
 import { AppText, Screen } from '../atoms/AtomsExports';
 import { User } from '../models';
 import { getCurrentUser } from './../res/utilFunctions';
@@ -14,7 +13,6 @@ export interface Props {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
-  route: RoutePropParams;
 }
 
 export interface PageProps {
@@ -113,7 +111,7 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
   );
 };
 
-export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) => {
+export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
   const [modal, setModal] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);

@@ -8,23 +8,25 @@ import { MapIcon } from '../../assets/Icons/IconExports';
 import { TEAL } from '../res/styles/Colors';
 
 export interface Props {
-  distance: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleCreate: (loc: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   locations: any[];
-  favorites: any[];
+  // favorites: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   region: any;
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
   route: RoutePropParams;
-  userLocation: any;
+  userLocation: Record<string, number>;
 }
 
 export const ActivityMap: React.FC<Props> = ({
-  distance,
-  favorites,
+  // favorites,
   handleCreate,
   image,
   locations,
@@ -73,7 +75,7 @@ export const ActivityMap: React.FC<Props> = ({
       {card && (
         <View style={{ position: 'absolute', bottom: 0 }}>
           <ActivityCard
-            favorites={favorites}
+            // favorites={favorites}
             route={route}
             navigation={navigation}
             handleCreate={handleCreate}

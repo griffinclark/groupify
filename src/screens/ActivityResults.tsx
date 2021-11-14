@@ -36,7 +36,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [locations, setLocations] = useState([]);
   const [title, setTitle] = useState<string>();
   const [image, setImage] = useState<string>();
-  const [favorites, setFavorites] = useState([]);
+  // const [favorites, setFavorites] = useState([]);
   const [distance, setDistance] = useState<number>(30);
 
   useEffect(() => {
@@ -149,6 +149,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     setLocations(detail.results);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCreate = async (loc: any) => {
     const user = await getCurrentUser();
     navigation.navigate('PlanCreate', {
@@ -195,8 +196,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
 
       {page === 'map' ? (
         <ActivityMap
-          favorites={favorites}
-          distance={distance}
+          // favorites={favorites}
           handleCreate={handleCreate}
           image={image}
           locations={locations}
@@ -207,7 +207,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
         />
       ) : (
         <ActivityList
-          favorites={favorites}
+          // favorites={favorites}
           distance={distance}
           setDistance={setDistance}
           handleCreate={handleCreate}

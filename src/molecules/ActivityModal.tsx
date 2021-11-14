@@ -4,6 +4,7 @@ import { AppText } from '../atoms/AtomsExports';
 
 interface Props {
   modal: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setModal: any;
 }
 

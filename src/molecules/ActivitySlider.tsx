@@ -7,6 +7,7 @@ import { TEAL } from '../res/styles/Colors';
 
 interface Props {
   distance: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setDistance: any;
 }
 

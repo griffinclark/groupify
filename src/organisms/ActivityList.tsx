@@ -4,25 +4,31 @@ import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard, ActivitySlider } from '../molecules/MoleculesExports';
 
 export interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleCreate: (loc: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   locations: any[];
-  favorites: any[];
+  // favorites: any[];
   distance: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setDistance: any;
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
   route: RoutePropParams;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setRegion?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   region: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image: any;
 }
 
 export const ActivityList: React.FC<Props> = ({
   distance,
   setDistance,
-  favorites,
+  // favorites,
   locations,
   handleCreate,
   navigation,
@@ -38,7 +44,7 @@ export const ActivityList: React.FC<Props> = ({
         data={locations}
         renderItem={({ item }) => (
           <ActivityCard
-            favorites={favorites}
+            // favorites={favorites}
             handleCreate={handleCreate}
             navigation={navigation}
             location={item}

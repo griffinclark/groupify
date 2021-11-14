@@ -1,5 +1,5 @@
 export const getCurrentUser = jest.fn().mockImplementation(() => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     resolve({
       attributes: {
         name: 'Mock Current User',

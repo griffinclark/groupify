@@ -6,12 +6,14 @@ import { AppText } from '../atoms/AtomsExports';
 import { TEAL, YELLOW } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { RoutePropParams } from '../res/root-navigation';
-import * as SecureStore from 'expo-secure-store';
+// import * as SecureStore from 'expo-secure-store';
 import { MapIcon } from '../../assets/Icons/IconExports';
 
 interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleCreate: (loc: any) => void;
-  favorites: any[];
+  // favorites: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   location: any;
   map: boolean;
   navigation: {
@@ -19,12 +21,15 @@ interface Props {
     goBack: () => void;
   };
   route: RoutePropParams;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setRegion?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   region?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image?: any;
 }
 
-export const ActivityCard: React.FC<Props> = ({ favorites, map, handleCreate, location, setRegion, image }: Props) => {
+export const ActivityCard: React.FC<Props> = ({ map, handleCreate, location, setRegion, image }: Props) => {
   const formatAddress = () => {
     if (!location.formatted_address) return null;
     const addressArr = location.formatted_address.split(',');
@@ -72,9 +77,9 @@ export const ActivityCard: React.FC<Props> = ({ favorites, map, handleCreate, lo
     );
   };
 
-  const addFavorite = async (value: string): Promise<void> => {
-    return SecureStore.setItemAsync('favorites', value);
-  };
+  // const addFavorite = async (value: string): Promise<void> => {
+  //   return SecureStore.setItemAsync('favorites', value);
+  // };
 
   const handleRegion = () => {
     const newRegion = {
