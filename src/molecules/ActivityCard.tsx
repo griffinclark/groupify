@@ -5,9 +5,9 @@ import { FavoriteIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AtomsExports';
 import { TEAL, YELLOW } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { RoutePropParams } from '../res/root-navigation';
 // import * as SecureStore from 'expo-secure-store';
 import { MapIcon } from '../../assets/Icons/IconExports';
+import { addFavorite, deleteFavorite } from '../res/utilFavorites';
 
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,16 +20,34 @@ interface Props {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
-  route: RoutePropParams;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setRegion?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   region?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  favoritesArr: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setFavoritesArr: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setTrigger?: any;
+  trigger?: boolean;
 }
 
-export const ActivityCard: React.FC<Props> = ({ map, handleCreate, location, setRegion, image }: Props) => {
+export const ActivityCard: React.FC<Props> = ({
+  favoritesArr,
+  setFavoritesArr,
+  map,
+  handleCreate,
+  location,
+  setRegion,
+  image,
+  setTrigger,
+  trigger,
+}: Props) => {
+  console.log(location);
+  if (!location.geometry) return null;
   const formatAddress = () => {
     if (!location.formatted_address) return null;
     const addressArr = location.formatted_address.split(',');
@@ -77,10 +95,6 @@ export const ActivityCard: React.FC<Props> = ({ map, handleCreate, location, set
     );
   };
 
-  // const addFavorite = async (value: string): Promise<void> => {
-  //   return SecureStore.setItemAsync('favorites', value);
-  // };
-
   const handleRegion = () => {
     const newRegion = {
       latitude: location.geometry.location.lat,
@@ -90,6 +104,18 @@ export const ActivityCard: React.FC<Props> = ({ map, handleCreate, location, set
       default: false,
     };
     setRegion(newRegion);
+  };
+
+  const handleToggleFavorite = async () => {
+    if (favoritesArr.includes(location.place_id)) {
+      const newFavs = await deleteFavorite(location.place_id);
+      setFavoritesArr(newFavs.map((ele: any) => ele.place_id));
+      console.log(trigger);
+      if (trigger != undefined) setTrigger(!trigger);
+    } else {
+      const newFavs = await addFavorite(location);
+      setFavoritesArr(newFavs.map((ele) => ele.place_id));
+    }
   };
 
   return (
@@ -126,7 +152,10 @@ export const ActivityCard: React.FC<Props> = ({ map, handleCreate, location, set
             <MapIcon image={image} />
           </Marker>
         </MapView>
-        <FavoriteIcon favorited={false} />
+        <FavoriteIcon
+          favorited={favoritesArr.includes(location.place_id) ? true : false}
+          onPress={handleToggleFavorite}
+        />
       </View>
       <View style={styles.cardBottom}>
         {map != true && (

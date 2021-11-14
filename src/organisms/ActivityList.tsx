@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { RoutePropParams } from '../res/root-navigation';
-import { ActivityCard, ActivitySlider } from '../molecules/MoleculesExports';
+import { ActivityCard } from '../molecules/MoleculesExports';
+import { getFavorites } from '../res/utilFavorites';
 
 export interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,50 +9,61 @@ export interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   locations: any[];
   // favorites: any[];
-  distance: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setDistance: any;
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
-  route: RoutePropParams;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setRegion?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   region: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  trigger?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setTrigger?: any;
 }
 
 export const ActivityList: React.FC<Props> = ({
-  distance,
-  setDistance,
-  // favorites,
   locations,
   handleCreate,
   navigation,
-  route,
   setRegion,
   region,
   image,
+  trigger,
+  setTrigger,
 }: Props) => {
+  const [favoritesArr, setFavoritesArr] = useState([]);
+
+  useEffect(() => {
+    queryFavorites();
+  }, []);
+
+  const queryFavorites = async () => {
+    const favorites = await getFavorites();
+    const favArr = favorites.map((ele: any) => ele.place_id);
+    setFavoritesArr(favArr);
+  };
+
   return (
     <View style={{ paddingBottom: 200 }}>
-      <ActivitySlider distance={distance} setDistance={setDistance} />
       <FlatList
         data={locations}
         renderItem={({ item }) => (
           <ActivityCard
-            // favorites={favorites}
+            favoritesArr={favoritesArr}
+            setFavoritesArr={setFavoritesArr}
             handleCreate={handleCreate}
             navigation={navigation}
             location={item}
-            route={route}
             map={false}
             setRegion={setRegion}
             region={region}
             image={image}
+            trigger={trigger}
+            setTrigger={setTrigger}
           />
         )}
         keyExtractor={(item) => item.place_id}

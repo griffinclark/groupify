@@ -26,6 +26,7 @@ import { PlanIndex } from '../screens/PlanIndex';
 import { EditPlan } from '../screens/EditPlan';
 import { ActivitySelector } from '../screens/ActivitySelector';
 import { ActivityResults } from '../screens/ActivityResults';
+import { ActivityFavorites } from '../screens/ActivityFavorites';
 
 export type RoutePropParams = {
   params: {
@@ -118,6 +119,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="EditPlan" component={EditPlan} options={{ headerShown: false }} />
         <Stack.Screen name="ActivitySelector" component={ActivitySelector} options={{ headerShown: false }} />
         <Stack.Screen name="ActivityResults" component={ActivityResults} options={{ headerShown: false }} />
+        <Stack.Screen name="ActivityFavorites" component={ActivityFavorites} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

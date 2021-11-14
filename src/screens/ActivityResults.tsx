@@ -9,6 +9,7 @@ import { AppText } from '../atoms/AppText';
 import { TEAL } from '../res/styles/Colors';
 import { ActivityMap, ActivityList } from '../organisms/OrganismsExports';
 import { getCurrentUser } from './../res/utilFunctions';
+import { ActivitySlider } from '../molecules/MoleculesExports';
 
 export interface Props {
   navigation: {
@@ -36,14 +37,13 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [locations, setLocations] = useState([]);
   const [title, setTitle] = useState<string>();
   const [image, setImage] = useState<string>();
-  // const [favorites, setFavorites] = useState([]);
+  const [favoritesArr, setFavoritesArr] = useState([]);
   const [distance, setDistance] = useState<number>(30);
 
   useEffect(() => {
     if (region.default) {
       getUserLocation();
     }
-    console.log('hit');
     update();
     queryActivities();
   }, [userLocation, route.params.activity, distance]);
@@ -174,7 +174,11 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
             />
             <AppText style={styles.navbarText}>{title}</AppText>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('ActivityFavorites', {});
+            }}
+          >
             <AppText style={styles.favorites}>Favorites</AppText>
           </TouchableOpacity>
         </View>
@@ -196,28 +200,25 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
 
       {page === 'map' ? (
         <ActivityMap
-          // favorites={favorites}
           handleCreate={handleCreate}
           image={image}
           locations={locations}
           navigation={navigation}
-          route={route}
           region={region}
           userLocation={userLocation}
         />
       ) : (
-        <ActivityList
-          // favorites={favorites}
-          distance={distance}
-          setDistance={setDistance}
-          handleCreate={handleCreate}
-          image={image}
-          locations={locations}
-          navigation={navigation}
-          route={route}
-          setRegion={setRegion}
-          region={region}
-        />
+        <View>
+          <ActivitySlider distance={distance} setDistance={setDistance} />
+          <ActivityList
+            handleCreate={handleCreate}
+            image={image}
+            locations={locations}
+            navigation={navigation}
+            setRegion={setRegion}
+            region={region}
+          />
+        </View>
       )}
     </View>
   );

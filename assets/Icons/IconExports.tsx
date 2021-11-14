@@ -10,6 +10,7 @@ import { Edit } from './Edit';
 import { SettingsCogIcon } from './SettingsCog';
 import { FavoriteIcon } from './Favorite';
 import { MapIcon } from './MapIcon';
+import { HandIcon } from './Hand';
 
 export {
   AnnounceIcon,
@@ -24,4 +25,5 @@ export {
   SettingsCogIcon,
   FavoriteIcon,
   MapIcon,
+  HandIcon,
 };
