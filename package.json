@@ -65,6 +65,7 @@
     "@react-native-community/slider": "^4.1.12",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
+    "@sharcoux/slider": "^5.6.1",
     "@types/google-libphonenumber": "^7.4.20",
     "aws-amplify": "^3.3.26",
     "expo": "^40.0.1",

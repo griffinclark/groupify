@@ -18,6 +18,7 @@ export interface Props {
     goBack: () => void;
   };
   route: RoutePropParams;
+  userLocation: any;
 }
 
 export const ActivityMap: React.FC<Props> = ({
@@ -29,6 +30,7 @@ export const ActivityMap: React.FC<Props> = ({
   navigation,
   route,
   region,
+  userLocation,
 }: Props) => {
   const [card, setCard] = useState();
 
@@ -83,13 +85,6 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height - (105 + Constants.statusBarHeight),
-
-    // position: 'absolute',
-    // top: 105 + Constants.statusBarHeight,
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
-    // flex: 1,
   },
   mapIcon: {
     alignSelf: 'center',

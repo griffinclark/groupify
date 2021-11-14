@@ -37,12 +37,13 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [title, setTitle] = useState<string>();
   const [image, setImage] = useState<string>();
   const [favorites, setFavorites] = useState([]);
-  const [distance, setDistance] = useState<number>(50);
+  const [distance, setDistance] = useState<number>(30);
 
   useEffect(() => {
     if (region.default) {
       getUserLocation();
     }
+    console.log('hit');
     update();
     queryActivities();
   }, [userLocation, route.params.activity, distance]);
@@ -59,7 +60,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
       try {
         let location = await Location.getLastKnownPositionAsync();
         if (location === null) {
-          location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Low });
+          location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
         }
         setUserLocation({
           latitude: location.coords.latitude,
@@ -68,8 +69,8 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
         setRegion({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05,
           default: false,
         });
         queryActivities();
@@ -202,6 +203,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
           navigation={navigation}
           route={route}
           region={region}
+          userLocation={userLocation}
         />
       ) : (
         <ActivityList

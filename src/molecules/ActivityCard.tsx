@@ -140,7 +140,7 @@ export const ActivityCard: React.FC<Props> = ({ favorites, map, handleCreate, lo
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    height: 243,
+    minHeight: 243,
     paddingTop: 18,
     paddingHorizontal: 13,
     width: Dimensions.get('window').width,
@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
   cardTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 86,
   },
   name: {
     fontSize: 20,
