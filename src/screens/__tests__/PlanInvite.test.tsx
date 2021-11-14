@@ -102,7 +102,7 @@ describe('Plan Invite Screen', () => {
     });
 
     it('filters contacts unpon text input', async () => {
-      const { getAllByTestId, getByTestId } = setup();
+      const { getByTestId } = setup();
 
       await waitFor(async () => {
         const textInput = getByTestId('SearchBar');
@@ -169,7 +169,7 @@ describe('Plan Invite Screen', () => {
     // });
 
     it('it navigates to Plan Details with correct info if contacts selected', async () => {
-      const { getByText, queryAllByTestId } = setup();
+      const { queryAllByTestId } = setup();
       await waitFor(async () => {
         const contactTiles = queryAllByTestId('ContactTile');
         fireEvent.press(contactTiles[0]);
