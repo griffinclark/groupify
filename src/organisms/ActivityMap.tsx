@@ -5,6 +5,7 @@ import Constants from 'expo-constants';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from '../molecules/ActivityCard';
 import { MapIcon } from '../../assets/Icons/IconExports';
+import { TEAL } from '../res/styles/Colors';
 
 export interface Props {
   distance: number;
@@ -38,7 +39,7 @@ export const ActivityMap: React.FC<Props> = ({
     <View style={styles.container}>
       <MapView
         provider={PROVIDER_GOOGLE}
-        showsUserLocation={true}
+        // showsUserLocation={true}
         region={{
           latitude: region.latitude,
           longitude: region.longitude,
@@ -47,6 +48,14 @@ export const ActivityMap: React.FC<Props> = ({
         }}
         style={styles.map}
       >
+        <Marker
+          coordinate={{
+            latitude: userLocation.latitude,
+            longitude: userLocation.longitude,
+          }}
+        >
+          <View style={styles.userMarker} />
+        </Marker>
         {locations.map((loc) => (
           <Marker
             coordinate={{
@@ -91,5 +100,13 @@ const styles = StyleSheet.create({
     marginTop: 18,
     height: 18,
     width: 18,
+  },
+  userMarker: {
+    backgroundColor: TEAL,
+    borderColor: '#fff',
+    borderRadius: 12.5,
+    borderWidth: 3,
+    height: 25,
+    width: 25,
   },
 });
