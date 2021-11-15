@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { LogBox, Text, View } from 'react-native';
 import { globalStyles } from './src/res/styles/GlobalStyles';
 import { RootNavigation } from './src/res/root-navigation';
-<<<<<<< HEAD
-import awsconfig from './src/aws-exports'
-=======
+
 import awsconfig from './src/aws-exports';
->>>>>>> parent of df71477 (complete build)
+
 import Amplify, { API, Auth } from 'aws-amplify';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
