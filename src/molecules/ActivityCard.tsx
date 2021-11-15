@@ -21,7 +21,7 @@ interface Props {
     goBack: () => void;
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setRegion?: any;
+  handleRegion?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   region?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,12 +41,11 @@ export const ActivityCard: React.FC<Props> = ({
   map,
   handleCreate,
   location,
-  setRegion,
+  handleRegion,
   image,
   setTrigger,
   trigger,
 }: Props) => {
-  console.log(location);
   if (!location.geometry) return null;
   const formatAddress = () => {
     if (!location.formatted_address) return null;
@@ -95,22 +94,10 @@ export const ActivityCard: React.FC<Props> = ({
     );
   };
 
-  const handleRegion = () => {
-    const newRegion = {
-      latitude: location.geometry.location.lat,
-      longitude: location.geometry.location.lng,
-      latitudeDelta: 0.001,
-      longitudeDelta: 0.001,
-      default: false,
-    };
-    setRegion(newRegion);
-  };
-
   const handleToggleFavorite = async () => {
     if (favoritesArr.includes(location.place_id)) {
       const newFavs = await deleteFavorite(location.place_id);
       setFavoritesArr(newFavs.map((ele: any) => ele.place_id));
-      console.log(trigger);
       if (trigger != undefined) setTrigger(!trigger);
     } else {
       const newFavs = await addFavorite(location);
@@ -149,7 +136,7 @@ export const ActivityCard: React.FC<Props> = ({
               longitude: location.geometry.location.lng,
             }}
           >
-            <MapIcon image={image} />
+            <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
           </Marker>
         </MapView>
         <FavoriteIcon
@@ -159,7 +146,7 @@ export const ActivityCard: React.FC<Props> = ({
       </View>
       <View style={styles.cardBottom}>
         {map != true && (
-          <TouchableOpacity style={styles.locationButton} onPress={handleRegion}>
+          <TouchableOpacity style={styles.locationButton} onPress={() => handleRegion(location)}>
             <AppText style={styles.locationButtonText}>Show Location</AppText>
           </TouchableOpacity>
         )}

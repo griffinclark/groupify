@@ -9,7 +9,7 @@ import { getFavorites } from '../res/utilFavorites';
 
 export interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  image: any;
+  image?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleCreate: (loc: any) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,6 +34,7 @@ export const ActivityMap: React.FC<Props> = ({
 }: Props) => {
   const [card, setCard] = useState();
   const [favoritesArr, setFavoritesArr] = useState([]);
+  console.log(image);
 
   useEffect(() => {
     queryFavorites();
@@ -41,6 +42,7 @@ export const ActivityMap: React.FC<Props> = ({
 
   const queryFavorites = async () => {
     const favorites = await getFavorites();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const favArr = favorites.map((ele: any) => ele.place_id);
     setFavoritesArr(favArr);
   };

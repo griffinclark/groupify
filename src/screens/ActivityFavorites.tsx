@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import Constants from 'expo-constants';
 import { AppText } from '../atoms/AtomsExports';
 import { TEAL } from '../res/styles/Colors';
@@ -22,7 +22,6 @@ export const ActivityFavorites: React.FC<Props> = ({ navigation }: Props) => {
 
   useEffect(() => {
     queryFavorites();
-    console.log('hit');
   }, [trigger]);
 
   const queryFavorites = async () => {
@@ -43,7 +42,7 @@ export const ActivityFavorites: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.navbar}>
         <BackChevronIcon
           onPress={() => {
@@ -68,6 +67,10 @@ export const ActivityFavorites: React.FC<Props> = ({ navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff',
+    minHeight: Dimensions.get('window').height,
+  },
   navbar: {
     backgroundColor: '#fff',
     flexDirection: 'row',

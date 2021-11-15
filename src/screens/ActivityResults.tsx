@@ -10,6 +10,7 @@ import { TEAL } from '../res/styles/Colors';
 import { ActivityMap, ActivityList } from '../organisms/OrganismsExports';
 import { getCurrentUser } from './../res/utilFunctions';
 import { ActivitySlider } from '../molecules/MoleculesExports';
+import { getFavorites } from '../res/utilFavorites';
 
 export interface Props {
   navigation: {
@@ -25,7 +26,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
-  }); // defaults to Los Angeles if user location is not provided
+  }); // defaults to Los Angeles if user location is not provided and no place param
   const [region, setRegion] = useState({
     latitude: 41.878,
     longitude: -93.0977,
@@ -37,7 +38,6 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [locations, setLocations] = useState([]);
   const [title, setTitle] = useState<string>();
   const [image, setImage] = useState<string>();
-  const [favoritesArr, setFavoritesArr] = useState([]);
   const [distance, setDistance] = useState<number>(30);
 
   useEffect(() => {
@@ -51,6 +51,15 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   useEffect(() => {
     setPage('map');
   }, [region]);
+
+  useEffect(() => {
+    if (route.params.place != undefined) {
+      setPage('map');
+      setRegion(route.params.place);
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      setImage(require('../../assets/activity-fav.png'));
+    }
+  }, [route.params.place]);
 
   const getUserLocation = async () => {
     const { status } = await Location.requestPermissionsAsync();
@@ -66,6 +75,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
         });
+
         setRegion({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
@@ -73,6 +83,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
           longitudeDelta: 0.05,
           default: false,
         });
+
         queryActivities();
       } catch (e) {
         console.log(e);
@@ -140,16 +151,21 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   };
 
   const queryActivities = async () => {
-    const distanceMeters = 1609.34 * distance > 40000 ? 40000 : 1609.34 * distance;
-    const search =
-      'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-      `location=${userLocation.latitude},${userLocation.longitude}` +
-      `&radius=${distanceMeters}` +
-      `&query=${route.params.activity}` +
-      `&key=${GOOGLE_PLACES_API_KEY}`;
-    const response = await fetch(search);
-    const detail = await response.json();
-    setLocations(detail.results);
+    if (route.params.activity === 'favorites') {
+      const favorites = await getFavorites();
+      setLocations(favorites);
+    } else {
+      const distanceMeters = 1609.34 * distance > 40000 ? 40000 : 1609.34 * distance;
+      const search =
+        'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
+        `location=${userLocation.latitude},${userLocation.longitude}` +
+        `&radius=${distanceMeters}` +
+        `&query=${route.params.activity}` +
+        `&key=${GOOGLE_PLACES_API_KEY}`;
+      const response = await fetch(search);
+      const detail = await response.json();
+      setLocations(detail.results);
+    }
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

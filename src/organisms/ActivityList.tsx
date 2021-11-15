@@ -16,9 +16,9 @@ export interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setRegion?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  region: any;
+  region?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  image: any;
+  image?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   trigger?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,8 +43,28 @@ export const ActivityList: React.FC<Props> = ({
 
   const queryFavorites = async () => {
     const favorites = await getFavorites();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const favArr = favorites.map((ele: any) => ele.place_id);
     setFavoritesArr(favArr);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleRegion = (location: any) => {
+    const newRegion = {
+      latitude: location.geometry.location.lat,
+      longitude: location.geometry.location.lng,
+      latitudeDelta: 0.001,
+      longitudeDelta: 0.001,
+      default: false,
+    };
+
+    if (setRegion) {
+      setRegion(newRegion);
+    } else {
+      navigation.navigate('ActivityResults', {
+        place: newRegion,
+      });
+    }
   };
 
   return (
@@ -59,7 +79,7 @@ export const ActivityList: React.FC<Props> = ({
             navigation={navigation}
             location={item}
             map={false}
-            setRegion={setRegion}
+            handleRegion={handleRegion}
             region={region}
             image={image}
             trigger={trigger}
