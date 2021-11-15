@@ -128,11 +128,14 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
         setImage(require('../../assets/activity-art.png'));
         break;
       case 'favorites':
+        setTitle('Favorites');
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-fav.png'));
         break;
       default:
         setTitle('Search Results');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        setImage(require('../../assets/activity-search.png'));
     }
   };
 
