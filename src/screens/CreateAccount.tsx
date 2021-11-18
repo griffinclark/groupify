@@ -16,7 +16,7 @@ export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
-    push: (ev: string, e: { phone: string; step: string }) => void;
+    push: (ev: any, e: { phone: any; step: string }) => void;
   };
   route: RoutePropParams;
 }
@@ -52,7 +52,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       setDisabled(true);
     }
   }, [password, firstName, lastName, name, phone, formatPhone, validationCode, confirmPassword]);
-
+ 
   useEffect(() => {
     setName(firstName + ' ' + lastName);
   }, [firstName, lastName]);
@@ -147,6 +147,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       await Auth.confirmSignUp(route.params.phone, validationCode);
       navigation.navigate('Login', { accountCreated: 'success' });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      
     } catch (err: any) {
       console.log('Error: ', err);
       setError(err.message);
@@ -232,9 +233,10 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                         }}
                         secureTextEntry={true}
                       />
-                      {error && <Alert status="error" message={error} />}
-                      {success && <Alert status="success" message={success} />}
-                      <TouchableOpacity
+                      {/* {error && <Alert status="error" message={error} />}
+                      {success && <Alert status="success" message={success} />} */}
+
+                      {/* <TouchableOpacity
                         onPress={() => {
                           try {
                             console.log(route.params.phone);
@@ -253,7 +255,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                         <AppText style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>
                           Send New Verification Code
                         </AppText>
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                     </TouchableWithoutFeedback>
                   </View>
                 </View>

@@ -5,7 +5,7 @@ import { RootNavigation } from './src/res/root-navigation';
 
 import awsconfig from './src/aws-exports';
 
-import Amplify, { API, Auth } from 'aws-amplify';
+import Amplify, { API, Auth, Hub } from 'aws-amplify';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import * as Notifications from 'expo-notifications';
@@ -28,6 +28,12 @@ export const App: React.FC = () => {
   LogBox.ignoreLogs(['Setting a timer']);
 
   useEffect(() => {
+    Hub.listen('auth', (event) => {
+        console.log("auth event", event);
+    });
+  }, []);
+
+  useEffect(() => {
     const checkAuth = async () => {
       try {
         await Auth.currentAuthenticatedUser();
@@ -37,7 +43,8 @@ export const App: React.FC = () => {
         const userQuery: any = await API.graphql({
           query: queries.usersByPhoneNumber,
           variables: { phoneNumber: phoneNumber },
-        });
+        });////////ernest console here
+        console.log('userQuery', userQuery);
         const users = userQuery.data.usersByPhoneNumber.items;
         const user = users[0];
         setUserID(user.id);
@@ -55,6 +62,8 @@ export const App: React.FC = () => {
     };
     checkAuth();
   }, []);
+
+
 
   return (
     <View style={globalStyles.defaultRootContainer}>

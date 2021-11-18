@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "groupifyMainAuth": {}
+        "groupifyMain": {},
+        "groupifyMainet": {}
       }
     }
   }

@@ -1,27 +1,328 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
+export const createPlan = /* GraphQL */ `
+  mutation CreatePlan(
+    $input: CreatePlanInput!
+    $condition: ModelPlanConditionInput
   ) {
-    createUser(input: $input, condition: $condition) {
+    createPlan(input: $input, condition: $condition) {
       id
-      phoneNumber
-      email
-      name
-      pushToken
-      friends
-      availability {
+      title
+      description
+      location
+      placeID
+      date
+      time
+      creatorID
+      creator {
         id
-        Sunday
-        Monday
-        Tuesday
-        Wednesday
-        Thursday
-        Friday
-        Saturday
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      arbitrations {
+        items {
+          id
+          stat
+          original_description
+          proposed_description
+          value_count
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePlan = /* GraphQL */ `
+  mutation UpdatePlan(
+    $input: UpdatePlanInput!
+    $condition: ModelPlanConditionInput
+  ) {
+    updatePlan(input: $input, condition: $condition) {
+      id
+      title
+      description
+      location
+      placeID
+      date
+      time
+      creatorID
+      creator {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      arbitrations {
+        items {
+          id
+          stat
+          original_description
+          proposed_description
+          value_count
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePlan = /* GraphQL */ `
+  mutation DeletePlan(
+    $input: DeletePlanInput!
+    $condition: ModelPlanConditionInput
+  ) {
+    deletePlan(input: $input, condition: $condition) {
+      id
+      title
+      description
+      location
+      placeID
+      date
+      time
+      creatorID
+      creator {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      arbitrations {
+        items {
+          id
+          stat
+          original_description
+          proposed_description
+          value_count
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createPlanArbitration = /* GraphQL */ `
+  mutation CreatePlanArbitration(
+    $input: CreatePlanArbitrationInput!
+    $condition: ModelPlanArbitrationConditionInput
+  ) {
+    createPlanArbitration(input: $input, condition: $condition) {
+      id
+      stat
+      original_description
+      proposed_description
+      value_count
+      planID
+      createdBy {
+        id
+        name
+        phoneNumber
+        status
+        pushToken
+        planID
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        arbitrations {
+          nextToken
+          startedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -36,27 +337,76 @@ export const createUser = /* GraphQL */ `
     }
   }
 `;
-export const updateUser = /* GraphQL */ `
-  mutation UpdateUser(
-    $input: UpdateUserInput!
-    $condition: ModelUserConditionInput
+export const updatePlanArbitration = /* GraphQL */ `
+  mutation UpdatePlanArbitration(
+    $input: UpdatePlanArbitrationInput!
+    $condition: ModelPlanArbitrationConditionInput
   ) {
-    updateUser(input: $input, condition: $condition) {
+    updatePlanArbitration(input: $input, condition: $condition) {
       id
-      phoneNumber
-      email
-      name
-      pushToken
-      friends
-      availability {
+      stat
+      original_description
+      proposed_description
+      value_count
+      planID
+      createdBy {
         id
-        Sunday
-        Monday
-        Tuesday
-        Wednesday
-        Thursday
-        Friday
-        Saturday
+        name
+        phoneNumber
+        status
+        pushToken
+        planID
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        arbitrations {
+          nextToken
+          startedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -71,27 +421,244 @@ export const updateUser = /* GraphQL */ `
     }
   }
 `;
-export const deleteUser = /* GraphQL */ `
-  mutation DeleteUser(
-    $input: DeleteUserInput!
-    $condition: ModelUserConditionInput
+export const deletePlanArbitration = /* GraphQL */ `
+  mutation DeletePlanArbitration(
+    $input: DeletePlanArbitrationInput!
+    $condition: ModelPlanArbitrationConditionInput
   ) {
-    deleteUser(input: $input, condition: $condition) {
+    deletePlanArbitration(input: $input, condition: $condition) {
       id
-      phoneNumber
-      email
-      name
-      pushToken
-      friends
-      availability {
+      stat
+      original_description
+      proposed_description
+      value_count
+      planID
+      createdBy {
         id
-        Sunday
-        Monday
-        Tuesday
-        Wednesday
-        Thursday
-        Friday
-        Saturday
+        name
+        phoneNumber
+        status
+        pushToken
+        planID
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        arbitrations {
+          nextToken
+          startedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createInvitee = /* GraphQL */ `
+  mutation CreateInvitee(
+    $input: CreateInviteeInput!
+    $condition: ModelInviteeConditionInput
+  ) {
+    createInvitee(input: $input, condition: $condition) {
+      id
+      name
+      phoneNumber
+      status
+      pushToken
+      planID
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        arbitrations {
+          nextToken
+          startedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateInvitee = /* GraphQL */ `
+  mutation UpdateInvitee(
+    $input: UpdateInviteeInput!
+    $condition: ModelInviteeConditionInput
+  ) {
+    updateInvitee(input: $input, condition: $condition) {
+      id
+      name
+      phoneNumber
+      status
+      pushToken
+      planID
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        arbitrations {
+          nextToken
+          startedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteInvitee = /* GraphQL */ `
+  mutation DeleteInvitee(
+    $input: DeleteInviteeInput!
+    $condition: ModelInviteeConditionInput
+  ) {
+    deleteInvitee(input: $input, condition: $condition) {
+      id
+      name
+      phoneNumber
+      status
+      pushToken
+      planID
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        arbitrations {
+          nextToken
+          startedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -172,245 +739,27 @@ export const deleteAvailability = /* GraphQL */ `
     }
   }
 `;
-export const createPlan = /* GraphQL */ `
-  mutation CreatePlan(
-    $input: CreatePlanInput!
-    $condition: ModelPlanConditionInput
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    createPlan(input: $input, condition: $condition) {
+    createUser(input: $input, condition: $condition) {
       id
-      title
-      description
-      location
-      placeID
-      date
-      time
-      creatorID
-      creator {
-        id
-        phoneNumber
-        email
-        name
-        pushToken
-        friends
-        availability {
-          id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      invitees {
-        items {
-          id
-          name
-          phoneNumber
-          status
-          pushToken
-          planID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updatePlan = /* GraphQL */ `
-  mutation UpdatePlan(
-    $input: UpdatePlanInput!
-    $condition: ModelPlanConditionInput
-  ) {
-    updatePlan(input: $input, condition: $condition) {
-      id
-      title
-      description
-      location
-      placeID
-      date
-      time
-      creatorID
-      creator {
-        id
-        phoneNumber
-        email
-        name
-        pushToken
-        friends
-        availability {
-          id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      invitees {
-        items {
-          id
-          name
-          phoneNumber
-          status
-          pushToken
-          planID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deletePlan = /* GraphQL */ `
-  mutation DeletePlan(
-    $input: DeletePlanInput!
-    $condition: ModelPlanConditionInput
-  ) {
-    deletePlan(input: $input, condition: $condition) {
-      id
-      title
-      description
-      location
-      placeID
-      date
-      time
-      creatorID
-      creator {
-        id
-        phoneNumber
-        email
-        name
-        pushToken
-        friends
-        availability {
-          id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      invitees {
-        items {
-          id
-          name
-          phoneNumber
-          status
-          pushToken
-          planID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createInvitee = /* GraphQL */ `
-  mutation CreateInvitee(
-    $input: CreateInviteeInput!
-    $condition: ModelInviteeConditionInput
-  ) {
-    createInvitee(input: $input, condition: $condition) {
-      id
-      name
       phoneNumber
-      status
+      name
       pushToken
-      planID
-      plan {
+      friends
+      email
+      availability {
         id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        creatorID
-        creator {
-          id
-          phoneNumber
-          email
-          name
-          pushToken
-          friends
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        invitees {
-          nextToken
-          startedAt
-        }
+        Sunday
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
         _version
         _deleted
         _lastChangedAt
@@ -425,44 +774,27 @@ export const createInvitee = /* GraphQL */ `
     }
   }
 `;
-export const updateInvitee = /* GraphQL */ `
-  mutation UpdateInvitee(
-    $input: UpdateInviteeInput!
-    $condition: ModelInviteeConditionInput
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    updateInvitee(input: $input, condition: $condition) {
+    updateUser(input: $input, condition: $condition) {
       id
-      name
       phoneNumber
-      status
+      name
       pushToken
-      planID
-      plan {
+      friends
+      email
+      availability {
         id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        creatorID
-        creator {
-          id
-          phoneNumber
-          email
-          name
-          pushToken
-          friends
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        invitees {
-          nextToken
-          startedAt
-        }
+        Sunday
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
         _version
         _deleted
         _lastChangedAt
@@ -477,44 +809,27 @@ export const updateInvitee = /* GraphQL */ `
     }
   }
 `;
-export const deleteInvitee = /* GraphQL */ `
-  mutation DeleteInvitee(
-    $input: DeleteInviteeInput!
-    $condition: ModelInviteeConditionInput
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    deleteInvitee(input: $input, condition: $condition) {
+    deleteUser(input: $input, condition: $condition) {
       id
-      name
       phoneNumber
-      status
+      name
       pushToken
-      planID
-      plan {
+      friends
+      email
+      availability {
         id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        creatorID
-        creator {
-          id
-          phoneNumber
-          email
-          name
-          pushToken
-          friends
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        invitees {
-          nextToken
-          startedAt
-        }
+        Sunday
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
         _version
         _deleted
         _lastChangedAt

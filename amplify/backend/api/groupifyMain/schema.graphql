@@ -1,4 +1,4 @@
-type Plan @model @auth(rules: [{allow: public}]) {
+type Plan @model  {
   id: ID!
   title: String!
   description: String
@@ -8,11 +8,11 @@ type Plan @model @auth(rules: [{allow: public}]) {
   time: AWSTime
   creatorID: ID!
   creator: User @connection
-  arbitrations: [PlanArbitration] @connection(keyName: "byPlan", fields: ["id"])
-  invitees: [Invitee] @connection(keyName: "byPlan", fields: ["id"])
+  arbitrations: [PlanArbitration] @connection
+  invitees: [Invitee] @connection
 }
 
-type PlanArbitration @model @auth(rules: [{allow: public}]) @key(name: "byPlan", fields: ["planID"]) {
+type PlanArbitration @model {
   id: ID!
   stat: Status
   original_description: String
@@ -29,7 +29,11 @@ enum Status {
   DECLINED
 }
 
-type Invitee @model @auth(rules: [{allow: public}]) @key(name: "byPlan", fields: ["planID"]) {
+type Invitee
+ @model
+  @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "inviteeByPhoneNUmber")
+  @key(name: "byPlan", fields: ["planID"], queryField: "inviteesByPlan")
+ {
   id: ID!
   name: String!
   phoneNumber: AWSPhone!
@@ -39,7 +43,7 @@ type Invitee @model @auth(rules: [{allow: public}]) @key(name: "byPlan", fields:
   plan: Plan @connection
 }
 
-type Availability @model @auth(rules: [{allow: public}]) {
+type Availability @model {
   id: ID!
   Sunday: [AWSTime]
   Monday: [AWSTime]
@@ -50,12 +54,17 @@ type Availability @model @auth(rules: [{allow: public}]) {
   Saturday: [AWSTime]
 }
 
-type User @model @auth(rules: [{allow: public}]) {
+type User
+ @model 
+  @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber")
+  @key(name: "byName", fields: ["name"], queryField: "usersByName")
+  {
   id: ID!
   phoneNumber: AWSPhone!
   name: String!
   pushToken: String!
   friends: ID
+  email: String
   availability: Availability @connection
 }
  

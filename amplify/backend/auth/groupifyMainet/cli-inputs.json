@@ -1,14 +1,16 @@
 {
-    "identityPoolName": "groupifymain8bc116ed_identitypool_8bc116ed",
+  "version": "1",
+  "cognitoConfig": {
+    "identityPoolName": "groupifymain4350a2fc_identitypool_4350a2fc",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "groupi8bc116ed",
-    "userPoolName": "groupifymain8bc116ed_userpool_8bc116ed",
+    "resourceNameTruncated": "groupi4350a2fc",
+    "userPoolName": "groupifymain4350a2fc_userpool_4350a2fc",
     "autoVerifiedAttributes": [
-        "phone_number"
+      "phone_number"
     ],
-    "mfaConfiguration": "ON",
+    "mfaConfiguration": "OFF",
     "mfaTypes": [
-        "SMS Text Message"
+      "SMS Text Message"
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
@@ -18,52 +20,35 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "name",
-        "phone_number"
+      "name",
+      "phone_number"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
-        "email"
+      "email"
     ],
     "userpoolClientReadAttributes": [
-        "email"
+      "email"
     ],
-    "userpoolClientLambdaRole": "groupi8bc116ed_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "groupi4350a2fc_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "8bc116ed",
-    "resourceName": "groupifyMainAuth",
+    "sharedId": "4350a2fc",
+    "resourceName": "groupifyMainet",
     "authSelections": "identityPoolAndUserPool",
-    "authRoleArn": {
-        "Fn::GetAtt": [
-            "AuthRole",
-            "Arn"
-        ]
-    },
-    "unauthRoleArn": {
-        "Fn::GetAtt": [
-            "UnauthRole",
-            "Arn"
-        ]
-    },
     "useDefault": "manual",
     "thirdPartyAuth": false,
     "usernameAttributes": [
-        "phone_number"
+      "phone_number"
     ],
     "userPoolGroups": false,
     "adminQueries": false,
-    "triggers": "{}",
+    "triggers": {},
     "hostedUI": false,
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true,
-    "parentStack": {
-        "Ref": "AWS::StackId"
-    },
-    "breakCircularDependency": true,
-    "permissions": [],
-    "dependsOn": []
+    "useEnabledMfas": true
+  }
 }
