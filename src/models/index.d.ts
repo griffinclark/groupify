@@ -52,6 +52,7 @@ export declare class User {
   readonly name: string;
   readonly pushToken: string;
   readonly friends?: string;
+  readonly email?: string;
   readonly availability?: Availability;
   readonly createdAt?: string;
   readonly updatedAt?: string;

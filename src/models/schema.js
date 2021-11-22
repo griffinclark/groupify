@@ -164,6 +164,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "availability": {
                     "name": "availability",
                     "isArray": false,
@@ -546,5 +553,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "0e8d41e7d5f01c6c8c5e7d480668468c"
+    "version": "6eb05e108cc5089ab31635f4a5932ab2"
 };

@@ -102,6 +102,7 @@ export const getPlan = /* GraphQL */ `
           proposed_description
           value_count
           planID
+          planArbitrationsId
           _version
           _deleted
           _lastChangedAt
@@ -119,6 +120,7 @@ export const getPlan = /* GraphQL */ `
           status
           pushToken
           planID
+          planInviteesId
           _version
           _deleted
           _lastChangedAt
@@ -204,6 +206,7 @@ export const syncPlanArbitrations = /* GraphQL */ `
         proposed_description
         value_count
         planID
+        planArbitrationsId
         createdBy {
           id
           name
@@ -211,6 +214,7 @@ export const syncPlanArbitrations = /* GraphQL */ `
           status
           pushToken
           planID
+          planInviteesId
           _version
           _deleted
           _lastChangedAt
@@ -252,6 +256,7 @@ export const getPlanArbitration = /* GraphQL */ `
       proposed_description
       value_count
       planID
+      planArbitrationsId
       createdBy {
         id
         name
@@ -259,6 +264,7 @@ export const getPlanArbitration = /* GraphQL */ `
         status
         pushToken
         planID
+        planInviteesId
         plan {
           id
           title
@@ -342,6 +348,7 @@ export const listPlanArbitrations = /* GraphQL */ `
         proposed_description
         value_count
         planID
+        planArbitrationsId
         createdBy {
           id
           name
@@ -349,6 +356,7 @@ export const listPlanArbitrations = /* GraphQL */ `
           status
           pushToken
           planID
+          planInviteesId
           _version
           _deleted
           _lastChangedAt
@@ -401,6 +409,7 @@ export const syncInvitees = /* GraphQL */ `
         status
         pushToken
         planID
+        planInviteesId
         plan {
           id
           title
@@ -436,6 +445,7 @@ export const getInvitee = /* GraphQL */ `
       status
       pushToken
       planID
+      planInviteesId
       plan {
         id
         title
@@ -494,6 +504,7 @@ export const listInvitees = /* GraphQL */ `
         status
         pushToken
         planID
+        planInviteesId
         plan {
           id
           title
@@ -739,6 +750,7 @@ export const inviteeByPhoneNUmber = /* GraphQL */ `
         status
         pushToken
         planID
+        planInviteesId
         plan {
           id
           title
@@ -787,6 +799,7 @@ export const inviteesByPlan = /* GraphQL */ `
         status
         pushToken
         planID
+        planInviteesId
         plan {
           id
           title

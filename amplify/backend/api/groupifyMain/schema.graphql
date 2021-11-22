@@ -7,6 +7,7 @@ type Plan @model  {
   date: AWSDate
   time: AWSTime
   creatorID: ID!
+  planCreatorId: ID
   creator: User @connection
   arbitrations: [PlanArbitration] @connection
   invitees: [Invitee] @connection
@@ -19,6 +20,7 @@ type PlanArbitration @model {
   proposed_description: String
   value_count: Int
   planID: ID
+  planArbitrationsId: ID
   createdBy: Invitee @connection
   plan: Plan @connection
 }
@@ -40,6 +42,7 @@ type Invitee
   status: Status!
   pushToken: String
   planID: ID
+  planInviteesId: ID
   plan: Plan @connection
 }
 

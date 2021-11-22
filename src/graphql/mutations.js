@@ -51,6 +51,7 @@ export const createPlan = /* GraphQL */ `
           proposed_description
           value_count
           planID
+          planArbitrationsId
           _version
           _deleted
           _lastChangedAt
@@ -68,6 +69,7 @@ export const createPlan = /* GraphQL */ `
           status
           pushToken
           planID
+          planInviteesId
           _version
           _deleted
           _lastChangedAt
@@ -135,6 +137,7 @@ export const updatePlan = /* GraphQL */ `
           proposed_description
           value_count
           planID
+          planArbitrationsId
           _version
           _deleted
           _lastChangedAt
@@ -152,6 +155,7 @@ export const updatePlan = /* GraphQL */ `
           status
           pushToken
           planID
+          planInviteesId
           _version
           _deleted
           _lastChangedAt
@@ -219,6 +223,7 @@ export const deletePlan = /* GraphQL */ `
           proposed_description
           value_count
           planID
+          planArbitrationsId
           _version
           _deleted
           _lastChangedAt
@@ -236,6 +241,7 @@ export const deletePlan = /* GraphQL */ `
           status
           pushToken
           planID
+          planInviteesId
           _version
           _deleted
           _lastChangedAt
@@ -265,6 +271,7 @@ export const createPlanArbitration = /* GraphQL */ `
       proposed_description
       value_count
       planID
+      planArbitrationsId
       createdBy {
         id
         name
@@ -272,6 +279,7 @@ export const createPlanArbitration = /* GraphQL */ `
         status
         pushToken
         planID
+        planInviteesId
         plan {
           id
           title
@@ -349,6 +357,7 @@ export const updatePlanArbitration = /* GraphQL */ `
       proposed_description
       value_count
       planID
+      planArbitrationsId
       createdBy {
         id
         name
@@ -356,6 +365,7 @@ export const updatePlanArbitration = /* GraphQL */ `
         status
         pushToken
         planID
+        planInviteesId
         plan {
           id
           title
@@ -433,6 +443,7 @@ export const deletePlanArbitration = /* GraphQL */ `
       proposed_description
       value_count
       planID
+      planArbitrationsId
       createdBy {
         id
         name
@@ -440,6 +451,7 @@ export const deletePlanArbitration = /* GraphQL */ `
         status
         pushToken
         planID
+        planInviteesId
         plan {
           id
           title
@@ -517,6 +529,7 @@ export const createInvitee = /* GraphQL */ `
       status
       pushToken
       planID
+      planInviteesId
       plan {
         id
         title
@@ -573,6 +586,7 @@ export const updateInvitee = /* GraphQL */ `
       status
       pushToken
       planID
+      planInviteesId
       plan {
         id
         title
@@ -629,6 +643,7 @@ export const deleteInvitee = /* GraphQL */ `
       status
       pushToken
       planID
+      planInviteesId
       plan {
         id
         title

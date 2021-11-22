@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
@@ -52,7 +52,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       setDisabled(true);
     }
   }, [password, firstName, lastName, name, phone, formatPhone, validationCode, confirmPassword]);
- 
+
   useEffect(() => {
     setName(firstName + ' ' + lastName);
   }, [firstName, lastName]);
@@ -147,7 +147,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
       await Auth.confirmSignUp(route.params.phone, validationCode);
       navigation.navigate('Login', { accountCreated: 'success' });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      
     } catch (err: any) {
       console.log('Error: ', err);
       setError(err.message);

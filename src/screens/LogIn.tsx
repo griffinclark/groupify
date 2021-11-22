@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Amplify,{ API, Auth, Hub } from 'aws-amplify';
+import { API, Auth, Hub } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts, getUserPushToken, setUserPushToken } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
@@ -15,7 +15,6 @@ import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
 import * as queries from '../graphql/queries';
 import * as Analytics from 'expo-firebase-analytics';
-
 
 // const user = {
 //   "_deleted": undefined,
@@ -53,19 +52,15 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [info, setInfo] = useState<string | undefined>();
 
- 
-
-  useEffect( () => {
+  useEffect(() => {
     const userInfo = Auth.currentUserInfo();
-   
+
     console.log('userInfo', info);
-  }, []); 
+  }, []);
 
   useEffect(() => {
     clearUserData();
-  }, []); 
-
- 
+  }, []);
 
   const clearUserData = async () => {
     await DataStore.clear();
@@ -78,24 +73,24 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [phone]);
 
   const registerUser = async (): Promise<User> => {
-     await registerForPushNotifications();
+    await registerForPushNotifications();
     const token = await getUserPushToken();
-     const userInfo = await Auth.currentUserInfo();
+    const userInfo = await Auth.currentUserInfo();
 
     console.log('userInfo', userInfo);
     console.log('userInfo', userInfo);
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    const userQuery: any = await API.graphql({
-      query: queries.usersByPhoneNumber,
-      variables: { phoneNumber: userInfo.attributes.phone_number },
-
-      
-    });
+    // const userQuery: any = await API.graphql({
+    //   query: queries.usersByPhoneNumber,
+    //   variables: { phoneNumber: userInfo.attributes.phone_number },
+    // });
+    const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     console.log(typeof userQuery);
-    console.log('userQuery', userQuery);
-    const users = userQuery.data.usersByPhoneNumber.items;
+   
+    const users =  userQuery.map((user) => user);
     if (users.length > 0) {
       const user = users[0];
+      console.log('user login', user);
       const pushTokenRegex = /ExponentPushToken\[.{22}]/;
       if (token && (!pushTokenRegex.test(token) || !pushTokenRegex.test(user.pushToken) || user.pushToken !== token)) {
         console.log('Existing User: Updating users pushToken');
@@ -109,7 +104,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       }
       console.log('Existing User: Returning user', user);
       return user;
-      
     } else {
       console.log('New User: Adding user to database');
       const newToken = await getExpoPushToken();
@@ -120,11 +114,10 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           phoneNumber: userInfo.attributes.phone_number,
           name: userInfo.attributes.name,
           pushToken: newToken,
-          
         }),
       );
       console.log('Created new user:');
-      console.log("newUser",newUser);
+      console.log('newUser', newUser);
       return newUser;
     }
   };
@@ -140,14 +133,14 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       console.log('successfully signed in');
       const kk = await registerForPushNotifications();
       console.log('kk', kk);
-      const user =  await registerUser();
-      console.log("dfgh",user);
+      const user = await registerUser();
+      console.log('dfgh', user);
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
         navigation.navigate('ImportContactDetails', {});
       } else {
         if (user.id) {
-          console.log("userr:",user.id);
+          console.log('userr:', user.id);
           navigation.push('Home', { userID: user.id });
         }
       }
@@ -189,7 +182,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     Hub.listen('auth', (event) => {
-        console.log("auth event", event);
+      console.log('auth event', event);
     });
   }, []);
 
