@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { API, Auth, Hub } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts, getUserPushToken, setUserPushToken } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
@@ -13,7 +14,6 @@ import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
-import * as queries from '../graphql/queries';
 import * as Analytics from 'expo-firebase-analytics';
 
 // const user = {
@@ -50,13 +50,14 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState<string | undefined>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [info, setInfo] = useState<string | undefined>();
 
-  useEffect(() => {
-    const userInfo = Auth.currentUserInfo();
+  // useEffect(() => {
+  //   const userInfo = Auth.currentUserInfo();
 
-    console.log('userInfo', info);
-  }, []);
+  //   console.log('userInfo', info);
+  // }, []);
 
   useEffect(() => {
     clearUserData();
@@ -76,18 +77,9 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     await registerForPushNotifications();
     const token = await getUserPushToken();
     const userInfo = await Auth.currentUserInfo();
-
-    console.log('userInfo', userInfo);
-    console.log('userInfo', userInfo);
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    // const userQuery: any = await API.graphql({
-    //   query: queries.usersByPhoneNumber,
-    //   variables: { phoneNumber: userInfo.attributes.phone_number },
-    // });
     const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     console.log(typeof userQuery);
-   
-    const users =  userQuery.map((user) => user);
+    const users = userQuery.map((user) => user);
     if (users.length > 0) {
       const user = users[0];
       console.log('user login', user);

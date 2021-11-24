@@ -1,7 +1,9 @@
+/* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { background, GREY_0, TEAL } from './../res/styles/Colors';
+// eslint-disable-next-line unused-imports/no-unused-imports-ts
 import { getCurrentUser, loadInviteeStatus, removePastPlans, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
@@ -41,7 +43,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   useEffect(() => {
     const awaitUser = async () => {
       const user = await getCurrentUser();
-      console.log('userHome', user);
       setCurrentUser(user);
       await loadPlans(user);
       setTrigger2(!trigger2);
@@ -58,17 +59,17 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
 
   const loadPlans = async (user: User) => {
     console.log('Loading plans');
-
-    const userCreatedPlans = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
+    const createdPlanOnDb = await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id));
+    const createdPlans = createdPlanOnDb.map((plan) => plan);
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
-    let invitedPlans = removePastPlans(
-      invitees
-        .map((invitee) => {
-          return invitee.plan;
-        })
-        .filter((item): item is Plan => item !== undefined),
-    );
-    const upcoming = removePastPlans(invitedPlans);
+    console.log('createdPlans', createdPlans);
+
+    let invitedPlans = //removePastPlans(
+      invitees.map((invitee) => (
+          invitee.plan
+      )).filter((item): item is Plan => item !== undefined);
+    // );
+    const upcoming = invitedPlans;
     if (currentUser) invitedPlans = invitedPlans.filter((item): item is Plan => item.creatorID !== currentUser.id);
 
     const accepted = [];
@@ -79,9 +80,9 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       }
     }
 
-    setUpcomingPlans(sortPlansByDate(accepted));
-    setUserPlans(sortPlansByDate(userCreatedPlans));
-    setInvitedPlans(sortPlansByDate(invitedPlans));
+    setUpcomingPlans(accepted);
+    setUserPlans(createdPlans);
+    setInvitedPlans(invitedPlans);
     console.log('Finished loading plans');
   };
 

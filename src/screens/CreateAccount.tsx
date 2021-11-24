@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RoutePropParams } from '../res/root-navigation';
 import { Dimensions, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
@@ -32,6 +33,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const [validationCode, setCode] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState<string | undefined>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [success, setSuccess] = useState<string | undefined>();
 
   useEffect(() => {

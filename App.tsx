@@ -5,11 +5,10 @@ import { RootNavigation } from './src/res/root-navigation';
 import { User } from './src/models';
 import awsconfig from './src/aws-exports';
 import { DataStore } from '@aws-amplify/datastore';
-import Amplify, { API, Auth, Hub } from 'aws-amplify';
+import Amplify, { Auth, Hub } from 'aws-amplify';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import * as Notifications from 'expo-notifications';
-import * as queries from './src/graphql/queries';
 
 Amplify.configure(awsconfig);
 
@@ -29,7 +28,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     Hub.listen('auth', (event) => {
-        console.log("auth event", event);
+      console.log('auth event', event);
     });
   }, []);
 
@@ -38,21 +37,11 @@ export const App: React.FC = () => {
       try {
         await Auth.currentAuthenticatedUser();
         console.log('user is signed in');
-        const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
-        const id = (await Auth.currentUserInfo()).id;
-        console.log('phoneNumber appscreen', phoneNumber);
+        // const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
 
         const userQuery = await DataStore.query(User);
-        
         const userd = userQuery.map((user) => user.id);
-       
-        // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-        // const userQuery: any = await API.graphql({
-        //   query: queries.usersByPhoneNumber,
-        //   variables: { phoneNumber: phoneNumber },
-        // });////////ernest console here
-       
-        
+
         setUserID(userd[0]);
         const contacts: Contact[] = await getAllImportedContacts();
         if (contacts.length === 0) {
@@ -68,8 +57,6 @@ export const App: React.FC = () => {
     };
     checkAuth();
   }, []);
-
-
 
   return (
     <View style={globalStyles.defaultRootContainer}>
