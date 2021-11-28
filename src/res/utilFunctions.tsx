@@ -197,12 +197,8 @@ export const loadPhoto = async (placeID: string): Promise<string> => {
 export const getCurrentUser = async (): Promise<User> => {
   const userInfo = await Auth.currentUserInfo();
   if (userInfo) {
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    const userQuery: any = await API.graphql({
-      query: queries.usersByPhoneNumber,
-      variables: { phoneNumber: userInfo.attributes.phone_number },
-    });
-    const user = userQuery.data.usersByPhoneNumber.items;
+    const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
+    const user = userQuery.map((user) => user);
     if (user) {
       return user[0];
     }

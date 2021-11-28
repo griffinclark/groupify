@@ -1,0 +1,73 @@
+type Plan @model  {
+  id: ID!
+  title: String!
+  description: String
+  location: String
+  placeID: String
+  date: AWSDate
+  time: AWSTime
+  creatorID: ID!
+  planCreatorId: ID
+  creator: User @connection
+  arbitrations: [PlanArbitration] @connection
+  invitees: [Invitee] @connection
+}
+
+type PlanArbitration @model {
+  id: ID!
+  stat: Status
+  original_description: String
+  proposed_description: String
+  value_count: Int
+  planID: ID
+  planArbitrationsId: ID
+  createdBy: Invitee @connection
+  plan: Plan @connection
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+type Invitee
+ @model
+  @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "inviteeByPhoneNUmber")
+  @key(name: "byPlan", fields: ["planID"], queryField: "inviteesByPlan")
+ {
+  id: ID!
+  name: String!
+  phoneNumber: AWSPhone!
+  status: Status!
+  pushToken: String
+  planID: ID
+  planInviteesId: ID
+  plan: Plan @connection
+}
+
+type Availability @model {
+  id: ID!
+  Sunday: [AWSTime]
+  Monday: [AWSTime]
+  Tuesday: [AWSTime]
+  Wednesday: [AWSTime]
+  Thursday: [AWSTime]
+  Friday: [AWSTime]
+  Saturday: [AWSTime]
+}
+
+type User
+ @model 
+  @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber")
+  @key(name: "byName", fields: ["name"], queryField: "usersByName")
+  {
+  id: ID!
+  phoneNumber: AWSPhone!
+  name: String!
+  pushToken: String!
+  friends: ID
+  email: String
+  availability: Availability @connection
+}
+ 

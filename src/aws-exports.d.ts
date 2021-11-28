@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable import/no-default-export */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const awsmobile: any;
-export default awsmobile;
+
+export { awsmobile };
