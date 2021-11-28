@@ -63,6 +63,7 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
             color={'white'}
             name="check"
             type="entypo"
+            tvParallaxProperties={undefined}
           />
         )}
       </TouchableOpacity>
