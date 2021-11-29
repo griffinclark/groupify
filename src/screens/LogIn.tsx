@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { API, Auth } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts, getUserPushToken, setUserPushToken } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
@@ -13,7 +14,6 @@ import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
-import * as queries from '../graphql/queries';
 import * as Analytics from 'expo-firebase-analytics';
 
 // const user = {
@@ -32,14 +32,14 @@ import * as Analytics from 'expo-firebase-analytics';
 export interface Props {
   navigation: {
     CreateAccount: {
-      step: string;
-      phone: string;
+      step: any;
+      phone: any;
     };
     params: {
       Login: string;
     };
-    navigate: (ev: string, {}) => void;
-    push: (ev: string, {}) => void;
+    navigate: (ev: any, {}) => void;
+    push: (ev: any, {}) => void;
   };
   route: RoutePropParams;
 }
@@ -50,6 +50,14 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState<string | undefined>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [info, setInfo] = useState<string | undefined>();
+
+  // useEffect(() => {
+  //   const userInfo = Auth.currentUserInfo();
+
+  //   console.log('userInfo', info);
+  // }, []);
 
   useEffect(() => {
     clearUserData();
@@ -69,15 +77,12 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     await registerForPushNotifications();
     const token = await getUserPushToken();
     const userInfo = await Auth.currentUserInfo();
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    const userQuery: any = await API.graphql({
-      query: queries.usersByPhoneNumber,
-      variables: { phoneNumber: userInfo.attributes.phone_number },
-    });
+    const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     console.log(typeof userQuery);
-    const users = userQuery.data.usersByPhoneNumber.items;
+    const users = userQuery.map((user) => user);
     if (users.length > 0) {
       const user = users[0];
+      console.log('user login', user);
       const pushTokenRegex = /ExponentPushToken\[.{22}]/;
       if (token && (!pushTokenRegex.test(token) || !pushTokenRegex.test(user.pushToken) || user.pushToken !== token)) {
         console.log('Existing User: Updating users pushToken');
@@ -89,21 +94,22 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           }),
         );
       }
+      console.log('Existing User: Returning user', user);
       return user;
     } else {
       console.log('New User: Adding user to database');
       const newToken = await getExpoPushToken();
       await setUserPushToken(newToken);
+      console.log('newToken', newToken);
       const newUser = await DataStore.save(
         new User({
           phoneNumber: userInfo.attributes.phone_number,
-          email: 'placeHolder@temporaryWorkAround.com',
           name: userInfo.attributes.name,
           pushToken: newToken,
-          friends: [],
         }),
       );
       console.log('Created new user:');
+      console.log('newUser', newUser);
       return newUser;
     }
   };
@@ -112,17 +118,21 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     setError(undefined);
     try {
       await Auth.signIn(formatPhone, password);
+      console.log('check', formatPhone);
+      console.log('check', password);
       setSecureStoreItem('phone', phone);
       setSecureStoreItem('password', password);
       console.log('successfully signed in');
+      const kk = await registerForPushNotifications();
+      console.log('kk', kk);
       const user = await registerUser();
-      console.log(user);
+      console.log('dfgh', user);
       const contacts: Contact[] = await getAllImportedContacts();
       if (contacts.length === 0) {
         navigation.navigate('ImportContactDetails', {});
       } else {
         if (user.id) {
-          console.log(user);
+          console.log('userr:', user.id);
           navigation.push('Home', { userID: user.id });
         }
       }
@@ -161,6 +171,12 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   const setSecureStoreItem = async (key: string, value: string): Promise<void> => {
     return SecureStore.setItemAsync(key, value);
   };
+
+  useEffect(() => {
+    Hub.listen('auth', (event) => {
+      console.log('auth event', event);
+    });
+  }, []);
 
   useEffect(() => {
     getSecureStoreItems();
@@ -203,9 +219,11 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
               >
                 <AppText style={styles.textTeal}>Forgot password?</AppText>
               </TouchableOpacity>
+
               {error && <Alert status="error" message={error} />}
             </View>
           </TouchableWithoutFeedback>
+
           <View style={styles.createAccount}>
             <AppText style={styles.text}>Don&apos;t have an account?</AppText>
             <AppText

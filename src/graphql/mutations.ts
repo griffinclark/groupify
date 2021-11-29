@@ -10,7 +10,7 @@ export const createUser = /* GraphQL */ `
     createUser(input: $input, condition: $condition) {
       id
       phoneNumber
-      email
+      
       name
       pushToken
       friends
@@ -45,7 +45,7 @@ export const updateUser = /* GraphQL */ `
     updateUser(input: $input, condition: $condition) {
       id
       phoneNumber
-      email
+      
       name
       pushToken
       friends
@@ -80,7 +80,7 @@ export const deleteUser = /* GraphQL */ `
     deleteUser(input: $input, condition: $condition) {
       id
       phoneNumber
-      email
+      
       name
       pushToken
       friends
@@ -190,7 +190,7 @@ export const createPlan = /* GraphQL */ `
       creator {
         id
         phoneNumber
-        email
+        
         name
         pushToken
         friends
@@ -257,7 +257,7 @@ export const updatePlan = /* GraphQL */ `
       creator {
         id
         phoneNumber
-        email
+        
         name
         pushToken
         friends
@@ -324,7 +324,7 @@ export const deletePlan = /* GraphQL */ `
       creator {
         id
         phoneNumber
-        email
+        e
         name
         pushToken
         friends
@@ -398,7 +398,7 @@ export const createInvitee = /* GraphQL */ `
         creator {
           id
           phoneNumber
-          email
+          
           name
           pushToken
           friends
@@ -450,7 +450,7 @@ export const updateInvitee = /* GraphQL */ `
         creator {
           id
           phoneNumber
-          email
+          
           name
           pushToken
           friends
@@ -502,7 +502,7 @@ export const deleteInvitee = /* GraphQL */ `
         creator {
           id
           phoneNumber
-          email
+         
           name
           pushToken
           friends
