@@ -1,0 +1,26 @@
+[
+    {
+      "id": "redeploy",
+      "execute-command": "/home/ubuntu/redeploy.sh",
+      "response-message": "Executing deploy script...",
+      "include-command-output-in-response": true,
+      "trigger-rule":
+      {
+        "and":
+        [
+          {
+            "match":
+            {
+              "type": "value",
+              "value": "refs/heads/staging",
+              "parameter":
+              {
+                "source": "payload",
+                "name": "ref"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
