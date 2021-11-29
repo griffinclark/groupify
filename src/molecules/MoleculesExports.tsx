@@ -13,6 +13,7 @@ import { InviteePreviewTile } from './InviteePreviewTile';
 import { Details } from './Details';
 import { ActivityCard } from './ActivityCard';
 import { ActivitySlider } from './ActivitySlider';
+import { NoResults } from './NoResults';
 
 export {
   AndroidContactTile,
@@ -30,4 +31,5 @@ export {
   Details,
   ActivityCard,
   ActivitySlider,
+  NoResults,
 };

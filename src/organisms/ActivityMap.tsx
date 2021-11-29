@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Constants from 'expo-constants';
-import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from '../molecules/ActivityCard';
 import { MapIcon } from '../../assets/Icons/IconExports';
 import { TEAL } from '../res/styles/Colors';
+import { getFavorites } from '../res/utilFavorites';
 
 export interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  image: any;
+  image?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleCreate: (loc: any) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,21 +21,31 @@ export interface Props {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
-  route: RoutePropParams;
   userLocation: Record<string, number>;
 }
 
 export const ActivityMap: React.FC<Props> = ({
-  // favorites,
   handleCreate,
   image,
   locations,
   navigation,
-  route,
   region,
   userLocation,
 }: Props) => {
   const [card, setCard] = useState();
+  const [favoritesArr, setFavoritesArr] = useState([]);
+  console.log(image);
+
+  useEffect(() => {
+    queryFavorites();
+  }, []);
+
+  const queryFavorites = async () => {
+    const favorites = await getFavorites();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const favArr = favorites.map((ele: any) => ele.place_id);
+    setFavoritesArr(favArr);
+  };
 
   return (
     <View style={styles.container}>
@@ -75,8 +85,8 @@ export const ActivityMap: React.FC<Props> = ({
       {card && (
         <View style={{ position: 'absolute', bottom: 0 }}>
           <ActivityCard
-            // favorites={favorites}
-            route={route}
+            favoritesArr={favoritesArr}
+            setFavoritesArr={setFavoritesArr}
             navigation={navigation}
             handleCreate={handleCreate}
             location={card}
