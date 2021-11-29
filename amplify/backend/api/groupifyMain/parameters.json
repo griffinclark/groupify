@@ -1,11 +1,12 @@
 {
-  "AppSyncApiName": "meepApi",
+  "AppSyncApiName": "groupifyMain",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
-      "authMeep",
+      "authgroupifyMainet",
       "Outputs.UserPoolId"
     ]
-  }
+  },
+  "AuthModeLastUpdated": "2021-11-18T05:31:47.189Z"
 }

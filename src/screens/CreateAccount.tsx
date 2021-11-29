@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RoutePropParams } from '../res/root-navigation';
 import { Dimensions, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
@@ -16,7 +17,7 @@ export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
-    push: (ev: string, e: { phone: string; step: string }) => void;
+    push: (ev: any, e: { phone: any; step: string }) => void;
   };
   route: RoutePropParams;
 }
@@ -32,6 +33,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
   const [validationCode, setCode] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState<string | undefined>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [success, setSuccess] = useState<string | undefined>();
 
   useEffect(() => {
@@ -232,9 +234,10 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                         }}
                         secureTextEntry={true}
                       />
-                      {error && <Alert status="error" message={error} />}
-                      {success && <Alert status="success" message={success} />}
-                      <TouchableOpacity
+                      {/* {error && <Alert status="error" message={error} />}
+                      {success && <Alert status="success" message={success} />} */}
+
+                      {/* <TouchableOpacity
                         onPress={() => {
                           try {
                             console.log(route.params.phone);
@@ -253,7 +256,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                         <AppText style={{ fontSize: 16, color: TEAL, paddingBottom: 80 }}>
                           Send New Verification Code
                         </AppText>
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                     </TouchableWithoutFeedback>
                   </View>
                 </View>

@@ -33,7 +33,6 @@ export type RoutePropParams = {
     userID: string;
     currentUser: User;
     currentUserPlan: Plan;
-    email: string;
     step: string;
     phone: string;
     invitedPlans: Plan[];

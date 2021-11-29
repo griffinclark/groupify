@@ -1,5 +1,131 @@
 export const schema = {
     "models": {
+        "Plan": {
+            "name": "Plan",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "location": {
+                    "name": "location",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "placeID": {
+                    "name": "placeID",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "date": {
+                    "name": "date",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "time": {
+                    "name": "time",
+                    "isArray": false,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "creatorID": {
+                    "name": "creatorID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "creator": {
+                    "name": "creator",
+                    "isArray": false,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "planCreatorId"
+                    }
+                },
+                "arbitrations": {
+                    "name": "arbitrations",
+                    "isArray": true,
+                    "type": {
+                        "model": "PlanArbitration"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "planArbitrationsId"
+                    }
+                },
+                "invitees": {
+                    "name": "invitees",
+                    "isArray": true,
+                    "type": {
+                        "model": "Invitee"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "planInviteesId"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Plans",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                }
+            ]
+        },
         "User": {
             "name": "User",
             "fields": {
@@ -14,13 +140,6 @@ export const schema = {
                     "name": "phoneNumber",
                     "isArray": false,
                     "type": "AWSPhone",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "email": {
-                    "name": "email",
-                    "isArray": false,
-                    "type": "AWSEmail",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -40,11 +159,17 @@ export const schema = {
                 },
                 "friends": {
                     "name": "friends",
-                    "isArray": true,
+                    "isArray": false,
                     "type": "ID",
                     "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "availability": {
                     "name": "availability",
@@ -58,6 +183,22 @@ export const schema = {
                         "connectionType": "BELONGS_TO",
                         "targetName": "userAvailabilityId"
                     }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
                 }
             },
             "syncable": true,
@@ -75,16 +216,6 @@ export const schema = {
                             "phoneNumber"
                         ],
                         "queryField": "usersByPhoneNumber"
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byEmail",
-                        "fields": [
-                            "email"
-                        ],
-                        "queryField": "usersByEmail"
                     }
                 },
                 {
@@ -164,6 +295,22 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
                 }
             },
             "syncable": true,
@@ -175,8 +322,8 @@ export const schema = {
                 }
             ]
         },
-        "Plan": {
-            "name": "Plan",
+        "PlanArbitration": {
+            "name": "PlanArbitration",
             "fields": {
                 "id": {
                     "name": "id",
@@ -185,100 +332,99 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "title": {
-                    "name": "title",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "location": {
-                    "name": "location",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "placeID": {
-                    "name": "placeID",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "date": {
-                    "name": "date",
-                    "isArray": false,
-                    "type": "AWSDate",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "time": {
-                    "name": "time",
-                    "isArray": false,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "creatorID": {
-                    "name": "creatorID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "creator": {
-                    "name": "creator",
+                "stat": {
+                    "name": "stat",
                     "isArray": false,
                     "type": {
-                        "model": "User"
+                        "enum": "Status"
                     },
                     "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "creatorID"
-                    }
+                    "attributes": []
                 },
-                "invitees": {
-                    "name": "invitees",
-                    "isArray": true,
+                "original_description": {
+                    "name": "original_description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "proposed_description": {
+                    "name": "proposed_description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "value_count": {
+                    "name": "value_count",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "planID": {
+                    "name": "planID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdBy": {
+                    "name": "createdBy",
+                    "isArray": false,
                     "type": {
                         "model": "Invitee"
                     },
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true,
                     "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "plan"
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "planArbitrationCreatedById"
                     }
+                },
+                "plan": {
+                    "name": "plan",
+                    "isArray": false,
+                    "type": {
+                        "model": "Plan"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "planArbitrationPlanId"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "planArbitrationsId": {
+                    "name": "planArbitrationsId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
-            "pluralName": "Plans",
+            "pluralName": "PlanArbitrations",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byCreator",
-                        "fields": [
-                            "creatorID"
-                        ],
-                        "queryField": "plansByCreator"
-                    }
                 }
             ]
         },
@@ -322,6 +468,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "planID": {
+                    "name": "planID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "plan": {
                     "name": "plan",
                     "isArray": false,
@@ -332,8 +485,31 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "planID"
+                        "targetName": "inviteePlanId"
                     }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "planInviteesId": {
+                    "name": "planInviteesId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -377,5 +553,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "20a64067603af71990a4acd480b2d9bd"
+    "version": "6eb05e108cc5089ab31635f4a5932ab2"
 };

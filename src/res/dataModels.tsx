@@ -2,7 +2,6 @@ import { Image } from 'expo-contacts';
 import { User } from '../models';
 
 export interface Profile {
-  email?: string;
   phoneNumber: string; // @Griffin This needs to be canonicalized format, not just a rando string
   firstName: string;
   lastName?: string; // some zombie accounts might not be made using a last name

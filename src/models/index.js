@@ -8,12 +8,13 @@ const Status = {
   "DECLINED": "DECLINED"
 };
 
-const { User, Availability, Plan, Invitee } = initSchema(schema);
+const { Plan, User, Availability, PlanArbitration, Invitee } = initSchema(schema);
 
 export {
+  Plan,
   User,
   Availability,
-  Plan,
+  PlanArbitration,
   Invitee,
   Status
 };

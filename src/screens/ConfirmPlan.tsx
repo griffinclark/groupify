@@ -197,7 +197,6 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       }),
     );
     inviteeList.push(userInvitee);
-
     //FIXME: plan invitee not being updated properly
     await DataStore.save(
       Plan.copyOf(newPlan, (item) => {
