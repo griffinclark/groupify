@@ -11,6 +11,8 @@ import { CreatedPlanTile } from './CreatedPlanTile';
 import { PlanDetailsTile } from './PlanDetailsTile';
 import { InviteePreviewTile } from './InviteePreviewTile';
 import { Details } from './Details';
+import { ActivityCard } from './ActivityCard';
+import { ActivitySlider } from './ActivitySlider';
 
 export {
   AndroidContactTile,
@@ -26,4 +28,6 @@ export {
   PlanDetailsTile,
   InviteePreviewTile,
   Details,
+  ActivityCard,
+  ActivitySlider,
 };

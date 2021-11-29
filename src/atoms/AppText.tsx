@@ -2,8 +2,6 @@ import React, { ReactNode } from 'react';
 import { NativeSyntheticEvent, NativeTouchEvent, Text } from 'react-native';
 import { useFonts } from 'expo-font';
 
-import { TextStyles } from '../res/styles/TextStyles';
-
 interface Props {
   children: string | ReactNode;
   maxFontSizeMultiplier?: number;
@@ -29,7 +27,7 @@ export const AppText: React.FC<Props> = ({
       maxFontSizeMultiplier={maxFontSizeMultiplier}
       numberOfLines={numberOfLines}
       onPress={onPress}
-      style={[TextStyles, { fontFamily: 'Brandon-Grotesque' }, style]}
+      style={[{ fontFamily: 'Brandon-Grotesque' }, style]}
     >
       {children}
     </Text>

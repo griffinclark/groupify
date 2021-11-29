@@ -43,7 +43,7 @@
       "tsx"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|rn-sliding-up-panel)"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|rn-sliding-up-panel|rn-swipe-gestures)"
     ],
     "coverageReporters": [
       "json-summary",
@@ -62,8 +62,10 @@
     "@react-native-community/checkbox": "^0.5.7",
     "@react-native-community/datetimepicker": "3.0.4",
     "@react-native-community/netinfo": "5.9.7",
+    "@react-native-community/slider": "^4.1.12",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
+    "@sharcoux/slider": "^5.6.1",
     "@types/google-libphonenumber": "^7.4.20",
     "aws-amplify": "^3.3.26",
     "expo": "^40.0.1",
