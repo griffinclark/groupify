@@ -2,8 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { TEAL, WHITE } from '../res/styles/Colors';
 import { User, Plan } from '../models';
-import { AppText } from '../atoms/AppText';
-import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
+import { SettingsCogIcon } from '../../assets/Icons/IconExports';
 
 interface Props {
   user?: User;
@@ -16,7 +15,7 @@ interface Props {
   };
 }
 
-export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPlans, navigation }: Props) => {
+export const SettingsNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPlans, navigation }: Props) => {
   return (
     <View style={{ width: '100%', alignItems: 'center' }}>
       <View style={[styles.nav, style]}>
@@ -26,29 +25,14 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
             navigation.navigate('Notifications', {});
           }}
         >
-          <AnnounceIcon />
-          <AppText style={styles.text}>Notifications</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '33%' }}
           onPress={() => {
-            navigation.push('ActivitySelector', { currentUser: user });
+            navigation.navigate('Settings', {});
           }}
         >
-          <CreatePlanIcon />
-          <AppText style={styles.text}>Create Plan</AppText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '33%' }}
-          onPress={() => {
-            navigation.navigate('Profile', {
-              currentUser: user,
-              currentUserPlan: userPlans[0] ? userPlans[0] : invitedPlans[0],
-            });
-          }}
-        >
-          <SettingsIcon />
-          <AppText style={styles.text}>Settings</AppText>
+          <SettingsCogIcon />
         </TouchableOpacity>
       </View>
     </View>

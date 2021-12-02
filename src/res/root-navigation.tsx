@@ -24,6 +24,8 @@ import { ForgotPassword } from '../screens/ForgotPassword';
 import { Welcome } from '../screens/Welcome';
 import { PlanIndex } from '../screens/PlanIndex';
 import { EditPlan } from '../screens/EditPlan';
+import { Settings } from '../screens/Settings';
+import { Notifications } from '../screens/Notifications';
 import { ActivitySelector } from '../screens/ActivitySelector';
 import { ActivityResults } from '../screens/ActivityResults';
 import { ActivityFavorites } from '../screens/ActivityFavorites';
@@ -118,6 +120,8 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen name="ViewPlans" component={PlanIndex} options={{ headerShown: false }} />
         <Stack.Screen name="EditPlan" component={EditPlan} options={{ headerShown: false }} />
+        <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
+        <Stack.Screen name="Notifications" component={Notifications} options={{ headerShown: false }} />
         <Stack.Screen name="ActivitySelector" component={ActivitySelector} options={{ headerShown: false }} />
         <Stack.Screen name="ActivityResults" component={ActivityResults} options={{ headerShown: false }} />
         <Stack.Screen name="ActivityFavorites" component={ActivityFavorites} options={{ headerShown: false }} />
