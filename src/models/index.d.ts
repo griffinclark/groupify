@@ -82,11 +82,11 @@ export declare class PlanArbitration {
   readonly proposed_description?: string;
   readonly value_count?: number;
   readonly planID?: string;
+  readonly planArbitrationsId?: string;
   readonly createdBy?: Invitee;
   readonly plan?: Plan;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  readonly planArbitrationsId?: string;
   constructor(init: ModelInit<PlanArbitration, PlanArbitrationMetaData>);
   static copyOf(source: PlanArbitration, mutator: (draft: MutableModel<PlanArbitration, PlanArbitrationMetaData>) => MutableModel<PlanArbitration, PlanArbitrationMetaData> | void): PlanArbitration;
 }
@@ -98,10 +98,10 @@ export declare class Invitee {
   readonly status: Status | keyof typeof Status;
   readonly pushToken?: string;
   readonly planID?: string;
+  readonly planInviteesId?: string;
   readonly plan?: Plan;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  readonly planInviteesId?: string;
   constructor(init: ModelInit<Invitee, InviteeMetaData>);
   static copyOf(source: Invitee, mutator: (draft: MutableModel<Invitee, InviteeMetaData>) => MutableModel<Invitee, InviteeMetaData> | void): Invitee;
 }

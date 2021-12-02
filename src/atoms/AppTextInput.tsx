@@ -38,6 +38,7 @@ export const AppTextInput: React.FC<Props> = ({
       {label && <AppText style={[styles.label, textStyle ? textStyle : {}]}>{label}</AppText>}
       <TextInput
         autoFocus={autoFocus}
+        maxLength={80}
         editable={editable}
         onBlur={() => setSelected(false)}
         onChangeText={onChangeText}

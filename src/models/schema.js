@@ -369,6 +369,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "planArbitrationsId": {
+                    "name": "planArbitrationsId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdBy": {
                     "name": "createdBy",
                     "isArray": false,
@@ -410,13 +417,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "planArbitrationsId": {
-                    "name": "planArbitrationsId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -475,6 +475,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "planInviteesId": {
+                    "name": "planInviteesId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "plan": {
                     "name": "plan",
                     "isArray": false,
@@ -503,13 +510,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "planInviteesId": {
-                    "name": "planInviteesId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
