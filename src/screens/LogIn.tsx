@@ -5,11 +5,20 @@ import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts, getUserPushToken, setUserPushToken } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
 import { Contact } from '../res/dataModels';
-import { Alert, FormInput, Button, Screen } from '../atoms/AtomsExports';
+import { Alert, FormInput, Button } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { User } from '../models';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  ImageBackground,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+  SafeAreaView,
+} from 'react-native';
 import { WHITE, TEAL } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
@@ -191,11 +200,11 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [phone, password]);
 
   return (
-    <Screen style={{ backgroundColor: WHITE, height: '100%', justifyContent: 'space-between' }}>
+    <SafeAreaView style={{ backgroundColor: WHITE, height: '100%', justifyContent: 'space-between' }}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-            <View style={{ alignSelf: 'center', flex: 1, marginTop: 20 }} testID="LogInScreen">
+            <View style={{ alignSelf: 'center', flex: 1, marginTop: -50 }} testID="LogInScreen">
               <ImageBackground style={styles.logoBackground} source={require('../../assets/Login_Background.png')} />
               <ImageBackground style={styles.logo} source={require('../../assets/Splash_Logo.png')} />
             </View>
@@ -238,12 +247,12 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
               <Alert status={'success'} message={'Account successfully created!'} />
             )}
           </View>
+          <View>
+            <Button title="Log In" onPress={logIn} disabled={disabled} />
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <View>
-        <Button title="Log In" onPress={logIn} disabled={disabled} />
-      </View>
-    </Screen>
+    </SafeAreaView>
   );
 };
 
