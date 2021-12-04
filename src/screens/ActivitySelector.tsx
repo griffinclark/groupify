@@ -114,9 +114,11 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
 export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
   const [modal, setModal] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(1);
   const [background, setBackground] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
+  const [interval, setInterval] = React.useState<Number | undefined>(1);
+  const intervals = 2;
+  const width = Dimensions.get('window').width;
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -130,14 +132,38 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate('ActivityResults', { activity: activity });
   };
 
+  const getInterval = (offset: any) => {
+    for (let i = 1; i <= intervals; i++) {
+      if (offset < (width / intervals) * i) {
+        return i;
+      }
+      if (i == intervals) {
+        return i;
+      }
+    }
+  }
+
+  let bullets = [];
+  for (let i = 1; i <= intervals; i++) {
+    bullets.push(
+      <View
+        key={i}
+        style={{
+          ...styles.bullet,
+          backgroundColor: interval === i ? '#31A59F' : '#C4C4C4'
+        }}
+      >
+      </View>
+    );
+  }
   return (
     <GestureRecognizerView
       /* eslint-disable */
       // @ts-expect-error
       config={{ detectSwipeDown: false, detectSwipeUp: false }}
       /* eslint-enable */
-      onSwipeLeft={() => setPage(2)}
-      onSwipeRight={() => setPage(1)}
+      //onSwipeLeft={() => setPage(2)}
+      //onSwipeRight={() => setPage(1)}
     >
       <ScrollView testID="ActivitySelectorScreen">
         <Screen>
@@ -164,12 +190,28 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
               <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
                 <AppText style={styles.questionText}>?</AppText>
               </TouchableOpacity>
-
-              {page === 1 ? <PageOne handleActivity={handleActivity} /> : <PageTwo handleActivity={handleActivity} />}
+              
+              <ScrollView 
+                horizontal={true}
+                decelerationRate={0}
+                disableIntervalMomentum={ true }
+                snapToInterval={ Dimensions.get('window').width }
+                snapToAlignment={"center"}
+                showsHorizontalScrollIndicator={false}
+                pagingEnabled={true}
+                scrollEventThrottle={200}
+                contentContainerStyle={{ ...styles.scrollView, width: `${100 * intervals}%` }}
+                onScroll={data => {
+                  console.log(data.nativeEvent.contentOffset.x);
+                  setInterval(getInterval(data.nativeEvent.contentOffset.x));
+                }}
+              >
+                <PageOne handleActivity={handleActivity} />
+                <PageTwo handleActivity={handleActivity} />
+              </ScrollView>
 
               <View style={styles.switch}>
-                <View style={page === 1 ? styles.active : styles.inactive} />
-                <View style={page === 1 ? styles.inactive : styles.active} />
+                {bullets}
               </View>
 
               <View>
@@ -265,8 +307,14 @@ const styles = StyleSheet.create({
     top: 0,
     // paddingTop: 125 + Constants.statusBarHeight,
   },
+  scrollView: {
+    display: 'flex',
+    flexDirection: 'row',
+    overflow: 'hidden',
+  },
   activities: {
     height: 379,
+    width: Dimensions.get('window').width
   },
   question: {
     alignItems: 'center',
@@ -317,15 +365,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 23,
   },
-  active: {
-    backgroundColor: '#31A59F',
-    borderRadius: 5.5,
-    height: 11,
-    marginHorizontal: 3,
-    width: 11,
-  },
-  inactive: {
-    backgroundColor: '#C4C4C4',
+  bullet: {
     borderRadius: 5.5,
     height: 11,
     marginHorizontal: 3,
