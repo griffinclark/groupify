@@ -234,7 +234,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
           {modal && <ActivityModal modal={modal} setModal={setModal} />}
           <View style={[background ? styles.inputBackground : styles.inputContainer]}>
             <TextInput
-              placeholder="Search for Restaurants, Parks, ..."
+              placeholder="Search for Restaurants, Parks, ....."
               onBlur={() => setBackground(false)}
               onFocus={() => setBackground(true)}
               onChangeText={(text) => setSearch(text)}
