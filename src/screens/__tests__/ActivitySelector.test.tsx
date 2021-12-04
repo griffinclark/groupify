@@ -40,7 +40,7 @@ describe('ActivitySelector Screen', () => {
       const { getByText, queryAllByTestId } = render(<ActivitySelector {...mockProps} />);
       await waitFor(() => {
         const activities = queryAllByTestId('activity');
-        expect(activities).toHaveLength(6);
+        expect(activities).toHaveLength(10);
         getByText('?');
         getByText('Get Food');
         getByText('Go Outside');
