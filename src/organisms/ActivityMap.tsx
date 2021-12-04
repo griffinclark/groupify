@@ -6,6 +6,7 @@ import { ActivityCard } from '../molecules/ActivityCard';
 import { MapIcon } from '../../assets/Icons/IconExports';
 import { TEAL } from '../res/styles/Colors';
 import { getFavorites } from '../res/utilFavorites';
+import { useIsFocused } from '@react-navigation/native';
 
 export interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,6 +40,12 @@ export const ActivityMap: React.FC<Props> = ({
   useEffect(() => {
     queryFavorites();
   }, []);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    queryFavorites();
+  }, [isFocused]);
 
   const queryFavorites = async () => {
     const favorites = await getFavorites();
