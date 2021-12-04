@@ -116,7 +116,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
   const [modal, setModal] = useState<boolean>(false);
   const [background, setBackground] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
-  const [interval, setInterval] = React.useState<Number | undefined>(1);
+  const [interval, setInterval] = React.useState<number | undefined>(1);
   const intervals = 2;
   const width = Dimensions.get('window').width;
 
@@ -132,6 +132,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate('ActivityResults', { activity: activity });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getInterval = (offset: any) => {
     for (let i = 1; i <= intervals; i++) {
       if (offset < (width / intervals) * i) {
@@ -141,19 +142,18 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
         return i;
       }
     }
-  }
+  };
 
-  let bullets = [];
+  const bullets = [];
   for (let i = 1; i <= intervals; i++) {
     bullets.push(
       <View
         key={i}
         style={{
           ...styles.bullet,
-          backgroundColor: interval === i ? '#31A59F' : '#C4C4C4'
+          backgroundColor: interval === i ? '#31A59F' : '#C4C4C4',
         }}
-      >
-      </View>
+      ></View>,
     );
   }
   return (
@@ -190,18 +190,18 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
               <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
                 <AppText style={styles.questionText}>?</AppText>
               </TouchableOpacity>
-              
-              <ScrollView 
+
+              <ScrollView
                 horizontal={true}
                 decelerationRate={0}
-                disableIntervalMomentum={ true }
-                snapToInterval={ Dimensions.get('window').width }
-                snapToAlignment={"center"}
+                disableIntervalMomentum={true}
+                snapToInterval={Dimensions.get('window').width}
+                snapToAlignment={'center'}
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled={true}
                 scrollEventThrottle={200}
                 contentContainerStyle={{ ...styles.scrollView, width: `${100 * intervals}%` }}
-                onScroll={data => {
+                onScroll={(data) => {
                   console.log(data.nativeEvent.contentOffset.x);
                   setInterval(getInterval(data.nativeEvent.contentOffset.x));
                 }}
@@ -210,9 +210,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
                 <PageTwo handleActivity={handleActivity} />
               </ScrollView>
 
-              <View style={styles.switch}>
-                {bullets}
-              </View>
+              <View style={styles.switch}>{bullets}</View>
 
               <View>
                 <View style={styles.dividerRow}>
@@ -314,7 +312,7 @@ const styles = StyleSheet.create({
   },
   activities: {
     height: 379,
-    width: Dimensions.get('window').width
+    width: Dimensions.get('window').width,
   },
   question: {
     alignItems: 'center',
