@@ -165,7 +165,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
       //onSwipeLeft={() => setPage(2)}
       //onSwipeRight={() => setPage(1)}
     >
-      <ScrollView testID="ActivitySelectorScreen">
+      <ScrollView testID="ActivitySelectorScreen" bounces={false}>
         <Screen>
           <View style={styles.activitySelectorContainer}>
             <View style={styles.navbar}>
