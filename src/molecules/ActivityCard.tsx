@@ -97,6 +97,7 @@ export const ActivityCard: React.FC<Props> = ({
   const handleToggleFavorite = async () => {
     if (favoritesArr.includes(location.place_id)) {
       const newFavs = await deleteFavorite(location.place_id);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       setFavoritesArr(newFavs.map((ele: any) => ele.place_id));
       if (trigger != undefined) setTrigger(!trigger);
     } else {
@@ -109,28 +110,28 @@ export const ActivityCard: React.FC<Props> = ({
     <View style={styles.card}>
       <View style={styles.cardContent}>
         <View style={styles.cardTop}>
-        <View style={{ width: 147 }}>
-          <AppText style={styles.name}>{location.name}</AppText>
-          <AppText style={styles.rating}>
-            {location.rating} {renderStars()} ({location.user_ratings_total})
-          </AppText>
-          <AppText>{formatMoney()}</AppText>
-          {formatAddress()}
-        </View>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          region={{
-            latitude: location.geometry.location.lat + 0.0005,
-            longitude: location.geometry.location.lng,
-            latitudeDelta: 0.002,
-            longitudeDelta: 0.002,
-          }}
-          style={styles.map}
-          zoomEnabled={false}
-          zoomTapEnabled={false}
-          rotateEnabled={false}
-          scrollEnabled={false}
-        >
+          <View style={{ width: 147 }}>
+            <AppText style={styles.name}>{location.name}</AppText>
+            <AppText style={styles.rating}>
+              {location.rating} {renderStars()} ({location.user_ratings_total})
+            </AppText>
+            <AppText>{formatMoney()}</AppText>
+            {formatAddress()}
+          </View>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            region={{
+              latitude: location.geometry.location.lat + 0.0005,
+              longitude: location.geometry.location.lng,
+              latitudeDelta: 0.002,
+              longitudeDelta: 0.002,
+            }}
+            style={styles.map}
+            zoomEnabled={false}
+            zoomTapEnabled={false}
+            rotateEnabled={false}
+            scrollEnabled={false}
+          >
           <Marker
             coordinate={{
               latitude: location.geometry.location.lat,
@@ -142,15 +143,15 @@ export const ActivityCard: React.FC<Props> = ({
         </MapView>
       </View>
         <View style={[styles.cardBottom, map != true ? styles.cardBottomFav : null]}>
-        {map != true && (
-          <TouchableOpacity style={styles.locationButton} onPress={() => handleRegion(location)}>
-            <AppText style={styles.locationButtonText}>Show Location</AppText>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity style={styles.button} onPress={() => handleCreate(location)}>
-          <AppText style={styles.buttonText}>Create Plan</AppText>
-        </TouchableOpacity>
-      </View>
+          {map != true && (
+            <TouchableOpacity style={styles.locationButton} onPress={() => handleRegion(location)}>
+              <AppText style={styles.locationButtonText}>Show Location</AppText>
+            </TouchableOpacity>
+          )}
+            <TouchableOpacity style={styles.button} onPress={() => handleCreate(location)}>
+              <AppText style={styles.buttonText}>Create Plan</AppText>
+            </TouchableOpacity>
+        </View>
       </View>
       <FavoriteIcon
         favorited={favoritesArr.includes(location.place_id) ? true : false}
