@@ -107,7 +107,8 @@ export const ActivityCard: React.FC<Props> = ({
 
   return (
     <View style={styles.card}>
-      <View style={styles.cardTop}>
+      <View style={styles.cardContent}>
+        <View style={styles.cardTop}>
         <View style={{ width: 147 }}>
           <AppText style={styles.name}>{location.name}</AppText>
           <AppText style={styles.rating}>
@@ -139,12 +140,8 @@ export const ActivityCard: React.FC<Props> = ({
             <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
           </Marker>
         </MapView>
-        <FavoriteIcon
-          favorited={favoritesArr.includes(location.place_id) ? true : false}
-          onPress={handleToggleFavorite}
-        />
       </View>
-      <View style={styles.cardBottom}>
+        <View style={[styles.cardBottom, map != true ? styles.cardBottomFav : null]}>
         {map != true && (
           <TouchableOpacity style={styles.locationButton} onPress={() => handleRegion(location)}>
             <AppText style={styles.locationButtonText}>Show Location</AppText>
@@ -154,6 +151,11 @@ export const ActivityCard: React.FC<Props> = ({
           <AppText style={styles.buttonText}>Create Plan</AppText>
         </TouchableOpacity>
       </View>
+      </View>
+      <FavoriteIcon
+        favorited={favoritesArr.includes(location.place_id) ? true : false}
+        onPress={handleToggleFavorite}
+      />
     </View>
   );
 };
@@ -161,15 +163,22 @@ export const ActivityCard: React.FC<Props> = ({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    minHeight: 243,
+    minHeight: 203,
     paddingTop: 18,
     paddingHorizontal: 13,
     width: Dimensions.get('window').width,
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  cardContent: {
+    flex: 1,
+    marginRight: 8
   },
   cardTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 86,
+    marginBottom: 8,
   },
   name: {
     fontSize: 20,
@@ -187,22 +196,21 @@ const styles = StyleSheet.create({
     width: 128,
     height: 115,
     marginLeft: 19,
-    marginRight: 17,
   },
   cardBottom: {
-    alignSelf: 'flex-end',
+    flex: 1,
     flexDirection: 'row',
-    // marginTop: 8,
-    position: 'absolute',
-    bottom: 13,
-    right: 32,
+    justifyContent: 'flex-end'
+  },
+  cardBottomFav: {
+    justifyContent: 'space-between'
   },
   button: {
     alignItems: 'center',
     backgroundColor: TEAL,
     borderRadius: 5,
     justifyContent: 'center',
-    marginLeft: 16,
+    //marginLeft: 16,
     height: 49,
     width: 150,
   },
