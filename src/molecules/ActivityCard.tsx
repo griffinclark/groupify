@@ -141,7 +141,7 @@ export const ActivityCard: React.FC<Props> = ({
               <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
             </Marker>
           </MapView>
-      </View>
+        </View>
         <View style={[styles.cardBottom, map != true ? styles.cardBottomFav : null]}>
           {map != true && (
             <TouchableOpacity style={styles.locationButton} onPress={() => handleRegion(location)}>
