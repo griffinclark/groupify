@@ -132,15 +132,15 @@ export const ActivityCard: React.FC<Props> = ({
             rotateEnabled={false}
             scrollEnabled={false}
           >
-          <Marker
-            coordinate={{
-              latitude: location.geometry.location.lat,
-              longitude: location.geometry.location.lng,
-            }}
-          >
-            <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
-          </Marker>
-        </MapView>
+            <Marker
+              coordinate={{
+                latitude: location.geometry.location.lat,
+                longitude: location.geometry.location.lng,
+              }}
+            >
+              <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
+            </Marker>
+          </MapView>
       </View>
         <View style={[styles.cardBottom, map != true ? styles.cardBottomFav : null]}>
           {map != true && (
@@ -148,9 +148,9 @@ export const ActivityCard: React.FC<Props> = ({
               <AppText style={styles.locationButtonText}>Show Location</AppText>
             </TouchableOpacity>
           )}
-            <TouchableOpacity style={styles.button} onPress={() => handleCreate(location)}>
-              <AppText style={styles.buttonText}>Create Plan</AppText>
-            </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handleCreate(location)}>
+            <AppText style={styles.buttonText}>Create Plan</AppText>
+          </TouchableOpacity>
         </View>
       </View>
       <FavoriteIcon
@@ -170,11 +170,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     alignItems: 'flex-start',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   cardContent: {
     flex: 1,
-    marginRight: 8
+    marginRight: 8,
   },
   cardTop: {
     flexDirection: 'row',
@@ -201,10 +201,10 @@ const styles = StyleSheet.create({
   cardBottom: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   cardBottomFav: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   button: {
     alignItems: 'center',
