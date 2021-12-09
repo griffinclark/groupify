@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { ActivityImage } from '../molecules/ActivityImage';
 import { FavoriteIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AtomsExports';
 import { TEAL, YELLOW } from '../res/styles/Colors';
@@ -118,29 +119,34 @@ export const ActivityCard: React.FC<Props> = ({
             <AppText>{formatMoney()}</AppText>
             {formatAddress()}
           </View>
-          <MapView
-            provider={PROVIDER_GOOGLE}
-            region={{
-              latitude: location.geometry.location.lat + 0.0005,
-              longitude: location.geometry.location.lng,
-              latitudeDelta: 0.002,
-              longitudeDelta: 0.002,
-            }}
-            style={styles.map}
-            zoomEnabled={false}
-            zoomTapEnabled={false}
-            rotateEnabled={false}
-            scrollEnabled={false}
-          >
-            <Marker
-              coordinate={{
-                latitude: location.geometry.location.lat,
-                longitude: location.geometry.location.lng,
-              }}
-            >
-              <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
-            </Marker>
-          </MapView>
+          {location.photos ? 
+            (
+              <ActivityImage referenceId={location.photos[0].photo_reference} width={128} height={115} />) :
+            (
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                region={{
+                  latitude: location.geometry.location.lat + 0.0005,
+                  longitude: location.geometry.location.lng,
+                  latitudeDelta: 0.002,
+                  longitudeDelta: 0.002,
+                }}
+                style={styles.map}
+                zoomEnabled={false}
+                zoomTapEnabled={false}
+                rotateEnabled={false}
+                scrollEnabled={false}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: location.geometry.location.lat,
+                    longitude: location.geometry.location.lng,
+                  }}
+                >
+                  <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
+                </Marker>
+              </MapView>
+            )}
         </View>
         <View style={[styles.cardBottom, map != true ? styles.cardBottomFav : null]}>
           {map != true && (
