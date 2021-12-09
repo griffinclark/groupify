@@ -12,7 +12,7 @@ interface Props {
 
 export const BackChevronIcon: React.FC<Props> = ({ onPress, testID, height = '34', width = '19' }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress} testID={testID} hitSlop={{top: 50, bottom: 50, left: 50, right: 50}}>
+    <TouchableOpacity onPress={onPress} testID={testID} hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}>
       <View>
         <Svg style={{ alignSelf: 'center' }} width={width} height={height} viewBox="0 0 19 34" fill="none">
           <Path

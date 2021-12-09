@@ -119,34 +119,33 @@ export const ActivityCard: React.FC<Props> = ({
             <AppText>{formatMoney()}</AppText>
             {formatAddress()}
           </View>
-          {location.photos ? 
-            (
-              <ActivityImage referenceId={location.photos[0].photo_reference} width={128} height={115} />) :
-            (
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                region={{
-                  latitude: location.geometry.location.lat + 0.0005,
+          {location.photos ? (
+            <ActivityImage referenceId={location.photos[0].photo_reference} width={128} height={115} />
+          ) : (
+            <MapView
+              provider={PROVIDER_GOOGLE}
+              region={{
+                latitude: location.geometry.location.lat + 0.0005,
+                longitude: location.geometry.location.lng,
+                latitudeDelta: 0.002,
+                longitudeDelta: 0.002,
+              }}
+              style={styles.map}
+              zoomEnabled={false}
+              zoomTapEnabled={false}
+              rotateEnabled={false}
+              scrollEnabled={false}
+            >
+              <Marker
+                coordinate={{
+                  latitude: location.geometry.location.lat,
                   longitude: location.geometry.location.lng,
-                  latitudeDelta: 0.002,
-                  longitudeDelta: 0.002,
                 }}
-                style={styles.map}
-                zoomEnabled={false}
-                zoomTapEnabled={false}
-                rotateEnabled={false}
-                scrollEnabled={false}
               >
-                <Marker
-                  coordinate={{
-                    latitude: location.geometry.location.lat,
-                    longitude: location.geometry.location.lng,
-                  }}
-                >
-                  <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
-                </Marker>
-              </MapView>
-            )}
+                <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
+              </Marker>
+            </MapView>
+          )}
         </View>
         <View style={[styles.cardBottom, map != true ? styles.cardBottomFav : null]}>
           {map != true && (
