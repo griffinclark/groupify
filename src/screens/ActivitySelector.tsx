@@ -7,6 +7,7 @@ import { getCurrentUser } from './../res/utilFunctions';
 import { ActivityModal } from '../molecules/ActivityModal';
 import GestureRecognizerView from 'rn-swipe-gestures';
 import Constants from 'expo-constants';
+import * as Analytics from 'expo-firebase-analytics';
 
 export interface Props {
   navigation: {
@@ -128,8 +129,9 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
     awaitUser();
   }, []);
 
-  const handleActivity = (activity: string) => {
+  const handleActivity = async (activity: string) => {
     navigation.navigate('ActivityResults', { activity: activity });
+    await Analytics.logEvent(`Page_ActivitySelector_${activity}`, {});
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
