@@ -106,3 +106,5 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+amplify/backend/types/amplify-dependent-resources-ref.d.ts
+package-lock.json

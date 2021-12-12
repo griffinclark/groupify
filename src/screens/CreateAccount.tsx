@@ -234,8 +234,8 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                         }}
                         secureTextEntry={true}
                       />
-                      {/* {error && <Alert status="error" message={error} />}
-                      {success && <Alert status="success" message={success} />} */}
+                      {error && <Alert status="error" message={error} />}
+                      {/* {success && <Alert status="success" message={success} />} */}
 
                       {/* <TouchableOpacity
                         onPress={() => {
