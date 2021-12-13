@@ -11,6 +11,7 @@ import { ActivityMap, ActivityList } from '../organisms/OrganismsExports';
 import { getCurrentUser } from './../res/utilFunctions';
 import { ActivitySlider } from '../molecules/MoleculesExports';
 import { getFavorites } from '../res/utilFavorites';
+import { copy } from '../res/groupifyCopy';
 
 export interface Props {
   navigation: {
@@ -20,6 +21,7 @@ export interface Props {
   route: RoutePropParams;
 }
 
+// FIXME secret is just being stored in text in Groupify!!!
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
 export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) => {
@@ -94,57 +96,57 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const update = () => {
     switch (route.params.activity) {
       case 'restaurant':
-        setTitle('Get Food');
+        setTitle(copy.foodActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-food.png'));
         break;
       case 'park':
-        setTitle('Go Outside');
+        setTitle(copy.outsideActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-outside.png'));
         break;
       case 'gym':
-        setTitle('Get Fit');
+        setTitle(copy.workoutActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-gym.png'));
         break;
       case 'shopping':
-        setTitle('Go Shopping');
+        setTitle(copy.shopActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-shopping.png'));
         break;
       case 'coffee':
-        setTitle('Get Coffee');
+        setTitle(copy.coffeeActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-coffee.png'));
         break;
       case 'relax':
-        setTitle('Get Relaxed');
+        setTitle(copy.relaxActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-relax.png'));
         break;
       case 'bar':
-        setTitle('Nightlife');
+        setTitle(copy.nightlifeActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-bar.png'));
         break;
       case 'entertainment':
-        setTitle('Entertainment');
+        setTitle(copy.entertainmentActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-entertainment.png'));
         break;
       case 'museum':
-        setTitle('Art & Culture');
+        setTitle(copy.artAndCultureActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-art.png'));
         break;
       case 'favorites':
-        setTitle('Favorites');
+        setTitle(copy.favoritesActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-fav.png'));
         break;
       default:
-        setTitle('Search Results');
+        setTitle(copy.defaultActivityTile);
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         setImage(require('../../assets/activity-search.png'));
     }

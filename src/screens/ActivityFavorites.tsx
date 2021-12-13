@@ -8,6 +8,7 @@ import { ActivityList } from '../organisms/ActivityList';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { getFavorites } from '../res/utilFavorites';
 import { getCurrentUser } from './../res/utilFunctions';
+import { copy } from '../res/groupifyCopy';
 
 export interface Props {
   navigation: {
@@ -49,10 +50,10 @@ export const ActivityFavorites: React.FC<Props> = ({ navigation }: Props) => {
             navigation.goBack();
           }}
         />
-        <AppText style={styles.navbarText}>Favorites</AppText>
+        <AppText style={styles.navbarText}>{copy.activityFavoritesText}</AppText>
       </View>
       {favorites.length < 1 ? (
-        <NoResults title="No favorites to see here, yet!" />
+        <NoResults title={copy.activityFavoritesEmptyState} />
       ) : (
         <ActivityList
           handleCreate={handleCreate}

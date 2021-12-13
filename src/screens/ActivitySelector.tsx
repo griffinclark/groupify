@@ -7,6 +7,7 @@ import { getCurrentUser } from './../res/utilFunctions';
 import { ActivityModal } from '../molecules/ActivityModal';
 import GestureRecognizerView from 'rn-swipe-gestures';
 import Constants from 'expo-constants';
+import { copy } from './../res/groupifyCopy';
 
 export interface Props {
   navigation: {
@@ -27,19 +28,19 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-food.png')} />
           </View>
-          <AppText style={styles.activityText}>Get Food</AppText>
+          <AppText style={styles.activityText}>{copy.foodActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('park')} testID={'activity'}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-outside.png')} />
           </View>
-          <AppText style={styles.activityText}>Go Outside</AppText>
+          <AppText style={styles.activityText}>{copy.outsideActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('gym')} testID={'activity'}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-gym.png')} />
           </View>
-          <AppText style={styles.activityText}>Get Fit</AppText>
+          <AppText style={styles.activityText}>{copy.workoutActivityTile}</AppText>
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
@@ -47,19 +48,19 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-shopping.png')} />
           </View>
-          <AppText style={styles.activityText}>Get Shopping</AppText>
+          <AppText style={styles.activityText}>{copy.shopActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('coffee')} testID={'activity'}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-coffee.png')} />
           </View>
-          <AppText style={styles.activityText}>Get Coffee</AppText>
+          <AppText style={styles.activityText}>{copy.coffeeActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('relax')} testID={'activity'}>
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-relax.png')} />
           </View>
-          <AppText style={styles.activityText}>Get Relaxed</AppText>
+          <AppText style={styles.activityText}>{copy.relaxActivityTile}</AppText>
         </TouchableOpacity>
       </View>
     </View>
@@ -78,7 +79,7 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-bar.png')} />
           </View>
-          <AppText style={styles.activityText}>Nightlife</AppText>
+          <AppText style={styles.activityText}>{copy.nightlifeActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleActivity('entertainment')}
@@ -88,7 +89,7 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-entertainment.png')} />
           </View>
-          <AppText style={styles.activityText}>Entertainment</AppText>
+          <AppText style={styles.activityText}>{copy.entertainmentActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleActivity('museum')}
@@ -98,13 +99,13 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-art.png')} />
           </View>
-          <AppText style={styles.activityText}>Art & Culture</AppText>
+          <AppText style={styles.activityText}>{copy.artAndCultureActivityTile}</AppText>
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
         <TouchableOpacity onPress={() => handleActivity('favorites')} testID={'activity'}>
           <Image source={require('../../assets/activity-fav.png')} />
-          <AppText style={styles.activityText}>Favorites</AppText>
+          <AppText style={styles.activityText}>{copy.favoritesActivityTile}</AppText>
         </TouchableOpacity>
       </View>
     </View>
@@ -175,7 +176,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
                 }}
                 testID="back"
               />
-              <AppText style={styles.navbarText}>Activity Selector</AppText>
+              <AppText style={styles.navbarText}>{copy.activitySelectorTitle}</AppText>
             </View>
             {/* <Image source={require('../../assets/activity-selector.png')} /> */}
             <Image
@@ -183,7 +184,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
               source={require('../../assets/SplashScreen.png')}
             />
             <View style={styles.description}>
-              <AppText style={styles.descriptionText}>What do you want to do today?</AppText>
+              <AppText style={styles.descriptionText}>{copy.activitySelectorSubtitle}</AppText>
               {/* <TextInput placeholder="Search for Restaurants, Parks, ..." style={styles.input} /> */}
             </View>
             <View style={styles.activitySelector}>
@@ -225,7 +226,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
                   }}
                   style={styles.activityLowerLink}
                 >
-                  <AppText style={styles.activityLowerLinkText}>Plan Custom Event!</AppText>
+                  <AppText style={styles.activityLowerLinkText}>Do Something Else</AppText>
                 </TouchableOpacity>
               </View>
             </View>

@@ -4,6 +4,7 @@ import { TEAL, WHITE } from '../res/styles/Colors';
 import { User, Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
+import { copy } from '../res/groupifyCopy';
 
 interface Props {
   user?: User;
@@ -27,7 +28,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
           }}
         >
           <AnnounceIcon />
-          <AppText style={styles.text}>Notifications</AppText>
+          <AppText style={styles.text}>{copy.leftNavButton}</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '33%' }}
@@ -36,7 +37,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
           }}
         >
           <CreatePlanIcon />
-          <AppText style={styles.text}>Create Plan</AppText>
+          <AppText style={styles.text}>{copy.centerNavButton}</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '33%' }}
@@ -48,7 +49,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
           }}
         >
           <SettingsIcon />
-          <AppText style={styles.text}>Settings</AppText>
+          <AppText style={styles.text}>{copy.rightNavButton}</AppText>
         </TouchableOpacity>
       </View>
     </View>
