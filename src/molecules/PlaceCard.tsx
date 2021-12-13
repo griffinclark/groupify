@@ -6,7 +6,7 @@ import { Button } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import SlidingUpPanel from 'rn-sliding-up-panel';
-
+import { GOOGLE_PLACES_API_KEY } from '../res/utilGoogle';
 interface Props {
   style?: StyleProp<ViewStyle>;
   name: string;
@@ -23,7 +23,7 @@ interface Props {
   onCloseButtonPress: () => void;
 }
 
-const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
+//const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 // Also add API key to app.json config before building
 
 export const PlaceCard: React.FC<Props> = (props: Props) => {
