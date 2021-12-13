@@ -12,6 +12,19 @@
 - Run `amplify init` in the repo root: this will walk you through the setup for your credentials. Our AWS region is `us-west-2`, and make sure to elect to use an existing environment (`staging` for all uses; **only use `production` for packages that will be submitted to an app store for users, and never test on this environment**). The CLI will ask you to authenticate, do so via a new profile, and "use an existing user". Contact jquach@munchkinlabs.us for your AWS CLI credentials.
 - Run `expo start` in the repo root
 
+## Setting up your enviroment after a clone or before every new task
+### After a clone
+- git clone the repository
+- Run yarn install
+- Run amplify init 
+- Run amplify pull
+- Run amplify codegen
+
+### New task
+before every new task or build, you want to run the following commands at the beginning to ensure your local enviroment is in sync with the cloud enviroment.
+- Run amplify pull
+- Run amplify codegen
+
 ### If you have an iPhone:
 - install Expo Go from the app store
 - log in with the same account you made during the register step
