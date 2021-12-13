@@ -1,11 +1,10 @@
-try {
-  remoteConfig = require('@react-native-firebase/remote-config');
-} catch (e) {
-  console.log(e);
-}
+// @providesModule @react-native-firebase/remote-config
+import remoteConfig from '@react-native-firebase/remote-config';
+// import { firebase } from '@react-native-firebase/remote-config';
 
 export const fetchConfig = async () => {
-  await remoteConfig()
+  await firebase
+    .remoteConfig()
     .setDefaults({
       awesome_new_feature: 'disabled',
     })
