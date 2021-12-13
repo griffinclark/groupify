@@ -1,4 +1,3 @@
-import { ConsoleLogger } from '@aws-amplify/core';
 import React, { useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import { refreshConfig } from '../res/firebaseConfig';

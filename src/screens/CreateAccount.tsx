@@ -12,7 +12,6 @@ import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import * as Analytics from 'expo-firebase-analytics';
-import { fetchConfig } from '../res/firebaseConfig';
 import { RefreshConfig } from './../molecules/RemoteConfigTest';
 
 export interface Props {
