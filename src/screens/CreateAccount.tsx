@@ -12,6 +12,7 @@ import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import * as Analytics from 'expo-firebase-analytics';
+import { copy } from '../res/groupifyCopy';
 
 export interface Props {
   navigation: {
@@ -177,39 +178,49 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                 <View>
                   <View style={{ flexDirection: 'row', paddingBottom: 20, marginHorizontal: 20 }}>
                     <BackChevronIcon onPress={() => navigation.navigate('Welcome', {})} />
-                    <AppText style={styles.title}>Create Account</AppText>
+                    <AppText style={styles.title}>{copy.createAccountPageTitle}</AppText>
                   </View>
                   <FormInput
                     autoFocus={false}
                     returnKeyNext={true}
-                    label="First Name"
+                    label={copy.firstNameFieldTitle}
                     onChangeText={(value) => {
                       setFirstName(value.trim());
                     }}
+                    autoComplete="name"
                   />
                   <FormInput
                     autoFocus={false}
                     returnKeyNext={true}
-                    label="Last Name"
+                    label={copy.lastNameFieldTitle}
                     onChangeText={(value) => {
                       setLastName(value.trim());
                     }}
+                    autoComplete="name"
                   />
                   <FormInput
                     returnKeyNext={true}
                     value={phone}
-                    label="Phone Number"
+                    label={copy.phoneNumberFieldTitle}
                     onChangeText={(value) => {
                       setPhone(formatPhoneNumber(value));
                     }}
+                    autoComplete="tel"
                   />
-                  <FormInput returnKeyNext={true} label="Password" onChangeText={setPassword} secureTextEntry={true} />
+                  <FormInput
+                    returnKeyNext={true}
+                    label={copy.passwordFieldTitle}
+                    onChangeText={setPassword}
+                    secureTextEntry={true}
+                    autoComplete="password"
+                  />
                   <FormInput
                     submit={signUp}
                     returnKeyNext={false}
-                    label="Confirm Password"
+                    label={copy.confirmPasswordFieldTitle}
                     onChangeText={setConfirmPassword}
                     secureTextEntry={true}
+                    autoComplete="password"
                   />
                   {error && <Alert status="error" message={error} />}
                 </View>
@@ -223,7 +234,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     <AppText style={styles.title}>Verify Phone Number</AppText>
                   </View>
                   <View>
-                    <AppText style={styles.details}>Please enter the verification code you received.</AppText>
+                    <AppText style={styles.details}>{copy.askForVerificationCode}</AppText>
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
                       <FormInput
                         returnKeyNext={false}
@@ -233,6 +244,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                           setCode(value.trim());
                         }}
                         secureTextEntry={true}
+                        autoComplete=""
                       />
                       {/* {error && <Alert status="error" message={error} />}
                       {success && <Alert status="success" message={success} />} */}
@@ -264,7 +276,11 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             )}
           </TouchableWithoutFeedback>
         </ScrollView>
-        <Button title="Next" onPress={route.params.step === 'validate' ? validateUser : signUp} disabled={disabled} />
+        <Button
+          title={copy.nextButtonTitle}
+          onPress={route.params.step === 'validate' ? validateUser : signUp}
+          disabled={disabled}
+        />
       </Screen>
     </KeyboardAvoidingView>
   );

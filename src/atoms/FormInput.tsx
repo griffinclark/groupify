@@ -10,6 +10,7 @@ interface Props {
   placeholder?: string;
   secureTextEntry?: boolean;
   value?: string;
+  autoComplete: string;
   returnKeyNext: boolean;
   autoFocus?: boolean;
   submit?: (ev: string) => void;
@@ -24,6 +25,7 @@ export const FormInput: React.FC<Props> = ({
   returnKeyNext,
   autoFocus,
   submit,
+  autoComplete,
   maxFontSizeMultiplier = 1.5,
 }: Props) => {
   const [focus, setFocus] = useState(false);
@@ -35,6 +37,7 @@ export const FormInput: React.FC<Props> = ({
         returnKeyType={returnKeyNext ? 'next' : 'done'}
         autoFocus={autoFocus || false}
         value={value}
+        autoCompleteType={autoComplete}
         keyboardType={
           label === 'Phone Number' ? 'number-pad' : label === 'Verification Code' ? 'number-pad' : 'default'
         }

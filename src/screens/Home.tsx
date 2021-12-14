@@ -4,7 +4,7 @@ import { ActivityIndicator, RefreshControl, StyleSheet, Text, View } from 'react
 import { globalStyles } from './../res/styles/GlobalStyles';
 import { background, GREY_0, TEAL } from './../res/styles/Colors';
 // eslint-disable-next-line unused-imports/no-unused-imports-ts
-import { getCurrentUser, loadInviteeStatus, removePastPlans, sortPlansByDate } from './../res/utilFunctions';
+import { getCurrentUser, loadInviteeStatus } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { NextPlan, InvitedPreview, CreatedPlans } from '../organisms/OrganismsExports';

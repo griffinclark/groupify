@@ -16,6 +16,7 @@ import Constants from 'expo-constants';
 import { PlanTextMessage } from '../molecules/PlanTextMessage';
 import * as queries from '../graphql/queries';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
+import { copy } from '../res/groupifyCopy';
 
 export interface Props {
   navigation: {
@@ -46,7 +47,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     disabled: boolean;
   }[] = [
     {
-      title: 'Plan Name *',
+      title: copy.planNameRequired,
       placeholder: '',
       settings: 'default',
       value: route.params.data ? route.params.data.eventData.title : '',
@@ -54,7 +55,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       disabled: true,
     },
     {
-      title: 'Date *',
+      title: copy.dateRequired,
       placeholder: 'MM/DD/YYYY',
       settings: 'default',
       value: route.params.data ? route.params.data.eventData.date : '',
@@ -62,7 +63,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       disabled: true,
     },
     {
-      title: 'Time *',
+      title: copy.timeRequired,
       placeholder: 'H:MM PM',
       settings: 'default',
       value: route.params.data ? route.params.data.eventData.time : '',
@@ -70,7 +71,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       disabled: true,
     },
     {
-      title: 'Description',
+      title: copy.createPlanDescription,
       placeholder: '',
       settings: 'default',
       value: route.params.data ? route.params.data.eventData.description : '',
@@ -78,7 +79,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       disabled: true,
     },
     {
-      title: 'Address',
+      title: copy.createPlanAddress,
       placeholder: '',
       settings: 'default',
       value: route.params.data ? route.params.data.eventData.location : '',
@@ -271,7 +272,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         <Screen>
           <View style={{ flexDirection: 'row', marginHorizontal: 20 }} testID="ConfirmPlanScreen">
             <BackChevronIcon testID="ConfirmPlanBack" onPress={() => navigation.navigate('PlanInvite', {})} />
-            <AppText style={styles.title}>Confirm</AppText>
+            <AppText style={styles.title}>{copy.confirmPlanTitle}</AppText>
           </View>
           <ScrollView
             contentContainerStyle={{
@@ -281,20 +282,17 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
               paddingTop: Constants.statusBarHeight - 340,
             }}
           >
-            <AppText style={styles.titleText}>
-              Almost done! Please confirm all details are correct, and that you’ve invited all you want. You can always
-              come back and edit this event at a later time.
-            </AppText>
+            <AppText style={styles.titleText}>{copy.confirmPlanSubtitle}</AppText>
             {/* <View>{loadPhoto(photo)}</View> */}
             <View style={{ flexGrow: 1 }}>
               <MeepForm inputList={inputFields}></MeepForm>
               <PlanTextMessage
-                label="Friends who don’t have Groupify yet will receive the following message:"
+                label={copy.createPlanNonUserMessage}
                 onChangeText={(e) => setMessage(e)}
                 text={message}
               />
               <TouchableOpacity onPress={() => setEditMessage(!editMessage)}>
-                <AppText style={styles.mapText}>Edit Note</AppText>
+                <AppText style={styles.mapText}>{copy.createPlanEditMessageTitle}</AppText>
               </TouchableOpacity>
             </View>
             {event.contacts.length > 0 && (
@@ -318,7 +316,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
           <ActivityIndicator color="black" size={'large'} />
         </View>
       ) : (
-        <BottomButton testID="bottomButtom" title="Confirm and Create Event" onPress={createConfirmAlert} />
+        <BottomButton testID="bottomButtom" title={copy.confirmPlanButtonText} onPress={createConfirmAlert} />
       )}
     </View>
   );
