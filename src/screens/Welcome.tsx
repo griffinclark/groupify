@@ -2,6 +2,7 @@ import React from 'react';
 import { ImageBackground, View } from 'react-native';
 import { AppText } from '../atoms/AppText';
 import { Button } from '../atoms/Button';
+import { copy } from '../res/groupifyCopy';
 import { TEAL } from '../res/styles/Colors';
 
 export interface Props {
@@ -22,7 +23,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
         <Button
           textStyle={{ fontSize: 20 }}
           buttonStyle={{ width: 335, borderRadius: 25 }}
-          title={'Log In'}
+          title={copy.loginButtonTitle}
           onPress={() => navigation.navigate('Login', {})}
           testID="WelcomeLoginButton"
         />
@@ -31,7 +32,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
           <Button
             buttonStyle={{ width: 335, backgroundColor: 'white', borderWidth: 2, borderColor: TEAL, borderRadius: 25 }}
             textStyle={{ color: TEAL, backgroundColor: 'white', fontSize: 20 }}
-            title={'Sign Up'}
+            title={copy.signUpButtonTitle}
             onPress={() => navigation.navigate('CreateAccount', {})}
             testID="WelcomeCreateButton"
           />

@@ -14,6 +14,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Image } from 'react-native-elements/dist/image/Image';
+import { copy } from '../res/groupifyCopy';
 
 export interface Props {
   navigation: {
@@ -64,10 +65,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
     console.log('createdPlans', createdPlans);
 
-    let invitedPlans = //removePastPlans(
-      invitees.map((invitee) => (
-          invitee.plan
-      )).filter((item): item is Plan => item !== undefined);
+    let invitedPlans = invitees.map((invitee) => invitee.plan).filter((item): item is Plan => item !== undefined); //removePastPlans(
     // );
     const upcoming = invitedPlans;
     if (currentUser) invitedPlans = invitedPlans.filter((item): item is Plan => item.creatorID !== currentUser.id);
@@ -91,7 +89,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       const firstName = currentUser.name.includes(' ')
         ? currentUser.name.substr(0, currentUser.name.indexOf(' '))
         : currentUser.name;
-      return `Hello, ${firstName}!`;
+      return copy.helloNameMessage + firstName;
     }
   };
 
@@ -114,7 +112,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
               <View>
                 {upcomingPlans.length > 0 && (
                   <View>
-                    <AppText style={styles.label}>COMING UP NEXT</AppText>
+                    <AppText style={styles.label}>{copy.upcomingPlansTitle}</AppText>
                     <NextPlan reload={trigger2} navigation={navigation} plan={upcomingPlans[0]} />
                   </View>
                 )}
@@ -122,7 +120,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                 <View>
                   {invitedPlans.length > 0 && (
                     <>
-                      <AppText style={styles.label}>YOU&apos;RE INVITED...</AppText>
+                      <AppText style={styles.label}>{copy.yourPlansTitle}</AppText>
                       <InvitedPreview
                         reload={trigger2}
                         navigation={navigation}
@@ -134,7 +132,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                   <View style={globalStyles.miniSpacer}></View>
                 </View>
                 <View style={{ height: userPlans.length > 0 ? 360 : 420 }}>
-                  <AppText style={styles.label}>CREATED PLANS</AppText>
+                  <AppText style={styles.label}>{copy.createdPlansTitle}</AppText>
                   <CreatedPlans
                     user={currentUser}
                     navigation={navigation}
@@ -146,8 +144,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
             ) : (
               <View style={styles.noPlan}>
                 <Text maxFontSizeMultiplier={1} style={styles.noPlanText}>
-                  Welcome to your plan dashboard. This is where you will see a round-up of plans you’ve created, and
-                  things you&apos;re invited to.
+                  {copy.createdPlansDescription}
                 </Text>
                 <View style={{ width: '100%', alignItems: 'center' }}>
                   <Image
@@ -158,7 +155,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                 </View>
                 <View>
                   <Text maxFontSizeMultiplier={1} style={[styles.noPlanText, { textAlign: 'center', width: '70%' }]}>
-                    Create your first plan with the button below
+                    {copy.createFirstPlanText}
                   </Text>
                 </View>
               </View>

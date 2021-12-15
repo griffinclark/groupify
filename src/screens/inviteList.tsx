@@ -20,6 +20,7 @@ interface Props {
 }
 
 export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
+  // FIXME API key stored in code!!
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const plan = route.params.plan;
   const [invitees, setInvitees] = useState<Invitee[]>([]);

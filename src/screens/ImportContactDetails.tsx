@@ -6,6 +6,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { getCurrentUser } from '../res/utilFunctions';
 import { User } from '../models';
 import { Image } from 'react-native-elements/dist/image/Image';
+import { copy } from './../res/groupifyCopy';
 
 interface Props {
   navigation: {
@@ -45,11 +46,9 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
             style={{ height: 186, width: '100%' }}
             resizeMode="contain"
           />
-          <AppText style={{ fontSize: 20, marginBottom: 40, paddingTop: 20 }}>
-            From your contact list, please select all people you’d like to import into Groupify.*
-          </AppText>
+          <AppText style={{ fontSize: 20, marginBottom: 40, paddingTop: 20 }}>{copy.askForContactsPrompt}</AppText>
 
-          <AppText style={{ alignSelf: 'center' }}>*You can always edit your contact list later. </AppText>
+          <AppText style={{ alignSelf: 'center' }}>{copy.editContactsLaterPrompt}</AppText>
         </View>
         <View style={styles.planResponse}>
           <Button

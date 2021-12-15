@@ -8,6 +8,7 @@ import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { PlanDetailsTile, Details } from '../molecules/MoleculesExports';
 import { WhiteButton } from '../atoms/WhiteButton';
 import { getCurrentUser, respondToPlan } from '../res/utilFunctions';
+import { copy } from '../res/groupifyCopy';
 
 interface Props {
   navigation: {
@@ -93,14 +94,14 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
             navigation.push(route.params.step ? route.params.step : 'Home', {});
           }}
         />
-        <AppText style={styles.title}>Plan Details</AppText>
+        <AppText style={styles.title}>{copy.planDetailsTitle}</AppText>
       </View>
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanDetailsRefresh} />}>
         <View style={styles.bodyContainer}>
           <PlanImageTile plan={plan} />
           <Details plan={plan} />
           <PlanDetailsTile navigation={navigation} creator={planCreator} plan={plan} />
-          <AppText style={{ fontSize: 16, fontWeight: '700' }}>Who&apos;s going?</AppText>
+          <AppText style={{ fontSize: 16, fontWeight: '700' }}>{copy.whosGoing}</AppText>
         </View>
         <View style={styles.inviteeListContainer}>
           <View style={styles.selector}>
@@ -127,7 +128,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
                   selectorOption == 'PENDING' ? styles.activeText : styles.inactiveText,
                 ]}
               >
-                PENDING
+                {copy.pendingTitle}
               </AppText>
             </TouchableOpacity>
           </View>

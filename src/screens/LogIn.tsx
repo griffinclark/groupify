@@ -24,6 +24,7 @@ import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
+import { copy } from '../res/groupifyCopy';
 
 // const user = {
 //   "_deleted": undefined,
@@ -214,6 +215,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
                 label="Phone Number"
                 value={phone}
                 onChangeText={(number) => setPhone(formatPhoneNumber(number))}
+                autoComplete="tel"
               />
               <FormInput
                 returnKeyNext={false}
@@ -221,12 +223,13 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
                 onChangeText={setPassword}
                 secureTextEntry={true}
                 value={password}
+                autoComplete="password"
               />
               <TouchableOpacity
                 style={{ alignSelf: 'center' }}
                 onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
               >
-                <AppText style={styles.textTeal}>Forgot password?</AppText>
+                <AppText style={styles.textTeal}>{copy.forgotPasswordQuestion}</AppText>
               </TouchableOpacity>
 
               {error && <Alert status="error" message={error} />}
@@ -234,7 +237,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           </TouchableWithoutFeedback>
 
           <View style={styles.createAccount}>
-            <AppText style={styles.text}>Don&apos;t have an account?</AppText>
+            <AppText style={styles.text}>{copy.dontHaveAnAccountQuestion}</AppText>
             <AppText
               style={styles.textTeal}
               onPress={async () => {
@@ -248,7 +251,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
             )}
           </View>
           <View>
-            <Button title="Log In" onPress={logIn} disabled={disabled} />
+            <Button title={copy.loginButtonTitle} onPress={logIn} disabled={disabled} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

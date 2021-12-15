@@ -10,6 +10,7 @@ import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports
 import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
 import Constants from 'expo-constants';
 import * as queries from '../graphql/queries';
+import { copy } from '../res/groupifyCopy';
 
 export interface Props {
   navigation: {
@@ -37,7 +38,6 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   const [friends, setFriends] = useState<User[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
   const [message, setMessage] = useState<string>('');
-  const [displayWarning, setDisplayWarning] = useState<boolean>(false);
 
   useEffect(() => {
     loadContacts();
@@ -158,7 +158,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     <View style={styles.screen} testID="PlanInviteScreen">
       <Navbar location={'PlanCreate'} navigation={navigation} data={route.params} title={'Invite Friends'} />
       <View style={styles.title}>
-        <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}?</AppText>
+        <AppText style={styles.titleText}>{copy.whoToInvite + eventObject.title + '?'}</AppText>
       </View>
       <View style={styles.friendContainer}>
         <View style={styles.menu}>
@@ -202,7 +202,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
               ) : null}
               <View style={{ marginBottom: 27, alignSelf: 'center' }}>
                 <Button
-                  title={selectedFriends.length === 0 ? 'Skip' : 'Next'}
+                  title={selectedFriends.length === 0 ? copy.skipSelectContactsButton : copy.nextButtonTitle}
                   onPress={() => setMenuItemSelected('contacts')}
                 />
               </View>
@@ -212,7 +212,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           {menuItemSelected === 'contacts' && (
             <View style={{ marginHorizontal: 20 }}>
               <View style={{ paddingVertical: 30, borderBottomWidth: 0.75, borderBottomColor: GRAY_LIGHT }}>
-                <SearchBar onInputChange={searchFriends} placeholder="Search for Friends to Invite" />
+                <SearchBar onInputChange={searchFriends} placeholder={copy.lookForFriends} />
               </View>
               <View style={styles.contactsScrollContainer}>
                 <ScrollView>
@@ -227,7 +227,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
       </View>
       <BottomButton
         disabled={selectedContacts.length == 0 ? true : false}
-        title="Preview Plan"
+        title={copy.previewPlan}
         onPress={sendContactMessage}
       />
     </View>

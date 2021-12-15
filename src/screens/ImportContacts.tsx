@@ -12,6 +12,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import * as Analytics from 'expo-firebase-analytics';
+import { copy } from '../res/groupifyCopy';
 
 interface Props {
   navigation: {
@@ -122,7 +123,9 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
             <BackChevronIcon onPress={() => navigation.navigate(route.params.last)} />
-            <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL, marginLeft: 15 }}>Select Contacts</AppText>
+            <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL, marginLeft: 15 }}>
+              {copy.selectContactsTitle}
+            </AppText>
           </View>
           <SearchBar onInputChange={searchContacts} />
           <View style={styles.flatListContainer}>
@@ -137,9 +140,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
                   </View>
                 ) : (
                   <View style={styles.listContainer}>
-                    <AppText style={{ fontSize: 20, textAlign: 'center' }}>
-                      Add friends from your contact list to make plans!
-                    </AppText>
+                    <AppText style={{ fontSize: 20, textAlign: 'center' }}>{copy.askForContactsPrompt}</AppText>
                     <Button
                       onPress={() => {
                         if (Platform.OS === 'ios') {
@@ -156,11 +157,11 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
         </View>
         <View style={styles.planResponse}>
           <TouchableOpacity onPress={() => setOpenModal(true)}>
-            <AppText style={styles.skipStyle}>Skip</AppText>
+            <AppText style={styles.skipStyle}>{copy.skipSelectContactsButton}</AppText>
           </TouchableOpacity>
           <Button
             buttonStyle={{ width: 210 }}
-            title={'Import Contacts'}
+            title={copy.importContactsButton}
             onPress={async () => {
               navigation.navigate('Home');
             }}
@@ -172,10 +173,10 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
         <AlertModal
           button1Text="Yes"
           button2Text="Close"
-          message2="You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later. "
+          message2={copy.noContactsImported}
           onButton1Press={() => navigation.navigate('Home')}
           onButton2Press={() => setOpenModal(false)}
-          message="Are you sure you don't want to import contacts? "
+          message={copy.confirmNoContactsImport}
         />
       )}
     </Screen>
