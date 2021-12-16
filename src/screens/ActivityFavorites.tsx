@@ -32,6 +32,7 @@ export const ActivityFavorites: React.FC<Props> = ({ navigation }: Props) => {
 
   const handleCreate = async (loc: any) => {
     const user = await getCurrentUser();
+    console.log(loc);
     navigation.navigate('PlanCreate', {
       currentUser: user,
       data: {

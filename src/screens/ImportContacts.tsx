@@ -42,9 +42,6 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
     loadImportedContacts();
   }, []);
 
-  //Everytime a contact is selected it adds it to local storage on the spot
-  //Same thing when a contact is unselected
-  //Much better than the previous way I had this working
   const addSelectedContact = async (newContact: Contact) => {
     await storeImportedContact(newContact);
     loadImportedContacts();
@@ -69,10 +66,10 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
           image: contact.image,
           phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
         }));
-        contacts.sort((c1, c2): any => {
-          if (c1.name && c2.name) {
-            return c1.name.toLowerCase() < c2.name.toLowerCase() ? -1 : 1;
-          }
+        contacts.sort((contact1, contact2): number => {
+          if (contact1.name && contact2.name) {
+            return contact1.name.toLowerCase() < contact2.name.toLowerCase() ? -1 : 1;
+          } else return 0;
         });
         contacts[0].phoneNumber && setContacts(contacts);
       }
