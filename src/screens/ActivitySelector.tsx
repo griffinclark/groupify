@@ -134,7 +134,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getInterval = (offset: any) => {
+  const getInterval = (offset: number) => {
     for (let i = 1; i <= intervals; i++) {
       if (offset < (width / intervals) * i) {
         return i;

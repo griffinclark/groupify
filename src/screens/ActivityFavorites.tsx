@@ -9,6 +9,7 @@ import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { getFavorites } from '../res/utilFavorites';
 import { getCurrentUser } from './../res/utilFunctions';
 import { copy } from '../res/groupifyCopy';
+import { GoogleLocation } from './../res/dataModels';
 
 export interface Props {
   navigation: {
@@ -30,9 +31,8 @@ export const ActivityFavorites: React.FC<Props> = ({ navigation }: Props) => {
     setFavorites(newFavorites);
   };
 
-  const handleCreate = async (loc: any) => {
+  const handleCreate = async (loc: GoogleLocation) => {
     const user = await getCurrentUser();
-    console.log(loc);
     navigation.navigate('PlanCreate', {
       currentUser: user,
       data: {

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityCard } from '../molecules/MoleculesExports';
+import { GoogleLocation } from '../res/dataModels';
 import { getFavorites } from '../res/utilFavorites';
 
 export interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleCreate: (loc: any) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  locations: any[];
-  // favorites: any[];
+  handleCreate: (loc: GoogleLocation) => void;
+  locations: GoogleLocation[];
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
@@ -43,13 +41,11 @@ export const ActivityList: React.FC<Props> = ({
 
   const queryFavorites = async () => {
     const favorites = await getFavorites();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const favArr = favorites.map((ele: any) => ele.place_id);
+    const favArr = favorites.map((ele: GoogleLocation) => ele.place_id);
     setFavoritesArr(favArr);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleRegion = (location: any) => {
+  const handleRegion = (location: GoogleLocation) => {
     const newRegion = {
       latitude: location.geometry.location.lat,
       longitude: location.geometry.location.lng,

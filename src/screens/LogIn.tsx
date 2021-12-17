@@ -26,19 +26,6 @@ import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
 import { copy } from '../res/groupifyCopy';
 
-// const user = {
-//   "_deleted": undefined,
-//   "_lastChangedAt": undefined,
-//   "_version": undefined,
-//   "email": "placeHolder@temporaryWorkAround.com",
-//   "friends": Array [],
-//   "id": "x",
-//   "name": "User Two",
-//   "phoneNumber": "+15102057904",
-//   "pushToken": "ExponentPushToken[v_oSimNdzGmTwk4-N4i-jT]",
-//   "userAvailabilityId": null,
-// }
-
 export interface Props {
   navigation: {
     CreateAccount: {

@@ -9,13 +9,11 @@ import { Icon } from 'react-native-elements/dist/icons/Icon';
 // import * as SecureStore from 'expo-secure-store';
 import { MapIcon } from '../../assets/Icons/IconExports';
 import { addFavorite, deleteFavorite } from '../res/utilFavorites';
+import { GoogleLocation } from '../res/dataModels';
 
 interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleCreate: (loc: any) => void;
-  // favorites: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  location: any;
+  handleCreate: (loc: GoogleLocation) => void;
+  location: GoogleLocation;
   map: boolean;
   navigation: {
     navigate: (ev: string, {}) => void;
@@ -48,6 +46,7 @@ export const ActivityCard: React.FC<Props> = ({
   trigger,
 }: Props) => {
   if (!location.geometry) return null;
+  console.log(location.formatted_address);
   const formatAddress = () => {
     if (!location.formatted_address) return null;
     const addressArr = location.formatted_address.split(',');

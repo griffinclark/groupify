@@ -7,15 +7,13 @@ import { MapIcon } from '../../assets/Icons/IconExports';
 import { TEAL } from '../res/styles/Colors';
 import { getFavorites } from '../res/utilFavorites';
 import { useIsFocused } from '@react-navigation/native';
+import { GoogleLocation } from './../res/dataModels';
 
 export interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleCreate: (loc: any) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  locations: any[];
-  // favorites: any[];
+  handleCreate: (loc: GoogleLocation) => void;
+  locations: GoogleLocation[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   region: any;
   navigation: {
@@ -33,9 +31,8 @@ export const ActivityMap: React.FC<Props> = ({
   region,
   userLocation,
 }: Props) => {
-  const [card, setCard] = useState();
+  const [card, setCard] = useState<GoogleLocation>();
   const [favoritesArr, setFavoritesArr] = useState([]);
-  console.log(image);
 
   useEffect(() => {
     queryFavorites();
@@ -49,8 +46,7 @@ export const ActivityMap: React.FC<Props> = ({
 
   const queryFavorites = async () => {
     const favorites = await getFavorites();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const favArr = favorites.map((ele: any) => ele.place_id);
+    const favArr = favorites.map((ele: GoogleLocation) => ele.place_id);
     setFavoritesArr(favArr);
   };
 
@@ -58,7 +54,6 @@ export const ActivityMap: React.FC<Props> = ({
     <View style={styles.container}>
       <MapView
         provider={PROVIDER_GOOGLE}
-        // showsUserLocation={true}
         region={{
           latitude: region.latitude,
           longitude: region.longitude,

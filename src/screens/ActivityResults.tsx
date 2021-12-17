@@ -12,6 +12,7 @@ import { getCurrentUser } from './../res/utilFunctions';
 import { ActivitySlider } from '../molecules/MoleculesExports';
 import { getFavorites } from '../res/utilFavorites';
 import { copy } from '../res/groupifyCopy';
+import { GoogleLocation } from '../res/dataModels';
 
 export interface Props {
   navigation: {
@@ -170,8 +171,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleCreate = async (loc: any) => {
+  const handleCreate = async (loc: GoogleLocation) => {
     const user = await getCurrentUser();
     navigation.navigate('PlanCreate', {
       currentUser: user,

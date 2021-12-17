@@ -1,13 +1,14 @@
 // TEMPORARY FILE
 // DELETE ONCE FAVORITES HANDLED BY BACKEND
 import * as SecureStore from 'expo-secure-store';
+import { GoogleLocation } from './dataModels';
 
 export const getFavorites = async () => {
   const favorites = await SecureStore.getItemAsync('favorites');
   return favorites ? JSON.parse(favorites) : [];
 };
 
-export const addFavorite = async (loc: any) => {
+export const addFavorite = async (loc: GoogleLocation) => {
   const favorites = await getFavorites();
   const newFavorite = {
     formatted_address: loc.formatted_address,
@@ -32,7 +33,7 @@ export const addFavorite = async (loc: any) => {
 
 export const deleteFavorite = async (id: string) => {
   const favorites = await getFavorites();
-  const newFavorites = favorites.filter((ele: any) => ele.place_id != id);
+  const newFavorites = favorites.filter((ele: GoogleLocation) => ele.place_id != id);
   await SecureStore.setItemAsync('favorites', JSON.stringify(newFavorites));
   return newFavorites;
 };
