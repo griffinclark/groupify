@@ -3,9 +3,10 @@
     "name": "Groupify",
     "icon": "./assets/groupify_icon_official.png",
     "slug": "groupify",
-    "sdkVersion": "40.0.0",
     "version": "1.5.5",
     "orientation": "portrait",
+    "facebookAppId": "693164164986653",
+    "facebookDisplayName": "Munchkin Labs",
     "splash": {
       "image": "./assets/SplashScreen.png",
       "resizeMode": "cover",
@@ -14,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.munchkinlabs.meep",
@@ -29,7 +32,7 @@
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
-	  "googleServicesFile": "./google-services.json",
+      "googleServicesFile": "./google-services.json",
       "package": "com.munchkinlabs.meep",
       "versionCode": 5,
       "config": {

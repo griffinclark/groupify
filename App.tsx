@@ -9,6 +9,7 @@ import Amplify, { Auth, Hub } from 'aws-amplify';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import * as Notifications from 'expo-notifications';
+import * as Facebook from 'expo-facebook'
 
 Amplify.configure(awsconfig);
 
@@ -20,6 +21,17 @@ Notifications.setNotificationHandler({
   }),
 });
 
+const fbInit= async ()=> {
+  await Facebook.initializeAsync({appId:'693164164986653',appName:"Munchkin Labs"})
+  const response = await Facebook.requestPermissionsAsync()
+  if (response.granted==true){
+    await Facebook.setAdvertiserTrackingEnabledAsync(true)
+  }
+  else {
+    await Facebook.setAdvertiserTrackingEnabledAsync(false)
+  }
+}
+
 export const App: React.FC = () => {
   const [initalScreen, setInitialScreen] = useState('');
   const [userID, setUserID] = useState('');
@@ -30,6 +42,10 @@ export const App: React.FC = () => {
     Hub.listen('auth', (event) => {
       console.log('auth event', event);
     });
+  }, []);
+
+  useEffect(() => {
+      fbInit()
   }, []);
 
   useEffect(() => {
