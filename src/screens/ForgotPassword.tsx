@@ -100,7 +100,6 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
                 label={copy.phoneNumberFieldTitle}
                 value={phone}
                 onChangeText={(number) => setPhone(formatPhoneNumber(number))}
-                autoComplete="tel"
               />
               {error && <Alert status="error" message={error} />}
             </TouchableWithoutFeedback>
@@ -114,14 +113,12 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
                   label="Verification Code"
                   onChangeText={setVerificationCode}
                   secureTextEntry={false}
-                  autoComplete=""
                 />
                 <FormInput
                   returnKeyNext={true}
                   label={copy.passwordFieldTitle}
                   onChangeText={setNewPassword}
                   secureTextEntry={true}
-                  autoComplete="password"
                 />
                 {/* FIXME strong password not being suggested for secondary field */}
                 <FormInput
@@ -129,7 +126,6 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
                   label={copy.confirmPasswordFieldTitle}
                   onChangeText={setConfirmNewPassword}
                   secureTextEntry={true}
-                  autoComplete="password"
                 />
                 {error && <Alert status="error" message={error} />}
               </TouchableWithoutFeedback>

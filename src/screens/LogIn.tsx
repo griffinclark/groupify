@@ -202,7 +202,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
                 label="Phone Number"
                 value={phone}
                 onChangeText={(number) => setPhone(formatPhoneNumber(number))}
-                autoComplete="tel"
               />
               <FormInput
                 returnKeyNext={false}
@@ -210,7 +209,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
                 onChangeText={setPassword}
                 secureTextEntry={true}
                 value={password}
-                autoComplete="password"
               />
               <TouchableOpacity
                 style={{ alignSelf: 'center' }}

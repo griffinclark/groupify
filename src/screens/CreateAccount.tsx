@@ -187,7 +187,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     onChangeText={(value) => {
                       setFirstName(value.trim());
                     }}
-                    autoComplete="name"
                   />
                   <FormInput
                     autoFocus={false}
@@ -196,7 +195,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     onChangeText={(value) => {
                       setLastName(value.trim());
                     }}
-                    autoComplete="name"
                   />
                   <FormInput
                     returnKeyNext={true}
@@ -205,14 +203,12 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     onChangeText={(value) => {
                       setPhone(formatPhoneNumber(value));
                     }}
-                    autoComplete="tel"
                   />
                   <FormInput
                     returnKeyNext={true}
                     label={copy.passwordFieldTitle}
                     onChangeText={setPassword}
                     secureTextEntry={true}
-                    autoComplete="password"
                   />
                   <FormInput
                     submit={signUp}
@@ -220,7 +216,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     label={copy.confirmPasswordFieldTitle}
                     onChangeText={setConfirmPassword}
                     secureTextEntry={true}
-                    autoComplete="password"
                   />
                   {error && <Alert status="error" message={error} />}
                 </View>
@@ -244,7 +239,6 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                           setCode(value.trim());
                         }}
                         secureTextEntry={true}
-                        autoComplete=""
                       />
                       {/* {error && <Alert status="error" message={error} />}
                       {success && <Alert status="success" message={success} />} */}
