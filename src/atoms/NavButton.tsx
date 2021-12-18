@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 import { StyleSheet, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import { WHITE } from '../res/styles/Colors';
 import { AppText } from './AppText';
