@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { createMock } from 'ts-auto-mock';
 import { Props, ActivitySelector } from '../ActivitySelector';
+import { copy } from '../../res/groupifyCopy';
 
 const mockProps = createMock<Props>({
   navigation: {
@@ -31,8 +32,8 @@ describe('ActivitySelector Screen', () => {
     it('renders description and searchbar', async () => {
       const { getByText, getByPlaceholderText } = render(<ActivitySelector {...mockProps} />);
       await waitFor(() => {
-        getByText('What do you want to do today?');
-        getByPlaceholderText('Search for Restaurants, Parks, ...');
+        getByText();
+        getByPlaceholderText(copy.activitySelectorSearchPlaceholder);
       });
     });
 
@@ -41,13 +42,13 @@ describe('ActivitySelector Screen', () => {
       await waitFor(() => {
         const activities = queryAllByTestId('activity');
         expect(activities).toHaveLength(10);
-        getByText('?');
-        getByText('Get Food');
-        getByText('Go Outside');
-        getByText('Get Fit');
-        getByText('Get Shopping');
-        getByText('Get Coffee');
-        getByText('Get Relaxed');
+        getByText(copy.activitySelectorHelpButton);
+        getByText(copy.foodActivityTile);
+        getByText(copy.outsideActivityTile);
+        getByText(copy.workoutActivityTile);
+        getByText(copy.shopActivityTile);
+        getByText(copy.coffeeActivityTile);
+        getByText(copy.relaxActivityTile);
       });
     });
 
@@ -56,8 +57,8 @@ describe('ActivitySelector Screen', () => {
       await waitFor(() => {
         const dividers = queryAllByTestId('divider');
         expect(dividers).toHaveLength(2);
-        getByText('or');
-        getByText('Plan Custom Event!');
+        getByText(copy.acticitySelectorOrText);
+        getByText(copy.activitySelectorSearchPlaceholder);
       });
     });
   });
@@ -93,7 +94,7 @@ describe('ActivitySelector Screen', () => {
     it('navigates to custom event', async () => {
       const { getByText } = render(<ActivitySelector {...mockProps} />);
       await waitFor(() => {
-        const customButton = getByText('Plan Custom Event!');
+        const customButton = getByText(copy.altrenateActivityText);
         fireEvent.press(customButton);
         expect(mockProps.navigation.navigate).toBeCalledWith('PlanCreate', {
           currentUser: {
@@ -114,7 +115,7 @@ describe('ActivitySelector Screen', () => {
       it('selects activity by text input', async () => {
         const { getByPlaceholderText } = render(<ActivitySelector {...mockProps} />);
         await waitFor(() => {
-          const input = getByPlaceholderText('Search for Restaurants, Parks, ...');
+          const input = getByPlaceholderText(copy.activitySelectorSearchPlaceholder);
           fireEvent.changeText(input, 'typed activity');
           fireEvent(input, 'submitEditing');
           expect(mockProps.navigation.navigate).toBeCalledWith('ActivityResults', { activity: 'typed activity' });

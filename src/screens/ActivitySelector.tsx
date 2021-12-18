@@ -103,7 +103,7 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity onPress={() => handleActivity('favorites')} testID={'activity'}>
+        <TouchableOpacity onPress={() => handleActivity('favites')} testID={'activity'}>
           <Image source={require('../../assets/activity-fav.png')} />
           <AppText style={styles.activityText}>{copy.favoritesActivityTile}</AppText>
         </TouchableOpacity>
@@ -189,7 +189,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
             </View>
             <View style={styles.activitySelector}>
               <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
-                <AppText style={styles.questionText}>?</AppText>
+                <AppText style={styles.questionText}>{copy.activitySelectorHelpButton}</AppText>
               </TouchableOpacity>
 
               <ScrollView
@@ -216,7 +216,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
               <View>
                 <View style={styles.dividerRow}>
                   <View style={styles.divider} testID="divider" />
-                  <AppText style={styles.dividerText}>or</AppText>
+                  <AppText style={styles.dividerText}>{copy.acticitySelectorOrText}</AppText>
                   <View style={styles.divider} testID="divider" />
                 </View>
 
@@ -226,7 +226,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
                   }}
                   style={styles.activityLowerLink}
                 >
-                  <AppText style={styles.activityLowerLinkText}>Do Something Else</AppText>
+                  <AppText style={styles.activityLowerLinkText}>{copy.altrenateActivityText}</AppText>
                 </TouchableOpacity>
               </View>
             </View>
