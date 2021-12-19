@@ -9,9 +9,7 @@
     "test": "jest --verbose",
     "test:watch": "npm run test --watch",
     "test:ci": "npm run test --coverage",
-    "test:badges": "npm run test:ci  && jest-coverage-badges --input coverage/coverage-summary.json --output __badges__",
-    "storybook": "start-storybook -p 7007",
-    "build-storybook": "build-storybook"
+    "test:badges": "npm run test:ci  && jest-coverage-badges --input coverage/coverage-summary.json --output __badges__"
   },
   "jest": {
     "preset": "jest-expo",
@@ -110,19 +108,11 @@
     "react-navigation": "^4.4.4",
     "rn-sliding-up-panel": "^2.4.5",
     "rn-swipe-gestures": "^1.0.3",
-    "storybook": "^6.4.9",
     "unirest": "^0.6.0",
     "uuid": "^3.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "@storybook/addon-actions": "^5.3",
-    "@storybook/addon-knobs": "^5.3",
-    "@storybook/addon-links": "^5.3",
-    "@storybook/addon-ondevice-actions": "^5.3.23",
-    "@storybook/addon-ondevice-knobs": "^5.3.25",
-    "@storybook/react-native": "^5.3.25",
-    "@storybook/react-native-server": "^5.3.23",
     "@testing-library/react-native": "^7.2.0",
     "@types/jest": "^27.0.2",
     "@types/qs": "^6.9.6",
@@ -134,7 +124,6 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
-    "babel-loader": "^8.2.3",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.0",
