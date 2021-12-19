@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { RED, TEAL, WHITE } from '../res/styles/Colors';
 import { AppText } from './AppText';
 
+// TODO Error buttons need to have a (x) on them
+
 interface Props {
   status: 'error' | 'success';
   message: string;
