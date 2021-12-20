@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
-
+import { StyleSheet, TextInput, View, Keyboard } from 'react-native';
 import { AppText } from './AppText';
 import { GOLD, WHITE } from '../res/styles/Colors';
+import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 
 interface Props {
   autoFocus?: boolean;
@@ -32,7 +32,7 @@ export const AppTextInput: React.FC<Props> = ({
   value,
 }: Props) => {
   const [selected, setSelected] = useState<boolean>(false);
-
+  // FIXME add in KeyboardAccessoryView to give people the 'done' button
   return (
     <View>
       {label && <AppText style={[styles.label, textStyle ? textStyle : {}]}>{label}</AppText>}

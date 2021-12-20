@@ -15,7 +15,7 @@ interface Props {
   handleCreate: (loc: any) => void;
   // favorites: any[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  location: any;
+  location: any; //TODO fix type
   map: boolean;
   navigation: {
     navigate: (ev: string, {}) => void;

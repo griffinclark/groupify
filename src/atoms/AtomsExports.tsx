@@ -1,5 +1,5 @@
 import { Alert } from './Alert';
-import { AlertModal } from './AlertModal';
+import { AlertModal } from '../molecules/AlertModal';
 import { AppText } from './AppText';
 import { AppTextInput } from './AppTextInput';
 import { BottomButton } from './BottomButton';
@@ -9,7 +9,7 @@ import { CheckBox } from './CheckBox';
 import { FormButton } from './Formbutton';
 import { FormInput } from './FormInput';
 import { FriendBubble } from './FriendBubble';
-import { MeepForm } from './MeepForm';
+import { GroupifyForm } from './GroupifyForm';
 import { MultiLineTextInput } from './MultiLineTextInput';
 import { Navbar } from './Navbar';
 import { NavButton } from './NavButton';
@@ -35,7 +35,7 @@ export {
   FormButton,
   FormInput,
   FriendBubble,
-  MeepForm,
+  GroupifyForm as MeepForm,
   MultiLineTextInput,
   Navbar,
   NavButton,

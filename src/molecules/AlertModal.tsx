@@ -2,48 +2,48 @@ import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { TEAL, WHITE } from '../res/styles/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AppText } from './AppText';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
-  message: string;
-  message2?: string;
+  title: string;
+  subtitle?: string;
   onButton2Press?: () => void;
   onButton1Press: () => void;
-  button1Text: string;
-  button2Text?: string;
+  yesButton: string;
+  noButton?: string;
 }
 export const AlertModal: React.FC<Props> = ({
-  message,
-  message2,
+  title,
+  subtitle,
   onButton2Press,
   onButton1Press,
-  button1Text,
-  button2Text,
+  yesButton,
+  noButton,
 }: Props) => {
   return (
     <View style={styles.popup}>
       <View style={styles.container}>
         <View>
           <AppText maxFontSizeMultiplier={1} style={styles.text1}>
-            {message}
+            {title}
           </AppText>
-          {message2 ? (
+          {subtitle ? (
             <AppText maxFontSizeMultiplier={1} style={styles.text2}>
-              {message2}
+              {subtitle}
             </AppText>
           ) : null}
         </View>
         <View style={styles.buttonContainer}>
-          {button2Text ? (
+          {noButton ? (
             <TouchableOpacity style={styles.button} onPress={onButton2Press}>
               <AppText maxFontSizeMultiplier={1} style={[styles.buttonText, { color: TEAL }]}>
-                {button2Text}
+                {noButton}
               </AppText>
             </TouchableOpacity>
           ) : null}
           <TouchableOpacity style={[styles.button, { backgroundColor: TEAL }]} onPress={onButton1Press}>
             <AppText maxFontSizeMultiplier={1} style={[styles.buttonText, { color: 'white' }]}>
-              {button1Text}
+              {yesButton}
             </AppText>
           </TouchableOpacity>
         </View>

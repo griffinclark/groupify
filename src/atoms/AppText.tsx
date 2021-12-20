@@ -33,3 +33,5 @@ export const AppText: React.FC<Props> = ({
     </Text>
   );
 };
+
+// TODO move all app text CSS into here

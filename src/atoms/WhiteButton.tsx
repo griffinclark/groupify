@@ -37,3 +37,5 @@ const styles = StyleSheet.create({
     color: TEAL,
   },
 });
+
+// FIXME this has to merge with button

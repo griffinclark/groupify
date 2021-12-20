@@ -19,7 +19,7 @@ interface Props {
   }[];
 }
 
-export const MeepForm: React.FC<Props> = ({ children, inputList }: Props) => {
+export const GroupifyForm: React.FC<Props> = ({ children, inputList }: Props) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [currentDate, setCurrentDate] = useState(roundDate(new Date()));

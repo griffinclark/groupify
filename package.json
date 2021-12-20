@@ -100,6 +100,7 @@
     "react-native-expo-viewport-units": "^0.0.8",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-google-places-autocomplete": "^2.2.0",
+    "react-native-keyboard-accessory": "^0.1.16",
     "react-native-maps": "0.29.4",
     "react-native-reanimated": "~2.3.1",
     "react-native-safe-area-context": "^3.3.2",

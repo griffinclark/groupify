@@ -61,6 +61,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
       const { data } = await Contacts.getContactsAsync({});
+      console.log(data);
       if (data.length > 0) {
         const contacts = data.map((contact) => ({
           id: contact.id,
@@ -170,9 +171,9 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
       </View>
       {openModal && (
         <AlertModal
-          button1Text="Yes"
-          button2Text="Close"
-          message2="You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later. "
+          yesButton="Yes"
+          noButton="Close"
+          subtitle="You must have contacts to make plans with, or to find plans being created. You can always edit your contact list later. "
           onButton1Press={() => navigation.navigate('Home')}
           onButton2Press={() => setOpenModal(false)}
           message="Are you sure you don't want to import contacts? "

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Platform, KeyboardAvoidingView, FlatList, ActivityIndicator } from 'react-native';
-import { MeepForm, TwoButtonAlert, BottomButton, Screen } from '../atoms/AtomsExports';
+import { MeepForm as GroupifyForm, TwoButtonAlert, BottomButton, Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { TEAL, GREY_8 } from '../res/styles/Colors';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -287,7 +287,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
             </AppText>
             {/* <View>{loadPhoto(photo)}</View> */}
             <View style={{ flexGrow: 1 }}>
-              <MeepForm inputList={inputFields}></MeepForm>
+              <GroupifyForm inputList={inputFields}></GroupifyForm>
               <PlanTextMessage
                 label="Friends who don’t have Groupify yet will receive the following message:"
                 onChangeText={(e) => setMessage(e)}

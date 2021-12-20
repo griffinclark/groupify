@@ -1,8 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
-import { action } from '@storybook/addon-actions';
-import { BufferView } from '../../decorator';
-import { Alert } from './../../../src/atoms/Alert';
+import { BufferView } from '../decorator';
+import { Alert } from '../../src/atoms/Alert';
 
 storiesOf('Alert', module)
   .addDecorator(BufferView)

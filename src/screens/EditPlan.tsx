@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AppText, BottomButton, MeepForm, Alert, Screen } from '../atoms/AtomsExports';
+import { AppText, BottomButton, MeepForm as GroupifyForm, Alert, Screen } from '../atoms/AtomsExports';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { BackChevronIcon, MapLinkIcon } from '../../assets/Icons/IconExports';
@@ -156,7 +156,7 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
           >
             {/* <View>{loadPhoto(photo)}</View> */}
             <View style={{ flexGrow: 1 }}>
-              <MeepForm inputList={inputFields}>
+              <GroupifyForm inputList={inputFields}>
                 <TouchableOpacity
                   style={styles.mapLink}
                   onPress={() => navigation.navigate('PlanMap', { option: 'edit' })}
@@ -164,7 +164,7 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
                   <MapLinkIcon />
                   <AppText style={styles.mapText}>Find address using the map</AppText>
                 </TouchableOpacity>
-              </MeepForm>
+              </GroupifyForm>
               {error && <Alert status="error" message={error} />}
             </View>
           </ScrollView>

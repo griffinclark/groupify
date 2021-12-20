@@ -97,9 +97,9 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
             setModal(<View style={{ display: 'none' }} />);
             respondToPlan(true, plan).then(() => setReload(!reload));
           }}
-          button1Text="Woot!"
+          yesButton="Woot!"
           message="You’ve accepted an invite!"
-          message2={`${plan.description ? plan.description : plan.title}\n${
+          subtitle={`${plan.description ? plan.description : plan.title}\n${
             plan.date && formatDayOfWeekDate(plan.date)
           }\n${plan.time && formatTime(plan.time)}`}
         />,
@@ -114,10 +114,10 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
           onButton2Press={() => {
             setModal(<View style={{ display: 'none' }} />);
           }}
-          button1Text="Yes, Decline"
-          button2Text="No"
+          yesButton="Yes, Decline"
+          noButton="No"
           message="Are you sure you’d like to decline this invitation?"
-          message2={`${plan.description}\n${plan.date && formatDayOfWeekDate(plan.date)}\n${
+          subtitle={`${plan.description}\n${plan.date && formatDayOfWeekDate(plan.date)}\n${
             plan.time && formatTime(plan.time)
           }`}
         />,
@@ -132,9 +132,9 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
           respondToPlan(false, plan).then(() => setReload(!reload));
           setModal(<View style={{ display: 'none' }} />);
         }}
-        button1Text="Okay"
+        yesButton="Okay"
         message="Invite has been declined."
-        message2={`${plan.description}\n${plan.date && formatDayOfWeekDate(plan.date)}\n${
+        subtitle={`${plan.description}\n${plan.date && formatDayOfWeekDate(plan.date)}\n${
           plan.time && formatTime(plan.time)
         }`}
       />,
