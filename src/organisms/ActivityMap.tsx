@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View, Image } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Constants from 'expo-constants';
 import { ActivityCard } from '../molecules/ActivityCard';
@@ -37,6 +37,8 @@ export const ActivityMap: React.FC<Props> = ({
   const [favoritesArr, setFavoritesArr] = useState([]);
   console.log(image);
 
+  const selectedMarker = require('../../assets/MapMarker.png');
+
   useEffect(() => {
     queryFavorites();
   }, []);
@@ -53,7 +55,7 @@ export const ActivityMap: React.FC<Props> = ({
     const favArr = favorites.map((ele: any) => ele.place_id);
     setFavoritesArr(favArr);
   };
-
+  
   return (
     <View style={styles.container}>
       <MapView
@@ -62,7 +64,7 @@ export const ActivityMap: React.FC<Props> = ({
         region={{
           latitude: region.latitude,
           longitude: region.longitude,
-          latitudeDelta: region.latitudeDelta,
+          latitudeDelta: card ? 1 : region.latitudeDelta,
           longitudeDelta: region.longitudeDelta,
         }}
         style={styles.map}
@@ -76,17 +78,28 @@ export const ActivityMap: React.FC<Props> = ({
           <View style={styles.userMarker} />
         </Marker>
         {locations.map((loc) => (
-          <Marker
-            coordinate={{
-              latitude: loc.geometry.location.lat,
-              longitude: loc.geometry.location.lng,
-            }}
-            onPress={() => setCard(loc)}
-            key={loc.place_id}
-            style={{ position: 'absolute' }}
-          >
-            <MapIcon image={image} />
-          </Marker>
+          (card &&
+            loc.geometry.location.lat === card.geometry.location.lat && 
+            loc.geometry.location.lng === card.geometry.location.lng) ? 
+            (<Marker
+              coordinate={{
+                latitude: loc.geometry.location.lat,
+                longitude: loc.geometry.location.lng,
+              }}
+              key={loc.place_id}
+              ><Image source={selectedMarker} style={{ width: 50, height: 55 }} />
+              </Marker>) :
+            (<Marker
+              coordinate={{
+                latitude: loc.geometry.location.lat,
+                longitude: loc.geometry.location.lng,
+              }}
+              onPress={() => setCard(loc)}
+              key={loc.place_id}
+              style={{ position: 'absolute' }}
+            >
+              <MapIcon image={image} />
+            </Marker>)
         ))}
       </MapView>
       {card && (
