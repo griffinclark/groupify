@@ -80,14 +80,14 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
   return (
     <NavigationContainer
       onReady={async () => {
-        await Analytics.setCurrentScreen(initialRoute);
+        await Analytics.setCurrentScreen(initialRoute, initialRoute);
         await Analytics.logEvent(`Page_${initialRoute}`, {});
       }}
       onStateChange={async (state) => {
         if (!state) return null;
         const newRoute = state.routes[state.routes.length - 1].name;
         if (typeof newRoute === 'string') {
-          await Analytics.setCurrentScreen(newRoute);
+          await Analytics.setCurrentScreen(newRoute, newRoute);
           await Analytics.logEvent(`Page_${newRoute}`, {});
         }
       }}
