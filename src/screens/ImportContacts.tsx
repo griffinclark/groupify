@@ -61,7 +61,6 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
       const { data } = await Contacts.getContactsAsync({});
-      console.log(data);
       if (data.length > 0) {
         const contacts = data.map((contact) => ({
           id: contact.id,

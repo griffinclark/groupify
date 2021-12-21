@@ -58,11 +58,11 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const loadPlans = async (user: User) => {
-    console.log('Loading plans');
+    // console.log('Loading plans');
     const createdPlanOnDb = await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id));
     const createdPlans = createdPlanOnDb.map((plan) => plan);
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
-    console.log('createdPlans', createdPlans);
+    // console.log('createdPlans', createdPlans);
 
     let invitedPlans = //removePastPlans(
       invitees.map((invitee) => (

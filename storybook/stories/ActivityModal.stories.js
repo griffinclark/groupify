@@ -6,3 +6,4 @@ import { ActivityModal } from './../../src/molecules/ActivityModal';
 storiesOf('ActivityModal', module)
   .addDecorator(BufferView)
   .add('default', () => <ActivityModal modal={true} setModal={null} />);
+//TODO fix

@@ -97,10 +97,11 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
           location: location,
           description: description,
           imageURL: photo || '',
-          placeId: route.params.data ? route.params.data.eventData.placeId : '',
+          placeId: route.params.data.eventData.placeId,
         },
       },
     });
+    console.log(route.params);
     resetFields();
     await Analytics.logEvent('submit_create_event_to_friends', { userId: id });
   };

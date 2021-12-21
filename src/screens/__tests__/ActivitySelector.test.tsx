@@ -9,7 +9,7 @@ const mockProps = createMock<Props>({
     goBack: jest.fn(),
   },
 });
-
+('debugger');
 describe('ActivitySelector Screen', () => {
   describe('renders correctly', () => {
     it('renders the screen', async () => {

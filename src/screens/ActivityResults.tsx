@@ -27,6 +27,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     latitude: 41.878,
     longitude: -93.0977,
   }); // defaults to Los Angeles if user location is not provided and no place param
+  // FIXME if user does not provide a location DO NOT let them use this screen - display an error asking them to enable location
   const [region, setRegion] = useState({
     latitude: 41.878,
     longitude: -93.0977,
@@ -62,7 +63,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   }, [route.params.place]);
 
   const getUserLocation = async () => {
-    const { status } = await Location.requestPermissionsAsync();
+    const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
     } else {
@@ -176,6 +177,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
       data: {
         eventData: {
           location: loc.formatted_address,
+          placeId: loc.place_id,
         },
       },
     });

@@ -112,6 +112,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   const sendContactMessage = async () => {
     const formattedContacts = formatContacts(selectedContacts);
     const event = route.params.data.eventData;
+    console.log(route.params.currentUser);
     navigation.navigate('ConfirmPlan', {
       currentUser: route.params.currentUser,
       data: {
