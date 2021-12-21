@@ -9,7 +9,7 @@ import Amplify, { Auth, Hub } from 'aws-amplify';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import * as Notifications from 'expo-notifications';
-import fbInit from './src/res/facebook'
+import fbInit from './src/res/facebook';
 
 
 Amplify.configure(awsconfig);
@@ -36,7 +36,7 @@ export const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-      fbInit()
+      fbInit();
   }, []);
 
   useEffect(() => {
