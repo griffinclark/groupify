@@ -24,7 +24,8 @@
       "infoPlist": {
         "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
         "NSLocationWhenInUseUsageDescription": "Accessing your location will allow you to view places near you.",
-        "NSUserTrackingUsageDescription": ""
+        "NSUserTrackingUsageDescription": "Tracking your app activity helps us understand how you use Groupify so we can develop new features, improve our messaging, and create a better user experience. Allow access to help us make getting together with your friends as easy as possible."
+        
       },
       "buildNumber": "1.5.5",
       "config": {
