@@ -7,4 +7,3 @@ import { plans } from '../ExampleData';
 storiesOf('DataDisplay', module)
   .addDecorator(BufferView)
   .add('default', () => <DataDisplay data={plans} />);
-// TODO need plans[]

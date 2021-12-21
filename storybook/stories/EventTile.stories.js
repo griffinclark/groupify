@@ -7,4 +7,3 @@ import { plans } from '../ExampleData';
 storiesOf('EventTile', module)
   .addDecorator(BufferView)
   .add('default', () => <EventTile enabled={true} plan={plans[0]} />);
-// TODO need default plan

@@ -12,5 +12,3 @@ storiesOf('ContactContainer', module)
       adjustSelectedContacts={() => console.log('this is where a React state update would go')}
     />
   ));
-
-//TODO need contacts[]

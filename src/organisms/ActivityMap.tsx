@@ -35,8 +35,6 @@ export const ActivityMap: React.FC<Props> = ({
 }: Props) => {
   const [card, setCard] = useState();
   const [favoritesArr, setFavoritesArr] = useState([]);
-  console.log(image);
-
   useEffect(() => {
     queryFavorites();
   }, []);

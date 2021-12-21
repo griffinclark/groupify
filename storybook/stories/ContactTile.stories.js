@@ -6,7 +6,19 @@ import { contacts } from './../ExampleData';
 
 storiesOf('ContactTile', module)
   .addDecorator(BufferView)
-  .add('selected', () => <ContactTile isSelected={true} />)
-  .add('notSelected', () => <ContactTile isSelected={false} />);
-
-// TODO create example friend to use here
+  .add('selected', () => (
+    <ContactTile
+      isSelected={true}
+      friend={contacts[0]}
+      addUser={console.log('no function')}
+      removeUser={console.log('no function')}
+    />
+  ))
+  .add('notSelected', () => (
+    <ContactTile
+      isSelected={false}
+      friend={contacts[0]}
+      addUser={console.log('no function')}
+      removeUser={console.log('no function')}
+    />
+  ));

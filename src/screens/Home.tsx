@@ -43,6 +43,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   useEffect(() => {
     const awaitUser = async () => {
       const user = await getCurrentUser();
+      console.log(user);
       setCurrentUser(user);
       await loadPlans(user);
       setTrigger2(!trigger2);
@@ -64,10 +65,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
     // console.log('createdPlans', createdPlans);
 
-    let invitedPlans = //removePastPlans(
-      invitees.map((invitee) => (
-          invitee.plan
-      )).filter((item): item is Plan => item !== undefined);
+    let invitedPlans = invitees.map((invitee) => invitee.plan).filter((item): item is Plan => item !== undefined); //removePastPlans(
     // );
     const upcoming = invitedPlans;
     if (currentUser) invitedPlans = invitedPlans.filter((item): item is Plan => item.creatorID !== currentUser.id);

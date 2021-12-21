@@ -1,10 +1,193 @@
-/*
-### DATA TO EXPORT ###
-
-2/ User[]
-3/ Location[]
-
-*/
+export const locations = [
+  {
+    business_status: 'OPERATIONAL',
+    formatted_address: '203-201 Sweet Alice Ln, Encinitas, CA 92024, United States',
+    geometry: {
+      location: {
+        lat: 33.0440232,
+        lng: -117.271722,
+      },
+      viewport: {
+        northeast: {
+          lat: 33.04533182989273,
+          lng: -117.2703005701073,
+        },
+        southwest: {
+          lat: 33.04263217010728,
+          lng: -117.2730002298927,
+        },
+      },
+    },
+    icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/shopping-71.png',
+    icon_background_color: '#4B96F3',
+    icon_mask_base_uri: 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/shopping_pinlet',
+    name: 'Merrick',
+    opening_hours: {
+      open_now: true,
+    },
+    place_id: 'ChIJDWUFmegN3IAR_42IrRLJOoE',
+    plus_code: {
+      compound_code: '2PVH+J8 Encinitas, California',
+      global_code: '85542PVH+J8',
+    },
+    rating: 0,
+    reference: 'ChIJDWUFmegN3IAR_42IrRLJOoE',
+    types: ['shopping_mall', 'point_of_interest', 'establishment'],
+    user_ratings_total: 0,
+  },
+  {
+    business_status: 'OPERATIONAL',
+    formatted_address: '203-201 Sweet Alice Ln, Encinitas, CA 92024, United States',
+    geometry: {
+      location: {
+        lat: 33.0440232,
+        lng: -117.271722,
+      },
+      viewport: {
+        northeast: {
+          lat: 33.04533182989273,
+          lng: -117.2703005701073,
+        },
+        southwest: {
+          lat: 33.04263217010728,
+          lng: -117.2730002298927,
+        },
+      },
+    },
+    icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/shopping-71.png',
+    icon_background_color: '#4B96F3',
+    icon_mask_base_uri: 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/shopping_pinlet',
+    name: 'Merrick',
+    opening_hours: {
+      open_now: true,
+    },
+    place_id: 'ChIJDWUFmegN3IAR_42IrRLJOoE',
+    plus_code: {
+      compound_code: '2PVH+J8 Encinitas, California',
+      global_code: '85542PVH+J8',
+    },
+    rating: 0,
+    reference: 'ChIJDWUFmegN3IAR_42IrRLJOoE',
+    types: ['shopping_mall', 'point_of_interest', 'establishment'],
+    user_ratings_total: 0,
+  },
+  {
+    business_status: 'OPERATIONAL',
+    formatted_address: '203-201 Sweet Alice Ln, Encinitas, CA 92024, United States',
+    geometry: {
+      location: {
+        lat: 33.0440232,
+        lng: -117.271722,
+      },
+      viewport: {
+        northeast: {
+          lat: 33.04533182989273,
+          lng: -117.2703005701073,
+        },
+        southwest: {
+          lat: 33.04263217010728,
+          lng: -117.2730002298927,
+        },
+      },
+    },
+    icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/shopping-71.png',
+    icon_background_color: '#4B96F3',
+    icon_mask_base_uri: 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/shopping_pinlet',
+    name: 'Merrick',
+    opening_hours: {
+      open_now: true,
+    },
+    place_id: 'ChIJDWUFmegN3IAR_42IrRLJOoE',
+    plus_code: {
+      compound_code: '2PVH+J8 Encinitas, California',
+      global_code: '85542PVH+J8',
+    },
+    rating: 0,
+    reference: 'ChIJDWUFmegN3IAR_42IrRLJOoE',
+    types: ['shopping_mall', 'point_of_interest', 'establishment'],
+    user_ratings_total: 0,
+  },
+  {
+    business_status: 'OPERATIONAL',
+    formatted_address: '203-201 Sweet Alice Ln, Encinitas, CA 92024, United States',
+    geometry: {
+      location: {
+        lat: 33.0440232,
+        lng: -117.271722,
+      },
+      viewport: {
+        northeast: {
+          lat: 33.04533182989273,
+          lng: -117.2703005701073,
+        },
+        southwest: {
+          lat: 33.04263217010728,
+          lng: -117.2730002298927,
+        },
+      },
+    },
+    icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/shopping-71.png',
+    icon_background_color: '#4B96F3',
+    icon_mask_base_uri: 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/shopping_pinlet',
+    name: 'Merrick',
+    opening_hours: {
+      open_now: true,
+    },
+    place_id: 'ChIJDWUFmegN3IAR_42IrRLJOoE',
+    plus_code: {
+      compound_code: '2PVH+J8 Encinitas, California',
+      global_code: '85542PVH+J8',
+    },
+    rating: 0,
+    reference: 'ChIJDWUFmegN3IAR_42IrRLJOoE',
+    types: ['shopping_mall', 'point_of_interest', 'establishment'],
+    user_ratings_total: 0,
+  },
+];
+export const users = [
+  {
+    _deleted: null,
+    _lastChangedAt: 1639868268898,
+    _version: 2,
+    createdAt: '2021-12-06T05:18:44.356Z',
+    email: null,
+    friends: null,
+    id: '5e65d4ee-4989-4985-bb4b-9406525113e5',
+    name: 'Griffin Clark',
+    phoneNumber: '+17608893464',
+    pushToken: 'ExponentPushToken[iPBZBiKYzZs4KRivBAiCQQ]',
+    updatedAt: '2021-12-18T22:57:48.855Z',
+    userAvailabilityId: null,
+  },
+  {
+    _deleted: null,
+    _lastChangedAt: 1639868268898,
+    _version: 2,
+    createdAt: '2021-12-06T05:18:44.356Z',
+    email: null,
+    friends: null,
+    id: '5e65d4ee-4989-4985-bb4b-9406525113e5',
+    name: 'Griffin Clark',
+    phoneNumber: '+17608893464',
+    pushToken: 'ExponentPushToken[iPBZBiKYzZs4KRivBAiCQQ]',
+    updatedAt: '2021-12-18T22:57:48.855Z',
+    userAvailabilityId: null,
+  },
+  {
+    _deleted: null,
+    _lastChangedAt: 1639868268898,
+    _version: 2,
+    createdAt: '2021-12-06T05:18:44.356Z',
+    email: null,
+    friends: null,
+    id: '5e65d4ee-4989-4985-bb4b-9406525113e5',
+    name: 'Griffin Clark',
+    phoneNumber: '+17608893464',
+    pushToken: 'ExponentPushToken[iPBZBiKYzZs4KRivBAiCQQ]',
+    updatedAt: '2021-12-18T22:57:48.855Z',
+    userAvailabilityId: null,
+  },
+];
 
 export const contacts = [
   {
@@ -12,8 +195,8 @@ export const contacts = [
     firstName: 'Carlos ',
     id: '2ABA6D8B-B191-4268-8371-9013D31F5E3F',
     imageAvailable: false,
-    lastName: 'Bean',
-    name: 'Carlos The Bean',
+    lastName: 'Dude',
+    name: 'Carlos The Dude',
     phoneNumbers: [
       {
         countryCode: 'us',

@@ -7,3 +7,5 @@ import { Navbar } from '../../src/molecules/Navbar';
 storiesOf('Navbar2', module)
   .addDecorator(BufferView)
   .add('default', () => <Navbar />);
+
+// TODO wtf is this component?
