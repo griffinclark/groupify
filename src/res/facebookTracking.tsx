@@ -1,7 +1,11 @@
 import * as Facebook from 'expo-facebook';
 //Asks for permission for facebook to track user data, used in App.tsx
-const fbInit= async ()=> {
-    await Facebook.initializeAsync({appId:'693164164986653',appName:"Munchkin Labs"});
+
+const appId = "693164164986653"
+const appName="Munchkin Labs"
+
+const facebookInit= async (): Promise<void> => {
+    await Facebook.initializeAsync({appId:appId ,appName:appName});
     const response = await Facebook.getPermissionsAsync();
     let finalResponse= response;
     if (response.status=="undetermined"){
@@ -19,4 +23,4 @@ const fbInit= async ()=> {
 
   };
 
-  export default fbInit;
+  export default facebookInit;
