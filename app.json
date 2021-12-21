@@ -23,7 +23,8 @@
       "bundleIdentifier": "com.munchkinlabs.meep",
       "infoPlist": {
         "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
-        "NSLocationWhenInUseUsageDescription": "Accessing your location will allow you to view places near you."
+        "NSLocationWhenInUseUsageDescription": "Accessing your location will allow you to view places near you.",
+        "NSUserTrackingUsageDescription": ""
       },
       "buildNumber": "1.5.5",
       "config": {
