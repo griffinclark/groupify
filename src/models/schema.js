@@ -1,7 +1,7 @@
 export const schema = {
     "models": {
-        "Plan": {
-            "name": "Plan",
+        "NotificationFromTo": {
+            "name": "NotificationFromTo",
             "fields": {
                 "id": {
                     "name": "id",
@@ -10,57 +10,30 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "title": {
-                    "name": "title",
+                "senderType": {
+                    "name": "senderType",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "Sender"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "notification": {
+                    "name": "notification",
+                    "isArray": false,
+                    "type": {
+                        "model": "Notification"
+                    },
                     "isRequired": true,
-                    "attributes": []
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "notificationID"
+                    }
                 },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "location": {
-                    "name": "location",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "placeID": {
-                    "name": "placeID",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "date": {
-                    "name": "date",
-                    "isArray": false,
-                    "type": "AWSDate",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "time": {
-                    "name": "time",
-                    "isArray": false,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "creatorID": {
-                    "name": "creatorID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "creator": {
-                    "name": "creator",
+                "sender": {
+                    "name": "sender",
                     "isArray": false,
                     "type": {
                         "model": "User"
@@ -69,35 +42,20 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "planCreatorId"
+                        "targetName": "senderID"
                     }
                 },
-                "arbitrations": {
-                    "name": "arbitrations",
-                    "isArray": true,
+                "recipient": {
+                    "name": "recipient",
+                    "isArray": false,
                     "type": {
-                        "model": "PlanArbitration"
+                        "model": "User"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": [],
-                    "isArrayNullable": true,
                     "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "planArbitrationsId"
-                    }
-                },
-                "invitees": {
-                    "name": "invitees",
-                    "isArray": true,
-                    "type": {
-                        "model": "Invitee"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "planInviteesId"
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "recipientID"
                     }
                 },
                 "createdAt": {
@@ -118,11 +76,162 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Plans",
+            "pluralName": "NotificationFromTos",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byNotification",
+                        "fields": [
+                            "notificationID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "bySender",
+                        "fields": [
+                            "senderID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byRecipient",
+                        "fields": [
+                            "recipientID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Notification": {
+            "name": "Notification",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "body": {
+                    "name": "body",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "data": {
+                    "name": "data",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "ttl": {
+                    "name": "ttl",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "messageSubtitle": {
+                    "name": "messageSubtitle",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "sound": {
+                    "name": "sound",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "channel": {
+                    "name": "channel",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "recipients": {
+                    "name": "recipients",
+                    "isArray": true,
+                    "type": {
+                        "model": "NotificationFromTo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "notification"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Notifications",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -182,6 +291,34 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetName": "userAvailabilityId"
+                    }
+                },
+                "notificationsSent": {
+                    "name": "notificationsSent",
+                    "isArray": true,
+                    "type": {
+                        "model": "NotificationFromTo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "sender"
+                    }
+                },
+                "notificationsRecieved": {
+                    "name": "notificationsRecieved",
+                    "isArray": true,
+                    "type": {
+                        "model": "NotificationFromTo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "recipient"
                     }
                 },
                 "createdAt": {
@@ -315,6 +452,132 @@ export const schema = {
             },
             "syncable": true,
             "pluralName": "Availabilities",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                }
+            ]
+        },
+        "Plan": {
+            "name": "Plan",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "location": {
+                    "name": "location",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "placeID": {
+                    "name": "placeID",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "date": {
+                    "name": "date",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "time": {
+                    "name": "time",
+                    "isArray": false,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "creatorID": {
+                    "name": "creatorID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "creator": {
+                    "name": "creator",
+                    "isArray": false,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "planCreatorId"
+                    }
+                },
+                "arbitrations": {
+                    "name": "arbitrations",
+                    "isArray": true,
+                    "type": {
+                        "model": "PlanArbitration"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "planArbitrationsId"
+                    }
+                },
+                "invitees": {
+                    "name": "invitees",
+                    "isArray": true,
+                    "type": {
+                        "model": "Invitee"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "planInviteesId"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Plans",
             "attributes": [
                 {
                     "type": "model",
@@ -543,6 +806,13 @@ export const schema = {
         }
     },
     "enums": {
+        "Sender": {
+            "name": "Sender",
+            "values": [
+                "USER",
+                "NOTIFICATIONPANEL"
+            ]
+        },
         "Status": {
             "name": "Status",
             "values": [
@@ -553,5 +823,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "6eb05e108cc5089ab31635f4a5932ab2"
+    "version": "7693cef111c4b406aee057da402f6680"
 };

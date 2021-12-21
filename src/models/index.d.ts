@@ -1,5 +1,10 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
+export enum Sender {
+  USER = "USER",
+  NOTIFICATIONPANEL = "NOTIFICATIONPANEL"
+}
+
 export enum Status {
   PENDING = "PENDING",
   ACCEPTED = "ACCEPTED",
@@ -8,7 +13,11 @@ export enum Status {
 
 
 
-type PlanMetaData = {
+type NotificationFromToMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type NotificationMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -20,6 +29,10 @@ type AvailabilityMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type PlanMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type PlanArbitrationMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -28,22 +41,31 @@ type InviteeMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-export declare class Plan {
+export declare class NotificationFromTo {
   readonly id: string;
-  readonly title: string;
-  readonly description?: string;
-  readonly location?: string;
-  readonly placeID?: string;
-  readonly date?: string;
-  readonly time?: string;
-  readonly creatorID: string;
-  readonly creator?: User;
-  readonly arbitrations?: (PlanArbitration | null)[];
-  readonly invitees?: (Invitee | null)[];
+  readonly senderType?: Sender | keyof typeof Sender;
+  readonly notification: Notification;
+  readonly sender?: User;
+  readonly recipient: User;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<Plan, PlanMetaData>);
-  static copyOf(source: Plan, mutator: (draft: MutableModel<Plan, PlanMetaData>) => MutableModel<Plan, PlanMetaData> | void): Plan;
+  constructor(init: ModelInit<NotificationFromTo, NotificationFromToMetaData>);
+  static copyOf(source: NotificationFromTo, mutator: (draft: MutableModel<NotificationFromTo, NotificationFromToMetaData>) => MutableModel<NotificationFromTo, NotificationFromToMetaData> | void): NotificationFromTo;
+}
+
+export declare class Notification {
+  readonly id: string;
+  readonly body: string;
+  readonly data?: string;
+  readonly ttl?: number;
+  readonly messageSubtitle?: string;
+  readonly sound?: boolean;
+  readonly channel?: string;
+  readonly recipients?: (NotificationFromTo | null)[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Notification, NotificationMetaData>);
+  static copyOf(source: Notification, mutator: (draft: MutableModel<Notification, NotificationMetaData>) => MutableModel<Notification, NotificationMetaData> | void): Notification;
 }
 
 export declare class User {
@@ -54,6 +76,8 @@ export declare class User {
   readonly friends?: string;
   readonly email?: string;
   readonly availability?: Availability;
+  readonly notificationsSent?: (NotificationFromTo | null)[];
+  readonly notificationsRecieved?: (NotificationFromTo | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<User, UserMetaData>);
@@ -73,6 +97,24 @@ export declare class Availability {
   readonly updatedAt?: string;
   constructor(init: ModelInit<Availability, AvailabilityMetaData>);
   static copyOf(source: Availability, mutator: (draft: MutableModel<Availability, AvailabilityMetaData>) => MutableModel<Availability, AvailabilityMetaData> | void): Availability;
+}
+
+export declare class Plan {
+  readonly id: string;
+  readonly title: string;
+  readonly description?: string;
+  readonly location?: string;
+  readonly placeID?: string;
+  readonly date?: string;
+  readonly time?: string;
+  readonly creatorID: string;
+  readonly creator?: User;
+  readonly arbitrations?: (PlanArbitration | null)[];
+  readonly invitees?: (Invitee | null)[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Plan, PlanMetaData>);
+  static copyOf(source: Plan, mutator: (draft: MutableModel<Plan, PlanMetaData>) => MutableModel<Plan, PlanMetaData> | void): Plan;
 }
 
 export declare class PlanArbitration {

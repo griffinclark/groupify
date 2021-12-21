@@ -1,4 +1,22 @@
 {
+  "notifdev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-groupifymain-notifdev-220343-authRole",
+      "UnauthRoleArn": "arn:aws:iam::645463423180:role/amplify-groupifymain-notifdev-220343-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::645463423180:role/amplify-groupifymain-notifdev-220343-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-groupifymain-notifdev-220343-deployment",
+      "UnauthRoleName": "amplify-groupifymain-notifdev-220343-unauthRole",
+      "StackName": "amplify-groupifymain-notifdev-220343",
+      "StackId": "arn:aws:cloudformation:us-west-2:645463423180:stack/amplify-groupifymain-notifdev-220343/8d1464d0-52f2-11ec-a06a-064ff6bf2eb1",
+      "AmplifyAppId": "d3u5ripuhqeq50"
+    },
+    "categories": {
+      "auth": {
+        "groupifyMainet": {}
+      }
+    }
+  },
   "staging": {
     "awscloudformation": {
       "AuthRoleName": "amplify-groupifymain-staging-10211-authRole",
