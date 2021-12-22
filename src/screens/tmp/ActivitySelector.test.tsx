@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import { createMock } from 'ts-auto-mock';
 import { Props, ActivitySelector } from '../ActivitySelector';
 
@@ -21,7 +21,9 @@ describe('ActivitySelector Screen', () => {
     });
 
     it('renders the top nav', async () => {
-      const { getByTestId, getByText } = render(<ActivitySelector {...mockProps} />);
+      const getByTestId = act(() => {
+        render(<ActivitySelector {...mockProps} />);
+      });
       await waitFor(() => {
         getByTestId('back');
         getByText('Activity Selector');

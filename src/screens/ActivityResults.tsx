@@ -63,7 +63,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   }, [route.params.place]);
 
   const getUserLocation = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
+    const { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
     } else {

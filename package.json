@@ -16,6 +16,7 @@
     "test:debug": "node --debug-brk --inspect ./node_modules/.bin/jest -i"
   },
   "jest": {
+    "testPathIgnorePatterns": ["./src/screens/tmp"],
     "preset": "jest-expo",
     "globals": {
       "ts-jest": {
