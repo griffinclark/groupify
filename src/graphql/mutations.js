@@ -15,6 +15,7 @@ export const createPlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -42,6 +43,14 @@ export const createPlan = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
       }
       arbitrations {
         items {
@@ -101,6 +110,7 @@ export const updatePlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -128,6 +138,14 @@ export const updatePlan = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
       }
       arbitrations {
         items {
@@ -187,6 +205,7 @@ export const deletePlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -214,6 +233,14 @@ export const deletePlan = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
       }
       arbitrations {
         items {
@@ -289,6 +316,7 @@ export const createPlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -310,6 +338,7 @@ export const createPlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -375,6 +404,7 @@ export const updatePlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -396,6 +426,7 @@ export const updatePlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -461,6 +492,7 @@ export const deletePlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -482,6 +514,7 @@ export const deletePlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -539,6 +572,7 @@ export const createInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -596,6 +630,7 @@ export const updateInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -653,6 +688,7 @@ export const deleteInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -786,6 +822,38 @@ export const createUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      notificationsSent {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      notificationsRecieved {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -821,6 +889,38 @@ export const updateUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      notificationsSent {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      notificationsRecieved {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -856,6 +956,476 @@ export const deleteUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      notificationsSent {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      notificationsRecieved {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const createNotificationFromTo = /* GraphQL */ `
+  mutation CreateNotificationFromTo(
+    $input: CreateNotificationFromToInput!
+    $condition: ModelNotificationFromToConditionInput
+  ) {
+    createNotificationFromTo(input: $input, condition: $condition) {
+      id
+      senderType
+      notificationID
+      senderID
+      recipientID
+      sender {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      recipient {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      notification {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const updateNotificationFromTo = /* GraphQL */ `
+  mutation UpdateNotificationFromTo(
+    $input: UpdateNotificationFromToInput!
+    $condition: ModelNotificationFromToConditionInput
+  ) {
+    updateNotificationFromTo(input: $input, condition: $condition) {
+      id
+      senderType
+      notificationID
+      senderID
+      recipientID
+      sender {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      recipient {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      notification {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const deleteNotificationFromTo = /* GraphQL */ `
+  mutation DeleteNotificationFromTo(
+    $input: DeleteNotificationFromToInput!
+    $condition: ModelNotificationFromToConditionInput
+  ) {
+    deleteNotificationFromTo(input: $input, condition: $condition) {
+      id
+      senderType
+      notificationID
+      senderID
+      recipientID
+      sender {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      recipient {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      notification {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const createNotification = /* GraphQL */ `
+  mutation CreateNotification(
+    $input: CreateNotificationInput!
+    $condition: ModelNotificationConditionInput
+  ) {
+    createNotification(input: $input, condition: $condition) {
+      id
+      body
+      data
+      ttl
+      messageSubtitle
+      sound
+      channel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      recipients {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const updateNotification = /* GraphQL */ `
+  mutation UpdateNotification(
+    $input: UpdateNotificationInput!
+    $condition: ModelNotificationConditionInput
+  ) {
+    updateNotification(input: $input, condition: $condition) {
+      id
+      body
+      data
+      ttl
+      messageSubtitle
+      sound
+      channel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      recipients {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const deleteNotification = /* GraphQL */ `
+  mutation DeleteNotification(
+    $input: DeleteNotificationInput!
+    $condition: ModelNotificationConditionInput
+  ) {
+    deleteNotification(input: $input, condition: $condition) {
+      id
+      body
+      data
+      ttl
+      messageSubtitle
+      sound
+      channel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      recipients {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;

@@ -23,6 +23,7 @@ export const syncPlans = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -66,6 +67,7 @@ export const getPlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -93,6 +95,14 @@ export const getPlan = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
       }
       arbitrations {
         items {
@@ -154,6 +164,7 @@ export const listPlans = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -230,6 +241,7 @@ export const syncPlanArbitrations = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -274,6 +286,7 @@ export const getPlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -295,6 +308,7 @@ export const getPlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -372,6 +386,7 @@ export const listPlanArbitrations = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -419,6 +434,7 @@ export const syncInvitees = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -455,6 +471,7 @@ export const getInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -514,6 +531,7 @@ export const listInvitees = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -650,6 +668,14 @@ export const syncUsers = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
@@ -685,6 +711,38 @@ export const getUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      notificationsSent {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      notificationsRecieved {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -722,6 +780,14 @@ export const listUsers = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
@@ -760,6 +826,7 @@ export const inviteeByPhoneNUmber = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -809,6 +876,7 @@ export const inviteesByPlan = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -868,6 +936,14 @@ export const usersByPhoneNumber = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
@@ -916,6 +992,358 @@ export const usersByName = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getNotificationFromTo = /* GraphQL */ `
+  query GetNotificationFromTo($id: ID!) {
+    getNotificationFromTo(id: $id) {
+      id
+      senderType
+      notificationID
+      senderID
+      recipientID
+      sender {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      recipient {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      notification {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const listNotificationFromTos = /* GraphQL */ `
+  query ListNotificationFromTos(
+    $filter: ModelNotificationFromToFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNotificationFromTos(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        senderType
+        notificationID
+        senderID
+        recipientID
+        sender {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        recipient {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notification {
+          id
+          body
+          data
+          ttl
+          messageSubtitle
+          sound
+          channel
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncNotificationFromTos = /* GraphQL */ `
+  query SyncNotificationFromTos(
+    $filter: ModelNotificationFromToFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncNotificationFromTos(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        senderType
+        notificationID
+        senderID
+        recipientID
+        sender {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        recipient {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notification {
+          id
+          body
+          data
+          ttl
+          messageSubtitle
+          sound
+          channel
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getNotification = /* GraphQL */ `
+  query GetNotification($id: ID!) {
+    getNotification(id: $id) {
+      id
+      body
+      data
+      ttl
+      messageSubtitle
+      sound
+      channel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      recipients {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const listNotifications = /* GraphQL */ `
+  query ListNotifications(
+    $filter: ModelNotificationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNotifications(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncNotifications = /* GraphQL */ `
+  query SyncNotifications(
+    $filter: ModelNotificationFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncNotifications(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
