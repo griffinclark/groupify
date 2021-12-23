@@ -184,9 +184,9 @@ const styles = StyleSheet.create({
     color: TEAL_0,
   },
   navbar: {
-    position: 'absolute',
-    bottom: 0,
-    alignSelf: 'center',
+    // position: 'absolute',
+    // bottom: 0,
+    // alignSelf: 'center',
   },
   feedContainer: {
     height: '118%',

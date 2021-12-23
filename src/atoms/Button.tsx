@@ -55,7 +55,7 @@ export const buttonStyles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 15,
     marginVertical: 10,

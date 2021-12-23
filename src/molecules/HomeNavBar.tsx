@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { TEAL_0, WHITE } from '../res/styles/Colors';
+import { GREY_1, TEAL_0, WHITE } from '../res/styles/Colors';
 import { User, Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
@@ -19,7 +19,7 @@ interface Props {
 
 export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPlans, navigation }: Props) => {
   return (
-    <View style={{ width: '100%', alignItems: 'center' }}>
+    <View style={styles.navbar}>
       <View style={[styles.nav, style]}>
         <TouchableOpacity
           style={{ width: '33%' }}
@@ -32,8 +32,11 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '33%' }}
+          // onPress={() => {
+          //   navigation.push('ActivitySelector', { currentUser: user });
+          // }}
           onPress={() => {
-            navigation.push('ActivitySelector', { currentUser: user });
+            navigation.navigate('SelectorMenu', '');
           }}
         >
           <CreatePlanIcon />
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    backgroundColor: TEAL_0,
+    backgroundColor: GREY_1,
   },
   text: {
     fontSize: 13,
@@ -71,5 +74,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: WHITE,
     textAlign: 'center',
+  },
+  navbar: {
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center',
+    width: '100%',
+    alignItems: 'center',
+    paddingBottom: 15, //TODO @Joni how high should this be?
   },
 });

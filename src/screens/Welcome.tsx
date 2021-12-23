@@ -30,7 +30,13 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
         <View style={{ marginTop: 20 }}>
           <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>Don&apos;t have an account?</AppText>
           <Button
-            buttonStyle={{ width: 335, backgroundColor: 'white', borderWidth: 2, borderColor: TEAL_0, borderRadius: 25 }}
+            buttonStyle={{
+              width: 335,
+              backgroundColor: 'white',
+              borderWidth: 2,
+              borderColor: TEAL_0,
+              borderRadius: 25,
+            }}
             textStyle={{ color: TEAL_0, backgroundColor: 'white', fontSize: 20 }}
             title={copy.signUpButtonTitle}
             onPress={() => navigation.navigate('CreateAccount', {})}
