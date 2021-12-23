@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 // import Slider from '@react-native-community/slider';
 import { Slider } from '@sharcoux/slider';
 import { AppText } from '../atoms/AtomsExports';
-import { TEAL_0, WHITE } from '../res/styles/Colors';
-import { GREY_4, WHITE } from './../res/styles/Colors';
+import { GREY_4, TEAL_0, WHITE } from './../res/styles/Colors';
+import { copy } from './../res/groupifyCopy';
 
 interface Props {
   distance: number;
@@ -33,7 +33,9 @@ export const ActivitySlider: React.FC<Props> = ({ distance, setDistance }: Props
             value={50}
           />
         </View>
-        <AppText style={styles.text}>{distance} mi</AppText>
+        <AppText style={styles.text}>
+          {distance} {copy.distanceMeasure}
+        </AppText>
       </View>
     </View>
   );

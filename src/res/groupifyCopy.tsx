@@ -95,5 +95,6 @@ export const copy = new LocalizedStrings({
     addFriendsButtonTitle: 'Add Friends',
     submitBugReportButtonTitle: 'Submit Bug Report',
     signUpButtonTitle: 'Sign Up',
+    distanceMeasure: 'mi',
   },
 });
