@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { WHITE, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL_0 } from '../res/styles/Colors';
 import { Button, Screen, AppText } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { getCurrentUser } from '../res/utilFunctions';
@@ -37,7 +37,7 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
   return (
     <Screen style={{ backgroundColor: WHITE }}>
       <View style={{ flex: 1, paddingHorizontal: 20 }}>
-        <AppText style={{ fontWeight: '330', fontSize: 30, color: TEAL }}>Import Contacts</AppText>
+        <AppText style={{ fontWeight: '330', fontSize: 30, color: TEAL_0 }}>Import Contacts</AppText>
 
         <View style={styles.flatListContainer}>
           <AppText style={{ fontSize: 20, paddingBottom: 20 }}>{createGreeting()}</AppText>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Qs from 'qs';
 import { StyleSheet, View, Image, FlatList, StyleProp, ViewStyle } from 'react-native';
-import { WHITE, YELLOW } from '../res/styles/Colors';
+import { GREY_4, WHITE, YELLOW } from '../res/styles/Colors';
 import { Button } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
@@ -81,7 +81,7 @@ export const PlaceCard: React.FC<Props> = (props: Props) => {
   const renderStars = () => {
     if (!props.rating) return null;
 
-    const arr = Array(5).fill('#c4c4c4');
+    const arr = Array(5).fill(GREY_4);
     const star = Math.round(props.rating);
     let i = 0;
     while (i < star) {

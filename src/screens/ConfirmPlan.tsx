@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Platform, KeyboardAvoidingView, FlatList, ActivityIndicator } from 'react-native';
 import { MeepForm, TwoButtonAlert, BottomButton, Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
-import { TEAL, GREY_8 } from '../res/styles/Colors';
+import { TEAL_0, GREY_8 } from '../res/styles/Colors';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RoutePropParams } from '../res/root-navigation';
 import { Event, Contact } from '../res/dataModels';
@@ -324,7 +324,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
 
 const styles = StyleSheet.create({
   mapText: {
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 16,
     margin: 20,
   },
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
   },
   loading: {
     alignItems: 'center',
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     height: 55,
     justifyContent: 'center',
     width: '100%',
@@ -397,6 +397,6 @@ const styles = StyleSheet.create({
   title: {
     paddingLeft: 15,
     fontSize: 30,
-    color: TEAL,
+    color: TEAL_0,
   },
 });

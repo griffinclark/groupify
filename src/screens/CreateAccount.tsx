@@ -6,7 +6,7 @@ import { Auth } from 'aws-amplify';
 import { Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { WHITE, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL_0 } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -283,7 +283,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
 const styles = StyleSheet.create({
   title: {
     marginLeft: 15,
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 30,
     fontWeight: '400',
   },

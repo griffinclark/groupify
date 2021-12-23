@@ -4,7 +4,7 @@ import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { BackChevronIcon, MapLinkIcon } from '../../assets/Icons/IconExports';
 import Constants from 'expo-constants';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
 import { Plan } from '../models';
@@ -186,13 +186,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   mapText: {
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 16,
     marginLeft: 10,
   },
   title: {
     paddingLeft: 15,
     fontSize: 30,
-    color: TEAL,
+    color: TEAL_0,
   },
 });

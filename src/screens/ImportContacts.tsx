@@ -3,7 +3,7 @@ import { StyleSheet, View, ActivityIndicator, Linking, Platform, Keyboard } from
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
-import { WHITE, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL_0 } from '../res/styles/Colors';
 import { deleteImportedContactFromID, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
 import { Button, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
@@ -120,7 +120,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
             <BackChevronIcon onPress={() => navigation.navigate(route.params.last)} />
-            <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL, marginLeft: 15 }}>
+            <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL_0, marginLeft: 15 }}>
               {copy.selectContactsTitle}
             </AppText>
           </View>
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   skipStyle: {
-    color: TEAL,
+    color: TEAL_0,
     fontWeight: '900',
     fontSize: 20,
   },

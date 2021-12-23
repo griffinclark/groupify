@@ -1,7 +1,7 @@
 import React from 'react';
 import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { GREY_3, GREY_4, WHITE, TEAL } from '../res/styles/Colors';
+import { GREY_3, GREY_4, WHITE, TEAL_0 } from '../res/styles/Colors';
 import { AppText } from './AppText';
 
 interface Props {
@@ -68,7 +68,7 @@ export const buttonStyles = StyleSheet.create({
     borderWidth: 0,
   },
   enabledButton: {
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     color: WHITE,
   },
   disabledButton: {

@@ -7,7 +7,7 @@ import { AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/Atoms
 import { API, Auth } from 'aws-amplify';
 import { User } from '../models';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
-import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
+import { GRAY_LIGHT, TEAL_0 } from '../res/styles/Colors';
 import Constants from 'expo-constants';
 import * as queries from '../graphql/queries';
 import { copy } from '../res/groupifyCopy';
@@ -272,18 +272,18 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   menuItemSelectedContainer: {
-    borderBottomColor: TEAL,
+    borderBottomColor: TEAL_0,
   },
   menuItemNotSelectedContainer: {
     // borderBottomColor: '#E5E5E5',
-    borderBottomColor: TEAL,
+    borderBottomColor: TEAL_0,
   },
   menuItem: {
     fontSize: 16,
     fontWeight: '700',
   },
   menuItemSelected: {
-    color: TEAL,
+    color: TEAL_0,
   },
   menuItemNotSelected: {
     color: '#8B8B8B',

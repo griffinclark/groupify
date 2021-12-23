@@ -19,7 +19,7 @@ import {
   View,
   SafeAreaView,
 } from 'react-native';
-import { WHITE, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL_0 } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   textTeal: {
-    color: TEAL,
+    color: TEAL_0,
     fontWeight: '500',
     fontSize: 20,
   },

@@ -4,12 +4,13 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { ActivityImage } from '../molecules/ActivityImage';
 import { FavoriteIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AtomsExports';
-import { TEAL, YELLOW } from '../res/styles/Colors';
+import { GREY_3, TEAL_0, WHITE, YELLOW } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 // import * as SecureStore from 'expo-secure-store';
 import { MapIcon } from '../../assets/Icons/IconExports';
 import { addFavorite, deleteFavorite } from '../res/utilFavorites';
 import { GoogleLocation } from '../res/dataModels';
+import { GREY_4 } from './../res/styles/Colors';
 
 interface Props {
   handleCreate: (loc: GoogleLocation) => void;
@@ -77,7 +78,7 @@ export const ActivityCard: React.FC<Props> = ({
   const renderStars = () => {
     if (!location.rating) return null;
 
-    const arr = Array(5).fill('#c4c4c4');
+    const arr = Array(5).fill(GREY_3);
     const star = Math.round(location.rating);
     let i = 0;
     while (i < star) {
@@ -167,7 +168,7 @@ export const ActivityCard: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: WHITE,
     minHeight: 203,
     paddingTop: 18,
     paddingHorizontal: 13,
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     borderRadius: 5,
     justifyContent: 'center',
     //marginLeft: 16,
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
     width: 150,
   },
   buttonText: {
-    color: '#fff',
+    color: WHITE,
     fontSize: 20,
     fontWeight: '900',
   },
@@ -228,13 +229,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     borderWidth: 2,
-    borderColor: TEAL,
+    borderColor: TEAL_0,
     height: 49,
     justifyContent: 'center',
     width: 150,
   },
   locationButtonText: {
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 20,
     fontWeight: '900',
   },

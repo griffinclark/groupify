@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
-import { background, GREY_0, TEAL } from './../res/styles/Colors';
+import { background, GREY_0, TEAL_0 } from './../res/styles/Colors';
 // eslint-disable-next-line unused-imports/no-unused-imports-ts
 import { getCurrentUser, loadInviteeStatus } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   greeting: {
-    color: TEAL,
+    color: TEAL_0,
   },
   navbar: {
     position: 'absolute',

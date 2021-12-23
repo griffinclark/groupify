@@ -5,7 +5,7 @@ import { Keyboard, KeyboardAvoidingView, Platform, View, StyleSheet } from 'reac
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { WHITE, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL_0 } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
 import { AppText } from '../atoms/AppText';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
@@ -144,7 +144,7 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
 const styles = StyleSheet.create({
   title: {
     marginLeft: 15,
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 30,
     fontWeight: '400',
     paddingBottom: 20,

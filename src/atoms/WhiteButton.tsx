@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 
 interface Props {
   onPress: () => void;
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     width: 182,
     height: 49,
     borderWidth: 2,
-    borderColor: TEAL,
+    borderColor: TEAL_0,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 40,
@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: '400',
-    color: TEAL,
+    color: TEAL_0,
   },
 });

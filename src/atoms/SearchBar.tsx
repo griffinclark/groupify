@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
+import { GREY_3, GREY_4 } from '../res/styles/Colors';
 
 interface Props {
   onInputChange: (input: string) => void;
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderColor: '#C5C5C5',
+    borderColor: GREY_4,
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
@@ -47,6 +48,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 10,
     marginLeft: 5,
-    color: '#424242',
+    color: GREY_3,
   },
 });

@@ -4,7 +4,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Constants from 'expo-constants';
 import { ActivityCard } from '../molecules/ActivityCard';
 import { MapIcon } from '../../assets/Icons/IconExports';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
 import { getFavorites } from '../res/utilFavorites';
 import { useIsFocused } from '@react-navigation/native';
 import { GoogleLocation } from './../res/dataModels';
@@ -116,8 +116,8 @@ const styles = StyleSheet.create({
     width: 18,
   },
   userMarker: {
-    backgroundColor: TEAL,
-    borderColor: '#fff',
+    backgroundColor: TEAL_0,
+    borderColor: WHITE,
     borderRadius: 12.5,
     borderWidth: 3,
     height: 25,

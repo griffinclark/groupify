@@ -4,7 +4,8 @@ import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Contact } from '../res/dataModels';
 import { AppText } from '../atoms/AppText';
-import { GREY_8 } from '../res/styles/Colors';
+import { GOLD_0, GREY_4, GREY_8 } from '../res/styles/Colors';
+import { TEAL_0 } from './../res/styles/Colors';
 
 interface Props {
   isSelected?: boolean;
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
   bubble: {
     width: 60,
     height: 60,
-    backgroundColor: '#C4C4C4',
+    backgroundColor: GREY_4,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
@@ -108,13 +109,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderWidth: 2,
-    borderColor: '#BE8C2C',
+    borderColor: GOLD_0,
     borderRadius: 25,
   },
   buttonSelected: {
     width: 40,
     height: 40,
-    backgroundColor: '#47A9A5',
+    backgroundColor: TEAL_0,
     borderRadius: 25,
     alignContent: 'center',
     alignItems: 'center',

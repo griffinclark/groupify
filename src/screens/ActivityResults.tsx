@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 import { RoutePropParams } from '../res/root-navigation';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AppText';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 import { ActivityMap, ActivityList } from '../organisms/OrganismsExports';
 import { getCurrentUser } from './../res/utilFunctions';
 import { ActivitySlider } from '../molecules/MoleculesExports';
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   navbarText: {
     fontSize: 30,
     fontWeight: '700',
-    color: TEAL,
+    color: TEAL_0,
     marginTop: -4,
     marginLeft: 18,
   },
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     alignItems: 'center',
-    borderBottomColor: TEAL,
+    borderBottomColor: TEAL_0,
     borderBottomWidth: 1.5,
     flex: 1,
     paddingBottom: 14,
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   activeText: {
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 16,
     fontWeight: '700',
   },

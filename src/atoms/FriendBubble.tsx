@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { User } from '../models';
+import { GOLD_0 } from '../res/styles/Colors';
 import { AppText } from './AppText';
+import { TEAL_0 } from './../res/styles/Colors';
 
 interface Props {
   friend: User;
@@ -50,13 +52,13 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   sphere: {
-    backgroundColor: '#BE8C2C',
+    backgroundColor: GOLD_0,
     width: 70,
     height: 70,
     borderRadius: 50,
   },
   sphereSelected: {
-    backgroundColor: '#32A59F',
+    backgroundColor: TEAL_0,
     width: 70,
     height: 70,
     borderRadius: 50,

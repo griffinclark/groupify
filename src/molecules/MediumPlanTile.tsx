@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet, GestureResponderEvent, Image } from 'react-native';
-import { GREY_1, WHITE, POST_SPACING } from '../res/styles/Colors';
+import { GREY_1, WHITE, POST_SPACING, BLACK } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { formatTime, formatDate, loadPhoto } from '../res/utilFunctions';
 import { AppText } from '../atoms/AppText';
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     marginTop: POST_SPACING,
     marginHorizontal: POST_SPACING,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: BLACK,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.25,
     shadowRadius: 2,

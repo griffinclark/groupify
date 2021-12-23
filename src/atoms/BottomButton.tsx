@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { GREY_4, TEAL, WHITE } from '../res/styles/Colors';
+import { GREY_4, TEAL_0, WHITE } from '../res/styles/Colors';
 import { AppText } from './AppText';
 
 interface Props {
@@ -27,7 +27,7 @@ export const BottomButton: React.FC<Props> = ({ onPress, title, disabled = false
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     height: 55,
     justifyContent: 'center',
     width: '100%',

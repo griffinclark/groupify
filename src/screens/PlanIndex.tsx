@@ -12,7 +12,7 @@ import {
   sortPlansByDate,
 } from './../res/utilFunctions';
 import { User, Plan, Invitee } from '../models';
-import { TEAL, WHITE } from '../res/styles/Colors';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
 import { ViewPlanTile } from '../organisms/ViewPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   },
   tabContainerSelected: {
     alignItems: 'center',
-    borderBottomColor: TEAL,
+    borderBottomColor: TEAL_0,
     borderBottomWidth: 3,
     marginTop: 20,
     paddingBottom: 14,
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   tabTextSelected: {
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 16,
     fontWeight: '700',
   },
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
   },
   text: {
     fontSize: 13,

@@ -1,6 +1,6 @@
 import React, { ReactChild, useState } from 'react';
 import { StyleSheet, View, Platform, Alert } from 'react-native';
-import { BLACK } from '../res/styles/Colors';
+import { BLACK, GREY_4 } from '../res/styles/Colors';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   },
   dateTimePicker: {
     borderRadius: 5,
-    borderColor: '#C5C5C5',
+    borderColor: GREY_4,
     // borderWidth: 1,
     marginVertical: 10,
     height: 43,

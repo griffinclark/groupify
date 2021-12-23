@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
-import { GREY_0, TEAL } from './../res/styles/Colors';
+import { GREY_0, TEAL_0 } from './../res/styles/Colors';
 import { convertDateStringToDate, getCurrentUser, isFuturePlan, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
@@ -110,7 +110,7 @@ export const InvitedPlans: React.FC<Props> = ({ navigation }: Props) => {
         </View>
         <AppText style={[globalStyles.superTitle, styles.greeting]}>{copy.yourInvitees}</AppText>
         <View style={styles.icon}>
-          <Icon name="refresh" type="font-awesome" size={30} color={TEAL} onPress={() => loadPlans()} />
+          <Icon name="refresh" type="font-awesome" size={30} color={TEAL_0} onPress={() => loadPlans()} />
         </View>
       </View>
       <View style={styles.feedContainer}>
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   greeting: {
-    color: TEAL,
+    color: TEAL_0,
     marginTop: 10,
   },
   icon: {
@@ -177,6 +177,6 @@ const styles = StyleSheet.create({
   selector: {
     marginLeft: 15,
     textDecorationLine: 'underline',
-    color: TEAL,
+    color: TEAL_0,
   },
 });

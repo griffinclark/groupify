@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Plan } from '../models';
 import { MiniPlanTile } from '../molecules/MiniPlanTile';
-import { background, GREY_4, TEAL } from '../res/styles/Colors';
+import { background, GREY_4, TEAL_0 } from '../res/styles/Colors';
 import { loadInviteeStatus } from '../res/utilFunctions';
 import { ViewAll } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
@@ -82,24 +82,24 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
     <View style={styles.container}>
       <View style={styles.selector}>
         <TouchableOpacity
-          style={[styles.selectorItem, { borderBottomColor: pendingSelected ? TEAL : background }]}
+          style={[styles.selectorItem, { borderBottomColor: pendingSelected ? TEAL_0 : background }]}
           onPress={() => {
             setPendingSelected(true);
             setAcceptedSelected(false);
           }}
         >
-          <AppText style={[styles.selectorText, { color: pendingSelected ? TEAL : GREY_4 }]}>
+          <AppText style={[styles.selectorText, { color: pendingSelected ? TEAL_0 : GREY_4 }]}>
             {copy.pendingTitle}
           </AppText>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.selectorItem, { borderBottomColor: acceptedSelected ? TEAL : background }]}
+          style={[styles.selectorItem, { borderBottomColor: acceptedSelected ? TEAL_0 : background }]}
           onPress={() => {
             setAcceptedSelected(true);
             setPendingSelected(false);
           }}
         >
-          <AppText style={[styles.selectorText, { color: acceptedSelected ? TEAL : GREY_4 }]}>
+          <AppText style={[styles.selectorText, { color: acceptedSelected ? TEAL_0 : GREY_4 }]}>
             {copy.acceptedTitle}
           </AppText>
         </TouchableOpacity>
@@ -111,7 +111,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
           <View style={{ padding: 30 }}>
             <AppText style={{ textAlign: 'center', fontSize: 20 }}>{copy.noPendingPlans}</AppText>
             <TouchableOpacity onPress={() => navigation.push('PlanCreate', {})}>
-              <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL, marginTop: 30 }}>
+              <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL_0, marginTop: 30 }}>
                 {copy.youCanCreateAPlanTitle}
               </AppText>
             </TouchableOpacity>

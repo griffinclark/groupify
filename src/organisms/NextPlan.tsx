@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Image } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Plan } from '../models';
-import { GREY_0, TEAL } from '../res/styles/Colors';
+import { BLACK, GREY_0, TEAL_0 } from '../res/styles/Colors';
 import { formatDayOfWeekDate, formatTime, loadPhoto } from '../res/utilFunctions';
 import { AppText } from '../atoms/AppText';
 import { InviteePreviewTile } from '../molecules/InviteePreviewTile';
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: BLACK,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   dateContainer: {
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     padding: 10,
     borderRadius: 10,
     alignSelf: 'flex-end',

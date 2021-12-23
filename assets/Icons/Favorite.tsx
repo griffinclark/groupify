@@ -1,6 +1,8 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native';
+import { GREY_8, YELLOW_0 as YELLOW } from '../../src/res/styles/Colors';
+import { GREY_4, TEAL_0 } from './../../src/res/styles/Colors';
 
 interface Props {
   favorited: boolean;
@@ -8,8 +10,8 @@ interface Props {
 }
 
 export const FavoriteIcon: React.FC<Props> = ({ favorited, onPress }: Props) => {
-  const starColor = favorited ? '#D9B139' : '#C4C4C4';
-  const ringColor = favorited ? '#31A59F' : '#616060';
+  const starColor = favorited ? YELLOW : GREY_4;
+  const ringColor = favorited ? TEAL_0 : GREY_8;
   return (
     <TouchableOpacity onPress={onPress}>
       <Svg style={{ alignSelf: 'center' }} width="35" height="35" viewBox="0 0 35 35" fill="none">

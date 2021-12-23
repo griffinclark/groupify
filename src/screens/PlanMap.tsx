@@ -11,7 +11,7 @@ import Constants from 'expo-constants';
 
 import { AppText } from '../atoms/AtomsExports';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
-import { TEAL, WHITE } from '../res/styles/Colors';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
 
 interface Props {
   navigation: {
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 25,
     right: 25,
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     width: 75,
     height: 35,
     alignItems: 'center',
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
   mapPopupText: {
     fontWeight: '400',
     fontSize: 24,
-    color: TEAL,
+    color: TEAL_0,
     width: '80%',
     alignSelf: 'center',
     textAlign: 'center',

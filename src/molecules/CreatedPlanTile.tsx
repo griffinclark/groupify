@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { GREY_1, WHITE } from '../res/styles/Colors';
+import { BLACK, GREY_1, WHITE } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
 import { AppText } from '../atoms/AppText';
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginRight: 30,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: BLACK,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.25,
     shadowRadius: 2,

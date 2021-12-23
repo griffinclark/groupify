@@ -5,8 +5,9 @@ import { DownArrow, UpArrow } from '../../assets/Icons/IconExports';
 import { PlanImageTile, WhiteButton, AppText } from '../atoms/AtomsExports';
 import { Plan } from '../models';
 import { InviteePreviewTile, PlanDetailsTile, Details } from '../molecules/MoleculesExports';
-import { background, TEAL } from '../res/styles/Colors';
+import { background, BLACK, GREY_6, TEAL_0 } from '../res/styles/Colors';
 import { loadInviteeStatus } from '../res/utilFunctions';
+import { GREY_8 } from './../res/styles/Colors';
 
 interface Props {
   plan: Plan;
@@ -67,7 +68,7 @@ export const ViewPlanTile: React.FC<Props> = ({ plan, navigation, modal, reload 
           style={{
             alignItems: 'center',
             borderBottomWidth: userStatus != 'PENDING' && !extendedDetails ? 0 : 1,
-            borderBottomColor: '#E1E1E1',
+            borderBottomColor: GREY_6,
             paddingBottom: 10,
           }}
         >
@@ -79,7 +80,7 @@ export const ViewPlanTile: React.FC<Props> = ({ plan, navigation, modal, reload 
             onPress={() => navigation.navigate('PlanDetails', { plan: plan, step: 'ViewPlans' })}
             style={{ alignSelf: 'center', paddingTop: 10 }}
           >
-            <AppText style={{ fontSize: 20, color: TEAL }}>View Full Plan</AppText>
+            <AppText style={{ fontSize: 20, color: TEAL_0 }}>View Full Plan</AppText>
           </TouchableOpacity>
         )}
         {userStatus === 'PENDING' && (
@@ -92,7 +93,7 @@ export const ViewPlanTile: React.FC<Props> = ({ plan, navigation, modal, reload 
               text={'Decline'}
             />
             <WhiteButton
-              style={[styles.button, { backgroundColor: TEAL }]}
+              style={[styles.button, { backgroundColor: TEAL_0 }]}
               textStyles={{ color: 'white' }}
               onPress={() => {
                 modal('accept', plan);
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 5,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: BLACK,
     shadowOffset: { width: 0, height: 7 },
     shadowOpacity: 0.1,
     shadowRadius: 10,

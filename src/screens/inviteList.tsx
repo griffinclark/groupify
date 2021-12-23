@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image, FlatList } from 'react-native';
 import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
-import { TEAL, WHITE, GREY_0, GREY_4, GOLD } from '../res/styles/Colors';
+import { TEAL_0, WHITE, GREY_0, GREY_4, GOLD_0 } from '../res/styles/Colors';
 import { Plan, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 
@@ -53,9 +53,9 @@ export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   const renderInvitee = ({ item }: { item: Invitee }) => {
-    let backgroundColor = GOLD;
+    let backgroundColor = GOLD_0;
     if (item.status === Status.ACCEPTED) {
-      backgroundColor = TEAL;
+      backgroundColor = TEAL_0;
     } else if (item.status === Status.DECLINED) {
       backgroundColor = GREY_4;
     }
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '400',
-    color: TEAL,
+    color: TEAL_0,
     flexWrap: 'wrap',
     maxWidth: 250,
     textAlign: 'right',
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   sphere: {
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     width: 40,
     height: 40,
     borderRadius: 40,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     color: GREY_0,
     borderWidth: 2,
-    borderColor: TEAL,
+    borderColor: TEAL_0,
   },
   status: {
     width: 120,

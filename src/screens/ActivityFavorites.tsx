@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import Constants from 'expo-constants';
 import { AppText } from '../atoms/AtomsExports';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 import { NoResults } from '../molecules/MoleculesExports';
 import { ActivityList } from '../organisms/ActivityList';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   navbarText: {
     fontSize: 30,
     fontWeight: '700',
-    color: TEAL,
+    color: TEAL_0,
     marginTop: -4,
     marginLeft: 18,
   },

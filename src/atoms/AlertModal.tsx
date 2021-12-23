@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import { TEAL, WHITE } from '../res/styles/Colors';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AppText } from './AppText';
 
@@ -36,12 +36,12 @@ export const AlertModal: React.FC<Props> = ({
         <View style={styles.buttonContainer}>
           {button2Text ? (
             <TouchableOpacity style={styles.button} onPress={onButton2Press}>
-              <AppText maxFontSizeMultiplier={1} style={[styles.buttonText, { color: TEAL }]}>
+              <AppText maxFontSizeMultiplier={1} style={[styles.buttonText, { color: TEAL_0 }]}>
                 {button2Text}
               </AppText>
             </TouchableOpacity>
           ) : null}
-          <TouchableOpacity style={[styles.button, { backgroundColor: TEAL }]} onPress={onButton1Press}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: TEAL_0 }]} onPress={onButton1Press}>
             <AppText maxFontSizeMultiplier={1} style={[styles.buttonText, { color: 'white' }]}>
               {button1Text}
             </AppText>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 122,
     height: 43,
-    borderColor: TEAL,
+    borderColor: TEAL_0,
     alignItems: 'center',
     justifyContent: 'center',
   },

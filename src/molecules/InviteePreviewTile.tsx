@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { AppText } from '../atoms/AtomsExports';
 import { Invitee, Plan } from '../models';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 
 interface Props {
   plan: Plan;
@@ -36,7 +36,7 @@ export const InviteePreviewTile: React.FC<Props> = ({ plan, reload }: Props) => 
 
   const renderInvitee = ({ item }: { item: Invitee }) => {
     return (
-      <View style={[styles.sphere, { backgroundColor: TEAL }]}>
+      <View style={[styles.sphere, { backgroundColor: TEAL_0 }]}>
         <AppText style={styles.initial}>{item.name.slice(0, 1)}</AppText>
       </View>
     );
@@ -76,7 +76,7 @@ export const InviteePreviewTile: React.FC<Props> = ({ plan, reload }: Props) => 
 
 const styles = StyleSheet.create({
   sphere: {
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     width: 40,
     height: 40,
     borderRadius: 40,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '400',
-    color: TEAL,
+    color: TEAL_0,
     flexWrap: 'wrap',
     maxWidth: 250,
     textAlign: 'left',

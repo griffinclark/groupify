@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, ScrollView, StyleSheet, View } from 'react-native';
 import { AppText } from '../atoms/AtomsExports';
+import { WHITE } from '../res/styles/Colors';
 
 interface Props {
   modal: boolean;
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: WHITE,
     borderRadius: 10,
     height: 465,
     paddingTop: 30,

@@ -3,6 +3,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { StyleSheet, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import { WHITE } from '../res/styles/Colors';
 import { AppText } from './AppText';
+import { TEAL_0 } from './../res/styles/Colors';
 
 interface Props {
   onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;
@@ -18,7 +19,7 @@ export const NavButton: React.FC<Props> = ({ onPress, title }: Props) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#32A59F',
+    backgroundColor: TEAL_0,
     borderRadius: 20,
     paddingHorizontal: 15,
     paddingVertical: 10,

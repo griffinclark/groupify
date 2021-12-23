@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { TEAL, WHITE } from '../res/styles/Colors';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
 import { User, Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
   },
   text: {
     fontSize: 13,

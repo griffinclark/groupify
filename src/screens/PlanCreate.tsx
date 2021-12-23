@@ -6,7 +6,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
 import { BackChevronIcon, MapLinkIcon } from '../../assets/Icons/IconExports';
 import Constants from 'expo-constants';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
 import { copy } from '../res/groupifyCopy';
@@ -208,13 +208,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   mapText: {
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 16,
     marginLeft: 10,
   },
   title: {
     paddingLeft: 15,
     fontSize: 30,
-    color: TEAL,
+    color: TEAL_0,
   },
 });

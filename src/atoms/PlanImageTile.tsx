@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Plan } from '../models';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 import { formatDayOfWeekDate, formatTime, loadPhoto } from '../res/utilFunctions';
 import { AppText } from './AppText';
 import { Image } from 'react-native-elements';
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   imageDetailContainer: {
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     padding: 5,
     margin: 4,
     borderRadius: 5,

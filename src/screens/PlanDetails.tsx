@@ -2,7 +2,7 @@ import { DataStore, Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, ScrollView, RefreshControl } from 'react-native';
 import { Screen, AppText, PlanImageTile } from '../atoms/AtomsExports';
-import { TEAL, GRAY_LIGHT } from '../res/styles/Colors';
+import { TEAL_0, GRAY_LIGHT } from '../res/styles/Colors';
 import { Plan, Invitee, Status } from '../models';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { PlanDetailsTile, Details } from '../molecules/MoleculesExports';
@@ -66,7 +66,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   const renderInvitee = ({ item }: { item: Invitee }) => {
     let backgroundColor = '#969393';
     if (item.status === Status.ACCEPTED) {
-      backgroundColor = TEAL;
+      backgroundColor = TEAL_0;
     } else if (item.status === Status.DECLINED) {
       backgroundColor = '#969393';
     }
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   title: {
     paddingLeft: 15,
     fontSize: 30,
-    color: TEAL,
+    color: TEAL_0,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -196,10 +196,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   active: {
-    borderBottomColor: TEAL,
+    borderBottomColor: TEAL_0,
   },
   activeText: {
-    color: TEAL,
+    color: TEAL_0,
   },
   inactive: {
     borderBottomColor: '#E5E5E5',
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     width: 182,
     height: 49,
     borderWidth: 2,
-    borderColor: TEAL,
+    borderColor: TEAL_0,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 40,
