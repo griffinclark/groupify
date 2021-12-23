@@ -75,6 +75,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
               console.log('error signing out...', err);
             }
           }}
+          tvParallaxProperties={undefined}
         />
       </View>
       <View style={styles.bodyContainer}>
@@ -86,7 +87,7 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
         >
           <View style={styles.selector}>
             <AppText style={styles.planTitle}>Invites/Plans</AppText>
-            <Icon name="chevron-forward-outline" size={30} type="ionicon" />
+            <Icon name="chevron-forward-outline" size={30} type="ionicon" tvParallaxProperties={undefined} />
           </View>
           {currentUserPlan ? (
             <View style={styles.plan}>
