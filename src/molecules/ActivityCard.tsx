@@ -4,7 +4,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { ActivityImage } from '../molecules/ActivityImage';
 import { FavoriteIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AtomsExports';
-import { GREY_3, TEAL_0, WHITE, YELLOW } from '../res/styles/Colors';
+import { GOLD_0, GREY_3, TEAL_0, WHITE, YELLOW } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 // import * as SecureStore from 'expo-secure-store';
 import { MapIcon } from '../../assets/Icons/IconExports';
@@ -20,6 +20,7 @@ interface Props {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
+  onPress: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleRegion?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,6 +46,7 @@ export const ActivityCard: React.FC<Props> = ({
   image,
   setTrigger,
   trigger,
+  onPress,
 }: Props) => {
   if (!location.geometry) return null;
   console.log(location.formatted_address);
@@ -78,11 +80,11 @@ export const ActivityCard: React.FC<Props> = ({
   const renderStars = () => {
     if (!location.rating) return null;
 
-    const arr = Array(5).fill(GREY_3);
+    const arr = Array(5).fill(GREY_4);
     const star = Math.round(location.rating);
     let i = 0;
     while (i < star) {
-      arr[i] = YELLOW;
+      arr[i] = GOLD_0;
       i++;
     }
 
@@ -108,35 +110,11 @@ export const ActivityCard: React.FC<Props> = ({
   };
 
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={onPress}>
       <View style={styles.leftCol}>
-        {location.photos ? (
-          <ActivityImage referenceId={location.photos[0].photo_reference} width={128} height={115} />
-        ) : (
-          <MapView
-            provider={PROVIDER_GOOGLE}
-            region={{
-              latitude: location.geometry.location.lat + 0.0005,
-              longitude: location.geometry.location.lng,
-              latitudeDelta: 0.002,
-              longitudeDelta: 0.002,
-            }}
-            style={styles.map}
-            zoomEnabled={false}
-            zoomTapEnabled={false}
-            rotateEnabled={false}
-            scrollEnabled={false}
-          >
-            <Marker
-              coordinate={{
-                latitude: location.geometry.location.lat,
-                longitude: location.geometry.location.lng,
-              }}
-            >
-              <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
-            </Marker>
-          </MapView>
-        )}
+        <View style={styles.imageContainer}>
+          <ActivityImage referenceId={location.photos[0].photo_reference} width={89} height={89} />
+        </View>
       </View>
       <View style={styles.rightCol}>
         <AppText style={styles.rating}>
@@ -145,7 +123,7 @@ export const ActivityCard: React.FC<Props> = ({
         <AppText style={styles.name}>{location.name}</AppText>
         {formatAddress()}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 /*
@@ -179,19 +157,15 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     alignItems: 'flex-start',
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
-  leftCol: {},
+  leftCol: {
+    paddingRight: 10,
+  },
   rightCol: {},
 
   cardContent: {
     flex: 1,
     marginRight: 8,
-  },
-  cardTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
   },
   name: {
     fontSize: 20,
@@ -210,11 +184,6 @@ const styles = StyleSheet.create({
     height: 115,
     marginLeft: 19,
   },
-  cardBottom: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
   cardBottomFav: {
     justifyContent: 'space-between',
   },
@@ -232,18 +201,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '900',
   },
-  locationButton: {
-    alignItems: 'center',
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: TEAL_0,
-    height: 49,
-    justifyContent: 'center',
-    width: 150,
-  },
   locationButtonText: {
     color: TEAL_0,
     fontSize: 20,
     fontWeight: '900',
+  },
+  locationImage: {
+    height: 89,
+    width: 89,
+  },
+  imageContainer: {
+    paddingBottom: 10,
   },
 });

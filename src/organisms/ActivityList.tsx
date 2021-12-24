@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityCard } from '../molecules/MoleculesExports';
 import { GoogleLocation } from '../res/dataModels';
+import { GREY_4 } from '../res/styles/Colors';
 import { getFavorites } from '../res/utilFavorites';
 
 export interface Props {
@@ -11,6 +12,7 @@ export interface Props {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
+  onPress: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setRegion?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,6 +34,7 @@ export const ActivityList: React.FC<Props> = ({
   image,
   trigger,
   setTrigger,
+  onPress,
 }: Props) => {
   const [favoritesArr, setFavoritesArr] = useState([]);
 
@@ -80,6 +83,7 @@ export const ActivityList: React.FC<Props> = ({
             image={image}
             trigger={trigger}
             setTrigger={setTrigger}
+            onPress={onPress}
           />
         )}
         keyExtractor={(item) => item.place_id}
@@ -91,7 +95,7 @@ export const ActivityList: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   separator: {
-    backgroundColor: 'rgba(0,0,0,.1)',
-    height: 1,
+    backgroundColor: GREY_4,
+    height: 2,
   },
 });

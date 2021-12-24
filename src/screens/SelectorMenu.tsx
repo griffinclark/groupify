@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { Screen } from '../atoms/Screen';
-import { GOLD_0, GREY_1, GREY_6, WHITE } from '../res/styles/Colors';
+import { GOLD_0, GREY_1, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
 import { AppText } from '../atoms/AppText';
 import { HomeNavBar } from '../molecules/HomeNavBar';
 import { Button } from '../atoms/Button';
 import { SearchBar } from '../atoms/SearchBar';
-import { ActivityList } from '../organisms/ActivityList';
+import { ActivityList, activityListStyles } from '../organisms/ActivityList';
 import { getCurrentUser } from '../res/utilFunctions';
 import { GoogleLocation } from '../res/dataModels';
 import * as Location from 'expo-location';
@@ -122,10 +122,10 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route, handleActivit
       'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
       `location=${userLocation.latitude},${userLocation.longitude}` +
       `&radius=${5000}` +
-      `&query=${'coffee'}` +
+      `&query=${'food'}` +
       `&key=${GOOGLE_PLACES_API_KEY}`;
     const response = await fetch(search);
-    // TODO make this a more interesting query and sort results by locationF
+    // TODO make this query more interetesting and run it on app load
     const detail = await response.json();
     setLocations(detail.results);
     console.log('locations set,');
@@ -169,8 +169,21 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route, handleActivit
           </View>
         ))}
       </View>
+      <View
+        style={{
+          backgroundColor: GREY_4,
+          height: 2,
+        }}
+      />
       <View style={styles.activitySuggestions}>
-        <ActivityList navigation={navigation} handleCreate={handleCreate} locations={locations} />
+        <ActivityList
+          navigation={navigation}
+          handleCreate={handleCreate}
+          locations={locations}
+          onPress={() => {
+            console.log('pressed');
+          }}
+        />
       </View>
       <HomeNavBar invitedPlans={[]} userPlans={[]} navigation={navigation} />
     </Screen>
