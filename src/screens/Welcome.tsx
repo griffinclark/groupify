@@ -1,6 +1,7 @@
 import React from 'react';
 import { ImageBackground, View } from 'react-native';
 import { AppText } from '../atoms/AppText';
+import { BottomButton } from '../atoms/BottomButton';
 import { Button } from '../atoms/Button';
 import { copy } from '../res/groupifyCopy';
 import { TEAL_0 } from '../res/styles/Colors';

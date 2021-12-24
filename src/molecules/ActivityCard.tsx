@@ -109,43 +109,53 @@ export const ActivityCard: React.FC<Props> = ({
 
   return (
     <View style={styles.card}>
-      <View style={styles.cardContent}>
+      <View style={styles.leftCol}>
+        {location.photos ? (
+          <ActivityImage referenceId={location.photos[0].photo_reference} width={128} height={115} />
+        ) : (
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            region={{
+              latitude: location.geometry.location.lat + 0.0005,
+              longitude: location.geometry.location.lng,
+              latitudeDelta: 0.002,
+              longitudeDelta: 0.002,
+            }}
+            style={styles.map}
+            zoomEnabled={false}
+            zoomTapEnabled={false}
+            rotateEnabled={false}
+            scrollEnabled={false}
+          >
+            <Marker
+              coordinate={{
+                latitude: location.geometry.location.lat,
+                longitude: location.geometry.location.lng,
+              }}
+            >
+              <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
+            </Marker>
+          </MapView>
+        )}
+      </View>
+      <View style={styles.rightCol}>
+        <AppText style={styles.rating}>
+          {location.rating} {renderStars()} ({location.user_ratings_total})
+        </AppText>
+        <AppText style={styles.name}>{location.name}</AppText>
+        {formatAddress()}
+      </View>
+    </View>
+  );
+};
+/*
+
+
+<View style={styles.cardContent}>
         <View style={styles.cardTop}>
           <View style={{ width: 147 }}>
-            <AppText style={styles.name}>{location.name}</AppText>
-            <AppText style={styles.rating}>
-              {location.rating} {renderStars()} ({location.user_ratings_total})
-            </AppText>
             <AppText>{formatMoney()}</AppText>
-            {formatAddress()}
           </View>
-          {location.photos ? (
-            <ActivityImage referenceId={location.photos[0].photo_reference} width={128} height={115} />
-          ) : (
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              region={{
-                latitude: location.geometry.location.lat + 0.0005,
-                longitude: location.geometry.location.lng,
-                latitudeDelta: 0.002,
-                longitudeDelta: 0.002,
-              }}
-              style={styles.map}
-              zoomEnabled={false}
-              zoomTapEnabled={false}
-              rotateEnabled={false}
-              scrollEnabled={false}
-            >
-              <Marker
-                coordinate={{
-                  latitude: location.geometry.location.lat,
-                  longitude: location.geometry.location.lng,
-                }}
-              >
-                <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
-              </Marker>
-            </MapView>
-          )}
         </View>
         <View style={[styles.cardBottom, map != true ? styles.cardBottomFav : null]}>
           {map != true && (
@@ -158,18 +168,12 @@ export const ActivityCard: React.FC<Props> = ({
           </TouchableOpacity>
         </View>
       </View>
-      <FavoriteIcon
-        favorited={favoritesArr.includes(location.place_id) ? true : false}
-        onPress={handleToggleFavorite}
-      />
-    </View>
-  );
-};
 
+*/
 const styles = StyleSheet.create({
   card: {
     backgroundColor: WHITE,
-    minHeight: 203,
+    minHeight: 107,
     paddingTop: 18,
     paddingHorizontal: 13,
     width: Dimensions.get('window').width,
@@ -177,6 +181,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  leftCol: {},
+  rightCol: {},
+
   cardContent: {
     flex: 1,
     marginRight: 8,

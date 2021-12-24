@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
-import { GREY_3, GREY_4 } from '../res/styles/Colors';
+import { GREY_3, GREY_4, GREY_6 } from '../res/styles/Colors';
 
 interface Props {
   onInputChange: (input: string) => void;
@@ -39,10 +39,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderColor: GREY_4,
+    borderColor: GREY_6,
     borderWidth: 1,
-    borderRadius: 5,
     paddingHorizontal: 10,
+    borderRadius: 5,
   },
   input: {
     flex: 1,

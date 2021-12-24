@@ -61,6 +61,7 @@ export const buttonStyles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 'auto',
     minWidth: 150,
+    height: 40,
     alignItems: 'center',
   },
   text: {
