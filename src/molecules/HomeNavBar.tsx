@@ -5,19 +5,30 @@ import { User, Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
 import { copy } from '../res/groupifyCopy';
+import { GoogleLocation } from '../res/dataModels';
 
 interface Props {
   user?: User;
   style?: Record<string, unknown>;
   invitedPlans: Plan[];
+  locations?: GoogleLocation[];
   userPlans: Plan[];
   navigation: {
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
   };
+  userLocation: any; //TODO fix
 }
 
-export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPlans, navigation }: Props) => {
+export const HomeNavBar: React.FC<Props> = ({
+  userLocation,
+  user,
+  style,
+  userPlans,
+  invitedPlans,
+  navigation,
+  locations,
+}: Props) => {
   return (
     <View style={styles.navbar}>
       <View style={[styles.nav, style]}>
@@ -36,7 +47,8 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
           //   navigation.push('ActivitySelector', { currentUser: user });
           // }}
           onPress={() => {
-            navigation.navigate('SelectorMenu', '');
+            console.log(userLocation);
+            navigation.navigate('SelectorMenu', { locations: locations, userLocation: userLocation });
           }}
         >
           <CreatePlanIcon />
@@ -71,7 +83,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 13,
     fontWeight: '700',
-    marginTop: 10,
+    marginTop: 5,
+    marginBottom: 10,
     color: WHITE,
     textAlign: 'center',
   },
@@ -81,6 +94,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '100%',
     alignItems: 'center',
-    paddingBottom: 15, //TODO @Joni how high should this be?
   },
 });

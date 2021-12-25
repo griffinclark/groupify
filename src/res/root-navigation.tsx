@@ -11,7 +11,7 @@ import { ImportContactDetails } from '../screens/ImportContactDetails';
 import { SendMessage } from '../screens/SendMessage';
 import { SetAvailability } from '../screens/SetAvailability';
 import { EditFriends } from '../screens/EditFriends';
-import { Contact } from './dataModels';
+import { Contact, GoogleLocation, UserLocation, XYLocation } from './dataModels';
 import { PlanMap } from '../screens/PlanMap';
 import { PlanDetails } from '../screens/PlanDetails';
 import { PlanCreate } from '../screens/PlanCreate';
@@ -35,7 +35,9 @@ export type RoutePropParams = {
     currentUser: User;
     currentUserPlan: Plan;
     step: string;
+    locations: GoogleLocation[];
     phone: string;
+    userLocation: UserLocation;
     invitedPlans: Plan[];
     userPlans: Plan[];
     option: string;

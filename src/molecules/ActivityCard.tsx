@@ -1,16 +1,13 @@
 import React from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { ActivityImage } from '../molecules/ActivityImage';
-import { FavoriteIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AtomsExports';
 import { GOLD_0, GREY_3, TEAL_0, WHITE, YELLOW } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 // import * as SecureStore from 'expo-secure-store';
-import { MapIcon } from '../../assets/Icons/IconExports';
-import { addFavorite, deleteFavorite } from '../res/utilFavorites';
 import { GoogleLocation } from '../res/dataModels';
 import { GREY_4 } from './../res/styles/Colors';
+import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 
 interface Props {
   handleCreate: (loc: GoogleLocation) => void;
@@ -20,36 +17,13 @@ interface Props {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
-  onPress: () => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleRegion?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  region?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  favoritesArr: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setFavoritesArr: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setTrigger?: any;
-  trigger?: boolean;
 }
 
-export const ActivityCard: React.FC<Props> = ({
-  favoritesArr,
-  setFavoritesArr,
-  map,
-  handleCreate,
-  location,
-  handleRegion,
-  image,
-  setTrigger,
-  trigger,
-  onPress,
-}: Props) => {
+export const ActivityCard: React.FC<Props> = ({ location, navigation }: Props) => {
   if (!location.geometry) return null;
-  console.log(location.formatted_address);
+  // console.log(location.formatted_address);
   const formatAddress = () => {
     if (!location.formatted_address) return null;
     const addressArr = location.formatted_address.split(',');
@@ -65,16 +39,6 @@ export const ActivityCard: React.FC<Props> = ({
         </View>
       </View>
     );
-  };
-
-  const formatMoney = () => {
-    let str = '';
-    let i = 0;
-    while (i < location.price_level) {
-      str += '$';
-      i++;
-    }
-    return str;
   };
 
   const renderStars = () => {
@@ -97,23 +61,18 @@ export const ActivityCard: React.FC<Props> = ({
     );
   };
 
-  const handleToggleFavorite = async () => {
-    if (favoritesArr.includes(location.place_id)) {
-      const newFavs = await deleteFavorite(location.place_id);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      setFavoritesArr(newFavs.map((ele: any) => ele.place_id));
-      if (trigger != undefined) setTrigger(!trigger);
-    } else {
-      const newFavs = await addFavorite(location);
-      setFavoritesArr(newFavs.map((ele) => ele.place_id));
-    }
-  };
-
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigation.navigate('ActivityResults', { activity: location.name })}
+    >
       <View style={styles.leftCol}>
         <View style={styles.imageContainer}>
-          <ActivityImage referenceId={location.photos[0].photo_reference} width={89} height={89} />
+          {location.photos ? (
+            <ActivityImage referenceId={location.photos[0].photo_reference} width={89} height={89} />
+          ) : (
+            <MagnifyingGlassIcon />
+          )}
         </View>
       </View>
       <View style={styles.rightCol}>
@@ -126,28 +85,7 @@ export const ActivityCard: React.FC<Props> = ({
     </TouchableOpacity>
   );
 };
-/*
 
-
-<View style={styles.cardContent}>
-        <View style={styles.cardTop}>
-          <View style={{ width: 147 }}>
-            <AppText>{formatMoney()}</AppText>
-          </View>
-        </View>
-        <View style={[styles.cardBottom, map != true ? styles.cardBottomFav : null]}>
-          {map != true && (
-            <TouchableOpacity style={styles.locationButton} onPress={() => handleRegion(location)}>
-              <AppText style={styles.locationButtonText}>Show Location</AppText>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity style={styles.button} onPress={() => handleCreate(location)}>
-            <AppText style={styles.buttonText}>Create Plan</AppText>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-*/
 const styles = StyleSheet.create({
   card: {
     backgroundColor: WHITE,
@@ -157,6 +95,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     alignItems: 'flex-start',
     flexDirection: 'row',
+    borderBottomColor: GREY_4,
+    borderBottomWidth: 2,
   },
   leftCol: {
     paddingRight: 10,

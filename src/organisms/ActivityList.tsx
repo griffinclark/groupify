@@ -83,7 +83,6 @@ export const ActivityList: React.FC<Props> = ({
             image={image}
             trigger={trigger}
             setTrigger={setTrigger}
-            onPress={onPress}
           />
         )}
         keyExtractor={(item) => item.place_id}

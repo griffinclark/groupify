@@ -14,8 +14,12 @@ import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Image } from 'react-native-elements/dist/image/Image';
+import * as Location from 'expo-location';
 import { copy } from '../res/groupifyCopy';
-
+import { LocationAccuracy } from 'expo-location';
+import { activities } from './SelectorMenu';
+import { GoogleLocation } from '../res/dataModels';
+import { LogBox } from 'react-native';
 export interface Props {
   navigation: {
     CreateAccount: {
@@ -31,15 +35,24 @@ export interface Props {
   route: RoutePropParams;
 }
 
-export const Home: React.FC<Props> = ({ navigation }: Props) => {
+export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [userPlans, setUserPlans] = useState<Plan[]>([]);
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
   const [upcomingPlans, setUpcomingPlans] = useState<Plan[]>([]);
+  const [locations, setLocations] = useState<GoogleLocation[]>([]);
   const [currentUser, setCurrentUser] = useState<User>();
   const [trigger1, setTrigger1] = useState(false);
   const [trigger2, setTrigger2] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [state, setState] = useState('loading');
+  const [userLocation, setUserLocation] = useState({}); // defaults to Los Angeles if user location is not provided and no place param
+  const [region, setRegion] = useState({});
+
+  useEffect(() => {
+    getUserLocation();
+    queryActivities();
+    //
+  }, []);
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -58,13 +71,53 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     setTrigger1(!trigger1);
   };
 
+  const getUserLocation = async () => {
+    const { status } = await Location.requestPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+    } else {
+      try {
+        let location = await Location.getLastKnownPositionAsync();
+        if (location === null) {
+          location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
+        }
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+
+        setRegion({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05,
+          default: false,
+        });
+
+        queryActivities();
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  const queryActivities = async () => {
+    const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
+    const search =
+      'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
+      `location=${userLocation.latitude},${userLocation.longitude}` +
+      `&radius=${5000}` +
+      `&query=${'climb'}` +
+      `&key=${GOOGLE_PLACES_API_KEY}`;
+    const response = await fetch(search);
+    const detail = await response.json();
+    setLocations(detail.results);
+  };
+
   const loadPlans = async (user: User) => {
-    console.log('Loading plans');
     const createdPlanOnDb = await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id));
     const createdPlans = createdPlanOnDb.map((plan) => plan);
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
-    console.log('createdPlans', createdPlans);
-
     let invitedPlans = invitees.map((invitee) => invitee.plan).filter((item): item is Plan => item !== undefined); //removePastPlans(
     // );
     const upcoming = invitedPlans;
@@ -81,7 +134,6 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     setUpcomingPlans(accepted);
     setUserPlans(createdPlans);
     setInvitedPlans(invitedPlans);
-    console.log('Finished loading plans');
   };
 
   const createGreeting = () => {
@@ -165,7 +217,14 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       )}
 
       <View style={styles.navbar}>
-        <HomeNavBar user={currentUser} navigation={navigation} userPlans={userPlans} invitedPlans={invitedPlans} />
+        <HomeNavBar
+          locations={locations}
+          user={currentUser}
+          navigation={navigation}
+          userPlans={userPlans}
+          invitedPlans={invitedPlans}
+          userLocation={userLocation}
+        />
       </View>
     </Screen>
   );
