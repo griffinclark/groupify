@@ -5,7 +5,7 @@ import { WHITE } from '../res/styles/Colors';
 import { AppText } from './AppText';
 
 interface Props {
-  onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;
+  onPress: () => void;
   title: string;
 }
 export const NavButton: React.FC<Props> = ({ onPress, title }: Props) => {
