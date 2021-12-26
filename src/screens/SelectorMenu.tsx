@@ -58,13 +58,52 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
+  const googlePlacesQuery: (text: string) => void = async (text: string) => {
+    const search =
+      'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
+      `location=${route.params.userLocation.latitude},${route.params.userLocation.longitude}` +
+      `&radius=${50000}` +
+      `&query=${text}` +
+      `&key=${GOOGLE_PLACES_API_KEY}`;
+    const response = await fetch(search);
+    const detail = await response.json();
+    detail.results.sort((a: GoogleLocation, b: GoogleLocation) => b.user_ratings_total - a.user_ratings_total);
+
+    setSuggestedLocations(detail.results);
+  };
+
+  const buildFakeNavbar: () => any = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setSearchView(false);
+        }}
+        style={styles.backButtonTemp}
+      >
+        <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
+        <Image source={require('../../assets/activity-relax.png')} style={styles.activitiesImage} />
+      </TouchableOpacity>
+    );
+  };
+
+  const BuildLocationsList = (locations: GoogleLocation[], onPress: () => void) => {
+    // FIXME the input being passed to this is wrong, and that's what's causing these errors. 
+    console.log('locations:');
+    console.log(locations.locations.length);
+    console.log('Onpress type: ' + typeof onPress);
+    return (
+      <>
+        {locations.map((location: GoogleLocation) => {
+          return <SearchSuggestionTile key={location.place_id} location={location} onPress={locations.OnPress} />;
+        })}
+      </>
+    );
+  };
+
   const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) => {
     return (
       <View style={styles.cancleSearchView}>
-        <View style={styles.navbarPlaceholder}>
-          <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
-          <Image source={require('../../assets/activity-relax.png')} style={styles.activitiesImage} />
-        </View>
+        {buildFakeNavbar()}
         <View>
           <Image source={require('../../assets/activity-selector-background-image.png')} />
           <View style={styles.buildPlanButtonContainer}>
@@ -121,28 +160,15 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   const LocationSearch: React.FC<Props> = () => {
     return (
       <>
-        <TouchableOpacity
-          onPress={() => {
-            setSearchView(false);
-          }}
-          style={styles.backButtonTemp}
-        >
-          <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
-          <Image source={require('../../assets/activity-relax.png')} style={styles.activitiesImage} />
-        </TouchableOpacity>
+        {buildFakeNavbar()}
         <View style={styles.locationSearchSuggestions}>
           {searchLocations.length > 0 ? (
-            searchLocations.map((location: GoogleLocation) => {
-              return (
-                <SearchSuggestionTile
-                  key={location.place_id}
-                  location={location}
-                  onPress={() => {
-                    console.log('hi');
-                  }}
-                />
-              );
-            })
+            <BuildLocationsList
+              locations={suggestedLocations}
+              onPress={() => {
+                console.log('function not built');
+              }}
+            />
           ) : (
             <AppText>Loading...</AppText>
           )}
@@ -154,15 +180,8 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) => {
     return (
       <>
-        <TouchableOpacity
-          onPress={() => {
-            setSearchView(false);
-          }}
-          style={styles.backButtonTemp}
-        >
-          <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
-          <Image source={require('../../assets/activity-relax.png')} style={styles.activitiesImage} />
-        </TouchableOpacity>
+        {buildFakeNavbar()}
+
         <View style={styles.locationSearchContainer}>
           <SearchBar
             leftIcon={<MapLinkIcon />}
@@ -200,22 +219,31 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           ) : (
             <>
               {suggestedLocations.length > 0 ? (
-                suggestedLocations.map((location: GoogleLocation) => {
-                  const locations: GoogleLocation[] = [location];
-                  return (
-                    <SearchSuggestionTile
-                      key={location.place_id}
-                      location={location}
-                      onPress={() => {
-                        navigation.navigate('PlanMap', {
-                          navigation: { navigation },
-                          route: { route },
-                          locations: { locations },
-                        });
-                      }}
-                    />
-                  );
-                })
+                // suggestedLocations.map((location: GoogleLocation) => {
+                //   return (
+                //     <SearchSuggestionTile
+                //       key={location.place_id}
+                //       location={location}
+                //       onPress={() => {
+                //         navigation.navigate('PlanMap', {
+                //           navigation: { navigation },
+                //           route: { route },
+                //         });
+                //       }}
+                //     />
+                //   );
+                // })
+                <>
+                  <BuildLocationsList
+                    locations={suggestedLocations}
+                    onPress={() => {
+                      navigation.navigate('PlanMap', {
+                        navigation: { navigation },
+                        route: { route },
+                      });
+                    }}
+                  />
+                </>
               ) : (
                 <AppText>{'locationSearchView ' + locationSearchView}</AppText>
               )}
@@ -248,7 +276,6 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
               );
 
               setSuggestedLocations(detail.results);
-              // FIXME sort these
             }}
           />
         </View>
