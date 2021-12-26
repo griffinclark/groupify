@@ -25,6 +25,8 @@ import { PlaceCard } from '../molecules/PlaceCard';
 import { Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import { SearchSuggestionTile } from '../molecules/SearchSuggestionTile';
+import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
+import { MapLinkIcon } from '../../assets/Icons/MapLink';
 export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
@@ -125,7 +127,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
             <View style={styles.activitiesRow} key={activityArr[0]}>
               {activityArr.map((activity: string) => (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ActivityResults', { activity: activity })}
+                  onPress={() => navigation.navigate('PlanMap', { navigation: { navigation }, route: { route } })}
                   testID={activity}
                   key={activity}
                 >
@@ -174,15 +176,31 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
           <Image source={require('../../assets/activity-relax.png')} style={styles.activitiesImage} />
         </TouchableOpacity>
+        <View style={styles.locationSearchContainer}>
+          <SearchBar
+            leftIcon={<MapLinkIcon />}
+            defaultValue="Current Location"
+            onInputChange={async (text: string) => {
+              console.log('text');
+            }}
+            selectTextOnFoucs={true}
+          />
+        </View>
+
         <View style={styles.locationSearchSuggestions}>
           {suggestedLocations.length > 0 ? (
             suggestedLocations.map((location: GoogleLocation) => {
+              const locations: GoogleLocation[] = [location];
               return (
                 <SearchSuggestionTile
                   key={location.place_id}
                   location={location}
                   onPress={() => {
-                    console.log(location.name);
+                    navigation.navigate('PlanMap', {
+                      navigation: { navigation },
+                      route: { route },
+                      locations: { locations },
+                    });
                   }}
                 />
               );
@@ -200,6 +218,8 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[0]}>
         <View style={getSearchBarStyle()}>
           <SearchBar
+            leftIcon={<MagnifyingGlassIcon />}
+            onPressIn={() => setSearchView(true)}
             placeholder="Search for food, parks, coffee, etc"
             onInputChange={async (text: string) => {
               const search =
@@ -216,9 +236,6 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
 
               setSuggestedLocations(detail.results);
               // FIXME sort these
-              if (text.length > 0) {
-                setSearchView(true);
-              }
             }}
           />
         </View>
@@ -321,7 +338,8 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   locationSuggestions: {
-    paddingTop: 155,
+    marginTop: 155,
+    zIndex: 1,
   },
   backButtonTemp: {
     position: 'absolute',
@@ -360,5 +378,15 @@ const styles = StyleSheet.create({
   },
   locationSearchSuggestions: {
     paddingTop: 0,
+    alignItems: 'center',
+    padding: 20,
+  },
+  locationSearchContainer: {
+    alignSelf: 'center',
+    marginTop: 16,
+    width: 334,
+    borderRadius: 5,
+    backgroundColor: WHITE,
+    zIndex: 2,
   },
 });

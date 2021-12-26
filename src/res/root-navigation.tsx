@@ -12,7 +12,7 @@ import { SendMessage } from '../screens/SendMessage';
 import { SetAvailability } from '../screens/SetAvailability';
 import { EditFriends } from '../screens/EditFriends';
 import { Contact, GoogleLocation, UserLocation, XYLocation } from './dataModels';
-import { PlanMap } from '../screens/PlanMap';
+import { PlanMap_old } from '../screens/PlanMap_old';
 import { PlanDetails } from '../screens/PlanDetails';
 import { PlanCreate } from '../screens/PlanCreate';
 import { InvitedPlans } from '../screens/InvitedPlans';
@@ -28,6 +28,7 @@ import { ActivitySelector } from '../screens/ActivitySelector';
 import { ActivityResults } from '../screens/ActivityResults';
 import { ActivityFavorites } from '../screens/ActivityFavorites';
 import { SelectorMenu } from '../screens/SelectorMenu';
+import { PlanMap } from '../screens/PlanMap';
 
 export type RoutePropParams = {
   params: {

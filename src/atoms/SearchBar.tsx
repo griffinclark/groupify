@@ -1,33 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import React, { JSXElementConstructor, useEffect, useState } from 'react';
+import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, TextInput, View } from 'react-native';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
-import { GREY_3, GREY_4, GREY_6 } from '../res/styles/Colors';
+import { BLACK, GREY_3, GREY_4, GREY_6 } from '../res/styles/Colors';
 
 interface Props {
   onInputChange: (input: string) => void;
   placeholder?: string;
+  onPressIn?: () => void;
+  leftIcon: any; //TODO what type goes here?
+  defaultValue?: string;
+  selectTextOnFoucs?: boolean;
 }
 
-export const SearchBar: React.FC<Props> = ({ onInputChange, placeholder = 'search' }: Props) => {
+export const SearchBar: React.FC<Props> = ({
+  placeholder,
+  onPressIn,
+  onInputChange,
+  leftIcon,
+  defaultValue,
+  selectTextOnFoucs,
+}: Props) => {
   const [input, setInput] = useState('');
 
   useEffect(() => {
     onInputChange(input);
   }, [input]);
-
+  console.log(selectTextOnFoucs);
   return (
-    <View>
-      <View style={styles.searchSection}>
-        <MagnifyingGlassIcon />
-        <TextInput
-          style={styles.input}
-          placeholder={placeholder}
-          onChangeText={(e) => setInput(e)}
-          underlineColorAndroid="transparent"
-          testID="SearchBar"
-        />
-      </View>
-    </View>
+    <>
+      {selectTextOnFoucs ? (
+        <View>
+          <View style={styles.searchSection}>
+            {leftIcon}
+            <TextInput
+              style={styles.input}
+              placeholder={placeholder}
+              onChangeText={(e) => setInput(e)}
+              underlineColorAndroid="transparent"
+              testID="SearchBar"
+              defaultValue={defaultValue}
+              selectTextOnFocus
+            />
+          </View>
+        </View>
+      ) : (
+        <View>
+          <View style={styles.searchSection}>
+            {leftIcon}
+            <TextInput
+              style={styles.input}
+              placeholder={placeholder}
+              onChangeText={(e) => setInput(e)}
+              underlineColorAndroid="transparent"
+              testID="SearchBar"
+              onPressIn={onPressIn}
+              defaultValue={defaultValue}
+            />
+          </View>
+        </View>
+      )}
+    </>
   );
 };
 
@@ -48,6 +80,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 10,
     marginLeft: 5,
-    color: GREY_3,
+    color: BLACK,
   },
 });
