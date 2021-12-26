@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Image, ScrollView, StyleProp, ViewStyle } from 'react-native';
 import { Screen } from '../atoms/Screen';
 import { GOLD_0, GREY_1, GREY_3, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
@@ -7,12 +7,13 @@ import { HomeNavBar } from '../molecules/HomeNavBar';
 import { Button } from '../atoms/Button';
 import { SearchBar } from '../atoms/SearchBar';
 import { getCurrentUser } from '../res/utilFunctions';
-import { GoogleLocation } from '../res/dataModels';
+import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from './../molecules/ActivityCard';
 import { SearchSuggestionTile } from '../molecules/SearchSuggestionTile';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 import { MapLinkIcon } from './../../assets/Icons/MapLink';
+import { Geometry } from 'react-native-google-places-autocomplete';
 export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
@@ -27,15 +28,19 @@ const activities: string[][] = [
 ];
 
 export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
-  const [searchView, setSearchView] = useState(false);
-  const [locationSearchView, setLocationSearchView] = useState(false);
-  const [query, setQuery] = useState('');
+  enum ScreenToDisplay {
+    LocationSearch = 'LOCATIONSEARCH',
+    ActivitySelector = 'ACTIVITYSELECTOR',
+    LocationChange = 'LOCATIONCHANGE',
+  }
+  const [screenToDisplay, setScreenToDisplay] = useState(ScreenToDisplay.ActivitySelector);
   const [suggestedLocations, setSuggestedLocations] = useState<GoogleLocation[]>([]);
-  const [searchLocations, setSearchLocations] = useState<GoogleLocation[]>([]);
+  const [suggestedLocationOverrides, setSuggestedLocationOverrides] = useState<GoogleLocation[]>([]);
+  const [userOverrideLocation, setUserOverrideLocation] = useState(route.params.userLocation);
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
   const getSearchBarStyle = (): StyleProp<ViewStyle> => {
-    if (searchView) {
+    if (screenToDisplay == ScreenToDisplay.LocationSearch || screenToDisplay == ScreenToDisplay.LocationChange) {
       return {
         position: 'absolute',
         alignSelf: 'center',
@@ -45,7 +50,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         backgroundColor: WHITE,
         zIndex: 1,
       };
-    } else {
+    } else if (screenToDisplay == ScreenToDisplay.ActivitySelector) {
       return {
         position: 'absolute',
         alignSelf: 'center',
@@ -58,10 +63,13 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const googlePlacesQuery: (text: string) => void = async (text: string) => {
+  const googlePlacesQuery: (text: string, save: ScreenToDisplay) => void = async (text: string, save: any) => {
+    if (userOverrideLocation == undefined) {
+      setUserOverrideLocation(route.params.userLocation);
+    }
     const search =
       'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-      `location=${route.params.userLocation.latitude},${route.params.userLocation.longitude}` +
+      `location=${userOverrideLocation?.latitude},${userOverrideLocation.longitude}` +
       `&radius=${50000}` +
       `&query=${text}` +
       `&key=${GOOGLE_PLACES_API_KEY}`;
@@ -69,14 +77,18 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     const detail = await response.json();
     detail.results.sort((a: GoogleLocation, b: GoogleLocation) => b.user_ratings_total - a.user_ratings_total);
 
-    setSuggestedLocations(detail.results);
+    if (save == ScreenToDisplay.LocationChange) {
+      setSuggestedLocationOverrides(detail.results);
+    } else if (save == ScreenToDisplay.LocationSearch) {
+      setSuggestedLocations(detail.results);
+    } else console.log('error saving locations');
   };
 
   const buildFakeNavbar: () => any = () => {
     return (
       <TouchableOpacity
         onPress={() => {
-          setSearchView(false);
+          setScreenToDisplay(ScreenToDisplay.ActivitySelector);
         }}
         style={styles.backButtonTemp}
       >
@@ -86,15 +98,41 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     );
   };
 
-  const BuildLocationsList = (locations: GoogleLocation[], onPress: () => void) => {
-    // FIXME the input being passed to this is wrong, and that's what's causing these errors. 
-    console.log('locations:');
-    console.log(locations.locations.length);
-    console.log('Onpress type: ' + typeof onPress);
+  const BuildLocationsList = ({
+    onPress,
+    useStupidFunction,
+    locations,
+  }: {
+    onPress: () => void;
+    useStupidFunction: boolean;
+    locations: GoogleLocation[];
+  }) => {
+    if (useStupidFunction == true) {
+      return (
+        <>
+          {locations.map((location: GoogleLocation) => {
+            return (
+              <SearchSuggestionTile
+                key={location.place_id}
+                location={location}
+                onPress={() => {
+                  const newLocation: UserLocation = {
+                    longitude: location.geometry.location.lng,
+                    latitude: location.geometry.location.lat,
+                  };
+                  setUserOverrideLocation(newLocation);
+                  setScreenToDisplay(ScreenToDisplay.LocationSearch);
+                }}
+              />
+            );
+          })}
+        </>
+      );
+    }
     return (
       <>
         {locations.map((location: GoogleLocation) => {
-          return <SearchSuggestionTile key={location.place_id} location={location} onPress={locations.OnPress} />;
+          return <SearchSuggestionTile key={location.place_id} location={location} onPress={onPress} />;
         })}
       </>
     );
@@ -157,135 +195,71 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     );
   };
 
-  const LocationSearch: React.FC<Props> = () => {
-    return (
-      <>
-        {buildFakeNavbar()}
-        <View style={styles.locationSearchSuggestions}>
-          {searchLocations.length > 0 ? (
-            <BuildLocationsList
-              locations={suggestedLocations}
-              onPress={() => {
-                console.log('function not built');
-              }}
-            />
-          ) : (
-            <AppText>Loading...</AppText>
-          )}
-        </View>
-      </>
-    );
-  };
-
-  const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) => {
-    return (
-      <>
-        {buildFakeNavbar()}
-
-        <View style={styles.locationSearchContainer}>
-          <SearchBar
-            leftIcon={<MapLinkIcon />}
-            onPressIn={() => console.log('setLocationSearchView(true)')} // FIXME fix double tap bug
-            placeholder="Current location"
-            onInputChange={() => {
-              console.log('input changed');
-            }}
-          />
-        </View>
-        <View style={styles.locationSearchSuggestions}>
-          {locationSearchView ? (
-            <>
-              {suggestedLocations.length > 0 ? (
-                suggestedLocations.map((location: GoogleLocation) => {
-                  const locations: GoogleLocation[] = [location];
-                  return (
-                    <SearchSuggestionTile
-                      key={location.place_id}
-                      location={location}
-                      onPress={() => {
-                        navigation.navigate('PlanMap', {
-                          navigation: { navigation },
-                          route: { route },
-                          locations: { locations },
-                        });
-                      }}
-                    />
-                  );
-                })
-              ) : (
-                <AppText>Location search view {locationSearchView}</AppText>
-              )}
-            </>
-          ) : (
-            <>
-              {suggestedLocations.length > 0 ? (
-                // suggestedLocations.map((location: GoogleLocation) => {
-                //   return (
-                //     <SearchSuggestionTile
-                //       key={location.place_id}
-                //       location={location}
-                //       onPress={() => {
-                //         navigation.navigate('PlanMap', {
-                //           navigation: { navigation },
-                //           route: { route },
-                //         });
-                //       }}
-                //     />
-                //   );
-                // })
-                <>
-                  <BuildLocationsList
-                    locations={suggestedLocations}
-                    onPress={() => {
-                      navigation.navigate('PlanMap', {
-                        navigation: { navigation },
-                        route: { route },
-                      });
-                    }}
-                  />
-                </>
-              ) : (
-                <AppText>{'locationSearchView ' + locationSearchView}</AppText>
-              )}
-            </>
-          )}
-        </View>
-      </>
-    );
-  };
-
   return (
     <Screen style={styles.screen}>
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[0]}>
         <View style={getSearchBarStyle()}>
           <SearchBar
             leftIcon={<MagnifyingGlassIcon />}
-            onPressIn={() => setSearchView(true)}
+            onPressIn={() => setScreenToDisplay(ScreenToDisplay.LocationSearch)}
             placeholder="Search for food, parks, coffee, etc"
             onInputChange={async (text: string) => {
-              const search =
-                'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-                `location=${route.params.userLocation.latitude},${route.params.userLocation.longitude}` +
-                `&radius=${50000}` +
-                `&query=${text}` +
-                `&key=${GOOGLE_PLACES_API_KEY}`;
-              const response = await fetch(search);
-              const detail = await response.json();
-              detail.results.sort(
-                (a: GoogleLocation, b: GoogleLocation) => b.user_ratings_total - a.user_ratings_total,
-              );
-
-              setSuggestedLocations(detail.results);
+              googlePlacesQuery(text, ScreenToDisplay.LocationSearch);
             }}
           />
         </View>
 
-        {searchView ? (
-          <TakeoverSearch navigation={navigation} route={route} />
-        ) : (
+        {screenToDisplay == ScreenToDisplay.ActivitySelector ? (
           <>
             <ActivitySelector navigation={navigation} route={route} />
             <LocationSuggestions route={route} navigation={navigation} />
+          </>
+        ) : (
+          <>
+            {buildFakeNavbar()}
+            <View style={styles.locationSearchContainer}>
+              <SearchBar
+                leftIcon={<MapLinkIcon />}
+                onPressIn={() => setScreenToDisplay(ScreenToDisplay.LocationChange)}
+                placeholder="Current location"
+                onInputChange={(text) => {
+                  googlePlacesQuery(text, ScreenToDisplay.LocationChange);
+                }}
+              />
+            </View>
+            <View style={styles.locationSearchSuggestions}>
+              {screenToDisplay == ScreenToDisplay.LocationSearch ? (
+                <>
+                  {suggestedLocations.length > 0 ? (
+                    <BuildLocationsList
+                      onPress={() => {
+                        console.log('navigating to map screen');
+                      }}
+                      useStupidFunction={false}
+                      locations={suggestedLocations}
+                    />
+                  ) : (
+                    <AppText>Location search view </AppText>
+                  )}
+                </>
+              ) : (
+                <>
+                  {suggestedLocationOverrides.length > 0 ? (
+                    <>
+                      <BuildLocationsList
+                        onPress={() => {
+                          console.log('doesnt matter');
+                        }}
+                        useStupidFunction={true}
+                        locations={suggestedLocationOverrides}
+                      />
+                    </>
+                  ) : (
+                    <AppText>Change my location</AppText>
+                  )}
+                </>
+              )}
+            </View>
           </>
         )}
       </ScrollView>

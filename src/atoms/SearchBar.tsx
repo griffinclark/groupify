@@ -37,6 +37,7 @@ export const SearchBar: React.FC<Props> = ({
               onChangeText={(e) => setInput(e)}
               underlineColorAndroid="transparent"
               testID="SearchBar"
+              onPressIn={onPressIn}
               defaultValue={defaultValue}
               selectTextOnFocus
             />

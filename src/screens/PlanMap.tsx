@@ -10,6 +10,7 @@ import { GREY_6, TEAL_0, WHITE } from '../res/styles/Colors';
 import Constants from 'expo-constants';
 import { GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { LocationAccuracy } from 'expo-location';
+import { HomeNavBar } from '../molecules/HomeNavBar';
 
 interface Props {
   navigation: {
@@ -172,6 +173,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, locations }: Props
       >
         {mapMarker ? mapMarker : null}
       </MapView>
+      <HomeNavBar invitedPlans={[]} userPlans={[]} navigation={navigation} />
     </View>
   );
 };
