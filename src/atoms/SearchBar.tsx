@@ -25,7 +25,6 @@ export const SearchBar: React.FC<Props> = ({
   useEffect(() => {
     onInputChange(input);
   }, [input]);
-  console.log(selectTextOnFoucs);
   return (
     <>
       {selectTextOnFoucs ? (

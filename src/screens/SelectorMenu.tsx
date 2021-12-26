@@ -1,16 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Image,
-  ScrollView,
-  RefreshControl,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View, Image, ScrollView, StyleProp, ViewStyle } from 'react-native';
 import { Screen } from '../atoms/Screen';
-import { GOLD_0, GOLD_1, GREY_1, GREY_3, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
+import { GOLD_0, GREY_1, GREY_3, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
 import { AppText } from '../atoms/AppText';
 import { HomeNavBar } from '../molecules/HomeNavBar';
 import { Button } from '../atoms/Button';
@@ -19,14 +10,9 @@ import { getCurrentUser } from '../res/utilFunctions';
 import { GoogleLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from './../molecules/ActivityCard';
-import { GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { v4 as uuidv4 } from 'uuid';
-import { PlaceCard } from '../molecules/PlaceCard';
-import { Marker } from 'react-native-maps';
-import Constants from 'expo-constants';
 import { SearchSuggestionTile } from '../molecules/SearchSuggestionTile';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
-import { MapLinkIcon } from '../../assets/Icons/MapLink';
+import { MapLinkIcon } from './../../assets/Icons/MapLink';
 export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
@@ -42,45 +28,11 @@ const activities: string[][] = [
 
 export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   const [searchView, setSearchView] = useState(false);
+  const [locationSearchView, setLocationSearchView] = useState(false);
   const [query, setQuery] = useState('');
   const [suggestedLocations, setSuggestedLocations] = useState<GoogleLocation[]>([]);
-  // const [mapMarker, setMapMarker] = useState<JSX.Element>();
-  // const markerRef = useRef<Marker>(null);
-  // const [placeCard, setPlaceCard] = useState<JSX.Element>();
-  // const [sessionToken, setSessionToken] = useState(uuidv4());
+  const [searchLocations, setSearchLocations] = useState<GoogleLocation[]>([]);
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
-  // const [region, setRegion] = useState({
-  //   latitude: 41.878,
-  //   longitude: -93.0977,
-  //   latitudeDelta: 0.01,
-  //   longitudeDelta: 0.01,
-  // });
-
-  const updateQuery = async (text: string) => {
-    // FIXME trying to set state of unmounted component
-    setQuery(text);
-    const search =
-      'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-      `location=${route.params.userLocation.latitude},${route.params.userLocation.longitude}` +
-      `&radius=${5000}` +
-      `&query=${query}` +
-      `&key=${GOOGLE_PLACES_API_KEY}`;
-    const response = await fetch(search);
-    const detail = await response.json();
-    setSuggestedLocations(detail.results);
-    // FIXME sort these
-  };
-  const handleCreate = async (loc: GoogleLocation) => {
-    const user = await getCurrentUser();
-    navigation.navigate('PlanCreate', {
-      currentUser: user,
-      data: {
-        eventData: {
-          location: loc.formatted_address,
-        },
-      },
-    });
-  };
 
   const getSearchBarStyle = (): StyleProp<ViewStyle> => {
     if (searchView) {
@@ -153,7 +105,9 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           return (
             <ActivityCard
               key={location.place_id}
-              handleCreate={handleCreate}
+              handleCreate={() => {
+                console.log('write handle create');
+              }}
               navigation={navigation}
               location={location}
               map={false}
@@ -161,6 +115,39 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           );
         })}
       </View>
+    );
+  };
+
+  const LocationSearch: React.FC<Props> = () => {
+    return (
+      <>
+        <TouchableOpacity
+          onPress={() => {
+            setSearchView(false);
+          }}
+          style={styles.backButtonTemp}
+        >
+          <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
+          <Image source={require('../../assets/activity-relax.png')} style={styles.activitiesImage} />
+        </TouchableOpacity>
+        <View style={styles.locationSearchSuggestions}>
+          {searchLocations.length > 0 ? (
+            searchLocations.map((location: GoogleLocation) => {
+              return (
+                <SearchSuggestionTile
+                  key={location.place_id}
+                  location={location}
+                  onPress={() => {
+                    console.log('hi');
+                  }}
+                />
+              );
+            })
+          ) : (
+            <AppText>Loading...</AppText>
+          )}
+        </View>
+      </>
     );
   };
 
@@ -179,34 +166,60 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         <View style={styles.locationSearchContainer}>
           <SearchBar
             leftIcon={<MapLinkIcon />}
-            defaultValue="Current Location"
-            onInputChange={async (text: string) => {
-              console.log('text');
+            onPressIn={() => console.log('setLocationSearchView(true)')} // FIXME fix double tap bug
+            placeholder="Current location"
+            onInputChange={() => {
+              console.log('input changed');
             }}
-            selectTextOnFoucs={true}
           />
         </View>
-
         <View style={styles.locationSearchSuggestions}>
-          {suggestedLocations.length > 0 ? (
-            suggestedLocations.map((location: GoogleLocation) => {
-              const locations: GoogleLocation[] = [location];
-              return (
-                <SearchSuggestionTile
-                  key={location.place_id}
-                  location={location}
-                  onPress={() => {
-                    navigation.navigate('PlanMap', {
-                      navigation: { navigation },
-                      route: { route },
-                      locations: { locations },
-                    });
-                  }}
-                />
-              );
-            })
+          {locationSearchView ? (
+            <>
+              {suggestedLocations.length > 0 ? (
+                suggestedLocations.map((location: GoogleLocation) => {
+                  const locations: GoogleLocation[] = [location];
+                  return (
+                    <SearchSuggestionTile
+                      key={location.place_id}
+                      location={location}
+                      onPress={() => {
+                        navigation.navigate('PlanMap', {
+                          navigation: { navigation },
+                          route: { route },
+                          locations: { locations },
+                        });
+                      }}
+                    />
+                  );
+                })
+              ) : (
+                <AppText>Location search view {locationSearchView}</AppText>
+              )}
+            </>
           ) : (
-            <AppText>Loading...</AppText>
+            <>
+              {suggestedLocations.length > 0 ? (
+                suggestedLocations.map((location: GoogleLocation) => {
+                  const locations: GoogleLocation[] = [location];
+                  return (
+                    <SearchSuggestionTile
+                      key={location.place_id}
+                      location={location}
+                      onPress={() => {
+                        navigation.navigate('PlanMap', {
+                          navigation: { navigation },
+                          route: { route },
+                          locations: { locations },
+                        });
+                      }}
+                    />
+                  );
+                })
+              ) : (
+                <AppText>{'locationSearchView ' + locationSearchView}</AppText>
+              )}
+            </>
           )}
         </View>
       </>
@@ -241,7 +254,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
 
         {searchView ? (
-          <TakeoverSearch navigation={navigation} />
+          <TakeoverSearch navigation={navigation} route={route} />
         ) : (
           <>
             <ActivitySelector navigation={navigation} route={route} />
