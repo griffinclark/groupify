@@ -1,5 +1,6 @@
 import 'jest-ts-auto-mock';
 import 'react-native-gesture-handler/jestSetup';
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
 jest.mock('react-native-reanimated', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -19,3 +20,6 @@ jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 // Folders to mock
 jest.mock('../res/storageFunctions');
 jest.mock('../res/utilFunctions');
+
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
+
