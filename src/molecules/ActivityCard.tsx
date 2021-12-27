@@ -10,7 +10,6 @@ import { GREY_4 } from './../res/styles/Colors';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 
 interface Props {
-  handleCreate: (loc: GoogleLocation) => void;
   location: GoogleLocation;
   map: boolean;
   navigation: {
@@ -62,10 +61,7 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation }: Props) =
   };
 
   return (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() => navigation.navigate('ActivityResults', { activity: location.name })}
-    >
+    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('PlanMap', { activity: location.name })}>
       <View style={styles.leftCol}>
         <View style={styles.imageContainer}>
           {location.photos ? (

@@ -1,268 +1,243 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, Dimensions, Image } from 'react-native';
-import { GoogleLocation, Photo } from '../res/dataModels';
-import { RoutePropParams } from '../res/root-navigation';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Location from 'expo-location';
-import MapView, { LatLng, Marker, Point, PROVIDER_GOOGLE } from 'react-native-maps';
-import { PlaceCard } from '../molecules/PlaceCard';
-import { GREY_6, TEAL_0, WHITE } from '../res/styles/Colors';
-import Constants from 'expo-constants';
-import { GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { LocationAccuracy } from 'expo-location';
-import { HomeNavBar } from '../molecules/HomeNavBar';
+import Constants from 'expo-constants';
+import { RoutePropParams } from '../res/root-navigation';
+import { BackChevronIcon } from '../../assets/Icons/IconExports';
+import { AppText } from '../atoms/AppText';
+import { TEAL_0 } from '../res/styles/Colors';
+import { ActivityMap, ActivityList } from '../organisms/OrganismsExports';
+import { getCurrentUser } from './../res/utilFunctions';
+import { ActivitySlider } from '../molecules/MoleculesExports';
+import { getFavorites } from '../res/utilFavorites';
+import { copy } from '../res/groupifyCopy';
+import { GoogleLocation } from '../res/dataModels';
 
-interface Props {
+export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
+    goBack: () => void;
   };
   route: RoutePropParams;
-  locations?: GoogleLocation[];
 }
+
+// FIXME secret is just being stored in text in Groupify!!!
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
-export const PlanMap: React.FC<Props> = ({ navigation, route, locations }: Props) => {
+export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
-  }); // defaults to Los Angeles if user location is not provided
+  }); // defaults to Los Angeles if user location is not provided and no place param
   const [region, setRegion] = useState({
     latitude: 41.878,
     longitude: -93.0977,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
+    latitudeDelta: 0.001,
+    longitudeDelta: 0.001,
+    default: true,
   });
-  const [mapMarker, setMapMarker] = useState<JSX.Element>();
-  const markerRef = useRef<Marker>(null);
-  const [placeCard, setPlaceCard] = useState<JSX.Element>();
-  const [sessionToken, setSessionToken] = useState(uuidv4());
+  const [page, setPage] = useState<string>('map');
+  const [locations, setLocations] = useState([]);
+  const [title, setTitle] = useState<string>();
+  const [image, setImage] = useState<string>();
+  const [distance, setDistance] = useState<number>(30);
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-      } else {
-        try {
-          let location = await Location.getLastKnownPositionAsync();
-          if (location === null) {
-            location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Low });
-          }
-          setUserLocation({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          });
-          setRegion({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: region.latitudeDelta,
-            longitudeDelta: region.longitudeDelta,
-          });
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    })();
-  }, []);
-  const onPoiPress = async (poi: POI) => {
-    const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${poi.placeId}&key=${GOOGLE_PLACES_API_KEY}`;
-    const response = await fetch(search);
-    const detail = await response.json();
-    onResultPress(detail.result);
-  };
-  interface GooglePlaceDetailExtended extends GooglePlaceDetail {
-    rating: number;
-    user_ratings_total: number;
-    reviews: Record<string, unknown>[];
-    price_level: number;
-    opening_hours: {
-      open_now: boolean;
-      weekday_text: string[];
-    };
-    photos: {
-      photo_reference: string;
-    }[];
-  }
-  interface POI {
-    coordinate: LatLng;
-    position: Point;
-    placeId: string;
-    name: string;
-  }
-  const onResultPress = async (detail: GooglePlaceDetail | null) => {
-    const moreDetails = detail as GooglePlaceDetailExtended;
-    setSessionToken(uuidv4());
-    if (detail) {
-      setRegion({
-        latitude: detail.geometry.location.lat,
-        longitude: detail.geometry.location.lng,
-        latitudeDelta: region.latitudeDelta,
-        longitudeDelta: region.longitudeDelta,
-      });
-      setMapMarker(
-        <Marker
-          ref={markerRef}
-          coordinate={{
-            latitude: detail.geometry.location.lat,
-            longitude: detail.geometry.location.lng,
-          }}
-          icon={require('../../assets/MapMarker.png')}
-        />,
-      );
-
-      if (markerRef && markerRef.current) {
-        markerRef.current.showCallout();
-      }
-      setPlaceCard(
-        <PlaceCard
-          name={detail.name}
-          address={detail.formatted_address}
-          rating={moreDetails.rating ? moreDetails.rating : undefined}
-          userRatings={moreDetails.user_ratings_total ? moreDetails.user_ratings_total : undefined}
-          priceLevel={moreDetails.price_level ? moreDetails.price_level : undefined}
-          openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
-          photos={moreDetails.photos ? moreDetails.photos.map((obj: any) => obj.photo_reference) : undefined}
-          onButtonPress={() =>
-            onButtonPress(
-              detail.formatted_address,
-              detail.place_id,
-              moreDetails.photos ? moreDetails.photos[0].photo_reference : '',
-            )
-          }
-          onCloseButtonPress={clearMarkers}
-        />,
-      );
+    if (region.default) {
+      getUserLocation();
     }
-  };
+    update();
+    queryActivities();
+  }, [userLocation, route.params.activity, distance]);
 
-  const clearMarkers = () => {
-    setPlaceCard(undefined);
-    setMapMarker(undefined);
-  };
-  const onButtonPress = (address: string, placeId: string, photo: string) => {
-    if (route.params.option === 'edit') {
-      navigation.navigate('EditPlan', { data: { eventData: { placeId: placeId, location: address } } });
+  useEffect(() => {
+    setPage('map');
+  }, [region]);
+
+  useEffect(() => {
+    if (route.params.place != undefined) {
+      setPage('map');
+      setRegion(route.params.place);
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      setImage(require('../../assets/activity-fav.png'));
+    }
+  }, [route.params.place]);
+
+  const getUserLocation = async () => {
+    const { status } = await Location.requestPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
     } else {
-      navigation.navigate('PlanCreate', {
-        currentUser: route.params.currentUser,
-        data: {
-          eventData: {
-            location: address,
-            imageURL: photo,
-            placeId: placeId,
-          },
-        },
-      });
+      try {
+        let location = await Location.getLastKnownPositionAsync();
+        if (location === null) {
+          location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
+        }
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+
+        setRegion({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05,
+          default: false,
+        });
+
+        queryActivities();
+      } catch (e) {
+        console.log(e);
+      }
     }
+  };
+
+  const update = () => {
+    setTitle('copy.foodActivityTile');
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    setImage(require('../../assets/groupify_icon_official.png'));
+  };
+
+  const queryActivities = async () => {
+    if (route.params.activity === 'favorites') {
+      const favorites = await getFavorites();
+      setLocations(favorites);
+    } else {
+      const distanceMeters = 1609.34 * distance > 40000 ? 40000 : 1609.34 * distance;
+      const search =
+        'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
+        `location=${userLocation.latitude},${userLocation.longitude}` +
+        `&radius=${distanceMeters}` +
+        `&query=${route.params.activity}` +
+        `&key=${GOOGLE_PLACES_API_KEY}`;
+      const response = await fetch(search);
+      const detail = await response.json();
+      setLocations(detail.results);
+    }
+  };
+
+  const handleCreate = async (loc: GoogleLocation) => {
+    const user = await getCurrentUser();
+    navigation.navigate('PlanCreate', {
+      currentUser: user,
+      data: {
+        eventData: {
+          location: loc.formatted_address,
+        },
+      },
+    });
   };
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.navbarPlaceholder}>
-        <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
-        <Image source={require('../../assets/activity-relax.png')} style={styles.activitiesImage} />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.navbar}>
+          <View style={{ flexDirection: 'row' }}>
+            <BackChevronIcon
+              onPress={() => {
+                navigation.goBack();
+              }}
+            />
+            <AppText style={styles.navbarText}>{title}</AppText>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('ActivityFavorites', {});
+            }}
+          >
+            <AppText style={styles.favorites}>Favorites</AppText>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.switch}>
+          <View style={page === 'map' ? styles.activeTab : styles.inactiveTab}>
+            <TouchableOpacity onPress={() => setPage('map')}>
+              <AppText style={page === 'map' ? styles.activeText : styles.inactiveText}>Map</AppText>
+            </TouchableOpacity>
+          </View>
+
+          <View style={page === 'list' ? styles.activeTab : styles.inactiveTab}>
+            <TouchableOpacity onPress={() => setPage('list')}>
+              <AppText style={page === 'list' ? styles.activeText : styles.inactiveText}>List</AppText>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        showsUserLocation={true}
-        region={region}
-        onPoiClick={(event) => onPoiPress(event.nativeEvent)}
-        style={styles.map}
-        // customMapStyle={mapStyles}
-        onPress={clearMarkers}
-      >
-        {mapMarker ? mapMarker : null}
-      </MapView>
-      <HomeNavBar invitedPlans={[]} userPlans={[]} navigation={navigation} />
+
+      {page === 'map' ? (
+        <ActivityMap
+          handleCreate={handleCreate}
+          image={image}
+          locations={locations}
+          navigation={navigation}
+          region={region}
+          userLocation={userLocation}
+        />
+      ) : (
+        <View>
+          <ActivitySlider distance={distance} setDistance={setDistance} />
+          <ActivityList
+            handleCreate={handleCreate}
+            image={image}
+            locations={locations}
+            navigation={navigation}
+            setRegion={setRegion}
+            region={region}
+          />
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: {
-    backgroundColor: WHITE,
-    flex: 1,
-  },
-  map: {
-    width: Dimensions.get('window').width,
-    height: 587,
-  },
-  navbar: {
-    flexDirection: 'row',
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-
-    paddingTop: 15,
-  },
-  navbarBackground: {
-    backgroundColor: WHITE,
-    // height: 83,
-    // height: 98,
-    height: Constants.statusBarHeight + 60,
-    position: 'absolute',
-    width: '100%',
-  },
-  navbarIcon: {
-    marginLeft: 27,
-    marginRight: 35,
-    marginTop: Constants.statusBarHeight - 10,
-  },
   container: {
     flex: 1,
-    // paddingTop: Constants.statusBarHeight,
   },
-  skip: {
-    position: 'absolute',
-    bottom: 25,
-    right: 25,
-    backgroundColor: TEAL_0,
-    width: 75,
-    height: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 25,
-  },
-  skipText: {
-    color: 'white',
-    fontWeight: '800',
-  },
-  popup: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'transparent',
-    position: 'absolute',
-  },
-  mapPopup: {
-    top: 110,
-    backgroundColor: 'white',
-    width: '95%',
-    alignSelf: 'center',
-    height: 250,
-    justifyContent: 'space-evenly',
-    borderRadius: 20,
-  },
-  mapPopupText: {
-    fontWeight: '400',
-    fontSize: 24,
-    color: TEAL_0,
-    width: '80%',
-    alignSelf: 'center',
-    textAlign: 'center',
-  },
-  navbarPlaceholder: {
-    backgroundColor: WHITE,
-    height: 45,
-    display: 'flex',
+  header: {},
+  navbar: {
+    backgroundColor: '#fff',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    paddingBottom: 26,
+    paddingHorizontal: 30,
+    paddingTop: Constants.statusBarHeight,
+    // height: 99,
   },
-  navbarLogo: {
-    height: 40,
-    width: 130,
+  navbarText: {
+    fontSize: 30,
+    fontWeight: '700',
+    color: TEAL_0,
+    marginTop: -4,
+    marginLeft: 18,
   },
-  activitiesImage: {
-    height: 30,
-    width: 30,
+  favorites: {
+    fontSize: 20,
   },
+  switch: {
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+  },
+  activeTab: {
+    alignItems: 'center',
+    borderBottomColor: TEAL_0,
+    borderBottomWidth: 1.5,
+    flex: 1,
+    paddingBottom: 14,
+  },
+  inactiveTab: {
+    alignItems: 'center',
+    borderBottomColor: '#E5E5E5',
+    borderBottomWidth: 1.5,
+    flex: 1,
+  },
+  activeText: {
+    color: TEAL_0,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  inactiveText: {},
 });

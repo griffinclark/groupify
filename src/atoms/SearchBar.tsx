@@ -18,7 +18,6 @@ export const SearchBar: React.FC<Props> = ({
   onInputChange,
   leftIcon,
   defaultValue,
-  selectTextOnFoucs,
 }: Props) => {
   const [input, setInput] = useState('');
 
@@ -26,40 +25,20 @@ export const SearchBar: React.FC<Props> = ({
     onInputChange(input);
   }, [input]);
   return (
-    <>
-      {selectTextOnFoucs ? (
-        <View>
-          <View style={styles.searchSection}>
-            {leftIcon}
-            <TextInput
-              style={styles.input}
-              placeholder={placeholder}
-              onChangeText={(e) => setInput(e)}
-              underlineColorAndroid="transparent"
-              testID="SearchBar"
-              onPressIn={onPressIn}
-              defaultValue={defaultValue}
-              selectTextOnFocus
-            />
-          </View>
-        </View>
-      ) : (
-        <View>
-          <View style={styles.searchSection}>
-            {leftIcon}
-            <TextInput
-              style={styles.input}
-              placeholder={placeholder}
-              onChangeText={(e) => setInput(e)}
-              underlineColorAndroid="transparent"
-              testID="SearchBar"
-              onPressIn={onPressIn}
-              defaultValue={defaultValue}
-            />
-          </View>
-        </View>
-      )}
-    </>
+    <View>
+      <View style={styles.searchSection}>
+        {leftIcon}
+        <TextInput
+          style={styles.input}
+          placeholder={placeholder}
+          onChangeText={(e) => setInput(e)}
+          underlineColorAndroid="transparent"
+          testID="SearchBar"
+          onPressIn={onPressIn}
+          defaultValue={defaultValue}
+        />
+      </View>
+    </View>
   );
 };
 

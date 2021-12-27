@@ -6,6 +6,7 @@ import { AppText } from '../atoms/AppText';
 import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
 import { copy } from '../res/groupifyCopy';
 import { GoogleLocation } from '../res/dataModels';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
   user?: User;
