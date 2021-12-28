@@ -7,7 +7,7 @@ import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { MediumDataDisplay } from '../organisms/OrganismsExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore } from 'aws-amplify';
 import { Plan, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { ScrollView } from 'react-native-gesture-handler';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore } from 'aws-amplify';
 import { Availability, User } from '../models';
 import { RoutePropParams } from '../res/root-navigation';
 import { Screen, Button, Title } from '../atoms/AtomsExports';

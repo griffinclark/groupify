@@ -26,12 +26,13 @@ const setup = () => render(<PlanInvite {...mockProps} />);
 describe('Plan Invite Screen', () => {
   describe('renders correctly', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
+      // jest.useFakeTimers();
       jest.clearAllMocks();
     });
 
     it('renders the screen', async () => {
       const { getByTestId } = setup();
+      jest.useFakeTimers();
 
       await waitFor(() => {
         getByTestId('PlanInviteScreen');

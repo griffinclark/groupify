@@ -15,7 +15,7 @@ import { User, Plan, Invitee } from '../models';
 import { TEAL, WHITE } from '../res/styles/Colors';
 import { ViewPlanTile } from '../organisms/ViewPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore } from 'aws-amplify';
 import GestureRecognizerView from 'rn-swipe-gestures';
 import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
 

@@ -4,7 +4,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/AtomsExports';
-import { API, Auth } from 'aws-amplify';
+import { API, Auth, DataStore } from 'aws-amplify';
 import { User } from '../models';
 import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
 import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
@@ -48,11 +48,15 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const getFriends = async () => {
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    const userQuery: any = await API.graphql({
-      query: queries.getUser,
-      variables: { id: route.params.currentUser.id },
-    });
-    const userFriends = userQuery.data.getUser.friends;
+    // const userQuery: any = await API.graphql({
+    //   query: queries.getUser,
+    //   variables: { id: route.params.currentUser.id },
+    // });
+    const userQuery = await DataStore.query(User, route.params.currentUser.id);
+    // const user = userQuery.map((user) => user);
+
+    const userFriends = userQuery?.friends;
+
     const friendList = [];
     if (userFriends) {
       for (let i = 0; i < userFriends.length; i++) {

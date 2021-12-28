@@ -10,7 +10,7 @@ import { AppText } from '../atoms/AppText';
 import { NextPlan, InvitedPreview, CreatedPlans } from '../organisms/OrganismsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore } from 'aws-amplify';
 import { User, Plan, Invitee } from '../models';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Image } from 'react-native-elements/dist/image/Image';

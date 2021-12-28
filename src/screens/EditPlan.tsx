@@ -6,7 +6,7 @@ import { BackChevronIcon, MapLinkIcon } from '../../assets/Icons/IconExports';
 import Constants from 'expo-constants';
 import { TEAL } from '../res/styles/Colors';
 import { RoutePropParams } from '../res/root-navigation';
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore } from 'aws-amplify';
 import { Plan } from '../models';
 import {
   formatDatabaseDate,

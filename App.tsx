@@ -4,7 +4,7 @@ import { globalStyles } from './src/res/styles/GlobalStyles';
 import { RootNavigation } from './src/res/root-navigation';
 import { User } from './src/models';
 import awsconfig from './src/aws-exports';
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore } from 'aws-amplify';
 import Amplify, { Auth, Hub } from 'aws-amplify';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
