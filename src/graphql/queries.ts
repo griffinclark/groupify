@@ -2,14 +2,14 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const syncUsers = /* GraphQL */ `
-  query SyncUsers(
-    $filter: ModelUserFilterInput
+export const syncPlans = /* GraphQL */ `
+  query SyncPlans(
+    $filter: ModelPlanFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncUsers(
+    syncPlans(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -17,11 +17,116 @@ export const syncUsers = /* GraphQL */ `
     ) {
       items {
         id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        planCreatorId
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          availability {
+            id
+            Sunday
+            Monday
+            Tuesday
+            Wednesday
+            Thursday
+            Friday
+            Saturday
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          notificationsSent {
+            nextToken
+            startedAt
+          }
+          notificationsRecieved {
+            nextToken
+            startedAt
+          }
+        }
+        arbitrations {
+          items {
+            id
+            stat
+            original_description
+            proposed_description
+            value_count
+            planID
+            planArbitrationsId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        invitees {
+          items {
+            id
+            name
+            phoneNumber
+            status
+            pushToken
+            planID
+            planInviteesId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getPlan = /* GraphQL */ `
+  query GetPlan($id: ID!) {
+    getPlan(id: $id) {
+      id
+      title
+      description
+      location
+      placeID
+      date
+      time
+      creatorID
+      planCreatorId
+      creator {
+        id
         phoneNumber
-        email
         name
         pushToken
         friends
+        email
         availability {
           id
           Sunday
@@ -42,30 +147,471 @@ export const syncUsers = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+      arbitrations {
+        items {
+          id
+          stat
+          original_description
+          proposed_description
+          value_count
+          planID
+          planArbitrationsId
+          createdBy {
+            id
+            name
+            phoneNumber
+            status
+            pushToken
+            planID
+            planInviteesId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          plan {
+            id
+            title
+            description
+            location
+            placeID
+            date
+            time
+            creatorID
+            planCreatorId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      invitees {
+        items {
+          id
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          planInviteesId
+          plan {
+            id
+            title
+            description
+            location
+            placeID
+            date
+            time
+            creatorID
+            planCreatorId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPlans = /* GraphQL */ `
+  query ListPlans(
+    $filter: ModelPlanFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPlans(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        planCreatorId
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          availability {
+            id
+            Sunday
+            Monday
+            Tuesday
+            Wednesday
+            Thursday
+            Friday
+            Saturday
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          notificationsSent {
+            nextToken
+            startedAt
+          }
+          notificationsRecieved {
+            nextToken
+            startedAt
+          }
+        }
+        arbitrations {
+          items {
+            id
+            stat
+            original_description
+            proposed_description
+            value_count
+            planID
+            planArbitrationsId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        invitees {
+          items {
+            id
+            name
+            phoneNumber
+            status
+            pushToken
+            planID
+            planInviteesId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
     }
   }
 `;
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      phoneNumber
-      email
-      name
-      pushToken
-      friends
-      availability {
+export const syncPlanArbitrations = /* GraphQL */ `
+  query SyncPlanArbitrations(
+    $filter: ModelPlanArbitrationFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPlanArbitrations(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
         id
-        Sunday
-        Monday
-        Tuesday
-        Wednesday
-        Thursday
-        Friday
-        Saturday
+        stat
+        original_description
+        proposed_description
+        value_count
+        planID
+        planArbitrationsId
+        createdBy {
+          id
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          planInviteesId
+          plan {
+            id
+            title
+            description
+            location
+            placeID
+            date
+            time
+            creatorID
+            planCreatorId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          planCreatorId
+          creator {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          arbitrations {
+            nextToken
+            startedAt
+          }
+          invitees {
+            nextToken
+            startedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getPlanArbitration = /* GraphQL */ `
+  query GetPlanArbitration($id: ID!) {
+    getPlanArbitration(id: $id) {
+      id
+      stat
+      original_description
+      proposed_description
+      value_count
+      planID
+      planArbitrationsId
+      createdBy {
+        id
+        name
+        phoneNumber
+        status
+        pushToken
+        planID
+        planInviteesId
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          planCreatorId
+          creator {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          arbitrations {
+            nextToken
+            startedAt
+          }
+          invitees {
+            nextToken
+            startedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        planCreatorId
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          availability {
+            id
+            Sunday
+            Monday
+            Tuesday
+            Wednesday
+            Thursday
+            Friday
+            Saturday
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          notificationsSent {
+            nextToken
+            startedAt
+          }
+          notificationsRecieved {
+            nextToken
+            startedAt
+          }
+        }
+        arbitrations {
+          items {
+            id
+            stat
+            original_description
+            proposed_description
+            value_count
+            planID
+            planArbitrationsId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        invitees {
+          items {
+            id
+            name
+            phoneNumber
+            status
+            pushToken
+            planID
+            planInviteesId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -80,29 +626,324 @@ export const getUser = /* GraphQL */ `
     }
   }
 `;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
+export const listPlanArbitrations = /* GraphQL */ `
+  query ListPlanArbitrations(
+    $filter: ModelPlanArbitrationFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listPlanArbitrations(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
-        phoneNumber
-        email
-        name
-        pushToken
-        friends
-        availability {
+        stat
+        original_description
+        proposed_description
+        value_count
+        planID
+        planArbitrationsId
+        createdBy {
           id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          planInviteesId
+          plan {
+            id
+            title
+            description
+            location
+            placeID
+            date
+            time
+            creatorID
+            planCreatorId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          planCreatorId
+          creator {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          arbitrations {
+            nextToken
+            startedAt
+          }
+          invitees {
+            nextToken
+            startedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncInvitees = /* GraphQL */ `
+  query SyncInvitees(
+    $filter: ModelInviteeFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncInvitees(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        phoneNumber
+        status
+        pushToken
+        planID
+        planInviteesId
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          planCreatorId
+          creator {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          arbitrations {
+            nextToken
+            startedAt
+          }
+          invitees {
+            nextToken
+            startedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getInvitee = /* GraphQL */ `
+  query GetInvitee($id: ID!) {
+    getInvitee(id: $id) {
+      id
+      name
+      phoneNumber
+      status
+      pushToken
+      planID
+      planInviteesId
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        planCreatorId
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          availability {
+            id
+            Sunday
+            Monday
+            Tuesday
+            Wednesday
+            Thursday
+            Friday
+            Saturday
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          notificationsSent {
+            nextToken
+            startedAt
+          }
+          notificationsRecieved {
+            nextToken
+            startedAt
+          }
+        }
+        arbitrations {
+          items {
+            id
+            stat
+            original_description
+            proposed_description
+            value_count
+            planID
+            planArbitrationsId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        invitees {
+          items {
+            id
+            name
+            phoneNumber
+            status
+            pushToken
+            planID
+            planInviteesId
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listInvitees = /* GraphQL */ `
+  query ListInvitees(
+    $filter: ModelInviteeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listInvitees(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        phoneNumber
+        status
+        pushToken
+        planID
+        planInviteesId
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          planCreatorId
+          creator {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          arbitrations {
+            nextToken
+            startedAt
+          }
+          invitees {
+            nextToken
+            startedAt
+          }
           _version
           _deleted
           _lastChangedAt
@@ -199,14 +1040,14 @@ export const listAvailabilitys = /* GraphQL */ `
     }
   }
 `;
-export const syncPlans = /* GraphQL */ `
-  query SyncPlans(
-    $filter: ModelPlanFilterInput
+export const syncUsers = /* GraphQL */ `
+  query SyncUsers(
+    $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncPlans(
+    syncUsers(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -214,59 +1055,11 @@ export const syncPlans = /* GraphQL */ `
     ) {
       items {
         id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        creatorID
-        creator {
-          id
-          phoneNumber
-          email
-          name
-          pushToken
-          friends
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        invitees {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getPlan = /* GraphQL */ `
-  query GetPlan($id: ID!) {
-    getPlan(id: $id) {
-      id
-      title
-      description
-      location
-      placeID
-      date
-      time
-      creatorID
-      creator {
-        id
         phoneNumber
-        email
         name
         pushToken
         friends
+        email
         availability {
           id
           Sunday
@@ -287,233 +1080,202 @@ export const getPlan = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
       }
-      invitees {
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      phoneNumber
+      name
+      pushToken
+      friends
+      email
+      availability {
+        id
+        Sunday
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      notificationsSent {
         items {
           id
-          name
-          phoneNumber
-          status
-          pushToken
-          planID
+          senderType
+          notificationID
+          senderID
+          recipientID
+          sender {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          recipient {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
+          notification {
+            id
+            body
+            data
+            ttl
+            messageSubtitle
+            sound
+            channel
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listPlans = /* GraphQL */ `
-  query ListPlans(
-    $filter: ModelPlanFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPlans(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        creatorID
-        creator {
+      notificationsRecieved {
+        items {
           id
-          phoneNumber
-          email
-          name
-          pushToken
-          friends
+          senderType
+          notificationID
+          senderID
+          recipientID
+          sender {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          recipient {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
+          notification {
+            id
+            body
+            data
+            ttl
+            messageSubtitle
+            sound
+            channel
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
         }
-        invitees {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+        nextToken
+        startedAt
       }
-      nextToken
-      startedAt
     }
   }
 `;
-export const syncInvitees = /* GraphQL */ `
-  query SyncInvitees(
-    $filter: ModelInviteeFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncInvitees(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        phoneNumber
-        status
-        pushToken
-        planID
-        plan {
-          id
-          title
-          description
-          location
-          placeID
-          date
-          time
-          creatorID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getInvitee = /* GraphQL */ `
-  query GetInvitee($id: ID!) {
-    getInvitee(id: $id) {
-      id
-      name
-      phoneNumber
-      status
-      pushToken
-      planID
-      plan {
-        id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        creatorID
-        creator {
-          id
-          phoneNumber
-          email
-          name
-          pushToken
-          friends
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        invitees {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listInvitees = /* GraphQL */ `
-  query ListInvitees(
-    $filter: ModelInviteeFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listInvitees(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        phoneNumber
-        status
-        pushToken
-        planID
-        plan {
-          id
-          title
-          description
-          location
-          placeID
-          date
-          time
-          creatorID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const usersByPhoneNumber = /* GraphQL */ `
-  query UsersByPhoneNumber(
-    $phoneNumber: AWSPhone
-    $sortDirection: ModelSortDirection
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
     $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    usersByPhoneNumber(
-      phoneNumber: $phoneNumber
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         phoneNumber
-        email
         name
         pushToken
         friends
+        email
         availability {
           id
           Sunday
@@ -534,154 +1296,38 @@ export const usersByPhoneNumber = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const usersByEmail = /* GraphQL */ `
-  query UsersByEmail(
-    $email: AWSEmail
-    $sortDirection: ModelSortDirection
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    usersByEmail(
-      email: $email
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        phoneNumber
-        email
-        name
-        pushToken
-        friends
-        availability {
-          id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const usersByName = /* GraphQL */ `
-  query UsersByName(
-    $name: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    usersByName(
-      name: $name
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        phoneNumber
-        email
-        name
-        pushToken
-        friends
-        availability {
-          id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const plansByCreator = /* GraphQL */ `
-  query PlansByCreator(
-    $creatorID: ID
-    $sortDirection: ModelSortDirection
-    $filter: ModelPlanFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    plansByCreator(
-      creatorID: $creatorID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        creatorID
-        creator {
-          id
-          phoneNumber
-          email
-          name
-          pushToken
-          friends
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        invitees {
+        notificationsSent {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+        notificationsRecieved {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
@@ -710,6 +1356,7 @@ export const inviteeByPhoneNUmber = /* GraphQL */ `
         status
         pushToken
         planID
+        planInviteesId
         plan {
           id
           title
@@ -719,6 +1366,28 @@ export const inviteeByPhoneNUmber = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
+          creator {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          arbitrations {
+            nextToken
+            startedAt
+          }
+          invitees {
+            nextToken
+            startedAt
+          }
           _version
           _deleted
           _lastChangedAt
@@ -758,6 +1427,7 @@ export const inviteesByPlan = /* GraphQL */ `
         status
         pushToken
         planID
+        planInviteesId
         plan {
           id
           title
@@ -767,6 +1437,28 @@ export const inviteesByPlan = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
+          creator {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          arbitrations {
+            nextToken
+            startedAt
+          }
+          invitees {
+            nextToken
+            startedAt
+          }
           _version
           _deleted
           _lastChangedAt
@@ -778,6 +1470,734 @@ export const inviteesByPlan = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const usersByPhoneNumber = /* GraphQL */ `
+  query UsersByPhoneNumber(
+    $phoneNumber: AWSPhone
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    usersByPhoneNumber(
+      phoneNumber: $phoneNumber
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const usersByName = /* GraphQL */ `
+  query UsersByName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    usersByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getNotificationFromTo = /* GraphQL */ `
+  query GetNotificationFromTo($id: ID!) {
+    getNotificationFromTo(id: $id) {
+      id
+      senderType
+      notificationID
+      senderID
+      recipientID
+      sender {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+      recipient {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      notification {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const listNotificationFromTos = /* GraphQL */ `
+  query ListNotificationFromTos(
+    $filter: ModelNotificationFromToFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNotificationFromTos(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        senderType
+        notificationID
+        senderID
+        recipientID
+        sender {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          availability {
+            id
+            Sunday
+            Monday
+            Tuesday
+            Wednesday
+            Thursday
+            Friday
+            Saturday
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          notificationsSent {
+            nextToken
+            startedAt
+          }
+          notificationsRecieved {
+            nextToken
+            startedAt
+          }
+        }
+        recipient {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          availability {
+            id
+            Sunday
+            Monday
+            Tuesday
+            Wednesday
+            Thursday
+            Friday
+            Saturday
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          notificationsSent {
+            nextToken
+            startedAt
+          }
+          notificationsRecieved {
+            nextToken
+            startedAt
+          }
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notification {
+          id
+          body
+          data
+          ttl
+          messageSubtitle
+          sound
+          channel
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          recipients {
+            nextToken
+            startedAt
+          }
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncNotificationFromTos = /* GraphQL */ `
+  query SyncNotificationFromTos(
+    $filter: ModelNotificationFromToFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncNotificationFromTos(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        senderType
+        notificationID
+        senderID
+        recipientID
+        sender {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          availability {
+            id
+            Sunday
+            Monday
+            Tuesday
+            Wednesday
+            Thursday
+            Friday
+            Saturday
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          notificationsSent {
+            nextToken
+            startedAt
+          }
+          notificationsRecieved {
+            nextToken
+            startedAt
+          }
+        }
+        recipient {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          availability {
+            id
+            Sunday
+            Monday
+            Tuesday
+            Wednesday
+            Thursday
+            Friday
+            Saturday
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          notificationsSent {
+            nextToken
+            startedAt
+          }
+          notificationsRecieved {
+            nextToken
+            startedAt
+          }
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notification {
+          id
+          body
+          data
+          ttl
+          messageSubtitle
+          sound
+          channel
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          recipients {
+            nextToken
+            startedAt
+          }
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getNotification = /* GraphQL */ `
+  query GetNotification($id: ID!) {
+    getNotification(id: $id) {
+      id
+      body
+      data
+      ttl
+      messageSubtitle
+      sound
+      channel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      recipients {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          sender {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          recipient {
+            id
+            phoneNumber
+            name
+            pushToken
+            friends
+            email
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          notification {
+            id
+            body
+            data
+            ttl
+            messageSubtitle
+            sound
+            channel
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const listNotifications = /* GraphQL */ `
+  query ListNotifications(
+    $filter: ModelNotificationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNotifications(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncNotifications = /* GraphQL */ `
+  query SyncNotifications(
+    $filter: ModelNotificationFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncNotifications(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          items {
+            id
+            senderType
+            notificationID
+            senderID
+            recipientID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
