@@ -1,6 +1,8 @@
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
+import { createNotification, createNotificationFromTo } from '../graphql/mutations';
+import { API, graphqlOperation } from 'aws-amplify';
 
 export const registerForPushNotifications = async (): Promise<void> => {
   if (Constants.isDevice) {
@@ -34,6 +36,8 @@ export const getExpoPushToken = async (): Promise<string> => {
 };
 
 export const sendPushNotification = async (
+  senderID: string,
+  recipientID: string,
   expoPushToken: string,
   title: string,
   body: string,
@@ -46,7 +50,6 @@ export const sendPushNotification = async (
     body: body,
     data: data,
   };
-  // console.log(JSON.stringify(message));
 
   await fetch('https://exp.host/--/api/v2/push/send', {
     method: 'POST',
@@ -57,4 +60,29 @@ export const sendPushNotification = async (
     },
     body: JSON.stringify(message),
   });
+
+  try {
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    const notificationResponse: any = await API.graphql(
+      graphqlOperation(createNotification, {
+        input: {
+          body: body,
+          messageSubtitle: title,
+        },
+      }),
+    );
+    const notificationID = notificationResponse.data.createNotification.id;
+    await API.graphql(
+      graphqlOperation(createNotificationFromTo, {
+        input: {
+          notificationID: notificationID,
+          senderID: senderID,
+          recipientID: recipientID,
+          senderType: 'USER',
+        },
+      }),
+    );
+  } catch (err) {
+    console.log('error:', err);
+  }
 };

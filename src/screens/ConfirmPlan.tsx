@@ -218,7 +218,14 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       if (user.length > 0) {
         console.log(user[0].pushToken);
         if (pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken) {
-          sendPushNotification(user[0].pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+          sendPushNotification(
+            currentUser.id,
+            user[0].id,
+            user[0].pushToken,
+            `You Have Been Invited by ${name}!!!`,
+            'Tap to open the app',
+            {},
+          );
         }
       } else {
         nonUsers.push(invitee);
