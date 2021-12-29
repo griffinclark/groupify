@@ -7,7 +7,8 @@ interface Props {
   onInputChange: (input: string) => void;
   placeholder?: string;
   onPressIn?: () => void;
-  leftIcon: any; //TODO what type goes here?
+  onPressOut?: () => void;
+  leftIcon: JSX.Element;
   defaultValue?: string;
   selectTextOnFoucs?: boolean;
 }
@@ -15,6 +16,7 @@ interface Props {
 export const SearchBar: React.FC<Props> = ({
   placeholder,
   onPressIn,
+  onPressOut,
   onInputChange,
   leftIcon,
   defaultValue,
@@ -35,6 +37,7 @@ export const SearchBar: React.FC<Props> = ({
           underlineColorAndroid="transparent"
           testID="SearchBar"
           onPressIn={onPressIn}
+          onPressOut={onPressOut}
           defaultValue={defaultValue}
         />
       </View>

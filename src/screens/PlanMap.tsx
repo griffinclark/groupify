@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import Constants from 'expo-constants';
 import { RoutePropParams } from '../res/root-navigation';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { AppText } from '../atoms/AppText';
-import { TEAL_0 } from '../res/styles/Colors';
+import { GREY_4, TEAL_0 } from '../res/styles/Colors';
 import { ActivityMap, ActivityList } from '../organisms/OrganismsExports';
 import { getCurrentUser } from './../res/utilFunctions';
 import { ActivitySlider } from '../molecules/MoleculesExports';
 import { getFavorites } from '../res/utilFavorites';
 import { copy } from '../res/groupifyCopy';
 import { GoogleLocation } from '../res/dataModels';
+import { WHITE } from './../res/styles/Colors';
+import { Screen } from '../atoms/Screen';
 
 export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
+    locations: GoogleLocation[];
+    passedLocation: string;
+    passedPlace: string;
   };
   route: RoutePropParams;
 }
@@ -38,17 +43,18 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     default: true,
   });
   const [page, setPage] = useState<string>('map');
-  const [locations, setLocations] = useState([]);
+  const [localLocations, setLocalLocations] = useState<GoogleLocation[]>([]);
   const [title, setTitle] = useState<string>();
   const [image, setImage] = useState<string>();
   const [distance, setDistance] = useState<number>(30);
+  const [locationQuery, setLocationQuery] = useState(route.params.userLocation);
+  const [placeQuery, setPlaceQuery] = useState(route.params.passedPlace);
 
   useEffect(() => {
     if (region.default) {
       getUserLocation();
     }
     update();
-    queryActivities();
   }, [userLocation, route.params.activity, distance]);
 
   useEffect(() => {
@@ -86,8 +92,8 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           longitudeDelta: 0.05,
           default: false,
         });
-
-        queryActivities();
+        setLocalLocations(route.params.locations);
+        console.log(locations);
       } catch (e) {
         console.log(e);
       }
@@ -100,25 +106,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     setImage(require('../../assets/groupify_icon_official.png'));
   };
-
-  const queryActivities = async () => {
-    if (route.params.activity === 'favorites') {
-      const favorites = await getFavorites();
-      setLocations(favorites);
-    } else {
-      const distanceMeters = 1609.34 * distance > 40000 ? 40000 : 1609.34 * distance;
-      const search =
-        'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-        `location=${userLocation.latitude},${userLocation.longitude}` +
-        `&radius=${distanceMeters}` +
-        `&query=${route.params.activity}` +
-        `&key=${GOOGLE_PLACES_API_KEY}`;
-      const response = await fetch(search);
-      const detail = await response.json();
-      setLocations(detail.results);
-    }
-  };
-
   const handleCreate = async (loc: GoogleLocation) => {
     const user = await getCurrentUser();
     navigation.navigate('PlanCreate', {
@@ -132,46 +119,21 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.navbar}>
-          <View style={{ flexDirection: 'row' }}>
-            <BackChevronIcon
-              onPress={() => {
-                navigation.goBack();
-              }}
-            />
-            <AppText style={styles.navbarText}>{title}</AppText>
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('ActivityFavorites', {});
-            }}
-          >
-            <AppText style={styles.favorites}>Favorites</AppText>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.switch}>
-          <View style={page === 'map' ? styles.activeTab : styles.inactiveTab}>
-            <TouchableOpacity onPress={() => setPage('map')}>
-              <AppText style={page === 'map' ? styles.activeText : styles.inactiveText}>Map</AppText>
-            </TouchableOpacity>
-          </View>
-
-          <View style={page === 'list' ? styles.activeTab : styles.inactiveTab}>
-            <TouchableOpacity onPress={() => setPage('list')}>
-              <AppText style={page === 'list' ? styles.activeText : styles.inactiveText}>List</AppText>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-
+    <Screen style={styles.container}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.goBack();
+        }}
+        style={styles.backButtonTemp}
+      >
+        <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
+        <Image source={require('../../assets/activity-relax.png')} style={styles.activitiesImage} />
+      </TouchableOpacity>
       {page === 'map' ? (
         <ActivityMap
           handleCreate={handleCreate}
           image={image}
-          locations={locations}
+          locations={localLocations}
           navigation={navigation}
           region={region}
           userLocation={userLocation}
@@ -182,14 +144,14 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           <ActivityList
             handleCreate={handleCreate}
             image={image}
-            locations={locations}
+            locations={localLocations}
             navigation={navigation}
             setRegion={setRegion}
             region={region}
           />
         </View>
       )}
-    </View>
+    </Screen>
   );
 };
 
@@ -208,11 +170,17 @@ const styles = StyleSheet.create({
     // height: 99,
   },
   navbarText: {
-    fontSize: 30,
+    fontSize: 16,
     fontWeight: '700',
-    color: TEAL_0,
+    alignSelf: 'center',
     marginTop: -4,
     marginLeft: 18,
+  },
+  backButtonTemp: {
+    borderBottomWidth: 1,
+    backgroundColor: WHITE,
+    borderBottomColor: GREY_4,
+    flexDirection: 'row',
   },
   favorites: {
     fontSize: 20,
@@ -240,4 +208,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   inactiveText: {},
+  navbarLogo: {
+    height: 45,
+    width: 130,
+  },
+  activitiesImage: {
+    height: 30,
+    width: 30,
+  },
 });
