@@ -5,27 +5,18 @@ import {
   View,
   Image,
   ScrollView,
-  StyleProp,
-  ViewStyle,
-  TextInput,
   Keyboard,
 } from 'react-native';
 import { Screen } from '../atoms/Screen';
-import { BLACK, GOLD_0, GREY_1, GREY_3, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
+import { BLACK, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
 import { AppText } from '../atoms/AppText';
 import { HomeNavBar } from '../molecules/HomeNavBar';
 import SvgUri from 'react-native-svg-uri';
-
-import { Button } from '../atoms/Button';
 import { SearchBar } from '../atoms/SearchBar';
-import { getCurrentUser } from '../res/utilFunctions';
 import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from './../molecules/ActivityCard';
-import { SearchSuggestionTile } from '../molecules/SearchSuggestionTile';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
-import { MapLinkIcon } from './../../assets/Icons/MapLink';
-import { Geometry } from 'react-native-google-places-autocomplete';
 import { TopNavBar } from '../molecules/TopNavBar';
 export interface Props {
   navigation: {
@@ -40,12 +31,12 @@ const activities: string[][] = [
   ['Nightlife', 'Events', 'Culture', 'Relax'],
 ];
 
-export const googlePlacesQuery: (text: string, userOverrideLocation: UserLocation) => GoogleLocation[] = async (
-  text,
-  userOverrideLocation,
-) => {
+export const googlePlacesQuery: (
+  text: string,
+  userOverrideLocation: UserLocation,
+) => Promise<GoogleLocation[]> = async (text, userOverrideLocation) => {
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
-
+  console.log(userOverrideLocation);
   const search =
     'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
     `location=${userOverrideLocation?.latitude},${userOverrideLocation.longitude}` +
@@ -105,11 +96,12 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen style={styles.screen}>
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[1]}>
-        <TopNavBar title="" navigation={navigation} displayGroupify={true} />
+        <TopNavBar title="" navigation={navigation} displayGroupify={true} route={route} targetScreen={'Home'} />
         <View style={styles.searchBar}>
           <View style={styles.searchBarContainer}>
             <SearchBar
               leftIcon={<MagnifyingGlassIcon />}
+              testID={'searchbar'}
               // onPressIn={() => setScreenToDisplay(ScreenName.LocationSearch)}
               onPressIn={() => {
                 navigation.navigate('TakeoverSearch', {
@@ -121,7 +113,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
               }}
               placeholder="Search for food, parks, coffee, etc"
               defaultValue={route.params.locationQuery}
-              onInputChange={(input) => {
+              onChangeText={(input) => {
                 if (input.length > 0) {
                   navigation.navigate('TakeoverSearch', {
                     navigation: navigation,

@@ -212,7 +212,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           {menuItemSelected === 'contacts' && (
             <View style={{ marginHorizontal: 20 }}>
               <View style={{ paddingVertical: 30, borderBottomWidth: 0.75, borderBottomColor: GRAY_LIGHT }}>
-                <SearchBar onInputChange={searchFriends} placeholder={copy.lookForFriends} />
+                <SearchBar onChangeText={searchFriends} placeholder={copy.lookForFriends} />
               </View>
               <View style={styles.contactsScrollContainer}>
                 <ScrollView>

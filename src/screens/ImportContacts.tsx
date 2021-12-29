@@ -124,7 +124,7 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
               {copy.selectContactsTitle}
             </AppText>
           </View>
-          <SearchBar onInputChange={searchContacts} />
+          <SearchBar onChangeText={searchContacts} />
           <View style={styles.flatListContainer}>
             <FlatList
               onScrollBeginDrag={Keyboard.dismiss}

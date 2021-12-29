@@ -1,6 +1,6 @@
 import { GoogleLocation, UserLocation } from '../res/dataModels';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TextInput, Keyboard } from 'react-native';
+import { StyleSheet, View, Keyboard } from 'react-native';
 import { Screen } from '../atoms/Screen';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -9,8 +9,7 @@ import { SearchBar } from '../atoms/SearchBar';
 import { googlePlacesQuery } from './SelectorMenu';
 import { RoutePropParams } from '../res/root-navigation';
 import { SearchSuggestionTile } from '../molecules/SearchSuggestionTile';
-import { BLACK, GOLD_0, GREY_6, WHITE } from '../res/styles/Colors';
-import { TEAL_0 } from './../res/styles/Colors';
+import { BLACK, WHITE } from '../res/styles/Colors';
 import { MapLinkIcon } from '../../assets/Icons/MapLink';
 
 interface Props {
@@ -38,9 +37,10 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
 
   useEffect(() => {
     setDataset(Dataset.SelectLocation);
-    if (userOverrideLocation != undefined) {
-      // console.log(userOverrideLocation);
-      // console.log(route.params.overrideLocation);
+    if (route.params.locationSearchInput == undefined) {
+      setLocationSearchInput('Current Location');
+    }
+    if (route.params.overrideLocation != undefined) {
       setUserOverrideLocation(route.params.overrideLocation);
     } else setUserOverrideLocation(route.params.userLocation);
   }, []);
@@ -76,6 +76,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
         return () => {
           navigation.navigate('PlanMap', {
             navigation: navigation,
+            locationSearchInput: locationSearchInput,
             route: route,
             locations: [location],
           });
@@ -86,25 +87,30 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
     }
   };
 
-  // TODO if myLocation != phone.getLocation, display the name of the location. Otherwise, display "Current Location"
   return (
     <Screen>
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[1]}>
-        <TopNavBar displayGroupify={false} title={'DO SOMETHING'} navigation={navigation} />
+        <TopNavBar
+          displayGroupify={false}
+          targetScreen={'SelectorMenu'}
+          title={'DO SOMETHING'}
+          navigation={navigation}
+          route={route}
+        />
         <View style={styles.stickySearchContainer}>
           <View style={styles.serachBar}>
-            <MagnifyingGlassIcon />
-            <TextInput
+            <SearchBar
+              leftIcon={<MagnifyingGlassIcon />}
               onPressOut={() => {
                 Keyboard.dismiss();
               }}
-              style={styles.input}
+              testID={'searchForLocationSearchbar'}
               onPressIn={async () => {
                 setDataset(Dataset.SelectLocation);
                 setSelectLocationDataset(await googlePlacesQuery(location, userOverrideLocation));
               }}
               placeholder="Search for food, parks, coffee, etc"
-              autoFocus
+              autoFocus={true}
               defaultValue={location}
               onChangeText={async (text: string) => {
                 setLocation(text);
@@ -116,9 +122,9 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
             />
           </View>
           <View style={styles.serachBar}>
-            <MapLinkIcon />
-            <TextInput
-              style={styles.input}
+            <SearchBar
+              // style={styles.input}
+              leftIcon={<MapLinkIcon />}
               placeholder={'placeholder'}
               onChangeText={async (text) => {
                 setLocationSearchInput(text);
@@ -127,15 +133,16 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                   setChangeUserLocations([]);
                 }
               }}
+              testID={'changeLocationSearchBar'}
               onPressOut={async () => {
                 Keyboard.dismiss();
                 setChangeUserLocations(await googlePlacesQuery(locationSearchInput, userOverrideLocation));
                 // TODO users have to tap twice to get out of search. Yuck
               }}
-              testID="SearchBar"
+              // testID="SearchBar"
               onPressIn={() => setDataset(Dataset.ChangeUserLocation)}
               defaultValue={locationSearchInput}
-              selectTextOnFocus
+              selectTextOnFocus={true}
             />
           </View>
         </View>
@@ -159,7 +166,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   serachBar: {
-    width: 334,
+    width: '100%',
     height: 45,
     marginTop: 19,
     // flex: 1,
@@ -167,11 +174,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderColor: GREY_6,
     // backgroundColor: GOLD_0,
-    borderWidth: 1,
     paddingHorizontal: 10,
-    borderRadius: 5,
   },
   input: {
     flex: 1,

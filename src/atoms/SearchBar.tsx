@@ -4,27 +4,33 @@ import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 import { BLACK, GREY_3, GREY_4, GREY_6 } from '../res/styles/Colors';
 
 interface Props {
-  onInputChange: (input: string) => void;
+  onChangeText: (input: string) => void;
   placeholder?: string;
   onPressIn?: () => void;
   onPressOut?: () => void;
   leftIcon: JSX.Element;
   defaultValue?: string;
+  autoFocus?: boolean;
   selectTextOnFoucs?: boolean;
+  selectTextOnFocus?: boolean;
+  testID: string;
 }
 
 export const SearchBar: React.FC<Props> = ({
   placeholder,
   onPressIn,
   onPressOut,
-  onInputChange,
+  onChangeText,
   leftIcon,
+  autoFocus,
   defaultValue,
+  selectTextOnFocus,
+  testID,
 }: Props) => {
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    onInputChange(input);
+    onChangeText(input);
   }, [input]);
   return (
     <View>
@@ -35,8 +41,11 @@ export const SearchBar: React.FC<Props> = ({
           placeholder={placeholder}
           onChangeText={(e) => setInput(e)}
           underlineColorAndroid="transparent"
-          testID="SearchBar"
+          testID={testID}
           onPressIn={onPressIn}
+          autoFocus={autoFocus}
+          selectTextOnFocus={selectTextOnFocus}
+          // TODO selectTextOnFocus not working
           onPressOut={onPressOut}
           defaultValue={defaultValue}
         />
@@ -47,7 +56,7 @@ export const SearchBar: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   searchSection: {
-    width: '100%',
+    width: 334,
     height: 45,
     flexDirection: 'row',
     justifyContent: 'center',

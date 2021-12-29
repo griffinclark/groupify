@@ -15,6 +15,7 @@ import { copy } from '../res/groupifyCopy';
 import { GoogleLocation } from '../res/dataModels';
 import { WHITE } from './../res/styles/Colors';
 import { Screen } from '../atoms/Screen';
+import { TopNavBar } from '../molecules/TopNavBar';
 
 export interface Props {
   navigation: {
@@ -117,15 +118,13 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.goBack();
-        }}
-        style={styles.backButtonTemp}
-      >
-        <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
-        <Image source={require('../../assets/activity-relax.png')} style={styles.activitiesImage} />
-      </TouchableOpacity>
+      <TopNavBar
+        targetScreen="SelectorMenu"
+        route={route}
+        title="DO SOMETHING"
+        displayGroupify={false}
+        navigation={navigation}
+      />
       {page === 'map' ? (
         <ActivityMap
           handleCreate={handleCreate}
