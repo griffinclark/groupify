@@ -37,7 +37,7 @@ export type RoutePropParams = {
     currentUser: User;
     currentUserPlan: Plan;
     step: string;
-    locationQuery?: string;
+    locationQuery: string;
     overrideLocation: UserLocation;
     locations: GoogleLocation[];
     phone: string;

@@ -47,8 +47,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   const [title, setTitle] = useState<string>();
   const [image, setImage] = useState<string>();
   const [distance, setDistance] = useState<number>(30);
-  const [locationQuery, setLocationQuery] = useState(route.params.userLocation);
-  const [placeQuery, setPlaceQuery] = useState(route.params.passedPlace);
 
   useEffect(() => {
     if (region.default) {
@@ -93,7 +91,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           default: false,
         });
         setLocalLocations(route.params.locations);
-        console.log(locations);
       } catch (e) {
         console.log(e);
       }

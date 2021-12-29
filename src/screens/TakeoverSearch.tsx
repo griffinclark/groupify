@@ -38,9 +38,11 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
 
   useEffect(() => {
     setDataset(Dataset.SelectLocation);
-    if (userOverrideLocation) {
+    if (userOverrideLocation != undefined) {
+      // console.log(userOverrideLocation);
+      // console.log(route.params.overrideLocation);
       setUserOverrideLocation(route.params.overrideLocation);
-    }
+    } else setUserOverrideLocation(route.params.userLocation);
   }, []);
 
   const getDataSet: () => GoogleLocation[] = () => {
@@ -64,6 +66,8 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
             latitude: location.geometry.location.lat,
           };
           setUserOverrideLocation(newLocation);
+          console.log('User override location ');
+          console.log(userOverrideLocation);
           setLocationSearchInput(location.name);
           setDataset(Dataset.SelectLocation);
         };
@@ -95,7 +99,10 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                 Keyboard.dismiss();
               }}
               style={styles.input}
-              onPressIn={() => setDataset(Dataset.SelectLocation)}
+              onPressIn={async () => {
+                setDataset(Dataset.SelectLocation);
+                setSelectLocationDataset(await googlePlacesQuery(location, userOverrideLocation));
+              }}
               placeholder="Search for food, parks, coffee, etc"
               autoFocus
               defaultValue={location}

@@ -44,9 +44,6 @@ export const googlePlacesQuery: (text: string, userOverrideLocation: UserLocatio
   text,
   userOverrideLocation,
 ) => {
-  // if (userOverrideLocation == undefined) {
-  //   setUserOverrideLocation(route.params.userLocation);
-  // }
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
   const search =
@@ -68,11 +65,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     ActivitySelector = 'ACTIVITYSELECTOR',
     LocationChange = 'LOCATIONCHANGE',
   }
-  const [screenToDisplay, setScreenToDisplay] = useState(ScreenName.ActivitySelector);
-  const [suggestedLocations, setSuggestedLocations] = useState<GoogleLocation[]>([]);
-  const [suggestedLocationOverrides, setSuggestedLocationOverrides] = useState<GoogleLocation[]>([]);
   const [userOverrideLocation, setUserOverrideLocation] = useState(route.params.userLocation);
-  const [locationInput, setLocationSearchInput] = useState('');
   const [featureLocations, setFeatureLocations] = useState<GoogleLocation[]>([]);
 
   useEffect(() => {
@@ -105,33 +98,6 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const getSearchBarStyle = (): StyleProp<ViewStyle> => {
-    if (screenToDisplay == ScreenName.LocationSearch || screenToDisplay == ScreenName.LocationChange) {
-      return {
-        position: 'absolute',
-        alignSelf: 'center',
-        marginTop: 19,
-        width: 334,
-        borderRadius: 5,
-        backgroundColor: WHITE,
-        zIndex: 1,
-      };
-    } else if (screenToDisplay == ScreenName.ActivitySelector) {
-      return {
-        position: 'absolute',
-        alignSelf: 'center',
-        marginTop: 209,
-        width: '100%',
-        padding: 10,
-        height: 65,
-        backgroundColor: WHITE,
-        alignItems: 'center',
-        zIndex: 1,
-        // FIXME stickyHeaderIndicies is forcing this above the image, when it should be behind the image
-      };
-    }
-  };
-
   const navigateToMapView = (locations: GoogleLocation[]) => {
     navigation.navigate('PlanMap', { navigation: { navigation }, route: { route }, locations: locations });
   };
@@ -140,7 +106,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     <Screen style={styles.screen}>
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[1]}>
         <TopNavBar title="" navigation={navigation} displayGroupify={true} />
-        <View style={getSearchBarStyle()}>
+        <View style={styles.searchBar}>
           <View style={styles.searchBarContainer}>
             <SearchBar
               leftIcon={<MagnifyingGlassIcon />}
@@ -149,137 +115,63 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
                 navigation.navigate('TakeoverSearch', {
                   navigation: navigation,
                   route: route,
-                  locationQuery: 'TODO: pass search input back and forth',
+                  locationQuery: route.params.locationQuery,
                   userLocation: userOverrideLocation,
                 });
               }}
               placeholder="Search for food, parks, coffee, etc"
-              onInputChange={async (text: string) => {
-                setSuggestedLocations(await googlePlacesQuery(text, userOverrideLocation));
-                if (text.length == 0) {
-                  setSuggestedLocations([]);
+              defaultValue={route.params.locationQuery}
+              onInputChange={(input) => {
+                if (input.length > 0) {
+                  navigation.navigate('TakeoverSearch', {
+                    navigation: navigation,
+                    route: route,
+                    locationQuery: route.params.locationQuery,
+                    userLocation: userOverrideLocation,
+                  });
+                } else {
+                  Keyboard.dismiss();
                 }
               }}
             />
           </View>
         </View>
 
-        {screenToDisplay == ScreenName.ActivitySelector ? (
-          <>
-            <View style={styles.activitySelectorRoot}>
-              <View>
-                <Image source={require('../../assets/activity-selector-background-image.png')} />
-              </View>
-              <View style={styles.activitySelector}>
-                {activities.map((activityArr: string[]) => (
-                  <View style={styles.activitiesRow} key={activityArr[0]}>
-                    {activityArr.map((activity: string) => (
-                      <TouchableOpacity
-                        onPress={async () => navigateToMapView(await googlePlacesQuery(activity, userOverrideLocation))}
-                        testID={activity}
-                        key={activity}
-                      >
-                        <View style={styles.activitiesImageContainer}>
-                          {/* <View style={styles.activitiesImage}> */}
-                          {getSVG(activity)}
-                          {/* </View> */}
-                          <AppText style={styles.iconText}>{activity}</AppText>
-                        </View>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
+        <View style={styles.activitySelectorRoot}>
+          <View>
+            <Image source={require('../../assets/activity-selector-background-image.png')} />
+          </View>
+          <View style={styles.activitySelector}>
+            {activities.map((activityArr: string[]) => (
+              <View style={styles.activitiesRow} key={activityArr[0]}>
+                {activityArr.map((activity: string) => (
+                  <TouchableOpacity
+                    onPress={async () => navigateToMapView(await googlePlacesQuery(activity, userOverrideLocation))}
+                    testID={activity}
+                    key={activity}
+                  >
+                    <View style={styles.activitiesImageContainer}>
+                      {/* <View style={styles.activitiesImage}> */}
+                      {getSVG(activity)}
+                      {/* </View> */}
+                      <AppText style={styles.iconText}>{activity}</AppText>
+                    </View>
+                  </TouchableOpacity>
                 ))}
               </View>
-              <View style={styles.activitySuggestions}></View>
-            </View>
-            <View style={styles.locationSuggestions}>
-              {featureLocations.length > 0 ? (
-                featureLocations.map((location: GoogleLocation) => {
-                  return (
-                    <ActivityCard key={location.place_id} navigation={navigation} location={location} map={false} />
-                  );
-                })
-              ) : (
-                <AppText>Fetching feature locations</AppText>
-              )}
-            </View>
-          </>
-        ) : (
-          <>
-            <View style={styles.locationSearchContainer}>
-              <View>
-                <View style={styles.searchSection}>
-                  <MapLinkIcon />
-                  <TextInput
-                    style={styles.input}
-                    placeholder={'placeholder'}
-                    onChangeText={async (text) => {
-                      setLocationSearchInput(text);
-                      setSuggestedLocationOverrides(await googlePlacesQuery(text, userOverrideLocation));
-                      if (text.length == 0) {
-                        setSuggestedLocationOverrides([]);
-                      }
-                    }}
-                    onPressOut={async () => {
-                      setSuggestedLocations(await googlePlacesQuery(locationInput, userOverrideLocation));
-                      // TODO users have to tap twice to get out of search. Yuck
-                    }}
-                    testID="SearchBar"
-                    onPressIn={() => setScreenToDisplay(ScreenName.LocationChange)}
-                    defaultValue={locationInput}
-                    selectTextOnFocus={true}
-                  />
-                </View>
-              </View>
-            </View>
-            <View style={styles.locationSearchSuggestions}>
-              {screenToDisplay == ScreenName.LocationSearch ? (
-                suggestedLocations.length > 0 ? (
-                  suggestedLocations.map((location: GoogleLocation) => {
-                    return (
-                      <SearchSuggestionTile
-                        image={true}
-                        key={location.place_id}
-                        location={location}
-                        onPress={() => {
-                          navigation.navigate('PlanMap', {
-                            navigation: navigation,
-                            route: route,
-                            locations: [location],
-                            overrideLocation: userOverrideLocation,
-                          });
-                        }}
-                      />
-                    );
-                  })
-                ) : (
-                  <AppText>Location search view </AppText>
-                )
-              ) : suggestedLocationOverrides.length > 0 ? (
-                suggestedLocationOverrides.map((location: GoogleLocation) => {
-                  return (
-                    <SearchSuggestionTile
-                      image={false}
-                      key={location.place_id}
-                      location={location}
-                      onPress={() => {
-                        const newLocation: UserLocation = {
-                          longitude: location.geometry.location.lng,
-                          latitude: location.geometry.location.lat,
-                        };
-                        setUserOverrideLocation(newLocation);
-                        setLocationSearchInput(location.name);
-                        setScreenToDisplay(ScreenName.LocationSearch);
-                      }}
-                    />
-                  );
-                })
-              ) : (
-                <AppText>Change my location</AppText>
-              )}
-            </View>
-          </>
-        )}
+            ))}
+          </View>
+          <View style={styles.activitySuggestions}></View>
+        </View>
+        <View style={styles.locationSuggestions}>
+          {featureLocations.length > 0 ? (
+            featureLocations.map((location: GoogleLocation) => {
+              return <ActivityCard key={location.place_id} navigation={navigation} location={location} map={false} />;
+            })
+          ) : (
+            <AppText>Fetching feature locations</AppText>
+          )}
+        </View>
       </ScrollView>
 
       <HomeNavBar
@@ -411,5 +303,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: WHITE,
     zIndex: 2,
+  },
+  searchBar: {
+    position: 'absolute',
+    alignSelf: 'center',
+    marginTop: 209,
+    width: '100%',
+    padding: 10,
+    height: 65,
+    backgroundColor: WHITE,
+    alignItems: 'center',
+    zIndex: 1,
   },
 });
