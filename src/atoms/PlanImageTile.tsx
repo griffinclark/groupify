@@ -12,49 +12,50 @@ interface Props {
 
 export const PlanImageTile: React.FC<Props> = ({ plan }: Props) => {
   const [photoURI, setPhotoURI] = useState('');
+
   useEffect(() => {
     (async () => {
       if (plan.placeID) {
         setPhotoURI(await loadPhoto(plan.placeID));
       }
+      console.log(photoURI !== '');
     })();
   }, []);
 
   return (
     <View>
-      {photoURI ? (
-        <Image source={{ uri: photoURI }} style={styles.image} resizeMode="cover">
-          <View style={styles.imageDetailContainer}>
-            <AppText maxFontSizeMultiplier={1} style={styles.imageDetail}>
-              {plan.date &&
-                formatDayOfWeekDate(plan.date)
-                  .toString()
-                  .substring(formatDayOfWeekDate(plan.date).toString().indexOf(' ') + 1)}
-            </AppText>
-          </View>
-          <View style={styles.imageDetailContainer}>
-            <AppText maxFontSizeMultiplier={1} style={styles.imageDetail}>
-              {plan.time && formatTime(plan.time)}
-            </AppText>
-          </View>
-          <View style={styles.imageDetailContainer}>
-            <AppText maxFontSizeMultiplier={1} style={styles.imageDetail}>
-              {plan.title}
-            </AppText>
-          </View>
-        </Image>
-      ) : null}
+      <Image source={photoURI ? { uri: photoURI } : require('../../assets/PlanDefault.png') } style={styles.image} resizeMode="cover">
+        {/* <View style={styles.imageDetailContainer}>
+          <AppText maxFontSizeMultiplier={1} style={styles.imageDetail}>
+            {plan.date &&
+              formatDayOfWeekDate(plan.date)
+                .toString()
+                .substring(formatDayOfWeekDate(plan.date).toString().indexOf(' ') + 1)}
+
+          </AppText>
+        </View>
+        <View style={styles.imageDetailContainer}>
+          <AppText maxFontSizeMultiplier={1} style={styles.imageDetail}>
+            {plan.time && formatTime(plan.time)}
+          </AppText>
+        </View>
+        <View style={styles.imageDetailContainer}>
+          <AppText maxFontSizeMultiplier={1} style={styles.imageDetail}>
+            {plan.title}
+          </AppText>
+        </View> */}
+      </Image>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   image: {
-    height: 154,
+    height: 188,
     width: '100%',
-    borderRadius: 5,
+    // borderRadius: 5,
     justifyContent: 'center',
-    paddingRight: 6,
+    // paddingRight: 6,
     alignItems: 'flex-end',
   },
   imageDetail: {

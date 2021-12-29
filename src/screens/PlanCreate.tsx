@@ -43,7 +43,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
         setName(data.eventData.title);
       }
       if (data.eventData.date && data.eventData.date != date) {
-        setDate(data.eventData.title);
+        setDate(data.eventData.date);
       }
       if (data.eventData.time && data.eventData.time != time) {
         setTime(data.eventData.time);

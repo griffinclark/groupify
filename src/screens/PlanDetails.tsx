@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, ScrollView, RefreshControl } from 'react-native';
 import { Screen, AppText, PlanImageTile } from '../atoms/AtomsExports';
 import { TEAL, GRAY_LIGHT } from '../res/styles/Colors';
-import { Plan, Invitee, Status } from '../models';
+import { Plan, Invitee, Status, User } from '../models';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { PlanDetailsTile, Details } from '../molecules/MoleculesExports';
 import { WhiteButton } from '../atoms/WhiteButton';
@@ -31,6 +31,20 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   const [selectorOption, setSelectorOption] = useState('ACCEPTED');
   const [planCreator, setPlanCreator] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [isGoing, setIsGoing] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User>();
+
+  useEffect(() => {
+    const awaitUser = async () => {
+      const user = await getCurrentUser();
+      setCurrentUser(user);
+      loadInvitees();
+      isCreator();
+
+      console.log(currentUser);
+    };
+    awaitUser();
+  }, []);
 
   useEffect(() => {
     loadInvitees();
@@ -51,14 +65,21 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
         setUserInvitee(invitee);
         break;
       }
+      if(currentUser && invitee.id === currentUser.id) {
+        setIsGoing(true);
+      }
     }
     setRefreshing(false);
   };
 
   const isCreator = async () => {
-    const user = await getCurrentUser();
-    if (user.id === plan.creatorID) {
+    console.log(currentUser);
+
+    if (currentUser && currentUser.id === plan.creatorID) {
       setPlanCreator(true);
+      setIsGoing(true);
+
+      console.log(isGoing);
     }
   };
 
@@ -96,11 +117,16 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
         <AppText style={styles.title}>Plan Details</AppText>
       </View>
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanDetailsRefresh} />}>
-        <View style={styles.bodyContainer}>
+        <View>
+          {isGoing && 
+            <View>You are going to this!</View>
+          }
           <PlanImageTile plan={plan} />
-          <Details plan={plan} />
-          <PlanDetailsTile navigation={navigation} creator={planCreator} plan={plan} />
-          <AppText style={{ fontSize: 16, fontWeight: '700' }}>Who&apos;s going?</AppText>
+          <View style={styles.bodyContainer}>
+            <Details plan={plan} />
+            <PlanDetailsTile navigation={navigation} creator={planCreator} plan={plan} />
+            <AppText style={{ fontSize: 16, fontWeight: '700' }}>Who&apos;s going?</AppText>
+          </View>
         </View>
         <View style={styles.inviteeListContainer}>
           <View style={styles.selector}>

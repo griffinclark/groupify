@@ -98,10 +98,12 @@ export const formatDatabaseDate = (date: string): string => {
     }
   }
   if (date.length === 8) {
+    console.log('in 8');
     const newDate = 20 + date.substring(6, 8) + '-' + '0' + date.substring(0, 1) + '-' + '0' + date.substring(2, 3);
     return newDate;
   }
   if (date.length === 9 && date.substring(0, date.indexOf('/')).length == 2) {
+    console.log('in 9 1');
     const year = date.substring(date.lastIndexOf('/') + 1);
     const month = date.substring(0, date.indexOf('/'));
     const day = 0 + date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'));
@@ -109,16 +111,19 @@ export const formatDatabaseDate = (date: string): string => {
     return newDate;
   }
   if (date.length === 9 && date.substring(0, date.indexOf('/')).length == 1) {
+    console.log('in 9 2');
+
     const year = date.substring(date.lastIndexOf('/') + 1);
     const month = 0 + date.substring(0, date.indexOf('/'));
     const day = date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'));
     const newDate = year + '-' + month + '-' + day;
     return newDate;
   }
-  if (date.length === 10) {
-    const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
-    return newDate;
-  }
+  // if (date.length === 10) {
+    //const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+    // return date;
+  // }
+
   return date;
 };
 
