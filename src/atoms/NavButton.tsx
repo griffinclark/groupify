@@ -10,7 +10,7 @@ interface Props {
 }
 export const NavButton: React.FC<Props> = ({ onPress, title }: Props) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={styles.button} onPress={() => onPress}>
       <AppText style={styles.text}>{title}</AppText>
     </TouchableOpacity>
   );

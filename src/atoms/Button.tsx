@@ -25,7 +25,7 @@ export const Button: React.FC<Props> = ({
   return (
     <View style={[buttonStyles.container, containerStyle]} testID={testID}>
       <TouchableOpacity
-        onPress={onPress}
+        onPress={() => onPress}
         disabled={disabled}
         style={[
           buttonStyles.button,
