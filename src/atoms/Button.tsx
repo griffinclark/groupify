@@ -1,5 +1,5 @@
 import React from 'react';
-import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, View, GestureResponderEvent } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, WHITE, TEAL } from '../res/styles/Colors';
 import { AppText } from './AppText';
@@ -46,20 +46,6 @@ export const Button: React.FC<Props> = ({
         </AppText>
       </TouchableOpacity>
     </View>
-
-    // <View >
-    //   <TouchableOpacity
-    //     onPress={() => onPress}
-    //     // disabled={disabled}
-    //
-    //   >
-    //     <AppText
-    //
-    //     >
-    //       {title}
-    //     </AppText>
-    //   </TouchableOpacity>
-    // </View>
   );
 };
 
