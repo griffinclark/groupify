@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Image,
-  ScrollView,
-  Keyboard,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image, ScrollView, Keyboard } from 'react-native';
 import { Screen } from '../atoms/Screen';
 import { BLACK, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
 import { AppText } from '../atoms/AppText';
@@ -99,11 +92,8 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         <TopNavBar title="" navigation={navigation} displayGroupify={true} route={route} targetScreen={'Home'} />
         <View style={styles.searchBar}>
           <View style={styles.searchBarContainer}>
-            <SearchBar
-              leftIcon={<MagnifyingGlassIcon />}
-              testID={'searchbar'}
-              // onPressIn={() => setScreenToDisplay(ScreenName.LocationSearch)}
-              onPressIn={() => {
+            <TouchableOpacity
+              onPress={() => {
                 navigation.navigate('TakeoverSearch', {
                   navigation: navigation,
                   route: route,
@@ -111,21 +101,27 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
                   userLocation: userOverrideLocation,
                 });
               }}
-              placeholder="Search for food, parks, coffee, etc"
-              defaultValue={route.params.locationQuery}
-              onChangeText={(input) => {
-                if (input.length > 0) {
-                  navigation.navigate('TakeoverSearch', {
-                    navigation: navigation,
-                    route: route,
-                    locationQuery: route.params.locationQuery,
-                    userLocation: userOverrideLocation,
-                  });
-                } else {
-                  Keyboard.dismiss();
-                }
-              }}
-            />
+            >
+              {/* TODO make the SearchBar just a textfield that looks like a searchbar */}
+              <SearchBar
+                leftIcon={<MagnifyingGlassIcon />}
+                testID={'searchbar'}
+                placeholder="Search for food, parks, coffee, etc"
+                defaultValue={route.params.locationQuery}
+                onChangeText={(input) => {
+                  if (input.length > 0) {
+                    navigation.navigate('TakeoverSearch', {
+                      navigation: navigation,
+                      route: route,
+                      locationQuery: route.params.locationQuery,
+                      userLocation: userOverrideLocation,
+                    });
+                  } else {
+                    Keyboard.dismiss();
+                  }
+                }}
+              />
+            </TouchableOpacity>
           </View>
         </View>
 
