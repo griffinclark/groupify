@@ -28,7 +28,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
     ChangeUserLocation = 'CHANGELOCATION',
     SelectLocation = 'SELECTLOCATION',
   }
-  const [location, setLocation] = useState(route.params.locationQuery);
+  const [location, setLocation] = useState(route.params.locationQuery); //FIXME this shouldn't exist
   const [changeUserLocations, setChangeUserLocations] = useState<GoogleLocation[]>([]);
   const [selectLocationDataset, setSelectLocationDataset] = useState<GoogleLocation[]>([]);
   const [dataset, setDataset] = useState(Dataset.SelectLocation);
@@ -74,11 +74,20 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
 
       case Dataset.SelectLocation:
         return () => {
+          // navigation.navigate('PlanMap', {
+          //   navigation: navigation,
+          //   locationSearchInput: locationSearchInput,
+          //   route: route,
+          //   locations: [location],
+          // });
+          const locationsToPass: GoogleLocation[] = [];
+          locationsToPass.push(location);
+          console.log(locationsToPass);
           navigation.navigate('PlanMap', {
-            navigation: navigation,
-            locationSearchInput: locationSearchInput,
-            route: route,
-            locations: [location],
+            navigation: { navigation },
+            route: { route },
+            locations: { locationsToPass },
+            userLocation: userOverrideLocation,
           });
         };
       default:

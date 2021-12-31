@@ -26,6 +26,7 @@ export const AppText: React.FC<Props> = ({
     <Text
       maxFontSizeMultiplier={maxFontSizeMultiplier}
       numberOfLines={numberOfLines}
+      ellipsizeMode="tail"
       onPress={onPress}
       style={[{ fontFamily: 'Brandon-Grotesque' }, style]}
     >

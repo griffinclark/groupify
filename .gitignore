@@ -107,3 +107,8 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 expoStart.sh
+amplify/backend/types/amplify-dependent-resources-ref.d.ts
+amplify/README.md
+amplify/team-provider-info.json
+amplify/backend/types/amplify-dependent-resources-ref.d.ts
+amplify/backend/types/amplify-dependent-resources-ref.d.ts

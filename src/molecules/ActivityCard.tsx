@@ -61,7 +61,7 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation }: Props) =
   };
 
   return (
-    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('PlanMap', { activity: location.name })}>
+    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('PlanMap', { locations: [location] })}>
       <View style={styles.leftCol}>
         <View style={styles.imageContainer}>
           {location.photos ? (

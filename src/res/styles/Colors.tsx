@@ -15,7 +15,7 @@ export const GREY_4 = '#C4C4C4';
 export const GREY_5 = '#E0E0E0';
 export const GREY_6 = '#EEEEEE';
 export const GREY_7 = '#FAFAFA';
-export const GREY_8 = '#616060';
+export const GREY_8 = '#767676';
 export const RED = '#E71717';
 
 //NEW COLOR SCALE

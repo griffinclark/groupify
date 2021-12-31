@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Image, ScrollView, Keyboard } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { Screen } from '../atoms/Screen';
-import { BLACK, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
+import { BLACK, GREY_4, GREY_6, GREY_8, WHITE } from '../res/styles/Colors';
 import { AppText } from '../atoms/AppText';
 import { HomeNavBar } from '../molecules/HomeNavBar';
 import SvgUri from 'react-native-svg-uri';
-import { SearchBar } from '../atoms/SearchBar';
 import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from './../molecules/ActivityCard';
@@ -29,7 +28,6 @@ export const googlePlacesQuery: (
   userOverrideLocation: UserLocation,
 ) => Promise<GoogleLocation[]> = async (text, userOverrideLocation) => {
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
-  console.log(userOverrideLocation);
   const search =
     'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
     `location=${userOverrideLocation?.latitude},${userOverrideLocation.longitude}` +
@@ -44,17 +42,13 @@ export const googlePlacesQuery: (
 };
 
 export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
-  enum ScreenName {
-    LocationSearch = 'LOCATIONSEARCH',
-    ActivitySelector = 'ACTIVITYSELECTOR',
-    LocationChange = 'LOCATIONCHANGE',
-  }
+
   const [userOverrideLocation, setUserOverrideLocation] = useState(route.params.userLocation);
-  const [featureLocations, setFeatureLocations] = useState<GoogleLocation[]>([]);
+  const [featuredLocations, setFeaturedLocations] = useState<GoogleLocation[]>([]);
 
   useEffect(() => {
     const getFeatureLocations = async () => {
-      setFeatureLocations(await googlePlacesQuery('park', userOverrideLocation));
+      setFeaturedLocations(await googlePlacesQuery('park', userOverrideLocation));
     };
     getFeatureLocations();
     setUserOverrideLocation(route.params.userLocation);
@@ -83,7 +77,14 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   const navigateToMapView = (locations: GoogleLocation[]) => {
-    navigation.navigate('PlanMap', { navigation: { navigation }, route: { route }, locations: locations });
+    console.log('locations: ');
+    console.log(locations);
+    navigation.navigate('PlanMap', {
+      navigation: { navigation },
+      route: { route },
+      locations: locations,
+      userLocation: userOverrideLocation,
+    });
   };
 
   return (
@@ -91,40 +92,24 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[1]}>
         <TopNavBar title="" navigation={navigation} displayGroupify={true} route={route} targetScreen={'Home'} />
         <View style={styles.searchBar}>
-          <View style={styles.searchBarContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('TakeoverSearch', {
-                  navigation: navigation,
-                  route: route,
-                  locationQuery: route.params.locationQuery,
-                  userLocation: userOverrideLocation,
-                });
-              }}
-            >
-              {/* TODO make the SearchBar just a textfield that looks like a searchbar */}
-              <SearchBar
-                leftIcon={<MagnifyingGlassIcon />}
-                testID={'searchbar'}
-                placeholder="Search for food, parks, coffee, etc"
-                defaultValue={route.params.locationQuery}
-                onChangeText={(input) => {
-                  if (input.length > 0) {
-                    navigation.navigate('TakeoverSearch', {
-                      navigation: navigation,
-                      route: route,
-                      locationQuery: route.params.locationQuery,
-                      userLocation: userOverrideLocation,
-                    });
-                  } else {
-                    Keyboard.dismiss();
-                  }
-                }}
-              />
-            </TouchableOpacity>
-          </View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              navigation.navigate('TakeoverSearch', {
+                navigation: navigation,
+                route: route,
+                locationQuery: route.params.locationQuery,
+                userLocation: userOverrideLocation,
+              });
+            }}
+          >
+            <View style={styles.searchBarContainer}>
+              <View style={styles.magnifyingGlassIcon}>
+                <MagnifyingGlassIcon />
+              </View>
+              <AppText style={styles.searchBarText}>Search for food, parks, coffee, etc</AppText>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
-
         <View style={styles.activitySelectorRoot}>
           <View>
             <Image source={require('../../assets/activity-selector-background-image.png')} />
@@ -134,14 +119,15 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
               <View style={styles.activitiesRow} key={activityArr[0]}>
                 {activityArr.map((activity: string) => (
                   <TouchableOpacity
-                    onPress={async () => navigateToMapView(await googlePlacesQuery(activity, userOverrideLocation))}
+                    onPress={async () => {
+                      console.log('navigating to map view');
+                      navigateToMapView(await googlePlacesQuery(activity, userOverrideLocation));
+                    }}
                     testID={activity}
                     key={activity}
                   >
                     <View style={styles.activitiesImageContainer}>
-                      {/* <View style={styles.activitiesImage}> */}
                       {getSVG(activity)}
-                      {/* </View> */}
                       <AppText style={styles.iconText}>{activity}</AppText>
                     </View>
                   </TouchableOpacity>
@@ -152,8 +138,8 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           <View style={styles.activitySuggestions}></View>
         </View>
         <View style={styles.locationSuggestions}>
-          {featureLocations.length > 0 ? (
-            featureLocations.map((location: GoogleLocation) => {
+          {featuredLocations.length > 0 ? (
+            featuredLocations.map((location: GoogleLocation) => {
               return <ActivityCard key={location.place_id} navigation={navigation} location={location} map={false} />;
             })
           ) : (
@@ -224,13 +210,19 @@ const styles = StyleSheet.create({
     // pushes "or" text down to the correct height:
     marginTop: 190,
   },
-  activitySelectorSpacing: {
-    // height: 380,
+  magnifyingGlassIcon: {
+    padding: 15,
   },
   searchBarContainer: {
     width: 334,
+    height: 45,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderColor: GREY_6,
+    borderWidth: 1,
     borderRadius: 5,
-    backgroundColor: WHITE,
   },
   activitySelectorRoot: {
     position: 'absolute',
@@ -272,6 +264,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
     borderRadius: 5,
+  },
+  searchBarText: {
+    color: GREY_8,
   },
   input: {
     flex: 1,

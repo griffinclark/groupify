@@ -1,25 +1,21 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Image } from 'react-native';
+import { ImageBackground, StyleSheet } from 'react-native';
 
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image: any;
 }
 
-export const MapIcon: React.FC<Props> = ({ image }: Props) => {
-  return (
-    <ImageBackground source={require('../MapIcon.png')} style={styles.background}>
-      <Image source={image} style={styles.image} />
-    </ImageBackground>
-  );
+export const MapIcon: React.FC<Props> = () => {
+  return <ImageBackground source={require('../locationPins/Location_Base.png')} style={styles.background} />;
 };
 
 const styles = StyleSheet.create({
   background: {
     // flex: 1,
-    height: 71,
     alignItems: 'center',
-    width: 49,
+    height: 32,
+    width: 25,
   },
   image: {
     height: 22,

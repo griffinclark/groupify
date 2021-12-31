@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import Constants from 'expo-constants';
 import { RoutePropParams } from '../res/root-navigation';
-import { BackChevronIcon } from '../../assets/Icons/IconExports';
-import { AppText } from '../atoms/AppText';
-import { GREY_4, TEAL_0 } from '../res/styles/Colors';
-import { ActivityMap, ActivityList } from '../organisms/OrganismsExports';
-import { getCurrentUser } from './../res/utilFunctions';
-import { ActivitySlider } from '../molecules/MoleculesExports';
-import { getFavorites } from '../res/utilFavorites';
-import { copy } from '../res/groupifyCopy';
+import { GOLD_0, GREY_4, GREY_8, TEAL_0 } from '../res/styles/Colors';
 import { GoogleLocation } from '../res/dataModels';
-import { WHITE } from './../res/styles/Colors';
+import { WHITE, GREY_6 } from './../res/styles/Colors';
 import { Screen } from '../atoms/Screen';
 import { TopNavBar } from '../molecules/TopNavBar';
+import { HomeNavBar } from '../molecules/HomeNavBar';
+import MapView from 'react-native-map-clustering';
+import { Marker } from 'react-native-maps';
+import { MapIcon } from './../../assets/Icons/MapIcon';
+import { AppText } from '../atoms/AppText';
+import { MagnifyingGlassIcon } from './../../assets/Icons/MagnifyingGlass';
 
 export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
-    locations: GoogleLocation[];
-    passedLocation: string;
-    passedPlace: string;
+    push: (ev: string, {}) => void;
   };
   route: RoutePropParams;
+  locations: GoogleLocation[];
+  passedLocation: string;
+  passedPlace: string;
 }
 
 // FIXME secret is just being stored in text in Groupify!!!
@@ -43,31 +43,24 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     longitudeDelta: 0.001,
     default: true,
   });
-  const [page, setPage] = useState<string>('map');
-  const [localLocations, setLocalLocations] = useState<GoogleLocation[]>([]);
-  const [title, setTitle] = useState<string>();
-  const [image, setImage] = useState<string>();
-  const [distance, setDistance] = useState<number>(30);
+  const [localLocations, setLocalLocations] = useState<GoogleLocation[]>([]); //TODO rename
+  const [mapIcon, setMapIcon] = useState<string>();
+  const [distance, setDistance] = useState<number>(30); //TODO does this do anything? 
 
   useEffect(() => {
     if (region.default) {
+      console.log('changing region');
       getUserLocation();
     }
-    update();
-  }, [userLocation, route.params.activity, distance]);
-
-  useEffect(() => {
-    setPage('map');
-  }, [region]);
+  }, [userLocation, route.params.activity, distance]); //FIXME the fuck are the second two?
 
   useEffect(() => {
     if (route.params.place != undefined) {
-      setPage('map');
       setRegion(route.params.place);
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      setImage(require('../../assets/activity-fav.png'));
+      setMapIcon(require('../../assets/locationPins/Location_Base.png'));
     }
-  }, [route.params.place]);
+  }, [route.params.place]); //FIXME the fuck is place?
 
   const getUserLocation = async () => {
     const { status } = await Location.requestPermissionsAsync();
@@ -91,29 +84,11 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           longitudeDelta: 0.05,
           default: false,
         });
-        setLocalLocations(route.params.locations);
+        setLocalLocations(route.params.locations); //FIXME the fuck is locations?
       } catch (e) {
         console.log(e);
       }
     }
-  };
-
-  const update = () => {
-    setTitle('copy.foodActivityTile');
-
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    setImage(require('../../assets/groupify_icon_official.png'));
-  };
-  const handleCreate = async (loc: GoogleLocation) => {
-    const user = await getCurrentUser();
-    navigation.navigate('PlanCreate', {
-      currentUser: user,
-      data: {
-        eventData: {
-          location: loc.formatted_address,
-        },
-      },
-    });
   };
 
   return (
@@ -125,28 +100,79 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         displayGroupify={false}
         navigation={navigation}
       />
-      {page === 'map' ? (
-        <ActivityMap
-          handleCreate={handleCreate}
-          image={image}
-          locations={localLocations}
-          navigation={navigation}
-          region={region}
-          userLocation={userLocation}
-        />
+      {region.default == true ? (
+        <>
+          <AppText numberOfLines={2}>Loading map</AppText>
+          {/* TODO AppText not truncating properly */}
+        </>
       ) : (
-        <View>
-          <ActivitySlider distance={distance} setDistance={setDistance} />
-          <ActivityList
-            handleCreate={handleCreate}
-            image={image}
-            locations={localLocations}
-            navigation={navigation}
-            setRegion={setRegion}
-            region={region}
-          />
-        </View>
+        <>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              navigation.navigate('TakeoverSearch', {
+                navigation: navigation,
+                route: route,
+                locationQuery: route.params.locationQuery,
+                userLocation: userLocation,
+              });
+            }}
+          >
+            <View style={styles.searchBarContainer}>
+              <View style={styles.magnifyingGlassIcon}>
+                <MagnifyingGlassIcon />
+              </View>
+              <AppText style={styles.searchBarText}>Current location</AppText>
+            </View>
+          </TouchableWithoutFeedback>
+
+          <MapView
+            initialRegion={region}
+            style={styles.map}
+            showsUserLocation={true}
+            animationEnabled={false}
+            showsBuildings={true}
+            showsCompass={false}
+            showsTraffic={true}
+            userInterfaceStyle="light"
+            clusterColor={GOLD_0}
+            // radius={40}
+            showsPointsOfInterest={false}
+          >
+            <Marker
+              coordinate={{
+                latitude: userLocation.latitude,
+                longitude: userLocation.longitude,
+              }}
+            >
+              <View style={styles.userMarker} />
+            </Marker>
+            {localLocations.map((loc) => (
+              <Marker
+                coordinate={{
+                  latitude: loc.geometry.location.lat,
+                  longitude: loc.geometry.location.lng,
+                }}
+                onPress={() => console.log('pinned pressed')}
+                key={loc.place_id}
+                style={styles.marker}
+              >
+                {/* TODO change icon on press */}
+                <MapIcon image={mapIcon} />
+                <Text style={styles.mapText}>{loc.name}</Text>
+              </Marker>
+            ))}
+          </MapView>
+        </>
       )}
+
+      <HomeNavBar
+        locations={[]}
+        user={route.params.currentUser}
+        navigation={navigation}
+        userPlans={[]}
+        userLocation={userLocation}
+        invitedPlans={[]}
+      />
     </Screen>
   );
 };
@@ -211,5 +237,51 @@ const styles = StyleSheet.create({
   activitiesImage: {
     height: 30,
     width: 30,
+  },
+  map: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height - (105 + Constants.statusBarHeight),
+  },
+  userMarker: {
+    backgroundColor: TEAL_0,
+    borderColor: WHITE,
+    borderRadius: 12.5,
+    borderWidth: 3,
+    height: 25,
+    width: 25,
+  },
+  marker: {
+    position: 'absolute',
+    alignItems: 'center',
+    width: 100,
+  },
+  mapText: {
+    fontWeight: '800',
+    textAlign: 'center',
+    color: TEAL_0,
+    // textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 20,
+    textShadowColor: WHITE,
+  },
+  magnifyingGlassIcon: {
+    padding: 15,
+  },
+  searchBarContainer: {
+    width: 334,
+    zIndex: 1,
+    height: 45,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderColor: GREY_6,
+    borderWidth: 1,
+    borderRadius: 5,
+    position: 'absolute',
+    marginTop: 90,
+    backgroundColor: WHITE,
+  },
+  searchBarText: {
+    color: GREY_8,
   },
 });

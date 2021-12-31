@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Constants from 'expo-constants';
-import { ActivityCard } from '../molecules/ActivityCard';
 import { MapIcon } from '../../assets/Icons/IconExports';
 import { TEAL_0, WHITE } from '../res/styles/Colors';
 import { getFavorites } from '../res/utilFavorites';
 import { useIsFocused } from '@react-navigation/native';
 import { GoogleLocation } from './../res/dataModels';
+import { SvgUri, SvgXml } from 'react-native-svg';
 
 export interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,24 +31,7 @@ export const ActivityMap: React.FC<Props> = ({
   region,
   userLocation,
 }: Props) => {
-  const [card, setCard] = useState<GoogleLocation>();
-  const [favoritesArr, setFavoritesArr] = useState([]);
-
-  useEffect(() => {
-    queryFavorites();
-  }, []);
-
   const isFocused = useIsFocused();
-
-  useEffect(() => {
-    queryFavorites();
-  }, [isFocused]);
-
-  const queryFavorites = async () => {
-    const favorites = await getFavorites();
-    const favArr = favorites.map((ele: GoogleLocation) => ele.place_id);
-    setFavoritesArr(favArr);
-  };
 
   return (
     <View style={styles.container}>
@@ -76,15 +59,16 @@ export const ActivityMap: React.FC<Props> = ({
               latitude: loc.geometry.location.lat,
               longitude: loc.geometry.location.lng,
             }}
-            onPress={() => setCard(loc)}
+            onPress={() => console.log('pinned pressed')}
             key={loc.place_id}
             style={{ position: 'absolute' }}
           >
             <MapIcon image={image} />
+            {/* <SvgXml width="20" height="20" xml={require('../../assets/locationPins/Location_Selected.svg')} /> */}
           </Marker>
         ))}
       </MapView>
-      {card && (
+      {/* {card && (
         <View style={{ position: 'absolute', bottom: 0 }}>
           <ActivityCard
             favoritesArr={favoritesArr}
@@ -96,7 +80,7 @@ export const ActivityMap: React.FC<Props> = ({
             image={image}
           />
         </View>
-      )}
+      )} */}
     </View>
   );
 };
