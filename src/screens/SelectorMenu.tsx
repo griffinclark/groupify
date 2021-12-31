@@ -5,7 +5,7 @@ import { BLACK, GREY_4, GREY_6, GREY_8, WHITE } from '../res/styles/Colors';
 import { AppText } from '../atoms/AppText';
 import { HomeNavBar } from '../molecules/HomeNavBar';
 import SvgUri from 'react-native-svg-uri';
-import { GoogleLocation, UserLocation } from '../res/dataModels';
+import { GoogleLocation, XYLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from './../molecules/ActivityCard';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
@@ -18,20 +18,21 @@ export interface Props {
   };
   route: RoutePropParams;
 }
-const activities: string[][] = [
+// Stored as 2d array to make it really easy to edit where options show up in the activity selector
+export const activities: string[][] = [
   ['Food', 'Outdoors', 'Shop', 'Coffee', 'Fitness'],
   ['Nightlife', 'Events', 'Culture', 'Relax'],
 ];
 
-export const googlePlacesQuery: (
-  text: string,
-  userOverrideLocation: UserLocation,
-) => Promise<GoogleLocation[]> = async (text, userOverrideLocation) => {
+export const googlePlacesQuery: (text: string, userOverrideLocation: XYLocation) => Promise<GoogleLocation[]> = async (
+  text,
+  userOverrideLocation,
+) => {
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const search =
     'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-    `location=${userOverrideLocation?.latitude},${userOverrideLocation.longitude}` +
-    `&radius=${50000}` +
+    `location=${userOverrideLocation?.lat},${userOverrideLocation.lng}` +
+    `&radius=${5000}` + // meters
     `&query=${text}` +
     `&key=${GOOGLE_PLACES_API_KEY}`;
   const response = await fetch(search);
@@ -42,16 +43,13 @@ export const googlePlacesQuery: (
 };
 
 export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
-
-  const [userOverrideLocation, setUserOverrideLocation] = useState(route.params.userLocation);
   const [featuredLocations, setFeaturedLocations] = useState<GoogleLocation[]>([]);
 
   useEffect(() => {
     const getFeatureLocations = async () => {
-      setFeaturedLocations(await googlePlacesQuery('park', userOverrideLocation));
+      setFeaturedLocations(await googlePlacesQuery('park', route.params.tempUserLocation));
     };
     getFeatureLocations();
-    setUserOverrideLocation(route.params.userLocation);
   }, []);
 
   const getSVG = (str: string) => {
@@ -76,14 +74,13 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const navigateToMapView = (locations: GoogleLocation[]) => {
-    console.log('locations: ');
-    console.log(locations);
+  const navigateToMapView = (placesUserWantsToGo: GoogleLocation[], placesUserWantsToGoQuery: string) => {
     navigation.navigate('PlanMap', {
       navigation: { navigation },
       route: { route },
-      locations: locations,
-      userLocation: userOverrideLocation,
+      placesUserWantsToGo: { placesUserWantsToGo },
+      placesUserWantsToGoQuery: { placesUserWantsToGoQuery },
+      tempUserLocationQuery: '',
     });
   };
 
@@ -97,8 +94,9 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
               navigation.navigate('TakeoverSearch', {
                 navigation: navigation,
                 route: route,
-                locationQuery: route.params.locationQuery,
-                userLocation: userOverrideLocation,
+                tempUserLocationQuery: '',
+                placesUserWantsToGoQuery: '',
+                //TODO @joni do we want to clear user search on navigate back to SelectorMenu?
               });
             }}
           >
@@ -121,7 +119,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
                   <TouchableOpacity
                     onPress={async () => {
                       console.log('navigating to map view');
-                      navigateToMapView(await googlePlacesQuery(activity, userOverrideLocation));
+                      navigateToMapView(await googlePlacesQuery(activity, route.params.tempUserLocation), activity);
                     }}
                     testID={activity}
                     key={activity}
@@ -154,7 +152,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         navigation={navigation}
         userPlans={[]}
         invitedPlans={[]}
-        userLocation={userOverrideLocation ? userOverrideLocation : route.params.userLocation}
+        userLocation={route.params.userLocation}
       />
     </Screen>
   );

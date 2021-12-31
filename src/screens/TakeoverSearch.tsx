@@ -1,4 +1,4 @@
-import { GoogleLocation, UserLocation } from '../res/dataModels';
+import { GoogleLocation, XYLocation } from '../res/dataModels';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 import { Screen } from '../atoms/Screen';
@@ -14,8 +14,8 @@ import { MapLinkIcon } from '../../assets/Icons/MapLink';
 
 interface Props {
   locationQuery: string;
-  userLocation: UserLocation;
-  overrideLocation: UserLocation;
+  userLocation: XYLocation;
+  tempUserLocation: XYLocation;
   navigation: {
     goBack: () => void;
     navigate: (ev: string, {}) => void;
@@ -28,29 +28,29 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
     ChangeUserLocation = 'CHANGELOCATION',
     SelectLocation = 'SELECTLOCATION',
   }
-  const [location, setLocation] = useState(route.params.locationQuery); //FIXME this shouldn't exist
-  const [changeUserLocations, setChangeUserLocations] = useState<GoogleLocation[]>([]);
-  const [selectLocationDataset, setSelectLocationDataset] = useState<GoogleLocation[]>([]);
+  const [placesUserWantsToGoResults, setPlacesUserWantsToGoResults] = useState<GoogleLocation[]>([]);
+  const [tempUserLocationResults, setTempUserLocationResults] = useState<GoogleLocation[]>([]);
   const [dataset, setDataset] = useState(Dataset.SelectLocation);
-  const [userOverrideLocation, setUserOverrideLocation] = useState(route.params.overrideLocation);
-  const [locationSearchInput, setLocationSearchInput] = useState('Current Location');
+  const [tempUserLocation, setTempUserLocation] = useState<XYLocation>();
+  const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState<string>();
+  const [tempUserLocationQuery, setTempUserLocationQuery] = useState<string>();
 
   useEffect(() => {
-    setDataset(Dataset.SelectLocation);
-    if (route.params.locationSearchInput == undefined) {
-      setLocationSearchInput('Current Location');
+    setDataset(Dataset.SelectLocation); // defualt
+    if (route.params.tempUserLocationQuery == undefined) {
+      setTempUserLocationQuery('Current Location');
+    } else {
+      setTempUserLocationQuery(route.params.tempUserLocationQuery);
     }
-    if (route.params.overrideLocation != undefined) {
-      setUserOverrideLocation(route.params.overrideLocation);
-    } else setUserOverrideLocation(route.params.userLocation);
+    setTempUserLocation(route.params.tempUserLocation);
   }, []);
 
   const getDataSet: () => GoogleLocation[] = () => {
     switch (dataset) {
       case Dataset.ChangeUserLocation:
-        return changeUserLocations;
+        return tempUserLocationResults;
       case Dataset.SelectLocation:
-        return selectLocationDataset;
+        return placesUserWantsToGoResults;
       default:
         console.log('Error selecting dataset');
         return [];
@@ -61,11 +61,11 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
     switch (dataset) {
       case Dataset.ChangeUserLocation:
         return () => {
-          const newLocation: UserLocation = {
-            longitude: location.geometry.location.lng,
-            latitude: location.geometry.location.lat,
+          const newLocation: XYLocation = {
+            lng: location.geometry.location.lng,
+            lat: location.geometry.location.lat,
           };
-          setUserOverrideLocation(newLocation);
+          setTempUserLocation(newLocation);
           console.log('User override location ');
           console.log(userOverrideLocation);
           setLocationSearchInput(location.name);

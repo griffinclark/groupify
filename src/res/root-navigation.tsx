@@ -36,12 +36,8 @@ export type RoutePropParams = {
     currentUser: User;
     currentUserPlan: Plan;
     step: string;
-    locationQuery: string;
-    locationSearchInput: string;
-    overrideLocation: UserLocation;
-    locations: GoogleLocation[];
     phone: string;
-    userLocation: UserLocation;
+    userLocation: XYLocation;
     invitedPlans: Plan[];
     userPlans: Plan[];
     option: string;
@@ -67,6 +63,10 @@ export type RoutePropParams = {
         message: string;
       };
     };
+    tempUserLocationQuery: string;
+    tempUserLocation: XYLocation;
+    placesUserWantsToGoQuery: string;
+    placesUserWantsToGoResults: GoogleLocation[];
   };
 };
 

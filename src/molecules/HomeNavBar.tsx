@@ -48,8 +48,11 @@ export const HomeNavBar: React.FC<Props> = ({
           //   navigation.push('ActivitySelector', { currentUser: user });
           // }}
           onPress={() => {
-            console.log(userLocation);
-            navigation.navigate('SelectorMenu', { locations: locations, userLocation: userLocation });
+            navigation.navigate('SelectorMenu', {
+              locations: locations,
+              userLocation: userLocation,
+              tempUserLocation: userLocation,
+            });
           }}
         >
           <CreatePlanIcon />

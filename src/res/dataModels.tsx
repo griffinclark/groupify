@@ -35,11 +35,6 @@ export interface XYLocation {
   lat: number;
 }
 
-export interface UserLocation {
-  latitude: number;
-  longitude: number;
-}
-
 export interface GoogleLocation {
   business_status: string;
   formatted_address: string;
