@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Image, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image, ScrollView } from 'react-native';
 import { Screen } from '../atoms/Screen';
-import { BLACK, GREY_4, GREY_6, GREY_8, WHITE } from '../res/styles/Colors';
+import { BLACK, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
 import { AppText } from '../atoms/AppText';
 import { HomeNavBar } from '../molecules/HomeNavBar';
-import SvgUri from 'react-native-svg-uri';
-import { GoogleLocation } from '../res/dataModels';
+import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from './../molecules/ActivityCard';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
@@ -19,6 +18,7 @@ export interface Props {
     push: () => void;
   };
   route: RoutePropParams;
+  userLocation: UserLocation;
 }
 // Stored as 2d array to make it really easy to edit where options show up in the activity selector
 export const activities: string[][] = [
@@ -104,6 +104,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           <SearchbarWithoutFeedback
             navigation={navigation}
             route={route}
+            userLocation={route.params.userLocation}
             icon={<MagnifyingGlassIcon />}
             placeholderText="Search for food, parks, coffee, etc"
             tempUserLocation={route.params.tempUserLocation}
@@ -121,17 +122,21 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
                 {activityArr.map((activity: string) => (
                   <TouchableOpacity
                     onPress={async () => {
+                      console.log(route.params.userLocation);
+
                       const activities: GoogleLocation[] = await googlePlacesQuery(
                         activity,
                         route.params.userLocation,
                         'activity',
                       );
+
                       console.log(route.params.userLocation);
                       navigation.navigate('PlanMap', {
                         navigation: { navigation },
                         route: { route },
                         placesUserWantsToGoQuery: { activity },
                         tempUserLocationQuery: '',
+                        userLocation: route.params.userLocation,
                         placesUserWantsToGoResults: activities,
                         tempUserLocation: route.params.tempUserLocation,
                       });

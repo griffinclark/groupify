@@ -1,4 +1,4 @@
-import { GoogleLocation, NavigationProps, UserLocation, XYLocation } from '../res/dataModels';
+import { GoogleLocation, NavigationProps, Photo, UserLocation } from '../res/dataModels';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 import { Screen } from '../atoms/Screen';
@@ -14,8 +14,8 @@ import { googlePlacesQuery } from '../res/utilFunctions';
 
 interface Props {
   locationQuery: string;
-  userLocation: XYLocation;
-  tempUserLocation: XYLocation;
+  userLocation: UserLocation;
+  tempUserLocation: UserLocation;
   navigation: NavigationProps;
   route: RoutePropParams;
 }
@@ -33,7 +33,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
   const [tempUserLocationQuery, setTempUserLocationQuery] = useState<string>();
 
   useEffect(() => {
-    setDataset(Dataset.SelectLocation); // defualt
+    setDataset(Dataset.SelectLocation);
     setPlacesUserWantsToGoQuery(route.params.placesUserWantsToGoQuery);
     setTempUserLocationQuery(route.params.tempUserLocationQuery);
     if (route.params.tempUserLocationQuery.length == 0) {
@@ -41,10 +41,6 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
     }
     setTempUserLocation(route.params.tempUserLocation);
   }, []);
-
-  useEffect(() => {
-    // TODO add 'current location' to the 0th position
-  }, tempUserLocation);
 
   const getDataSet: () => GoogleLocation[] = () => {
     switch (dataset) {
@@ -56,6 +52,22 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
         console.log('Error selecting dataset');
         return [];
     }
+  };
+
+  const placehodlerPhoto: Photo = {
+    photo_reference:
+      'Aap_uEAaObHoUCrr6U-GNsZoP3Hl_pOvGmPU4VKM2loAQ7mPp_-mo4HqjNG2mE4rW-RBHbjNul-uN-b6djsWbcAroHqFbQE-aAGIwZ6HRbbKaGHc71aHddczUS4pA1xHtebC-2rnSnQG5k-lHfz-1vzBJdjPhxvgQ8aTlGELmfhWC_Yn317M',
+  };
+  const origionalUserLocation: GoogleLocation = {
+    geometry: {
+      location: {
+        lng: route.params.userLocation.longitude,
+        lat: route.params.userLocation.latitude,
+      },
+    },
+    name: 'Current Location',
+    place_id: 'manually entered search tile',
+    photos: [placehodlerPhoto],
   };
 
   return (
@@ -103,15 +115,12 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                 setDataset(Dataset.ChangeUserLocation);
                 // FIXME indicate to the user that they have not changed their location until a location is selected from the list
                 setTempUserLocationQuery(text);
-                await googlePlacesQuery(text, tempUserLocation, 'changeLocation').then(
-                  (res) => {
-                    setTempUserLocationResults(res);
-                  },
-                  (rej) => {
-                    console.log(rej);
-                    //TODO create a default network not available error
-                  },
-                );
+                const noCurrentLocationArr = await googlePlacesQuery(text, tempUserLocation, 'changeLocation');
+                const currentLocation0Arr: GoogleLocation[] = [origionalUserLocation];
+                noCurrentLocationArr.forEach((location) => {
+                  currentLocation0Arr.push(location);
+                });
+                setTempUserLocationResults(currentLocation0Arr);
               }}
               testID={'changeLocationSearchBar'}
               onPressOut={async () => {
@@ -122,7 +131,14 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                 // TODO users have to tap twice to get out of search. Yuck
               }}
               // testID="SearchBar"
-              onPressIn={() => setDataset(Dataset.ChangeUserLocation)}
+              onPressIn={() => {
+                if (tempUserLocationQuery == 'Current Location') {
+                  setTempUserLocationQuery('');
+                  setTempUserLocation(route.params.userLocation);
+                  setTempUserLocationResults([origionalUserLocation]);
+                }
+                setDataset(Dataset.ChangeUserLocation);
+              }}
               defaultValue={tempUserLocationQuery}
               selectTextOnFocus={true}
             />
@@ -141,9 +157,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                       longitude: location.geometry.location.lng,
                       latitude: location.geometry.location.lat,
                     };
-                    console.log(newLocation);
                     setTempUserLocation(newLocation);
-                    console.log(tempUserLocation);
                     setTempUserLocationQuery(location.name);
                     setPlacesUserWantsToGoResults(
                       await googlePlacesQuery(placesUserWantsToGoQuery, newLocation, 'activity'),

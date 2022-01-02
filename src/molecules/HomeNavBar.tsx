@@ -49,7 +49,7 @@ export const HomeNavBar: React.FC<Props> = ({
           // }}
           onPress={() => {
             navigation.navigate('SelectorMenu', {
-              locations: locations,
+              locations: locations, // TODO is this needed?
               userLocation: userLocation,
               tempUserLocation: userLocation,
             });

@@ -13,6 +13,7 @@ interface Props {
   placesUserWantsToGoQuery: string;
   tempUserLocationQuery: string;
   navigation: NavigationProps;
+  userLocation: UserLocation;
 }
 
 export const SearchbarWithoutFeedback: React.FC<Props> = ({
@@ -21,6 +22,7 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
   icon,
   placeholderText,
   tempUserLocationQuery,
+  userLocation,
   placesUserWantsToGoQuery,
   tempUserLocation,
 }: Props) => {
@@ -32,6 +34,7 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
           navigation: navigation,
           route: route,
           tempUserLocation: tempUserLocation,
+          userLocation: userLocation,
           placesUserWantsToGoQuery: placesUserWantsToGoQuery,
           tempUserLocationQuery: tempUserLocationQuery,
           //TODO @joni do we want to clear user search on navigate back to SelectorMenu?

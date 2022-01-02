@@ -319,9 +319,9 @@ export const respondToPlan = async (accept: boolean, plan: Plan): Promise<void> 
 
 export const googlePlacesQuery: (
   text: string,
-  tempUserLocation: UserLocation,
+  userLocation: UserLocation,
   searchType: string,
-) => Promise<GoogleLocation[]> = async (text, tempUserLocation, searchType) => {
+) => Promise<GoogleLocation[]> = async (text, userLocation, searchType) => {
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const searchResults: GoogleLocation[] = [];
   switch (searchType) {
@@ -329,7 +329,7 @@ export const googlePlacesQuery: (
       let unfilteredLocations: GoogleLocation[] = [];
       const search =
         'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-        `location=${tempUserLocation?.latitude},${tempUserLocation.longitude}` +
+        `location=${userLocation?.latitude},${userLocation.longitude}` +
         `&query=${text}` +
         // '&type=point_of_interest' +
         `&key=${GOOGLE_PLACES_API_KEY}`;
@@ -387,7 +387,7 @@ export const googlePlacesQuery: (
     case 'changeLocation':
       const changeLocSearch =
         'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-        `location=${tempUserLocation?.latitude},${tempUserLocation.longitude}` +
+        `location=${userLocation?.latitude},${userLocation.longitude}` +
         `&query=${text}` +
         '&type=locality' +
         `&key=${GOOGLE_PLACES_API_KEY}`;
@@ -409,7 +409,7 @@ export const googlePlacesQuery: (
   // If we have results, return the results. If there are no results, re-run the query with one less character and return that
   if (searchResults.length > 0 || text.length == 0) {
     return searchResults;
-  } else return await googlePlacesQuery(text.substring(0, text.length - 1), tempUserLocation, searchType);
+  } else return await googlePlacesQuery(text.substring(0, text.length - 1), userLocation, searchType);
 };
 
 export const removePastPlans = (plans: Plan[]): Plan[] => {
