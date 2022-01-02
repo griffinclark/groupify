@@ -1,26 +1,54 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable prettier/prettier */
-/* eslint-disable import/no-default-export */
-import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
-import { FontAwesome5 , Feather} from '@expo/vector-icons';
-import tw from 'tailwind-react-native-classnames';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { FontAwesome5, Feather } from '@expo/vector-icons';
 
-const FooterCard = () => {
-    return (
-        <View style={tw`bg-white mt-2`}>
-        <View style={tw`mt-3 py-12 bg-green-700 `}>
-            <View style={tw`flex-row items-center mx-4  mb-2`}>
-              <FontAwesome5  name="heart" size={36} color="white" />
-              <Text style={tw`text-lg mx-3 text-white font-medium`}>Make more plans with more friends by sharing our quickly evolving app!</Text>
-            </View>
-        <TouchableOpacity style={tw`flex-row items-center justify-center bg-green-600 mx-4 rounded-xl py-3 `}>
-         <Feather name="upload" size={28} color="white" />
-         <Text style={tw`text-xl text-white mx-2 font-semibold`}>Share Groupify</Text>
+export const FooterCard: React.FC = () => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.subContainer}>
+        <View style={styles.textContainer}>
+          <FontAwesome5 name="heart" size={36} color="white" />
+          <Text style={styles.text}>Make more plans with more friends by sharing our quickly evolving app!</Text>
+        </View>
+        <TouchableOpacity style={styles.button}>
+          <Feather name="upload" size={28} color="white" />
+          <Text style={{ fontWeight: '700', fontSize: 18, color: '#fff', marginHorizontal: 5 }}>Share Groupify</Text>
         </TouchableOpacity>
       </View>
-      </View>
-    )
-}
+    </View>
+  );
+};
 
-export default FooterCard;
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff',
+    marginTop: 6,
+  },
+  subContainer: {
+    marginTop: 6,
+    paddingVertical: 24,
+    backgroundColor: '#097969',
+  },
+  textContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 8,
+    marginBottom: 6,
+  },
+  text: {
+    fontSize: 18,
+    marginHorizontal: 8,
+    color: 'white',
+    fontWeight: '600',
+    paddingVertical: 8,
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#31A59F',
+    marginHorizontal: 18,
+    borderRadius: 8,
+    paddingVertical: 10,
+  },
+});

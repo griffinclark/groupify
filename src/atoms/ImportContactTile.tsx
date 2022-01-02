@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import tw from 'tailwind-react-native-classnames';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { Contact } from '../res/dataModels';
 
@@ -31,42 +30,46 @@ export const ImportContactTile = ({ navigation }: Props) => {
   return (
     <View>
       {emptyState === 'false' ? (
-        <View style={tw`mt-2 bg-white pb-4`}>
-          <View style={tw`flex-row justify-between px-4 items-center py-8`}>
-            <Text style={tw`text-xl text-gray-800 font-semibold`}>Your Contacts</Text>
-            <Text style={tw`text-xl text-gray-500 font-medium`}>0 Contacts</Text>
+        <View style={styles.emptyContainer}>
+          <View style={styles.contactContainer}>
+            <Text style={styles.header}>Your Contacts</Text>
+            <Text style={styles.subHeader}>0 Contacts</Text>
           </View>
 
-          <View style={tw`items-center py-2`}>
-            <Text style={tw` mx-4 text-center text-lg font-semibold text-gray-500 pb-4 `}>
+          <View style={{ alignItems: 'center', paddingVertical: 10 }}>
+            <Text style={styles.emptyText}>
               Look like you don&apos;t have any contacts in the app yet. Let&apos;s add some of your friends.!{' '}
             </Text>
 
-            <TouchableOpacity activeOpacity={0.4} style={tw`bg-green-700 py-2 px-24 rounded-xl`}>
-              <Text style={tw`text-xl font-semibold text-white`}>Import Contacts</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ImportContacts', {})}
+              activeOpacity={0.4}
+              style={styles.emptyButton}
+            >
+              <Text style={{ fontWeight: '600', color: 'white', fontSize: 22 }}>Import Contacts</Text>
             </TouchableOpacity>
           </View>
         </View>
       ) : (
-        <ScrollView style={tw`mt-2 bg-white pb-4`}>
-          <View style={tw`flex-row justify-between px-4 items-center py-8`}>
-            <Text style={tw`text-xl text-gray-800 font-semibold`}>Your Contacts</Text>
-            <Text style={tw`text-xl text-gray-500 font-medium`}>{contactd.length} Contacts</Text>
+        <ScrollView style={styles.emptyContainer}>
+          <View style={styles.contactContainer}>
+            <Text style={styles.header}>Your Contacts</Text>
+            <Text style={styles.subHeader}>{contactd.length} Contacts</Text>
           </View>
           {contactd
             .filter((item, index) => index < 3)
             .map((contact: Contact) => (
-              <Text key={contact.id} style={tw`text-xl ml-4 text-gray-700 font-medium`}>
+              <Text key={contact.id} style={{ fontSize: 20, marginLeft: 8, fontWeight: '500' }}>
                 {contact.name}
               </Text>
             ))}
-          <View style={tw`flex-row justify-between mx-4 mt-2`}>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('ImportContacts', {})}>
-              <Text style={tw`text-lg text-green-700 font-semibold `}>Add Contacts</Text>
+              <Text style={styles.buttonText}>Add Contacts</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('ContactList', {})}>
-              <Text style={tw`text-lg text-green-700 font-semibold`}>See All Contacts</Text>
+              <Text style={styles.buttonText}>See All Contacts</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -74,3 +77,52 @@ export const ImportContactTile = ({ navigation }: Props) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  emptyContainer: {
+    marginTop: 5,
+    backgroundColor: '#fff',
+    paddingBottom: 9,
+  },
+  contactContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 9,
+    alignItems: 'center',
+    paddingVertical: 16,
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  subHeader: {
+    fontSize: 19,
+    fontWeight: '600',
+    color: '#767676',
+  },
+  emptyText: {
+    fontSize: 20,
+    textAlign: 'center',
+    marginHorizontal: 8,
+    fontWeight: '600',
+    color: '#767676',
+    paddingBottom: 18,
+  },
+  emptyButton: {
+    backgroundColor: 'teal',
+    paddingVertical: 9,
+    paddingHorizontal: 50,
+    borderRadius: 8,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 8,
+    marginTop: 10,
+  },
+  buttonText: {
+    fontSize: 19,
+    color: 'teal',
+    fontWeight: '600',
+  },
+});

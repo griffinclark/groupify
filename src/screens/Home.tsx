@@ -10,7 +10,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Header } from '../atoms/Header';
 import { PlansPreview } from '../atoms/PlansPreview';
 import { ImportContactTile } from '../atoms/ImportContactTile';
-import FooterCard from '../atoms/FooterCard';
+import { FooterCard } from '../atoms/FooterCard';
 import { Banner } from '../atoms/Banner';
 
 export interface Props {
@@ -84,7 +84,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   return (
-    <Screen>
+    <Screen style={styles.container}>
       {state === 'loading' ? (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size={'large'} />
@@ -111,6 +111,9 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#ececec',
+  },
   navbar: {
     position: 'absolute',
     bottom: 0,
