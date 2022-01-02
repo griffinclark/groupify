@@ -23,6 +23,12 @@ export interface Event {
   placeId: string;
 }
 
+export interface NavigationProps {
+  navigate: (ev: string, {}) => void;
+  goBack: () => void;
+  push: (ev: string, {}) => void;
+}
+
 export interface Contact {
   id: string;
   name: string;
@@ -52,6 +58,11 @@ export interface GoogleLocation {
   types: string[];
   user_ratings_total: number;
   price_level: number;
+}
+
+export interface UserLocation {
+  latitude: number;
+  longitude: number;
 }
 
 export interface Photo {

@@ -5,11 +5,13 @@ import { BLACK, GREY_4, GREY_6, GREY_8, WHITE } from '../res/styles/Colors';
 import { AppText } from '../atoms/AppText';
 import { HomeNavBar } from '../molecules/HomeNavBar';
 import SvgUri from 'react-native-svg-uri';
-import { GoogleLocation, XYLocation } from '../res/dataModels';
+import { GoogleLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from './../molecules/ActivityCard';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 import { TopNavBar } from '../molecules/TopNavBar';
+import { googlePlacesQuery } from '../res/utilFunctions';
+import { SearchbarWithoutFeedback } from './../molecules/SearchbarWithoutFeedback';
 export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
@@ -24,64 +26,74 @@ export const activities: string[][] = [
   ['Nightlife', 'Events', 'Culture', 'Relax'],
 ];
 
-export const googlePlacesQuery: (text: string, userOverrideLocation: XYLocation) => Promise<GoogleLocation[]> = async (
-  text,
-  userOverrideLocation,
-) => {
-  const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
-  const search =
-    'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-    `location=${userOverrideLocation?.lat},${userOverrideLocation.lng}` +
-    `&radius=${5000}` + // meters
-    `&query=${text}` +
-    `&key=${GOOGLE_PLACES_API_KEY}`;
-  const response = await fetch(search);
-  const detail = await response.json();
-  const res: GoogleLocation[] = detail.results;
-  // detail.results.sort((a: GoogleLocation, b: GoogleLocation) => b.user_ratings_total - a.user_ratings_total);
-  return res;
-};
-
 export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   const [featuredLocations, setFeaturedLocations] = useState<GoogleLocation[]>([]);
+  const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState('');
+  const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
 
   useEffect(() => {
-    const getFeatureLocations = async () => {
-      setFeaturedLocations(await googlePlacesQuery('park', route.params.tempUserLocation));
+    setTempUserLocationQuery('');
+    setPlacesUserWantsToGoQuery('');
+    const buildFeatureLocations = async () => {
+      setFeaturedLocations(await googlePlacesQuery('park', route.params.tempUserLocation, 'activity'));
     };
-    getFeatureLocations();
+    buildFeatureLocations();
   }, []);
 
   const getSVG = (str: string) => {
     // return <SvgUri width="20" height="20" source={require('../../assets/activityIcons/Coffee.svg')} />;
     switch (str) {
       case 'Coffee':
-        return <SvgUri width="20" height="20" source={require('../../assets/activityIcons/Coffee.svg')} />;
+        return (
+          <Image source={require('../../assets/activityIcons/Coffee.png')} style={styles.activitySelectorButtonImage} />
+        );
       case 'Culture':
-        return <SvgUri width="20" height="20" source={require('../../assets/activityIcons/Culture.svg')} />;
+        return (
+          <Image
+            source={require('../../assets/activityIcons/Culture.png')}
+            style={styles.activitySelectorButtonImage}
+          />
+        );
       case 'Events':
-        return <SvgUri width="20" height="20" source={require('../../assets/activityIcons/Events.svg')} />;
+        return (
+          <Image source={require('../../assets/activityIcons/Events.png')} style={styles.activitySelectorButtonImage} />
+        );
       case 'Fitness':
-        return <SvgUri width="20" height="20" source={require('../../assets/activityIcons/Fitness.svg')} />;
+        return (
+          <Image
+            source={require('../../assets/activityIcons/Fitness.png')}
+            style={styles.activitySelectorButtonImage}
+          />
+        );
       case 'Outdoors':
-        return <SvgUri width="20" height="20" source={require('../../assets/activityIcons/Outdoors.svg')} />;
+        return (
+          <Image
+            source={require('../../assets/activityIcons/Outdoors.png')}
+            style={styles.activitySelectorButtonImage}
+          />
+        );
       case 'Relax':
-        return <SvgUri width="20" height="20" source={require('../../assets/activityIcons/Relax.svg')} />;
+        return (
+          <Image source={require('../../assets/activityIcons/Relax.png')} style={styles.activitySelectorButtonImage} />
+        );
       case 'Shop':
-        return <SvgUri width="20" height="20" source={require('../../assets/activityIcons/Shop.svg')} />;
+        return (
+          <Image source={require('../../assets/activityIcons/Shop.png')} style={styles.activitySelectorButtonImage} />
+        );
+      case 'Food':
+        return (
+          <Image source={require('../../assets/activityIcons/Food.png')} style={styles.activitySelectorButtonImage} />
+        );
+      case 'Nightlife':
+        return (
+          <Image
+            source={require('../../assets/activityIcons/Nightlife.png')}
+            style={styles.activitySelectorButtonImage}
+          />
+        );
       default:
         return <AppText>Error</AppText>;
     }
-  };
-
-  const navigateToMapView = (placesUserWantsToGo: GoogleLocation[], placesUserWantsToGoQuery: string) => {
-    navigation.navigate('PlanMap', {
-      navigation: { navigation },
-      route: { route },
-      placesUserWantsToGo: { placesUserWantsToGo },
-      placesUserWantsToGoQuery: { placesUserWantsToGoQuery },
-      tempUserLocationQuery: '',
-    });
   };
 
   return (
@@ -89,24 +101,15 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[1]}>
         <TopNavBar title="" navigation={navigation} displayGroupify={true} route={route} targetScreen={'Home'} />
         <View style={styles.searchBar}>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              navigation.navigate('TakeoverSearch', {
-                navigation: navigation,
-                route: route,
-                tempUserLocationQuery: '',
-                placesUserWantsToGoQuery: '',
-                //TODO @joni do we want to clear user search on navigate back to SelectorMenu?
-              });
-            }}
-          >
-            <View style={styles.searchBarContainer}>
-              <View style={styles.magnifyingGlassIcon}>
-                <MagnifyingGlassIcon />
-              </View>
-              <AppText style={styles.searchBarText}>Search for food, parks, coffee, etc</AppText>
-            </View>
-          </TouchableWithoutFeedback>
+          <SearchbarWithoutFeedback
+            navigation={navigation}
+            route={route}
+            icon={<MagnifyingGlassIcon />}
+            placeholderText="Search for food, parks, coffee, etc"
+            tempUserLocation={route.params.tempUserLocation}
+            placesUserWantsToGoQuery={placesUserWantsToGoQuery}
+            tempUserLocationQuery={tempUserLocationQuery}
+          />
         </View>
         <View style={styles.activitySelectorRoot}>
           <View>
@@ -118,8 +121,20 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
                 {activityArr.map((activity: string) => (
                   <TouchableOpacity
                     onPress={async () => {
-                      console.log('navigating to map view');
-                      navigateToMapView(await googlePlacesQuery(activity, route.params.tempUserLocation), activity);
+                      const activities: GoogleLocation[] = await googlePlacesQuery(
+                        activity,
+                        route.params.userLocation,
+                        'activity',
+                      );
+                      console.log(route.params.userLocation);
+                      navigation.navigate('PlanMap', {
+                        navigation: { navigation },
+                        route: { route },
+                        placesUserWantsToGoQuery: { activity },
+                        tempUserLocationQuery: '',
+                        placesUserWantsToGoResults: activities,
+                        tempUserLocation: route.params.tempUserLocation,
+                      });
                     }}
                     testID={activity}
                     key={activity}
@@ -189,6 +204,10 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
   },
+  activitySelectorButtonImage: {
+    height: 20,
+    width: 20,
+  },
   iconText: {
     fontSize: 10,
   },
@@ -208,20 +227,7 @@ const styles = StyleSheet.create({
     // pushes "or" text down to the correct height:
     marginTop: 190,
   },
-  magnifyingGlassIcon: {
-    padding: 15,
-  },
-  searchBarContainer: {
-    width: 334,
-    height: 45,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    alignSelf: 'center',
-    borderColor: GREY_6,
-    borderWidth: 1,
-    borderRadius: 5,
-  },
+
   activitySelectorRoot: {
     position: 'absolute',
     marginTop: 45,
@@ -263,9 +269,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
   },
-  searchBarText: {
-    color: GREY_8,
-  },
+
   input: {
     flex: 1,
     paddingRight: 10,

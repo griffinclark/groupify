@@ -172,7 +172,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     Hub.listen('auth', (event) => {
-      console.log('auth event', event);
+      // console.log('auth event', event);
     });
   }, []);
 

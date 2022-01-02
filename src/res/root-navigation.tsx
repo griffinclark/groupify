@@ -37,7 +37,7 @@ export type RoutePropParams = {
     currentUserPlan: Plan;
     step: string;
     phone: string;
-    userLocation: XYLocation;
+    userLocation: UserLocation;
     invitedPlans: Plan[];
     userPlans: Plan[];
     option: string;
@@ -64,7 +64,7 @@ export type RoutePropParams = {
       };
     };
     tempUserLocationQuery: string;
-    tempUserLocation: XYLocation;
+    tempUserLocation: UserLocation;
     placesUserWantsToGoQuery: string;
     placesUserWantsToGoResults: GoogleLocation[];
   };
@@ -82,7 +82,7 @@ interface RootProps {
 
 const Stack = createStackNavigator();
 export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParams }: RootProps) => {
-  console.log('Initial route: ' + initialRoute);
+  // console.log('Initial route: ' + initialRoute);
 
   return (
     <NavigationContainer

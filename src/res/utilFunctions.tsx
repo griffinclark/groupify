@@ -5,6 +5,7 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Platform } from 'react-native';
 import { sendPushNotification } from './notifications';
 import * as queries from '../graphql/queries';
+import { GoogleLocation, UserLocation } from './dataModels';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
@@ -314,6 +315,101 @@ export const respondToPlan = async (accept: boolean, plan: Plan): Promise<void> 
       }),
     );
   }
+};
+
+export const googlePlacesQuery: (
+  text: string,
+  tempUserLocation: UserLocation,
+  searchType: string,
+) => Promise<GoogleLocation[]> = async (text, tempUserLocation, searchType) => {
+  const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
+  const searchResults: GoogleLocation[] = [];
+  switch (searchType) {
+    case 'activity':
+      let unfilteredLocations: GoogleLocation[] = [];
+      const search =
+        'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
+        `location=${tempUserLocation?.latitude},${tempUserLocation.longitude}` +
+        `&query=${text}` +
+        // '&type=point_of_interest' +
+        `&key=${GOOGLE_PLACES_API_KEY}`;
+      await fetch(search).then(
+        async (res) => {
+          const detail = await res.json();
+          unfilteredLocations = detail.results;
+          // detail.results.sort((a: GoogleLocation, b: GoogleLocation) => b.user_ratings_total - a.user_ratings_total);
+        },
+        (rej) => {
+          console.log(rej);
+        },
+      );
+      // Filter locations, sort by distance, and return
+      // A complete list of location tags can be found at: https://developers.google.com/maps/documentation/places/web-service/supported_types
+      const whitelist = [
+        'art_gallery',
+        'bakery',
+        'bar',
+        'beauty_salon',
+        'book_store',
+        'bowling_alley',
+        'cafe',
+        'campground',
+        'casino',
+        'church',
+        'clothing_store',
+        'department_store',
+        'gym',
+        'hair_care',
+        'library',
+        'light_rail_station',
+        'lodging',
+        'meal_takeaway',
+        'movie_theater',
+        'museum',
+        'night_club',
+        'park',
+        'school',
+        'rv_park',
+        'restaurant',
+        'tourist_attraction',
+        'transit_station',
+        'university',
+        'zoo',
+      ];
+
+      unfilteredLocations.forEach((location: GoogleLocation) => {
+        if (whitelist.some((tag) => location.types.includes(tag)) == true) {
+          searchResults.push(location);
+        }
+      });
+      break;
+
+    case 'changeLocation':
+      const changeLocSearch =
+        'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
+        `location=${tempUserLocation?.latitude},${tempUserLocation.longitude}` +
+        `&query=${text}` +
+        '&type=locality' +
+        `&key=${GOOGLE_PLACES_API_KEY}`;
+      await fetch(changeLocSearch).then(
+        async (res) => {
+          const detail = await res.json();
+          detail.results.forEach((location: GoogleLocation) => searchResults.push(location));
+        },
+        (rej) => {
+          console.log(rej);
+        },
+      );
+      break;
+
+    default:
+      console.log('Invalid searchType: ' + searchType);
+      return [];
+  }
+  // If we have results, return the results. If there are no results, re-run the query with one less character and return that
+  if (searchResults.length > 0 || text.length == 0) {
+    return searchResults;
+  } else return await googlePlacesQuery(text.substring(0, text.length - 1), tempUserLocation, searchType);
 };
 
 export const removePastPlans = (plans: Plan[]): Plan[] => {

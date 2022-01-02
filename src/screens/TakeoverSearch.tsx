@@ -1,4 +1,4 @@
-import { GoogleLocation, XYLocation } from '../res/dataModels';
+import { GoogleLocation, NavigationProps, UserLocation, XYLocation } from '../res/dataModels';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
 import { Screen } from '../atoms/Screen';
@@ -6,20 +6,17 @@ import { TopNavBar } from '../molecules/TopNavBar';
 import { ScrollView } from 'react-native-gesture-handler';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 import { SearchBar } from '../atoms/SearchBar';
-import { googlePlacesQuery } from './SelectorMenu';
 import { RoutePropParams } from '../res/root-navigation';
 import { SearchSuggestionTile } from '../molecules/SearchSuggestionTile';
 import { BLACK, WHITE } from '../res/styles/Colors';
 import { MapLinkIcon } from '../../assets/Icons/MapLink';
+import { googlePlacesQuery } from '../res/utilFunctions';
 
 interface Props {
   locationQuery: string;
   userLocation: XYLocation;
   tempUserLocation: XYLocation;
-  navigation: {
-    goBack: () => void;
-    navigate: (ev: string, {}) => void;
-  };
+  navigation: NavigationProps;
   route: RoutePropParams;
 }
 
@@ -31,19 +28,23 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
   const [placesUserWantsToGoResults, setPlacesUserWantsToGoResults] = useState<GoogleLocation[]>([]);
   const [tempUserLocationResults, setTempUserLocationResults] = useState<GoogleLocation[]>([]);
   const [dataset, setDataset] = useState(Dataset.SelectLocation);
-  const [tempUserLocation, setTempUserLocation] = useState<XYLocation>();
+  const [tempUserLocation, setTempUserLocation] = useState<UserLocation>(route.params.tempUserLocation);
   const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState<string>();
   const [tempUserLocationQuery, setTempUserLocationQuery] = useState<string>();
 
   useEffect(() => {
     setDataset(Dataset.SelectLocation); // defualt
-    if (route.params.tempUserLocationQuery == undefined) {
+    setPlacesUserWantsToGoQuery(route.params.placesUserWantsToGoQuery);
+    setTempUserLocationQuery(route.params.tempUserLocationQuery);
+    if (route.params.tempUserLocationQuery.length == 0) {
       setTempUserLocationQuery('Current Location');
-    } else {
-      setTempUserLocationQuery(route.params.tempUserLocationQuery);
     }
     setTempUserLocation(route.params.tempUserLocation);
   }, []);
+
+  useEffect(() => {
+    // TODO add 'current location' to the 0th position
+  }, tempUserLocation);
 
   const getDataSet: () => GoogleLocation[] = () => {
     switch (dataset) {
@@ -57,45 +58,6 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
     }
   };
 
-  const getOnPressFunc = (location: GoogleLocation) => {
-    switch (dataset) {
-      case Dataset.ChangeUserLocation:
-        return () => {
-          const newLocation: XYLocation = {
-            lng: location.geometry.location.lng,
-            lat: location.geometry.location.lat,
-          };
-          setTempUserLocation(newLocation);
-          console.log('User override location ');
-          console.log(userOverrideLocation);
-          setLocationSearchInput(location.name);
-          setDataset(Dataset.SelectLocation);
-        };
-
-      case Dataset.SelectLocation:
-        return () => {
-          // navigation.navigate('PlanMap', {
-          //   navigation: navigation,
-          //   locationSearchInput: locationSearchInput,
-          //   route: route,
-          //   locations: [location],
-          // });
-          const locationsToPass: GoogleLocation[] = [];
-          locationsToPass.push(location);
-          console.log(locationsToPass);
-          navigation.navigate('PlanMap', {
-            navigation: { navigation },
-            route: { route },
-            locations: { locationsToPass },
-            userLocation: userOverrideLocation,
-          });
-        };
-      default:
-        console.log('Error selecting function');
-        return () => console.log('failed to generate function');
-    }
-  };
-
   return (
     <Screen>
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[1]}>
@@ -105,6 +67,8 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
           title={'DO SOMETHING'}
           navigation={navigation}
           route={route}
+          placesUserWantsToGoQuery={placesUserWantsToGoQuery}
+          tempUserLocationQuery={tempUserLocationQuery}
         />
         <View style={styles.stickySearchContainer}>
           <View style={styles.serachBar}>
@@ -116,17 +80,17 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
               testID={'searchForLocationSearchbar'}
               onPressIn={async () => {
                 setDataset(Dataset.SelectLocation);
-                setSelectLocationDataset(await googlePlacesQuery(location, userOverrideLocation));
+                setPlacesUserWantsToGoResults(
+                  await googlePlacesQuery(placesUserWantsToGoQuery, tempUserLocation, 'activity'),
+                );
               }}
               placeholder="Search for food, parks, coffee, etc"
               autoFocus={true}
-              defaultValue={location}
+              defaultValue={placesUserWantsToGoQuery}
               onChangeText={async (text: string) => {
-                setLocation(text);
-                setSelectLocationDataset(await googlePlacesQuery(text, userOverrideLocation));
-                if (text.length == 0) {
-                  setSelectLocationDataset([]);
-                }
+                setPlacesUserWantsToGoQuery(text);
+                setDataset(Dataset.SelectLocation);
+                setPlacesUserWantsToGoResults(await googlePlacesQuery(text, tempUserLocation, 'activity'));
               }}
             />
           </View>
@@ -134,35 +98,79 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
             <SearchBar
               // style={styles.input}
               leftIcon={<MapLinkIcon />}
-              placeholder={'placeholder'}
+              placeholder={'@Joni what do I put here?'}
               onChangeText={async (text) => {
-                setLocationSearchInput(text);
-                setChangeUserLocations(await googlePlacesQuery(text, userOverrideLocation));
-                if (text.length == 0) {
-                  setChangeUserLocations([]);
-                }
+                setDataset(Dataset.ChangeUserLocation);
+                // FIXME indicate to the user that they have not changed their location until a location is selected from the list
+                setTempUserLocationQuery(text);
+                await googlePlacesQuery(text, tempUserLocation, 'changeLocation').then(
+                  (res) => {
+                    setTempUserLocationResults(res);
+                  },
+                  (rej) => {
+                    console.log(rej);
+                    //TODO create a default network not available error
+                  },
+                );
               }}
               testID={'changeLocationSearchBar'}
               onPressOut={async () => {
                 Keyboard.dismiss();
-                setChangeUserLocations(await googlePlacesQuery(locationSearchInput, userOverrideLocation));
+                setTempUserLocationResults(
+                  await googlePlacesQuery(tempUserLocationQuery, tempUserLocation, 'changeLocation'),
+                );
                 // TODO users have to tap twice to get out of search. Yuck
               }}
               // testID="SearchBar"
               onPressIn={() => setDataset(Dataset.ChangeUserLocation)}
-              defaultValue={locationSearchInput}
+              defaultValue={tempUserLocationQuery}
               selectTextOnFocus={true}
             />
           </View>
         </View>
         {getDataSet().map((location: GoogleLocation) => {
           return (
-            <SearchSuggestionTile
-              image={true}
-              key={location.place_id}
-              location={location}
-              onPress={getOnPressFunc(location)}
-            />
+            <>
+              {dataset == Dataset.ChangeUserLocation ? (
+                <SearchSuggestionTile
+                  image={true}
+                  key={location.place_id}
+                  location={location}
+                  onPress={async () => {
+                    const newLocation: UserLocation = {
+                      longitude: location.geometry.location.lng,
+                      latitude: location.geometry.location.lat,
+                    };
+                    console.log(newLocation);
+                    setTempUserLocation(newLocation);
+                    console.log(tempUserLocation);
+                    setTempUserLocationQuery(location.name);
+                    setPlacesUserWantsToGoResults(
+                      await googlePlacesQuery(placesUserWantsToGoQuery, newLocation, 'activity'),
+                    );
+                    setDataset(Dataset.SelectLocation);
+                  }}
+                />
+              ) : (
+                <SearchSuggestionTile
+                  image={true}
+                  key={location.place_id}
+                  location={location}
+                  onPress={async () => {
+                    // rerun the query with the name of the selected venue so all venues with the same name show up on the map
+                    const results = await googlePlacesQuery(location.name, route.params.tempUserLocation, 'activity');
+                    navigation.navigate('PlanMap', {
+                      navigation: { navigation },
+                      route: { route },
+                      placesUserWantsToGoResults: results,
+                      tempUserLocation: tempUserLocation,
+                      tempUserLocationQuery: route.params.tempUserLocationQuery,
+                      placesUserWantsToGoQuery: route.params.placesUserWantsToGoQuery,
+                    });
+                  }}
+                />
+              )}
+            </>
           );
         })}
       </ScrollView>

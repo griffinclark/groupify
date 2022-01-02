@@ -2,20 +2,29 @@ import React from 'react';
 import { StyleSheet, View, Image, Keyboard } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AppText } from '../atoms/AppText';
+import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { GREY_4, WHITE } from '../res/styles/Colors';
 
 interface Props {
   title?: string;
-  navigation: {
-    navigate: (ev: string, {}) => void;
-  };
+  navigation: NavigationProps;
   displayGroupify: boolean;
   route: RoutePropParams;
   targetScreen: string;
+  placesUserWantsToGoQuery?: string;
+  tempUserLocationQuery?: string;
 }
 
-export const TopNavBar: React.FC<Props> = ({ title, navigation, displayGroupify, route, targetScreen }: Props) => {
+export const TopNavBar: React.FC<Props> = ({
+  title,
+  navigation,
+  displayGroupify,
+  route,
+  targetScreen,
+  placesUserWantsToGoQuery,
+  tempUserLocationQuery,
+}: Props) => {
   return (
     <View style={styles.topNavBarRoot}>
       {displayGroupify ? (
@@ -25,7 +34,7 @@ export const TopNavBar: React.FC<Props> = ({ title, navigation, displayGroupify,
       )}
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate(targetScreen, { route });
+          navigation.navigate(targetScreen, { route, placesUserWantsToGoQuery, tempUserLocationQuery });
         }}
       >
         <Image source={require('../../assets/activity-relax.png')} style={styles.activitiesImage} />

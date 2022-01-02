@@ -23,9 +23,7 @@ export interface Props {
     push: (ev: string, {}) => void;
   };
   route: RoutePropParams;
-  locations: GoogleLocation[];
-  passedLocation: string;
-  passedPlace: string;
+  placesUserWantsToGoResults: GoogleLocation[];
 }
 
 // FIXME secret is just being stored in text in Groupify!!!
@@ -45,11 +43,10 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   });
   const [localLocations, setLocalLocations] = useState<GoogleLocation[]>([]); //TODO rename
   const [mapIcon, setMapIcon] = useState<string>();
-  const [distance, setDistance] = useState<number>(30); //TODO does this do anything? 
+  const [distance, setDistance] = useState<number>(30); //TODO does this do anything?
 
   useEffect(() => {
     if (region.default) {
-      console.log('changing region');
       getUserLocation();
     }
   }, [userLocation, route.params.activity, distance]); //FIXME the fuck are the second two?
@@ -84,7 +81,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           longitudeDelta: 0.05,
           default: false,
         });
-        setLocalLocations(route.params.locations); //FIXME the fuck is locations?
+        setLocalLocations(route.params.placesUserWantsToGoResults); //FIXME the fuck is locations?
       } catch (e) {
         console.log(e);
       }
@@ -108,11 +105,12 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
       ) : (
         <>
           <TouchableWithoutFeedback
+            // FIXME make this its own component
             onPress={() => {
               navigation.navigate('TakeoverSearch', {
                 navigation: navigation,
                 route: route,
-                locationQuery: route.params.locationQuery,
+                tempUserLocationQuery: route.params.tempUserLocationQuery,
                 userLocation: userLocation,
               });
             }}
@@ -124,16 +122,18 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
               <AppText style={styles.searchBarText}>Current location</AppText>
             </View>
           </TouchableWithoutFeedback>
-
+          {/* TODO MapView has to be built dynamically based on number of locations and distance between locations */}
           <MapView
             initialRegion={region}
             style={styles.map}
-            showsUserLocation={true}
+            // disable showsUserLocation because it's slightly off from the one Apple displays, leading to 2 user locations shown
+            showsUserLocation={false}
+            //FIXME user is grouping with locations
             animationEnabled={false}
             showsBuildings={true}
             showsCompass={false}
             showsTraffic={true}
-            userInterfaceStyle="light"
+            userInterfaceStyle="dark"
             clusterColor={GOLD_0}
             // radius={40}
             showsPointsOfInterest={false}
@@ -260,8 +260,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: TEAL_0,
     // textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 20,
-    textShadowColor: WHITE,
+    // textShadowRadius: 20,
+    // textShadowColor: WHITE,
   },
   magnifyingGlassIcon: {
     padding: 15,
