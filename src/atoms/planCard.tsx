@@ -9,6 +9,7 @@ import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 
 export interface Props {
+  //TODO for consistency in our code and to improve readability, we declare optionals with title?:string instead of title: string|undefined. Also note that you use both here
   title: string | undefined;
   date: string | undefined;
   location: string | undefined;
@@ -24,6 +25,7 @@ export const PlanCard = ({ title, date, location, planId, placeId, creator, invi
   const [hostName, setHostName] = useState('');
 
   const getHost = async (id: string) => {
+    //TODO why is this type any? This should have a type, especially if you're calling variable.value on it. This appears multiple places in your code
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const userQuery: any = await API.graphql({
       query: queries.getUser,
@@ -38,6 +40,7 @@ export const PlanCard = ({ title, date, location, planId, placeId, creator, invi
   };
 
   useEffect(() => {
+    //TODO remove unnecessary () at the and and wrapping async
     (async () => {
       if (placeId) {
         setPhotoURI(await loadPhoto(placeId));
@@ -46,10 +49,12 @@ export const PlanCard = ({ title, date, location, planId, placeId, creator, invi
   }, []);
 
   useEffect(() => {
+    //TODO why are these useEffect calls in two different functions? Merge them together if possible
     loadInvitees();
     getHost(creatorId);
   }, []);
 
+  //TODO since loadInvitees is just being used once and is pretty small you can put this code inside the useEffect
   const loadInvitees = async () => {
     const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === planId);
     setInvitees(invitees);
@@ -64,6 +69,8 @@ export const PlanCard = ({ title, date, location, planId, placeId, creator, invi
             {title}
           </Text>
           {creator ? (
+            //TODO never use colors like '#FFFFFF' in your code. Always reference colors.WHITE (you'll have to import colors). If we don't have the color you need, you can add it in. This appears in multiple places throughout your code
+            //TODO styling should go in StyleSheet not inline. This appears in multiple places throughout your code. 
             <View style={{ backgroundColor: '#cdffcd', padding: 4, marginTop: 4, borderRadius: 5 }}>
               <Text style={{ fontWeight: '500' }}>You are hosting this plan</Text>
             </View>
@@ -85,6 +92,7 @@ export const PlanCard = ({ title, date, location, planId, placeId, creator, invi
       </View>
       <View style={styles.invited}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          {/* TODO  instead of saying "is this true? show x. is this false? show y" you can use {invited ? (return x):(return y)}. Reduces errors */}
           {invited && <AntDesign name="checkcircle" size={24} color="green" />}
           {!invited && !creator && <MaterialCommunityIcons name="dots-horizontal-circle" size={24} color="red" />}
           <Text style={styles.invitedText}>{invitees.length} Invited</Text>

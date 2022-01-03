@@ -19,6 +19,7 @@ interface Props {
 export const Banner: React.FC<Props> = ({ plan, reload }: Props) => {
   const [photoURI, setPhotoURI] = useState('');
   const [hostName, setHostName] = useState('');
+  // TODO typo
   const [inviteesd, setInviteesd] = useState<Invitee[]>([]);
 
   const getHost = async (id: string) => {
@@ -43,6 +44,7 @@ export const Banner: React.FC<Props> = ({ plan, reload }: Props) => {
   }, [reload]);
 
   useEffect(() => {
+    // TODO merge with other useEffect
     loadInvitees();
   }, [reload]);
 

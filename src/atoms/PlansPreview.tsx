@@ -8,11 +8,14 @@ import { PlanCard } from './planCard';
 import { NoPlansCard } from './NoPlansCard';
 
 export const PlansPreview = () => {
+  //TODO instead of having five variables which can get out of sync with each other, have one const [state, setState] and an enum with each of the states as values. For an example of how to do this, check out the TakeoverSearch screen on my activity selector branch
   const [allSelected, setAllSelected] = useState(false);
   const [pendingSelected, setPendingSelected] = useState(false);
   const [acceptedSelected, setAcceptedSelected] = useState(false);
   const [createdSelected, setCreatedSelected] = useState(false);
   const [pastSelected, setPastSelected] = useState(false);
+  //TODO instead of having 5 arrays of plans here ( which can easily get out of sync and eat up lots of memory ), use one const [plans, setPlans]. Whenever you need to get pendingPlans, createdPlans, etc. run a function on plans[] to pull out what you're looking for. 
+  // I'm not leaving comments in fetchPlans because I'm assuming that it will be rewritten after you implement this feedback
   const [allPlans, setAllPlans] = useState<Plan[]>([]);
   const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
   const [createdPlans, setCreatedPlans] = useState<Plan[]>([]);
@@ -21,6 +24,7 @@ export const PlansPreview = () => {
 
   useEffect(() => {
     const plans = async () => {
+      //TODO instead of getCurrentUser, could you pass currentUser into this screen with navigation  and reference it with route.params.currentUser?
       const user = await getCurrentUser();
       fetchPlans(user);
     };
@@ -28,6 +32,7 @@ export const PlansPreview = () => {
   }, []);
 
   const fetchPlans = async (user: User) => {
+    //TODO we should be pulling a user's plans once and storing them in state. When plans are referenced, show the plans stored in state, make a call to planDB ( which will update state ), the update the screens if there's new data. 
     console.log('Loading plans');
     const createdPlanOnDb = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
     const createdPlans = createdPlanOnDb.map((plan) => plan);
@@ -72,17 +77,20 @@ export const PlansPreview = () => {
 
   return (
     <View style={styles.container}>
+      {/* TODO subContainer is a horrendous name for a style. Try something more descriptive ^.^ */}
       <View style={styles.subContainer}>
         <Text style={styles.header}>Your Plans</Text>
         <ScrollView showsHorizontalScrollIndicator={false} style={{ paddingLeft: 10, paddingBottom: 8 }} horizontal>
           <TouchableOpacity
             onPress={() => {
+              // TODO anytime you catch yourself doing this ( writing out a bunch of calls and changing the values a bit ), there's probably a more intelligent design you can be using. This design is slow and prone to error
               setAllSelected(true);
               setPendingSelected(false);
               setAcceptedSelected(false);
               setCreatedSelected(false);
               setPastSelected(false);
             }}
+            // TODO extract style to StyleSheet. This appears in multiple places
             style={[
               styles.selectedItem,
               { borderBottomColor: allSelected ? 'green' : 'transparent', marginHorizontal: 8 },
@@ -156,7 +164,7 @@ export const PlansPreview = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
-
+       {/* TODO Instead of having multiple "is this variable true?" blocks, you should have one function that checks the current state and returns the appropriate JSX code*/}
       {createdSelected &&
         (createdPlans.length > 0 ? (
           createdPlans.map((plan) => (

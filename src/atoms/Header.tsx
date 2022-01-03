@@ -6,6 +6,7 @@ import { Octicons, Ionicons, Entypo } from '@expo/vector-icons';
 export interface Props {
   title?: string | undefined;
   home?: boolean;
+  // TODO why is navigation optional?
   navigation?: {
     goBack: () => void;
   };

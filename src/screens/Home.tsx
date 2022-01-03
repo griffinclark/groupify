@@ -36,7 +36,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [trigger1, setTrigger1] = useState(false);
   const [trigger2, setTrigger2] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [state, setState] = useState('loading');
+  const [state, setState] = useState('loading'); //TODO state should use an enum because there are only a finite number of acceptable values. I shouldn't be able to setState('randomMeaninglessString')
 
   useEffect(() => {
     const awaitUser = async () => {
@@ -57,6 +57,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
 
   const loadPlans = async (user: User) => {
     console.log('Loading plans');
+    //TODO add types to your constants (const: type). This appears in multiple places throughout your code, but only going to mention it here
     const createdPlanOnDb = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
     const createdPlans = createdPlanOnDb.map((plan) => plan);
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
@@ -66,20 +67,23 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       invitees.map((invitee) => invitee.plan).filter((item): item is Plan => item !== undefined),
     );
 
+    //TODO be consistent with your variable naming. If you named one invitedPlans then this should be upcomingPlans
     const upcoming = invitedPlans;
     if (currentUser) invitedPlans = invitedPlans.filter((item): item is Plan => item.creatorID !== currentUser.id);
 
+    //TODO should be acceptedPlans
     const accepted = [];
     for (const plan of upcoming) {
       const status = await loadInviteeStatus(plan);
+      //TODO probably not fixable now, but status should be an enum not a string
       if (status === 'ACCEPTED') {
         accepted.push(plan);
       }
     }
-
     setUpcomingPlans(accepted);
     setUserPlans(createdPlans);
     setInvitedPlans(invitedPlans);
+    //TODO remember to comment these out when you're done. Fine to have them now, this is just a reminder
     console.log('Finished loading plans');
   };
 
@@ -115,6 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ececec',
   },
   navbar: {
+    //TODO I'll fix this in my PR but navbar should have its own styling 
     position: 'absolute',
     bottom: 0,
     alignSelf: 'center',

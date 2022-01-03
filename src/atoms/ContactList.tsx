@@ -41,16 +41,19 @@ export const ContactList = ({ navigation }: Props) => {
   };
 
   const loadContacts = async () => {
+    // TODO can be moved inside useEffect
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
       const { data } = await Contacts.getContactsAsync({});
       if (data.length > 0) {
+        // TODO type
         const contacts = data.map((contact) => ({
           id: contact.id,
           name: contact.name,
           image: contact.image,
           phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
         }));
+        // TODO no any - create a type here if you have to you're referencing type.value
         contacts.sort((c1, c2): any => {
           if (c1.name && c2.name) {
             return c1.name.toLowerCase() < c2.name.toLowerCase() ? -1 : 1;
@@ -62,6 +65,7 @@ export const ContactList = ({ navigation }: Props) => {
   };
 
   const loadImportedContacts = async () => {
+    // TODO can be moved inside useEffect
     await getAllImportedContacts().then((contacts) => {
       setAddedContacts(contacts);
       if (contacts.length > 0) {

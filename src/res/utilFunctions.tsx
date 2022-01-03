@@ -243,6 +243,7 @@ export const isFuturePlan = (date: string, time: string, currentDate: Date): boo
 };
 
 // determines if a plan is in the past
+//TODO rename to isPlanPast. Little bit easier to read IMO
 export const isPastPlan = (date: string, time: string, currentDate: Date): boolean => {
   const dateString = date + 'T' + time + ':00';
   const planDate = new Date(dateString);
@@ -335,6 +336,7 @@ export const removePastPlans = (plans: Plan[]): Plan[] => {
 
 // add past plans
 export const addPastPlans = (plans: Plan[]): Plan[] => {
+  //TODO another reminder to type your variables
   const currentDate = new Date();
   return plans.filter((plan) => {
     if (plan.date && plan.time) {
