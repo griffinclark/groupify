@@ -55,6 +55,7 @@ export type RoutePropParams = {
         date: string;
         time: string;
         location: string;
+        locationName: string;
         showImage: string;
         placeId: string;
         message: string;

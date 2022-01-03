@@ -3670,10 +3670,10 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
-"@react-native-community/datetimepicker@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-3.2.0.tgz#757ae731bab4442842a4a884941239efa75f371f"
-  integrity sha512-RX4/mi2beCiJXakJJr9bJrqNSfu7wc69Q0gPw21m/PdpYM14bJplVgjmL0hm3VSedj3Eg/dErWy5DdLM8upS/A==
+"@react-native-community/datetimepicker@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-5.1.0.tgz#c2e73b6ca375a527e54f0a19b0e4ca42bc8b7382"
+  integrity sha512-DsKmdthZIb1AfuvpPE0iOiw4iQLXUWY3mJEYpGe9iUJt7pOkNnqHk6D95wqg4wjZ2bEBLAPfvndoeWZAjAZKfw==
   dependencies:
     invariant "^2.2.4"
 
@@ -10857,10 +10857,10 @@ react-native-contacts@^6.0.5:
   resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-6.0.5.tgz#26503c862a197eef790aee243053c0ceb23d7a0f"
   integrity sha512-2BPW1bODJPnKbi/Wr2+m43hlrxcYrzMkWVAre3nMwqekSrsapMu/iSpQbxcB3Ia8cvBNH6Cu2tSqGpqY4Lc/lg==
 
-react-native-date-picker@^3.3.2:
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-3.4.3.tgz#42a76092a221f23004ed45b127d09664201db6e8"
-  integrity sha512-YAp/U8KafgXI57ZiqaZlgWMLPcY686PQ2ejo5gTEb1EcnjSKn3Zt8Gg7+oy55cLl98gZzmz+rJlBeVIDlq4n+A==
+react-native-date-picker@^4.1.3:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-4.1.3.tgz#ca6d7fa7305ff5730e2409f743e7ca7b06b203ae"
+  integrity sha512-ct1SR9LqQ9qczdKV4K/fWuV9wOVrlENMc3GyvwASP+obNbRid09OOJ6YHXIGx3B6CzZ1dAbzF++Jtxuo85XW8A==
 
 react-native-elements@^3.4.1:
   version "3.4.2"

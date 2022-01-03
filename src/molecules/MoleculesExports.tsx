@@ -14,7 +14,8 @@ import { Details } from './Details';
 import { ActivityCard } from './ActivityCard';
 import { ActivitySlider } from './ActivitySlider';
 import { NoResults } from './NoResults';
-
+import { LocationBlock } from './LocationBlock';
+import { DateTimeSelector } from './DateTimeSelector';
 export {
   AndroidContactTile,
   ContactTile,
@@ -32,4 +33,6 @@ export {
   ActivityCard,
   ActivitySlider,
   NoResults,
+  LocationBlock,
+  DateTimeSelector
 };
