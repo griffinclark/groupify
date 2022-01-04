@@ -317,15 +317,20 @@ export const respondToPlan = async (accept: boolean, plan: Plan): Promise<void> 
   }
 };
 
+export enum GooglePlacesQueryOptions {
+  Activity = 0,
+  ChangeLocation = 1,
+}
+
 export const googlePlacesQuery: (
   text: string,
   userLocation: UserLocation,
-  searchType: string,
+  searchType: GooglePlacesQueryOptions,
 ) => Promise<GoogleLocation[]> = async (text, userLocation, searchType) => {
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const searchResults: GoogleLocation[] = [];
   switch (searchType) {
-    case 'activity':
+    case 0:
       let unfilteredLocations: GoogleLocation[] = [];
       const search =
         'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
@@ -384,10 +389,10 @@ export const googlePlacesQuery: (
       });
       break;
 
-    case 'changeLocation':
+    case 1:
       const changeLocSearch =
         'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-        `location=${userLocation?.latitude},${userLocation.longitude}` +
+        `location=${userLocation.latitude},${userLocation.longitude}` +
         `&query=${text}` +
         '&type=locality' +
         `&key=${GOOGLE_PLACES_API_KEY}`;

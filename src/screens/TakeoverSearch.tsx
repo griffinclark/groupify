@@ -10,7 +10,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { SearchSuggestionTile } from '../molecules/SearchSuggestionTile';
 import { BLACK, WHITE } from '../res/styles/Colors';
 import { MapLinkIcon } from '../../assets/Icons/MapLink';
-import { googlePlacesQuery } from '../res/utilFunctions';
+import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
 
 interface Props {
   locationQuery: string;
@@ -93,7 +93,11 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
               onPressIn={async () => {
                 setDataset(Dataset.SelectLocation);
                 setPlacesUserWantsToGoResults(
-                  await googlePlacesQuery(placesUserWantsToGoQuery, tempUserLocation, 'activity'),
+                  await googlePlacesQuery(
+                    placesUserWantsToGoQuery,
+                    tempUserLocation,
+                    GooglePlacesQueryOptions.Activity,
+                  ),
                 );
               }}
               placeholder="Search for food, parks, coffee, etc"
@@ -102,7 +106,9 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
               onChangeText={async (text: string) => {
                 setPlacesUserWantsToGoQuery(text);
                 setDataset(Dataset.SelectLocation);
-                setPlacesUserWantsToGoResults(await googlePlacesQuery(text, tempUserLocation, 'activity'));
+                setPlacesUserWantsToGoResults(
+                  await googlePlacesQuery(text, tempUserLocation, GooglePlacesQueryOptions.Activity),
+                );
               }}
             />
           </View>
@@ -115,7 +121,11 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                 setDataset(Dataset.ChangeUserLocation);
                 // FIXME indicate to the user that they have not changed their location until a location is selected from the list
                 setTempUserLocationQuery(text);
-                const noCurrentLocationArr = await googlePlacesQuery(text, tempUserLocation, 'changeLocation');
+                const noCurrentLocationArr = await googlePlacesQuery(
+                  text,
+                  tempUserLocation,
+                  GooglePlacesQueryOptions.ChangeLocation,
+                );
                 const currentLocation0Arr: GoogleLocation[] = [origionalUserLocation];
                 noCurrentLocationArr.forEach((location) => {
                   currentLocation0Arr.push(location);
@@ -126,7 +136,11 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
               onPressOut={async () => {
                 Keyboard.dismiss();
                 setTempUserLocationResults(
-                  await googlePlacesQuery(tempUserLocationQuery, tempUserLocation, 'changeLocation'),
+                  await googlePlacesQuery(
+                    tempUserLocationQuery,
+                    tempUserLocation,
+                    GooglePlacesQueryOptions.ChangeLocation,
+                  ),
                 );
                 // TODO users have to tap twice to get out of search. Yuck
               }}
@@ -160,7 +174,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                     setTempUserLocation(newLocation);
                     setTempUserLocationQuery(location.name);
                     setPlacesUserWantsToGoResults(
-                      await googlePlacesQuery(placesUserWantsToGoQuery, newLocation, 'activity'),
+                      await googlePlacesQuery(placesUserWantsToGoQuery, newLocation, GooglePlacesQueryOptions.Activity),
                     );
                     setDataset(Dataset.SelectLocation);
                   }}
@@ -172,7 +186,11 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                   location={location}
                   onPress={async () => {
                     // rerun the query with the name of the selected venue so all venues with the same name show up on the map
-                    const results = await googlePlacesQuery(location.name, route.params.tempUserLocation, 'activity');
+                    const results = await googlePlacesQuery(
+                      location.name,
+                      route.params.tempUserLocation,
+                      GooglePlacesQueryOptions.Activity,
+                    );
                     navigation.navigate('PlanMap', {
                       navigation: { navigation },
                       route: { route },
