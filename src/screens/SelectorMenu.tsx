@@ -12,6 +12,7 @@ import { TopNavBar } from '../molecules/TopNavBar';
 import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
 import { SearchbarWithoutFeedback } from './../molecules/SearchbarWithoutFeedback';
 import { TEAL_0 } from './../res/styles/Colors';
+import { ProgressBar } from '../atoms/ProgressBar';
 export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
@@ -99,55 +100,6 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
-  const Progress = ({ step, steps, height }) => {
-    const animatedValue = React.useRef(new Animated.Value(-1000)).current;
-    const reactive = React.useRef(new Animated.Value(-1000)).current;
-    const [width, setWidth] = React.useState(0);
-    const [index, setIndex] = React.useState(0);
-
-    useEffect(() => {
-      Animated.timing(animatedValue, { toValue: reactive, duration: 300, useNativeDriver: true }).start();
-    }, []);
-
-    useEffect(() => {
-      reactive.setValue(-width + (width * step) / steps);
-    }, [step, width]);
-
-    // make the progress bar look like it's loading every 0.9 seconds
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setIndex((index + 1) % (steps + 1));
-      }, 1000);
-      return () => {
-        clearInterval(interval);
-      };
-    }, [index]);
-
-    return (
-      <View
-        style={{ height: height, backgroundColor: TEAL_0, borderRadius: height, overflow: 'hidden' }}
-        onLayout={(e) => {
-          const newWidth = e.nativeEvent.layout.width;
-          setWidth(newWidth);
-        }}
-      >
-        <Animated.View
-          style={{
-            height: height,
-            borderRadius: height,
-            backgroundColor: BLACK,
-            width: '100%',
-            transform: [
-              {
-                translateX: animatedValue,
-              },
-            ],
-          }}
-        />
-      </View>
-    );
-  };
-
   return (
     <Screen style={styles.screen}>
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[1]}>
@@ -208,15 +160,12 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           <View style={styles.activitySuggestions}></View>
         </View>
         <View style={styles.locationSuggestions}>
-          {featuredLocations.length < 0 ? (
+          {featuredLocations.length > 0 ? (
             featuredLocations.map((location: GoogleLocation) => {
               return <ActivityCard key={location.place_id} navigation={navigation} location={location} map={false} />;
             })
           ) : (
-            // <AppText>Fetching feature locations</AppText>
-            <>
-              <Progress step={1} steps={10} height={20} />
-            </>
+            <ProgressBar />
           )}
         </View>
       </ScrollView>
