@@ -7,9 +7,12 @@ import { Invitee, Plan, User } from '../models';
 import { PlanCard } from './planCard';
 import { NoPlansCard } from './NoPlansCard';
 
-export const PlansPreview = () => {
+export interface Props {
+  reload: boolean;
+}
+export const PlansPreview = ({reload}: Props) => {
   //TODO instead of having five variables which can get out of sync with each other, have one const [state, setState] and an enum with each of the states as values. For an example of how to do this, check out the TakeoverSearch screen on my activity selector branch
-  const [allSelected, setAllSelected] = useState(false);
+  const [allSelected, setAllSelected] = useState(true);
   const [pendingSelected, setPendingSelected] = useState(false);
   const [acceptedSelected, setAcceptedSelected] = useState(false);
   const [createdSelected, setCreatedSelected] = useState(false);
@@ -29,7 +32,7 @@ export const PlansPreview = () => {
       fetchPlans(user);
     };
     plans();
-  }, []);
+  }, [reload]);
 
   const fetchPlans = async (user: User) => {
     //TODO we should be pulling a user's plans once and storing them in state. When plans are referenced, show the plans stored in state, make a call to planDB ( which will update state ), the update the screens if there's new data. 
@@ -78,7 +81,7 @@ export const PlansPreview = () => {
   return (
     <View style={styles.container}>
       {/* TODO subContainer is a horrendous name for a style. Try something more descriptive ^.^ */}
-      <View style={styles.subContainer}>
+      <View style={styles.scrollList}>
         <Text style={styles.header}>Your Plans</Text>
         <ScrollView showsHorizontalScrollIndicator={false} style={{ paddingLeft: 10, paddingBottom: 8 }} horizontal>
           <TouchableOpacity
@@ -164,7 +167,7 @@ export const PlansPreview = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
-       {/* TODO Instead of having multiple "is this variable true?" blocks, you should have one function that checks the current state and returns the appropriate JSX code*/}
+      {/* TODO Instead of having multiple "is this variable true?" blocks, you should have one function that checks the current state and returns the appropriate JSX code*/}
       {createdSelected &&
         (createdPlans.length > 0 ? (
           createdPlans.map((plan) => (
@@ -270,7 +273,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 10,
   },
-  subContainer: {
+  scrollList: {
     borderColor: '#E5E5E5',
     backgroundColor: '#fff',
   },

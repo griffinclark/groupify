@@ -98,8 +98,10 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
           <Header home={true} />
           <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
             <View>
-              {upcomingPlans.length > 0 && <Banner reload={trigger2} navigation={navigation} plan={upcomingPlans[0]} />}
-              <PlansPreview />
+              {upcomingPlans.length > 0 && (
+                <Banner reload={trigger2} navigation={navigation} plan={upcomingPlans[0] || userPlans[0]} />
+              )}
+              <PlansPreview reload={trigger2} />
               <ImportContactTile navigation={navigation} />
               <FooterCard />
             </View>

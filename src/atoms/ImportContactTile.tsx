@@ -13,27 +13,24 @@ export interface Props {
 export const ImportContactTile = ({ navigation }: Props) => {
   // TODO should be contacts not contactd
   const [contactd, setContactd] = React.useState<Contact[]>([]);
-  // TODO why is this a string?? Should be a boolean
-  const [emptyState, setEmptyState] = React.useState('false');
+  const [emptyState, setEmptyState] = React.useState(false);
 
   useEffect(() => {
+    const checkContacts = async () => {
+      const contacts: Contact[] = await getAllImportedContacts();
+      setContactd(contacts);
+      if (contacts.length > 0) {
+        setEmptyState(false);
+      } else {
+        setEmptyState(true);
+      }
+    };
     checkContacts();
   }, []);
 
-  const checkContacts = async () => {
-    // TODO you can just put this code straight into the useEffect. Improves readability
-    const contacts: Contact[] = await getAllImportedContacts();
-    setContactd(contacts);
-    if (contacts.length > 0) {
-      setEmptyState('true');
-    } else {
-      setEmptyState('false');
-    }
-  };
   return (
     <View>
-      {/* TODO once you chang emptyState to boolean, change this to {emptyState ? ():()} */}
-      {emptyState === 'false' ? (
+      {emptyState ? (
         <View style={styles.emptyContainer}>
           <View style={styles.contactContainer}>
             <Text style={styles.header}>Your Contacts</Text>

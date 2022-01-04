@@ -73,7 +73,9 @@ export const Banner: React.FC<Props> = ({ plan, reload }: Props) => {
               <Text style={{ fontSize: 19, color: '#C3982C', fontWeight: '500' }}>
                 {plan.date && formatDayOfWeekDate(plan.date)}
               </Text>
-              <Text style={styles.title}>{plan.title}</Text>
+              <Text style={styles.title}>
+                {plan.title.length > 20 ? plan.title.substring(0, 19) + '...' : plan.title}
+              </Text>
               <Text style={styles.hostName}>{hostName}</Text>
             </View>
             <View>

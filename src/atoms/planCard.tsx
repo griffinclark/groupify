@@ -7,14 +7,14 @@ import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
+import { WHITE, GOLD, GREY_3, GREEN } from '../res/styles/Colors';
 
 export interface Props {
-  //TODO for consistency in our code and to improve readability, we declare optionals with title?:string instead of title: string|undefined. Also note that you use both here
-  title: string | undefined;
-  date: string | undefined;
-  location: string | undefined;
-  planId: string | undefined;
-  placeId: string | undefined;
+  title: string;
+  date?: string;
+  location: string;
+  planId?: string;
+  placeId?: string;
   creator?: boolean;
   invited?: boolean;
   creatorId: string;
@@ -40,25 +40,19 @@ export const PlanCard = ({ title, date, location, planId, placeId, creator, invi
   };
 
   useEffect(() => {
-    //TODO remove unnecessary () at the and and wrapping async
     (async () => {
       if (placeId) {
         setPhotoURI(await loadPhoto(placeId));
       }
-    })();
-  }, []);
+    })(); // TODO why is this async?, well its fixes lazy loading of images
+    const loadInvitees = async () => {
+      const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === planId);
+      setInvitees(invitees);
+    };
 
-  useEffect(() => {
-    //TODO why are these useEffect calls in two different functions? Merge them together if possible
     loadInvitees();
     getHost(creatorId);
   }, []);
-
-  //TODO since loadInvitees is just being used once and is pretty small you can put this code inside the useEffect
-  const loadInvitees = async () => {
-    const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === planId);
-    setInvitees(invitees);
-  };
 
   return (
     <View style={styles.container}>
@@ -66,13 +60,11 @@ export const PlanCard = ({ title, date, location, planId, placeId, creator, invi
         <View>
           <Text style={styles.date}>{date && formatDayOfWeekDate(date)}</Text>
           <Text numberOfLines={1} style={{ fontWeight: '500', fontSize: 20, marginVertical: 5 }}>
-            {title}
+            {title.length > 20 ? title.substring(0, 19) + '...' : title}
           </Text>
           {creator ? (
-            //TODO never use colors like '#FFFFFF' in your code. Always reference colors.WHITE (you'll have to import colors). If we don't have the color you need, you can add it in. This appears in multiple places throughout your code
-            //TODO styling should go in StyleSheet not inline. This appears in multiple places throughout your code. 
-            <View style={{ backgroundColor: '#cdffcd', padding: 4, marginTop: 4, borderRadius: 5 }}>
-              <Text style={{ fontWeight: '500' }}>You are hosting this plan</Text>
+            <View style={styles.creatorContainer}>
+              <Text style={styles.creatorText}>You are hosting this plan</Text>
             </View>
           ) : (
             <View>
@@ -92,14 +84,15 @@ export const PlanCard = ({ title, date, location, planId, placeId, creator, invi
       </View>
       <View style={styles.invited}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {/* TODO  instead of saying "is this true? show x. is this false? show y" you can use {invited ? (return x):(return y)}. Reduces errors */}
-          {invited && <AntDesign name="checkcircle" size={24} color="green" />}
-          {!invited && !creator && <MaterialCommunityIcons name="dots-horizontal-circle" size={24} color="red" />}
+          {invited
+            ? <AntDesign name="checkcircle" size={24} color="green" /> ||
+              (!creator && <MaterialCommunityIcons name="dots-horizontal-circle" size={24} color="red" />)
+            : null}
           <Text style={styles.invitedText}>{invitees.length} Invited</Text>
         </View>
         <View>
           <Text numberOfLines={1} style={styles.invitedText}>
-            {location?.slice(0, 17)}...
+            {location?.length > 20 ? location?.substring(0, 19) + '...' : location}
           </Text>
         </View>
       </View>
@@ -109,7 +102,7 @@ export const PlanCard = ({ title, date, location, planId, placeId, creator, invi
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: WHITE,
     marginTop: 5,
     paddingBottom: 9,
   },
@@ -122,13 +115,13 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 19,
     fontWeight: '600',
-    color: '#C3982C',
+    color: GOLD,
     marginBottom: 5,
   },
   hostName: {
     fontSize: 20,
     fontWeight: '500',
-    color: 'gray',
+    color: GREY_3,
     paddingTop: 5,
   },
   image: {
@@ -146,8 +139,17 @@ const styles = StyleSheet.create({
 
   invitedText: {
     fontSize: 18,
-    color: '#8B8B8B',
+    color: GREY_3,
     marginLeft: 4,
+    fontWeight: '500',
+  },
+  creatorContainer: {
+    backgroundColor: GREEN,
+    padding: 4,
+    marginTop: 4,
+    borderRadius: 5,
+  },
+  creatorText: {
     fontWeight: '500',
   },
 });
