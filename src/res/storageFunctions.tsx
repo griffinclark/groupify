@@ -71,7 +71,12 @@ export const getAllImportedContacts: () => Promise<Contact[]> = async () => {
 export const storeImportedContact: (contact: Contact) => Promise<void> = async (contact: Contact) => {
   try {
     const userFriends: Contact[] = await getAllImportedContacts();
-    userFriends.push(contact);
+    if (userFriends.find((c) => c.id === contact.id)) {
+      console.log('contact already exists');
+      return;
+    } else {
+      userFriends.push(contact);
+    }
     await AsyncStorage.setItem('user_friends', JSON.stringify(userFriends));
   } catch (e) {
     console.log('Error storing this contact');

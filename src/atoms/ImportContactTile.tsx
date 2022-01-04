@@ -19,6 +19,10 @@ export const ImportContactTile = ({ navigation }: Props) => {
     const checkContacts = async () => {
       const contacts: Contact[] = await getAllImportedContacts();
       setContactd(contacts);
+      console.log(
+        'contacts: ',
+        contacts.map((c) => c.name),
+      );
       if (contacts.length > 0) {
         setEmptyState(false);
       } else {

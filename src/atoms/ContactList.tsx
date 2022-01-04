@@ -25,6 +25,28 @@ export const ContactList = ({ navigation }: Props) => {
   const [addedContacts, setAddedContacts] = useState<Contact[]>([]);
 
   useEffect(() => {
+    const loadContacts = async () => {
+      const { status } = await Contacts.requestPermissionsAsync();
+      if (status === 'granted') {
+        const { data } = await Contacts.getContactsAsync({});
+        if (data.length > 0) {
+          // TODO type
+          const contacts = data.map((contact) => ({
+            id: contact.id,
+            name: contact.name,
+            image: contact.image,
+            phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
+          }));
+          // TODO no any - create a type here if you have to you're referencing type.value
+          contacts.sort((c1, c2): any => {
+            if (c1.name && c2.name) {
+              return c1.name.toLowerCase() < c2.name.toLowerCase() ? -1 : 1;
+            }
+          });
+          contacts[0].phoneNumber && setContacts(contacts);
+        }
+      }
+    };
     loadContacts();
     loadImportedContacts();
   }, []);
@@ -40,32 +62,8 @@ export const ContactList = ({ navigation }: Props) => {
     loadImportedContacts();
   };
 
-  const loadContacts = async () => {
-    // TODO can be moved inside useEffect
-    const { status } = await Contacts.requestPermissionsAsync();
-    if (status === 'granted') {
-      const { data } = await Contacts.getContactsAsync({});
-      if (data.length > 0) {
-        // TODO type
-        const contacts = data.map((contact) => ({
-          id: contact.id,
-          name: contact.name,
-          image: contact.image,
-          phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
-        }));
-        // TODO no any - create a type here if you have to you're referencing type.value
-        contacts.sort((c1, c2): any => {
-          if (c1.name && c2.name) {
-            return c1.name.toLowerCase() < c2.name.toLowerCase() ? -1 : 1;
-          }
-        });
-        contacts[0].phoneNumber && setContacts(contacts);
-      }
-    }
-  };
-
   const loadImportedContacts = async () => {
-    // TODO can be moved inside useEffect
+    // TODO can be moved inside useEffect? no, we use this particular function elsewhere
     await getAllImportedContacts().then((contacts) => {
       setAddedContacts(contacts);
       if (contacts.length > 0) {
