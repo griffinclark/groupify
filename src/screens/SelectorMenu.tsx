@@ -10,8 +10,7 @@ import { ActivityCard } from './../molecules/ActivityCard';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
-import { SearchbarWithoutFeedback } from './../molecules/SearchbarWithoutFeedback';
-import { TEAL_0 } from './../res/styles/Colors';
+import { SearchbarDisplayMode, SearchbarWithoutFeedback } from './../molecules/SearchbarWithoutFeedback';
 import { ProgressBar } from '../atoms/ProgressBar';
 export interface Props {
   navigation: {
@@ -34,6 +33,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
 
   useEffect(() => {
+    // TODO @JONI do we want to be resetting one or both of these?
     setTempUserLocationQuery('');
     setPlacesUserWantsToGoQuery('');
     const buildFeatureLocations = async () => {
@@ -114,6 +114,8 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
             tempUserLocation={route.params.tempUserLocation}
             placesUserWantsToGoQuery={placesUserWantsToGoQuery}
             tempUserLocationQuery={tempUserLocationQuery}
+            mode={SearchbarDisplayMode.Query}
+
           />
         </View>
         <View style={styles.activitySelectorRoot}>
@@ -126,19 +128,15 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
                 {activityArr.map((activity: string) => (
                   <TouchableOpacity
                     onPress={async () => {
-                      console.log(route.params.userLocation);
-
                       const activities: GoogleLocation[] = await googlePlacesQuery(
                         activity,
                         route.params.userLocation,
                         GooglePlacesQueryOptions.Activity,
                       );
-
-                      console.log(route.params.userLocation);
                       navigation.navigate('PlanMap', {
                         navigation: { navigation },
                         route: { route },
-                        placesUserWantsToGoQuery: { activity },
+                        placesUserWantsToGoQuery: activity,
                         tempUserLocationQuery: '',
                         userLocation: route.params.userLocation,
                         placesUserWantsToGoResults: activities,

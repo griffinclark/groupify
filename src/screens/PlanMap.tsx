@@ -4,9 +4,8 @@ import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import Constants from 'expo-constants';
 import { RoutePropParams } from '../res/root-navigation';
-import { GOLD_0, GREY_4, GREY_8, TEAL_0 } from '../res/styles/Colors';
+import { GOLD_0, GREY_4, GREY_8, GREY_6, TEAL_0, WHITE } from '../res/styles/Colors';
 import { GoogleLocation } from '../res/dataModels';
-import { WHITE, GREY_6 } from './../res/styles/Colors';
 import { Screen } from '../atoms/Screen';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { HomeNavBar } from '../molecules/HomeNavBar';
@@ -15,6 +14,7 @@ import { Marker } from 'react-native-maps';
 import { MapIcon } from './../../assets/Icons/MapIcon';
 import { AppText } from '../atoms/AppText';
 import { MagnifyingGlassIcon } from './../../assets/Icons/MagnifyingGlass';
+import { SearchbarDisplayMode, SearchbarWithoutFeedback } from '../molecules/SearchbarWithoutFeedback';
 
 export interface Props {
   navigation: {
@@ -24,10 +24,9 @@ export interface Props {
   };
   route: RoutePropParams;
   placesUserWantsToGoResults: GoogleLocation[];
+  tempUserLocationQuery: string;
+  placesUserWantsToGoQuery: string;
 }
-
-// FIXME secret is just being stored in text in Groupify!!!
-const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
 export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   const [userLocation, setUserLocation] = useState({
@@ -41,7 +40,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     longitudeDelta: 0.001,
     default: true,
   });
-  const [localLocations, setLocalLocations] = useState<GoogleLocation[]>([]); //TODO rename
+  // const [localLocations, setLocalLocations] = useState<GoogleLocation[]>([]); //TODO rename
   const [mapIcon, setMapIcon] = useState<string>();
   const [distance, setDistance] = useState<number>(30); //TODO does this do anything?
 
@@ -81,7 +80,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           longitudeDelta: 0.05,
           default: false,
         });
-        setLocalLocations(route.params.placesUserWantsToGoResults); //FIXME the fuck is locations?
+        // setLocalLocations(route.params.placesUserWantsToGoResults); //FIXME the fuck is locations?
       } catch (e) {
         console.log(e);
       }
@@ -97,6 +96,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         displayGroupify={false}
         navigation={navigation}
       />
+
       {region.default == true ? (
         <>
           <AppText numberOfLines={2}>Loading map</AppText>
@@ -104,49 +104,35 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         </>
       ) : (
         <>
-          <TouchableWithoutFeedback
-            // FIXME make this its own component
-            onPress={() => {
-              navigation.navigate('TakeoverSearch', {
-                navigation: navigation,
-                route: route,
-                tempUserLocationQuery: route.params.tempUserLocationQuery,
-                userLocation: userLocation,
-              });
-            }}
-          >
-            <View style={styles.searchBarContainer}>
-              <View style={styles.magnifyingGlassIcon}>
-                <MagnifyingGlassIcon />
-              </View>
-              <AppText style={styles.searchBarText}>Current location</AppText>
-            </View>
-          </TouchableWithoutFeedback>
+          <View style={styles.searchBarContainer}>
+            <SearchbarWithoutFeedback
+              route={route}
+              icon={<MagnifyingGlassIcon />}
+              placeholderText={'route.params.tempUserLocationQuery'}
+              navigation={navigation}
+              tempUserLocationQuery={route.params.tempUserLocationQuery}
+              userLocation={route.params.userLocation}
+              tempUserLocation={route.params.tempUserLocation}
+              placesUserWantsToGoQuery={route.params.placesUserWantsToGoQuery}
+              mode={SearchbarDisplayMode.Result}
+            />
+          </View>
           {/* TODO MapView has to be built dynamically based on number of locations and distance between locations */}
           <MapView
             initialRegion={region}
             style={styles.map}
-            // disable showsUserLocation because it's slightly off from the one Apple displays, leading to 2 user locations shown
-            showsUserLocation={false}
+            showsUserLocation={true}
             //FIXME user is grouping with locations
             animationEnabled={false}
             showsBuildings={true}
             showsCompass={false}
-            showsTraffic={true}
+            showsTraffic={false}
             userInterfaceStyle="dark"
             clusterColor={GOLD_0}
             // radius={40}
             showsPointsOfInterest={false}
           >
-            <Marker
-              coordinate={{
-                latitude: userLocation.latitude,
-                longitude: userLocation.longitude,
-              }}
-            >
-              <View style={styles.userMarker} />
-            </Marker>
-            {localLocations.map((loc) => (
+            {route.params.placesUserWantsToGoResults.map((loc) => (
               <Marker
                 coordinate={{
                   latitude: loc.geometry.location.lat,
@@ -180,75 +166,12 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {},
-  navbar: {
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingBottom: 26,
-    paddingHorizontal: 30,
-    paddingTop: Constants.statusBarHeight,
-    // height: 99,
-  },
-  navbarText: {
-    fontSize: 16,
-    fontWeight: '700',
-    alignSelf: 'center',
-    marginTop: -4,
-    marginLeft: 18,
-  },
-  backButtonTemp: {
-    borderBottomWidth: 1,
-    backgroundColor: WHITE,
-    borderBottomColor: GREY_4,
-    flexDirection: 'row',
-  },
-  favorites: {
-    fontSize: 20,
-  },
-  switch: {
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-  },
-  activeTab: {
-    alignItems: 'center',
-    borderBottomColor: TEAL_0,
-    borderBottomWidth: 1.5,
-    flex: 1,
-    paddingBottom: 14,
-  },
-  inactiveTab: {
-    alignItems: 'center',
-    borderBottomColor: '#E5E5E5',
-    borderBottomWidth: 1.5,
-    flex: 1,
-  },
-  activeText: {
-    color: TEAL_0,
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  inactiveText: {},
-  navbarLogo: {
-    height: 45,
-    width: 130,
-  },
-  activitiesImage: {
-    height: 30,
-    width: 30,
+    height: '100%',
   },
   map: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - (105 + Constants.statusBarHeight),
-  },
-  userMarker: {
-    backgroundColor: TEAL_0,
-    borderColor: WHITE,
-    borderRadius: 12.5,
-    borderWidth: 3,
-    height: 25,
-    width: 25,
+    height: Dimensions.get('window').height - (65 + Constants.statusBarHeight),
+    // height: '100%',
   },
   marker: {
     position: 'absolute',
@@ -258,7 +181,7 @@ const styles = StyleSheet.create({
   mapText: {
     fontWeight: '800',
     textAlign: 'center',
-    color: TEAL_0,
+    color: WHITE,
     // textShadowOffset: { width: 2, height: 2 },
     // textShadowRadius: 20,
     // textShadowColor: WHITE,
@@ -278,7 +201,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     position: 'absolute',
-    marginTop: 90,
+    marginTop: 95,
     backgroundColor: WHITE,
   },
   searchBarText: {

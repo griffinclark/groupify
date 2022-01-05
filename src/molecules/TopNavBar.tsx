@@ -5,7 +5,7 @@ import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { AppText } from '../atoms/AppText';
 import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
-import { GREY_4, WHITE } from '../res/styles/Colors';
+import { GREY_1, GREY_4, WHITE } from '../res/styles/Colors';
 
 interface Props {
   title?: string;
@@ -30,7 +30,7 @@ export const TopNavBar: React.FC<Props> = ({
     <View style={styles.topNavBarRoot}>
       <TouchableOpacity
         onPress={() => {
-          console.log('navigating ' + targetScreen);
+          // console.log('navigating ' + targetScreen);
           navigation.navigate(targetScreen, { route, placesUserWantsToGoQuery, tempUserLocationQuery });
         }}
       >

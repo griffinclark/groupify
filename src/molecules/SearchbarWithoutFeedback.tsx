@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import { AppText } from '../atoms/AppText';
 import { NavigationProps, UserLocation } from '../res/dataModels';
@@ -8,12 +8,18 @@ import { GREY_6, GREY_8 } from '../res/styles/Colors';
 interface Props {
   route: RoutePropParams;
   icon: JSX.Element;
-  placeholderText: string;
+  placeholderText?: string;
   tempUserLocation: UserLocation;
   placesUserWantsToGoQuery: string;
   tempUserLocationQuery: string;
   navigation: NavigationProps;
   userLocation: UserLocation;
+  mode: SearchbarDisplayMode;
+}
+
+export enum SearchbarDisplayMode {
+  Query = 'QUERY',
+  Result = 'RESULT',
 }
 
 export const SearchbarWithoutFeedback: React.FC<Props> = ({
@@ -25,11 +31,11 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
   userLocation,
   placesUserWantsToGoQuery,
   tempUserLocation,
+  mode,
 }: Props) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        console.log(placesUserWantsToGoQuery);
         navigation.navigate('TakeoverSearch', {
           navigation: navigation,
           route: route,
@@ -43,7 +49,15 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
     >
       <View style={styles.searchBarContainer}>
         <View style={styles.icon}>{icon}</View>
-        <AppText style={styles.searchBarText}>{placeholderText}</AppText>
+
+        {mode == SearchbarDisplayMode.Query ? (
+          <AppText style={styles.searchBarText}>{placeholderText}</AppText>
+        ) : (
+          <View style={{ flexDirection: 'row' }}>
+            <AppText>{placesUserWantsToGoQuery}</AppText>
+            <AppText style={styles.searchBarText}>{tempUserLocationQuery}</AppText>
+          </View>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

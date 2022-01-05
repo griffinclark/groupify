@@ -29,12 +29,13 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
   const [tempUserLocationResults, setTempUserLocationResults] = useState<GoogleLocation[]>([]);
   const [dataset, setDataset] = useState(Dataset.SelectLocation);
   const [tempUserLocation, setTempUserLocation] = useState<UserLocation>(route.params.tempUserLocation);
-  const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState<string>();
-  const [tempUserLocationQuery, setTempUserLocationQuery] = useState<string>();
+  const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState('');
+  const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
 
   useEffect(() => {
     setDataset(Dataset.SelectLocation);
     setPlacesUserWantsToGoQuery(route.params.placesUserWantsToGoQuery);
+
     setTempUserLocationQuery(route.params.tempUserLocationQuery);
     if (route.params.tempUserLocationQuery.length == 0) {
       setTempUserLocationQuery('Current Location');
@@ -55,19 +56,46 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
   };
 
   const placehodlerPhoto: Photo = {
+    height: -1,
+    width: -1,
+    html_attributions: ['none'],
     photo_reference:
       'Aap_uEAaObHoUCrr6U-GNsZoP3Hl_pOvGmPU4VKM2loAQ7mPp_-mo4HqjNG2mE4rW-RBHbjNul-uN-b6djsWbcAroHqFbQE-aAGIwZ6HRbbKaGHc71aHddczUS4pA1xHtebC-2rnSnQG5k-lHfz-1vzBJdjPhxvgQ8aTlGELmfhWC_Yn317M',
   };
   const origionalUserLocation: GoogleLocation = {
+    // I have not tested whether or not viewport{} works, but I've added it so we have a complete object
     geometry: {
       location: {
         lng: route.params.userLocation.longitude,
         lat: route.params.userLocation.latitude,
       },
+      viewport: {
+        northeast: {
+          lng: route.params.userLocation.longitude,
+          lat: route.params.userLocation.latitude,
+        },
+        southwest: {
+          lng: route.params.userLocation.longitude,
+          lat: route.params.userLocation.latitude,
+        },
+      },
     },
     name: 'Current Location',
     place_id: 'manually entered search tile',
     photos: [placehodlerPhoto],
+    // All data below here should never be accessed
+    business_status: 'null',
+    icon: 'null',
+    icon_background_color: 'null',
+    icon_mask_base_uri: 'null',
+    plusCode: { compound_code: 'null', global_code: 'null' },
+    opening_hours: { open_now: false },
+    formatted_address: 'null',
+    rating: -1,
+    user_ratings_total: -1,
+    price_level: -1,
+    reference: 'null',
+    types: ['null'],
   };
 
   return (
@@ -196,8 +224,8 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                       route: { route },
                       placesUserWantsToGoResults: results,
                       tempUserLocation: tempUserLocation,
-                      tempUserLocationQuery: route.params.tempUserLocationQuery,
-                      placesUserWantsToGoQuery: route.params.placesUserWantsToGoQuery,
+                      tempUserLocationQuery: tempUserLocationQuery,
+                      placesUserWantsToGoQuery: placesUserWantsToGoQuery,
                     });
                   }}
                 />
