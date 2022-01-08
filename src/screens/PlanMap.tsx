@@ -15,6 +15,7 @@ import { MapIcon } from './../../assets/Icons/MapIcon';
 import { AppText } from '../atoms/AppText';
 import { MagnifyingGlassIcon } from './../../assets/Icons/MagnifyingGlass';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from '../molecules/SearchbarWithoutFeedback';
+import { ProgressBar } from '../atoms/ProgressBar';
 
 export interface Props {
   navigation: {
@@ -46,7 +47,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     if (region.default) {
-      getUserLocation();
+      getStartRegion();
     }
   }, [userLocation, route.params.activity, distance]); //FIXME the fuck are the second two?
 
@@ -58,7 +59,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   }, [route.params.place]); //FIXME the fuck is place?
 
-  const getUserLocation = async () => {
+  const getStartRegion = async () => {
     const { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
@@ -68,10 +69,10 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         if (location === null) {
           location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
         }
-        setUserLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        });
+        // setUserLocation({
+        //   latitude: location.coords.latitude,
+        //   longitude: location.coords.longitude,
+        // });
 
         setRegion({
           latitude: location.coords.latitude,
@@ -99,7 +100,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
 
       {region.default == true ? (
         <>
-          <AppText numberOfLines={2}>Loading map</AppText>
+          <ProgressBar />
           {/* TODO AppText not truncating properly */}
         </>
       ) : (
@@ -182,6 +183,11 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     textAlign: 'center',
     color: WHITE,
+    fontSize: 11,
+    maxHeight: 30,
+    // maxWidth: 100,
+    overflow: 'hidden',
+    //TODO truncate text properly
     // textShadowOffset: { width: 2, height: 2 },
     // textShadowRadius: 20,
     // textShadowColor: WHITE,

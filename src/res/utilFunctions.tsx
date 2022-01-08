@@ -6,6 +6,7 @@ import { Platform } from 'react-native';
 import { sendPushNotification } from './notifications';
 import * as queries from '../graphql/queries';
 import { GoogleLocation, UserLocation } from './dataModels';
+import { getDistance } from 'geolib';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
@@ -318,36 +319,91 @@ export const respondToPlan = async (accept: boolean, plan: Plan): Promise<void> 
 };
 
 export enum GooglePlacesQueryOptions {
-  Activity = 0,
-  ChangeLocation = 1,
+  Activity,
+  ChangeLocation,
 }
 
 export const googlePlacesQuery: (
   text: string,
   userLocation: UserLocation,
   searchType: GooglePlacesQueryOptions,
-) => Promise<GoogleLocation[]> = async (text, userLocation, searchType) => {
+) => Promise<GoogleLocation[]> = async (query, userLocation, searchType) => {
+  //if query is one of the activity selector buttons, transform it to a more interesting query
+  console.log(query);
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const searchResults: GoogleLocation[] = [];
   switch (searchType) {
-    case 0:
-      let unfilteredLocations: GoogleLocation[] = [];
-      const search =
-        'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-        `location=${userLocation?.latitude},${userLocation.longitude}` +
-        `&query=${text}` +
-        // '&type=point_of_interest' +
-        `&key=${GOOGLE_PLACES_API_KEY}`;
-      await fetch(search).then(
-        async (res) => {
-          const detail = await res.json();
-          unfilteredLocations = detail.results;
-          // detail.results.sort((a: GoogleLocation, b: GoogleLocation) => b.user_ratings_total - a.user_ratings_total);
-        },
-        (rej) => {
-          console.log(rej);
-        },
-      );
+    case GooglePlacesQueryOptions.Activity:
+      const unfilteredLocations: GoogleLocation[] = [];
+
+      switch (query) {
+        case 'Outdoors':
+          //TODO this is now "active outdoors"
+          const [r0, r1, r2]: GoogleLocation[][] = await Promise.all([
+            googlePlacesQuery('trail', userLocation, searchType),
+            googlePlacesQuery('mountain', userLocation, searchType),
+            // googlePlacesQuery('beach', userLocation, searchType),
+          ]);
+          r0.forEach((a) => unfilteredLocations.push(a));
+          r1.forEach((a) => unfilteredLocations.push(a));
+          // r2.forEach((a) => unfilteredLocations.push(a));
+          break;
+        case 'Culture':
+          //TODO this is now "casual outdoors"
+          const [r3, r4]: GoogleLocation[][] = await Promise.all([
+            googlePlacesQuery('park', userLocation, searchType),
+            googlePlacesQuery('beach', userLocation, searchType),
+          ]);
+          r3.forEach((a) => unfilteredLocations.push(a));
+          r4.forEach((a) => unfilteredLocations.push(a));
+          break;
+        case 'Fitness':
+          const [r5, r6, r7, r8, r9]: GoogleLocation[][] = await Promise.all([
+            googlePlacesQuery('climbing gym', userLocation, searchType),
+            googlePlacesQuery('boxing gym', userLocation, searchType),
+            googlePlacesQuery('gym', userLocation, searchType),
+            googlePlacesQuery('pool', userLocation, searchType),
+            googlePlacesQuery('yoga studio', userLocation, searchType),
+          ]);
+          r5.forEach((a) => unfilteredLocations.push(a));
+          r6.forEach((a) => unfilteredLocations.push(a));
+          r7.forEach((a) => unfilteredLocations.push(a));
+          r8.forEach((a) => unfilteredLocations.push(a));
+          r9.forEach((a) => unfilteredLocations.push(a));
+          break;
+        case 'Nightlife':
+          const [r10, r11, r12]: GoogleLocation[][] = await Promise.all([
+            googlePlacesQuery('go kart', userLocation, searchType),
+            googlePlacesQuery('movie theater', userLocation, searchType),
+            googlePlacesQuery('sailing', userLocation, searchType),
+            googlePlacesQuery('kayak', userLocation, searchType),
+            googlePlacesQuery('zoo', userLocation, searchType),
+            googlePlacesQuery('snorkel', userLocation, searchType),
+            googlePlacesQuery('bike rental', userLocation, searchType),
+
+          ]);
+        default:
+          const search =
+            'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
+            `location=${userLocation?.latitude},${userLocation.longitude}` +
+            `&query=${query}` +
+            // 'rankby=distance' +
+            // 'radius=10000' +
+            // '&type=point_of_interest' +
+            `&key=${GOOGLE_PLACES_API_KEY}`;
+          await fetch(search).then(
+            async (res) => {
+              const detail = await res.json();
+              detail.results.forEach((unfilteredLocation: GoogleLocation) =>
+                unfilteredLocations.push(unfilteredLocation),
+              );
+              // detail.results.sort((a: GoogleLocation, b: GoogleLocation) => b.user_ratings_total - a.user_ratings_total);
+            },
+            (rej) => {
+              console.log(rej);
+            },
+          );
+      }
       // Filter locations, sort by distance, and return
       // A complete list of location tags can be found at: https://developers.google.com/maps/documentation/places/web-service/supported_types
       const whitelist = [
@@ -382,18 +438,56 @@ export const googlePlacesQuery: (
         'zoo',
       ];
 
+      //If the query is one of the activity selector buttons, we're going to make sure that we return only the locations that make sense for that button
+      switch (query) {
+        default:
+          whitelist.push(
+            'art_gallery',
+            'bakery',
+            'bar',
+            'beauty_salon',
+            'book_store',
+            'bowling_alley',
+            'cafe',
+            'campground',
+            'casino',
+            'church',
+            'clothing_store',
+            'department_store',
+            'gym',
+            'hair_care',
+            'library',
+            'light_rail_station',
+            'lodging',
+            'meal_takeaway',
+            'movie_theater',
+            'museum',
+            'night_club',
+            'park',
+            'school',
+            'rv_park',
+            'restaurant',
+            'tourist_attraction',
+            'transit_station',
+            'university',
+            'zoo',
+          );
+      }
+
       unfilteredLocations.forEach((location: GoogleLocation) => {
         if (whitelist.some((tag) => location.types.includes(tag)) == true) {
-          searchResults.push(location);
+          if (getDistance(userLocation, location.geometry.location) < 30000) {
+            searchResults.push(location);
+          }
         }
       });
       break;
 
-    case 1:
+    case GooglePlacesQueryOptions.ChangeLocation:
       const changeLocSearch =
         'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
         `location=${userLocation.latitude},${userLocation.longitude}` +
-        `&query=${text}` +
+        `&query=${query}` +
         '&type=locality' +
         `&key=${GOOGLE_PLACES_API_KEY}`;
       await fetch(changeLocSearch).then(
@@ -412,9 +506,9 @@ export const googlePlacesQuery: (
       return [];
   }
   // If we have results, return the results. If there are no results, re-run the query with one less character and return that
-  if (searchResults.length > 0 || text.length == 0) {
+  if (searchResults.length > 0 || query.length == 0) {
     return searchResults;
-  } else return await googlePlacesQuery(text.substring(0, text.length - 1), userLocation, searchType);
+  } else return await googlePlacesQuery(query.substring(0, query.length - 1), userLocation, searchType);
 };
 
 export const removePastPlans = (plans: Plan[]): Plan[] => {

@@ -9,6 +9,7 @@ interface Props {
   onPressIn?: () => void;
   onPressOut?: () => void;
   leftIcon: JSX.Element;
+  onSubmitEditing?: () => void;
   defaultValue?: string;
   autoFocus?: boolean;
   selectTextOnFoucs?: boolean;
@@ -22,6 +23,7 @@ export const SearchBar: React.FC<Props> = ({
   onPressOut,
   onChangeText,
   leftIcon,
+  onSubmitEditing,
   autoFocus,
   defaultValue,
   selectTextOnFocus,
@@ -43,6 +45,7 @@ export const SearchBar: React.FC<Props> = ({
           underlineColorAndroid="transparent"
           testID={testID}
           onPressIn={onPressIn}
+          onSubmitEditing={onSubmitEditing}
           autoFocus={autoFocus}
           selectTextOnFocus={selectTextOnFocus}
           // TODO selectTextOnFocus not working

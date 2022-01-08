@@ -224,12 +224,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
           <View style={styles.createAccount}>
             <AppText style={styles.text}>{copy.dontHaveAnAccountQuestion}</AppText>
-            <AppText
-              style={styles.textTeal}
-              onPress={async () => {
-                navigation.navigate('CreateAccount', {});
-              }}
-            >
+            <AppText style={styles.textTeal} onPress={() => logIn()}>
               Create one today!
             </AppText>
             {route.params && route.params.accountCreated === 'success' && (

@@ -54,7 +54,7 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
           <AppText style={styles.searchBarText}>{placeholderText}</AppText>
         ) : (
           <View style={{ flexDirection: 'row' }}>
-            <AppText>{placesUserWantsToGoQuery}</AppText>
+            <AppText>{placesUserWantsToGoQuery + ' '}</AppText>
             <AppText style={styles.searchBarText}>{tempUserLocationQuery}</AppText>
           </View>
         )}

@@ -35,13 +35,25 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
   useEffect(() => {
     setDataset(Dataset.SelectLocation);
     setPlacesUserWantsToGoQuery(route.params.placesUserWantsToGoQuery);
-
     setTempUserLocationQuery(route.params.tempUserLocationQuery);
     if (route.params.tempUserLocationQuery.length == 0) {
       setTempUserLocationQuery('Current Location');
     }
     setTempUserLocation(route.params.tempUserLocation);
   }, []);
+
+  const navigateToPlanMap = async (query: string) => {
+    // rerun the query with the name of the selected venue so all venues with the same name show up on the map
+    const results = await googlePlacesQuery(query, route.params.tempUserLocation, GooglePlacesQueryOptions.Activity);
+    navigation.navigate('PlanMap', {
+      navigation: { navigation },
+      route: { route },
+      placesUserWantsToGoResults: results,
+      tempUserLocation: tempUserLocation,
+      tempUserLocationQuery: tempUserLocationQuery,
+      placesUserWantsToGoQuery: query,
+    });
+  };
 
   const getDataSet: () => GoogleLocation[] = () => {
     switch (dataset) {
@@ -66,17 +78,17 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
     // I have not tested whether or not viewport{} works, but I've added it so we have a complete object
     geometry: {
       location: {
-        lng: route.params.userLocation.longitude,
-        lat: route.params.userLocation.latitude,
+        lng: route.params.tempUserLocation.longitude,
+        lat: route.params.tempUserLocation.latitude,
       },
       viewport: {
         northeast: {
-          lng: route.params.userLocation.longitude,
-          lat: route.params.userLocation.latitude,
+          lng: route.params.tempUserLocation.longitude,
+          lat: route.params.tempUserLocation.latitude,
         },
         southwest: {
-          lng: route.params.userLocation.longitude,
-          lat: route.params.userLocation.latitude,
+          lng: route.params.tempUserLocation.longitude,
+          lat: route.params.tempUserLocation.latitude,
         },
       },
     },
@@ -118,6 +130,9 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                 Keyboard.dismiss();
               }}
               testID={'searchForLocationSearchbar'}
+              onSubmitEditing={() => {
+                navigateToPlanMap(placesUserWantsToGoQuery);
+              }}
               onPressIn={async () => {
                 setDataset(Dataset.SelectLocation);
                 setPlacesUserWantsToGoResults(
@@ -212,21 +227,8 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                   image={true}
                   key={location.place_id}
                   location={location}
-                  onPress={async () => {
-                    // rerun the query with the name of the selected venue so all venues with the same name show up on the map
-                    const results = await googlePlacesQuery(
-                      location.name,
-                      route.params.tempUserLocation,
-                      GooglePlacesQueryOptions.Activity,
-                    );
-                    navigation.navigate('PlanMap', {
-                      navigation: { navigation },
-                      route: { route },
-                      placesUserWantsToGoResults: results,
-                      tempUserLocation: tempUserLocation,
-                      tempUserLocationQuery: tempUserLocationQuery,
-                      placesUserWantsToGoQuery: placesUserWantsToGoQuery,
-                    });
+                  onPress={() => {
+                    navigateToPlanMap(location.name);
                   }}
                 />
               )}
