@@ -15,6 +15,7 @@ export const createPlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -101,6 +102,7 @@ export const updatePlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -187,6 +189,7 @@ export const deletePlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -289,6 +292,7 @@ export const createPlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -310,6 +314,7 @@ export const createPlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -375,6 +380,7 @@ export const updatePlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -396,6 +402,7 @@ export const updatePlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -461,6 +468,7 @@ export const deletePlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -482,6 +490,7 @@ export const deletePlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -539,6 +548,7 @@ export const createInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -596,6 +606,7 @@ export const updateInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -653,6 +664,7 @@ export const deleteInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber

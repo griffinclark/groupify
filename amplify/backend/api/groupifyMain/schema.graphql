@@ -1,4 +1,36 @@
-type Plan @model  {
+enum Sender {
+  USER
+  NOTIFICATIONPANEL
+}
+
+type NotificationFromTo
+  @model
+  @auth(rules: [{ allow: private }])
+  @key(name: "byNotification", fields: ["notificationID"])
+  @key(name: "bySender", fields: ["senderID"])
+  @key(name: "byRecipient", fields: ["recipientID"]) {
+  id: ID!
+  senderType: Sender
+  notificationID: ID!
+  senderID: ID
+  recipientID: ID!
+  notification: Notification! @connection(fields: ["notificationID"])
+  sender: User @connection(fields: ["senderID"])
+  recipient: User! @connection(fields: ["recipientID"])
+}
+
+type Notification @model @auth(rules: [{ allow: private }]) {
+  id: ID!
+  body: String!
+  data: String
+  ttl: Int
+  messageSubtitle: String
+  sound: Boolean
+  channel: String
+  recipients: [NotificationFromTo] @connection(keyName: "byNotification", fields: ["id"])
+}
+
+type Plan @model {
   id: ID!
   title: String!
   description: String
@@ -32,10 +64,9 @@ enum Status {
 }
 
 type Invitee
- @model
+  @model
   @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "inviteeByPhoneNUmber")
-  @key(name: "byPlan", fields: ["planID"], queryField: "inviteesByPlan")
- {
+  @key(name: "byPlan", fields: ["planID"], queryField: "inviteesByPlan") {
   id: ID!
   name: String!
   phoneNumber: AWSPhone!
@@ -58,10 +89,9 @@ type Availability @model {
 }
 
 type User
- @model 
+  @model
   @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber")
-  @key(name: "byName", fields: ["name"], queryField: "usersByName")
-  {
+  @key(name: "byName", fields: ["name"], queryField: "usersByName") {
   id: ID!
   phoneNumber: AWSPhone!
   name: String!
@@ -69,5 +99,6 @@ type User
   friends: ID
   email: String
   availability: Availability @connection
+  notificationsSent: [NotificationFromTo] @connection(keyName: "bySender", fields: ["id"])
+  notificationsRecieved: [NotificationFromTo] @connection(keyName: "byRecipient", fields: ["id"])
 }
- 

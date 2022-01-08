@@ -23,6 +23,7 @@ export const syncPlans = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -66,6 +67,7 @@ export const getPlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -154,6 +156,7 @@ export const listPlans = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -230,6 +233,7 @@ export const syncPlanArbitrations = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -274,6 +278,7 @@ export const getPlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -295,6 +300,7 @@ export const getPlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -372,6 +378,7 @@ export const listPlanArbitrations = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -419,6 +426,7 @@ export const syncInvitees = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -455,6 +463,7 @@ export const getInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -514,6 +523,7 @@ export const listInvitees = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -760,6 +770,7 @@ export const inviteeByPhoneNUmber = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -809,6 +820,7 @@ export const inviteesByPlan = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
