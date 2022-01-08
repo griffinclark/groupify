@@ -12,7 +12,6 @@ import { HomeNavBar } from '../molecules/HomeNavBar';
 import MapView from 'react-native-map-clustering';
 import { Marker } from 'react-native-maps';
 import { MapIcon } from './../../assets/Icons/MapIcon';
-import { AppText } from '../atoms/AppText';
 import { MagnifyingGlassIcon } from './../../assets/Icons/MagnifyingGlass';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from '../molecules/SearchbarWithoutFeedback';
 import { ProgressBar } from '../atoms/ProgressBar';
@@ -41,9 +40,11 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     longitudeDelta: 0.001,
     default: true,
   });
-  // const [localLocations, setLocalLocations] = useState<GoogleLocation[]>([]); //TODO rename
-  const [mapIcon, setMapIcon] = useState<string>();
-  const [distance, setDistance] = useState<number>(30); //TODO does this do anything?
+  const [mapIcon, setMapIcon] = useState('');
+  const [selectedMapIcon, setSelectedMapIcon] = useState('');
+  const [distance, setDistance] = useState(30); //TODO does this do anything?
+  const [showPinTitle, setShowPinTitle] = useState(true);
+  const [selectedMarker, setSelectedMarker] = useState('');
 
   useEffect(() => {
     if (region.default) {
@@ -56,6 +57,8 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
       setRegion(route.params.place);
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       setMapIcon(require('../../assets/locationPins/Location_Base.png'));
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      setSelectedMapIcon(require('../../assets/locationPins/Location_Selected.png'));
     }
   }, [route.params.place]); //FIXME the fuck is place?
 
@@ -81,7 +84,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
           longitudeDelta: 0.05,
           default: false,
         });
-        // setLocalLocations(route.params.placesUserWantsToGoResults); //FIXME the fuck is locations?
       } catch (e) {
         console.log(e);
       }
@@ -127,10 +129,18 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
             animationEnabled={false}
             showsBuildings={true}
             showsCompass={false}
+            onRegionChange={async (region) => {
+              if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) + 1 < 12.5) {
+                setShowPinTitle(false);
+              } else setShowPinTitle(true);
+            }}
             showsTraffic={false}
             userInterfaceStyle="dark"
             clusterColor={GOLD_0}
-            // radius={40}
+            spiderLineColor={GOLD_0}
+            edgePadding={{ top: 50, left: 0, right: 0, bottom: 0 }}
+            // clusteringEnabled={false}
+            radius={Dimensions.get('window').width * 0.04}
             showsPointsOfInterest={false}
           >
             {route.params.placesUserWantsToGoResults.map((loc) => (
@@ -139,13 +149,16 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
                   latitude: loc.geometry.location.lat,
                   longitude: loc.geometry.location.lng,
                 }}
-                onPress={() => console.log('pinned pressed')}
+                onPress={() => {
+                  setSelectedMarker(loc.place_id);
+                  console.log(selectedMarker);
+                }}
                 key={loc.place_id}
                 style={styles.marker}
               >
                 {/* TODO change icon on press */}
-                <MapIcon image={mapIcon} />
-                <Text style={styles.mapText}>{loc.name}</Text>
+                {loc.place_id == selectedMarker ? <MapIcon image={selectedMapIcon} /> : <MapIcon image={mapIcon} />}
+                {showPinTitle && <Text style={styles.mapText}>{loc.name}</Text>}
               </Marker>
             ))}
           </MapView>

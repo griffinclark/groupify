@@ -339,7 +339,7 @@ export const googlePlacesQuery: (
       switch (query) {
         case 'Outdoors':
           //TODO this is now "active outdoors"
-          const [r0, r1, r2]: GoogleLocation[][] = await Promise.all([
+          const [r0, r1]: GoogleLocation[][] = await Promise.all([
             googlePlacesQuery('trail', userLocation, searchType),
             googlePlacesQuery('mountain', userLocation, searchType),
             // googlePlacesQuery('beach', userLocation, searchType),
