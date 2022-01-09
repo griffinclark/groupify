@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, ScrollView, View } from 'react-native';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import Constants from 'expo-constants';
@@ -43,8 +43,9 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   const [mapIcon, setMapIcon] = useState('');
   const [selectedMapIcon, setSelectedMapIcon] = useState('');
   const [distance, setDistance] = useState(30); //TODO does this do anything?
-  const [showPinTitle, setShowPinTitle] = useState(true);
   const [selectedMarker, setSelectedMarker] = useState('');
+  const [radius, setRadius] = useState(1);
+  const [menuHeight, setMenuHeight] = useState(175);
 
   useEffect(() => {
     if (region.default) {
@@ -62,6 +63,17 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   }, [route.params.place]); //FIXME the fuck is place?
 
+  const getRaidus = () => {
+    const zoom = Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) + 1;
+    if (zoom < 10) {
+      console.log('returning 1');
+      return 1;
+    } else {
+      console.log('returning 100');
+      return 100;
+    }
+  };
+
   const getStartRegion = async () => {
     const { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
@@ -72,10 +84,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         if (location === null) {
           location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
         }
-        // setUserLocation({
-        //   latitude: location.coords.latitude,
-        //   longitude: location.coords.longitude,
-        // });
 
         setRegion({
           latitude: location.coords.latitude,
@@ -92,14 +100,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen style={styles.container}>
-      <TopNavBar
-        targetScreen="SelectorMenu"
-        route={route}
-        title="DO SOMETHING"
-        displayGroupify={false}
-        navigation={navigation}
-      />
-
       {region.default == true ? (
         <>
           <ProgressBar />
@@ -107,61 +107,78 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
         </>
       ) : (
         <>
-          <View style={styles.searchBarContainer}>
-            <SearchbarWithoutFeedback
+          <ScrollView>
+            <TopNavBar
+              targetScreen="SelectorMenu"
               route={route}
-              icon={<MagnifyingGlassIcon />}
-              placeholderText={'route.params.tempUserLocationQuery'}
+              title="DO SOMETHING"
+              displayGroupify={false}
               navigation={navigation}
-              tempUserLocationQuery={route.params.tempUserLocationQuery}
-              userLocation={route.params.userLocation}
-              tempUserLocation={route.params.tempUserLocation}
-              placesUserWantsToGoQuery={route.params.placesUserWantsToGoQuery}
-              mode={SearchbarDisplayMode.Result}
             />
-          </View>
-          {/* TODO MapView has to be built dynamically based on number of locations and distance between locations */}
-          <MapView
-            initialRegion={region}
-            style={styles.map}
-            showsUserLocation={true}
-            //FIXME user is grouping with locations
-            animationEnabled={false}
-            showsBuildings={true}
-            showsCompass={false}
-            onRegionChange={async (region) => {
-              if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) + 1 < 12.5) {
-                setShowPinTitle(false);
-              } else setShowPinTitle(true);
-            }}
-            showsTraffic={false}
-            userInterfaceStyle="dark"
-            clusterColor={GOLD_0}
-            spiderLineColor={GOLD_0}
-            edgePadding={{ top: 50, left: 0, right: 0, bottom: 0 }}
-            // clusteringEnabled={false}
-            radius={Dimensions.get('window').width * 0.04}
-            showsPointsOfInterest={false}
-          >
-            {route.params.placesUserWantsToGoResults.map((loc) => (
-              <Marker
-                coordinate={{
-                  latitude: loc.geometry.location.lat,
-                  longitude: loc.geometry.location.lng,
+            <View style={styles.mapContainer}>
+              <View style={styles.searchBarContainer}>
+                <SearchbarWithoutFeedback
+                  route={route}
+                  icon={<MagnifyingGlassIcon />}
+                  placeholderText={'route.params.tempUserLocationQuery'}
+                  navigation={navigation}
+                  tempUserLocationQuery={route.params.tempUserLocationQuery}
+                  userLocation={route.params.userLocation}
+                  tempUserLocation={route.params.tempUserLocation}
+                  placesUserWantsToGoQuery={route.params.placesUserWantsToGoQuery}
+                  mode={SearchbarDisplayMode.Result}
+                />
+              </View>
+              {/* TODO MapView has to be built dynamically based on number of locations and distance between locations */}
+              <MapView
+                initialRegion={region}
+                style={styles.map}
+                showsUserLocation={true}
+                animationEnabled={false}
+                showsBuildings={true}
+                showsCompass={false}
+                onRegionChange={async (region) => {
+                  if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) + 1 < 13) {
+                    // console.log('changing radius to 100');
+                    setRadius(100);
+                  } else {
+                    // console.log('setting radius to 10');
+                    setRadius(10);
+                  }
                 }}
-                onPress={() => {
-                  setSelectedMarker(loc.place_id);
-                  console.log(selectedMarker);
-                }}
-                key={loc.place_id}
-                style={styles.marker}
+                showsTraffic={false}
+                userInterfaceStyle="dark"
+                clusterColor={GOLD_0}
+                spiderLineColor={GOLD_0}
+                edgePadding={{ top: 50, left: 0, right: 0, bottom: 0 }}
+                // clusteringEnabled={false}
+                radius={radius}
+                showsPointsOfInterest={false}
               >
-                {/* TODO change icon on press */}
-                {loc.place_id == selectedMarker ? <MapIcon image={selectedMapIcon} /> : <MapIcon image={mapIcon} />}
-                {showPinTitle && <Text style={styles.mapText}>{loc.name}</Text>}
-              </Marker>
-            ))}
-          </MapView>
+                {route.params.placesUserWantsToGoResults.map((loc) => (
+                  <Marker
+                    coordinate={{
+                      latitude: loc.geometry.location.lat,
+                      longitude: loc.geometry.location.lng,
+                    }}
+                    onPress={() => {
+                      setSelectedMarker(loc.place_id);
+                      // console.log(loc.place_id);
+                      // console.log(getZoomValue());
+                    }}
+                    key={loc.place_id}
+                    style={styles.marker}
+                  >
+                    {/* TODO change icon on press */}
+                    {loc.place_id == selectedMarker ? <MapIcon image={selectedMapIcon} /> : <MapIcon image={mapIcon} />}
+                    <Text style={styles.mapText}>{loc.name}</Text>
+                  </Marker>
+                ))}
+              </MapView>
+            </View>
+
+            {/* <View style={styles.slideUpMenu}></View> */}
+          </ScrollView>
         </>
       )}
 
@@ -184,7 +201,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - (65 + Constants.statusBarHeight),
+    height: Dimensions.get('window').height - (65 + Constants.statusBarHeight) - 175,
     // height: '100%',
   },
   marker: {
@@ -226,4 +243,13 @@ const styles = StyleSheet.create({
   searchBarText: {
     color: GREY_8,
   },
+  slideUpMenu: {
+    backgroundColor: WHITE,
+    height: 1000,
+    zIndex: 2,
+    position: 'absolute',
+    width: '100%',
+    marginBottom: 175,
+  },
+  mapContainer: {},
 });
