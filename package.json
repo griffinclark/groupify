@@ -9,7 +9,9 @@
     "test": "jest --verbose",
     "test:watch": "npm run test --watch",
     "test:ci": "npm run test --coverage",
-    "test:badges": "npm run test:ci  && jest-coverage-badges --input coverage/coverage-summary.json --output __badges__"
+    "test:badges": "npm run test:ci  && jest-coverage-badges --input coverage/coverage-summary.json --output __badges__",
+    "e2e-run": "detox test --configuration ios",
+    "e2e-build": "detox build --configuration ios"
   },
   "jest": {
     "preset": "jest-expo",
@@ -126,6 +128,7 @@
     "babel-jest": "^27.4.6",
     "detox": "^19.4.1",
     "detox-expo-helpers": "github:ourmaninamsterdam/detox-expo-helpers",
+    "detox-recorder": "^1.0.151",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.0",
