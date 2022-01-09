@@ -1,4 +1,5 @@
 node_modules/**/*
+groupify.app
 .expo/*
 npm-debug.*
 *.jks
