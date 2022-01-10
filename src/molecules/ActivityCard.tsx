@@ -5,22 +5,22 @@ import { AppText } from '../atoms/AtomsExports';
 import { GOLD_0, GREY_3, TEAL_0, WHITE, YELLOW } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 // import * as SecureStore from 'expo-secure-store';
-import { GoogleLocation } from '../res/dataModels';
+import { GoogleLocation, NavigationProps } from '../res/dataModels';
 import { GREY_4 } from './../res/styles/Colors';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
+import { navigateToPlanMap } from './../res/utilFunctions';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
   location: GoogleLocation;
   map: boolean;
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    goBack: () => void;
-  };
+  navigation: NavigationProps;
+  route: RoutePropParams;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image?: any;
 }
 
-export const ActivityCard: React.FC<Props> = ({ location, navigation }: Props) => {
+export const ActivityCard: React.FC<Props> = ({ location, navigation, route }: Props) => {
   if (!location.geometry) return null;
   // console.log(location.formatted_address);
   const formatAddress = () => {
@@ -61,7 +61,10 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation }: Props) =
   };
 
   return (
-    <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('PlanMap', { locations: [location] })}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigateToPlanMap(location.name, navigation, route, route.params.userLocation, location.name)}
+    >
       <View style={styles.leftCol}>
         <View style={styles.imageContainer}>
           {location.photos ? (

@@ -112,7 +112,7 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
   );
 };
 
-export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
+export const OldActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
   const [modal, setModal] = useState<boolean>(false);
   const [background, setBackground] = useState<boolean>(false);

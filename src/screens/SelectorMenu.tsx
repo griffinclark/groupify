@@ -12,7 +12,9 @@ import { TopNavBar } from '../molecules/TopNavBar';
 import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from './../molecules/SearchbarWithoutFeedback';
 import { ProgressBar } from '../atoms/ProgressBar';
-export interface Props {
+import { ActivitySelector } from '../molecules/ActivitySelector';
+import { LocationResults } from '../molecules/LocationResults';
+interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
     goBack: () => void;
@@ -21,11 +23,6 @@ export interface Props {
   route: RoutePropParams;
   userLocation: UserLocation;
 }
-// Stored as 2d array to make it really easy to edit where options show up in the activity selector
-export const activities: string[][] = [
-  ['Food', 'Outdoors', 'Shop', 'Coffee', 'Fitness'],
-  ['Nightlife', 'Events', 'Culture', 'Relax'],
-];
 
 export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   const [featuredLocations, setFeaturedLocations] = useState<GoogleLocation[]>([]);
@@ -38,67 +35,11 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     setPlacesUserWantsToGoQuery('');
     const buildFeatureLocations = async () => {
       setFeaturedLocations(
-        await googlePlacesQuery('park', route.params.tempUserLocation, GooglePlacesQueryOptions.Activity),
+        await googlePlacesQuery('things to do', route.params.tempUserLocation, GooglePlacesQueryOptions.Activity),
       );
     };
     buildFeatureLocations();
   }, []);
-
-  const getSVG = (str: string) => {
-    // return <SvgUri width="20" height="20" source={require('../../assets/activityIcons/Coffee.svg')} />;
-    switch (str) {
-      case 'Coffee':
-        return (
-          <Image source={require('../../assets/activityIcons/Coffee.png')} style={styles.activitySelectorButtonImage} />
-        );
-      case 'Culture':
-        return (
-          <Image
-            source={require('../../assets/activityIcons/Culture.png')}
-            style={styles.activitySelectorButtonImage}
-          />
-        );
-      case 'Events':
-        return (
-          <Image source={require('../../assets/activityIcons/Events.png')} style={styles.activitySelectorButtonImage} />
-        );
-      case 'Fitness':
-        return (
-          <Image
-            source={require('../../assets/activityIcons/Fitness.png')}
-            style={styles.activitySelectorButtonImage}
-          />
-        );
-      case 'Outdoors':
-        return (
-          <Image
-            source={require('../../assets/activityIcons/Outdoors.png')}
-            style={styles.activitySelectorButtonImage}
-          />
-        );
-      case 'Relax':
-        return (
-          <Image source={require('../../assets/activityIcons/Relax.png')} style={styles.activitySelectorButtonImage} />
-        );
-      case 'Shop':
-        return (
-          <Image source={require('../../assets/activityIcons/Shop.png')} style={styles.activitySelectorButtonImage} />
-        );
-      case 'Food':
-        return (
-          <Image source={require('../../assets/activityIcons/Food.png')} style={styles.activitySelectorButtonImage} />
-        );
-      case 'Nightlife':
-        return (
-          <Image
-            source={require('../../assets/activityIcons/Nightlife.png')}
-            style={styles.activitySelectorButtonImage}
-          />
-        );
-      default:
-        return <AppText>Error</AppText>;
-    }
-  };
 
   return (
     <Screen style={styles.screen}>
@@ -115,53 +56,18 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
             placesUserWantsToGoQuery={placesUserWantsToGoQuery}
             tempUserLocationQuery={tempUserLocationQuery}
             mode={SearchbarDisplayMode.Query}
-
           />
         </View>
         <View style={styles.activitySelectorRoot}>
           <View>
             <Image source={require('../../assets/activity-selector-background-image.png')} />
           </View>
-          <View style={styles.activitySelector}>
-            {activities.map((activityArr: string[]) => (
-              <View style={styles.activitiesRow} key={activityArr[0]}>
-                {activityArr.map((activity: string) => (
-                  <TouchableOpacity
-                    onPress={async () => {
-                      const activities: GoogleLocation[] = await googlePlacesQuery(
-                        activity,
-                        route.params.userLocation,
-                        GooglePlacesQueryOptions.Activity,
-                      );
-                      navigation.navigate('PlanMap', {
-                        navigation: { navigation },
-                        route: { route },
-                        placesUserWantsToGoQuery: activity,
-                        tempUserLocationQuery: '',
-                        userLocation: route.params.userLocation,
-                        placesUserWantsToGoResults: activities,
-                        tempUserLocation: route.params.tempUserLocation,
-                      });
-                    }}
-                    testID={activity}
-                    key={activity}
-                  >
-                    <View style={styles.activitiesImageContainer}>
-                      {getSVG(activity)}
-                      <AppText style={styles.iconText}>{activity}</AppText>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            ))}
-          </View>
+          <ActivitySelector route={route} navigation={navigation} />
           <View style={styles.activitySuggestions}></View>
         </View>
         <View style={styles.locationSuggestions}>
           {featuredLocations.length > 0 ? (
-            featuredLocations.map((location: GoogleLocation) => {
-              return <ActivityCard key={location.place_id} navigation={navigation} location={location} map={false} />;
-            })
+            <LocationResults navigation={navigation} route={route} locations={featuredLocations} />
           ) : (
             <ProgressBar />
           )}
@@ -184,40 +90,11 @@ const styles = StyleSheet.create({
   screen: {
     backgroundColor: WHITE,
   },
-  activitiesRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    // space out the rows of buttons:
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 17,
-    marginRight: 17,
-  },
-  activitiesImageContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 5,
-    marginRight: 5,
-    backgroundColor: WHITE,
-    width: 60,
-    height: 60,
-    borderColor: GREY_6,
-    borderWidth: 1,
-    borderRadius: 5,
-  },
   activitiesImage: {
     height: 30,
     width: 30,
   },
-  activitySelectorButtonImage: {
-    height: 20,
-    width: 20,
-  },
-  iconText: {
-    fontSize: 10,
-  },
+
   navbarLogo: {
     height: 45,
     width: 130,
@@ -238,12 +115,6 @@ const styles = StyleSheet.create({
   activitySelectorRoot: {
     position: 'absolute',
     marginTop: 45,
-  },
-  activitySelector: {
-    // Pushes activitySelector down to the correct height:
-    paddingTop: 40,
-    backgroundColor: WHITE,
-    // zIndex: -1,
   },
   activitySuggestions: {
     backgroundColor: WHITE,

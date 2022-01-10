@@ -11,6 +11,8 @@ import { SearchSuggestionTile } from '../molecules/SearchSuggestionTile';
 import { BLACK, WHITE } from '../res/styles/Colors';
 import { MapLinkIcon } from '../../assets/Icons/MapLink';
 import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
+import { navigateToPlanMap } from './../res/utilFunctions';
+import { LocationResults } from '../molecules/LocationResults';
 
 interface Props {
   locationQuery: string;
@@ -31,6 +33,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
   const [tempUserLocation, setTempUserLocation] = useState<UserLocation>(route.params.tempUserLocation);
   const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState('');
   const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
+  const [userLocation, setUserLocation] = useState<UserLocation>(route.params.userLocation);
 
   useEffect(() => {
     setDataset(Dataset.SelectLocation);
@@ -40,20 +43,9 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
       setTempUserLocationQuery('Current Location');
     }
     setTempUserLocation(route.params.tempUserLocation);
+    console.log(route.params.userLocation);
+    setUserLocation(route.params.userLocation);
   }, []);
-
-  const navigateToPlanMap = async (query: string) => {
-    // rerun the query with the name of the selected venue so all venues with the same name show up on the map
-    const results = await googlePlacesQuery(query, route.params.tempUserLocation, GooglePlacesQueryOptions.Activity);
-    navigation.navigate('PlanMap', {
-      navigation: { navigation },
-      route: { route },
-      placesUserWantsToGoResults: results,
-      tempUserLocation: tempUserLocation,
-      tempUserLocationQuery: tempUserLocationQuery,
-      placesUserWantsToGoQuery: query,
-    });
-  };
 
   const getDataSet: () => GoogleLocation[] = () => {
     switch (dataset) {
@@ -131,7 +123,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
               }}
               testID={'searchForLocationSearchbar'}
               onSubmitEditing={() => {
-                navigateToPlanMap(placesUserWantsToGoQuery);
+                navigateToPlanMap(placesUserWantsToGoQuery, navigation, route, tempUserLocation, tempUserLocationQuery);
               }}
               onPressIn={async () => {
                 setDataset(Dataset.SelectLocation);
@@ -191,7 +183,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
               onPressIn={() => {
                 if (tempUserLocationQuery == 'Current Location') {
                   setTempUserLocationQuery('');
-                  setTempUserLocation(route.params.userLocation);
+                  setTempUserLocation(userLocation);
                   setTempUserLocationResults([origionalUserLocation]);
                 }
                 setDataset(Dataset.ChangeUserLocation);
@@ -201,10 +193,14 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
             />
           </View>
         </View>
-        {getDataSet().map((location: GoogleLocation) => {
-          return (
-            <>
-              {dataset == Dataset.ChangeUserLocation ? (
+        {dataset == Dataset.SelectLocation ? (
+          <View style={styles.selectLocationSearchResults}>
+            <LocationResults navigation={navigation} route={route} locations={getDataSet()} />
+          </View>
+        ) : (
+          <>
+            {getDataSet().map((location: GoogleLocation) => {
+              return (
                 <SearchSuggestionTile
                   image={true}
                   key={location.place_id}
@@ -222,19 +218,10 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
                     setDataset(Dataset.SelectLocation);
                   }}
                 />
-              ) : (
-                <SearchSuggestionTile
-                  image={true}
-                  key={location.place_id}
-                  location={location}
-                  onPress={() => {
-                    navigateToPlanMap(location.name);
-                  }}
-                />
-              )}
-            </>
-          );
-        })}
+              );
+            })}
+          </>
+        )}
       </ScrollView>
     </Screen>
   );
@@ -265,5 +252,9 @@ const styles = StyleSheet.create({
   stickySearchContainer: {
     backgroundColor: WHITE,
     height: 142,
+  },
+  selectLocationSearchResults: {
+    paddingBottom: 300,
+    // TODO set this height dynamically based on whether the keyboard is showing or not
   },
 });

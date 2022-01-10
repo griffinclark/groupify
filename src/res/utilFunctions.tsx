@@ -5,8 +5,9 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Platform } from 'react-native';
 import { sendPushNotification } from './notifications';
 import * as queries from '../graphql/queries';
-import { GoogleLocation, UserLocation } from './dataModels';
+import { GoogleLocation, NavigationProps, UserLocation } from './dataModels';
 import { getDistance } from 'geolib';
+import { RoutePropParams } from './root-navigation';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
@@ -329,7 +330,6 @@ export const googlePlacesQuery: (
   searchType: GooglePlacesQueryOptions,
 ) => Promise<GoogleLocation[]> = async (query, userLocation, searchType) => {
   //if query is one of the activity selector buttons, transform it to a more interesting query
-  console.log(query);
   const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const searchResults: GoogleLocation[] = [];
   switch (searchType) {
@@ -340,12 +340,12 @@ export const googlePlacesQuery: (
         case 'Outdoors':
           //TODO this is now "active outdoors"
           const [r0, r1]: GoogleLocation[][] = await Promise.all([
-            googlePlacesQuery('trail', userLocation, searchType),
-            googlePlacesQuery('mountain', userLocation, searchType),
+            googlePlacesQuery('music', userLocation, searchType),
+            // googlePlacesQuery('mountain', userLocation, searchType),
             // googlePlacesQuery('beach', userLocation, searchType),
           ]);
           r0.forEach((a) => unfilteredLocations.push(a));
-          r1.forEach((a) => unfilteredLocations.push(a));
+          // r1.forEach((a) => unfilteredLocations.push(a));
           // r2.forEach((a) => unfilteredLocations.push(a));
           break;
         case 'Culture':
@@ -380,7 +380,6 @@ export const googlePlacesQuery: (
             googlePlacesQuery('zoo', userLocation, searchType),
             googlePlacesQuery('snorkel', userLocation, searchType),
             googlePlacesQuery('bike rental', userLocation, searchType),
-
           ]);
         default:
           const search =
@@ -393,6 +392,7 @@ export const googlePlacesQuery: (
             `&key=${GOOGLE_PLACES_API_KEY}`;
           await fetch(search).then(
             async (res) => {
+              // console.log(search);
               const detail = await res.json();
               detail.results.forEach((unfilteredLocation: GoogleLocation) =>
                 unfilteredLocations.push(unfilteredLocation),
@@ -518,4 +518,29 @@ export const removePastPlans = (plans: Plan[]): Plan[] => {
       return isFuturePlan(plan.date, plan.time, currentDate);
     }
   });
+};
+
+export const navigateToPlanMap = async (
+  query: string,
+  navigation: NavigationProps,
+  route: RoutePropParams,
+  tempUserLocation: UserLocation,
+  tempUserLocationQuery: string,
+): Promise<void> => {
+  // rerun the query with the name of the selected venue so all venues with the same name show up on the map
+  try {
+    const results = await googlePlacesQuery(query, route.params.tempUserLocation, GooglePlacesQueryOptions.Activity);
+    navigation.navigate('PlanMap', {
+      navigation: { navigation },
+      route: { route },
+      placesUserWantsToGoResults: results,
+      userLocation: route.params.userLocation,
+      tempUserLocation: tempUserLocation,
+      tempUserLocationQuery: tempUserLocationQuery,
+      placesUserWantsToGoQuery: query,
+    });
+  } catch (e) {
+    // TODO fix
+    console.log(e);
+  }
 };
