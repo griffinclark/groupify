@@ -33,7 +33,11 @@ export const DateTimeSelector: React.FC<Props> = ({ onDateChange, testID }: Prop
                 /* eslint-disable */
                 // @ts-expect-error
                 onChange={(event: Event, date: Date) => onChange(event, date, onDateChange)}
-                themeVariant={'light'}
+                themeVariant={"dark"}
+                format={'h:mm a'}
+                minuteInterval={5}
+                locale="en-US"
+                textColor="black"
             />
         </View>
     )

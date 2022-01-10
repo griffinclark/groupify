@@ -16,6 +16,8 @@ import { ActivitySlider } from './ActivitySlider';
 import { NoResults } from './NoResults';
 import { LocationBlock } from './LocationBlock';
 import { DateTimeSelector } from './DateTimeSelector';
+import { ConfettiAnimation } from './ConfettiAnimation';
+
 export {
   AndroidContactTile,
   ContactTile,
@@ -34,5 +36,6 @@ export {
   ActivitySlider,
   NoResults,
   LocationBlock,
-  DateTimeSelector
+  DateTimeSelector,
+  ConfettiAnimation
 };

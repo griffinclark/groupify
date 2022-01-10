@@ -40,7 +40,7 @@ export const formatIosTimeInput = (time: Date | string): string => {
 };
 
 //Formats date into format: DayOfWeek, Month DayOfMonth
-export const formatDayOfWeekDate = (date: string, shorten?: boolean): string => {
+export const formatDayOfWeekDate = (date: string, shorten?: boolean, withYear?: boolean): string => {
   const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
   const newDate = convertTimeStringToDate(date);
@@ -51,7 +51,12 @@ export const formatDayOfWeekDate = (date: string, shorten?: boolean): string => 
   if (shorten) {
     return months[month - 1] + ' ' + dayOfMonth;
   }
-  return daysOfWeek[newDate.getDay()] + ',' + ' ' + months[month - 1] + ' ' + dayOfMonth;
+
+  const result = daysOfWeek[newDate.getDay()] + ',' + ' ' + months[month - 1] + ' ' + dayOfMonth;
+  if (withYear) {
+    return result + ', ' + newDate.getFullYear();
+  }
+  return result;
 };
 
 //formats date to be presentable to users
@@ -116,8 +121,8 @@ export const formatDatabaseDate = (date: string): string => {
     return newDate;
   }
   if (date.length === 10) {
-    const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
-    return newDate;
+    // const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+    return date;
   }
   return date;
 };
@@ -197,7 +202,7 @@ export const loadPhoto = async (placeID: string): Promise<string> => {
 export const getCurrentUser = async (): Promise<User> => {
   const userInfo = await Auth.currentUserInfo();
   if (userInfo) {
-    const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
+      const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     const user = userQuery.map((user) => user);
     if (user) {
       return user[0];

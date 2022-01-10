@@ -1,4 +1,3 @@
-import { FileParseCallback } from '@babel/core';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -10,11 +9,12 @@ interface Props {
   addUser: (friend: User) => void;
   removeUser: (friend: User) => void;
   selectedFriends: User[];
-  isContact: Boolean
 }
 
-export const FriendButton: React.FC<Props> = ({ friend, addUser, removeUser, selectedFriends, isContact }: Props) => {
+export const FriendBubble: React.FC<Props> = ({ friend, addUser, removeUser, selectedFriends }: Props) => {
   const [selected, setSelected] = useState(false);
+  const firstInitial = friend.name.slice(0, 1);
+  const firstName = friend.name.includes(' ') ? friend.name.substr(0, friend.name.indexOf(' ')) : friend.name;
   const handlePress = () => {
     setSelected(!selected);
   };
@@ -34,7 +34,10 @@ export const FriendButton: React.FC<Props> = ({ friend, addUser, removeUser, sel
 
   return (
     <TouchableOpacity onPress={handlePress} style={styles.container}>
-      <AppText>{friend.name}</AppText>
+      <View style={[selected ? styles.sphereSelected : styles.sphere]}>
+        <AppText style={styles.firstInitial}>{firstInitial}</AppText>
+      </View>
+      <AppText style={styles.firstName}>{firstName}</AppText>
     </TouchableOpacity>
   );
 };

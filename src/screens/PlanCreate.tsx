@@ -36,8 +36,9 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
     const onDateChange = (date: Date) => {
         setDate(date.toLocaleDateString());
 
-        const formatedTime = Platform.OS === 'ios' ? formatIosTimeInput(date.toLocaleDateString()) : formatTime(date.toLocaleTimeString());
+        const formatedTime = Platform.OS === 'ios' ? formatIosTimeInput(date.toLocaleTimeString()) : formatTime(date.toLocaleTimeString());
         setTime(formatedTime);
+        console.log(time);
     }
 
     useEffect(() => {

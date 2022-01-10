@@ -5,11 +5,11 @@ import { TEAL } from '../res/styles/Colors';
 import { formatDayOfWeekDate } from '../res/utilFunctions';
 
 interface Props {
-    locationName: String;
-    locationAddress: String;
-    planName?: String,
-    date?: String,
-    time?: String
+    locationName: string;
+    locationAddress: string;
+    planName?: string,
+    date?: string,
+    time?: string
 }
 
 export const LocationBlock: React.FC<Props> = ({ locationName, locationAddress, planName, date, time }: Props) => {
@@ -17,7 +17,7 @@ export const LocationBlock: React.FC<Props> = ({ locationName, locationAddress, 
     return (
         <View style={styles.locationBlock}>
             {locationName ? <AppText style={[styles.text, styles.locationName]}>{locationName}</AppText> : null}
-            {planName ? <AppText style={styles.text}>{planName}</AppText> : null}
+            {planName && planName !== locationName ? <AppText style={styles.text}>{planName}</AppText> : null}
             <AppText style={styles.text}>{locationAddressArr[0]} , {locationAddressArr[1]}</AppText>
             {(date && time) ? <AppText style={styles.text}>{formatDayOfWeekDate(date)} at {time}</AppText> : null}
         </View>
