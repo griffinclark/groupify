@@ -3,7 +3,7 @@ import Animated from "react-native-reanimated";
 import { View, Dimensions, StyleSheet, Image } from "react-native";
 
 const NUM_CONFETTI = 100;
-const COLORS = ['#8686BC', '#E5A477', '#96CFDD', '#E5D87C'];
+const COLORS = [WHITE, GREY_6, TEAL_0];
 const CONFETTI_SIZE = 12;
 const ConfettiArr = [
                         require('../../assets/confetti_1.png'),
