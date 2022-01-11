@@ -235,7 +235,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     return (
         <Screen>
             <View testID="PlanInviteScreen" style={{ flex: 1 }}>
-                <View style={globalStyles.container}>
+                <ScrollView style={globalStyles.container}>
                     <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
                         <AppText style={styles.title}>Build a Plan</AppText>
                     </View>
@@ -269,13 +269,13 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
                     <View>
                         <AppText style={globalStyles.sectionTitle}>Send Invite</AppText>
                         <AppText style={{ fontSize: 18 }}>Add a friend who isn't on groupify yet.</AppText>
-                        <ScrollView>
+                        {/* <ScrollView> */}
                             <View style={styles.contactsContainer}>
                                 <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
                             </View>
-                        </ScrollView>
+                        {/* </ScrollView> */}
                     </View>
-                </View>
+                </ScrollView>
                 <BottomButton
                     disabled={selectedContacts.length == 0 ? true : false}
                     title="Preview Plan"
