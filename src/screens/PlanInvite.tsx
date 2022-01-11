@@ -46,7 +46,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
 
     useEffect(() => {
         loadContacts();
-        setPlanObject(route.params.data.eventData);
+        setPlanObject(route.params.data.planData);
         getFriends();
         //createInitialMessage();
     }, []);
@@ -88,9 +88,10 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
             contacts.filter((contact) => {
                 let contactLowercase = '';
 
-                try {
+                if(typeof contact.name === 'string') {
                     contactLowercase = contact.name.toLowerCase();
-                } catch {
+                }
+                else {
                     console.log('error filtering a contact');
                 }
 
@@ -220,10 +221,10 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
             navigation.navigate('PlanConfirm', {
                 currentUser: route.params.currentUser,
                 data: {
-                    eventData: {
-                        title: route.params.data.eventData.title,
-                        date: route.params.data.eventData.date,
-                        time: route.params.data.eventData.time
+                    planData: {
+                        title: route.params.data.planData.title,
+                        date: route.params.data.planData.date,
+                        time: route.params.data.planData.time
                     }
                 }
             });
@@ -244,11 +245,11 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
                     <View style={globalStyles.topBlockBack}>
                         <BackChevronIcon height={'20'} onPress={() => navigation.goBack()} />
                         <LocationBlock 
-                            planName={route.params.data.eventData.title} 
-                            locationName={route.params.data.eventData.locationName} 
-                            locationAddress={route.params.data.eventData.location}
-                            date={route.params.data.eventData.date} 
-                            time={route.params.data.eventData.time} 
+                            planName={route.params.data.planData.title} 
+                            locationName={route.params.data.planData.locationName} 
+                            locationAddress={route.params.data.planData.location}
+                            date={route.params.data.planData.date} 
+                            time={route.params.data.planData.time} 
                         />
                     </View>
 

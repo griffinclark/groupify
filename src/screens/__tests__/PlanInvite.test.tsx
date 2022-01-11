@@ -13,7 +13,7 @@ const mockProps = createMock<Props>({
   route: {
     params: {
       data: {
-        eventData: {
+        planData: {
           title: 'Example Plan Title',
         },
       },

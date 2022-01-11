@@ -171,7 +171,6 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCreate = async (loc: any) => {
     const user = await getCurrentUser();
-    console.log(loc);
 
     navigation.navigate('PlanCreate', {
       currentUser: user,

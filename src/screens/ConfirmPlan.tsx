@@ -27,7 +27,7 @@ export interface Props {
 }
 
 export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
-  const event: Event = route.params.data.eventData;
+  const event: Event = route.params.data.planData;
   const currentUser: User = route.params.currentUser;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('Loading Message...');
@@ -49,7 +49,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Plan Name *',
       placeholder: '',
       settings: 'default',
-      value: route.params.data ? route.params.data.eventData.title : '',
+      value: route.params.data ? route.params.data.planData.title : '',
       func: setName,
       disabled: true,
     },
@@ -57,7 +57,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Date *',
       placeholder: 'MM/DD/YYYY',
       settings: 'default',
-      value: route.params.data ? route.params.data.eventData.date : '',
+      value: route.params.data ? route.params.data.planData.date : '',
       func: setDate,
       disabled: true,
     },
@@ -65,7 +65,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Time *',
       placeholder: 'H:MM PM',
       settings: 'default',
-      value: route.params.data ? route.params.data.eventData.time : '',
+      value: route.params.data ? route.params.data.planData.time : '',
       func: setTime,
       disabled: true,
     },
@@ -73,7 +73,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Description',
       placeholder: '',
       settings: 'default',
-      value: route.params.data ? route.params.data.eventData.description : '',
+      value: route.params.data ? route.params.data.planData.description : '',
       func: setDescription,
       disabled: true,
     },
@@ -81,7 +81,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       title: 'Address',
       placeholder: '',
       settings: 'default',
-      value: route.params.data ? route.params.data.eventData.location : '',
+      value: route.params.data ? route.params.data.planData.location : '',
       func: setLocation,
       disabled: true,
     },
@@ -92,7 +92,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   }, []);
 
   const createInitialMessage = async (): Promise<void> => {
-    const event = route.params.data.eventData;
+    const event = route.params.data.planData;
     const initMessage = event.message;
     setMessage(initMessage);
   };
@@ -142,8 +142,8 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   const storeInvitees = async () => {
-    const date = route.params.data.eventData.date;
-    const time = route.params.data.eventData.time;
+    const date = route.params.data.planData.date;
+    const time = route.params.data.planData.time;
     const newPlan = await DataStore.save(
       new Plan({
         title: event.title,
@@ -213,7 +213,7 @@ export const ConfirmPlan: React.FC<Props> = ({ navigation, route }: Props) => {
       const userQuery: any = await API.graphql({
         query: queries.usersByPhoneNumber,
         variables: { phoneNumber: invitee.phoneNumber },
-      });
+      }); 
       const user = userQuery.data.usersByPhoneNumber.items;
       if (user.length > 0) {
         console.log(user[0].pushToken);

@@ -34,7 +34,7 @@ export const ActivityFavorites: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate('PlanCreate', {
       currentUser: user,
       data: {
-        eventData: {
+        planData: {
           location: loc.formatted_address,
         },
       },
