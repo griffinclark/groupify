@@ -14,7 +14,7 @@ interface Props {
   onChangeText: (e: string) => void;
   placeholder?: string | undefined;
   secureTextEntry?: boolean;
-  textStyle?: Record<string, unknown>;
+  textStyle?: Record<string, unknown> | Array<Record<string, unknown>>;
   value?: string | undefined;
 }
 
@@ -28,14 +28,14 @@ export const AppTextInput: React.FC<Props> = ({
   onChangeText,
   placeholder,
   secureTextEntry = false,
-  textStyle,
+  textStyle = {},
   value,
 }: Props) => {
   const [selected, setSelected] = useState<boolean>(false);
 
   return (
     <View>
-      {label && <AppText style={[styles.label, textStyle ? textStyle : {}]}>{label}</AppText>}
+      {label && <AppText style={[styles.label, textStyle]}>{label}</AppText>}
       <TextInput
         autoFocus={autoFocus}
         maxLength={80}

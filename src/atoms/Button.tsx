@@ -37,7 +37,7 @@ export const Button: React.FC<Props> = ({
         <AppText
           style={[
             buttonStyles.enabledButton,
-            textStyle ? textStyle : { fontSize: 16 },
+            textStyle ? textStyle : { fontSize: 16, fontFamily: 'Jost-500' },
             buttonStyles.text,
             disabled ? buttonStyles.disabledButton : {},
           ]}
