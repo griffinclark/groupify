@@ -12,17 +12,13 @@ export interface Props {
 
 export const ImportContactTile = ({ navigation }: Props) => {
   // TODO should be contacts not contactd
-  const [contactd, setContactd] = React.useState<Contact[]>([]);
+  const [contact, setContact] = React.useState<Contact[]>([]);
   const [emptyState, setEmptyState] = React.useState(false);
 
   useEffect(() => {
     const checkContacts = async () => {
       const contacts: Contact[] = await getAllImportedContacts();
-      setContactd(contacts);
-      console.log(
-        'contacts: ',
-        contacts.map((c) => c.name),
-      );
+      setContact(contacts);
       if (contacts.length > 0) {
         setEmptyState(false);
       } else {
@@ -30,7 +26,7 @@ export const ImportContactTile = ({ navigation }: Props) => {
       }
     };
     checkContacts();
-  }, []);
+  }, [contact]);
 
   return (
     <View>
@@ -51,7 +47,7 @@ export const ImportContactTile = ({ navigation }: Props) => {
               activeOpacity={0.4}
               style={styles.emptyButton}
             >
-              <Text style={{ fontWeight: '600', color: 'white', fontSize: 22 }}>Import Contacts</Text>
+              <Text style={styles.importText}>Import Contacts</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -59,12 +55,12 @@ export const ImportContactTile = ({ navigation }: Props) => {
         <ScrollView style={styles.emptyContainer}>
           <View style={styles.contactContainer}>
             <Text style={styles.header}>Your Contacts</Text>
-            <Text style={styles.subHeader}>{contactd.length} Contacts</Text>
+            <Text style={styles.subHeader}>{contact.length} Contacts</Text>
           </View>
-          {contactd
+          {contact
             .filter((item, index) => index < 3)
             .map((contact: Contact) => (
-              <Text key={contact.id} style={{ fontSize: 20, marginLeft: 8, fontWeight: '500' }}>
+              <Text key={contact.id} style={styles.contact}>
                 {contact.name}
               </Text>
             ))}
@@ -85,7 +81,7 @@ export const ImportContactTile = ({ navigation }: Props) => {
 
 const styles = StyleSheet.create({
   emptyContainer: {
-    marginTop: 5,
+    marginTop: 2,
     backgroundColor: '#fff',
     paddingBottom: 9,
   },
@@ -94,7 +90,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 9,
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 22,
+    marginHorizontal: 4,
   },
   header: {
     fontSize: 20,
@@ -129,5 +126,16 @@ const styles = StyleSheet.create({
     fontSize: 19,
     color: 'teal',
     fontWeight: '600',
+  },
+  contact: {
+    fontSize: 20,
+    marginHorizontal: 15,
+    fontWeight: '500',
+    marginVertical: 9,
+  },
+  importText: {
+    fontWeight: '600',
+    color: 'white',
+    fontSize: 22,
   },
 });

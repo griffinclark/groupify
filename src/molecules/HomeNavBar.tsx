@@ -8,7 +8,7 @@ import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/I
 interface Props {
   user?: User;
   style?: Record<string, unknown>;
-  invitedPlans: Plan[];
+  invitedPlans?: Plan[];
   userPlans: Plan[];
   navigation: {
     navigate: (ev: string, {}) => void;

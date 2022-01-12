@@ -1,65 +1,63 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { DataStore } from '@aws-amplify/datastore';
-import { Invitee } from '../models';
-import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { API } from 'aws-amplify';
-import * as queries from '../graphql/queries';
-import { WHITE, GOLD, GREY_3, GREEN } from '../res/styles/Colors';
+import { Invitee, Plan } from '../models';
+import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
+import { Entypo, AntDesign } from '@expo/vector-icons';
+import { WHITE, GOLD, GREY_3, GREEN, TEAL } from '../res/styles/Colors';
 
 export interface Props {
   title: string;
   date?: string;
-  location: string;
+  location?: string;
   planId?: string;
   placeId?: string;
   creator?: boolean;
   invited?: boolean;
   creatorId: string;
+  plan: Plan;
+  navigation: {
+    navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
+  };
 }
-export const PlanCard = ({ title, date, location, planId, placeId, creator, invited, creatorId }: Props) => {
+export const PlanCard = ({
+  title,
+  date,
+  location,
+  planId,
+  placeId,
+  creator,
+  invited,
+  creatorId,
+  navigation,
+  plan,
+}: Props) => {
   const [invitees, setInvitees] = useState<Invitee[]>([]);
   const [photoURI, setPhotoURI] = useState('');
   const [hostName, setHostName] = useState('');
 
-  const getHost = async (id: string) => {
-    //TODO why is this type any? This should have a type, especially if you're calling variable.value on it. This appears multiple places in your code
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    const userQuery: any = await API.graphql({
-      query: queries.getUser,
-      variables: { id: id },
-    });
-    const user = userQuery.data.getUser;
-    if (user) {
-      setHostName(user.name);
-      return user.name;
-    }
-    console.log('host name', hostName);
-  };
-
   useEffect(() => {
-    (async () => {
+    const loadCard = async () => {
+      getHost(creatorId).then((host) => {
+        setHostName(host);
+      });
       if (placeId) {
         setPhotoURI(await loadPhoto(placeId));
       }
-    })(); // TODO why is this async?, well its fixes lazy loading of images
-    const loadInvitees = async () => {
       const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === planId);
       setInvitees(invitees);
     };
-
-    loadInvitees();
-    getHost(creatorId);
+    loadCard();
   }, []);
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={() => navigation.push('PlanDetails', { plan: plan })} style={styles.container}>
       <View style={styles.textContainer}>
         <View>
           <Text style={styles.date}>{date && formatDayOfWeekDate(date)}</Text>
-          <Text numberOfLines={1} style={{ fontWeight: '500', fontSize: 20, marginVertical: 5 }}>
+          <Text numberOfLines={1} style={styles.title}>
             {title.length > 20 ? title.substring(0, 19) + '...' : title}
           </Text>
           {creator ? (
@@ -85,25 +83,25 @@ export const PlanCard = ({ title, date, location, planId, placeId, creator, invi
       <View style={styles.invited}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {invited
-            ? <AntDesign name="checkcircle" size={24} color="green" /> ||
-              (!creator && <MaterialCommunityIcons name="dots-horizontal-circle" size={24} color="red" />)
+            ? <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL} /> ||
+              (!creator && <AntDesign name="question" size={24} color="red" />)
             : null}
           <Text style={styles.invitedText}>{invitees.length} Invited</Text>
         </View>
         <View>
           <Text numberOfLines={1} style={styles.invitedText}>
-            {location?.length > 20 ? location?.substring(0, 19) + '...' : location}
+            {location.length > 20 ? location?.substring(0, 19) + '...' : location}
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: WHITE,
-    marginTop: 5,
+    marginTop: 2,
     paddingBottom: 9,
   },
   textContainer: {
@@ -125,8 +123,8 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   image: {
-    width: 130,
-    height: 110,
+    width: 125,
+    height: 105,
     borderRadius: 10,
     marginTop: 5,
   },
@@ -151,5 +149,10 @@ const styles = StyleSheet.create({
   },
   creatorText: {
     fontWeight: '500',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: '400',
+    marginVertical: 5,
   },
 });

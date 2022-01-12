@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ImageBackground, Image, StyleSheet } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { View, Text, ImageBackground, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
 import { Plan, Invitee } from '../models';
-import * as queries from '../graphql/queries';
-import { API } from 'aws-amplify';
-import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
+import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
 import { DataStore } from '@aws-amplify/datastore';
+import { TEAL, WHITE, GREY_3 } from '../res/styles/Colors';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
   plan: Plan;
@@ -16,51 +16,37 @@ interface Props {
   reload: boolean;
 }
 
-export const Banner: React.FC<Props> = ({ plan, reload }: Props) => {
+export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => {
   const [photoURI, setPhotoURI] = useState('');
   const [hostName, setHostName] = useState('');
-  // TODO typo
-  const [inviteesd, setInviteesd] = useState<Invitee[]>([]);
-
-  const getHost = async (id: string) => {
-    const userQuery: any = await API.graphql({
-      query: queries.getUser,
-      variables: { id: id },
-    });
-    const user = userQuery.data.getUser;
-    if (user) {
-      setHostName(user.name);
-      return user.name;
-    }
-  };
+  const [invitees, setInvitees] = useState<Invitee[]>([]);
 
   useEffect(() => {
-    getHost(plan.creatorID);
-    (async () => {
+    const loadCard = async () => {
+      getHost(plan.creatorID).then((name) => setHostName(name));
       if (plan.placeID) {
         setPhotoURI(await loadPhoto(plan.placeID));
       }
-    })();
+      const inviteesOnDB = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
+      setInvitees(inviteesOnDB);
+    };
+    loadCard();
   }, [reload]);
 
-  useEffect(() => {
-    // TODO merge with other useEffect
-    loadInvitees();
-  }, [reload]);
-
-  const loadInvitees = async () => {
-    const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
-    setInviteesd(invitees);
-  };
   return (
     <View>
       <ImageBackground
         source={{ uri: photoURI ? photoURI : 'https://cdn.pixabay.com/photo/2021/12/07/21/17/sheep-6854087__340.jpg' }}
         resizeMode="cover"
-        style={{ height: 240, width: '100%' }}
+        style={styles.imgBackground}
       >
+        <LinearGradient colors={['rgba(0,0,0,0.5)', 'rgba(0,0,0,0.5)']} style={styles.gradientStyle} />
         <Text style={styles.containerText}>Your Next Event</Text>
-        <View style={{ backgroundColor: '#fff', marginHorizontal: 8, paddingVertical: 8, borderRadius: 15 }}>
+        <TouchableOpacity
+          onPress={() => navigation.push('PlanDetails', { plan: plan })}
+          activeOpacity={0.8}
+          style={styles.card}
+        >
           <View
             style={{
               flexDirection: 'row',
@@ -88,10 +74,10 @@ export const Banner: React.FC<Props> = ({ plan, reload }: Props) => {
             </View>
           </View>
           <View style={styles.invitedContainer}>
-            <AntDesign style={{ marginRight: 6 }} name="checkcircle" size={30} color="#31A59F" />
-            <Text style={styles.invitedText}>{inviteesd?.length} Invited</Text>
+            <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL} />
+            <Text style={styles.invitedText}>{invitees?.length} Invited</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </ImageBackground>
     </View>
   );
@@ -119,7 +105,7 @@ const styles = StyleSheet.create({
   hostName: {
     fontSize: 18,
     fontWeight: '600',
-    color: 'gray',
+    color: GREY_3,
   },
   invitedContainer: {
     flexDirection: 'row',
@@ -129,6 +115,23 @@ const styles = StyleSheet.create({
   invitedText: {
     fontSize: 18,
     fontWeight: '500',
-    color: 'gray',
+    color: GREY_3,
+  },
+  card: {
+    backgroundColor: WHITE,
+    marginHorizontal: 8,
+    paddingVertical: 8,
+    borderRadius: 15,
+  },
+  gradientStyle: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 240,
+  },
+  imgBackground: {
+    height: 240,
+    width: '100%',
   },
 });

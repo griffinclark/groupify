@@ -30,20 +30,21 @@ export const ContactList = ({ navigation }: Props) => {
       if (status === 'granted') {
         const { data } = await Contacts.getContactsAsync({});
         if (data.length > 0) {
-          // TODO type
-          const contacts = data.map((contact) => ({
+          const contacts: Contact[] = data.map((contact) => ({
             id: contact.id,
             name: contact.name,
             image: contact.image,
             phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
           }));
           // TODO no any - create a type here if you have to you're referencing type.value
-          contacts.sort((c1, c2): any => {
+          contacts.sort((c1, c2): number => {
             if (c1.name && c2.name) {
               return c1.name.toLowerCase() < c2.name.toLowerCase() ? -1 : 1;
+            } else {
+              return 0;
             }
           });
-          contacts[0].phoneNumber && setContacts(contacts);
+          return contacts[0].phoneNumber && setContacts(contacts);
         }
       }
     };
@@ -80,6 +81,7 @@ export const ContactList = ({ navigation }: Props) => {
           contactLowercase = contact.name.toLowerCase();
         } catch {
           console.log('error filtering a contact');
+          return;
         }
         const textLowercase = trimText.toLowerCase();
         return contactLowercase.indexOf(textLowercase) > -1;
@@ -109,7 +111,7 @@ export const ContactList = ({ navigation }: Props) => {
       <View style={{ marginLeft: 10 }}>
         <Text style={{ fontSize: 18, fontWeight: '600', marginVertical: 5 }}>Your Friends</Text>
         <Text style={{ fontSize: 18, color: 'gray', fontWeight: '500' }}>
-          You have {contacts.length} friends on Groupify
+          You have {contacts.length} friends you can add to Groupify
         </Text>
       </View>
       <View>

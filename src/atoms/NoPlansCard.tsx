@@ -1,9 +1,16 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { User } from '../models';
 
-export const NoPlansCard = () => {
+interface Props {
+  user: User | undefined;
+  navigation: {
+    navigate: (ev: string, {}) => void;
+  };
+}
+
+export const NoPlansCard: React.FC<Props> = ({ navigation, user }: Props) => {
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'center', marginTop: 40 }}>
@@ -11,7 +18,11 @@ export const NoPlansCard = () => {
         <Text style={styles.text}>No Plans to see here, yet!</Text>
       </View>
 
-      <TouchableOpacity activeOpacity={0.4} style={styles.button}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('ActivitySelector', { currentUser: user })}
+        activeOpacity={0.4}
+        style={styles.button}
+      >
         <Text style={styles.buttonText}>Create a Plan</Text>
       </TouchableOpacity>
     </View>
@@ -23,7 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-    marginTop: 5,
+    marginTop: 2,
     paddingBottom: 8,
   },
   text: {

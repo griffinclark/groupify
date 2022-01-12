@@ -337,10 +337,23 @@ export const removePastPlans = (plans: Plan[]): Plan[] => {
 // add past plans
 export const addPastPlans = (plans: Plan[]): Plan[] => {
   //TODO another reminder to type your variables
-  const currentDate = new Date();
+  const currentDate: Date = new Date();
   return plans.filter((plan) => {
     if (plan.date && plan.time) {
       return isPastPlan(plan.date, plan.time, currentDate);
     }
   });
+};
+
+export const getHost = async (id: string) => {
+  //TODO why is this type any? This should have a type, especially if you're calling variable.value on it. This appears multiple places in your code
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  const userQuery: any = await API.graphql({
+    query: queries.getUser,
+    variables: { id: id },
+  });
+  const user = userQuery.data.getUser;
+  if (user) {
+    return user.name;
+  }
 };
