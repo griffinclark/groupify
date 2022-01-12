@@ -36,8 +36,8 @@ export const PlanConfirm: React.FC<Props> = ({ navigation, route }: Props) => {
                         <CloseIcon onPress={goHome} />
                         <View style={styles.modalContent}>
                           <AppText style={styles.modalText}>Great! Plan has been created!</AppText>
-                          <AppText style={styles.modalText}>{route.params.data.eventData.title}</AppText>
-                          <AppText style={styles.modalText}>{formatDayOfWeekDate(route.params.data.eventData.date, false, true)} {'\n'} {route.params.data.eventData.time}</AppText>
+                          <AppText style={styles.modalText}>{route.params.data.planData.title}</AppText>
+                          <AppText style={styles.modalText}>{formatDayOfWeekDate(route.params.data.planData.date, false, true)} {'\n'} {route.params.data.planData.time}</AppText>
                           <Button title={'Awesome Sauce'} onPress={goHome} buttonStyle={{minWidth: 292, borderRadius: 5}} />
                         </View>
                         

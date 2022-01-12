@@ -175,7 +175,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     navigation.navigate('PlanCreate', {
       currentUser: user,
       data: {
-        eventData: {
+        planData: {
           location: loc.formatted_address,
           locationName: loc.name,
           placeId: loc.place_id

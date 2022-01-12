@@ -31,6 +31,7 @@ export const GOLD_4 = '#7B5B24';
 export const GOLD_5 = '#483517';
 
 //TEAL SCALE
+export const TEAL_0 = '#96CFDD';
 export const TEAL_1 = '#123B39';
 export const TEAL_2 = '#22706C';
 export const TEAL = '#31A59F';

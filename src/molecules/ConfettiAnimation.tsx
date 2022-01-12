@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect } from "react";
 import Animated from "react-native-reanimated";
 import { View, Dimensions, StyleSheet, Image } from "react-native";
+import { WHITE, GREY_6, TEAL_0 } from "../res/styles/Colors";
 
 const NUM_CONFETTI = 100;
 const COLORS = [WHITE, GREY_6, TEAL_0];

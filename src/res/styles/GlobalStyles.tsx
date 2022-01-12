@@ -67,9 +67,9 @@ export const globalStyles = StyleSheet.create({
     width: '100%'
   },
   sectionTitle: {
-    fontWeight: '700',
-    fontSize: 20,
+    fontSize: 16,
     textTransform: 'capitalize',
-    marginTop: 30
+    marginTop: 30,
+    fontFamily: 'Jost-500'
 }
 });

@@ -44,14 +44,15 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
     useEffect(() => {
         if(route.params.data) {
             const { data } = route.params;
-
-            if (data.eventData.locationName) {
-                setLocationName(data.eventData.locationName);
-                setName(data.eventData.locationName);
+            console.log(data);
+            
+            if (data.planData.locationName) {
+                setLocationName(data.planData.locationName);
+                setName(data.planData.locationName);
             }
         
-            if(data.eventData.location) {
-                setLocationAddress(data.eventData.location);
+            if(data.planData.location) {
+                setLocationAddress(data.planData.location);
             }
         }
     }, [route.params.data]);
@@ -62,7 +63,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
         navigation.navigate('PlanInvite', {
             currentUser: route.params.currentUser,
             data: {
-                eventData: {
+                planData: {
                     uuid: id,
                     title: name,
                     date: date ? date : currentDate.toLocaleDateString(),
@@ -73,7 +74,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
                         : formatIosTimeInput(currentDate.toLocaleTimeString()),
                     locationName: locationName,
                     location: locationAddress,
-                    placeId: route.params.data ? route.params.data.eventData.placeId : ''
+                    placeId: route.params.data ? route.params.data.planData.placeId : ''
                 }
             }
         });
@@ -92,7 +93,6 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
                             <AppText style={globalStyles.navTitle}>Build a Plan</AppText>
                         </View>
 
-                        
                         <View style={globalStyles.topBlockBack}>
                             <BackChevronIcon height={'20'} onPress={() => navigation.goBack()} />
                             <LocationBlock locationName={locationName} locationAddress={locationAddress} />
@@ -106,9 +106,6 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
                                 paddingTop: Constants.statusBarHeight - 340,
                               }}
                         >
-                            <AppText style={globalStyles.sectionTitle}>When are we meeting?</AppText>
-                            <DateTimeSelector onDateChange={onDateChange} />
-                            
                             <View>
                                 <AppTextInput
                                         editable={true}
@@ -116,9 +113,15 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
                                         onChangeText={(e: string) => setName(e)}
                                         placeholder={'Name Your Plan'}
                                         value={name === locationName ? '' : name}
-                                        textStyle={{fontWeight: 'bold', fontSize: 18}}
+                                        textStyle={[globalStyles.sectionTitle, {fontWeight: 'bold', fontSize: 16}]}
                                     />
                             </View>
+
+                            <View>
+                                <AppText style={globalStyles.sectionTitle}>When are we meeting?</AppText>
+                                <DateTimeSelector onDateChange={onDateChange} />
+                            </View>
+                            
                         </ScrollView>
                     </View>
                     </KeyboardAvoidingView>

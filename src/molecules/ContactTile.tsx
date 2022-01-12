@@ -50,25 +50,12 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
         onPress={handlePress}
         testID="ContactTile"
       >
-        {/* {selected && (
-          <Icon
-            testID="SelectedIcon"
-            size={32}
-            containerStyle={styles.icon}
-            color={'white'}
-            name="check"
-            type="entypo"
-            tvParallaxProperties={undefined}
-          />
-        )} */}
-
         <WhiteButton
           onPress={handlePress}
           text={selected ? 'Invited' : 'Invite'}
           style={ selected ? {borderColor: GRAY_DARK} : {}}
-          textStyles={ selected ? {color: GRAY_DARK} : {}}
+          textStyles={ selected ? {color: GRAY_DARK, fontFamily: 'Jost-600'} : {fontFamily: 'Jost-600'}}
         />
-        
       </TouchableOpacity>
     </View>
   );
@@ -87,8 +74,7 @@ const styles = StyleSheet.create({
     borderBottomColor: GRAY_MEDIUM
   },
   name: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
     flexWrap: 'wrap',
   },
   nameContainer: {

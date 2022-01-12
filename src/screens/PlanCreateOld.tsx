@@ -40,31 +40,31 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   useEffect(() => {
     if (route.params.data) {
       const { data } = route.params;
-      if (data.eventData.title) {
-        setName(data.eventData.title);
+      if (data.planData.title) {
+        setName(data.planData.title);
       }
 
-      // if (data.eventData.date && data.eventData.date != date) {
-      //   setDate(data.eventData.title);
+      // if (data.planData.date && data.planData.date != date) {
+      //   setDate(data.planData.title);
       // }
 
-      // if (data.eventData.time && data.eventData.time != time) {
-      //   setTime(data.eventData.time);
+      // if (data.planData.time && data.planData.time != time) {
+      //   setTime(data.planData.time);
       // }
-      // if (data.eventData.description && data.eventData.description != description) {
-      //   setDescription(data.eventData.description);
+      // if (data.planData.description && data.planData.description != description) {
+      //   setDescription(data.planData.description);
       // }
 
-      if (data.eventData.locationName) {
-        setLocationName(data.eventData.locationName);
+      if (data.planData.locationName) {
+        setLocationName(data.planData.locationName);
       }
 
-      if(data.eventData.location) {
-        setLocationAddress(data.eventData.location);
+      if(data.planData.location) {
+        setLocationAddress(data.planData.location);
       }
 
-      // if (data.eventData.imageURL && data.eventData.imageURL != photo) {
-      //   setPhoto(data.eventData.imageURL);
+      // if (data.planData.imageURL && data.planData.imageURL != photo) {
+      //   setPhoto(data.planData.imageURL);
       // }
     }
   }, [route.params.data]);
@@ -95,7 +95,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
     navigation.navigate('PlanInvite', {
       currentUser: route.params.currentUser,
       data: {
-        eventData: {
+        planData: {
           uuid: id,
           title: name,
           date: date ? date : currentDate.toLocaleDateString(),
@@ -108,7 +108,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
           locationAddress: locationAddress,
           description: description,
           imageURL: photo || '',
-          placeId: route.params.data ? route.params.data.eventData.placeId : '',
+          placeId: route.params.data ? route.params.data.planData.placeId : '',
         },
       },
     });

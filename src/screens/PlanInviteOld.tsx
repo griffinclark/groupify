@@ -44,7 +44,7 @@ export const PlanInviteOld: React.FC<Props> = ({ navigation, route }: Props) => 
 
   useEffect(() => {
     loadContacts();
-    setEventObject(route.params.data.eventData);
+    setEventObject(route.params.data.planData);
     getFriends();
     createInitialMessage();
   }, []);
@@ -114,11 +114,11 @@ export const PlanInviteOld: React.FC<Props> = ({ navigation, route }: Props) => 
 
   const sendContactMessage = async () => {
     const formattedContacts = formatContacts(selectedContacts);
-    const event = route.params.data.eventData;
+    const event = route.params.data.planData;
     navigation.navigate('ConfirmPlan', {
       currentUser: route.params.currentUser,
       data: {
-        eventData: {
+        planData: {
           uuid: event.uuid,
           title: event.title,
           date: event.date,
@@ -140,7 +140,7 @@ export const PlanInviteOld: React.FC<Props> = ({ navigation, route }: Props) => 
   };
 
   const createInitialMessage = async (): Promise<void> => {
-    const event = route.params.data.eventData;
+    const event = route.params.data.planData;
     const userInfo = await Auth.currentUserInfo();
     const name = userInfo.attributes.name;
 

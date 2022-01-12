@@ -136,12 +136,12 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const onButtonPress = (address: string, placeId: string, photo: string) => {
     if (route.params.option === 'edit') {
-      navigation.navigate('EditPlan', { data: { eventData: { placeId: placeId, location: address } } });
+      navigation.navigate('EditPlan', { data: { planData: { placeId: placeId, location: address } } });
     } else {
       navigation.navigate('PlanCreate', {
         currentUser: route.params.currentUser,
         data: {
-          eventData: {
+          planData: {
             location: address,
             imageURL: photo,
             placeId: placeId,

@@ -222,9 +222,9 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
                 currentUser: route.params.currentUser,
                 data: {
                     planData: {
-                        title: route.params.data.planData.title,
-                        date: route.params.data.planData.date,
-                        time: route.params.data.planData.time
+                        title: planObject.title,
+                        date: planObject.date,
+                        time: planObject.time
                     }
                 }
             });
@@ -269,7 +269,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
 
                     <View>
                         <AppText style={globalStyles.sectionTitle}>Send Invite</AppText>
-                        <AppText style={{ fontSize: 18 }}>Add a friend who isn't on groupify yet.</AppText>
+                        <AppText style={{ fontSize: 16 }}>Add a friend who isn't on groupify yet.</AppText>
                         {/* <ScrollView> */}
                             <View style={styles.contactsContainer}>
                                 <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
