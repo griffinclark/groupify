@@ -23,7 +23,7 @@ interface Props {
 }
 
 export const SendMessage: React.FC<Props> = ({ navigation, route }: Props) => {
-  const plan: Event = route.params.data.planData;
+  const plan: Event = route.params.data.eventData;
   const currentUser: User = route.params.currentUser;
   const [message, setMessage] = useState<string>('Loading Message...');
   const [editMessage, setEditMessage] = useState<boolean | undefined>(false);
