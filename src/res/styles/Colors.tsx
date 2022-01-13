@@ -8,7 +8,6 @@ export const DK_PURPLE = '#3c2061';
 export const L_PURPLE = '#8686BC';
 export const L_YELLOW = '#E5D87C';
 export const L_ORANGE = '#E5A477';
-
 export const WHITE = '#ffffff';
 export const BLACK = '#000000';
 export const GREY_0 = '#222222';

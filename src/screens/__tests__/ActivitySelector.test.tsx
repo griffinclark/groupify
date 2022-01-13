@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import { render, waitFor } from '@testing-library/react-native';
 import { createMock } from 'ts-auto-mock';
 import { Props, ActivitySelector } from '../ActivitySelector';
 

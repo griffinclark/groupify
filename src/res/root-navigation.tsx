@@ -44,7 +44,7 @@ export type RoutePropParams = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     place: any;
     data: {
-      eventData: {
+      planData: {
         friends: User[];
         contacts: Contact[];
         uuid: string;
