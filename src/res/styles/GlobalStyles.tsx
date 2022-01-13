@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { LIGHT, TEAL } from './Colors';
+import { LIGHT } from './Colors';
 
 export const globalStyles = StyleSheet.create({
   defaultRootContainer: {
@@ -49,26 +49,5 @@ export const globalStyles = StyleSheet.create({
   errorMessage: {
     color: 'red',
     fontWeight: 'bold',
-  },
-  container: {
-    paddingHorizontal: 20,
-    flexGrow: 1,
-  },
-  navTitle: {
-    paddingLeft: 15,
-    fontSize: 30,
-    color: TEAL,
-    textTransform: 'capitalize',
-  },
-  topBlockBack: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    width: '100%',
-  },
-  sectionTitle: {
-    fontSize: 16,
-    textTransform: 'capitalize',
-    marginTop: 30,
   },
 });

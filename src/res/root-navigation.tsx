@@ -3,6 +3,7 @@ import * as Analytics from 'expo-firebase-analytics';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import { Home } from '../screens/Home';
+import { PlanInvite } from '../screens/PlanInvite';
 import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
@@ -14,10 +15,9 @@ import { Contact } from './dataModels';
 import { PlanMap } from '../screens/PlanMap';
 import { PlanDetails } from '../screens/PlanDetails';
 import { PlanCreate } from '../screens/PlanCreate';
-import { PlanInvite } from '../screens/PlanInvite';
-import { PlanConfirm } from '../screens/PlanConfirm';
 import { InvitedPlans } from '../screens/InvitedPlans';
 import { InviteeList } from '../screens/inviteList';
+import { ConfirmPlan } from '../screens/ConfirmPlan';
 import { User, Plan } from '../models';
 import { Profile } from '../screens/Profile';
 import { ForgotPassword } from '../screens/ForgotPassword';
@@ -44,7 +44,7 @@ export type RoutePropParams = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     place: any;
     data: {
-      planData: {
+      eventData: {
         friends: User[];
         contacts: Contact[];
         uuid: string;
@@ -55,7 +55,6 @@ export type RoutePropParams = {
         date: string;
         time: string;
         location: string;
-        locationName: string;
         showImage: string;
         placeId: string;
         message: string;
@@ -107,6 +106,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="ImportContacts" component={ImportContacts} options={{ headerShown: false }} />
         <Stack.Screen name="ImportContactDetails" component={ImportContactDetails} options={{ headerShown: false }} />
         <Stack.Screen name="SendMessage" component={SendMessage} options={{ headerShown: false }} />
+        <Stack.Screen name="ConfirmPlan" component={ConfirmPlan} options={{ headerShown: false }} />
         <Stack.Screen name="SetAvailability" component={SetAvailability} options={{ headerShown: false }} />
         <Stack.Screen name="EditFriends" component={EditFriends} options={{ headerShown: false }} />
         <Stack.Screen name="PlanMap" component={PlanMap} options={{ headerShown: false }} />
@@ -121,7 +121,6 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="ActivitySelector" component={ActivitySelector} options={{ headerShown: false }} />
         <Stack.Screen name="ActivityResults" component={ActivityResults} options={{ headerShown: false }} />
         <Stack.Screen name="ActivityFavorites" component={ActivityFavorites} options={{ headerShown: false }} />
-        <Stack.Screen name="PlanConfirm" component={PlanConfirm} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
