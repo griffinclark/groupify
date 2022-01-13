@@ -20,7 +20,7 @@ describe('ActivitySelector Screen', () => {
       });
     });
 
-    it('renders the top nav', async () => {
+    /*it('renders the top nav', async () => {
       const { getByTestId, getByText } = render(<ActivitySelector {...mockProps} />);
       await waitFor(() => {
         getByTestId('back');
@@ -135,6 +135,6 @@ describe('ActivitySelector Screen', () => {
           expect(mockProps.navigation.navigate).not.toBeCalledWith('ActivityResults', { activity: 'relax' });
         });
       });
-    });
+    });*/
   });
 });
