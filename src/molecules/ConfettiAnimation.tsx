@@ -35,7 +35,7 @@ const createConfetti = () => {
   });
 };
 
-export const ConfettiAnimation = () => {
+export const ConfettiAnimation: React.FC = () => {
   const confetti = useMemo(createConfetti, []);
 
   return (
@@ -58,7 +58,7 @@ export const ConfettiAnimation = () => {
                 const { startClock, set, add, sub, divide, diff, multiply, cond, clockRunning, greaterThan, lessThan } =
                   Animated;
 
-                const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+                const { width: screenWidth } = Dimensions.get('window');
 
                 const timeDiff = diff(clock);
                 const dt = divide(timeDiff, 1000);

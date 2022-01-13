@@ -29,6 +29,7 @@ export const ActivityFavorites: React.FC<Props> = ({ navigation }: Props) => {
     setFavorites(newFavorites);
   };
 
+  //@typescript-eslint/no-explicit-any
   const handleCreate = async (loc: any) => {
     const user = await getCurrentUser();
     navigation.navigate('PlanCreate', {
