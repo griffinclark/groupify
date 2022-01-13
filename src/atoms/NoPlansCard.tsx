@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { User } from '../models';
 
 interface Props {
-  user: User | undefined;
+  user: User;
   navigation: {
     navigate: (ev: string, {}) => void;
   };

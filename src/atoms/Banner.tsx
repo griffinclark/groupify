@@ -4,7 +4,7 @@ import { Entypo } from '@expo/vector-icons';
 import { Plan, Invitee } from '../models';
 import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
 import { DataStore } from '@aws-amplify/datastore';
-import { TEAL, WHITE, GREY_3 } from '../res/styles/Colors';
+import { TEAL, WHITE, GREY_3, BLACK } from '../res/styles/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
@@ -40,7 +40,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
         resizeMode="cover"
         style={styles.imgBackground}
       >
-        <LinearGradient colors={['rgba(0,0,0,0.5)', 'rgba(0,0,0,0.5)']} style={styles.gradientStyle} />
+        <LinearGradient colors={['rgba(205, 203, 208, 0.8)', 'rgba(33,33,33,0.5)']} style={styles.gradientStyle} />
         <Text style={styles.containerText}>Your Next Event</Text>
         <TouchableOpacity
           onPress={() => navigation.push('PlanDetails', { plan: plan })}
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     marginVertical: 4,
     fontSize: 24,
-    fontWeight: '700',
-    color: '#fbfbfb',
+    fontWeight: '600',
+    color: BLACK,
   },
   image: {
     width: 120,

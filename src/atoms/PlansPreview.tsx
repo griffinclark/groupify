@@ -11,7 +11,7 @@ export interface Props {
   pending: Plan[];
   accepted: Plan[];
   created: Plan[];
-  user: User | undefined;
+  user: User;
   navigation: {
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
@@ -67,6 +67,7 @@ export const PlansPreview: React.FC<Props> = ({
             }}
             style={[
               styles.selectedItem,
+              // todo: discuss in meeting
               { borderBottomColor: state === SelectedOption.allSelected ? TEAL : 'transparent' },
             ]}
           >

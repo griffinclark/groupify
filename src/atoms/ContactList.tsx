@@ -36,7 +36,7 @@ export const ContactList = ({ navigation }: Props) => {
             image: contact.image,
             phoneNumber: (contact.phoneNumbers && contact.phoneNumbers[0].number) || 'No phone number found',
           }));
-          // TODO no any - create a type here if you have to you're referencing type.value
+
           contacts.sort((c1, c2): number => {
             if (c1.name && c2.name) {
               return c1.name.toLowerCase() < c2.name.toLowerCase() ? -1 : 1;

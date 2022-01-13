@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Contact } from '../res/dataModels';
 
 interface Props {
-  isSelected?: boolean;
+  isSelected: boolean;
   friend: Contact;
   addUser: (friend: Contact) => void;
   removeUser: (friend: Contact) => void;
@@ -25,6 +25,7 @@ export const AddContactTile = ({ isSelected, friend, addUser, removeUser }: Prop
     }
   };
 
+  // we need to check if the user is already selected previously
   useEffect(() => {
     if (isSelected) {
       setSelected(true);
@@ -44,7 +45,7 @@ export const AddContactTile = ({ isSelected, friend, addUser, removeUser }: Prop
         style={[styles.button, { borderColor: !Selected ? '#31A59F' : '#767676' }]}
       >
         <Text style={[styles.buttonText, { color: !Selected ? '#31A59F' : '#767676' }]}>
-          {!Selected ? 'Add' : 'Added'}
+          {Selected ? 'Added' : 'Add'}
         </Text>
       </TouchableOpacity>
     </View>
