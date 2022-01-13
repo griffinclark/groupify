@@ -22,18 +22,18 @@ export const WhiteButton: React.FC<Props> = ({ onPress, text, style, textStyles 
 
 const styles = StyleSheet.create({
   button: {
-    width: 120,
-    height: 40,
-    borderWidth: 1,
+    width: 182,
+    height: 49,
+    borderWidth: 2,
     borderColor: TEAL,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 8,
-    // marginTop: 10,
+    borderRadius: 40,
+    marginTop: 10,
   },
   text: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '400',
     color: TEAL,
   },
 });

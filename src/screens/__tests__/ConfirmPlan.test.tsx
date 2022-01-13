@@ -17,7 +17,7 @@
 //   route: {
 //     params: {
 //       data: {
-//         planData: {
+//         eventData: {
 //           friends: mockFriends,
 //           contacts: mockFriends,
 //           uuid: 'string',
