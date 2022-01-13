@@ -14,6 +14,9 @@ import { Details } from './Details';
 import { ActivityCard } from './ActivityCard';
 import { ActivitySlider } from './ActivitySlider';
 import { NoResults } from './NoResults';
+import { LocationBlock } from './LocationBlock';
+import { DateTimeSelector } from './DateTimeSelector';
+import { ConfettiAnimation } from './ConfettiAnimation';
 
 export {
   AndroidContactTile,
@@ -32,4 +35,7 @@ export {
   ActivityCard,
   ActivitySlider,
   NoResults,
+  LocationBlock,
+  DateTimeSelector,
+  ConfettiAnimation,
 };

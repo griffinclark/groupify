@@ -50,8 +50,8 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
 
   // Update location or photo
   useEffect(() => {
-    if (route.params.data && route.params.data.eventData.location) {
-      setLocation(route.params.data.eventData.location);
+    if (route.params.data && route.params.data.planData.location) {
+      setLocation(route.params.data.planData.location);
     }
   }, [route.params.data]);
   //formatDatabaseDate(date)
@@ -74,9 +74,7 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         );
         updated.description = description;
         updated.location = location;
-        updated.placeID = route.params.data
-          ? route.params.data.eventData.placeId
-          : route.params.currentUserPlan.placeID;
+        updated.placeID = route.params.data ? route.params.data.planData.placeId : route.params.currentUserPlan.placeID;
         updated.creatorID = route.params.currentUserPlan.creatorID;
       }),
     );

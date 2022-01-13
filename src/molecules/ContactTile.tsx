@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Contact } from '../res/dataModels';
 import { AppText } from '../atoms/AppText';
-import { GREY_8 } from '../res/styles/Colors';
+import { GRAY_MEDIUM, GRAY_DARK } from '../res/styles/Colors';
+import { WhiteButton } from '../atoms/AtomsExports';
 
 interface Props {
   isSelected?: boolean;
@@ -15,7 +15,6 @@ interface Props {
 
 export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSelected = false }: Props) => {
   const [selected, setSelected] = useState(false);
-  const [firstInitial, setFirstInitial] = useState('');
 
   const handlePress = () => {
     if (!selected) {
@@ -34,38 +33,22 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
     } else {
       setSelected(false);
     }
-    if (friend.name) {
-      setFirstInitial(friend.name.slice(0, 1));
-    }
   }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.nameContainer}>
-        <View style={styles.bubble}>
-          <AppText style={{ fontSize: 20 }}>{firstInitial}</AppText>
-        </View>
         <View>
           <AppText style={styles.name}>{friend.name}</AppText>
-          <AppText style={styles.phone}>{friend.phoneNumber}</AppText>
         </View>
       </View>
-      <TouchableOpacity
-        style={selected ? styles.buttonSelected : styles.button}
-        onPress={handlePress}
-        testID="ContactTile"
-      >
-        {selected && (
-          <Icon
-            testID="SelectedIcon"
-            size={32}
-            containerStyle={styles.icon}
-            color={'white'}
-            name="check"
-            type="entypo"
-            tvParallaxProperties={undefined}
-          />
-        )}
+      <TouchableOpacity onPress={handlePress} testID="ContactTile">
+        <WhiteButton
+          onPress={handlePress}
+          text={selected ? 'Invited' : 'Invite'}
+          style={selected ? { borderColor: GRAY_DARK } : {}}
+          textStyles={selected ? { color: GRAY_DARK } : {}}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -76,54 +59,19 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    height: 80,
+    // height: 80,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: GRAY_MEDIUM,
   },
   name: {
-    fontSize: 15,
-    marginLeft: 10,
+    fontSize: 16,
     flexWrap: 'wrap',
-    maxWidth: 220,
-  },
-  phone: {
-    fontSize: 12,
-    marginLeft: 10,
-    color: GREY_8,
-  },
-  bubble: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#C4C4C4',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 50,
   },
   nameContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  button: {
-    width: 40,
-    height: 40,
-    borderWidth: 2,
-    borderColor: '#BE8C2C',
-    borderRadius: 25,
-  },
-  buttonSelected: {
-    width: 40,
-    height: 40,
-    backgroundColor: '#47A9A5',
-    borderRadius: 25,
-    alignContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    alignSelf: 'center',
-  },
-  icon: {
-    flex: 1,
-    justifyContent: 'center',
+    // flexDirection: 'row',
+    // alignItems: 'center',
   },
 });
