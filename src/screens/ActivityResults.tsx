@@ -178,7 +178,7 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
         planData: {
           location: loc.formatted_address,
           locationName: loc.name,
-          placeId: loc.place_id
+          placeId: loc.place_id,
         },
       },
     });

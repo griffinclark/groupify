@@ -74,9 +74,7 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
         );
         updated.description = description;
         updated.location = location;
-        updated.placeID = route.params.data
-          ? route.params.data.planData.placeId
-          : route.params.currentUserPlan.placeID;
+        updated.placeID = route.params.data ? route.params.data.planData.placeId : route.params.currentUserPlan.placeID;
         updated.creatorID = route.params.currentUserPlan.creatorID;
       }),
     );

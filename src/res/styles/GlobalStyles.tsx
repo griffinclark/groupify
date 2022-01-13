@@ -52,23 +52,23 @@ export const globalStyles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 20,
-    flexGrow: 1
+    flexGrow: 1,
   },
   navTitle: {
     paddingLeft: 15,
     fontSize: 30,
     color: TEAL,
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
   },
   topBlockBack: {
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    width: '100%'
+    width: '100%',
   },
   sectionTitle: {
     fontSize: 16,
     textTransform: 'capitalize',
-    marginTop: 30
-}
+    marginTop: 30,
+  },
 });

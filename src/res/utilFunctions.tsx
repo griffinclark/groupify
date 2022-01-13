@@ -202,7 +202,7 @@ export const loadPhoto = async (placeID: string): Promise<string> => {
 export const getCurrentUser = async (): Promise<User> => {
   const userInfo = await Auth.currentUserInfo();
   if (userInfo) {
-      const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
+    const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     const user = userQuery.map((user) => user);
     if (user) {
       return user[0];

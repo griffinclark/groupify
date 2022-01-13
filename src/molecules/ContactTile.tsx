@@ -46,15 +46,12 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
           <AppText style={styles.name}>{friend.name}</AppText>
         </View>
       </View>
-      <TouchableOpacity
-        onPress={handlePress}
-        testID="ContactTile"
-      >
+      <TouchableOpacity onPress={handlePress} testID="ContactTile">
         <WhiteButton
           onPress={handlePress}
           text={selected ? 'Invited' : 'Invite'}
-          style={ selected ? {borderColor: GRAY_DARK} : {}}
-          textStyles={ selected ? {color: GRAY_DARK} : {}}
+          style={selected ? { borderColor: GRAY_DARK } : {}}
+          textStyles={selected ? { color: GRAY_DARK } : {}}
         />
       </TouchableOpacity>
     </View>
@@ -71,7 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: GRAY_MEDIUM
+    borderBottomColor: GRAY_MEDIUM,
   },
   name: {
     fontSize: 16,
@@ -80,5 +77,5 @@ const styles = StyleSheet.create({
   nameContainer: {
     // flexDirection: 'row',
     // alignItems: 'center',
-  }
+  },
 });

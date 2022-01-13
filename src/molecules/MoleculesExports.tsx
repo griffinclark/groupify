@@ -37,5 +37,5 @@ export {
   NoResults,
   LocationBlock,
   DateTimeSelector,
-  ConfettiAnimation
+  ConfettiAnimation,
 };
