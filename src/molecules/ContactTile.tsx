@@ -54,7 +54,7 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
           onPress={handlePress}
           text={selected ? 'Invited' : 'Invite'}
           style={ selected ? {borderColor: GRAY_DARK} : {}}
-          textStyles={ selected ? {color: GRAY_DARK, fontFamily: 'Jost-600'} : {fontFamily: 'Jost-600'}}
+          textStyles={ selected ? {color: GRAY_DARK} : {}}
         />
       </TouchableOpacity>
     </View>

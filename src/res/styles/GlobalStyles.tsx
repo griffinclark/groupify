@@ -69,7 +69,6 @@ export const globalStyles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     textTransform: 'capitalize',
-    marginTop: 30,
-    fontFamily: 'Jost-500'
+    marginTop: 30
 }
 });
