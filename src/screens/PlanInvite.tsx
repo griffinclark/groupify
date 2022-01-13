@@ -39,7 +39,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     placeId: '',
   });
 
-  // const [friends, setFriends] = useState<User[]>([]);
+  const [friends, setFriends] = useState<User[]>([]);
   // const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
 
   useEffect(() => {
