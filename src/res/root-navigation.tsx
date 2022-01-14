@@ -64,6 +64,14 @@ export type RoutePropParams = {
   };
 };
 
+export type AllPlans = { 
+  all: Plan[],
+  created: Plan[],
+  accepted: Plan[],
+  pending: Plan[],
+  past: Plan[]
+}
+
 export interface StackProps {
   navigation?: StackNavigationProp<ParamListBase>;
   route?: ParamListBase;

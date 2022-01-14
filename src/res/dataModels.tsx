@@ -1,5 +1,5 @@
 import { Image } from 'expo-contacts';
-import { User } from '../models';
+import { User, Plan } from '../models';
 
 export interface Profile {
   phoneNumber: string; // @Griffin This needs to be canonicalized format, not just a rando string

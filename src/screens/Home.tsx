@@ -5,6 +5,7 @@ import { Screen } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
+import { AllPlans } from '../res/root-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Header } from '../atoms/Header';
 import { PlansPreview } from '../atoms/PlansPreview';
@@ -18,6 +19,7 @@ export interface Props {
     push: (ev: string, {}) => void;
   };
 }
+
 enum LoadingState {
   Loading,
   Loaded,
@@ -29,7 +31,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [trigger1, setTrigger1] = useState(false);
   const [trigger2, setTrigger2] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [allPlans, setAllPlans] = useState<Plan[]>([]);
+  const [allPlans, setAllPlans] = useState<AllPlans>();
   const [pastPlans, setPastPlans] = useState<Plan[]>([]);
   const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
   const [state, setState] = useState(LoadingState.Loading);
@@ -85,9 +87,15 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       }
     }
 
-    const allPlans = [...createdPlans, ...pending, ...accepted];
+    // const allPlans = [...createdPlans, ...pending, ...accepted];
 
-    setAllPlans(allPlans);
+    setAllPlans({
+      all: [...createdPlans, ...pending, ...accepted],
+      created: createdPlans,
+      pending: pendingPlans,
+      accepted: acceptedPlans,
+      past: pastPlans
+    });
     setPendingPlans(pending);
     setAcceptedPlans(accepted);
     setCreatedPlans(createdPlans);
@@ -109,11 +117,11 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
                 <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />
               )}
               <PlansPreview
-                past={pastPlans}
-                pending={pendingPlans}
-                created={createdPlans}
-                accepted={acceptedPlans}
-                all={allPlans}
+                // past={pastPlans}
+                // pending={pendingPlans}
+                // created={createdPlans}
+                // accepted={acceptedPlans}
+                all={allPlans!}
                 reload={trigger2}
                 navigation={navigation}
                 user={currentUser}
