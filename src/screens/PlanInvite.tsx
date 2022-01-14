@@ -34,10 +34,9 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     uuid: '',
     placeId: '',
   });
+
   const [friends, setFriends] = useState<User[]>([]);
-  const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
-  const [message, setMessage] = useState<string>('');
-  const [displayWarning, setDisplayWarning] = useState<boolean>(false);
+  // const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
 
   useEffect(() => {
     loadContacts();
