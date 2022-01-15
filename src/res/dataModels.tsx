@@ -29,12 +29,3 @@ export interface Contact {
   image?: Image | undefined;
   phoneNumber: string;
 }
-
-// export interface User {
-//   id: string;
-//   phoneNumber: number;
-//   name: string;
-//   pushToken: string;
-//   friends: User[];
-
-// }

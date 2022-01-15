@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
 import { getCurrentUser, loadInviteeStatus, removePastPlans, addPastPlans } from './../res/utilFunctions';
@@ -5,6 +6,7 @@ import { Screen } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
+import { AllPlans } from '../res/root-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Header } from '../atoms/Header';
 import { PlansPreview } from '../atoms/PlansPreview';
@@ -29,7 +31,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   const [trigger1, setTrigger1] = useState(false);
   const [trigger2, setTrigger2] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [allPlans, setAllPlans] = useState<Plan[]>([]);
+  const [allPlans, setAllPlans] = useState<AllPlans>();
   const [pastPlans, setPastPlans] = useState<Plan[]>([]);
   const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
   const [state, setState] = useState(LoadingState.Loading);
@@ -64,7 +66,8 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
     const pastInvitedPlans = addPastPlans(
       invitees.map((invitee) => invitee.plan).filter((item): item is Plan => item !== undefined),
     );
-    const pastPlans = [...pastCreatedPlans, ...pastInvitedPlans];
+    const pastPlanArr = [...pastCreatedPlans, ...pastInvitedPlans];
+    const pastPlan = pastPlanArr.filter((plan, index) => pastPlanArr.indexOf(plan) === index);
 
     const upcoming = invitedPlans.filter((item): item is Plan => item.creatorID !== user.id);
 
@@ -85,13 +88,19 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
       }
     }
 
-    const allPlans = [...createdPlans, ...pending, ...accepted];
-
-    setAllPlans(allPlans);
+    // const allPlans = [...createdPlans, ...pending, ...accepted];
     setPendingPlans(pending);
     setAcceptedPlans(accepted);
     setCreatedPlans(createdPlans);
-    setPastPlans(pastPlans);
+    setPastPlans(pastPlan);
+
+    setAllPlans({
+      all: [...createdPlans, ...pending, ...accepted],
+      created: createdPlans,
+      pending: pendingPlans,
+      accepted: acceptedPlans,
+      past: pastPlans,
+    });
   };
 
   return (
@@ -105,19 +114,10 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
           <Header home={true} />
           <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
             <View>
-              {acceptedPlans.length > 0 && (
-                <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />
-              )}
-              <PlansPreview
-                past={pastPlans}
-                pending={pendingPlans}
-                created={createdPlans}
-                accepted={acceptedPlans}
-                all={allPlans}
-                reload={trigger2}
-                navigation={navigation}
-                user={currentUser}
-              />
+              {acceptedPlans.length > 0 || createdPlans.length > 0 ? (
+                <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[1]} />
+              ) : null}
+              <PlansPreview all={allPlans!} reload={trigger2} navigation={navigation} user={currentUser!} />
               <ImportContactTile navigation={navigation} />
               <FooterCard />
             </View>

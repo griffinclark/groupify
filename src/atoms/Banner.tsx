@@ -40,7 +40,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
         resizeMode="cover"
         style={styles.imgBackground}
       >
-        <LinearGradient colors={['rgba(205, 203, 208, 0.8)', 'rgba(33,33,33,0.5)']} style={styles.gradientStyle} />
+        <LinearGradient colors={['rgba(180, 190, 190, 0.7)', 'rgba(33,33,33,0.5)']} style={styles.gradientStyle} />
         <Text style={styles.containerText}>Your Next Event</Text>
         <TouchableOpacity
           onPress={() => navigation.push('PlanDetails', { plan: plan })}
