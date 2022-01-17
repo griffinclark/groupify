@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
-import { AppText, BottomButton, MeepForm, Alert, Screen } from '../atoms/AtomsExports';
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { AppText, BottomButton, Screen } from '../atoms/AtomsExports';
+import { Platform, View, KeyboardAvoidingView } from 'react-native';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
-import { BackChevronIcon, MapLinkIcon } from '../../assets/Icons/IconExports';
-import Constants from 'expo-constants';
-import { TEAL } from '../res/styles/Colors';
+import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
+import { LocationBlock, DateTimeSelector } from '../molecules/MoleculesExports';
+import { AppTextInput } from '../atoms/AppTextInput';
+import { ScrollView } from 'react-native-gesture-handler';
+import Constants from 'expo-constants';
+import { globalStyles } from '../res/styles/GlobalStyles';
 
 interface Props {
   navigation: {
@@ -23,69 +25,44 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   const [name, setName] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [time, setTime] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [location, setLocation] = useState<string>('');
-  const [photo, setPhoto] = useState<string>('');
-  const [error, setError] = useState<string | undefined>();
-  const [disabled, setDisabled] = useState<boolean>(true);
+
+  const [locationName, setLocationName] = useState<string>('');
+  const [locationAddress, setLocationAddress] = useState<string>('');
+
   const currentDate = roundDate(new Date());
 
-  // Check if required fields are full
-  useEffect(() => {
-    checkDisabled();
-  }, [name]);
+  const onDateChange = (date: Date) => {
+    setDate(date.toLocaleDateString());
 
-  // Update state from params
+    const formatedTime =
+      Platform.OS === 'ios' ? formatIosTimeInput(date.toLocaleTimeString()) : formatTime(date.toLocaleTimeString());
+    setTime(formatedTime);
+    console.log(time);
+  };
+
   useEffect(() => {
     if (route.params.data) {
       const { data } = route.params;
-      if (data.eventData.title && data.eventData.title != name) {
-        setName(data.eventData.title);
+      console.log(data);
+
+      if (data.planData.locationName) {
+        setLocationName(data.planData.locationName);
+        setName(data.planData.locationName);
       }
-      if (data.eventData.date && data.eventData.date != date) {
-        setDate(data.eventData.title);
-      }
-      if (data.eventData.time && data.eventData.time != time) {
-        setTime(data.eventData.time);
-      }
-      if (data.eventData.description && data.eventData.description != description) {
-        setDescription(data.eventData.description);
-      }
-      if (data.eventData.location && data.eventData.location != location) {
-        setLocation(data.eventData.location);
-      }
-      if (data.eventData.imageURL && data.eventData.imageURL != photo) {
-        setPhoto(data.eventData.imageURL);
+
+      if (data.planData.location) {
+        setLocationAddress(data.planData.location);
       }
     }
   }, [route.params.data]);
 
-  const resetFields = () => {
-    setName('');
-    setDate(currentDate.toLocaleDateString());
-    setTime(
-      Platform.OS === 'android'
-        ? formatTime(currentDate.toLocaleTimeString())
-        : formatIosTimeInput(currentDate.toLocaleTimeString()),
-    );
-    setDescription('');
-    setLocation('');
-    setPhoto('');
-    setError(undefined);
-    setDisabled(true);
-  };
-
   const onFormSubmit = async () => {
     const id = uuid.v4();
-    if (!name) {
-      setError('Please add a name to your plan');
-      return;
-    }
 
     navigation.navigate('PlanInvite', {
       currentUser: route.params.currentUser,
       data: {
-        eventData: {
+        planData: {
           uuid: id,
           title: name,
           date: date ? date : currentDate.toLocaleDateString(),
@@ -94,126 +71,62 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
             : Platform.OS === 'android'
             ? formatTime(currentDate.toLocaleTimeString())
             : formatIosTimeInput(currentDate.toLocaleTimeString()),
-          location: location,
-          description: description,
-          imageURL: photo || '',
-          placeId: route.params.data ? route.params.data.eventData.placeId : '',
+          locationName: locationName,
+          location: locationAddress,
+          placeId: route.params.data ? route.params.data.planData.placeId : '',
         },
       },
     });
-    resetFields();
+
     await Analytics.logEvent('submit_create_event_to_friends', { userId: id });
   };
-
-  const inputFields: {
-    title: string;
-    placeholder: string;
-    settings: string;
-    value: string;
-    func: React.Dispatch<React.SetStateAction<string>>;
-  }[] = [
-    {
-      title: 'Plan Name *',
-      placeholder: '',
-      settings: 'default',
-      value: name,
-      func: setName,
-    },
-    {
-      title: 'Date *',
-      placeholder: 'MM/DD/YYYY',
-      settings: 'date',
-      value: date,
-      func: setDate,
-    },
-    {
-      title: 'Time *',
-      placeholder: 'H:MM PM',
-      settings: 'time',
-      value: time,
-      func: setTime,
-    },
-    {
-      title: 'Description',
-      placeholder: '',
-      settings: 'default',
-      value: description,
-      func: setDescription,
-    },
-    {
-      title: 'Address',
-      placeholder: '',
-      settings: 'default',
-      value: location,
-      func: setLocation,
-    },
-  ];
-
-  const checkDisabled = () => {
-    if (name) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  };
-
   return (
-    <View style={{ flex: 1 }}>
-      <KeyboardAvoidingView
-        style={{ flex: 1, backgroundColor: 'white' }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      >
-        <Screen>
-          <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
-            <BackChevronIcon onPress={() => navigation.goBack()} />
-            <AppText style={styles.title}>Create a Plan</AppText>
-          </View>
-          <ScrollView
-            contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: 'space-between',
-              flexDirection: 'column',
-              paddingTop: Constants.statusBarHeight - 340,
-            }}
-          >
-            {/* <View>{loadPhoto(photo)}</View> */}
-            <View style={{ flexGrow: 1 }}>
-              <MeepForm inputList={inputFields}>
-                <TouchableOpacity
-                  style={styles.mapLink}
-                  onPress={() => navigation.navigate('PlanMap', { currentUser: route.params.currentUser })}
-                >
-                  {/* <Icon color={TEAL} name="map-marker" type="font-awesome" size={24} /> */}
-                  <MapLinkIcon />
-                  <AppText style={styles.mapText}>Find address using the map</AppText>
-                </TouchableOpacity>
-              </MeepForm>
-              {error && <Alert status="error" message={error} />}
+    <Screen>
+      <View style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          style={{ flex: 1, backgroundColor: 'white' }}
+          behavior={'position'}
+          keyboardVerticalOffset={Constants.statusBarHeight}
+        >
+          <View style={globalStyles.container}>
+            <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
+              <AppText style={globalStyles.navTitle}>Build a Plan</AppText>
             </View>
-          </ScrollView>
-        </Screen>
-      </KeyboardAvoidingView>
-      <BottomButton disabled={disabled} title="Invite Friends" onPress={onFormSubmit} />
-    </View>
+
+            <View style={globalStyles.topBlockBack}>
+              <BackChevronIcon height={'20'} onPress={() => navigation.goBack()} />
+              <LocationBlock locationName={locationName} locationAddress={locationAddress} />
+            </View>
+
+            <ScrollView
+              contentContainerStyle={{
+                flexGrow: 1,
+                justifyContent: 'space-between',
+                flexDirection: 'column',
+                paddingTop: Constants.statusBarHeight - 340,
+              }}
+            >
+              <View>
+                <AppTextInput
+                  editable={true}
+                  label={'Name Your plan - Optional'}
+                  onChangeText={(e: string) => setName(e)}
+                  placeholder={'Name Your Plan'}
+                  value={name === locationName ? '' : name}
+                  textStyle={[globalStyles.sectionTitle, { fontWeight: 'bold', fontSize: 16 }]}
+                />
+              </View>
+
+              <View>
+                <AppText style={globalStyles.sectionTitle}>When are we meeting?</AppText>
+                <DateTimeSelector onDateChange={onDateChange} />
+              </View>
+            </ScrollView>
+          </View>
+        </KeyboardAvoidingView>
+
+        <BottomButton disabled={false} title="Invite Friends" onPress={onFormSubmit} />
+      </View>
+    </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  mapLink: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: 30,
-    paddingLeft: 20,
-    width: '100%',
-  },
-  mapText: {
-    color: TEAL,
-    fontSize: 16,
-    marginLeft: 10,
-  },
-  title: {
-    paddingLeft: 15,
-    fontSize: 30,
-    color: TEAL,
-  },
-});
