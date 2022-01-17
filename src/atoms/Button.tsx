@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, WHITE, TEAL } from '../res/styles/Colors';
 import { AppText } from './AppText';
@@ -25,14 +25,14 @@ export const Button: React.FC<Props> = ({
   return (
     <View style={[buttonStyles.container, containerStyle]} testID={testID}>
       <TouchableOpacity
+        onPress={() => onPress()}
+        disabled={disabled}
         style={[
           buttonStyles.button,
           buttonStyles.enabledButton,
           buttonStyle,
           disabled ? buttonStyles.disabledButton : {},
         ]}
-        onPress={onPress}
-        disabled={disabled}
       >
         <AppText
           style={[

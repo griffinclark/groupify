@@ -43,7 +43,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
           onPress={() => {
             navigation.navigate('Profile', {
               currentUser: user,
-              currentUserPlan: userPlans[0] ? userPlans[0] : invitedPlans[0],
+              currentUserPlan: userPlans[0] ? userPlans[0] : invitedPlans![0],
             });
           }}
         >
