@@ -1,15 +1,19 @@
+import { DataStore, API } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Contact } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
-import { AppText, BottomButton, Button, Navbar, SearchBar } from '../atoms/AtomsExports';
-import { API, Auth } from 'aws-amplify';
-import { User } from '../models';
-import { ContactContainer, FriendContainer } from '../organisms/OrganismsExports';
-import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
-import Constants from 'expo-constants';
-import * as queries from '../graphql/queries';
+import { User, Plan, Status, Invitee } from '../models';
+import { ContactContainer } from '../organisms/OrganismsExports';
+import { LocationBlock } from '../molecules/MoleculesExports';
+import { BackChevronIcon } from '../../assets/Icons/IconExports';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { AppText, BottomButton, SearchBar, Screen } from '../atoms/AtomsExports';
+// import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
+import { globalStyles } from '../res/styles/GlobalStyles';
+import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
+import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import { sendPushNotification } from '../res/notifications';
 
 export interface Props {
   navigation: {
@@ -20,57 +24,30 @@ export interface Props {
 }
 
 export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
+  const currentUser: User = route.params.currentUser;
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
-  const [menuItemSelected, setMenuItemSelected] = useState('contacts');
-  const [eventObject, setEventObject] = useState({
+
+  const [planObject, setPlanObject] = useState({
     date: '',
-    description: '',
-    imageURL: '',
     location: '',
+    locationName: '',
     time: '',
     title: '',
     uuid: '',
     placeId: '',
   });
 
-  const [friends, setFriends] = useState<User[]>([]);
+  // const [friends, setFriends] = useState<User[]>([]);
   // const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
 
   useEffect(() => {
     loadContacts();
-    setEventObject(route.params.data.eventData);
+    setPlanObject(route.params.data.planData);
     getFriends();
-    createInitialMessage();
+    //createInitialMessage();
   }, []);
-
-  const getFriends = async () => {
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    const userQuery: any = await API.graphql({
-      query: queries.getUser,
-      variables: { id: route.params.currentUser.id },
-    });
-    const userFriends = userQuery.data.getUser.friends;
-    const friendList = [];
-    if (userFriends) {
-      for (let i = 0; i < userFriends.length; i++) {
-        const friendId = userFriends[i];
-        if (friendId) {
-          // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-          const friendQuery: any = await API.graphql({
-            query: queries.getUser,
-            variables: { id: friendId },
-          });
-          const friend = friendQuery.data.getUser;
-          if (friend) friendList.push(friend);
-        }
-      }
-    }
-    if (friendList) {
-      setFriends(friendList);
-    }
-  };
 
   const loadContacts = async () => {
     const importedContacts = await getAllImportedContacts();
@@ -78,19 +55,58 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     setFilteredContacts(importedContacts);
   };
 
+  const getFriends = async () => {
+    const userQuery = await DataStore.query(User, route.params.currentUser.id);
+
+    const friends: User[] = [];
+
+    if (userQuery) {
+      const friendIds = userQuery.friends?.split(',');
+
+      if (friendIds) {
+        for (const friendId of friendIds) {
+          if (friendId) {
+            const friend = await DataStore.query(User, friendId);
+
+            if (friend) {
+              friends.push(friend);
+            }
+          }
+        }
+      }
+    }
+
+    if (friends.length) {
+      setFriends(friends);
+    }
+  };
+
   const searchFriends = (text: string) => {
     setFilteredContacts(
       contacts.filter((contact) => {
         let contactLowercase = '';
-        try {
+
+        if (typeof contact.name === 'string') {
           contactLowercase = contact.name.toLowerCase();
-        } catch {
+        } else {
           console.log('error filtering a contact');
         }
+
         const textLowercase = text.toLowerCase();
+
         return contactLowercase.indexOf(textLowercase) > -1;
       }),
     );
+  };
+
+  const pushEvent = async (friends: Invitee[], message: string): Promise<void> => {
+    const util = PhoneNumberUtil.getInstance();
+    const attendees = friends.map((friend) => {
+      const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+      return util.format(num, PhoneNumberFormat.E164);
+    });
+    const obj = { attendees: attendees, content: message };
+    console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
   };
 
   const formatContacts = (arr: Contact[]) => {
@@ -108,188 +124,176 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     return formattedArr;
   };
 
-  const sendContactMessage = async () => {
-    const formattedContacts = formatContacts(selectedContacts);
-    const event = route.params.data.eventData;
-    navigation.navigate('ConfirmPlan', {
-      currentUser: route.params.currentUser,
-      data: {
-        eventData: {
-          uuid: event.uuid,
-          title: event.title,
-          date: event.date,
-          time: event.time,
-          location: event.location,
-          description: event.description,
-          imageURL: event.imageURL,
-          placeId: event.placeId,
-          friends: selectedFriends,
-          contacts: formattedContacts,
-          message: message,
-        },
-      },
-    });
+  const formatPhoneNumber = (friend: Contact) => {
+    const util = PhoneNumberUtil.getInstance();
+    const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+    const newNumber = util.format(num, PhoneNumberFormat.E164);
+    return newNumber;
   };
 
-  const menuSelection = (item: string) => {
-    setMenuItemSelected(item);
-  };
+  const storeInvitess = async () => {
+    const newPlan = await DataStore.save(
+      new Plan({
+        title: planObject.title,
+        location: planObject.location,
+        placeID: planObject.placeId,
+        date: formatDatabaseDate(planObject.date),
+        time: formatDatabaseTime(planObject.time),
+        creatorID: currentUser.id,
+      }),
+    );
 
-  const createInitialMessage = async (): Promise<void> => {
-    const event = route.params.data.eventData;
-    const userInfo = await Auth.currentUserInfo();
-    const name = userInfo.attributes.name;
+    const inviteeList: Invitee[] = [];
+    const contacts = formatContacts(selectedContacts);
 
-    const initMessage =
+    for (const contact of contacts) {
+      if (contact.phoneNumber !== 'No phone number found') {
+        const invitee = await DataStore.save(
+          new Invitee({
+            name: contact.name,
+            phoneNumber: formatPhoneNumber(contact),
+            status: Status.PENDING,
+            pushToken: '',
+            plan: newPlan,
+          }),
+        );
+
+        inviteeList.push(invitee);
+      }
+    }
+
+    // Add the invitor to the plan.
+    //I don't really like it. Should have a more elegant way to combine the 2
+    const userInvitee = await DataStore.save(
+      new Invitee({
+        name: currentUser.name,
+        phoneNumber: currentUser.phoneNumber,
+        status: Status.ACCEPTED,
+        pushToken: currentUser.pushToken,
+        plan: newPlan,
+      }),
+    );
+
+    inviteeList.push(userInvitee);
+
+    await DataStore.save(
+      Plan.copyOf(newPlan, (item) => {
+        item.invitees = inviteeList;
+      }),
+    );
+
+    const name = currentUser.name;
+    const nonUsers = [];
+    const pushTokenRegex = /ExponentPushToken\[.{22}]/;
+    const message =
       `Hey, ${name} is inviting you ` +
-      `to '${event.title}'` +
-      `${event.time ? ' at ' + event.time : ''}` +
-      `${event.date ? ' on ' + event.date : ''}` +
-      `${event.location ? ' at ' + event.location : ''}` +
-      `${event.description}` +
+      `to '${planObject.title}'` +
+      `${planObject.time ? ' at ' + planObject.time : ''}` +
+      `${planObject.date ? ' on ' + planObject.date : ''}` +
+      `${planObject.location ? ' at ' + planObject.location : ''}` +
       '. Hope to see you there!';
 
-    setMessage(initMessage);
+    for (const invitee of inviteeList) {
+      const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', invitee.phoneNumber));
+      const user = userQuery.map((user) => user);
+
+      if (user.length) {
+        if (pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken) {
+          sendPushNotification(user[0].pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+        }
+      } else {
+        nonUsers.push(invitee);
+      }
+    }
+
+    pushEvent(nonUsers, message);
   };
 
-  /* Contact items displayed as 'friends' temporary until friend section finished */
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      await storeInvitess();
+
+      navigation.navigate('PlanConfirm', {
+        currentUser: route.params.currentUser,
+        data: {
+          planData: {
+            title: planObject.title,
+            date: planObject.date,
+            time: planObject.time,
+          },
+        },
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
   return (
-    <View style={styles.screen} testID="PlanInviteScreen">
-      <Navbar location={'PlanCreate'} navigation={navigation} data={route.params} title={'Invite Friends'} />
-      <View style={styles.title}>
-        <AppText style={styles.titleText}>Who do you want to invite to {eventObject.title}?</AppText>
-      </View>
-      <View style={styles.friendContainer}>
-        <View style={styles.menu}>
-          {/* <View style={menuItemSelected === 'friends' && styles.itemSelectedContainer}>
-            <Text
-              style={[
-                menuItemSelected === 'friends' ? styles.menuItemSelected : styles.menuItemNotSelected,
-                styles.menuItem,
-              ]}
-              onPress={() => menuSelection('friends')}
-            >
-              FRIENDS
-            </Text>
-          </View> */}
-          <View
-            style={[
-              menuItemSelected === 'contacts' ? styles.menuItemSelectedContainer : styles.menuItemNotSelectedContainer,
-              styles.menuItemContainer,
-            ]}
-          >
-            <AppText
-              style={[
-                menuItemSelected === 'contacts' ? styles.menuItemSelected : styles.menuItemNotSelected,
-                styles.menuItem,
-              ]}
-              onPress={() => menuSelection('contacts')}
-            >
-              FRIENDS
-            </AppText>
+    <Screen>
+      <View testID="PlanInviteScreen" style={{ flex: 1 }}>
+        <ScrollView style={globalStyles.container}>
+          <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
+            <AppText style={styles.title}>Build a Plan</AppText>
           </View>
-          {/* <View style={[styles.menuItemNotSelectedContainer, styles.menuItemContainer]} /> */}
-        </View>
 
-        <View style={{ flex: 1 }}>
-          {menuItemSelected === 'friends' && (
-            <View style={{ flex: 1, justifyContent: 'space-between' }}>
-              {friends.length > 0 ? (
-                <View style={styles.friendBubbleContainer}>
-                  <FriendContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
-                </View>
-              ) : null}
-              <View style={{ marginBottom: 27, alignSelf: 'center' }}>
-                <Button
-                  title={selectedFriends.length === 0 ? 'Skip' : 'Next'}
-                  onPress={() => setMenuItemSelected('contacts')}
-                />
-              </View>
-            </View>
-          )}
+          <View style={globalStyles.topBlockBack}>
+            <BackChevronIcon height={'20'} onPress={() => navigation.goBack()} />
+            <LocationBlock
+              planName={route.params.data.planData.title}
+              locationName={route.params.data.planData.locationName}
+              locationAddress={route.params.data.planData.location}
+              date={route.params.data.planData.date}
+              time={route.params.data.planData.time}
+            />
+          </View>
 
-          {menuItemSelected === 'contacts' && (
-            <View style={{ marginHorizontal: 20 }}>
-              <View style={{ paddingVertical: 30, borderBottomWidth: 0.75, borderBottomColor: GRAY_LIGHT }}>
-                <SearchBar onInputChange={searchFriends} placeholder="Search for Friends to Invite" />
-              </View>
-              <View style={styles.contactsScrollContainer}>
-                <ScrollView>
-                  <View style={styles.contactsContainer}>
-                    <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
-                  </View>
-                </ScrollView>
-              </View>
+          <View style={{ paddingVertical: 30 }}>
+            <SearchBar onInputChange={searchFriends} placeholder="Search for friends" />
+          </View>
+
+          {/* <View>
+                        <AppText style={globalStyles.sectionTitle}>Add Groupies</AppText>
+                        <AppText style={{ fontSize: 18 }}>Send a friend request to these Groupify users.</AppText>
+                        {friends.length > 0 ? (
+                            <View style={styles.friendBubbleContainer}>
+                                <FriendContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
+                            </View>
+                        ) : null}
+                    </View> */}
+
+          <View>
+            <AppText style={globalStyles.sectionTitle}>Send Invite</AppText>
+            <AppText style={{ fontSize: 16 }}>Add a friend who isn&apos;t on groupify yet.</AppText>
+            {/* <ScrollView> */}
+            <View style={styles.contactsContainer}>
+              <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
             </View>
-          )}
-        </View>
+            {/* </ScrollView> */}
+          </View>
+        </ScrollView>
+        <BottomButton
+          disabled={selectedContacts.length == 0 ? true : false}
+          title="Preview Plan"
+          onPress={handleSubmit}
+        />
       </View>
-      <BottomButton
-        disabled={selectedContacts.length == 0 ? true : false}
-        title="Preview Plan"
-        onPress={sendContactMessage}
-      />
-    </View>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  contactsScrollContainer: {
-    height: Dimensions.get('window').height - Constants.statusBarHeight - 340,
-  },
-  screen: {
-    flex: 1,
-    backgroundColor: 'white',
-    flexGrow: 1,
-    justifyContent: 'space-between',
-    paddingTop: Constants.statusBarHeight,
-  },
-  title: {
-    marginTop: 27,
-    marginHorizontal: 63,
-  },
-  titleText: {
-    fontSize: 20,
-    lineHeight: 23,
-    textAlign: 'center',
-  },
-  rowContainer: {
-    flexDirection: 'row',
-  },
-  friendContainer: {
-    flex: 3,
-  },
-  menu: {
-    flexDirection: 'row',
-    borderColor: '#8B8B8B',
-    marginTop: 30,
-  },
-  menuItemContainer: {
+  container: {},
+  topBlock: {
     alignItems: 'center',
-    borderBottomWidth: 3,
-    paddingBottom: 13,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     width: '100%',
   },
-  menuItemSelectedContainer: {
-    borderBottomColor: TEAL,
-  },
-  menuItemNotSelectedContainer: {
-    // borderBottomColor: '#E5E5E5',
-    borderBottomColor: TEAL,
-  },
-  menuItem: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  menuItemSelected: {
-    color: TEAL,
-  },
-  menuItemNotSelected: {
-    color: '#8B8B8B',
-  },
-  body: {
-    marginHorizontal: 20,
-    justifyContent: 'space-between',
+  title: {
+    paddingLeft: 15,
+    fontSize: 30,
+    textTransform: 'capitalize',
   },
   friendBubbleContainer: {
     flexDirection: 'row',
@@ -300,8 +304,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
-  error: {
-    textAlign: 'center',
-    color: 'red',
+  contactsScrollContainer: {
+    // height: Dimensions.get('window').height - Constants.statusBarHeight - 340,
   },
 });

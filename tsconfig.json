@@ -19,5 +19,6 @@
         "cacheBetweenTests": false
       }
     ]
-  }
+  },
+  "extends": "expo/tsconfig.base"
 }
