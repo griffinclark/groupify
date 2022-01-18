@@ -26,8 +26,9 @@ enum SelectedOption {
 
 export const PlansPreview: React.FC<Props> = ({ all, navigation, user, reload }: Props) => {
   const [selectedTab, setSelectedTab] = useState<SelectedOption>(SelectedOption.all);
-  const [selectedPlans, setSelectedPlans] = useState<Plan[]>(all.all);
+  const [selectedPlans, setSelectedPlans] = useState<Plan[]>(all.all); //initial state is all plans
   const [plansCard, setPlansCard] = useState<Plan[]>([]);
+
   useEffect(() => {
     const plansTab: any = [];
     for (const planType in SelectedOption) {

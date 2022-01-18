@@ -46,6 +46,8 @@ export const ContactList = ({ navigation }: Props) => {
           });
           return contacts[0].phoneNumber && setContacts(contacts);
         }
+      } else {
+        console.error('Permission to contacts denied');
       }
     };
     loadContacts();
