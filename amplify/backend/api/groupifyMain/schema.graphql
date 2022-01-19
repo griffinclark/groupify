@@ -1,4 +1,36 @@
-type Plan @model  {
+enum Sender {
+  USER
+  NOTIFICATIONPANEL
+}
+
+type NotificationFromTo
+  @model
+  @auth(rules: [{ allow: private }])
+  @key(name: "byNotification", fields: ["notificationID"])
+  @key(name: "bySender", fields: ["senderID"])
+  @key(name: "byRecipient", fields: ["recipientID"]) {
+  id: ID!
+  senderType: Sender
+  notificationID: ID!
+  senderID: ID
+  recipientID: ID!
+  notification: Notification! @connection(fields: ["notificationID"])
+  sender: User @connection(fields: ["senderID"])
+  recipient: User! @connection(fields: ["recipientID"])
+}
+
+type Notification @model @auth(rules: [{ allow: private }]) {
+  id: ID!
+  body: String!
+  data: String
+  ttl: Int
+  messageSubtitle: String
+  sound: Boolean
+  channel: String
+  recipients: [NotificationFromTo] @connection(keyName: "byNotification", fields: ["id"])
+}
+
+type Plan @model {
   id: ID!
   title: String!
   description: String
@@ -7,43 +39,28 @@ type Plan @model  {
   date: AWSDate
   time: AWSTime
   creatorID: ID!
-  planCreatorId: ID
-  creator: User @connection
-  arbitrations: [PlanArbitration] @connection
-  invitees: [Invitee] @connection
+  creator: User @connection(fields: ["creatorID"])
+  invitees: [PlanArbitration] @connection(keyName: "byPlanID", fields: ["id"])
 }
 
-type PlanArbitration @model {
+type PlanArbitration
+  @model
+  @key(name: "byPlanID", fields: ["planID"])
+  @key(name: "byInviteeID", fields: ["inviteeID"]) {
   id: ID!
   stat: Status
-  original_description: String
-  proposed_description: String
-  value_count: Int
-  planID: ID
-  planArbitrationsId: ID
-  createdBy: Invitee @connection
-  plan: Plan @connection
+  planID: ID!
+  newPlanID: ID
+  inviteeID: ID
+  invitee: User! @connection(fields: ["inviteeID"])
+  plan: Plan! @connection(fields: ["planID"])
+  newPlan: Plan! @connection(fields: ["newPlanID"])
 }
 
 enum Status {
   PENDING
   ACCEPTED
   DECLINED
-}
-
-type Invitee
- @model
-  @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "inviteeByPhoneNUmber")
-  @key(name: "byPlan", fields: ["planID"], queryField: "inviteesByPlan")
- {
-  id: ID!
-  name: String!
-  phoneNumber: AWSPhone!
-  status: Status!
-  pushToken: String
-  planID: ID
-  planInviteesId: ID
-  plan: Plan @connection
 }
 
 type Availability @model {
@@ -58,16 +75,32 @@ type Availability @model {
 }
 
 type User
- @model 
+  @model
   @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber")
-  @key(name: "byName", fields: ["name"], queryField: "usersByName")
-  {
+  @key(name: "byName", fields: ["name"], queryField: "usersByName") {
   id: ID!
   phoneNumber: AWSPhone!
-  name: String!
-  pushToken: String!
-  friends: ID
+  name: String
+  pushToken: String
   email: String
   availability: Availability @connection
+  notificationsSent: [NotificationFromTo] @connection(keyName: "bySender", fields: ["id"])
+  notificationsRecieved: [NotificationFromTo] @connection(keyName: "byRecipient", fields: ["id"])
+  friends: [UserRelationship] @connection(keyName: "bySource", fields: ["id"])
+  plans: [PlanArbitration] @connection(keyName: "byInviteeID", fields: ["id"])
 }
- 
+
+type UserRelationship @model @auth(rules: [{ allow: private }]) @key(name: "bySource", fields: ["friendSourceID"]) {
+  id: ID!
+  relationshipStatus: RelationshipStatus!
+  friendSourceID: ID!
+  friendID: ID!
+  friendSource: User! @connection(fields: ["friendSourceID"])
+  friend: User! @connection(fields: ["friendID"])
+}
+
+enum RelationshipStatus {
+  PENDING
+  FRIENDS
+  BLOCKED
+}
