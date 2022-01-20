@@ -7,6 +7,7 @@ import { getCurrentUser } from './../res/utilFunctions';
 import { ActivityModal } from '../molecules/ActivityModal';
 import GestureRecognizerView from 'rn-swipe-gestures';
 import Constants from 'expo-constants';
+import * as Analytics from 'expo-firebase-analytics';
 
 export interface Props {
   navigation: {
@@ -23,19 +24,19 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
   return (
     <View style={styles.activities}>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity onPress={() => handleActivity('restaurant')} testID={'activity'}>
+        <TouchableOpacity onPress={() => handleActivity('restaurant')} testID="activity">
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-food.png')} />
           </View>
           <AppText style={styles.activityText}>Get Food</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleActivity('park')} testID={'activity'}>
+        <TouchableOpacity onPress={() => handleActivity('park')} testID="activity">
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-outside.png')} />
           </View>
           <AppText style={styles.activityText}>Go Outside</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleActivity('gym')} testID={'activity'}>
+        <TouchableOpacity onPress={() => handleActivity('gym')} testID="activity">
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-gym.png')} />
           </View>
@@ -43,19 +44,19 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity onPress={() => handleActivity('shopping')} testID={'activity'}>
+        <TouchableOpacity onPress={() => handleActivity('shopping')} testID="activity">
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-shopping.png')} />
           </View>
           <AppText style={styles.activityText}>Get Shopping</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleActivity('coffee')} testID={'activity'}>
+        <TouchableOpacity onPress={() => handleActivity('coffee')} testID="activity">
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-coffee.png')} />
           </View>
           <AppText style={styles.activityText}>Get Coffee</AppText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleActivity('relax')} testID={'activity'}>
+        <TouchableOpacity onPress={() => handleActivity('relax')} testID="activity">
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-relax.png')} />
           </View>
@@ -128,8 +129,9 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
     awaitUser();
   }, []);
 
-  const handleActivity = (activity: string) => {
+  const handleActivity = async (activity: string) => {
     navigation.navigate('ActivityResults', { activity: activity });
+    await Analytics.logEvent(`Page_ActivitySelector_${activity}`, {});
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

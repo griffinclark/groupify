@@ -3,9 +3,10 @@
     "name": "Groupify",
     "icon": "./assets/groupify_icon_official.png",
     "slug": "groupify",
-    "sdkVersion": "40.0.0",
-    "version": "1.5.5",
+    "version": "1.5.6",
     "orientation": "portrait",
+    "facebookAppId": "693164164986653",
+    "facebookDisplayName": "Munchkin Labs",
     "splash": {
       "image": "./assets/SplashScreen.png",
       "resizeMode": "cover",
@@ -14,13 +15,16 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.munchkinlabs.meep",
       "infoPlist": {
         "NSContactsUsageDescription": "Accessing your contacts will allow you to invite your friends to events you create",
-        "NSLocationWhenInUseUsageDescription": "Accessing your location will allow you to view places near you."
+        "NSLocationWhenInUseUsageDescription": "Accessing your location will allow you to view places near you.",
+        "NSUserTrackingUsageDescription": "Tracking your app activity helps us understand how you use Groupify so we can develop new features, improve our messaging, and create a better user experience. Allow access to help us make getting together with your friends as easy as possible."
       },
       "buildNumber": "1.5.5",
       "config": {
@@ -29,7 +33,7 @@
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
-	  "googleServicesFile": "./google-services.json",
+      "googleServicesFile": "./google-services.json",
       "package": "com.munchkinlabs.meep",
       "versionCode": 5,
       "config": {

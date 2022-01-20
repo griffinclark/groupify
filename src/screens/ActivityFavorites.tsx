@@ -29,12 +29,13 @@ export const ActivityFavorites: React.FC<Props> = ({ navigation }: Props) => {
     setFavorites(newFavorites);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCreate = async (loc: any) => {
     const user = await getCurrentUser();
     navigation.navigate('PlanCreate', {
       currentUser: user,
       data: {
-        eventData: {
+        planData: {
           location: loc.formatted_address,
         },
       },

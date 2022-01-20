@@ -9,6 +9,7 @@ import Amplify, { Auth, Hub } from 'aws-amplify';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import * as Notifications from 'expo-notifications';
+import { facebookInit } from './src/res/facebookTracking';
 
 Amplify.configure(awsconfig);
 
@@ -30,6 +31,10 @@ export const App: React.FC = () => {
     Hub.listen('auth', (event) => {
       console.log('auth event', event);
     });
+  }, []);
+
+  useEffect(() => {
+    facebookInit();
   }, []);
 
   useEffect(() => {
