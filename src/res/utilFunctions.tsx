@@ -247,6 +247,15 @@ export const isFuturePlan = (date: string, time: string, currentDate: Date): boo
   return currentDate < planDate ? true : false;
 };
 
+// determines if a plan is in the past
+//TODO rename to isPlanPast. Little bit easier to read IMO
+export const isPastPlan = (date: string, time: string, currentDate: Date): boolean => {
+  const dateString = date + 'T' + time + ':00';
+  const planDate = new Date(dateString);
+
+  return currentDate > planDate ? true : false;
+};
+
 //determines if a plan is today
 export const isToday = (date: string): boolean => {
   const currentDate = new Date();
@@ -328,4 +337,28 @@ export const removePastPlans = (plans: Plan[]): Plan[] => {
       return isFuturePlan(plan.date, plan.time, currentDate);
     }
   });
+};
+
+// add past plans
+export const addPastPlans = (plans: Plan[]): Plan[] => {
+  //TODO another reminder to type your variables
+  const currentDate: Date = new Date();
+  return plans.filter((plan) => {
+    if (plan.date && plan.time) {
+      return isPastPlan(plan.date, plan.time, currentDate);
+    }
+  });
+};
+
+export const getHost = async (id: string) => {
+  //TODO why is this type any? This should have a type, especially if you're calling variable.value on it. This appears multiple places in your code
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  const userQuery: any = await API.graphql({
+    query: queries.getUser,
+    variables: { id: id },
+  });
+  const user = userQuery.data.getUser;
+  if (user) {
+    return user.name;
+  }
 };

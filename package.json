@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.0",
+    "@expo/vector-icons": "^12.0.5",
     "@iconify-icons/eva": "^1.1.0",
     "@iconify/react": "^1.1.4",
     "@react-native-async-storage/async-storage": "^1.13.0",
@@ -109,6 +110,8 @@
     "react-native-web": "~0.13.12",
     "rn-sliding-up-panel": "^2.4.5",
     "rn-swipe-gestures": "^1.0.3",
+    "tailwind-react-native-classnames": "^1.5.1",
+    "tailwind-rn": "^3.0.1",
     "unirest": "^0.6.0",
     "uuid": "^3.4.0"
   },
