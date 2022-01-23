@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, Animated, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, TouchableOpacity, Animated, View, Image, ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { Screen } from '../atoms/Screen';
 import { BLACK, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
 import { AppText } from '../atoms/AppText';
@@ -14,6 +14,7 @@ import { SearchbarDisplayMode, SearchbarWithoutFeedback } from './../molecules/S
 import { ProgressBar } from '../atoms/ProgressBar';
 import { ActivitySelector } from '../molecules/ActivitySelector';
 import { LocationResults } from '../molecules/LocationResults';
+
 interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
@@ -26,45 +27,49 @@ interface Props {
 
 export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   const [featuredLocations, setFeaturedLocations] = useState<GoogleLocation[]>([]);
-  const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState('');
-  const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
-
+  //const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState('');
+  //const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
+  const [scrollTop, setScrollTop] = useState(true);
+  
   useEffect(() => {
     // TODO @JONI do we want to be resetting one or both of these?
-    setTempUserLocationQuery('');
-    setPlacesUserWantsToGoQuery('');
+    //setTempUserLocationQuery('');
+    //setPlacesUserWantsToGoQuery('');
     const buildFeatureLocations = async () => {
       setFeaturedLocations(
-        await googlePlacesQuery('things to do', route.params.tempUserLocation, GooglePlacesQueryOptions.Activity),
+        await googlePlacesQuery('things to do', route.params.data.activitySearchData.tempUserLocation, GooglePlacesQueryOptions.Activity),
       );
     };
     buildFeatureLocations();
   }, []);
 
+  const handleScrollView = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    setScrollTop(e.nativeEvent.contentOffset.y > 300)
+  }
+
   return (
     <Screen style={styles.screen}>
-      <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[1]}>
-        <TopNavBar title="" navigation={navigation} displayGroupify={true} route={route} targetScreen={'Home'} />
-        <View style={styles.searchBar}>
-          <SearchbarWithoutFeedback
-            navigation={navigation}
-            route={route}
-            userLocation={route.params.userLocation}
-            icon={<MagnifyingGlassIcon />}
-            placeholderText="Search for food, parks, coffee, etc"
-            tempUserLocation={route.params.tempUserLocation}
-            placesUserWantsToGoQuery={placesUserWantsToGoQuery}
-            tempUserLocationQuery={tempUserLocationQuery}
-            mode={SearchbarDisplayMode.Query}
-          />
-        </View>
-        <View style={styles.activitySelectorRoot}>
+      <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[2]} onScroll={handleScrollView} scrollEventThrottle={32}>
+        <TopNavBar title="" navigation={navigation} displayGroupify={true} displayBackButton={false} route={route} targetScreen={'Home'} />
           <View>
-            <Image source={require('../../assets/activity-selector-background-image.png')} />
+            <Image style={{width: '100%'}} source={require('../../assets/activity-selector-background-image.png')} />
+          </View>
+
+          <View style={[styles.searchBar, scrollTop ? {backgroundColor: WHITE} : {}]}>
+            <SearchbarWithoutFeedback
+              navigation={navigation}
+              route={route}
+              userLocation={route.params.userLocation}
+              icon={<MagnifyingGlassIcon />}
+              placeholderText="Search for food, parks, coffee, etc"
+              tempUserLocation={route.params.data.activitySearchData.tempUserLocation}
+              placesUserWantsToGoQuery={''}
+              tempUserLocationQuery={''}
+              mode={SearchbarDisplayMode.Query}
+            />
           </View>
           <ActivitySelector route={route} navigation={navigation} />
-          <View style={styles.activitySuggestions}></View>
-        </View>
+
         <View style={styles.locationSuggestions}>
           {featuredLocations.length > 0 ? (
             <LocationResults navigation={navigation} route={route} locations={featuredLocations} />
@@ -99,35 +104,19 @@ const styles = StyleSheet.create({
     height: 45,
     width: 130,
   },
-  buildPlanButtonContainer: {
-    position: 'absolute',
-    alignSelf: 'center',
-    // pushes button on image down to the correct height:
-    marginTop: 121,
-  },
-  middleTextContainer: {
-    position: 'absolute',
-    alignSelf: 'center',
-    // pushes "or" text down to the correct height:
-    marginTop: 190,
-  },
-
-  activitySelectorRoot: {
-    position: 'absolute',
-    marginTop: 45,
-  },
   activitySuggestions: {
     backgroundColor: WHITE,
     height: '58%',
   },
-  middleText: { color: 'white', fontWeight: 'bold' },
+  middleText: { 
+    color: 'white', 
+    fontWeight: 'bold' 
+  },
   scrollContainer: {
-    // Add some spacing to the bottom of the activity suggestions:
     marginBottom: 50,
   },
   locationSuggestions: {
-    marginTop: 155,
-    zIndex: 1,
+    marginTop: 30,
   },
   backButtonTemp: {
     borderBottomWidth: 1,
@@ -147,7 +136,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
   },
-
   input: {
     flex: 1,
     paddingRight: 10,
@@ -168,13 +156,12 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   searchBar: {
-    position: 'absolute',
     alignSelf: 'center',
-    marginTop: 209,
+    marginTop: -30,
+    marginBottom: -30,
     width: '100%',
     padding: 10,
     height: 65,
-    backgroundColor: WHITE,
     alignItems: 'center',
     zIndex: 1,
   },

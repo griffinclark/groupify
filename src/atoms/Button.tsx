@@ -5,7 +5,7 @@ import { GREY_3, GREY_4, WHITE, TEAL } from '../res/styles/Colors';
 import { AppText } from './AppText';
 
 interface Props {
-  onPress: () => void;
+  onPress?: (e: Event) => void;
   title: string;
   disabled?: boolean;
   containerStyle?: Record<string, unknown>;
@@ -31,7 +31,7 @@ export const Button: React.FC<Props> = ({
           buttonStyle,
           disabled ? buttonStyles.disabledButton : {},
         ]}
-        onPress={onPress}
+        onPress={() => onPress}
         disabled={disabled}
       >
         <AppText

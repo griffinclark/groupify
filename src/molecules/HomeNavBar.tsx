@@ -51,7 +51,9 @@ export const HomeNavBar: React.FC<Props> = ({
             navigation.navigate('SelectorMenu', {
               locations: locations, // TODO is this needed?
               userLocation: userLocation,
-              tempUserLocation: userLocation,
+              data: {
+                activitySearchData: {tempUserLocation: userLocation}
+              }
             });
           }}
         >

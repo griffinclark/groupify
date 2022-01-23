@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import { AppText } from '../atoms/AppText';
 import { NavigationProps, UserLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
-import { GREY_6, GREY_8 } from '../res/styles/Colors';
+import { GREY_6, GREY_8, WHITE } from '../res/styles/Colors';
 
 interface Props {
   route: RoutePropParams;
@@ -33,29 +33,34 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
   tempUserLocation,
   mode,
 }: Props) => {
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
         navigation.navigate('TakeoverSearch', {
           navigation: navigation,
           route: route,
-          tempUserLocation: tempUserLocation,
+          data: {
+            activitySearchData: {
+              tempUserLocation: tempUserLocation,
+              placesUserWantsToGoQuery: placesUserWantsToGoQuery,
+              tempUserLocationQuery: tempUserLocationQuery,
+            }
+          },
           userLocation: userLocation,
-          placesUserWantsToGoQuery: placesUserWantsToGoQuery,
-          tempUserLocationQuery: tempUserLocationQuery,
+          
           //TODO @joni do we want to clear user search on navigate back to SelectorMenu?
         });
       }}
     >
       <View style={styles.searchBarContainer}>
         <View style={styles.icon}>{icon}</View>
-
         {mode == SearchbarDisplayMode.Query ? (
           <AppText style={styles.searchBarText}>{placeholderText}</AppText>
         ) : (
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', overflow: 'hidden' }}>
             <AppText>{placesUserWantsToGoQuery + ' '}</AppText>
-            <AppText style={styles.searchBarText}>{tempUserLocationQuery}</AppText>
+            <AppText style={styles.searchBarText}>{tempUserLocationQuery ? tempUserLocationQuery : 'Current Location'}</AppText>
           </View>
         )}
       </View>
@@ -74,6 +79,8 @@ const styles = StyleSheet.create({
     borderColor: GREY_6,
     borderWidth: 1,
     borderRadius: 5,
+    backgroundColor: WHITE,
+    overflow: 'hidden'
   },
   icon: {
     padding: 15,

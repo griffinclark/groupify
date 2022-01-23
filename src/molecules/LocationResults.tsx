@@ -7,13 +7,14 @@ interface Props {
   navigation: NavigationProps;
   route: RoutePropParams;
   locations: GoogleLocation[];
+  tempUserLocationQuery: string
 }
-export const LocationResults: React.FC<Props> = ({ navigation, route, locations }: Props) => {
+export const LocationResults: React.FC<Props> = ({ navigation, route, locations, tempUserLocationQuery }: Props) => {
   return (
     <>
       {locations.map((location: GoogleLocation) => {
         return (
-          <ActivityCard key={location.place_id} navigation={navigation} route={route} location={location} map={false} />
+          <ActivityCard key={location.place_id} navigation={navigation} route={route} tempUserLocationQuery={tempUserLocationQuery} location={location} map={false} />
         );
       })}
     </>

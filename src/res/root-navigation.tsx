@@ -62,11 +62,13 @@ export type RoutePropParams = {
         placeId: string;
         message: string;
       };
-    };
-    tempUserLocationQuery: string;
-    tempUserLocation: UserLocation;
-    placesUserWantsToGoQuery: string;
-    placesUserWantsToGoResults: GoogleLocation[];
+      activitySearchData: {
+        tempUserLocationQuery: string;
+        tempUserLocation: UserLocation;
+        placesUserWantsToGoQuery: string;
+        placesUserWantsToGoResults: GoogleLocation[];
+      }
+    };    
   };
 };
 

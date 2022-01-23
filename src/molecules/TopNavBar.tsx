@@ -6,11 +6,13 @@ import { AppText } from '../atoms/AppText';
 import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { GREY_1, GREY_4, WHITE } from '../res/styles/Colors';
+import Constants from 'expo-constants';
 
 interface Props {
   title?: string;
   navigation: NavigationProps;
   displayGroupify: boolean;
+  displayBackButton?: boolean;
   route: RoutePropParams;
   targetScreen: string;
   placesUserWantsToGoQuery?: string;
@@ -21,6 +23,7 @@ export const TopNavBar: React.FC<Props> = ({
   title,
   navigation,
   displayGroupify,
+  displayBackButton = true,
   route,
   targetScreen,
   placesUserWantsToGoQuery,
@@ -34,12 +37,12 @@ export const TopNavBar: React.FC<Props> = ({
           navigation.navigate(targetScreen, { route, placesUserWantsToGoQuery, tempUserLocationQuery });
         }}
       >
-        <BackChevronIcon />
+      {displayBackButton ? <BackChevronIcon /> : null}
       </TouchableOpacity>
       {displayGroupify ? (
         <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
       ) : (
-        <AppText style={styles.navbarLogo}>{title}</AppText>
+        <AppText>{title}</AppText>
       )}
       <View />
     </View>
@@ -48,8 +51,8 @@ export const TopNavBar: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   navbarLogo: {
-    height: 45,
-    width: 160,
+    height: 24,
+    width: 108,
     // position: 'absolute',
     // alignSelf: 'center',
   },
@@ -60,5 +63,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 50,
+    zIndex: 99,
+    position: 'absolute',
+    width: '100%'
   },
 });

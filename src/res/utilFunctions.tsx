@@ -529,15 +529,19 @@ export const navigateToPlanMap = async (
 ): Promise<void> => {
   // rerun the query with the name of the selected venue so all venues with the same name show up on the map
   try {
-    const results = await googlePlacesQuery(query, route.params.tempUserLocation, GooglePlacesQueryOptions.Activity);
+    const results = await googlePlacesQuery(query, route.params.data.activitySearchData.tempUserLocation, GooglePlacesQueryOptions.Activity);
     navigation.navigate('PlanMap', {
       navigation: { navigation },
-      route: { route },
-      placesUserWantsToGoResults: results,
+      route: route,
+      data: {
+        activitySearchData: {
+          tempUserLocation : tempUserLocation,
+          tempUserLocationQuery: tempUserLocationQuery,
+          placesUserWantsToGoResults: results,
+          placesUserWantsToGoQuery: query,
+        }
+      },
       userLocation: route.params.userLocation,
-      tempUserLocation: tempUserLocation,
-      tempUserLocationQuery: tempUserLocationQuery,
-      placesUserWantsToGoQuery: query,
     });
   } catch (e) {
     // TODO fix

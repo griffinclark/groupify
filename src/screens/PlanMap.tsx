@@ -41,12 +41,15 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     longitudeDelta: 0.001,
     default: true,
   });
-  const [mapIcon, setMapIcon] = useState('');
-  const [selectedMapIcon, setSelectedMapIcon] = useState('');
+  // const [mapIcon, setMapIcon] = useState('');
+  // const [selectedMapIcon, setSelectedMapIcon] = useState('');
   const [distance, setDistance] = useState(30); //TODO does this do anything?
   const [selectedMarker, setSelectedMarker] = useState('');
   const [radius, setRadius] = useState(1);
   const [placesUserWantsToGo, setPlacesUserWantsToGo] = useState<GoogleLocation[]>([]);
+
+  const mapMarker = require('../../assets/locationPins/Location_Base.png');
+  const mapSelectedMarker = require('../../assets/locationPins/Location_Selected.png');
 
   useEffect(() => {
     if (region.default) {
@@ -55,16 +58,16 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [userLocation, route.params.activity, distance]); //FIXME the fuck are the second two?
 
   useEffect(() => {
-    setPlacesUserWantsToGo(route.params.placesUserWantsToGoResults);
+    setPlacesUserWantsToGo(route.params.data.activitySearchData.placesUserWantsToGoResults);
   }, []);
 
   useEffect(() => {
     if (route.params.place != undefined) {
       setRegion(route.params.place);
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      setMapIcon(require('../../assets/locationPins/Location_Base.png'));
+      // setMapIcon(require('../../assets/locationPins/Location_Base.png'));
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      setSelectedMapIcon(require('../../assets/locationPins/Location_Selected.png'));
+      // setSelectedMapIcon(require('../../assets/locationPins/Location_Selected.png'));
     }
   }, [route.params.place]); //FIXME the fuck is place?
 
@@ -113,12 +116,12 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
               <SearchbarWithoutFeedback
                 route={route}
                 icon={<MagnifyingGlassIcon />}
-                placeholderText={'route.params.tempUserLocationQuery'}
+                placeholderText={route.params.data.activitySearchData.tempUserLocationQuery}
                 navigation={navigation}
-                tempUserLocationQuery={route.params.tempUserLocationQuery}
+                tempUserLocationQuery={route.params.data.activitySearchData.tempUserLocationQuery}
                 userLocation={route.params.userLocation}
-                tempUserLocation={route.params.tempUserLocation}
-                placesUserWantsToGoQuery={route.params.placesUserWantsToGoQuery}
+                tempUserLocation={route.params.data.activitySearchData.tempUserLocation}
+                placesUserWantsToGoQuery={route.params.data.activitySearchData.placesUserWantsToGoQuery}
                 mode={SearchbarDisplayMode.Result}
               />
             </View>
@@ -139,7 +142,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
                 } else {
                   setRadius(15);
                 }
-                // console.log(radius);
               }}
               showsTraffic={false}
               userInterfaceStyle="dark"
@@ -165,7 +167,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
                   style={styles.marker}
                 >
                   {/* TODO change icon on press */}
-                  {loc.place_id == selectedMarker ? <MapIcon image={selectedMapIcon} /> : <MapIcon image={mapIcon} />}
+                  {loc.place_id == selectedMarker ? <MapIcon image={mapSelectedMarker} /> : <MapIcon image={mapMarker} />}
                   <Text style={styles.mapText}>{loc.name}</Text>
                 </Marker>
               ))}
@@ -194,7 +196,11 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - (65 + Constants.statusBarHeight),
+    height: Dimensions.get('window').height,
+    // position: 'absolute',
+    // left: 0,
+    // top: 0,
+    // zIndex: 3
     // height: '100%',
   },
   marker: {
@@ -227,7 +233,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     position: 'absolute',
-    marginTop: 20,
+    marginTop: Constants.statusBarHeight + 20,
     backgroundColor: WHITE,
   },
   searchBarText: {
@@ -237,7 +243,7 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     height: 1000,
     zIndex: 2,
-    position: 'absolute',
+    // position: 'absolute',
     width: '100%',
     marginBottom: 175,
   },
