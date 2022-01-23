@@ -173,11 +173,14 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
 
   const handleCreate = async (loc: GoogleLocation) => {
     const user = await getCurrentUser();
+
     navigation.navigate('PlanCreate', {
       currentUser: user,
       data: {
-        eventData: {
+        planData: {
           location: loc.formatted_address,
+          locationName: loc.name,
+          placeId: loc.place_id,
         },
       },
     });

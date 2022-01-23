@@ -5,9 +5,6 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Platform } from 'react-native';
 import { sendPushNotification } from './notifications';
 import * as queries from '../graphql/queries';
-import { GoogleLocation, NavigationProps, UserLocation } from './dataModels';
-import { getDistance } from 'geolib';
-import { RoutePropParams } from './root-navigation';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
@@ -43,7 +40,7 @@ export const formatIosTimeInput = (time: Date | string): string => {
 };
 
 //Formats date into format: DayOfWeek, Month DayOfMonth
-export const formatDayOfWeekDate = (date: string, shorten?: boolean): string => {
+export const formatDayOfWeekDate = (date: string, shorten?: boolean, withYear?: boolean): string => {
   const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
   const newDate = convertTimeStringToDate(date);
@@ -54,7 +51,12 @@ export const formatDayOfWeekDate = (date: string, shorten?: boolean): string => 
   if (shorten) {
     return months[month - 1] + ' ' + dayOfMonth;
   }
-  return daysOfWeek[newDate.getDay()] + ',' + ' ' + months[month - 1] + ' ' + dayOfMonth;
+
+  const result = daysOfWeek[newDate.getDay()] + ',' + ' ' + months[month - 1] + ' ' + dayOfMonth;
+  if (withYear) {
+    return result + ', ' + newDate.getFullYear();
+  }
+  return result;
 };
 
 //formats date to be presentable to users
@@ -119,8 +121,8 @@ export const formatDatabaseDate = (date: string): string => {
     return newDate;
   }
   if (date.length === 10) {
-    const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
-    return newDate;
+    // const newDate = date.substring(6, 10) + '-' + date.substring(0, 2) + '-' + date.substring(3, 5);
+    return date;
   }
   return date;
 };
@@ -245,6 +247,15 @@ export const isFuturePlan = (date: string, time: string, currentDate: Date): boo
   return currentDate < planDate ? true : false;
 };
 
+// determines if a plan is in the past
+//TODO rename to isPlanPast. Little bit easier to read IMO
+export const isPastPlan = (date: string, time: string, currentDate: Date): boolean => {
+  const dateString = date + 'T' + time + ':00';
+  const planDate = new Date(dateString);
+
+  return currentDate > planDate ? true : false;
+};
+
 //determines if a plan is today
 export const isToday = (date: string): boolean => {
   const currentDate = new Date();
@@ -319,198 +330,6 @@ export const respondToPlan = async (accept: boolean, plan: Plan): Promise<void> 
   }
 };
 
-export enum GooglePlacesQueryOptions {
-  Activity,
-  ChangeLocation,
-}
-
-export const googlePlacesQuery: (
-  text: string,
-  userLocation: UserLocation,
-  searchType: GooglePlacesQueryOptions,
-) => Promise<GoogleLocation[]> = async (query, userLocation, searchType) => {
-  //if query is one of the activity selector buttons, transform it to a more interesting query
-  const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
-  const searchResults: GoogleLocation[] = [];
-  switch (searchType) {
-    case GooglePlacesQueryOptions.Activity:
-      const unfilteredLocations: GoogleLocation[] = [];
-
-      switch (query) {
-        case 'Outdoors':
-          //TODO this is now "active outdoors"
-          const [r0, r1]: GoogleLocation[][] = await Promise.all([
-            googlePlacesQuery('music', userLocation, searchType),
-            // googlePlacesQuery('mountain', userLocation, searchType),
-            // googlePlacesQuery('beach', userLocation, searchType),
-          ]);
-          r0.forEach((a) => unfilteredLocations.push(a));
-          // r1.forEach((a) => unfilteredLocations.push(a));
-          // r2.forEach((a) => unfilteredLocations.push(a));
-          break;
-        case 'Culture':
-          //TODO this is now "casual outdoors"
-          const [r3, r4]: GoogleLocation[][] = await Promise.all([
-            googlePlacesQuery('park', userLocation, searchType),
-            googlePlacesQuery('beach', userLocation, searchType),
-          ]);
-          r3.forEach((a) => unfilteredLocations.push(a));
-          r4.forEach((a) => unfilteredLocations.push(a));
-          break;
-        case 'Fitness':
-          const [r5, r6, r7, r8, r9]: GoogleLocation[][] = await Promise.all([
-            googlePlacesQuery('climbing gym', userLocation, searchType),
-            googlePlacesQuery('boxing gym', userLocation, searchType),
-            googlePlacesQuery('gym', userLocation, searchType),
-            googlePlacesQuery('pool', userLocation, searchType),
-            googlePlacesQuery('yoga studio', userLocation, searchType),
-          ]);
-          r5.forEach((a) => unfilteredLocations.push(a));
-          r6.forEach((a) => unfilteredLocations.push(a));
-          r7.forEach((a) => unfilteredLocations.push(a));
-          r8.forEach((a) => unfilteredLocations.push(a));
-          r9.forEach((a) => unfilteredLocations.push(a));
-          break;
-        case 'Nightlife':
-          const [r10, r11, r12]: GoogleLocation[][] = await Promise.all([
-            googlePlacesQuery('go kart', userLocation, searchType),
-            googlePlacesQuery('movie theater', userLocation, searchType),
-            googlePlacesQuery('sailing', userLocation, searchType),
-            googlePlacesQuery('kayak', userLocation, searchType),
-            googlePlacesQuery('zoo', userLocation, searchType),
-            googlePlacesQuery('snorkel', userLocation, searchType),
-            googlePlacesQuery('bike rental', userLocation, searchType),
-          ]);
-        default:
-          const search =
-            'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-            `location=${userLocation?.latitude},${userLocation.longitude}` +
-            `&query=${query}` +
-            // 'rankby=distance' +
-            // 'radius=10000' +
-            // '&type=point_of_interest' +
-            `&key=${GOOGLE_PLACES_API_KEY}`;
-          await fetch(search).then(
-            async (res) => {
-              // console.log(search);
-              const detail = await res.json();
-              detail.results.forEach((unfilteredLocation: GoogleLocation) =>
-                unfilteredLocations.push(unfilteredLocation),
-              );
-              // detail.results.sort((a: GoogleLocation, b: GoogleLocation) => b.user_ratings_total - a.user_ratings_total);
-            },
-            (rej) => {
-              console.log(rej);
-            },
-          );
-      }
-      // Filter locations, sort by distance, and return
-      // A complete list of location tags can be found at: https://developers.google.com/maps/documentation/places/web-service/supported_types
-      const whitelist = [
-        'art_gallery',
-        'bakery',
-        'bar',
-        'beauty_salon',
-        'book_store',
-        'bowling_alley',
-        'cafe',
-        'campground',
-        'casino',
-        'church',
-        'clothing_store',
-        'department_store',
-        'gym',
-        'hair_care',
-        'library',
-        'light_rail_station',
-        'lodging',
-        'meal_takeaway',
-        'movie_theater',
-        'museum',
-        'night_club',
-        'park',
-        'school',
-        'rv_park',
-        'restaurant',
-        'tourist_attraction',
-        'transit_station',
-        'university',
-        'zoo',
-      ];
-
-      //If the query is one of the activity selector buttons, we're going to make sure that we return only the locations that make sense for that button
-      switch (query) {
-        default:
-          whitelist.push(
-            'art_gallery',
-            'bakery',
-            'bar',
-            'beauty_salon',
-            'book_store',
-            'bowling_alley',
-            'cafe',
-            'campground',
-            'casino',
-            'church',
-            'clothing_store',
-            'department_store',
-            'gym',
-            'hair_care',
-            'library',
-            'light_rail_station',
-            'lodging',
-            'meal_takeaway',
-            'movie_theater',
-            'museum',
-            'night_club',
-            'park',
-            'school',
-            'rv_park',
-            'restaurant',
-            'tourist_attraction',
-            'transit_station',
-            'university',
-            'zoo',
-          );
-      }
-
-      unfilteredLocations.forEach((location: GoogleLocation) => {
-        if (whitelist.some((tag) => location.types.includes(tag)) == true) {
-          if (getDistance(userLocation, location.geometry.location) < 30000) {
-            searchResults.push(location);
-          }
-        }
-      });
-      break;
-
-    case GooglePlacesQueryOptions.ChangeLocation:
-      const changeLocSearch =
-        'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-        `location=${userLocation.latitude},${userLocation.longitude}` +
-        `&query=${query}` +
-        '&type=locality' +
-        `&key=${GOOGLE_PLACES_API_KEY}`;
-      await fetch(changeLocSearch).then(
-        async (res) => {
-          const detail = await res.json();
-          detail.results.forEach((location: GoogleLocation) => searchResults.push(location));
-        },
-        (rej) => {
-          console.log(rej);
-        },
-      );
-      break;
-
-    default:
-      console.log('Invalid searchType: ' + searchType);
-      return [];
-  }
-  // If we have results, return the results. If there are no results, re-run the query with one less character and return that
-  if (searchResults.length > 0 || query.length == 0) {
-    return searchResults;
-  } else return await googlePlacesQuery(query.substring(0, query.length - 1), userLocation, searchType);
-};
-
 export const removePastPlans = (plans: Plan[]): Plan[] => {
   const currentDate = new Date();
   return plans.filter((plan) => {
@@ -520,31 +339,26 @@ export const removePastPlans = (plans: Plan[]): Plan[] => {
   });
 };
 
-export const navigateToPlanMap = async (
-  query: string,
-  navigation: NavigationProps,
-  route: RoutePropParams,
-  tempUserLocation: UserLocation,
-  tempUserLocationQuery: string,
-): Promise<void> => {
-  // rerun the query with the name of the selected venue so all venues with the same name show up on the map
-  try {
-    const results = await googlePlacesQuery(query, route.params.data.activitySearchData.tempUserLocation, GooglePlacesQueryOptions.Activity);
-    navigation.navigate('PlanMap', {
-      navigation: { navigation },
-      route: route,
-      data: {
-        activitySearchData: {
-          tempUserLocation : tempUserLocation,
-          tempUserLocationQuery: tempUserLocationQuery,
-          placesUserWantsToGoResults: results,
-          placesUserWantsToGoQuery: query,
-        }
-      },
-      userLocation: route.params.userLocation,
-    });
-  } catch (e) {
-    // TODO fix
-    console.log(e);
+// add past plans
+export const addPastPlans = (plans: Plan[]): Plan[] => {
+  //TODO another reminder to type your variables
+  const currentDate: Date = new Date();
+  return plans.filter((plan) => {
+    if (plan.date && plan.time) {
+      return isPastPlan(plan.date, plan.time, currentDate);
+    }
+  });
+};
+
+export const getHost = async (id: string) => {
+  //TODO why is this type any? This should have a type, especially if you're calling variable.value on it. This appears multiple places in your code
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  const userQuery: any = await API.graphql({
+    query: queries.getUser,
+    variables: { id: id },
+  });
+  const user = userQuery.data.getUser;
+  if (user) {
+    return user.name;
   }
 };
