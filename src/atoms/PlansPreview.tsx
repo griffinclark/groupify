@@ -13,6 +13,7 @@ export interface Props {
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
   };
+  userLocation: any;
   reload: boolean;
 }
 
@@ -24,7 +25,7 @@ enum SelectedOption {
   past = 'Past',
 }
 
-export const PlansPreview: React.FC<Props> = ({ all, navigation, user, reload }: Props) => {
+export const PlansPreview: React.FC<Props> = ({ all, navigation, user, userLocation, reload }: Props) => {
   const [selectedTab, setSelectedTab] = useState<SelectedOption>(SelectedOption.all);
   const [selectedPlans, setSelectedPlans] = useState<Plan[]>(all.all); //initial state is all plans
   const [plansCard, setPlansCard] = useState<Plan[]>([]);
@@ -77,7 +78,7 @@ export const PlansPreview: React.FC<Props> = ({ all, navigation, user, reload }:
           />
         ))
       ) : (
-        <NoPlansCard user={user} navigation={navigation} />
+        <NoPlansCard user={user} navigation={navigation} userLocation={userLocation} />
       )}
     </View>
   );

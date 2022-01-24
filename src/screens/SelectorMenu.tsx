@@ -49,7 +49,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen style={styles.screen}>
-      <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[2]} onScroll={handleScrollView} scrollEventThrottle={32}>
+      <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[2]}  onScroll={handleScrollView} scrollEventThrottle={32}>
         <TopNavBar title="" navigation={navigation} displayGroupify={true} displayBackButton={false} route={route} targetScreen={'Home'} />
           <View>
             <Image style={{width: '100%'}} source={require('../../assets/activity-selector-background-image.png')} />
@@ -62,7 +62,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
               userLocation={route.params.userLocation}
               icon={<MagnifyingGlassIcon />}
               placeholderText="Search for food, parks, coffee, etc"
-              tempUserLocation={route.params.data.activitySearchData.tempUserLocation}
+              tempUserLocation={route.params.data?.activitySearchData.tempUserLocation}
               placesUserWantsToGoQuery={''}
               tempUserLocationQuery={''}
               mode={SearchbarDisplayMode.Query}
@@ -72,7 +72,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
 
         <View style={styles.locationSuggestions}>
           {featuredLocations.length > 0 ? (
-            <LocationResults navigation={navigation} route={route} locations={featuredLocations} />
+            <LocationResults navigation={navigation} route={route} locations={featuredLocations} tempUserLocationQuery={''} />
           ) : (
             <ProgressBar />
           )}

@@ -65,10 +65,26 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tem
     return true;
   }
 
+  const onActivityCardPress = () => {
+    console.log(route.params);
+
+    navigation.navigate('PlanCreate', {
+      currentUser: route.params.currentUser,
+      navigation: navigation,
+      data: {
+        planData: {
+          location: location.formatted_address,
+          locationName: location.name,
+          placeId: location.place_id,
+        }
+      }
+    });
+  }
+
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => console.log('click container')}
+      onPress={onActivityCardPress}
     >
       <View style={styles.leftCol}>
         <View style={styles.imageContainer}>

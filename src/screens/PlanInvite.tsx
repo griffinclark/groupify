@@ -249,7 +249,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
 
           <View style={{ paddingVertical: 30 }}>
-            <SearchBar onInputChange={searchFriends} placeholder="Search for friends" />
+            <SearchBar onChangeText={searchFriends} placeholder="Search for friends" />
           </View>
 
           {/* <View>
@@ -274,7 +274,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
         </ScrollView>
         <BottomButton
           disabled={selectedContacts.length == 0 ? true : false}
-          title="Preview Plan"
+          title="Send Invite"
           onPress={handleSubmit}
         />
       </View>
