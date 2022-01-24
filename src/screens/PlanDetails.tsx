@@ -88,11 +88,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View style={styles.titleContainer}>
-        <BackChevronIcon
-          onPress={() => {
-            navigation.push(route.params.step ? route.params.step : 'Home', {});
-          }}
-        />
+        <BackChevronIcon onPress={() => navigation.goBack()} />
         <AppText style={styles.title}>Plan Details</AppText>
       </View>
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanDetailsRefresh} />}>

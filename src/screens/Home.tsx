@@ -11,7 +11,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Header } from '../atoms/Header';
 import { PlansPreview } from '../atoms/PlansPreview';
 import { ImportContactTile } from '../atoms/ImportContactTile';
-import { FooterCard } from '../atoms/FooterCard';
 import { Banner } from '../atoms/Banner';
 
 export interface Props {
@@ -115,12 +114,12 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
           <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
             <View>
               {acceptedPlans.length > 0 || createdPlans.length > 0 ? (
-                <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[1]} />
+                <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />
               ) : null}
               <PlansPreview all={allPlans!} reload={trigger2} navigation={navigation} user={currentUser!} />
               <ImportContactTile navigation={navigation} />
-              <FooterCard />
             </View>
+            <View style={{ height: 50 }}></View>
           </ScrollView>
         </>
       )}

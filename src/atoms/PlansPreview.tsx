@@ -17,11 +17,11 @@ export interface Props {
 }
 
 enum SelectedOption {
-  all = 'All',
-  pending = 'Pending',
-  accepted = 'Accepted',
-  created = 'Created',
-  past = 'Past',
+  all = 'ALL',
+  pending = 'PENDING',
+  accepted = 'ACCEPTED',
+  created = 'CREATED',
+  past = 'PAST',
 }
 
 export const PlansPreview: React.FC<Props> = ({ all, navigation, user, reload }: Props) => {
@@ -44,7 +44,7 @@ export const PlansPreview: React.FC<Props> = ({ all, navigation, user, reload }:
           style={[styles.selectedItem, { borderBottomColor: selectedTab === planTypeEnum ? TEAL : 'transparent' }]}
         >
           <Text style={[styles.buttonText, { color: selectedTab === planTypeEnum ? TEAL : GRAY_DARK }]}>
-            {planTypeEnum}({plans.length})
+            {planTypeEnum} ({plans.length})
           </Text>
         </TouchableOpacity>,
       );
@@ -85,7 +85,7 @@ export const PlansPreview: React.FC<Props> = ({ all, navigation, user, reload }:
 
 const styles = StyleSheet.create({
   selectedItem: {
-    borderBottomWidth: 4,
+    borderBottomWidth: 3,
     paddingHorizontal: 8,
     marginHorizontal: 8,
   },
@@ -96,13 +96,14 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
   },
   header: {
-    padding: 6,
+    padding: 4,
     fontWeight: '600',
     fontSize: 20,
     marginLeft: 10,
+    marginVertical: 6,
   },
   buttonText: {
-    fontSize: 19,
+    fontSize: 17,
     fontWeight: '600',
     paddingBottom: 5,
   },
