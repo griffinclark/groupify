@@ -12,6 +12,7 @@ import { Header } from '../atoms/Header';
 import { PlansPreview } from '../atoms/PlansPreview';
 import { ImportContactTile } from '../atoms/ImportContactTile';
 import { Banner } from '../atoms/Banner';
+import { WHITE } from '../res/styles/Colors';
 
 export interface Props {
   navigation: {
@@ -119,7 +120,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
               <PlansPreview all={allPlans!} reload={trigger2} navigation={navigation} user={currentUser!} />
               <ImportContactTile navigation={navigation} />
             </View>
-            <View style={{ height: 50 }}></View>
+            <View style={{ height: 70, backgroundColor: WHITE }}></View>
           </ScrollView>
         </>
       )}
