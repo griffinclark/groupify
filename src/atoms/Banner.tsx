@@ -40,7 +40,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
         resizeMode="cover"
         style={styles.imgBackground}
       >
-        <LinearGradient colors={['rgba(180, 190, 190, 0.7)', 'rgba(33,33,33,0.5)']} style={styles.gradientStyle} />
+        <LinearGradient colors={['rgba(180, 180, 180, 0.9)', 'rgba(22,22,22,0.5)']} style={styles.gradientStyle} />
         <Text style={styles.containerText}>Your Next Event</Text>
         <TouchableOpacity
           onPress={() => navigation.push('PlanDetails', { plan: plan })}
@@ -86,8 +86,8 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
 const styles = StyleSheet.create({
   containerText: {
     marginHorizontal: 8,
-    marginVertical: 4,
-    fontSize: 24,
+    marginTop: 18,
+    fontSize: 22,
     fontWeight: '600',
     color: BLACK,
   },
@@ -119,9 +119,10 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: WHITE,
-    marginHorizontal: 8,
+    marginHorizontal: 6,
     paddingVertical: 8,
     borderRadius: 15,
+    marginTop: 8,
   },
   gradientStyle: {
     position: 'absolute',

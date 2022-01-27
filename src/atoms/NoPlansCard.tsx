@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { User } from '../models';
+import { WHITE, TEAL, BLACK } from '../res/styles/Colors';
 
 interface Props {
   user: User;
@@ -14,7 +15,7 @@ export const NoPlansCard: React.FC<Props> = ({ navigation, user }: Props) => {
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'center', marginTop: 40 }}>
-        <MaterialIcons name="celebration" size={50} color="green" />
+        <MaterialIcons name="celebration" size={50} color={BLACK} />
         <Text style={styles.text}>No Plans to see here, yet!</Text>
       </View>
 
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: WHITE,
     marginTop: 2,
     paddingBottom: 8,
   },
@@ -41,13 +42,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     marginVertical: 22,
-    fontWeight: '600',
+    fontWeight: '400',
   },
   button: {
-    backgroundColor: '#31A59F',
+    backgroundColor: TEAL,
     paddingVertical: 10,
     paddingHorizontal: 100,
-    borderRadius: 15,
+    borderRadius: 10,
   },
   buttonText: {
     color: '#fff',

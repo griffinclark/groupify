@@ -18,7 +18,7 @@ export const PlanConfirm: React.FC<Props> = ({ navigation, route }: Props) => {
   const [isVisible, setIsVisible] = useState(true);
 
   const goHome = () => {
-    navigation.push('Home');
+    navigation.navigate('Home', {});
     setIsVisible(false);
   };
 
