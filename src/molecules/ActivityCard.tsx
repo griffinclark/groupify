@@ -17,9 +17,10 @@ interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image?: any;
   tempUserLocationQuery: string;
+  onSelectLocation?: (location: GoogleLocation) => void;
 }
 
-export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tempUserLocationQuery }: Props) => {
+export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tempUserLocationQuery, onSelectLocation }: Props) => {
   if (!location.geometry) return null;
   // console.log(location.formatted_address);
   const formatAddress = () => {
@@ -61,13 +62,17 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tem
 
   const onButtonPress = (e: GestureResponderEvent) => {
     e.stopPropagation();
-    navigateToPlanMap(location.name, navigation, route, route.params.userLocation, tempUserLocationQuery);
+
+    if(!onSelectLocation) {
+      navigateToPlanMap(location.name, navigation, route, route.params.userLocation, tempUserLocationQuery);
+    }
+    else {
+      onSelectLocation(location);
+    }
     return true;
   }
 
   const onActivityCardPress = () => {
-    console.log(route.params);
-
     navigation.navigate('PlanCreate', {
       currentUser: route.params.currentUser,
       navigation: navigation,
@@ -97,10 +102,16 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tem
       </View>
       <View style={styles.rightCol}>
         <View style={styles.firstRow}>
-          <AppText style={styles.rating}>
-            {location.rating.toFixed(1)} {renderStars()} ({location.user_ratings_total})
-          </AppText>
-          <View onStartShouldSetResponder={onButtonPress}>
+
+          {location.rating ? (
+            <AppText style={styles.rating}>
+              {location.rating.toFixed(1)} {renderStars()} ({location.user_ratings_total})
+            </AppText>
+          ) : 
+            <AppText style={styles.rating}>No Rating</AppText>
+          }
+          
+          <View style={styles.viewMapBtn} onStartShouldSetResponder={onButtonPress}>
             <Button buttonStyle={styles.button} containerStyle={{width: 'auto'}} title={'View Map'} />
           </View>
         </View>
@@ -155,6 +166,9 @@ const styles = StyleSheet.create({
   },
   rating: {
     fontSize: 12,
+  },
+  viewMapBtn: {
+    marginLeft: 'auto'
   },
   address: {
     fontSize: 12,

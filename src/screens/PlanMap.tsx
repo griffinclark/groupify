@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Dimensions, StyleSheet, Text, ScrollView, View } from 'react-native';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import Constants from 'expo-constants';
 import { RoutePropParams } from '../res/root-navigation';
 import { GOLD_0, GREY_8, GREY_6, WHITE } from '../res/styles/Colors';
-import { GoogleLocation } from '../res/dataModels';
+import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { Screen } from '../atoms/Screen';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { HomeNavBar } from '../molecules/HomeNavBar';
@@ -16,6 +16,7 @@ import { MagnifyingGlassIcon } from './../../assets/Icons/MagnifyingGlass';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from '../molecules/SearchbarWithoutFeedback';
 import { ProgressBar } from '../atoms/ProgressBar';
 import { ActivitySelectorSlideUpCard } from '../organisms/ActivitySelectorSlideUpCard';
+import { ActivityEnum } from '../molecules/ActivitySelector';
 
 export interface Props {
   navigation: {
@@ -27,9 +28,10 @@ export interface Props {
   placesUserWantsToGoResults: GoogleLocation[];
   tempUserLocationQuery: string;
   placesUserWantsToGoQuery: string;
+  userLocation: UserLocation;
 }
 
-export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
+export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQuery  }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
@@ -51,11 +53,20 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
   const mapMarker = require('../../assets/locationPins/Location_Base.png');
   const mapSelectedMarker = require('../../assets/locationPins/Location_Selected.png');
 
+  const mapRef = useRef();
+
   useEffect(() => {
-    if (region.default) {
+    if(placesUserWantsToGo.length === 1) {
+      setSelectedLocation(placesUserWantsToGo[0]);
+    }
+
+    if (placesUserWantsToGo.length != 1 && region.default) {
       getStartRegion();
     }
-  }, [userLocation, route.params.activity, distance]); //FIXME the fuck are the second two?
+
+    
+
+  }, [userLocation, route.params.activity, distance, placesUserWantsToGo]); //FIXME the fuck are the second two?
 
   useEffect(() => {
     setPlacesUserWantsToGo(route.params.data.activitySearchData.placesUserWantsToGoResults);
@@ -95,6 +106,22 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };
 
+  const setSelectedLocation = (location: GoogleLocation) => {
+    setSelectedMarker(location.place_id);
+
+    const region = {
+      latitude: location.geometry.location.lat,
+      longitude: location.geometry.location.lng,
+      latitudeDelta: 0.009,
+      longitudeDelta: 0.009,
+      default: false,
+    };
+
+    setRegion(region);
+
+    mapRef.current?.animateToRegion(region, 2000);
+  }
+
   return (
     <Screen style={styles.container}>
       {region.default == true ? (
@@ -127,6 +154,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
             </View>
             {/* TODO MapView has to be built dynamically based on number of locations and distance between locations */}
             <MapView
+              ref={mapRef}
               initialRegion={region}
               style={styles.map}
               showsUserLocation={true}
@@ -173,7 +201,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
               ))}
             </MapView>
           </View>
-          <ActivitySelectorSlideUpCard route={route} navigation={navigation} />
+          <ActivitySelectorSlideUpCard route={route} navigation={navigation} locations={placesUserWantsToGo} tempUserLocationQuery={tempUserLocationQuery} onSelectLocation={setSelectedLocation} />
         </>
       )}
 
@@ -233,7 +261,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     position: 'absolute',
-    marginTop: Constants.statusBarHeight + 20,
+    marginTop: Constants.statusBarHeight + 40,
     backgroundColor: WHITE,
   },
   searchBarText: {

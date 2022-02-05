@@ -11,7 +11,7 @@ export const globalStyles = StyleSheet.create({
     flexDirection: 'column'
   },
   containerWithHeader: {
-    paddingTop: Constants.statusBarHeight + 5,
+    paddingTop: Constants.statusBarHeight + 25,
   },
   containerWithFooter: {
     paddingBottom: 80,

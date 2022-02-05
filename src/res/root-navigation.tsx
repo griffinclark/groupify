@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import * as Analytics from 'expo-firebase-analytics';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
@@ -69,6 +70,7 @@ export type RoutePropParams = {
         tempUserLocation: UserLocation;
         placesUserWantsToGoQuery: string;
         placesUserWantsToGoResults: GoogleLocation[];
+        fromButton: boolean;
       }
     };    
   };
@@ -111,6 +113,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         }
       }}
     >
+      <StatusBar barStyle={'dark-content'} />
       <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ animationEnabled: false }}>
         <Stack.Screen
           name="CreateAccount"

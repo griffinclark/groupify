@@ -1,6 +1,6 @@
 import { GoogleLocation, NavigationProps, Photo, UserLocation } from '../res/dataModels';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Keyboard } from 'react-native';
+import { StyleSheet, View, Keyboard, Dimensions } from 'react-native';
 import { Screen } from '../atoms/Screen';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -10,6 +10,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { SearchSuggestionTile } from '../molecules/SearchSuggestionTile';
 import { BLACK, WHITE } from '../res/styles/Colors';
 import { MapLinkIcon } from '../../assets/Icons/MapLink';
+import { PinIcon } from '../../assets/Icons/Pin';
 import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
 import { navigateToPlanMap } from './../res/utilFunctions';
 import { LocationResults } from '../molecules/LocationResults';
@@ -102,9 +103,8 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
     types: ['null'],
   };
 
-  const onChangeLocationField = async(text: string) => {
+  const onChangeLocationField = async(text: string) => {    
     setDataset(Dataset.ChangeUserLocation);
-    console.log(text);
     // FIXME indicate to the user that they have not changed their location until a location is selected from the list
     setTempUserLocationQuery(text);
     const noCurrentLocationArr = await googlePlacesQuery(
@@ -125,7 +125,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
         <TopNavBar
           displayGroupify={false}
           targetScreen={'SelectorMenu'}
-          title={'DO SOMETHING'}
+          title={'GROUPIFY IT'}
           navigation={navigation}
           route={route}
           placesUserWantsToGoQuery={placesUserWantsToGoQuery}
@@ -167,7 +167,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
           <View style={styles.searchBar}>
             <SearchBar
               // style={styles.input}
-              leftIcon={<MapLinkIcon />}
+              leftIcon={<PinIcon />}
               placeholder={'City, State, Zip Code'}
               onChangeText={onChangeLocationField}
               testID={'changeLocationSearchBar'}
@@ -193,6 +193,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
               }}
               defaultValue={tempUserLocationQuery}
               selectTextOnFocus={true}
+              hideClose={true}
             />
           </View>
         </View>
@@ -202,7 +203,8 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
               navigation={navigation} 
               route={route} 
               locations={getDataSet()}
-              tempUserLocationQuery = {tempUserLocationQuery} />
+              tempUserLocationQuery = {tempUserLocationQuery}
+            />
           </View>
         ) : (
           <>
@@ -236,17 +238,13 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    marginBottom: 50,
+    // marginBottom: 50,
   },
   searchBar: {
     width: '100%',
     height: 45,
-    marginTop: 19,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    paddingHorizontal: 10,
+    marginTop: 16,
+    paddingHorizontal: 20,
   },
   input: {
     flex: 1,
@@ -256,13 +254,12 @@ const styles = StyleSheet.create({
   },
   stickySearchContainer: {
     backgroundColor: WHITE,
-    height: 142,
-    paddingTop: Constants.statusBarHeight + 50,
-    marginBottom: 60
+    paddingTop: Constants.statusBarHeight + 40,
+    // marginBottom: 60,
   },
   selectLocationSearchResults: {
     paddingBottom: 300,
-    marginTop: 10
+    marginTop: 20
     // TODO set this height dynamically based on whether the keyboard is showing or not
   },
 });

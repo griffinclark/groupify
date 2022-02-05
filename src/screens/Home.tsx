@@ -16,10 +16,9 @@ import { Banner } from '../atoms/Banner';
 import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
 import { LocationAccuracy } from 'expo-location';
-import { activities } from './SelectorMenu';
 import { GoogleLocation } from '../res/dataModels';
-import { LogBox } from 'react-native';
 import { globalStyles } from '../res/styles/GlobalStyles';
+import Constants from 'expo-constants';
 
 export interface Props {
   navigation: {
@@ -32,6 +31,7 @@ export interface Props {
     };
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
+    goBack: () => void;
   };
   route: RoutePropParams;
 }
@@ -50,7 +50,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [pastPlans, setPastPlans] = useState<Plan[]>([]);
   const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
   const [state, setState] = useState(LoadingState.Loading);
-  const [userLocation, setUserLocation] = useState({}); // defaults to Los Angeles if user location is not provided and no place param
+  const [userLocation, setUserLocation] = useState({latitude: 0, longitude: 0}); // defaults to Los Angeles if user location is not provided and no place param
   const [region, setRegion] = useState({});
   const [locations, setLocations] = useState<GoogleLocation[]>([]);
 
@@ -210,6 +210,6 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ececec'
+    backgroundColor: '#ececec',
   },
 });

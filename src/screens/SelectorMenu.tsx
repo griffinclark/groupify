@@ -50,34 +50,35 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen style={styles.screen}>
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[2]}  onScroll={handleScrollView} scrollEventThrottle={32}>
-        <TopNavBar title="" navigation={navigation} displayGroupify={true} displayBackButton={false} route={route} targetScreen={'Home'} />
-          <View>
-            <Image style={{width: '100%'}} source={require('../../assets/activity-selector-background-image.png')} />
-          </View>
-
-          <View style={[styles.searchBar, scrollTop ? {backgroundColor: WHITE} : {}]}>
-            <SearchbarWithoutFeedback
-              navigation={navigation}
-              route={route}
-              userLocation={route.params.userLocation}
-              icon={<MagnifyingGlassIcon />}
-              placeholderText="Search for food, parks, coffee, etc"
-              tempUserLocation={route.params.data?.activitySearchData.tempUserLocation}
-              placesUserWantsToGoQuery={''}
-              tempUserLocationQuery={''}
-              mode={SearchbarDisplayMode.Query}
-            />
-          </View>
-          <ActivitySelector route={route} navigation={navigation} />
-
-        <View style={styles.locationSuggestions}>
-          {featuredLocations.length > 0 ? (
-            <LocationResults navigation={navigation} route={route} locations={featuredLocations} tempUserLocationQuery={''} />
-          ) : (
-            <ProgressBar />
-          )}
+        <TopNavBar stickyHeader={false} title="" navigation={navigation} displayGroupify={true} displayBackButton={false} route={route} targetScreen={'Home'} />
+        
+        <View>
+          <Image style={{width: '100%'}} source={require('../../assets/activity-selector-background-image.png')} />
         </View>
-      </ScrollView>
+
+        <View style={[styles.searchBar, scrollTop ? {backgroundColor: WHITE} : {}]}>
+          <SearchbarWithoutFeedback
+            navigation={navigation}
+            route={route}
+            userLocation={route.params.userLocation}
+            icon={<MagnifyingGlassIcon />}
+            placeholderText="Search for food, parks, coffee, etc"
+            tempUserLocation={route.params.data?.activitySearchData.tempUserLocation}
+            placesUserWantsToGoQuery={''}
+            tempUserLocationQuery={''}
+            mode={SearchbarDisplayMode.Query}
+          />
+        </View>
+        <ActivitySelector route={route} navigation={navigation} />
+
+      <View style={styles.locationSuggestions}>
+        {featuredLocations.length > 0 ? (
+          <LocationResults navigation={navigation} route={route} locations={featuredLocations} tempUserLocationQuery={''} />
+        ) : (
+          <ProgressBar />
+        )}
+      </View>
+    </ScrollView>
 
       <HomeNavBar
         locations={[]}
@@ -99,10 +100,9 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
   },
-
   navbarLogo: {
-    height: 45,
-    width: 130,
+    //height: 45,
+   // width: 130,
   },
   activitySuggestions: {
     backgroundColor: WHITE,

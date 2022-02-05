@@ -180,14 +180,12 @@ export const OldActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
               />
               <AppText style={styles.navbarText}>{copy.activitySelectorTitle}</AppText>
             </View>
-            {/* <Image source={require('../../assets/activity-selector.png')} /> */}
             <Image
               style={{ position: 'absolute', top: -163, width: Dimensions.get('window').width, zIndex: -10 }}
               source={require('../../assets/SplashScreen.png')}
             />
             <View style={styles.description}>
               <AppText style={styles.descriptionText}>{copy.activitySelectorSubtitle}</AppText>
-              {/* <TextInput placeholder="Search for Restaurants, Parks, ..." style={styles.input} /> */}
             </View>
             <View style={styles.activitySelector}>
               <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
@@ -205,7 +203,6 @@ export const OldActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
                 scrollEventThrottle={200}
                 contentContainerStyle={{ ...styles.scrollView, width: `${100 * intervals}%` }}
                 onScroll={(data) => {
-                  console.log(data.nativeEvent.contentOffset.x);
                   setInterval(getInterval(data.nativeEvent.contentOffset.x));
                 }}
               >

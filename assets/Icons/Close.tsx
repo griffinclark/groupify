@@ -4,12 +4,14 @@ import Svg, { Path } from 'react-native-svg';
 
 interface Props {
   onPress?: () => void;
+  height?: number;
+  width?: number;
 }
 
-export const CloseIcon: React.FC<Props> = ({ onPress }: Props) => {
+export const CloseIcon: React.FC<Props> = ({ onPress, height = 20, width = 20 }: Props) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <Svg width={width} height={height} viewBox="0 0 20 20" fill="none">
         <Path
           d="M18.4375 1.5625L1.5625 18.4375"
           stroke="black"

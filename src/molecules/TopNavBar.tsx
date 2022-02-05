@@ -17,6 +17,7 @@ interface Props {
   targetScreen: string;
   placesUserWantsToGoQuery?: string;
   tempUserLocationQuery?: string;
+  stickyHeader?: boolean;
 }
 
 export const TopNavBar: React.FC<Props> = ({
@@ -28,9 +29,10 @@ export const TopNavBar: React.FC<Props> = ({
   targetScreen,
   placesUserWantsToGoQuery,
   tempUserLocationQuery,
+  stickyHeader = true
 }: Props) => {
   return (
-    <View style={styles.topNavBarRoot}>
+    <View style={[styles.topNavBarRoot, stickyHeader && styles.topNavBarSticky]}>
       <TouchableOpacity
         onPress={() => {
           // console.log('navigating ' + targetScreen);
@@ -53,8 +55,6 @@ const styles = StyleSheet.create({
   navbarLogo: {
     height: 24,
     width: 108,
-    // position: 'absolute',
-    // alignSelf: 'center',
   },
   topNavBarRoot: {
     borderBottomWidth: 1,
@@ -62,11 +62,17 @@ const styles = StyleSheet.create({
     borderBottomColor: GREY_4,
     flexDirection: 'row',
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    height: 50,
+    // height: Constants.statusBarHeight + 50,
     zIndex: 99,
     position: 'absolute',
     width: '100%',
+    marginBottom: 40,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
+  topNavBarSticky: {
+    marginTop: Constants.statusBarHeight
+  }
 });
