@@ -32,7 +32,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
             buttonStyle={{ width: 335, backgroundColor: 'white', borderWidth: 2, borderColor: TEAL, borderRadius: 25 }}
             textStyle={{ color: TEAL, backgroundColor: 'white', fontSize: 20 }}
             title={'Sign Up'}
-            onPress={() => navigation.navigate('CreateAccount', {})}
+            onPress={() => navigation.navigate('VerifyPhone', {})}
             testID="WelcomeCreateButton"
           />
         </View>

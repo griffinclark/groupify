@@ -53,7 +53,7 @@ export const PlansPreview: React.FC<Props> = ({ all, navigation, user, reload }:
   }, [selectedTab, reload]);
 
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.scrollList}>
         <Text style={styles.header}>Your Plans</Text>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal>
@@ -89,11 +89,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     marginHorizontal: 8,
   },
-  container: {
-    marginTop: 5,
-  },
+  // container: {
+  //   marginTop: 5,
+  // },
   scrollList: {
     backgroundColor: WHITE,
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1.5,
   },
   header: {
     padding: 4,

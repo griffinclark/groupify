@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { GOLD, GREY_5 } from '../res/styles/Colors';
 import { AppText } from './AppText';
@@ -30,7 +30,7 @@ export const FormInput: React.FC<Props> = ({
 
   return (
     <View style={styles.wrapper}>
-      <AppText style={styles.title}>{label}</AppText>
+      <Text style={styles.title}>{label}</Text>
       <TextInput
         returnKeyType={returnKeyNext ? 'next' : 'done'}
         autoFocus={autoFocus || false}
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   title: {
-    fontWeight: '400',
-    fontSize: 14,
+    fontWeight: '500',
+    fontSize: 18,
   },
   input: {
     // backgroundColor: background,

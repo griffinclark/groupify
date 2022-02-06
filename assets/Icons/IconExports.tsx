@@ -11,6 +11,7 @@ import { SettingsCogIcon } from './SettingsCog';
 import { FavoriteIcon } from './Favorite';
 import { MapIcon } from './MapIcon';
 import { HandIcon } from './Hand';
+import { GroupifyLogo } from './GroupifyLogo';
 
 export {
   AnnounceIcon,
@@ -26,4 +27,5 @@ export {
   FavoriteIcon,
   MapIcon,
   HandIcon,
+  GroupifyLogo,
 };

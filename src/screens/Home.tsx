@@ -18,6 +18,7 @@ export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
+    goBack: () => void;
   };
 }
 enum LoadingState {
@@ -111,7 +112,7 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
         </View>
       ) : (
         <>
-          <Header home={true} />
+          <Header navigation={navigation} home={true} />
           <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
             <View>
               {acceptedPlans.length > 0 || createdPlans.length > 0 ? (

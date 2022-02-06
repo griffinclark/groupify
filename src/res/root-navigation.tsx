@@ -28,6 +28,10 @@ import { ActivitySelector } from '../screens/ActivitySelector';
 import { ActivityResults } from '../screens/ActivityResults';
 import { ActivityFavorites } from '../screens/ActivityFavorites';
 import { ContactList } from '../atoms/ContactList';
+import { phoneVerificationScreen } from '../screens/phoneVerificationScreen';
+import { createAccountForm } from '../screens/createAccountForm';
+import { ProfileScreen } from '../screens/ProfileScreen';
+import { ValidateUser } from '../screens/ValidateUser';
 
 export type RoutePropParams = {
   params: {
@@ -132,6 +136,10 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="ActivityFavorites" component={ActivityFavorites} options={{ headerShown: false }} />
         <Stack.Screen name="ContactList" component={ContactList} options={{ headerShown: false }} />
         <Stack.Screen name="PlanConfirm" component={PlanConfirm} options={{ headerShown: false }} />
+        <Stack.Screen name="VerifyPhone" component={phoneVerificationScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="createAccountForm" component={createAccountForm} options={{ headerShown: false }} />
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ValidateUser" component={ValidateUser} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

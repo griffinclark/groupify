@@ -1,8 +1,7 @@
 import React from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import { TEAL, WHITE } from '../res/styles/Colors';
+import { Dimensions, StyleSheet, View, Text } from 'react-native';
+import { WHITE } from '../res/styles/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AppText } from './AppText';
 
 interface Props {
   message: string;
@@ -24,27 +23,27 @@ export const AlertModal: React.FC<Props> = ({
     <View style={styles.popup}>
       <View style={styles.container}>
         <View>
-          <AppText maxFontSizeMultiplier={1} style={styles.text1}>
+          <Text maxFontSizeMultiplier={1} style={styles.text1}>
             {message}
-          </AppText>
+          </Text>
           {message2 ? (
-            <AppText maxFontSizeMultiplier={1} style={styles.text2}>
+            <Text maxFontSizeMultiplier={1} style={styles.text2}>
               {message2}
-            </AppText>
+            </Text>
           ) : null}
         </View>
         <View style={styles.buttonContainer}>
           {button2Text ? (
             <TouchableOpacity style={styles.button} onPress={onButton2Press}>
-              <AppText maxFontSizeMultiplier={1} style={[styles.buttonText, { color: TEAL }]}>
+              <Text maxFontSizeMultiplier={1} style={[styles.buttonText, { color: '#3F8A8D' }]}>
                 {button2Text}
-              </AppText>
+              </Text>
             </TouchableOpacity>
           ) : null}
-          <TouchableOpacity style={[styles.button, { backgroundColor: TEAL }]} onPress={onButton1Press}>
-            <AppText maxFontSizeMultiplier={1} style={[styles.buttonText, { color: 'white' }]}>
+          <TouchableOpacity style={[styles.button2, { backgroundColor: '#31A59F' }]} onPress={onButton1Press}>
+            <Text maxFontSizeMultiplier={1} style={[styles.buttonText, { color: 'white' }]}>
               {button1Text}
-            </AppText>
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -62,39 +61,49 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '30%',
     backgroundColor: WHITE,
-    borderWidth: 1,
-    borderRadius: 30,
+    // borderWidth: 1,
+    borderRadius: 10,
     justifyContent: 'space-between',
   },
   text1: {
     fontSize: 20,
-    lineHeight: 28.6,
+    lineHeight: 29.6,
     textAlign: 'center',
     marginHorizontal: 20,
   },
   text2: {
-    fontWeight: '500',
+    fontWeight: '400',
     fontSize: 16,
     textAlign: 'center',
-    marginHorizontal: 15,
-    marginTop: 20,
+    marginHorizontal: 8,
+    marginTop: 10,
+    lineHeight: 24,
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
   },
   button: {
-    borderRadius: 40,
-    borderWidth: 1,
-    width: 122,
-    height: 43,
-    borderColor: TEAL,
+    paddingHorizontal: 10,
+    borderColor: '#3F8A8D',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 8,
+    borderRadius: 5,
+    marginLeft: -10,
+  },
+  button2: {
+    paddingHorizontal: 10,
+    borderColor: '#3F8A8D',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    borderRadius: 5,
+    marginRight: 15,
   },
   buttonText: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 18,
+    fontWeight: '500',
   },
   popup: {
     width: Dimensions.get('screen').width,

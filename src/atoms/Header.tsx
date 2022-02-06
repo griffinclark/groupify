@@ -1,32 +1,49 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Octicons, Ionicons, Entypo } from '@expo/vector-icons';
+import { View, StyleSheet } from 'react-native';
+import { Ionicons, Entypo } from '@expo/vector-icons';
+import { GroupifyLogo } from '../../assets/Icons/GroupifyLogo';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export interface Props {
   title?: string | undefined;
   home?: boolean;
   // TODO why is navigation optional?
-  navigation?: {
+  navigation: {
+    navigate: (ev: string, {}) => void;
     goBack: () => void;
   };
 }
-export const Header = ({ title, home, navigation }: Props) => {
+export const Header = ({ home, navigation }: Props) => {
   return (
     <View>
       {home ? (
         <View style={styles.homeContainer}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>Groupify</Text>
-            <Octicons style={{ marginLeft: 8 }} name="megaphone" size={33} color="green" />
+          <View style={[styles.titleContainer, { marginLeft: 130 }]}>
+            <GroupifyLogo />
           </View>
-          <Ionicons name="md-settings-outline" size={33} color="black" />
+          <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {})}>
+            <Ionicons
+              style={{ alignSelf: 'flex-end', marginHorizontal: 10 }}
+              name="md-settings-outline"
+              size={30}
+              color="black"
+            />
+          </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.container}>
-          <Entypo onPress={() => navigation.goBack()} name="chevron-thin-left" size={28} color="black" />
-          <Text style={styles.text}>{title}</Text>
-          <Ionicons name="md-settings-outline" size={33} color="black" />
+          <Entypo
+            style={{ paddingLeft: 15 }}
+            onPress={() => navigation.goBack()}
+            name="chevron-thin-left"
+            size={24}
+            color="black"
+          />
+          <View style={[styles.titleContainer, { marginRight: 135 }]}>
+            <GroupifyLogo />
+          </View>
+          {/* <Ionicons name="md-settings-outline" size={30} color="black" /> */}
         </View>
       )}
     </View>
@@ -39,7 +56,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
-    padding: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#ccc',
+    height: 45,
     marginBottom: 10,
   },
   text: {
@@ -47,30 +66,28 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   homeContainer: {
+    backgroundColor: '#fff',
+    padding: 5,
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-
-    elevation: 7,
+    height: 45,
+    width: '100%',
+    borderBottomWidth: 3,
+    borderBottomColor: '#ccc',
   },
   titleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingLeft: 120,
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
   titleText: {
     fontSize: 24,
     fontWeight: '700',
     color: 'green',
+  },
+  logo: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
   },
 });

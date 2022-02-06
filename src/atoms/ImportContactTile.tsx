@@ -7,6 +7,7 @@ import { Contact } from '../res/dataModels';
 export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
+    push: (ev: any, {}) => void;
   };
 }
 
@@ -65,7 +66,7 @@ export const ImportContactTile = ({ navigation }: Props) => {
               </Text>
             ))}
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('ImportContacts', {})}>
+            <TouchableOpacity onPress={() => navigation.push('ImportContacts', {})}>
               <Text style={styles.buttonText}>Add Contacts</Text>
             </TouchableOpacity>
 
