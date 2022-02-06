@@ -167,12 +167,12 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
               showsCompass={false}
               onRegionChange={async (region) => {
                 // console.log(Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)));
-                if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 13) {
-                  setRadius(100);
+                if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 12) {
+                  setRadius(200);
                 } else if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 14) {
-                  setRadius(50);
+                  setRadius(10);
                 } else {
-                  setRadius(15);
+                  setRadius(30);
                 }
               }}
               showsTraffic={false}
