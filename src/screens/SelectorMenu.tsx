@@ -12,7 +12,7 @@ import { TopNavBar } from '../molecules/TopNavBar';
 import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from './../molecules/SearchbarWithoutFeedback';
 import { ProgressBar } from '../atoms/ProgressBar';
-import { ActivitySelector } from '../molecules/ActivitySelector';
+import { ActivitySelector, ActivityEnum } from '../molecules/ActivitySelector';
 import { LocationResults } from '../molecules/LocationResults';
 
 interface Props {
@@ -30,13 +30,23 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   //const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
   const [scrollTop, setScrollTop] = useState(true);
   
+  const randomEnumKey = (enumeration: typeof ActivityEnum) => {
+    const keys = Object.keys(enumeration)
+        .filter(k => !(Math.abs(Number.parseInt(k)) + 1));
+    const enumKey = keys[Math.floor(Math.random() * keys.length)];
+    return enumKey;
+  };
+
   useEffect(() => {
     // TODO @JONI do we want to be resetting one or both of these?
     //setTempUserLocationQuery('');
     //setPlacesUserWantsToGoQuery('');
+
+    const randomKey = randomEnumKey(ActivityEnum);
+
     const buildFeatureLocations = async () => {
       setFeaturedLocations(
-        await googlePlacesQuery('things to do', route.params.data.activitySearchData.tempUserLocation, GooglePlacesQueryOptions.Activity),
+        await googlePlacesQuery(ActivityEnum[randomKey], route.params.data.activitySearchData.tempUserLocation, GooglePlacesQueryOptions.Activity),
       );
     };
     buildFeatureLocations();
@@ -46,13 +56,25 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     setScrollTop(e.nativeEvent.contentOffset.y > 300)
   }
 
+  const bgImage = [
+    require('../../assets/activity-selector-bg/image-activity-1.png'),
+    require('../../assets/activity-selector-bg/image-activity-2.png'),
+    require('../../assets/activity-selector-bg/image-activity-3.png'),
+    require('../../assets/activity-selector-bg/image-activity-4.png'),
+    require('../../assets/activity-selector-bg/image-activity-5.png')
+  ];
+
+  const bgImageIndex = Math.floor(Math.random() * 4);
+
+  console.log(bgImageIndex);
+
   return (
     <Screen style={styles.screen}>
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[2]}  onScroll={handleScrollView} scrollEventThrottle={32}>
         <TopNavBar stickyHeader={false} title="" navigation={navigation} displayGroupify={true} displayBackButton={false} route={route} targetScreen={'Home'} />
         
         <View>
-          <Image style={{width: '100%'}} source={require('../../assets/activity-selector-background-image.png')} />
+          <Image style={{width: '100%', height: 250}} source={bgImage[bgImageIndex]} />
         </View>
 
         <View style={[styles.searchBar, scrollTop ? {backgroundColor: WHITE} : {}]}>
@@ -113,6 +135,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     marginBottom: 50,
+    paddingBottom: 400
   },
   locationSuggestions: {
     marginTop: 30,
