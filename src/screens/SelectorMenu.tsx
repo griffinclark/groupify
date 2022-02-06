@@ -4,7 +4,7 @@ import { Screen } from '../atoms/Screen';
 import { BLACK, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
 import { AppText } from '../atoms/AppText';
 import { HomeNavBar } from '../molecules/HomeNavBar';
-import { GoogleLocation, UserLocation } from '../res/dataModels';
+import { GoogleLocation, UserLocation, ActivityEnum } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from './../molecules/ActivityCard';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
@@ -12,7 +12,7 @@ import { TopNavBar } from '../molecules/TopNavBar';
 import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from './../molecules/SearchbarWithoutFeedback';
 import { ProgressBar } from '../atoms/ProgressBar';
-import { ActivitySelector, ActivityEnum } from '../molecules/ActivitySelector';
+import { ActivitySelector } from '../molecules/ActivitySelector';
 import { LocationResults } from '../molecules/LocationResults';
 
 interface Props {
@@ -65,16 +65,14 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   ];
 
   const bgImageIndex = Math.floor(Math.random() * 4);
-
-  console.log(bgImageIndex);
-
+  
   return (
     <Screen style={styles.screen}>
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[2]}  onScroll={handleScrollView} scrollEventThrottle={32}>
         <TopNavBar stickyHeader={false} title="" navigation={navigation} displayGroupify={true} displayBackButton={false} route={route} targetScreen={'Home'} />
         
         <View>
-          <Image style={{width: '100%', height: 250}} source={bgImage[bgImageIndex]} />
+          <Image style={{width: 'auto', height: 260}} source={bgImage[bgImageIndex]} />
         </View>
 
         <View style={[styles.searchBar, scrollTop ? {backgroundColor: WHITE} : {}]}>

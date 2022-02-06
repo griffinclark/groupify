@@ -5,10 +5,9 @@ import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Platform } from 'react-native';
 import { sendPushNotification } from './notifications';
 import * as queries from '../graphql/queries';
-import { GoogleLocation, NavigationProps, UserLocation } from './dataModels';
+import { GoogleLocation, NavigationProps, UserLocation, ActivityEnum } from './dataModels';
 import { getDistance } from 'geolib';
 import { RoutePropParams } from './root-navigation';
-import { ActivityEnum } from '../molecules/ActivitySelector';
 
 const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
@@ -359,8 +358,19 @@ export const googlePlacesQuery: (
       let unfilteredLocations: GoogleLocation[] = [];
 
       switch (query) {
+        case ActivityEnum.Happending:
+            const [live, theatre, concert, show, foodtruck, farmer]: GoogleLocation[][] = await Promise.all([
+              googleQuerySearch('live music', userLocation),
+              googleQuerySearch('theatre', userLocation),
+              googleQuerySearch('concert', userLocation),
+              googleQuerySearch('art show', userLocation),
+              googleQuerySearch('food truck', userLocation),
+              googleQuerySearch('farmer\'s market', userLocation),
+            ]);
+            unfilteredLocations = unfilteredLocations.concat(live, theatre, concert, show, foodtruck, farmer);
+            break;
         case ActivityEnum.Outdoors:
-          const [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12]: GoogleLocation[][] = await Promise.all([
+          const [trail, mountain, beack, park, pier, bonfire, garden, snow, skii, sled, paddle, fish, golf]: GoogleLocation[][] = await Promise.all([
             googleQuerySearch('trail', userLocation),
             googleQuerySearch('mountain', userLocation),
             googleQuerySearch('beach', userLocation),
@@ -373,48 +383,61 @@ export const googlePlacesQuery: (
             googleQuerySearch('sledding', userLocation),
             googleQuerySearch('paddle boarding', userLocation),
             googleQuerySearch('fishing', userLocation),
+            googleQuerySearch('disc golf', userLocation),
           ]);
-          unfilteredLocations = unfilteredLocations.concat(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12);
+          unfilteredLocations = unfilteredLocations.concat(trail, mountain, beack, park, pier, bonfire, garden, snow, skii, sled, paddle, fish, golf);
 
           break;
         case ActivityEnum.Food:
-          const [r13, r14, r15, r16, r17, r18, r19, r20, r21, r22] : GoogleLocation[][] = await Promise.all([
+          const [restau] : GoogleLocation[][] = await Promise.all([
             googleQuerySearch('restaurants', userLocation),
-            googleQuerySearch('ramen', userLocation),
-            googleQuerySearch('sandwich', userLocation),
-            googleQuerySearch('sushi', userLocation),
-            googleQuerySearch('poki', userLocation),
-            googleQuerySearch('mexican', userLocation),
-            googleQuerySearch('chinese', userLocation),
-            googleQuerySearch('thai', userLocation),
-            googleQuerySearch('burger', userLocation),
-            googleQuerySearch('doughnut', userLocation),
           ]);
 
-          unfilteredLocations = unfilteredLocations.concat(r13, r14, r15, r16, r17, r18, r19, r20, r21, r22);
-          break;
-        case ActivityEnum.Shopping: 
+          unfilteredLocations = unfilteredLocations.concat(restau);
           break;
         case ActivityEnum.Chill:
+          const [boba, coffee, tea, acai, smoothie] : GoogleLocation[][] = await Promise.all([
+            googleQuerySearch('boba', userLocation),
+            googleQuerySearch('coffee', userLocation),
+            googleQuerySearch('tea', userLocation),
+            googleQuerySearch('acai', userLocation),
+            googleQuerySearch('smoothie', userLocation)
+          ]);
+  
+          unfilteredLocations = unfilteredLocations.concat(boba, coffee, tea, acai, smoothie);
           break;
-        case ActivityEnum.Fitness:
+        case ActivityEnum.Exercise:
+          const [climb, yoga, gym, boxing, swim, pilates, martial, parkor, spin] : GoogleLocation[][] = await Promise.all([
+            googleQuerySearch('climbing gym', userLocation),
+            googleQuerySearch('yoga studio', userLocation),
+            googleQuerySearch('gym', userLocation),
+            googleQuerySearch('boxing gym', userLocation),
+            googleQuerySearch('swimming pool', userLocation),
+            googleQuerySearch('pilates', userLocation),
+            googleQuerySearch('martial arts', userLocation),
+            googleQuerySearch('parkor', userLocation),
+            googleQuerySearch('spin class', userLocation)
+          ]);
+  
+          unfilteredLocations = unfilteredLocations.concat(climb, yoga, gym, boxing, swim, pilates, martial, parkor, spin);
           break;
-        case ActivityEnum.Game: 
-        const [r23, r24, r25, r26, r27, r28, r29, r30] : GoogleLocation[][] = await Promise.all([
-          googleQuerySearch('pool hall', userLocation),
-          googleQuerySearch('ping pong', userLocation),
-          googleQuerySearch('arcade', userLocation),
-          googleQuerySearch('bowling', userLocation),
-          googleQuerySearch('poker', userLocation),
-          googleQuerySearch('game room', userLocation),
-          googleQuerySearch('axe throwing', userLocation),
-          googleQuerySearch('escape room', userLocation)
-        ]);
+        case ActivityEnum.Indoor: 
+          const [pool, arcade, bowl, poker, trampoline, parkour, game, axe, escape] : GoogleLocation[][] = await Promise.all([
+            googleQuerySearch('pool hall', userLocation),
+            googleQuerySearch('arcade', userLocation),
+            googleQuerySearch('bowling', userLocation),
+            googleQuerySearch('poker', userLocation),
+            googleQuerySearch('trampoline park', userLocation),
+            googleQuerySearch('parkour', userLocation),
+            googleQuerySearch('game room', userLocation),
+            googleQuerySearch('axe throwing', userLocation),
+            googleQuerySearch('escape room', userLocation)
+          ]);
 
-        unfilteredLocations = unfilteredLocations.concat(r23, r24, r25, r26, r27, r28, r29, r30);
+          unfilteredLocations = unfilteredLocations.concat(pool, arcade, bowl, poker, trampoline, parkour, game, axe, escape);
           break;
         case ActivityEnum.Sports:
-            const [r31, r32, r33, r34, r35, r36, r37, r38] : GoogleLocation[][] = await Promise.all([
+            const [volley, pickle, tennis, basket, soccer, baseball, paintball, airsoft] : GoogleLocation[][] = await Promise.all([
               googleQuerySearch('volleyball court', userLocation),
               googleQuerySearch('pickle ball court', userLocation),
               googleQuerySearch('tennis court', userLocation),
@@ -425,23 +448,26 @@ export const googlePlacesQuery: (
               googleQuerySearch('airsoft', userLocation)
             ]);
     
-            unfilteredLocations = unfilteredLocations.concat(r31, r32, r33, r34, r35, r36, r37, r38);
+            unfilteredLocations = unfilteredLocations.concat(volley, pickle, tennis, basket, soccer, baseball, paintball, airsoft);
           break;
-        case ActivityEnum.Culture:
-          const [r39, r40, r41, r42, r43, r44, r45, r46, r47, r48] : GoogleLocation[][] = await Promise.all([
+        case ActivityEnum.AllDay:
+          const [zoo, zipline, aquarium, museum, ice, skate, water, art, kayak, theater, sufboard, bike, sky] : GoogleLocation[][] = await Promise.all([
             googleQuerySearch('zoo', userLocation),
+            googleQuerySearch('ziplining', userLocation),
             googleQuerySearch('aquarium', userLocation),
             googleQuerySearch('museum', userLocation),
             googleQuerySearch('ice skating', userLocation),
             googleQuerySearch('skate park', userLocation),
+            googleQuerySearch('water park', userLocation),
             googleQuerySearch('art', userLocation),
             googleQuerySearch('kayak rental', userLocation),
             googleQuerySearch('theater', userLocation),
             googleQuerySearch('surfboard rental', userLocation),
-            googleQuerySearch('bike rental', userLocation)
+            googleQuerySearch('bike rental', userLocation),
+            googleQuerySearch('skydiving', userLocation)
           ]);
   
-          unfilteredLocations = unfilteredLocations.concat(r39, r40, r41, r42, r43, r44, r45, r46, r47, r48);
+          unfilteredLocations = unfilteredLocations.concat(zoo, zipline, aquarium, museum, ice, skate, water, art, kayak, theater, sufboard, bike, sky);
           break;
         default:
           const search =

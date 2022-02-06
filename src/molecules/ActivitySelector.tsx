@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { RoutePropParams } from '../res/root-navigation';
-import { GoogleLocation, NavigationProps } from './../res/dataModels';
+import { GoogleLocation, NavigationProps, ActivityEnum } from './../res/dataModels';
 import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import { AppText } from '../atoms/AppText';
 import { GREY_6, WHITE } from '../res/styles/Colors';
@@ -13,69 +13,54 @@ interface Props {
   setPlacesUserWantsToGo?: () => GoogleLocation[];
 }
 
-export enum ActivitySelectorLayout {
-  SingleLine,
-  MultiLine,
-}
-
-export enum ActivityEnum {
-  Food = 'Food',
-  Shopping = 'Shopping',
-  Chill = 'Chill',
-  Fitness = 'Fitness',
-  Game = 'Drink & Game',
-  Culture = 'Culture',
-  Sports = 'Sports',
-  Outdoors = 'Outdoors'
-}
 // Stored as 2d array to make it really easy to edit where options show up in the activity selector
 export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const activities = [
     {
-      id: ActivityEnum.Food,
-      name: copy.foodActivityTile,
+      id: ActivityEnum.Happending,
+      name: copy.happendingActivityTile,
     },
     {
-      id: ActivityEnum.Shopping,
-      name: copy.shopActivityTile,
+      id: ActivityEnum.Outdoors,
+      name: copy.outsideActivityTile,
+    },
+    {
+      id: ActivityEnum.Indoor,
+      name: copy.indoorActivityTile,
+    },
+    {
+      id: ActivityEnum.Exercise,
+      name: copy.exerciseActivityTile,
     },
     {
       id: ActivityEnum.Chill,
       name: copy.chillDrinkActivityTile,
     },
     {
-      id: ActivityEnum.Fitness,
-      name: copy.fitnessActivityTile,
-    },
-    {
-      id: ActivityEnum.Game,
-      name: copy.drinkGameActivityTile,
-    },
-    {
-      id: ActivityEnum.Culture,
-      name: copy.artAndCultureActivityTile,
-    },
-    {
       id: ActivityEnum.Sports,
       name: copy.pickupActivityTile,
     },
     {
-      id: ActivityEnum.Outdoors,
-      name: copy.outsideActivityTile,
+      id: ActivityEnum.AllDay,
+      name: copy.alldayActivityTile,
+    },
+    {
+      id: ActivityEnum.Food,
+      name: copy.foodActivityTile,
     },
   ];
 
   const getImageSource = (id : ActivityEnum) => {
     switch(id) {
       case ActivityEnum.Food: return require('../../assets/activityIcons/Food.png');
-      case ActivityEnum.Shopping: return require('../../assets/activityIcons/Shop.png');
       case ActivityEnum.Chill: return require('../../assets/activityIcons/Coffee.png');
-      case ActivityEnum.Fitness: return require('../../assets/activityIcons/Fitness.png');
-      case ActivityEnum.Game: return require('../../assets/activityIcons/Nightlife.png');
-      case ActivityEnum.Culture: return require('../../assets/activityIcons/Culture.png');
+      case ActivityEnum.Exercise: return require('../../assets/activityIcons/Fitness.png');
       case ActivityEnum.Sports: return require('../../assets/activityIcons/Sports.png');
       case ActivityEnum.Outdoors: return require('../../assets/activityIcons/Outdoors.png');
+      case ActivityEnum.Indoor: return require('../../assets/activityIcons/Shop.png');
+      case ActivityEnum.AllDay: return require('../../assets/activityIcons/Nightlife.png');
+      case ActivityEnum.Happending: return require('../../assets/activityIcons/Culture.png');
       default:
         return <AppText>Error</AppText>;
     }

@@ -5,7 +5,7 @@ import { LocationAccuracy } from 'expo-location';
 import Constants from 'expo-constants';
 import { RoutePropParams } from '../res/root-navigation';
 import { GOLD_0, GREY_8, GREY_6, WHITE } from '../res/styles/Colors';
-import { GoogleLocation, UserLocation } from '../res/dataModels';
+import { GoogleLocation, UserLocation, ActivityEnum} from '../res/dataModels';
 import { Screen } from '../atoms/Screen';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { HomeNavBar } from '../molecules/HomeNavBar';
@@ -16,7 +16,6 @@ import { MagnifyingGlassIcon } from './../../assets/Icons/MagnifyingGlass';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from '../molecules/SearchbarWithoutFeedback';
 import { ProgressBar } from '../atoms/ProgressBar';
 import { ActivitySelectorSlideUpCard } from '../organisms/ActivitySelectorSlideUpCard';
-import { ActivityEnum } from '../molecules/ActivitySelector';
 
 export interface Props {
   navigation: {

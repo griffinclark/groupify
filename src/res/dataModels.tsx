@@ -83,3 +83,14 @@ export interface Review {
   text: string;
   time: number;
 }
+
+export enum ActivityEnum {
+  Food = 'Food',
+  Chill = 'Chill Drink',
+  Exercise = 'Exercise',
+  Sports = 'Pick-up Game',
+  Outdoors = 'Outdoors',
+  Happending = 'Happending',
+  Indoor = 'Indoor Fun',
+  AllDay = 'All-Day Fun'
+}
