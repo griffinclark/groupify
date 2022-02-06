@@ -13,39 +13,49 @@ interface Props {
   locations: GoogleLocation[];
   tempUserLocationQuery: string;
   userLocation: UserLocation;
+  selectedLocation: GoogleLocation | undefined;
   onSelectLocation?: (location: GoogleLocation) => void
 }
 
-export const ActivitySelectorSlideUpCard: React.FC<Props> = ({ navigation, route, locations, tempUserLocationQuery, userLocation, onSelectLocation = () => {}  }: Props) => {
+export const ActivitySelectorSlideUpCard: React.FC<Props> = ({ navigation, route, locations, tempUserLocationQuery, userLocation, selectedLocation, onSelectLocation = () => {}  }: Props) => {
 
   const slideUpMenuHeight = 650;
   const slideUpMenuBottom = 250;
 
   const [allowDragging, setAllowDragging] = useState(true);
 
-  const [selectedLocation, setSelectedLocation] = useState<GoogleLocation>();
+  const [currentSelectedLocation, setCurrentSelectedLocation] = useState<GoogleLocation | undefined>(selectedLocation);
 
   const [showPlanDetails, setShowPlanDetails] = useState(false);
 
+  // useEffect(() => {
+  //   const shouldShowDetail = selectedLocation !== undefined;
+
+  //   setShowPlanDetails(shouldShowDetail);
+
+  //   if(shouldShowDetail) {
+  //     selectLocation(locations[0]);
+  //   }
+  // }, []);
+
+
   useEffect(() => {
-    const shouldShowDetail = locations.length === 1 && tempUserLocationQuery == undefined;
+    selectLocation(selectedLocation);
+  }, [selectedLocation]);
 
-    setShowPlanDetails(shouldShowDetail);
 
-    if(shouldShowDetail) {
-      selectLocation(locations[0]);
+  const selectLocation = (location: GoogleLocation | undefined) => {
+    if(location) {
+      onSelectLocation(location);
+      setCurrentSelectedLocation(location);
+      setShowPlanDetails(true);
     }
-  }, []);
-
-  const selectLocation = (location: GoogleLocation) => {
-    console.log(location);
-    onSelectLocation(location);
-    setSelectedLocation(location);
-    setShowPlanDetails(true);
+    
   }
 
   const closeDetail = () => {
     setShowPlanDetails(false);
+    setCurrentSelectedLocation(undefined);
   }
   
   return (
@@ -65,8 +75,8 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({ navigation, route
           onTouchEnd={() => setAllowDragging(true)}
           onTouchCancel={() => setAllowDragging(true)}
         >
-          {showPlanDetails && selectedLocation ? 
-            <LocationDetails location={selectedLocation} userLocation={userLocation} closeLocationDetail={closeDetail}  />
+          {currentSelectedLocation && showPlanDetails ? 
+            <LocationDetails location={currentSelectedLocation} userLocation={userLocation} closeLocationDetail={closeDetail}  />
             :
             <LocationResults navigation={navigation} route={route} userLocation={userLocation} locations={locations} tempUserLocationQuery={tempUserLocationQuery} onSelectLocation={selectLocation} />
           }
@@ -95,7 +105,6 @@ const styles = StyleSheet.create({
   slideUpMenuRootContainer: {
     height: '100%',
     alignItems: 'center',
-    //marginTop: 15,
     paddingTop: 32,
     position: 'relative',
   },

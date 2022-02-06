@@ -49,6 +49,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
   const [selectedMarker, setSelectedMarker] = useState('');
   const [radius, setRadius] = useState(1);
   const [placesUserWantsToGo, setPlacesUserWantsToGo] = useState<GoogleLocation[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<GoogleLocation>();
 
   const mapMarker = require('../../assets/locationPins/Location_Base.png');
   const mapSelectedMarker = require('../../assets/locationPins/Location_Selected.png');
@@ -68,7 +69,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
 
   useEffect(() => {
     setPlacesUserWantsToGo(route.params.data.activitySearchData.placesUserWantsToGoResults);
-
   }, []);
 
   useEffect(() => {
@@ -80,8 +80,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
       // setSelectedMapIcon(require('../../assets/locationPins/Location_Selected.png'));
     }
   }, [route.params.place]); //FIXME the fuck is place?
-
-  console.log(userLocation);
 
   const getStartRegion = async () => {
     const { status } = await Location.requestPermissionsAsync();
@@ -112,8 +110,9 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
     }
   };
 
-  const setSelectedLocation = (location: GoogleLocation) => {
+  const setSelectedLocationFn = (location: GoogleLocation) => {
     setSelectedMarker(location.place_id);
+    setSelectedLocation(location);
 
     const region = {
       latitude: location.geometry.location.lat,
@@ -193,9 +192,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
                     longitude: loc.geometry.location.lng,
                   }}
                   onPress={() => {
-                    setSelectedMarker(loc.place_id);
-                    // console.log(loc.place_id);
-                    // console.log(getZoomValue());
+                    setSelectedLocation(loc);
                   }}
                   key={loc.place_id}
                   style={styles.marker}
@@ -207,7 +204,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
               ))}
             </MapView>
           </View>
-          <ActivitySelectorSlideUpCard route={route} userLocation={userLocation} navigation={navigation} locations={placesUserWantsToGo} tempUserLocationQuery={tempUserLocationQuery} onSelectLocation={setSelectedLocation} />
+          <ActivitySelectorSlideUpCard route={route} selectedLocation={selectedLocation} userLocation={userLocation} navigation={navigation} locations={placesUserWantsToGo} tempUserLocationQuery={tempUserLocationQuery} onSelectLocation={setSelectedLocationFn} />
         </>
       )}
 

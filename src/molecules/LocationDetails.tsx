@@ -35,23 +35,27 @@ export const LocationDetails: React.FC<Props> =   ({ location, userLocation, clo
     }, [userLocation]);
 
     const imageGallery:  JSX.Element[] = [];
-
-    placeDetails?.photos.slice(0, Math.min(4, placeDetails.photos.length)).map((photo) => {
-        imageGallery.push(
-            <ActivityImage containerStyle={{marginBottom: 5}} referenceId={photo.photo_reference} height={Dimensions.get("window").width / 2 - 25} width={Dimensions.get("window").width / 2 - 25} />
-        )
-    });
+    if(placeDetails && placeDetails.photos) {
+        placeDetails.photos.slice(0, Math.min(4, placeDetails.photos.length)).map((photo) => {
+            imageGallery.push(
+                <ActivityImage containerStyle={{marginBottom: 5}} referenceId={photo.photo_reference} height={Dimensions.get("window").width / 2 - 25} width={Dimensions.get("window").width / 2 - 25} />
+            )
+        });
+    }
 
     const reviewsRow: JSX.Element[] = [];
-    placeDetails?.reviews.slice(0, Math.min(5, placeDetails.reviews.length)).map((review) => {
-        reviewsRow.push(
-            <View style={styles.reviewSingle}>
-                <LocationRating containerStyle={styles.paddingBottomTen} rating={review.rating} />
-
-                <AppText style={styles.reviewText}>{review.text}</AppText>
-            </View>
-        );
-    });
+    if(placeDetails && placeDetails.reviews) {
+        placeDetails.reviews.slice(0, Math.min(5, placeDetails.reviews.length)).map((review) => {
+            reviewsRow.push(
+                <View style={styles.reviewSingle}>
+                    <LocationRating containerStyle={styles.paddingBottomTen} rating={review.rating} />
+    
+                    <AppText style={styles.reviewText}>{review.text}</AppText>
+                </View>
+            );
+        });
+    }
+    
 
     return (
         <View style={styles.locationDetailsContainer}>
@@ -70,14 +74,20 @@ export const LocationDetails: React.FC<Props> =   ({ location, userLocation, clo
 
             <AppText style={styles.driveTime}>Drive Time: {duration}</AppText>
 
-            <View style={styles.galleryContainer}>
-                {imageGallery}
-            </View>
+            {imageGallery.length ? (
+                <View style={styles.galleryContainer}>
+                    {imageGallery}
+                </View>
+            ): null}
 
-            <View style={styles.reivewsRow}>
-                <AppText style={styles.reviewTitle}>Reviews</AppText>
-                {reviewsRow}
-            </View>
+            
+            {reviewsRow.length ? (
+                <View style={styles.reivewsRow}>
+                    <AppText style={styles.reviewTitle}>Reviews</AppText>
+                    {reviewsRow}
+                </View>
+            ): null}
+            
         </View>
     );
 }
