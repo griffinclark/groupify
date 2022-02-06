@@ -5,10 +5,13 @@ import { AppText, Button } from '../atoms/AtomsExports';
 import { GOLD_0, TEAL_0, WHITE, GREY_4, GREY_6 } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 // import * as SecureStore from 'expo-secure-store';
-import { GoogleLocation, NavigationProps } from '../res/dataModels';
+import { GoogleLocation, NavigationProps, UserLocation } from '../res/dataModels';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 import { navigateToPlanMap } from './../res/utilFunctions';
 import { RoutePropParams } from '../res/root-navigation';
+import { LocationRating } from '../molecules/LocationRating';
+import { LocationAddress } from '../molecules/LocationAddress';
+
 interface Props {
   location: GoogleLocation;
   map: boolean;
@@ -17,62 +20,16 @@ interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image?: any;
   tempUserLocationQuery: string;
+  userLocation: UserLocation;
   onSelectLocation?: (location: GoogleLocation) => void;
 }
 
-export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tempUserLocationQuery, onSelectLocation }: Props) => {
+export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tempUserLocationQuery, userLocation, onSelectLocation }: Props) => {
   if (!location.geometry) return null;
-  // console.log(location.formatted_address);
-  const formatAddress = () => {
-    if (!location.formatted_address) return null;
-    const addressArr = location.formatted_address.split(',');
-    const firstLine = addressArr.slice(0, -2);
-    const lastLine = addressArr.slice(-2);
-    return (
-      <View>
-        <View>
-          <AppText style={styles.address}>{firstLine.join(',')}</AppText>
-        </View>
-        <View>
-          <AppText style={styles.address}>{lastLine.join(',')}</AppText>
-        </View>
-      </View>
-    );
-  };
-
-  const renderStars = () => {
-    if (!location.rating) return null;
-
-    const arr = Array(5).fill(GREY_4);
-    const star = Math.round(location.rating);
-    let i = 0;
-    while (i < star) {
-      arr[i] = GOLD_0;
-      i++;
-    }
-
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        {arr.map((ele, idx) => (
-          <Icon color={ele} key={idx} name="star" type="font-awesome" size={15} />
-        ))}
-      </View>
-    );
-  };
-
+  
   const onButtonPress = (e: GestureResponderEvent) => {
     e.stopPropagation();
 
-    if(!onSelectLocation) {
-      navigateToPlanMap(location.name, navigation, route, route.params.userLocation, tempUserLocationQuery);
-    }
-    else {
-      onSelectLocation(location);
-    }
-    return true;
-  }
-
-  const onActivityCardPress = () => {
     navigation.navigate('PlanCreate', {
       currentUser: route.params.currentUser,
       navigation: navigation,
@@ -84,6 +41,16 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tem
         }
       }
     });
+    return true;
+  }
+
+  const onActivityCardPress = () => {
+    if(onSelectLocation) {
+      onSelectLocation(location);
+    }
+    else {
+      navigateToPlanMap(location.name, navigation, route, userLocation, tempUserLocationQuery,);
+    }
   }
 
   return (
@@ -102,22 +69,14 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tem
       </View>
       <View style={styles.rightCol}>
         <View style={styles.firstRow}>
-
-          {location.rating ? (
-            <AppText style={styles.rating}>
-              {location.rating.toFixed(1)} {renderStars()} ({location.user_ratings_total})
-            </AppText>
-          ) : 
-            <AppText style={styles.rating}>No Rating</AppText>
-          }
-          
+          <LocationRating rating={location.rating} ratingTotal={location.user_ratings_total} />
           <View style={styles.viewMapBtn} onStartShouldSetResponder={onButtonPress}>
-            <Button buttonStyle={styles.button} containerStyle={{width: 'auto'}} title={'View Map'} />
+            <Button buttonStyle={styles.button} containerStyle={{width: 'auto'}} title={'Groupify It'} />
           </View>
         </View>
         
         <AppText style={styles.name}>{location.name}</AppText>
-        {formatAddress()}
+        <LocationAddress formattedAddress={location.formatted_address} />
       </View>
     </TouchableOpacity>
   );
@@ -164,15 +123,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
   },
-  rating: {
-    fontSize: 12,
-  },
   viewMapBtn: {
     marginLeft: 'auto'
-  },
-  address: {
-    fontSize: 12,
-    lineHeight: 14,
   },
   map: {
     borderRadius: 10,
@@ -187,7 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: TEAL_0,
     borderRadius: 5,
     justifyContent: 'center',
-    maxWidth: 84,
+    maxWidth: 90,
     minWidth: 0,
     paddingVertical: 3,
     paddingHorizontal: 8,

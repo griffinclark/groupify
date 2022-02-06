@@ -56,6 +56,7 @@ export interface GoogleLocation {
   rating: number;
   reference: string;
   types: string[];
+  reviews: Review[];
   user_ratings_total: number;
   price_level: number;
 }
@@ -70,4 +71,15 @@ export interface Photo {
   width: number;
   html_attributions: string[];
   photo_reference: string;
+}
+
+export interface Review {
+  author_name: string;
+  author_url: string;
+  language: string;
+  profile_photo_url: string;
+  rating: number;
+  relative_time_description: string;
+  text: string;
+  time: number;
 }

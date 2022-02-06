@@ -81,15 +81,19 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       try {
         let location = await Location.getLastKnownPositionAsync();
 
-        console.log(location);
-
         if (location === null) {
           location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
         }
+
         setUserLocation({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
         });
+
+        route.params.userLocation = {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        }
 
         setRegion({
           latitude: location.coords.latitude,
@@ -202,7 +206,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         navigation={navigation}
         userPlans={createdPlans}
         invitedPlans={[...acceptedPlans, ...pendingPlans]}
-        userLocation={userLocation}
+        route={route}
       />
     </Screen>
   );

@@ -5,10 +5,11 @@ import { User, Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
 import { copy } from '../res/groupifyCopy';
-import { GoogleLocation } from '../res/dataModels';
+import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
+  route: RoutePropParams;
   user?: User;
   style?: Record<string, unknown>;
   invitedPlans: Plan[];
@@ -18,11 +19,10 @@ interface Props {
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
   };
-  userLocation: any; //TODO fix
 }
 
 export const HomeNavBar: React.FC<Props> = ({
-  userLocation,
+  route,
   user,
   style,
   userPlans,
@@ -30,6 +30,7 @@ export const HomeNavBar: React.FC<Props> = ({
   navigation,
   locations,
 }: Props) => {
+
   return (
     <View style={styles.navbar}>
       <View style={[styles.nav, style]}>
@@ -51,9 +52,9 @@ export const HomeNavBar: React.FC<Props> = ({
             navigation.navigate('SelectorMenu', {
               currentUser: user,
               locations: locations, // TODO is this needed?
-              userLocation: userLocation,
+              userLocation: route.params.userLocation,
               data: {
-                activitySearchData: {tempUserLocation: userLocation}
+                activitySearchData: {tempUserLocation: route.params.userLocation}
               }
             });
           }}

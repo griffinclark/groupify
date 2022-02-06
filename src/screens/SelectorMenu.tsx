@@ -22,7 +22,6 @@ interface Props {
     push: () => void;
   };
   route: RoutePropParams;
-  userLocation: UserLocation;
 }
 
 export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
@@ -73,7 +72,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
 
       <View style={styles.locationSuggestions}>
         {featuredLocations.length > 0 ? (
-          <LocationResults navigation={navigation} route={route} locations={featuredLocations} tempUserLocationQuery={''} />
+          <LocationResults navigation={navigation} route={route} locations={featuredLocations} tempUserLocationQuery={''} userLocation={route.params.userLocation} />
         ) : (
           <ProgressBar />
         )}
@@ -86,7 +85,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         navigation={navigation}
         userPlans={[]}
         invitedPlans={[]}
-        userLocation={route.params.userLocation}
+        route={route}
       />
     </Screen>
   );

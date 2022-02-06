@@ -186,6 +186,15 @@ export const comparePlansByDate = (planA: Plan, planB: Plan, reverse = false): n
 };
 
 // Returns the uri for a photo given a place's placeID using Google Places API
+export const loadPlaceDetails = async (placeID: string): Promise<GoogleLocation> => {
+  const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeID}&key=${GOOGLE_PLACES_API_KEY}`;
+  const response = await fetch(search);
+  const detail = await response.json();
+
+  return detail.result;
+};
+
+// Returns the uri for a photo given a place's placeID using Google Places API
 export const loadPhoto = async (placeID: string): Promise<string> => {
   const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
   const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeID}&key=${GOOGLE_PLACES_API_KEY}`;
@@ -315,6 +324,7 @@ const googleQuerySearch: (
     'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
     `location=${userLocation?.latitude},${userLocation.longitude}` +
     `&query=${query}` +
+    `&fields=rating` +
     `&key=${GOOGLE_PLACES_API_KEY}`;
     
   
@@ -441,6 +451,7 @@ export const googlePlacesQuery: (
             // 'rankby=distance' +
             // 'radius=10000' +
             // '&type=point_of_interest' +
+            `&fields=rating` +
             `&key=${GOOGLE_PLACES_API_KEY}`;
           await fetch(search).then(
             async (res) => {
@@ -543,6 +554,7 @@ export const googlePlacesQuery: (
         `location=${userLocation.latitude},${userLocation.longitude}` +
         `&query=${query}` +
         '&type=locality' +
+        `&fields=rating` +
         `&key=${GOOGLE_PLACES_API_KEY}`;
       await fetch(changeLocSearch).then(
         async (res) => {
@@ -630,7 +642,7 @@ export const getHost = async (id: string) => {
   }
 };
 export const navigateToPlanMap = async (
-  query: string | Activity,
+  query: string,
   navigation: NavigationProps,
   route: RoutePropParams,
   tempUserLocation: UserLocation,
@@ -650,7 +662,6 @@ export const navigateToPlanMap = async (
           tempUserLocationQuery: tempUserLocationQuery,
           placesUserWantsToGoResults: results,
           placesUserWantsToGoQuery: query,
-          fromButton: fromButton
         }
       },
       userLocation: route.params.userLocation,

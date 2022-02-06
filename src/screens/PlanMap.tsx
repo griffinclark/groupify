@@ -31,7 +31,7 @@ export interface Props {
   userLocation: UserLocation;
 }
 
-export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQuery  }: Props) => {
+export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQuery }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
@@ -64,12 +64,11 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
       getStartRegion();
     }
 
-    
-
   }, [userLocation, route.params.activity, distance, placesUserWantsToGo]); //FIXME the fuck are the second two?
 
   useEffect(() => {
     setPlacesUserWantsToGo(route.params.data.activitySearchData.placesUserWantsToGoResults);
+
   }, []);
 
   useEffect(() => {
@@ -82,6 +81,8 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
     }
   }, [route.params.place]); //FIXME the fuck is place?
 
+  console.log(userLocation);
+
   const getStartRegion = async () => {
     const { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
@@ -92,6 +93,11 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
         if (location === null) {
           location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
         }
+
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
 
         setRegion({
           latitude: location.coords.latitude,
@@ -146,7 +152,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
                 placeholderText={route.params.data.activitySearchData.tempUserLocationQuery}
                 navigation={navigation}
                 tempUserLocationQuery={route.params.data.activitySearchData.tempUserLocationQuery}
-                userLocation={route.params.userLocation}
+                userLocation={userLocation}
                 tempUserLocation={route.params.data.activitySearchData.tempUserLocation}
                 placesUserWantsToGoQuery={route.params.data.activitySearchData.placesUserWantsToGoQuery}
                 mode={SearchbarDisplayMode.Result}
@@ -201,7 +207,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
               ))}
             </MapView>
           </View>
-          <ActivitySelectorSlideUpCard route={route} navigation={navigation} locations={placesUserWantsToGo} tempUserLocationQuery={tempUserLocationQuery} onSelectLocation={setSelectedLocation} />
+          <ActivitySelectorSlideUpCard route={route} userLocation={userLocation} navigation={navigation} locations={placesUserWantsToGo} tempUserLocationQuery={tempUserLocationQuery} onSelectLocation={setSelectedLocation} />
         </>
       )}
 

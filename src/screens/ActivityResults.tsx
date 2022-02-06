@@ -44,6 +44,9 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
   const [distance, setDistance] = useState<number>(30);
 
   useEffect(() => {
+    getUserLocation();
+  }, []);
+  useEffect(() => {
     if (region.default) {
       getUserLocation();
     }
@@ -71,6 +74,9 @@ export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) =
     } else {
       try {
         let location = await Location.getLastKnownPositionAsync();
+
+        console.log(location);
+
         if (location === null) {
           location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
         }
