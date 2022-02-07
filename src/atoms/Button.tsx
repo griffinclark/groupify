@@ -1,11 +1,11 @@
 import React from 'react';
-import { GestureResponderEvent, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, WHITE, TEAL_0 } from '../res/styles/Colors';
 import { AppText } from './AppText';
 
 interface Props {
-  onPress?: (event: GestureResponderEvent) => void;
+  onPress?: () => void;
   title: string;
   disabled?: boolean;
   containerStyle?: Record<string, unknown>;
@@ -31,7 +31,7 @@ export const Button: React.FC<Props> = ({
           buttonStyle,
           disabled ? buttonStyles.disabledButton : {},
         ]}
-        onPress={onPress ? () => onPress() : null}
+        onPress={onPress}
         disabled={disabled}
       >
         <AppText
