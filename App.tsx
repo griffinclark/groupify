@@ -25,14 +25,13 @@ export const App: React.FC = () => {
   const [initalScreen, setInitialScreen] = useState('');
   const [userID, setUserID] = useState('');
   LogBox.ignoreLogs([
-    '"requestPermissionsAsync()" is now deprecated.',
+    `'requestPermissionsAsync()' is now deprecated.`,
     `AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage`,
     'FirebaseAnalytics.setCurrentScreen` is deprecated.',
     'Non-serializable values were found in the navigation state',
     'source.uri should not be an empty string',
     'Setting a timer',
-    `[Unhandled promise rejection: TypeError: undefined is not an object (evaluating 'userInfo.attributes.phone_number')]`  
-  ]);
+    `[Unhandled promise rejection: TypeError: undefined is not an object (evaluating 'userInfo.attributes.phone_number')]`,]);
 
   useEffect(() => {
     Hub.listen('auth', (event) => {
