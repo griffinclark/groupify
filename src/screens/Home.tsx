@@ -11,7 +11,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { PlansPreview } from '../atoms/PlansPreview';
 import { ImportContactTile } from '../atoms/ImportContactTile';
-import { FooterCard } from '../atoms/FooterCard';
 import { Banner } from '../atoms/Banner';
 import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
@@ -19,6 +18,7 @@ import { LocationAccuracy } from 'expo-location';
 import { GoogleLocation } from '../res/dataModels';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import Constants from 'expo-constants';
+import { WHITE } from '../res/styles/Colors';
 
 export interface Props {
   navigation: {
@@ -195,8 +195,8 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
               ) : null}
               <PlansPreview all={allPlans!} reload={trigger2} navigation={navigation} user={currentUser!} userLocation={userLocation} />
               <ImportContactTile navigation={navigation} />
-              <FooterCard />
             </View>
+            <View style={{ height: 70, backgroundColor: WHITE }}></View>
           </ScrollView>
         </>
       )}
