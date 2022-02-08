@@ -18,8 +18,8 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
 
   const activities = [
     {
-      id: ActivityEnum.Happending,
-      name: copy.happendingActivityTile,
+      id: ActivityEnum.Happening,
+      name: copy.happeningActivityTile,
     },
     {
       id: ActivityEnum.Outdoors,
@@ -60,7 +60,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
       case ActivityEnum.Outdoors: return require('../../assets/activityIcons/Outdoors.png');
       case ActivityEnum.Indoor: return require('../../assets/activityIcons/Shop.png');
       case ActivityEnum.AllDay: return require('../../assets/activityIcons/Nightlife.png');
-      case ActivityEnum.Happending: return require('../../assets/activityIcons/Culture.png');
+      case ActivityEnum.Happening: return require('../../assets/activityIcons/Culture.png');
       default:
         return <AppText>Error</AppText>;
     }

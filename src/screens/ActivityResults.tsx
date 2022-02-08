@@ -13,6 +13,7 @@ import { ActivitySlider } from '../molecules/MoleculesExports';
 import { getFavorites } from '../res/utilFavorites';
 import { copy } from '../res/groupifyCopy';
 import { GoogleLocation } from '../res/dataModels';
+import { GOOGLE_PLACES_API_KEY } from '../res/utilGoogle';
 
 export interface Props {
   navigation: {
@@ -21,9 +22,6 @@ export interface Props {
   };
   route: RoutePropParams;
 }
-
-// FIXME secret is just being stored in text in Groupify!!!
-const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
 
 export const ActivityResults: React.FC<Props> = ({ navigation, route }: Props) => {
   const [userLocation, setUserLocation] = useState({

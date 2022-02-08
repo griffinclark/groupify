@@ -14,7 +14,7 @@ export const copy = new LocalizedStrings({
     outsideActivityTile: 'Outdoors',
     exerciseActivityTile: 'Exercise',
     shopActivityTile: 'Shopping',
-    happendingActivityTile: 'Happending',
+    happeningActivityTile: 'Happening',
     drinkGameActivityTile: 'Drink & Game',
     indoorActivityTile: 'Indoor Fun',
     alldayActivityTile: 'All-Day Fun',

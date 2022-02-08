@@ -7,6 +7,7 @@ import { AppText } from '../atoms/AppText';
 import { TEAL_0, WHITE, GREY_0, GREY_4, GOLD_0 } from '../res/styles/Colors';
 import { Plan, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { GOOGLE_PLACES_API_KEY } from '../res/utilGoogle';
 
 interface Props {
   navigation: {
@@ -20,8 +21,6 @@ interface Props {
 }
 
 export const InviteeList: React.FC<Props> = ({ navigation, route }: Props) => {
-  // FIXME API key stored in code!!
-  const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
   const plan = route.params.plan;
   const [invitees, setInvitees] = useState<Invitee[]>([]);
   const [photoURI, setPhotoURI] = useState('');

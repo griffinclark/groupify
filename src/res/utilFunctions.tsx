@@ -8,8 +8,7 @@ import * as queries from '../graphql/queries';
 import { GoogleLocation, NavigationProps, UserLocation, ActivityEnum } from './dataModels';
 import { getDistance } from 'geolib';
 import { RoutePropParams } from './root-navigation';
-
-const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
+import { GOOGLE_PLACES_API_KEY } from './utilGoogle';
 
 //formats time to be presentable to users
 export const formatTime = (time: Date | string): string => {
@@ -358,7 +357,7 @@ export const googlePlacesQuery: (
       let unfilteredLocations: GoogleLocation[] = [];
 
       switch (query) {
-        case ActivityEnum.Happending:
+        case ActivityEnum.Happening:
             const [live, theatre, concert, show, foodtruck, farmer]: GoogleLocation[][] = await Promise.all([
               googleQuerySearch('live music', userLocation),
               googleQuerySearch('theatre', userLocation),

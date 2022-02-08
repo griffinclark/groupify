@@ -90,7 +90,7 @@ export enum ActivityEnum {
   Exercise = 'Exercise',
   Sports = 'Pick-up Game',
   Outdoors = 'Outdoors',
-  Happending = 'Happending',
+  Happening = 'Happening',
   Indoor = 'Indoor Fun',
   AllDay = 'All-Day Fun'
 }
