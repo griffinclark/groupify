@@ -35,16 +35,6 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
 
   const [showPlanDetails, setShowPlanDetails] = useState(false);
 
-  // useEffect(() => {
-  //   const shouldShowDetail = selectedLocation !== undefined;
-
-  //   setShowPlanDetails(shouldShowDetail);
-
-  //   if(shouldShowDetail) {
-  //     selectLocation(locations[0]);
-  //   }
-  // }, []);
-
   useEffect(() => {
     selectLocation(selectedLocation);
   }, [selectedLocation]);

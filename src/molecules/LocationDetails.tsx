@@ -51,6 +51,7 @@ export const LocationDetails: React.FC<Props> = ({ location, userLocation, close
           referenceId={photo.photo_reference}
           height={Dimensions.get('window').width / 2 - 25}
           width={Dimensions.get('window').width / 2 - 25}
+          key={photo.photo_reference}
         />,
       );
     });
