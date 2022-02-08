@@ -1,9 +1,8 @@
 import React from 'react';
-import { Dimensions, GestureResponderEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { GestureResponderEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActivityImage } from '../molecules/ActivityImage';
 import { AppText, Button } from '../atoms/AtomsExports';
-import { GOLD_0, TEAL_0, WHITE, GREY_4, GREY_6 } from '../res/styles/Colors';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { TEAL_0, WHITE, GREY_6 } from '../res/styles/Colors';
 // import * as SecureStore from 'expo-secure-store';
 import { GoogleLocation, NavigationProps, UserLocation } from '../res/dataModels';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
@@ -24,9 +23,16 @@ interface Props {
   onSelectLocation?: (location: GoogleLocation) => void;
 }
 
-export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tempUserLocationQuery, userLocation, onSelectLocation }: Props) => {
+export const ActivityCard: React.FC<Props> = ({
+  location,
+  navigation,
+  route,
+  tempUserLocationQuery,
+  userLocation,
+  onSelectLocation,
+}: Props) => {
   if (!location.geometry) return null;
-  
+
   const onButtonPress = (e: GestureResponderEvent) => {
     e.stopPropagation();
 
@@ -38,26 +44,22 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tem
           location: location.formatted_address,
           locationName: location.name,
           placeId: location.place_id,
-        }
-      }
+        },
+      },
     });
     return true;
-  }
+  };
 
   const onActivityCardPress = () => {
-    if(onSelectLocation) {
+    if (onSelectLocation) {
       onSelectLocation(location);
+    } else {
+      navigateToPlanMap(location.name, navigation, route, userLocation, tempUserLocationQuery);
     }
-    else {
-      navigateToPlanMap(location.name, navigation, route, userLocation, tempUserLocationQuery,);
-    }
-  }
+  };
 
   return (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={onActivityCardPress}
-    >
+    <TouchableOpacity style={styles.card} onPress={onActivityCardPress}>
       <View style={styles.leftCol}>
         <View style={styles.imageContainer}>
           {location.photos ? (
@@ -71,10 +73,10 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tem
         <View style={styles.firstRow}>
           <LocationRating rating={location.rating} ratingTotal={location.user_ratings_total} />
           <View style={styles.viewMapBtn} onStartShouldSetResponder={onButtonPress}>
-            <Button buttonStyle={styles.button} containerStyle={{width: 'auto'}} title={'Groupify It'} />
+            <Button buttonStyle={styles.button} containerStyle={{ width: 'auto' }} title={'Groupify It'} />
           </View>
         </View>
-        
+
         <AppText style={styles.name}>{location.name}</AppText>
         <LocationAddress formattedAddress={location.formatted_address} />
       </View>
@@ -83,9 +85,7 @@ export const ActivityCard: React.FC<Props> = ({ location, navigation, route, tem
 };
 
 const styles = StyleSheet.create({
-  imageContainer: {
-
-  },
+  imageContainer: {},
   card: {
     backgroundColor: WHITE,
     minHeight: 107,
@@ -103,8 +103,7 @@ const styles = StyleSheet.create({
   rightCol: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'flex-start'
-  
+    justifyContent: 'flex-start',
   },
   firstRow: {
     justifyContent: 'space-between',
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginRight: 0,
     marginBottom: 4,
-    flex: 1
+    flex: 1,
   },
   cardContent: {
     flex: 1,
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   viewMapBtn: {
-    marginLeft: 'auto'
+    marginLeft: 'auto',
   },
   map: {
     borderRadius: 10,
@@ -143,7 +142,7 @@ const styles = StyleSheet.create({
     minWidth: 0,
     paddingVertical: 3,
     paddingHorizontal: 8,
-    marginVertical: 0
+    marginVertical: 0,
   },
   buttonText: {
     color: WHITE,
@@ -158,5 +157,5 @@ const styles = StyleSheet.create({
   locationImage: {
     height: 89,
     width: 89,
-  }
+  },
 });

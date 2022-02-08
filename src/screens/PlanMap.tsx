@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Dimensions, StyleSheet, Text, ScrollView, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import Constants from 'expo-constants';
 import { RoutePropParams } from '../res/root-navigation';
 import { GOLD_0, GREY_8, GREY_6, WHITE } from '../res/styles/Colors';
-import { GoogleLocation, UserLocation, ActivityEnum} from '../res/dataModels';
+import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { Screen } from '../atoms/Screen';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { HomeNavBar } from '../molecules/HomeNavBar';
@@ -50,20 +50,21 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
   const [placesUserWantsToGo, setPlacesUserWantsToGo] = useState<GoogleLocation[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<GoogleLocation>();
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const mapMarker = require('../../assets/locationPins/Location_Base.png');
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const mapSelectedMarker = require('../../assets/locationPins/Location_Selected.png');
 
   const mapRef = useRef();
 
   useEffect(() => {
-    if(placesUserWantsToGo.length === 1) {
+    if (placesUserWantsToGo.length === 1) {
       setSelectedLocation(placesUserWantsToGo[0]);
     }
 
     if (placesUserWantsToGo.length != 1 && region.default) {
       getStartRegion();
     }
-
   }, [userLocation, route.params.activity, distance, placesUserWantsToGo]); //FIXME the fuck are the second two?
 
   useEffect(() => {
@@ -73,10 +74,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
   useEffect(() => {
     if (route.params.place != undefined) {
       setRegion(route.params.place);
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      // setMapIcon(require('../../assets/locationPins/Location_Base.png'));
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      // setSelectedMapIcon(require('../../assets/locationPins/Location_Selected.png'));
     }
   }, [route.params.place]); //FIXME the fuck is place?
 
@@ -124,7 +121,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
     setRegion(region);
 
     mapRef.current?.animateToRegion(region, 2000);
-  }
+  };
 
   return (
     <Screen style={styles.container}>
@@ -197,13 +194,25 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
                   style={styles.marker}
                 >
                   {/* TODO change icon on press */}
-                  {loc.place_id == selectedMarker ? <MapIcon image={mapSelectedMarker} /> : <MapIcon image={mapMarker} />}
+                  {loc.place_id == selectedMarker ? (
+                    <MapIcon image={mapSelectedMarker} />
+                  ) : (
+                    <MapIcon image={mapMarker} />
+                  )}
                   <Text style={styles.mapText}>{loc.name}</Text>
                 </Marker>
               ))}
             </MapView>
           </View>
-          <ActivitySelectorSlideUpCard route={route} selectedLocation={selectedLocation} userLocation={userLocation} navigation={navigation} locations={placesUserWantsToGo} tempUserLocationQuery={tempUserLocationQuery} onSelectLocation={setSelectedLocationFn} />
+          <ActivitySelectorSlideUpCard
+            route={route}
+            selectedLocation={selectedLocation}
+            userLocation={userLocation}
+            navigation={navigation}
+            locations={placesUserWantsToGo}
+            tempUserLocationQuery={tempUserLocationQuery}
+            onSelectLocation={setSelectedLocationFn}
+          />
         </>
       )}
 

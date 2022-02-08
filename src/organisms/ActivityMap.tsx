@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Constants from 'expo-constants';
 import { MapIcon } from '../../assets/Icons/IconExports';
 import { TEAL_0, WHITE } from '../res/styles/Colors';
-import { getFavorites } from '../res/utilFavorites';
 import { useIsFocused } from '@react-navigation/native';
 import { GoogleLocation } from './../res/dataModels';
-import { SvgUri, SvgXml } from 'react-native-svg';
 
 export interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

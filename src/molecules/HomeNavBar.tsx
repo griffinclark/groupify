@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { GREY_1, TEAL_0, WHITE } from '../res/styles/Colors';
+import { GREY_1, WHITE } from '../res/styles/Colors';
 import { User, Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
 import { copy } from '../res/groupifyCopy';
-import { GoogleLocation, UserLocation } from '../res/dataModels';
+import { GoogleLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
@@ -30,7 +30,6 @@ export const HomeNavBar: React.FC<Props> = ({
   navigation,
   locations,
 }: Props) => {
-
   return (
     <View style={styles.navbar}>
       <View style={[styles.nav, style]}>
@@ -54,8 +53,8 @@ export const HomeNavBar: React.FC<Props> = ({
               locations: locations, // TODO is this needed?
               userLocation: route.params.userLocation,
               data: {
-                activitySearchData: {tempUserLocation: route.params.userLocation}
-              }
+                activitySearchData: { tempUserLocation: route.params.userLocation },
+              },
             });
           }}
         >

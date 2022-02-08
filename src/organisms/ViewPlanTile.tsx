@@ -7,7 +7,6 @@ import { Plan } from '../models';
 import { InviteePreviewTile, PlanDetailsTile, Details } from '../molecules/MoleculesExports';
 import { background, BLACK, GREY_6, TEAL_0 } from '../res/styles/Colors';
 import { loadInviteeStatus } from '../res/utilFunctions';
-import { GREY_8 } from './../res/styles/Colors';
 
 interface Props {
   plan: Plan;

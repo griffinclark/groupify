@@ -36,7 +36,7 @@ export const PlanConfirm: React.FC<Props> = ({ navigation, route }: Props) => {
                 {formatDayOfWeekDate(route.params.data.planData.date, false, true)} {'\n'}{' '}
                 {route.params.data.planData.time}
               </AppText>
-              
+
               <Button title={'Awesome Sauce'} onPress={goHome} buttonStyle={{ minWidth: 292, borderRadius: 5 }} />
             </View>
           </View>

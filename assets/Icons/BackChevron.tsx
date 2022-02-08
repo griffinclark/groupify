@@ -10,7 +10,7 @@ interface Props {
   width?: string;
 }
 
-export const BackChevronIcon: React.FC<Props> = ({ onPress, testID, height = '20', width = '15'}: Props) => {
+export const BackChevronIcon: React.FC<Props> = ({ onPress, testID, height = '20', width = '15' }: Props) => {
   return (
     <TouchableOpacity onPress={onPress ? () => onPress() : null}>
       <Svg width={width} height={height} viewBox="0 0 19 34" fill="none">

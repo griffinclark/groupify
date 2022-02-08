@@ -1,6 +1,6 @@
 import { GoogleLocation, NavigationProps, Photo, UserLocation } from '../res/dataModels';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Keyboard, Dimensions } from 'react-native';
+import { StyleSheet, View, Keyboard } from 'react-native';
 import { Screen } from '../atoms/Screen';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -9,7 +9,6 @@ import { SearchBar } from '../atoms/SearchBar';
 import { RoutePropParams } from '../res/root-navigation';
 import { SearchSuggestionTile } from '../molecules/SearchSuggestionTile';
 import { BLACK, WHITE } from '../res/styles/Colors';
-import { MapLinkIcon } from '../../assets/Icons/MapLink';
 import { PinIcon } from '../../assets/Icons/Pin';
 import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
 import { navigateToPlanMap } from './../res/utilFunctions';
@@ -32,7 +31,9 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
   const [placesUserWantsToGoResults, setPlacesUserWantsToGoResults] = useState<GoogleLocation[]>([]);
   const [tempUserLocationResults, setTempUserLocationResults] = useState<GoogleLocation[]>([]);
   const [dataset, setDataset] = useState(Dataset.SelectLocation);
-  const [tempUserLocation, setTempUserLocation] = useState<UserLocation>(route.params.data.activitySearchData.tempUserLocation);
+  const [tempUserLocation, setTempUserLocation] = useState<UserLocation>(
+    route.params.data.activitySearchData.tempUserLocation,
+  );
   const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState('');
   const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
   const [userLocation, setUserLocation] = useState<UserLocation>(route.params.userLocation);
@@ -103,7 +104,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
     types: ['null'],
   };
 
-  const onChangeLocationField = async(text: string) => {    
+  const onChangeLocationField = async (text: string) => {
     setDataset(Dataset.ChangeUserLocation);
     // FIXME indicate to the user that they have not changed their location until a location is selected from the list
     setTempUserLocationQuery(text);
@@ -117,7 +118,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
       currentLocation0Arr.push(location);
     });
     setTempUserLocationResults(currentLocation0Arr);
-  }
+  };
 
   return (
     <Screen>
@@ -199,11 +200,11 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
         </View>
         {dataset == Dataset.SelectLocation ? (
           <View style={styles.selectLocationSearchResults}>
-            <LocationResults 
-              navigation={navigation} 
-              route={route} 
+            <LocationResults
+              navigation={navigation}
+              route={route}
               locations={getDataSet()}
-              tempUserLocationQuery = {tempUserLocationQuery}
+              tempUserLocationQuery={tempUserLocationQuery}
             />
           </View>
         ) : (
@@ -259,7 +260,7 @@ const styles = StyleSheet.create({
   },
   selectLocationSearchResults: {
     paddingBottom: 300,
-    marginTop: 20
+    marginTop: 20,
     // TODO set this height dynamically based on whether the keyboard is showing or not
   },
 });

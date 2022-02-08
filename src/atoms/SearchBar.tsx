@@ -1,7 +1,6 @@
-import React, { JSXElementConstructor, useEffect, useState } from 'react';
-import { NativeSyntheticEvent, NativeTouchEvent, StyleSheet, TextInput, View } from 'react-native';
-import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
-import { BLACK, GREY_3, GREY_4, GREY_6 } from '../res/styles/Colors';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
+import { BLACK, GREY_6 } from '../res/styles/Colors';
 import { CloseIcon } from '../../assets/Icons/Close';
 
 interface Props {
@@ -30,7 +29,7 @@ export const SearchBar: React.FC<Props> = ({
   defaultValue,
   selectTextOnFocus,
   testID,
-  hideClose = false
+  hideClose = false,
 }: Props) => {
   const [input, setInput] = useState('');
 

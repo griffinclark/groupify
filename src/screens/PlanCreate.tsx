@@ -41,7 +41,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   console.log(route.params.currentUser);
-  
+
   useEffect(() => {
     if (route.params.data) {
       const { data } = route.params;

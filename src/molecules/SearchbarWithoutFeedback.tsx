@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import { AppText } from '../atoms/AppText';
 import { NavigationProps, UserLocation } from '../res/dataModels';
@@ -33,7 +33,6 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
   tempUserLocation,
   mode,
 }: Props) => {
-
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -45,10 +44,10 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
               tempUserLocation: tempUserLocation,
               placesUserWantsToGoQuery: placesUserWantsToGoQuery,
               tempUserLocationQuery: tempUserLocationQuery,
-            }
+            },
           },
           userLocation: userLocation,
-          
+
           //TODO @joni do we want to clear user search on navigate back to SelectorMenu?
         });
       }}
@@ -60,7 +59,9 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
         ) : (
           <View style={{ flexDirection: 'row', overflow: 'hidden' }}>
             <AppText>{placesUserWantsToGoQuery + ' '}</AppText>
-            <AppText style={styles.searchBarText}>{tempUserLocationQuery ? tempUserLocationQuery : 'Current Location'}</AppText>
+            <AppText style={styles.searchBarText}>
+              {tempUserLocationQuery ? tempUserLocationQuery : 'Current Location'}
+            </AppText>
           </View>
         )}
       </View>
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     backgroundColor: WHITE,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   icon: {
     padding: 15,

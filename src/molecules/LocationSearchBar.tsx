@@ -1,7 +1,9 @@
-import React from 'react';
+/** Griffin's WIP */
+/*import React from 'react';
+
 import { BLACK } from '../res/styles/Colors';
 
-export const LocationSearchBar = (setSearchInput) => {
+export const LocationSearchBar = (setSearchInput: string) => {
   <TextInput
     style={styles.input}
     placeholder={'placeholder'}
@@ -30,4 +32,4 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     color: BLACK,
   },
-});
+});*/

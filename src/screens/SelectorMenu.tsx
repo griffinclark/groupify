@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, Animated, View, Image, ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { Screen } from '../atoms/Screen';
 import { BLACK, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
-import { AppText } from '../atoms/AppText';
 import { HomeNavBar } from '../molecules/HomeNavBar';
-import { GoogleLocation, UserLocation, ActivityEnum } from '../res/dataModels';
+import { GoogleLocation, ActivityEnum } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
-import { ActivityCard } from './../molecules/ActivityCard';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
@@ -29,10 +27,9 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   //const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState('');
   //const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
   const [scrollTop, setScrollTop] = useState(true);
-  
+
   const randomEnumKey = (enumeration: typeof ActivityEnum) => {
-    const keys = Object.keys(enumeration)
-        .filter(k => !(Math.abs(Number.parseInt(k)) + 1));
+    const keys = Object.keys(enumeration).filter((k) => !(Math.abs(Number.parseInt(k)) + 1));
     const enumKey = keys[Math.floor(Math.random() * keys.length)];
     return enumKey;
   };
@@ -46,36 +43,53 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
 
     const buildFeatureLocations = async () => {
       setFeaturedLocations(
-        await googlePlacesQuery(ActivityEnum[randomKey], route.params.data.activitySearchData.tempUserLocation, GooglePlacesQueryOptions.Activity),
+        await googlePlacesQuery(
+          ActivityEnum[randomKey],
+          route.params.data.activitySearchData.tempUserLocation,
+          GooglePlacesQueryOptions.Activity,
+        ),
       );
     };
     buildFeatureLocations();
   }, []);
 
   const handleScrollView = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setScrollTop(e.nativeEvent.contentOffset.y > 300)
-  }
+    setScrollTop(e.nativeEvent.contentOffset.y > 300);
+  };
 
   const bgImage = [
     require('../../assets/activity-selector-bg/image-activity-1.png'),
     require('../../assets/activity-selector-bg/image-activity-2.png'),
     require('../../assets/activity-selector-bg/image-activity-3.png'),
     require('../../assets/activity-selector-bg/image-activity-4.png'),
-    require('../../assets/activity-selector-bg/image-activity-5.png')
+    require('../../assets/activity-selector-bg/image-activity-5.png'),
   ];
 
   const bgImageIndex = Math.floor(Math.random() * 4);
-  
+
   return (
     <Screen style={styles.screen}>
-      <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[2]}  onScroll={handleScrollView} scrollEventThrottle={32}>
-        <TopNavBar stickyHeader={false} title="" navigation={navigation} displayGroupify={true} displayBackButton={false} route={route} targetScreen={'Home'} />
-        
+      <ScrollView
+        style={styles.scrollContainer}
+        stickyHeaderIndices={[2]}
+        onScroll={handleScrollView}
+        scrollEventThrottle={32}
+      >
+        <TopNavBar
+          stickyHeader={false}
+          title=""
+          navigation={navigation}
+          displayGroupify={true}
+          displayBackButton={false}
+          route={route}
+          targetScreen={'Home'}
+        />
+
         <View>
-          <Image style={{width: 'auto', height: 260}} source={bgImage[bgImageIndex]} />
+          <Image style={{ width: 'auto', height: 260 }} source={bgImage[bgImageIndex]} />
         </View>
 
-        <View style={[styles.searchBar, scrollTop ? {backgroundColor: WHITE} : {}]}>
+        <View style={[styles.searchBar, scrollTop ? { backgroundColor: WHITE } : {}]}>
           <SearchbarWithoutFeedback
             navigation={navigation}
             route={route}
@@ -90,14 +104,20 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
         <ActivitySelector route={route} navigation={navigation} />
 
-      <View style={styles.locationSuggestions}>
-        {featuredLocations.length > 0 ? (
-          <LocationResults navigation={navigation} route={route} locations={featuredLocations} tempUserLocationQuery={''} userLocation={route.params.userLocation} />
-        ) : (
-          <ProgressBar />
-        )}
-      </View>
-    </ScrollView>
+        <View style={styles.locationSuggestions}>
+          {featuredLocations.length > 0 ? (
+            <LocationResults
+              navigation={navigation}
+              route={route}
+              locations={featuredLocations}
+              tempUserLocationQuery={''}
+              userLocation={route.params.userLocation}
+            />
+          ) : (
+            <ProgressBar />
+          )}
+        </View>
+      </ScrollView>
 
       <HomeNavBar
         locations={[]}
@@ -121,19 +141,19 @@ const styles = StyleSheet.create({
   },
   navbarLogo: {
     //height: 45,
-   // width: 130,
+    // width: 130,
   },
   activitySuggestions: {
     backgroundColor: WHITE,
     height: '58%',
   },
-  middleText: { 
-    color: 'white', 
-    fontWeight: 'bold' 
+  middleText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
   scrollContainer: {
     marginBottom: 50,
-    paddingBottom: 400
+    paddingBottom: 400,
   },
   locationSuggestions: {
     marginTop: 30,

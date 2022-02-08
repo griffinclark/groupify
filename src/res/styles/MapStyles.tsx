@@ -1,4 +1,17 @@
-import { GOLD_5, GREY_7, YELLOW_5, YELLOW_2, GOLD_2, GOLD_4, TEAL_0, SUCCESS, GOLD_0, ALERT, TEAL_4, GREY_4 } from './Colors';
+import {
+  GOLD_5,
+  GREY_7,
+  YELLOW_5,
+  YELLOW_2,
+  GOLD_2,
+  GOLD_4,
+  TEAL_0,
+  SUCCESS,
+  GOLD_0,
+  ALERT,
+  TEAL_4,
+  GREY_4,
+} from './Colors';
 
 export const mapStyles = [
   {

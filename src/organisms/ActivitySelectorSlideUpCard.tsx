@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { RoutePropParams } from '../res/root-navigation';
 import { NavigationProps, GoogleLocation, UserLocation } from './../res/dataModels';
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import { StyleSheet, View, Text, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Dimensions } from 'react-native';
 import { GREY_6, WHITE } from '../res/styles/Colors';
 import { LocationResults } from '../molecules/LocationResults';
 import { LocationDetails } from '../molecules/LocationDetails';
@@ -14,11 +14,18 @@ interface Props {
   tempUserLocationQuery: string;
   userLocation: UserLocation;
   selectedLocation: GoogleLocation | undefined;
-  onSelectLocation?: (location: GoogleLocation) => void
+  onSelectLocation?: (location: GoogleLocation) => void;
 }
 
-export const ActivitySelectorSlideUpCard: React.FC<Props> = ({ navigation, route, locations, tempUserLocationQuery, userLocation, selectedLocation, onSelectLocation = () => {}  }: Props) => {
-
+export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
+  navigation,
+  route,
+  locations,
+  tempUserLocationQuery,
+  userLocation,
+  selectedLocation,
+  onSelectLocation,
+}: Props) => {
   const slideUpMenuHeight = 650;
   const slideUpMenuBottom = 250;
 
@@ -38,26 +45,23 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({ navigation, route
   //   }
   // }, []);
 
-
   useEffect(() => {
     selectLocation(selectedLocation);
   }, [selectedLocation]);
 
-
   const selectLocation = (location: GoogleLocation | undefined) => {
-    if(location) {
-      onSelectLocation(location);
+    if (location) {
+      onSelectLocation && onSelectLocation(location);
       setCurrentSelectedLocation(location);
       setShowPlanDetails(true);
     }
-    
-  }
+  };
 
   const closeDetail = () => {
     setShowPlanDetails(false);
     setCurrentSelectedLocation(undefined);
-  }
-  
+  };
+
   return (
     <SlidingUpPanel
       height={slideUpMenuHeight}
@@ -69,17 +73,28 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({ navigation, route
     >
       <View style={styles.slideUpMenuRootContainer}>
         <View style={styles.slideUpPanelIcon}></View>
-        <ScrollView 
+        <ScrollView
           style={styles.slideBar}
           onTouchStart={() => setAllowDragging(false)}
           onTouchEnd={() => setAllowDragging(true)}
           onTouchCancel={() => setAllowDragging(true)}
         >
-          {currentSelectedLocation && showPlanDetails ? 
-            <LocationDetails location={currentSelectedLocation} userLocation={userLocation} closeLocationDetail={closeDetail}  />
-            :
-            <LocationResults navigation={navigation} route={route} userLocation={userLocation} locations={locations} tempUserLocationQuery={tempUserLocationQuery} onSelectLocation={selectLocation} />
-          }
+          {currentSelectedLocation && showPlanDetails ? (
+            <LocationDetails
+              location={currentSelectedLocation}
+              userLocation={userLocation}
+              closeLocationDetail={closeDetail}
+            />
+          ) : (
+            <LocationResults
+              navigation={navigation}
+              route={route}
+              userLocation={userLocation}
+              locations={locations}
+              tempUserLocationQuery={tempUserLocationQuery}
+              onSelectLocation={selectLocation}
+            />
+          )}
         </ScrollView>
       </View>
     </SlidingUpPanel>
@@ -92,7 +107,7 @@ const styles = StyleSheet.create({
     height: 5,
     backgroundColor: WHITE,
     borderRadius: 3,
-    paddingBottom: 200
+    paddingBottom: 200,
   },
   slideUpPanelIcon: {
     height: 5,
@@ -100,7 +115,7 @@ const styles = StyleSheet.create({
     backgroundColor: GREY_6,
     position: 'absolute',
     top: 16,
-    left: Dimensions.get('screen').width / 2 - 32
+    left: Dimensions.get('screen').width / 2 - 32,
   },
   slideUpMenuRootContainer: {
     height: '100%',

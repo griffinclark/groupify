@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Image, Keyboard } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { AppText } from '../atoms/AppText';
 import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
-import { GREY_1, GREY_4, WHITE } from '../res/styles/Colors';
+import { GREY_4, WHITE } from '../res/styles/Colors';
 import Constants from 'expo-constants';
 
 interface Props {
@@ -29,7 +29,7 @@ export const TopNavBar: React.FC<Props> = ({
   targetScreen,
   placesUserWantsToGoQuery,
   tempUserLocationQuery,
-  stickyHeader = true
+  stickyHeader = true,
 }: Props) => {
   return (
     <View style={[styles.topNavBarRoot, stickyHeader && styles.topNavBarSticky]}>
@@ -39,7 +39,7 @@ export const TopNavBar: React.FC<Props> = ({
           navigation.navigate(targetScreen, { route, placesUserWantsToGoQuery, tempUserLocationQuery });
         }}
       >
-      {displayBackButton ? <BackChevronIcon /> : null}
+        {displayBackButton ? <BackChevronIcon /> : null}
       </TouchableOpacity>
       {displayGroupify ? (
         <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   topNavBarSticky: {
-    marginTop: Constants.statusBarHeight
-  }
+    marginTop: Constants.statusBarHeight,
+  },
 });

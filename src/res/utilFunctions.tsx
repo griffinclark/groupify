@@ -314,26 +314,23 @@ export enum GooglePlacesQueryOptions {
   ChangeLocation,
 }
 
-const googleQuerySearch: (
-  queryTerm: string,
-  userLocation: UserLocation,
-) => Promise<GoogleLocation[]> = async (query, userLocation) => {
+const googleQuerySearch: (queryTerm: string, userLocation: UserLocation) => Promise<GoogleLocation[]> = async (
+  query,
+  userLocation,
+) => {
   const search =
     'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
     `location=${userLocation?.latitude},${userLocation.longitude}` +
     `&query=${query}` +
-    `&fields=rating` +
+    '&fields=rating' +
     `&key=${GOOGLE_PLACES_API_KEY}`;
-    
-  
+
   const unfilteredLocations: GoogleLocation[] = [];
 
   await fetch(search).then(
     async (res) => {
       const detail = await res.json();
-      detail.results.forEach((unfilteredLocation: GoogleLocation) =>
-        unfilteredLocations.push(unfilteredLocation),
-      );
+      detail.results.forEach((unfilteredLocation: GoogleLocation) => unfilteredLocations.push(unfilteredLocation));
     },
     (rej) => {
       console.log(rej);
@@ -341,7 +338,7 @@ const googleQuerySearch: (
   );
 
   return unfilteredLocations;
-}
+};
 
 export const googlePlacesQuery: (
   text: string,
@@ -358,18 +355,32 @@ export const googlePlacesQuery: (
 
       switch (query) {
         case ActivityEnum.Happening:
-            const [live, theatre, concert, show, foodtruck, farmer]: GoogleLocation[][] = await Promise.all([
-              googleQuerySearch('live music', userLocation),
-              googleQuerySearch('theatre', userLocation),
-              googleQuerySearch('concert', userLocation),
-              googleQuerySearch('art show', userLocation),
-              googleQuerySearch('food truck', userLocation),
-              googleQuerySearch('farmer\'s market', userLocation),
-            ]);
-            unfilteredLocations = unfilteredLocations.concat(live, theatre, concert, show, foodtruck, farmer);
-            break;
+          const [live, theatre, concert, show, foodtruck, farmer]: GoogleLocation[][] = await Promise.all([
+            googleQuerySearch('live music', userLocation),
+            googleQuerySearch('theatre', userLocation),
+            googleQuerySearch('concert', userLocation),
+            googleQuerySearch('art show', userLocation),
+            googleQuerySearch('food truck', userLocation),
+            googleQuerySearch('"farmer\'s·market"', userLocation),
+          ]);
+          unfilteredLocations = unfilteredLocations.concat(live, theatre, concert, show, foodtruck, farmer);
+          break;
         case ActivityEnum.Outdoors:
-          const [trail, mountain, beack, park, pier, bonfire, garden, snow, skii, sled, paddle, fish, golf]: GoogleLocation[][] = await Promise.all([
+          const [
+            trail,
+            mountain,
+            beack,
+            park,
+            pier,
+            bonfire,
+            garden,
+            snow,
+            skii,
+            sled,
+            paddle,
+            fish,
+            golf,
+          ]: GoogleLocation[][] = await Promise.all([
             googleQuerySearch('trail', userLocation),
             googleQuerySearch('mountain', userLocation),
             googleQuerySearch('beach', userLocation),
@@ -384,59 +395,94 @@ export const googlePlacesQuery: (
             googleQuerySearch('fishing', userLocation),
             googleQuerySearch('disc golf', userLocation),
           ]);
-          unfilteredLocations = unfilteredLocations.concat(trail, mountain, beack, park, pier, bonfire, garden, snow, skii, sled, paddle, fish, golf);
+          unfilteredLocations = unfilteredLocations.concat(
+            trail,
+            mountain,
+            beack,
+            park,
+            pier,
+            bonfire,
+            garden,
+            snow,
+            skii,
+            sled,
+            paddle,
+            fish,
+            golf,
+          );
 
           break;
         case ActivityEnum.Food:
-          const [restau] : GoogleLocation[][] = await Promise.all([
-            googleQuerySearch('restaurants', userLocation),
-          ]);
+          const [restau]: GoogleLocation[][] = await Promise.all([googleQuerySearch('restaurants', userLocation)]);
 
           unfilteredLocations = unfilteredLocations.concat(restau);
           break;
         case ActivityEnum.Chill:
-          const [boba, coffee, tea, acai, smoothie] : GoogleLocation[][] = await Promise.all([
+          const [boba, coffee, tea, acai, smoothie]: GoogleLocation[][] = await Promise.all([
             googleQuerySearch('boba', userLocation),
             googleQuerySearch('coffee', userLocation),
             googleQuerySearch('tea', userLocation),
             googleQuerySearch('acai', userLocation),
-            googleQuerySearch('smoothie', userLocation)
+            googleQuerySearch('smoothie', userLocation),
           ]);
-  
+
           unfilteredLocations = unfilteredLocations.concat(boba, coffee, tea, acai, smoothie);
           break;
         case ActivityEnum.Exercise:
-          const [climb, yoga, gym, boxing, swim, pilates, martial, parkor, spin] : GoogleLocation[][] = await Promise.all([
-            googleQuerySearch('climbing gym', userLocation),
-            googleQuerySearch('yoga studio', userLocation),
-            googleQuerySearch('gym', userLocation),
-            googleQuerySearch('boxing gym', userLocation),
-            googleQuerySearch('swimming pool', userLocation),
-            googleQuerySearch('pilates', userLocation),
-            googleQuerySearch('martial arts', userLocation),
-            googleQuerySearch('parkor', userLocation),
-            googleQuerySearch('spin class', userLocation)
-          ]);
-  
-          unfilteredLocations = unfilteredLocations.concat(climb, yoga, gym, boxing, swim, pilates, martial, parkor, spin);
-          break;
-        case ActivityEnum.Indoor: 
-          const [pool, arcade, bowl, poker, trampoline, parkour, game, axe, escape] : GoogleLocation[][] = await Promise.all([
-            googleQuerySearch('pool hall', userLocation),
-            googleQuerySearch('arcade', userLocation),
-            googleQuerySearch('bowling', userLocation),
-            googleQuerySearch('poker', userLocation),
-            googleQuerySearch('trampoline park', userLocation),
-            googleQuerySearch('parkour', userLocation),
-            googleQuerySearch('game room', userLocation),
-            googleQuerySearch('axe throwing', userLocation),
-            googleQuerySearch('escape room', userLocation)
-          ]);
+          const [climb, yoga, gym, boxing, swim, pilates, martial, parkor, spin]: GoogleLocation[][] =
+            await Promise.all([
+              googleQuerySearch('climbing gym', userLocation),
+              googleQuerySearch('yoga studio', userLocation),
+              googleQuerySearch('gym', userLocation),
+              googleQuerySearch('boxing gym', userLocation),
+              googleQuerySearch('swimming pool', userLocation),
+              googleQuerySearch('pilates', userLocation),
+              googleQuerySearch('martial arts', userLocation),
+              googleQuerySearch('parkor', userLocation),
+              googleQuerySearch('spin class', userLocation),
+            ]);
 
-          unfilteredLocations = unfilteredLocations.concat(pool, arcade, bowl, poker, trampoline, parkour, game, axe, escape);
+          unfilteredLocations = unfilteredLocations.concat(
+            climb,
+            yoga,
+            gym,
+            boxing,
+            swim,
+            pilates,
+            martial,
+            parkor,
+            spin,
+          );
+          break;
+        case ActivityEnum.Indoor:
+          const [pool, arcade, bowl, poker, trampoline, parkour, game, axe, escape]: GoogleLocation[][] =
+            await Promise.all([
+              googleQuerySearch('pool hall', userLocation),
+              googleQuerySearch('arcade', userLocation),
+              googleQuerySearch('bowling', userLocation),
+              googleQuerySearch('poker', userLocation),
+              googleQuerySearch('trampoline park', userLocation),
+              googleQuerySearch('parkour', userLocation),
+              googleQuerySearch('game room', userLocation),
+              googleQuerySearch('axe throwing', userLocation),
+              googleQuerySearch('escape room', userLocation),
+            ]);
+
+          unfilteredLocations = unfilteredLocations.concat(
+            pool,
+            arcade,
+            bowl,
+            poker,
+            trampoline,
+            parkour,
+            game,
+            axe,
+            escape,
+          );
           break;
         case ActivityEnum.Sports:
-            const [volley, pickle, tennis, basket, soccer, baseball, paintball, airsoft] : GoogleLocation[][] = await Promise.all([
+          const [volley, pickle, tennis, basket, soccer, baseball, paintball, airsoft]: GoogleLocation[][] =
+            await Promise.all([
               googleQuerySearch('volleyball court', userLocation),
               googleQuerySearch('pickle ball court', userLocation),
               googleQuerySearch('tennis court', userLocation),
@@ -444,13 +490,36 @@ export const googlePlacesQuery: (
               googleQuerySearch('soccer field', userLocation),
               googleQuerySearch('baseball field', userLocation),
               googleQuerySearch('paintball', userLocation),
-              googleQuerySearch('airsoft', userLocation)
+              googleQuerySearch('airsoft', userLocation),
             ]);
-    
-            unfilteredLocations = unfilteredLocations.concat(volley, pickle, tennis, basket, soccer, baseball, paintball, airsoft);
+
+          unfilteredLocations = unfilteredLocations.concat(
+            volley,
+            pickle,
+            tennis,
+            basket,
+            soccer,
+            baseball,
+            paintball,
+            airsoft,
+          );
           break;
         case ActivityEnum.AllDay:
-          const [zoo, zipline, aquarium, museum, ice, skate, water, art, kayak, theater, sufboard, bike, sky] : GoogleLocation[][] = await Promise.all([
+          const [
+            zoo,
+            zipline,
+            aquarium,
+            museum,
+            ice,
+            skate,
+            water,
+            art,
+            kayak,
+            theater,
+            sufboard,
+            bike,
+            sky,
+          ]: GoogleLocation[][] = await Promise.all([
             googleQuerySearch('zoo', userLocation),
             googleQuerySearch('ziplining', userLocation),
             googleQuerySearch('aquarium', userLocation),
@@ -463,10 +532,24 @@ export const googlePlacesQuery: (
             googleQuerySearch('theater', userLocation),
             googleQuerySearch('surfboard rental', userLocation),
             googleQuerySearch('bike rental', userLocation),
-            googleQuerySearch('skydiving', userLocation)
+            googleQuerySearch('skydiving', userLocation),
           ]);
-  
-          unfilteredLocations = unfilteredLocations.concat(zoo, zipline, aquarium, museum, ice, skate, water, art, kayak, theater, sufboard, bike, sky);
+
+          unfilteredLocations = unfilteredLocations.concat(
+            zoo,
+            zipline,
+            aquarium,
+            museum,
+            ice,
+            skate,
+            water,
+            art,
+            kayak,
+            theater,
+            sufboard,
+            bike,
+            sky,
+          );
           break;
         default:
           const search =
@@ -476,7 +559,7 @@ export const googlePlacesQuery: (
             // 'rankby=distance' +
             // 'radius=10000' +
             // '&type=point_of_interest' +
-            `&fields=rating` +
+            '&fields=rating' +
             `&key=${GOOGLE_PLACES_API_KEY}`;
           await fetch(search).then(
             async (res) => {
@@ -561,10 +644,13 @@ export const googlePlacesQuery: (
       }
 
       // Gather place_id to make sure we don't have duplicate places
-      const placeIdArr : string[] = [];
+      const placeIdArr: string[] = [];
 
-      unfilteredLocations.forEach((location: GoogleLocation) => {        
-        if (location.types.length && whitelist.some((tag) => location.types.includes(tag)) == true && !placeIdArr.includes(location.place_id)) {
+      unfilteredLocations.forEach((location: GoogleLocation) => {
+        location.types.length &&
+          whitelist.some((tag) => location.types.includes(tag)) == true &&
+          !placeIdArr.includes(location.place_id);
+        {
           if (getDistance(userLocation, location.geometry.location) < 30000) {
             placeIdArr.push(location.place_id);
             searchResults.push(location);
@@ -579,7 +665,7 @@ export const googlePlacesQuery: (
         `location=${userLocation.latitude},${userLocation.longitude}` +
         `&query=${query}` +
         '&type=locality' +
-        `&fields=rating` +
+        '&fields=rating' +
         `&key=${GOOGLE_PLACES_API_KEY}`;
       await fetch(changeLocSearch).then(
         async (res) => {
@@ -672,22 +758,25 @@ export const navigateToPlanMap = async (
   route: RoutePropParams,
   tempUserLocation: UserLocation,
   tempUserLocationQuery: string,
-  fromButton?: boolean
-) : Promise<void> => {
+  fromButton?: boolean,
+): Promise<void> => {
   // rerun the query with the name of the selected venue so all venues with the same name show up on the map
   try {
-    const results = await googlePlacesQuery(query, route.params.data.activitySearchData.tempUserLocation, GooglePlacesQueryOptions.Activity);
-    
+    const results = await googlePlacesQuery(
+      query,
+      route.params.data.activitySearchData.tempUserLocation,
+      GooglePlacesQueryOptions.Activity,
+    );
     navigation.navigate('PlanMap', {
       navigation: { navigation },
       route: route,
       data: {
         activitySearchData: {
-          tempUserLocation : tempUserLocation,
+          tempUserLocation: tempUserLocation,
           tempUserLocationQuery: tempUserLocationQuery,
           placesUserWantsToGoResults: results,
           placesUserWantsToGoQuery: query,
-        }
+        },
       },
       userLocation: route.params.userLocation,
     });

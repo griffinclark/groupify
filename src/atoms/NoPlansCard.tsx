@@ -3,18 +3,17 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { RoutePropParams } from '../res/root-navigation';
 import { GoogleLocation } from '../res/dataModels';
-import { roundDate } from '../res/utilFunctions';
 import { User } from '../models';
 import { WHITE, TEAL, BLACK } from '../res/styles/Colors';
 
 interface Props {
-  user: User,
+  user: User;
   navigation: {
     navigate: (ev: string, {}) => void;
   };
   locations?: GoogleLocation[];
   userLocation: any; //TODO fix
-  route: RoutePropParams
+  route: RoutePropParams;
 }
 
 export const NoPlansCard: React.FC<Props> = ({ user, navigation, locations, userLocation }: Props) => {
@@ -26,14 +25,16 @@ export const NoPlansCard: React.FC<Props> = ({ user, navigation, locations, user
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('SelectorMenu', {
-          locations: locations, // TODO is this needed?
-          userLocation: userLocation,
-          data: {
-            activitySearchData: {tempUserLocation: userLocation}
-          },
-          currentUser: user
-        })}
+        onPress={() =>
+          navigation.navigate('SelectorMenu', {
+            locations: locations, // TODO is this needed?
+            userLocation: userLocation,
+            data: {
+              activitySearchData: { tempUserLocation: userLocation },
+            },
+            currentUser: user,
+          })
+        }
         activeOpacity={0.4}
         style={styles.button}
       >

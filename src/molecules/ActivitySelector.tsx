@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RoutePropParams } from '../res/root-navigation';
 import { GoogleLocation, NavigationProps, ActivityEnum } from './../res/dataModels';
 import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
@@ -15,7 +15,6 @@ interface Props {
 
 // Stored as 2d array to make it really easy to edit where options show up in the activity selector
 export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) => {
-
   const activities = [
     {
       id: ActivityEnum.Happening,
@@ -51,47 +50,52 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
     },
   ];
 
-  const getImageSource = (id : ActivityEnum) => {
-    switch(id) {
-      case ActivityEnum.Food: return require('../../assets/activityIcons/Food.png');
-      case ActivityEnum.Chill: return require('../../assets/activityIcons/Coffee.png');
-      case ActivityEnum.Exercise: return require('../../assets/activityIcons/Fitness.png');
-      case ActivityEnum.Sports: return require('../../assets/activityIcons/Sports.png');
-      case ActivityEnum.Outdoors: return require('../../assets/activityIcons/Outdoors.png');
-      case ActivityEnum.Indoor: return require('../../assets/activityIcons/Shop.png');
-      case ActivityEnum.AllDay: return require('../../assets/activityIcons/Nightlife.png');
-      case ActivityEnum.Happening: return require('../../assets/activityIcons/Culture.png');
+  const getImageSource = (id: ActivityEnum) => {
+    switch (id) {
+      case ActivityEnum.Food:
+        return require('../../assets/activityIcons/Food.png');
+      case ActivityEnum.Chill:
+        return require('../../assets/activityIcons/Coffee.png');
+      case ActivityEnum.Exercise:
+        return require('../../assets/activityIcons/Fitness.png');
+      case ActivityEnum.Sports:
+        return require('../../assets/activityIcons/Sports.png');
+      case ActivityEnum.Outdoors:
+        return require('../../assets/activityIcons/Outdoors.png');
+      case ActivityEnum.Indoor:
+        return require('../../assets/activityIcons/Shop.png');
+      case ActivityEnum.AllDay:
+        return require('../../assets/activityIcons/Nightlife.png');
+      case ActivityEnum.Happening:
+        return require('../../assets/activityIcons/Culture.png');
       default:
         return <AppText>Error</AppText>;
     }
-  }
+  };
 
   return (
     <View style={styles.activitySelector}>
-        {activities.map((activity: {id: ActivityEnum, name: string}) => (
-          <TouchableOpacity
-            onPress={async () => {
-              navigateToPlanMap(activity.id, navigation, route, route.params.userLocation, 'Current Location', true);
-            }}
-            testID={activity.id}
-            key={activity.id}
-          >
-            <View style={styles.activitiesImageContainer}>
-            <Image
-              source={getImageSource(activity.id)}
-              style={styles.activitySelectorButtonImage}
-            />
-              <AppText style={styles.iconText}>{activity.name}</AppText>
-            </View>
-          </TouchableOpacity>
-        ))}
+      {activities.map((activity: { id: ActivityEnum; name: string }) => (
+        <TouchableOpacity
+          onPress={async () => {
+            navigateToPlanMap(activity.id, navigation, route, route.params.userLocation, 'Current Location', true);
+          }}
+          testID={activity.id}
+          key={activity.id}
+        >
+          <View style={styles.activitiesImageContainer}>
+            <Image source={getImageSource(activity.id)} style={styles.activitySelectorButtonImage} />
+            <AppText style={styles.iconText}>{activity.name}</AppText>
+          </View>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   activitySelectorButtonImage: {
-    marginBottom: 5
+    marginBottom: 5,
   },
   activitySelector: {
     paddingTop: 30,
@@ -99,7 +103,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   activitiesImageContainer: {
     display: 'flex',
@@ -118,6 +122,6 @@ const styles = StyleSheet.create({
   },
   iconText: {
     fontSize: 11,
-    fontWeight: '500'
+    fontWeight: '500',
   },
 });
