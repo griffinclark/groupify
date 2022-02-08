@@ -17,7 +17,6 @@ import { RoutePropParams } from '../res/root-navigation';
 import { LocationAccuracy } from 'expo-location';
 import { GoogleLocation } from '../res/dataModels';
 import { globalStyles } from '../res/styles/GlobalStyles';
-import Constants from 'expo-constants';
 import { WHITE } from '../res/styles/Colors';
 
 export interface Props {
@@ -50,10 +49,9 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [pastPlans, setPastPlans] = useState<Plan[]>([]);
   const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
   const [state, setState] = useState(LoadingState.Loading);
-  const [userLocation, setUserLocation] = useState({latitude: 0, longitude: 0}); // defaults to Los Angeles if user location is not provided and no place param
+  const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 }); // defaults to Los Angeles if user location is not provided and no place param
   const [region, setRegion] = useState({});
   const [locations, setLocations] = useState<GoogleLocation[]>([]);
-
 
   useEffect(() => {
     getUserLocation();
@@ -74,7 +72,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const getUserLocation = async () => {
     const { status } = await Location.requestPermissionsAsync();
-    
+
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
     } else {
@@ -93,7 +91,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         route.params.userLocation = {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
-        }
+        };
 
         setRegion({
           latitude: location.coords.latitude,
@@ -122,7 +120,6 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     const detail = await response.json();
     setLocations(detail.results);
   };
-
 
   const onHomeRefresh = () => {
     setRefreshing(true);
@@ -187,13 +184,26 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       ) : (
         <>
-          <TopNavBar title="" navigation={navigation} displayGroupify={true} displayBackButton={false} route={route} targetScreen={'Home'} />
+          <TopNavBar
+            title=""
+            navigation={navigation}
+            displayGroupify={true}
+            displayBackButton={false}
+            route={route}
+            targetScreen={'Home'}
+          />
           <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
             <View style={[globalStyles.containerWithHeader, globalStyles.containerWithFooter]}>
               {acceptedPlans.length > 0 || createdPlans.length > 0 ? (
                 <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />
               ) : null}
-              <PlansPreview all={allPlans!} reload={trigger2} navigation={navigation} user={currentUser!} userLocation={userLocation} />
+              <PlansPreview
+                all={allPlans!}
+                reload={trigger2}
+                navigation={navigation}
+                user={currentUser!}
+                userLocation={userLocation}
+              />
               <ImportContactTile navigation={navigation} />
             </View>
             <View style={{ height: 70, backgroundColor: WHITE }}></View>
