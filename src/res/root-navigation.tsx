@@ -25,8 +25,6 @@ import { Welcome } from '../screens/Welcome';
 import { PlanIndex } from '../screens/PlanIndex';
 import { EditPlan } from '../screens/EditPlan';
 import { OldActivitySelector } from '../screens/ActivitySelector';
-import { ActivityResults } from '../screens/ActivityResults';
-import { ActivityFavorites } from '../screens/ActivityFavorites';
 import { SelectorMenu } from '../screens/SelectorMenu';
 import { PlanMap } from '../screens/PlanMap';
 import { TakeoverSearch } from '../screens/TakeoverSearch';
@@ -140,8 +138,6 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="ViewPlans" component={PlanIndex} options={{ headerShown: false }} />
         <Stack.Screen name="EditPlan" component={EditPlan} options={{ headerShown: false }} />
         <Stack.Screen name="ActivitySelector" component={OldActivitySelector} options={{ headerShown: false }} />
-        <Stack.Screen name="ActivityResults" component={ActivityResults} options={{ headerShown: false }} />
-        <Stack.Screen name="ActivityFavorites" component={ActivityFavorites} options={{ headerShown: false }} />
         <Stack.Screen name="SelectorMenu" component={SelectorMenu} options={{ headerShown: false }} />
         <Stack.Screen name="TakeoverSearch" component={TakeoverSearch} options={{ headerShown: false }} />
         <Stack.Screen name="ContactList" component={ContactList} options={{ headerShown: false }} />

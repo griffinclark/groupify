@@ -44,7 +44,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
   });
   // const [mapIcon, setMapIcon] = useState('');
   // const [selectedMapIcon, setSelectedMapIcon] = useState('');
-  const [distance, setDistance] = useState(30); //TODO does this do anything?
   const [selectedMarker, setSelectedMarker] = useState('');
   const [radius, setRadius] = useState(1);
   const [placesUserWantsToGo, setPlacesUserWantsToGo] = useState<GoogleLocation[]>([]);
@@ -65,7 +64,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
     if (placesUserWantsToGo.length != 1 && region.default) {
       getStartRegion();
     }
-  }, [userLocation, route.params.activity, distance, placesUserWantsToGo]); //FIXME the fuck are the second two?
+  }, [userLocation, route.params.activity, placesUserWantsToGo]); //FIXME the fuck are the second two?
 
   useEffect(() => {
     setPlacesUserWantsToGo(route.params.data.activitySearchData.placesUserWantsToGoResults);

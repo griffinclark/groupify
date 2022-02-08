@@ -12,8 +12,8 @@ interface Props {
 
 export const BackChevronIcon: React.FC<Props> = ({ onPress, testID, height = '20', width = '15' }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress ? () => onPress() : null}>
-      <Svg width={width} height={height} viewBox="0 0 19 34" fill="none">
+    <TouchableOpacity onPress={onPress}>
+      <Svg width={width} height={height} viewBox="0 0 19 34" fill="none" testID={testID}>
         <Path
           d="M16.875 2L1.875 17L16.875 32"
           stroke="black"

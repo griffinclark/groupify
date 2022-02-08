@@ -50,12 +50,9 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
   const [state, setState] = useState(LoadingState.Loading);
   const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 }); // defaults to Los Angeles if user location is not provided and no place param
-  const [region, setRegion] = useState({});
-  const [locations, setLocations] = useState<GoogleLocation[]>([]);
 
   useEffect(() => {
     getUserLocation();
-    queryActivities();
   }, []);
 
   useEffect(() => {
@@ -93,32 +90,10 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           longitude: location.coords.longitude,
         };
 
-        setRegion({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
-          default: false,
-        });
-
-        queryActivities();
       } catch (e) {
         console.log(e);
       }
     }
-  };
-
-  const queryActivities = async () => {
-    const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
-    const search =
-      'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
-      `location=${userLocation.latitude},${userLocation.longitude}` +
-      `&radius=${5000}` +
-      `&query=${'climb'}` +
-      `&key=${GOOGLE_PLACES_API_KEY}`;
-    const response = await fetch(search);
-    const detail = await response.json();
-    setLocations(detail.results);
   };
 
   const onHomeRefresh = () => {

@@ -7,8 +7,6 @@ import { InvitedPreview } from './InvitedPreview';
 import { CreatedPlans } from './CreatedPlans';
 import { ContactContainer } from './ContactContainer';
 import { FriendContainer } from './FriendContainer';
-import { ActivityMap } from './ActivityMap';
-import { ActivityList } from './ActivityList';
 
 export {
   DataDisplay,
@@ -20,6 +18,4 @@ export {
   CreatedPlans,
   ContactContainer,
   FriendContainer,
-  ActivityMap,
-  ActivityList,
 };
