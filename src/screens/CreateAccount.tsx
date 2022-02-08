@@ -6,12 +6,13 @@ import { Auth } from 'aws-amplify';
 import { Screen, FormInput, Button, Alert } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { WHITE, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL_0 } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import * as Analytics from 'expo-firebase-analytics';
+import { copy } from '../res/groupifyCopy';
 
 export interface Props {
   navigation: {
@@ -177,12 +178,12 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                 <View>
                   <View style={{ flexDirection: 'row', paddingBottom: 20, marginHorizontal: 20 }}>
                     <BackChevronIcon onPress={() => navigation.navigate('Welcome', {})} />
-                    <AppText style={styles.title}>Create Account</AppText>
+                    <AppText style={styles.title}>{copy.createAccountPageTitle}</AppText>
                   </View>
                   <FormInput
                     autoFocus={false}
                     returnKeyNext={true}
-                    label="First Name"
+                    label={copy.firstNameFieldTitle}
                     onChangeText={(value) => {
                       setFirstName(value.trim());
                     }}
@@ -190,7 +191,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                   <FormInput
                     autoFocus={false}
                     returnKeyNext={true}
-                    label="Last Name"
+                    label={copy.lastNameFieldTitle}
                     onChangeText={(value) => {
                       setLastName(value.trim());
                     }}
@@ -198,16 +199,21 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                   <FormInput
                     returnKeyNext={true}
                     value={phone}
-                    label="Phone Number"
+                    label={copy.phoneNumberFieldTitle}
                     onChangeText={(value) => {
                       setPhone(formatPhoneNumber(value));
                     }}
                   />
-                  <FormInput returnKeyNext={true} label="Password" onChangeText={setPassword} secureTextEntry={true} />
+                  <FormInput
+                    returnKeyNext={true}
+                    label={copy.passwordFieldTitle}
+                    onChangeText={setPassword}
+                    secureTextEntry={true}
+                  />
                   <FormInput
                     submit={signUp}
                     returnKeyNext={false}
-                    label="Confirm Password"
+                    label={copy.confirmPasswordFieldTitle}
                     onChangeText={setConfirmPassword}
                     secureTextEntry={true}
                   />
@@ -223,7 +229,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
                     <AppText style={styles.title}>Verify Phone Number</AppText>
                   </View>
                   <View>
-                    <AppText style={styles.details}>Please enter the verification code you received.</AppText>
+                    <AppText style={styles.details}>{copy.askForVerificationCode}</AppText>
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
                       <FormInput
                         returnKeyNext={false}
@@ -264,7 +270,11 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
             )}
           </TouchableWithoutFeedback>
         </ScrollView>
-        <Button title="Next" onPress={route.params.step === 'validate' ? validateUser : signUp} disabled={disabled} />
+        <Button
+          title={copy.nextButtonTitle}
+          onPress={route.params.step === 'validate' ? validateUser : signUp}
+          disabled={disabled}
+        />
       </Screen>
     </KeyboardAvoidingView>
   );
@@ -273,7 +283,7 @@ export const CreateAccount: React.FC<Props> = ({ navigation, route }: Props) => 
 const styles = StyleSheet.create({
   title: {
     marginLeft: 15,
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 30,
     fontWeight: '400',
   },

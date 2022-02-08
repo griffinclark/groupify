@@ -3,11 +3,12 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { convertDateStringToDate, formatTime } from '../res/utilFunctions';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 import { Edit } from '../../assets/Icons/IconExports';
 import { API } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import Clipboard from 'expo-clipboard';
+import { GREY_6 } from './../res/styles/Colors';
 
 interface Props {
   plan: Plan;
@@ -48,7 +49,7 @@ export const PlanDetailsTile: React.FC<Props> = ({ plan, creator, navigation }: 
       <AppText style={{ fontSize: 18, fontWeight: '700', paddingBottom: 35 }}>Host:</AppText>
       <View style={styles.nameRow}>
         <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-          <View style={[styles.sphere, { backgroundColor: TEAL }]}>
+          <View style={[styles.sphere, { backgroundColor: TEAL_0 }]}>
             <AppText maxFontSizeMultiplier={1} style={{ fontSize: 24, fontWeight: '700', color: 'white' }}>
               {hostName.slice(0, 1)}
             </AppText>
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   clipboard: {
-    backgroundColor: '#e3dede',
+    backgroundColor: GREY_6,
     borderRadius: 8,
     position: 'absolute',
     top: -20,

@@ -8,6 +8,7 @@ import { AppText } from '../atoms/AppText';
 import { MediumPlanTile } from '../molecules/MediumPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
+import { copy } from '../res/groupifyCopy';
 
 interface Props {
   navigation: {
@@ -19,34 +20,6 @@ interface Props {
 export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
   const currentUser = route.params.currentUser;
   const currentUserPlan = route.params.currentUserPlan;
-  // const [sundayAvailabilityStart, setSundayAvailabilityStart] = useState('');
-  // const [sundayAvailabilityEnd, setSundayAvailabilityEnd] = useState('');
-  // const [mondayAvailabilityStart, setMondayAvailabilityStart] = useState('');
-  // const [mondayAvailabilityEnd, setMondayAvailabilityEnd] = useState('');
-  // const [tuesdayAvailabilityStart, setTuesdayAvailabilityStart] = useState('');
-  // const [tuesdayAvailabilityEnd, setTuesdayAvailabilityEnd] = useState('');
-
-  // useEffect(() => {
-  //   setAvailability();
-  // }, [currentUser]);
-
-  // const setAvailability = async () => {
-  //   const user = await DataStore.query(User, route.params.currentUser.id);
-  //   if (
-  //     user &&
-  //     user.availability &&
-  //     user.availability.Sunday &&
-  //     user.availability.Monday &&
-  //     user.availability.Tuesday
-  //   ) {
-  //     setSundayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Sunday[0]}`)));
-  //     setSundayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Sunday[1]}`)));
-  //     setMondayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Monday[0]}`)));
-  //     setMondayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Monday[1]}`)));
-  //     setTuesdayAvailabilityStart(formatTime(new Date(`2021-01-01T${user.availability.Tuesday[0]}`)));
-  //     setTuesdayAvailabilityEnd(formatTime(new Date(`2021-01-01T${user.availability.Tuesday[1]}`)));
-  //   }
-  // };
 
   return (
     <Screen>
@@ -98,54 +71,18 @@ export const Profile: React.FC<Props> = ({ navigation, route }: Props) => {
               <AppText style={{ fontSize: 20, fontWeight: '200' }}>Lets create one together! </AppText>
             </View>
           )}
-
-          {/*
-          <View style={styles.availability}>
-            <View style={styles.availabilityDays}>
-              <AppText style={styles.availabilityText}>Sunday</AppText>
-              <AppText style={styles.availabilityText}>
-                <AppText style={{ color: '#31A59F' }}>{sundayAvailabilityStart}</AppText> to{' '}
-                <AppText style={{ color: '#31A59F' }}>{sundayAvailabilityEnd}</AppText>
-              </AppText>
-            </View>
-            <View style={styles.availabilityDays}>
-              <AppText style={styles.availabilityText}>Monday</AppText>
-              <AppText style={styles.availabilityText}>
-                <AppText style={{ color: '#31A59F' }}>{mondayAvailabilityStart}</AppText> to{' '}
-                <AppText style={{ color: '#31A59F' }}>{mondayAvailabilityEnd}</AppText>
-              </AppText>
-            </View>
-            <View style={styles.availabilityDays}>
-              <AppText style={styles.availabilityText}>Tuesday</AppText>
-              <AppText style={styles.availabilityText}>
-                <AppText style={{ color: '#31A59F' }}>{tuesdayAvailabilityStart}</AppText> to{' '}
-                <AppText style={{ color: '#31A59F' }}>{tuesdayAvailabilityEnd}</AppText>
-              </AppText>
-            </View>
-          </View>
-          */}
-        </TouchableOpacity>
-        {/* <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('EditFriends', {
-              userID: route.params.currentUser.id,
-            });
-          }}
-          style={styles.bugReport}
-        >
-          <AppText style={{ fontSize: 18 }}>Edit Friends</AppText>
-        </TouchableOpacity> */}
-        <TouchableOpacity
-          onPress={() => Linking.openURL('https://forms.gle/ysqh1hg5NhisEAcM7')}
-          style={styles.bugReport}
-        >
-          <AppText style={{ fontSize: 18 }}>Submit Bug Report</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('ImportContacts', { last: 'Profile' })}
           style={styles.bugReport}
         >
-          <AppText style={{ fontSize: 18 }}>Import Contacts</AppText>
+          <AppText style={{ fontSize: 18 }}>{copy.addFriendsButtonTitle}</AppText>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => Linking.openURL('https://forms.gle/ysqh1hg5NhisEAcM7')}
+          style={styles.bugReport}
+        >
+          <AppText style={{ fontSize: 18 }}>{copy.submitBugReportButtonTitle}</AppText>
         </TouchableOpacity>
       </View>
     </Screen>

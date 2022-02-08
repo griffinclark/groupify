@@ -12,12 +12,12 @@ import {
   sortPlansByDate,
 } from './../res/utilFunctions';
 import { User, Plan, Invitee } from '../models';
-import { TEAL, WHITE } from '../res/styles/Colors';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
 import { ViewPlanTile } from '../organisms/ViewPlanTile';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
 import GestureRecognizerView from 'rn-swipe-gestures';
-import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
+import { copy } from '../res/groupifyCopy';
 
 interface Props {
   navigation: {
@@ -64,7 +64,7 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
 
     setUserPlans(sortPlansByDate(userCreatedPlans));
     reorder(sortPlansByDate(invitedPlans));
-    console.log('Finished loading plans');
+    // console.log('Finished loading plans');
   };
 
   const reorder = (plans: Plan[]) => {
@@ -97,8 +97,8 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
             setModal(<View style={{ display: 'none' }} />);
             respondToPlan(true, plan).then(() => setReload(!reload));
           }}
-          button1Text="Woot!"
-          message="You’ve accepted an invite!"
+          button1Text={copy.celebrationText}
+          message={copy.inviteAcceptedConfirmation}
           message2={`${plan.description ? plan.description : plan.title}\n${
             plan.date && formatDayOfWeekDate(plan.date)
           }\n${plan.time && formatTime(plan.time)}`}
@@ -114,9 +114,9 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
           onButton2Press={() => {
             setModal(<View style={{ display: 'none' }} />);
           }}
-          button1Text="Yes, Decline"
-          button2Text="No"
-          message="Are you sure you’d like to decline this invitation?"
+          button1Text={copy.confirmDeclineText}
+          button2Text={copy.cancelDeclineText}
+          message={copy.confirmInviteDeclineText}
           message2={`${plan.description}\n${plan.date && formatDayOfWeekDate(plan.date)}\n${
             plan.time && formatTime(plan.time)
           }`}
@@ -132,8 +132,8 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
           respondToPlan(false, plan).then(() => setReload(!reload));
           setModal(<View style={{ display: 'none' }} />);
         }}
-        button1Text="Okay"
-        message="Invite has been declined."
+        button1Text={copy.confirm}
+        message={copy.inviteDeclined}
         message2={`${plan.description}\n${plan.date && formatDayOfWeekDate(plan.date)}\n${
           plan.time && formatTime(plan.time)
         }`}
@@ -149,14 +149,14 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View testID="PlanIndexScreen" style={styles.planIndexContainer}>
-        <Navbar location={'Home'} navigation={navigation} title={'All Plans'} />
+        <Navbar location={'Home'} navigation={navigation} title={copy.notificationsTitle} />
         <View style={styles.tabs}>
           <View style={tab === 'invited' ? styles.tabContainerSelected : styles.tabContainer}>
             <AppText
               onPress={() => setTab('invited')}
               style={tab === 'invited' ? styles.tabTextSelected : styles.tabText}
             >
-              INVITED
+              {copy.invitedNotificationsTitle}
             </AppText>
           </View>
           <View style={tab === 'created' ? styles.tabContainerSelected : styles.tabContainer}>
@@ -164,7 +164,7 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
               onPress={() => setTab('created')}
               style={tab === 'created' ? styles.tabTextSelected : styles.tabText}
             >
-              CREATED
+              {copy.createdNotificationsTitle}
             </AppText>
           </View>
         </View>
@@ -177,10 +177,10 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
         ) : (
           <>
             <GestureRecognizerView
-            /* eslint-disable */
-            // @ts-expect-error
-            config={{ detectSwipeDown: false, detectSwipeUp: false }}
-            /* eslint-enable */
+              /* eslint-disable */
+              // @ts-expect-error
+              config={{ detectSwipeDown: false, detectSwipeUp: false }}
+              /* eslint-enable */
               onSwipeLeft={() => setTab('created')}
               onSwipeRight={() => setTab('invited')}
             >
@@ -196,30 +196,11 @@ export const PlanIndex: React.FC<Props> = ({ navigation, route }: Props) => {
           </>
         )}
       </View>
-      {state === 'loading' ? (
-        <View style={styles.navbar}>
-          <View style={{ width: '100%', alignItems: 'center' }}>
-            <View style={styles.nav}>
-              <View style={styles.navalign}>
-                <AnnounceIcon />
-                <AppText style={styles.text}>Notifications</AppText>
-              </View>
-              <View style={styles.navalign}>
-                <CreatePlanIcon />
-                <AppText style={styles.text}>Create Plan</AppText>
-              </View>
-              <View style={styles.navalign}>
-                <SettingsIcon />
-                <AppText style={styles.text}>Settings</AppText>
-              </View>
-            </View>
-          </View>
-        </View>
-      ) : (
-        <View style={styles.navbar}>
-          <HomeNavBar user={currentUser} navigation={navigation} invitedPlans={invitedPlans} userPlans={userPlans} />
-        </View>
-      )}
+      {/* TODO why do we have this here? Seems redundant */}
+      <View style={styles.navbar}>
+        <HomeNavBar user={currentUser} navigation={navigation} invitedPlans={invitedPlans} userPlans={userPlans} />
+      </View>
+
       {modal ? modal : null}
     </Screen>
   );
@@ -242,7 +223,7 @@ const styles = StyleSheet.create({
   },
   tabContainerSelected: {
     alignItems: 'center',
-    borderBottomColor: TEAL,
+    borderBottomColor: TEAL_0,
     borderBottomWidth: 3,
     marginTop: 20,
     paddingBottom: 14,
@@ -254,7 +235,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   tabTextSelected: {
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 16,
     fontWeight: '700',
   },
@@ -274,7 +255,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
   },
   text: {
     fontSize: 13,

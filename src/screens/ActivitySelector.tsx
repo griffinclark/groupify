@@ -7,6 +7,7 @@ import { getCurrentUser } from './../res/utilFunctions';
 import { ActivityModal } from '../molecules/ActivityModal';
 import GestureRecognizerView from 'rn-swipe-gestures';
 import Constants from 'expo-constants';
+import { copy } from './../res/groupifyCopy';
 import * as Analytics from 'expo-firebase-analytics';
 
 export interface Props {
@@ -28,19 +29,19 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-food.png')} />
           </View>
-          <AppText style={styles.activityText}>Get Food</AppText>
+          <AppText style={styles.activityText}>{copy.foodActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('park')} testID="activity">
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-outside.png')} />
           </View>
-          <AppText style={styles.activityText}>Go Outside</AppText>
+          <AppText style={styles.activityText}>{copy.outsideActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('gym')} testID="activity">
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-gym.png')} />
           </View>
-          <AppText style={styles.activityText}>Get Fit</AppText>
+          <AppText style={styles.activityText}>{copy.workoutActivityTile}</AppText>
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
@@ -48,19 +49,19 @@ const PageOne: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-shopping.png')} />
           </View>
-          <AppText style={styles.activityText}>Get Shopping</AppText>
+          <AppText style={styles.activityText}>{copy.shopActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('coffee')} testID="activity">
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-coffee.png')} />
           </View>
-          <AppText style={styles.activityText}>Get Coffee</AppText>
+          <AppText style={styles.activityText}>{copy.coffeeActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleActivity('relax')} testID="activity">
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-relax.png')} />
           </View>
-          <AppText style={styles.activityText}>Get Relaxed</AppText>
+          <AppText style={styles.activityText}>{copy.relaxActivityTile}</AppText>
         </TouchableOpacity>
       </View>
     </View>
@@ -79,7 +80,7 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-bar.png')} />
           </View>
-          <AppText style={styles.activityText}>Nightlife</AppText>
+          <AppText style={styles.activityText}>{copy.nightlifeActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleActivity('entertainment')}
@@ -89,7 +90,7 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-entertainment.png')} />
           </View>
-          <AppText style={styles.activityText}>Entertainment</AppText>
+          <AppText style={styles.activityText}>{copy.entertainmentActivityTile}</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleActivity('museum')}
@@ -99,20 +100,20 @@ const PageTwo: React.FC<PageProps> = ({ handleActivity }: PageProps) => {
           <View style={styles.activitiesImageContainer}>
             <Image style={styles.activitiesImage} source={require('../../assets/activity-art.png')} />
           </View>
-          <AppText style={styles.activityText}>Art & Culture</AppText>
+          <AppText style={styles.activityText}>{copy.artAndCultureActivityTile}</AppText>
         </TouchableOpacity>
       </View>
       <View style={styles.activitiesRow}>
-        <TouchableOpacity onPress={() => handleActivity('favorites')} testID={'activity'}>
+        <TouchableOpacity onPress={() => handleActivity('favites')} testID={'activity'}>
           <Image source={require('../../assets/activity-fav.png')} />
-          <AppText style={styles.activityText}>Favorites</AppText>
+          <AppText style={styles.activityText}>{copy.favoritesActivityTile}</AppText>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
+export const OldActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
   const [currentUser, setCurrentUser] = useState<User>();
   const [modal, setModal] = useState<boolean>(false);
   const [background, setBackground] = useState<boolean>(false);
@@ -135,7 +136,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getInterval = (offset: any) => {
+  const getInterval = (offset: number) => {
     for (let i = 1; i <= intervals; i++) {
       if (offset < (width / intervals) * i) {
         return i;
@@ -177,20 +178,18 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
                 }}
                 testID="back"
               />
-              <AppText style={styles.navbarText}>Activity Selector</AppText>
+              <AppText style={styles.navbarText}>{copy.activitySelectorTitle}</AppText>
             </View>
-            {/* <Image source={require('../../assets/activity-selector.png')} /> */}
             <Image
               style={{ position: 'absolute', top: -163, width: Dimensions.get('window').width, zIndex: -10 }}
               source={require('../../assets/SplashScreen.png')}
             />
             <View style={styles.description}>
-              <AppText style={styles.descriptionText}>What do you want to do today?</AppText>
-              {/* <TextInput placeholder="Search for Restaurants, Parks, ..." style={styles.input} /> */}
+              <AppText style={styles.descriptionText}>{copy.activitySelectorSubtitle}</AppText>
             </View>
             <View style={styles.activitySelector}>
               <TouchableOpacity onPress={() => setModal(true)} style={styles.question}>
-                <AppText style={styles.questionText}>?</AppText>
+                <AppText style={styles.questionText}>{copy.activitySelectorHelpButton}</AppText>
               </TouchableOpacity>
 
               <ScrollView
@@ -204,7 +203,6 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
                 scrollEventThrottle={200}
                 contentContainerStyle={{ ...styles.scrollView, width: `${100 * intervals}%` }}
                 onScroll={(data) => {
-                  console.log(data.nativeEvent.contentOffset.x);
                   setInterval(getInterval(data.nativeEvent.contentOffset.x));
                 }}
               >
@@ -217,7 +215,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
               <View>
                 <View style={styles.dividerRow}>
                   <View style={styles.divider} testID="divider" />
-                  <AppText style={styles.dividerText}>or</AppText>
+                  <AppText style={styles.dividerText}>{copy.acticitySelectorOrText}</AppText>
                   <View style={styles.divider} testID="divider" />
                 </View>
 
@@ -227,7 +225,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
                   }}
                   style={styles.activityLowerLink}
                 >
-                  <AppText style={styles.activityLowerLinkText}>Plan Custom Event!</AppText>
+                  <AppText style={styles.activityLowerLinkText}>{copy.altrenateActivityText}</AppText>
                 </TouchableOpacity>
               </View>
             </View>
@@ -236,7 +234,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation }: Props) => {
           {modal && <ActivityModal modal={modal} setModal={setModal} />}
           <View style={[background ? styles.inputBackground : styles.inputContainer]}>
             <TextInput
-              placeholder="Search for Restaurants, Parks, ..."
+              placeholder={copy.activitySelectorSearchPlaceholder}
               onBlur={() => setBackground(false)}
               onFocus={() => setBackground(true)}
               onChangeText={(text) => setSearch(text)}

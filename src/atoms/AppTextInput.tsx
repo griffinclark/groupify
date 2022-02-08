@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { AppText } from './AppText';
-import { GOLD, WHITE } from '../res/styles/Colors';
+import { GOLD_0, WHITE } from '../res/styles/Colors';
+import { GREY_4 } from './../res/styles/Colors';
 
 interface Props {
   autoFocus?: boolean;
@@ -61,13 +62,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   selected: {
-    borderColor: GOLD,
+    borderColor: GOLD_0,
   },
   textInput: {
     fontSize: 18,
     backgroundColor: WHITE,
     borderRadius: 5,
-    borderColor: '#C5C5C5',
+    borderColor: GREY_4,
     borderWidth: 1,
     padding: 8,
     marginVertical: 10,

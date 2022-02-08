@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 
 import { AppText } from './AppText';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 
 interface Props {
   data?: Record<string, unknown>;
@@ -32,7 +32,7 @@ export const Navbar: React.FC<Props> = ({ data = {}, location, navigation, title
 const styles = StyleSheet.create({
   title: {
     fontSize: 30,
-    color: TEAL,
+    color: TEAL_0,
     // textAlign: 'center',
     fontWeight: '400',
     flex: 1,

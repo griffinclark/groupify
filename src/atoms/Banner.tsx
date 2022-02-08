@@ -4,7 +4,7 @@ import { Entypo } from '@expo/vector-icons';
 import { Plan, Invitee } from '../models';
 import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
 import { DataStore } from '@aws-amplify/datastore';
-import { TEAL, WHITE, GREY_3, BLACK } from '../res/styles/Colors';
+import { TEAL_0, WHITE, GREY_3, BLACK } from '../res/styles/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
@@ -74,7 +74,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
             </View>
           </View>
           <View style={styles.invitedContainer}>
-            <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL} />
+            <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL_0} />
             <Text style={styles.invitedText}>{invitees?.length} Invited</Text>
           </View>
         </TouchableOpacity>

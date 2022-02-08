@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, WHITE } from '../res/styles/Colors';
 import { AppText } from './AppText';
+import { TEAL_0 } from './../res/styles/Colors';
 
 interface Props {
   onPress: (ev?: React.FormEvent<HTMLFormElement>) => void;
@@ -49,7 +50,7 @@ export const buttonStyles = StyleSheet.create({
     fontSize: 16,
   },
   enabledButton: {
-    backgroundColor: '#32A59F',
+    backgroundColor: TEAL_0,
     color: WHITE,
   },
   disabledButton: {

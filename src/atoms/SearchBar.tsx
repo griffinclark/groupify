@@ -1,30 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
-import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
+import { BLACK, GREY_6 } from '../res/styles/Colors';
+import { CloseIcon } from '../../assets/Icons/Close';
 
 interface Props {
-  onInputChange: (input: string) => void;
+  onChangeText: (input: string) => void;
   placeholder?: string;
+  onPressIn?: () => void;
+  onPressOut?: () => void;
+  leftIcon: JSX.Element;
+  onSubmitEditing?: () => void;
+  defaultValue?: string;
+  autoFocus?: boolean;
+  selectTextOnFoucs?: boolean;
+  selectTextOnFocus?: boolean;
+  testID: string;
+  hideClose?: boolean;
 }
 
-export const SearchBar: React.FC<Props> = ({ onInputChange, placeholder = 'search' }: Props) => {
+export const SearchBar: React.FC<Props> = ({
+  placeholder,
+  onPressIn,
+  onPressOut,
+  onChangeText,
+  leftIcon,
+  onSubmitEditing,
+  autoFocus,
+  defaultValue,
+  selectTextOnFocus,
+  testID,
+  hideClose = false,
+}: Props) => {
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    onInputChange(input);
+    onChangeText(input);
   }, [input]);
 
   return (
     <View>
       <View style={styles.searchSection}>
-        <MagnifyingGlassIcon />
+        {leftIcon}
         <TextInput
           style={styles.input}
           placeholder={placeholder}
           onChangeText={(e) => setInput(e)}
           underlineColorAndroid="transparent"
-          testID="SearchBar"
+          testID={testID}
+          onPressIn={onPressIn}
+          onSubmitEditing={onSubmitEditing}
+          autoFocus={autoFocus}
+          selectTextOnFocus={selectTextOnFocus}
+          // TODO selectTextOnFocus not working
+          onPressOut={onPressOut}
+          defaultValue={defaultValue}
         />
+
+        {!hideClose && <CloseIcon onPress={() => setInput('')} height={15} width={15} />}
       </View>
     </View>
   );
@@ -38,15 +70,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderColor: '#C5C5C5',
+    borderColor: GREY_6,
     borderWidth: 1,
-    borderRadius: 5,
     paddingHorizontal: 10,
+    borderRadius: 5,
   },
   input: {
     flex: 1,
     paddingRight: 10,
     marginLeft: 5,
-    color: '#424242',
+    color: BLACK,
   },
 });

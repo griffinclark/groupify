@@ -3,10 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Plan } from '../models';
 import { MiniPlanTile } from '../molecules/MiniPlanTile';
-import { background, GREY_4, TEAL } from '../res/styles/Colors';
+import { background, GREY_4, TEAL_0 } from '../res/styles/Colors';
 import { loadInviteeStatus } from '../res/utilFunctions';
 import { ViewAll } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
+import { copy } from './../res/groupifyCopy';
 
 interface Props {
   invitedPlans: Plan[];
@@ -81,22 +82,26 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
     <View style={styles.container}>
       <View style={styles.selector}>
         <TouchableOpacity
-          style={[styles.selectorItem, { borderBottomColor: pendingSelected ? TEAL : background }]}
+          style={[styles.selectorItem, { borderBottomColor: pendingSelected ? TEAL_0 : background }]}
           onPress={() => {
             setPendingSelected(true);
             setAcceptedSelected(false);
           }}
         >
-          <AppText style={[styles.selectorText, { color: pendingSelected ? TEAL : GREY_4 }]}>PENDING</AppText>
+          <AppText style={[styles.selectorText, { color: pendingSelected ? TEAL_0 : GREY_4 }]}>
+            {copy.pendingTitle}
+          </AppText>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.selectorItem, { borderBottomColor: acceptedSelected ? TEAL : background }]}
+          style={[styles.selectorItem, { borderBottomColor: acceptedSelected ? TEAL_0 : background }]}
           onPress={() => {
             setAcceptedSelected(true);
             setPendingSelected(false);
           }}
         >
-          <AppText style={[styles.selectorText, { color: acceptedSelected ? TEAL : GREY_4 }]}>ACCEPTED</AppText>
+          <AppText style={[styles.selectorText, { color: acceptedSelected ? TEAL_0 : GREY_4 }]}>
+            {copy.acceptedTitle}
+          </AppText>
         </TouchableOpacity>
       </View>
       {pendingSelected &&
@@ -104,10 +109,10 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
           pendingPlans
         ) : (
           <View style={{ padding: 30 }}>
-            <AppText style={{ textAlign: 'center', fontSize: 20 }}>No pending plans at the moment.</AppText>
+            <AppText style={{ textAlign: 'center', fontSize: 20 }}>{copy.noPendingPlans}</AppText>
             <TouchableOpacity onPress={() => navigation.push('PlanCreate', {})}>
-              <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL, marginTop: 30 }}>
-                You can create one!
+              <AppText style={{ textAlign: 'center', fontSize: 20, color: TEAL_0, marginTop: 30 }}>
+                {copy.youCanCreateAPlanTitle}
               </AppText>
             </TouchableOpacity>
           </View>
@@ -117,9 +122,7 @@ export const InvitedPreview: React.FC<Props> = ({ invitedPlans, navigation, relo
           acceptedPlans
         ) : (
           <View style={{ padding: 20, marginHorizontal: 30 }}>
-            <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>
-              Looks like you haven&apos;t accepted any plans
-            </AppText>
+            <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>{copy.noPlansAccepted}</AppText>
           </View>
         ))}
 

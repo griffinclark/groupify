@@ -1,201 +1,129 @@
 import React from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { GestureResponderEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ActivityImage } from '../molecules/ActivityImage';
-import { FavoriteIcon } from '../../assets/Icons/IconExports';
-import { AppText } from '../atoms/AtomsExports';
-import { TEAL, YELLOW } from '../res/styles/Colors';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { AppText, Button } from '../atoms/AtomsExports';
+import { TEAL_0, WHITE, GREY_6 } from '../res/styles/Colors';
 // import * as SecureStore from 'expo-secure-store';
-import { MapIcon } from '../../assets/Icons/IconExports';
-import { addFavorite, deleteFavorite } from '../res/utilFavorites';
+import { GoogleLocation, NavigationProps, UserLocation } from '../res/dataModels';
+import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
+import { navigateToPlanMap } from './../res/utilFunctions';
+import { RoutePropParams } from '../res/root-navigation';
+import { LocationRating } from '../molecules/LocationRating';
+import { LocationAddress } from '../molecules/LocationAddress';
 
 interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleCreate: (loc: any) => void;
-  // favorites: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  location: any;
+  location: GoogleLocation;
   map: boolean;
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    goBack: () => void;
-  };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleRegion?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  region?: any;
+  navigation: NavigationProps;
+  route: RoutePropParams;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  favoritesArr: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setFavoritesArr: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setTrigger?: any;
-  trigger?: boolean;
+  tempUserLocationQuery: string;
+  userLocation: UserLocation;
+  onSelectLocation?: (location: GoogleLocation) => void;
 }
 
 export const ActivityCard: React.FC<Props> = ({
-  favoritesArr,
-  setFavoritesArr,
-  map,
-  handleCreate,
   location,
-  handleRegion,
-  image,
-  setTrigger,
-  trigger,
+  navigation,
+  route,
+  tempUserLocationQuery,
+  userLocation,
+  onSelectLocation,
 }: Props) => {
   if (!location.geometry) return null;
-  const formatAddress = () => {
-    if (!location.formatted_address) return null;
-    const addressArr = location.formatted_address.split(',');
-    const firstLine = addressArr.slice(0, -2);
-    const lastLine = addressArr.slice(-2);
-    return (
-      <View>
-        <View>
-          <AppText style={styles.address}>{firstLine.join(',')}</AppText>
-        </View>
-        <View>
-          <AppText style={styles.address}>{lastLine.join(',')}</AppText>
-        </View>
-      </View>
-    );
+
+  const onButtonPress = (e: GestureResponderEvent) => {
+    e.stopPropagation();
+
+    navigation.navigate('PlanCreate', {
+      currentUser: route.params.currentUser,
+      navigation: navigation,
+      data: {
+        planData: {
+          location: location.formatted_address,
+          locationName: location.name,
+          placeId: location.place_id,
+        },
+      },
+    });
+    return true;
   };
 
-  const formatMoney = () => {
-    let str = '';
-    let i = 0;
-    while (i < location.price_level) {
-      str += '$';
-      i++;
-    }
-    return str;
-  };
-
-  const renderStars = () => {
-    if (!location.rating) return null;
-
-    const arr = Array(5).fill('#c4c4c4');
-    const star = Math.round(location.rating);
-    let i = 0;
-    while (i < star) {
-      arr[i] = YELLOW;
-      i++;
-    }
-
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        {arr.map((ele, idx) => (
-          <Icon color={ele} key={idx} name="star" type="font-awesome" size={15} />
-        ))}
-      </View>
-    );
-  };
-
-  const handleToggleFavorite = async () => {
-    if (favoritesArr.includes(location.place_id)) {
-      const newFavs = await deleteFavorite(location.place_id);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      setFavoritesArr(newFavs.map((ele: any) => ele.place_id));
-      if (trigger != undefined) setTrigger(!trigger);
+  const onActivityCardPress = () => {
+    if (onSelectLocation) {
+      onSelectLocation(location);
     } else {
-      const newFavs = await addFavorite(location);
-      setFavoritesArr(newFavs.map((ele) => ele.place_id));
+      navigateToPlanMap(location.name, navigation, route, userLocation, tempUserLocationQuery);
     }
   };
 
   return (
-    <View style={styles.card}>
-      <View style={styles.cardContent}>
-        <View style={styles.cardTop}>
-          <View style={{ width: 147 }}>
-            <AppText style={styles.name}>{location.name}</AppText>
-            <AppText style={styles.rating}>
-              {location.rating} {renderStars()} ({location.user_ratings_total})
-            </AppText>
-            <AppText>{formatMoney()}</AppText>
-            {formatAddress()}
-          </View>
+    <TouchableOpacity style={styles.card} onPress={onActivityCardPress}>
+      <View style={styles.leftCol}>
+        <View style={styles.imageContainer}>
           {location.photos ? (
-            <ActivityImage referenceId={location.photos[0].photo_reference} width={128} height={115} />
+            <ActivityImage referenceId={location.photos[0].photo_reference} width={89} height={89} />
           ) : (
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              region={{
-                latitude: location.geometry.location.lat + 0.0005,
-                longitude: location.geometry.location.lng,
-                latitudeDelta: 0.002,
-                longitudeDelta: 0.002,
-              }}
-              style={styles.map}
-              zoomEnabled={false}
-              zoomTapEnabled={false}
-              rotateEnabled={false}
-              scrollEnabled={false}
-            >
-              <Marker
-                coordinate={{
-                  latitude: location.geometry.location.lat,
-                  longitude: location.geometry.location.lng,
-                }}
-              >
-                <MapIcon image={image ? image : require('../../assets/activity-fav.png')} />
-              </Marker>
-            </MapView>
+            <MagnifyingGlassIcon />
           )}
-        </View>
-        <View style={[styles.cardBottom, map != true ? styles.cardBottomFav : null]}>
-          {map != true && (
-            <TouchableOpacity style={styles.locationButton} onPress={() => handleRegion(location)}>
-              <AppText style={styles.locationButtonText}>Show Location</AppText>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity style={styles.button} onPress={() => handleCreate(location)}>
-            <AppText style={styles.buttonText}>Create Plan</AppText>
-          </TouchableOpacity>
         </View>
       </View>
-      <FavoriteIcon
-        favorited={favoritesArr.includes(location.place_id) ? true : false}
-        onPress={handleToggleFavorite}
-      />
-    </View>
+      <View style={styles.rightCol}>
+        <View style={styles.firstRow}>
+          <LocationRating rating={location.rating} ratingTotal={location.user_ratings_total} />
+          <View style={styles.viewMapBtn} onStartShouldSetResponder={onButtonPress}>
+            <Button buttonStyle={styles.button} containerStyle={{ width: 'auto' }} title={'Groupify It'} />
+          </View>
+        </View>
+
+        <AppText style={styles.name}>{location.name}</AppText>
+        <LocationAddress formattedAddress={location.formatted_address} />
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  imageContainer: {},
   card: {
-    backgroundColor: '#fff',
-    minHeight: 203,
-    paddingTop: 18,
+    backgroundColor: WHITE,
+    minHeight: 107,
+    paddingVertical: 8,
     paddingHorizontal: 13,
-    width: Dimensions.get('window').width,
+    width: '100%',
     alignItems: 'flex-start',
     flexDirection: 'row',
+    borderBottomColor: GREY_6,
+    borderBottomWidth: 2,
+  },
+  leftCol: {
+    marginRight: 10,
+  },
+  rightCol: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  firstRow: {
     justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
+    flexDirection: 'row',
+    marginRight: 0,
+    marginBottom: 4,
+    flex: 1,
   },
   cardContent: {
     flex: 1,
     marginRight: 8,
   },
-  cardTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
   name: {
     fontSize: 20,
     fontWeight: '700',
   },
-  rating: {
-    fontSize: 15,
-  },
-  address: {
-    fontSize: 12,
-    lineHeight: 14,
+  viewMapBtn: {
+    marginLeft: 'auto',
   },
   map: {
     borderRadius: 10,
@@ -203,40 +131,31 @@ const styles = StyleSheet.create({
     height: 115,
     marginLeft: 19,
   },
-  cardBottom: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
   cardBottomFav: {
     justifyContent: 'space-between',
   },
   button: {
-    alignItems: 'center',
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     borderRadius: 5,
     justifyContent: 'center',
-    //marginLeft: 16,
-    height: 49,
-    width: 150,
+    maxWidth: 90,
+    minWidth: 0,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    marginVertical: 0,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: '900',
-  },
-  locationButton: {
-    alignItems: 'center',
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: TEAL,
-    height: 49,
-    justifyContent: 'center',
-    width: 150,
+    color: WHITE,
+    fontSize: 14,
+    fontWeight: '600',
   },
   locationButtonText: {
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 20,
     fontWeight: '900',
+  },
+  locationImage: {
+    height: 89,
+    width: 89,
   },
 });

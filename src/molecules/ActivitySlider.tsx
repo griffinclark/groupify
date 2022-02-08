@@ -3,7 +3,8 @@ import { StyleSheet, View } from 'react-native';
 // import Slider from '@react-native-community/slider';
 import { Slider } from '@sharcoux/slider';
 import { AppText } from '../atoms/AtomsExports';
-import { TEAL } from '../res/styles/Colors';
+import { GREY_4, TEAL_0, WHITE } from './../res/styles/Colors';
+import { copy } from './../res/groupifyCopy';
 
 interface Props {
   distance: number;
@@ -25,14 +26,16 @@ export const ActivitySlider: React.FC<Props> = ({ distance, setDistance }: Props
           <Slider
             maximumValue={4}
             step={1}
-            maximumTrackTintColor={'#C4C4C4'}
-            minimumTrackTintColor={TEAL}
+            maximumTrackTintColor={GREY_4}
+            minimumTrackTintColor={TEAL_0}
             onSlidingComplete={(val) => handleSlideDone(val)}
             thumbStyle={styles.thumb}
             value={50}
           />
         </View>
-        <AppText style={styles.text}>{distance} mi</AppText>
+        <AppText style={styles.text}>
+          {distance} {copy.distanceMeasure}
+        </AppText>
       </View>
     </View>
   );
@@ -40,7 +43,7 @@ export const ActivitySlider: React.FC<Props> = ({ distance, setDistance }: Props
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: WHITE,
     paddingLeft: 26,
     paddingRight: 17,
     paddingTop: 16,
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(49,165,159, 0.25)',
     borderRadius: 11.5,
     borderWidth: 6,
-    backgroundColor: '#fff',
+    backgroundColor: WHITE,
     height: 23,
     width: 23,
   },

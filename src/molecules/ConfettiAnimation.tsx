@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import Animated from 'react-native-reanimated';
 import { View, Dimensions, StyleSheet, Image } from 'react-native';
-import { L_PURPLE, L_ORANGE, L_YELLOW, TEAL_0 } from '../res/styles/Colors';
+import { L_PURPLE, L_ORANGE, L_YELLOW, TEAL_6 } from '../res/styles/Colors';
 
 const NUM_CONFETTI = 100;
-const COLORS = [L_PURPLE, L_ORANGE, L_YELLOW, TEAL_0];
+const COLORS = [L_PURPLE, L_ORANGE, L_YELLOW, TEAL_6];
 const CONFETTI_SIZE = 12;
 const ConfettiArr = [
   require('../../assets/confetti_1.png'),

@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import * as Analytics from 'expo-firebase-analytics';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
@@ -10,8 +11,7 @@ import { ImportContactDetails } from '../screens/ImportContactDetails';
 import { SendMessage } from '../screens/SendMessage';
 import { SetAvailability } from '../screens/SetAvailability';
 import { EditFriends } from '../screens/EditFriends';
-import { Contact } from './dataModels';
-import { PlanMap } from '../screens/PlanMap';
+import { Contact, GoogleLocation, UserLocation } from './dataModels';
 import { PlanDetails } from '../screens/PlanDetails';
 import { PlanCreate } from '../screens/PlanCreate';
 import { PlanInvite } from '../screens/PlanInvite';
@@ -24,9 +24,10 @@ import { ForgotPassword } from '../screens/ForgotPassword';
 import { Welcome } from '../screens/Welcome';
 import { PlanIndex } from '../screens/PlanIndex';
 import { EditPlan } from '../screens/EditPlan';
-import { ActivitySelector } from '../screens/ActivitySelector';
-import { ActivityResults } from '../screens/ActivityResults';
-import { ActivityFavorites } from '../screens/ActivityFavorites';
+import { OldActivitySelector } from '../screens/ActivitySelector';
+import { SelectorMenu } from '../screens/SelectorMenu';
+import { PlanMap } from '../screens/PlanMap';
+import { TakeoverSearch } from '../screens/TakeoverSearch';
 import { ContactList } from '../atoms/ContactList';
 
 export type RoutePropParams = {
@@ -36,6 +37,7 @@ export type RoutePropParams = {
     currentUserPlan: Plan;
     step: string;
     phone: string;
+    userLocation: UserLocation;
     invitedPlans: Plan[];
     userPlans: Plan[];
     option: string;
@@ -61,6 +63,13 @@ export type RoutePropParams = {
         placeId: string;
         message: string;
       };
+      activitySearchData: {
+        tempUserLocationQuery: string;
+        tempUserLocation: UserLocation;
+        placesUserWantsToGoQuery: string;
+        placesUserWantsToGoResults: GoogleLocation[];
+        fromButton: boolean;
+      };
     };
   };
 };
@@ -85,7 +94,7 @@ interface RootProps {
 
 const Stack = createStackNavigator();
 export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParams }: RootProps) => {
-  console.log('Initial route: ' + initialRoute);
+  // console.log('Initial route: ' + initialRoute);
 
   return (
     <NavigationContainer
@@ -102,6 +111,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         }
       }}
     >
+      <StatusBar barStyle={'dark-content'} />
       <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ animationEnabled: false }}>
         <Stack.Screen
           name="CreateAccount"
@@ -127,9 +137,9 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen name="ViewPlans" component={PlanIndex} options={{ headerShown: false }} />
         <Stack.Screen name="EditPlan" component={EditPlan} options={{ headerShown: false }} />
-        <Stack.Screen name="ActivitySelector" component={ActivitySelector} options={{ headerShown: false }} />
-        <Stack.Screen name="ActivityResults" component={ActivityResults} options={{ headerShown: false }} />
-        <Stack.Screen name="ActivityFavorites" component={ActivityFavorites} options={{ headerShown: false }} />
+        <Stack.Screen name="ActivitySelector" component={OldActivitySelector} options={{ headerShown: false }} />
+        <Stack.Screen name="SelectorMenu" component={SelectorMenu} options={{ headerShown: false }} />
+        <Stack.Screen name="TakeoverSearch" component={TakeoverSearch} options={{ headerShown: false }} />
         <Stack.Screen name="ContactList" component={ContactList} options={{ headerShown: false }} />
         <Stack.Screen name="PlanConfirm" component={PlanConfirm} options={{ headerShown: false }} />
       </Stack.Navigator>

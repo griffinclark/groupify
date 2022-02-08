@@ -1,14 +1,19 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { TEAL, WHITE } from '../res/styles/Colors';
+import { GREY_1, WHITE } from '../res/styles/Colors';
 import { User, Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
+import { copy } from '../res/groupifyCopy';
+import { GoogleLocation } from '../res/dataModels';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
+  route: RoutePropParams;
   user?: User;
   style?: Record<string, unknown>;
-  invitedPlans?: Plan[];
+  invitedPlans: Plan[];
+  locations?: GoogleLocation[];
   userPlans: Plan[];
   navigation: {
     navigate: (ev: string, {}) => void;
@@ -16,9 +21,17 @@ interface Props {
   };
 }
 
-export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPlans, navigation }: Props) => {
+export const HomeNavBar: React.FC<Props> = ({
+  route,
+  user,
+  style,
+  userPlans,
+  invitedPlans,
+  navigation,
+  locations,
+}: Props) => {
   return (
-    <View style={{ width: '100%', alignItems: 'center' }}>
+    <View style={styles.navbar}>
       <View style={[styles.nav, style]}>
         <TouchableOpacity
           style={{ width: '33%' }}
@@ -27,16 +40,26 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
           }}
         >
           <AnnounceIcon />
-          <AppText style={styles.text}>Notifications</AppText>
+          <AppText style={styles.text}>{copy.leftNavButton}</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '33%' }}
+          // onPress={() => {
+          //   navigation.push('ActivitySelector', { currentUser: user });
+          // }}
           onPress={() => {
-            navigation.push('ActivitySelector', { currentUser: user });
+            navigation.navigate('SelectorMenu', {
+              currentUser: user,
+              locations: locations, // TODO is this needed?
+              userLocation: route.params.userLocation,
+              data: {
+                activitySearchData: { tempUserLocation: route.params.userLocation },
+              },
+            });
           }}
         >
           <CreatePlanIcon />
-          <AppText style={styles.text}>Create Plan</AppText>
+          <AppText style={styles.text}>{copy.centerNavButton}</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '33%' }}
@@ -48,7 +71,7 @@ export const HomeNavBar: React.FC<Props> = ({ user, style, userPlans, invitedPla
           }}
         >
           <SettingsIcon />
-          <AppText style={styles.text}>Settings</AppText>
+          <AppText style={styles.text}>{copy.rightNavButton}</AppText>
         </TouchableOpacity>
       </View>
     </View>
@@ -62,13 +85,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    backgroundColor: TEAL,
+    backgroundColor: GREY_1,
   },
   text: {
     fontSize: 13,
     fontWeight: '700',
-    marginTop: 10,
+    marginTop: 5,
+    marginBottom: 10,
     color: WHITE,
     textAlign: 'center',
+  },
+  navbar: {
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center',
+    width: '100%',
+    alignItems: 'center',
   },
 });

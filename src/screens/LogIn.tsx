@@ -9,6 +9,7 @@ import { Alert, FormInput, Button } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { User } from '../models';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+
 import {
   ImageBackground,
   Keyboard,
@@ -19,24 +20,12 @@ import {
   View,
   SafeAreaView,
 } from 'react-native';
-import { WHITE, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL_0 } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
-
-// const user = {
-//   "_deleted": undefined,
-//   "_lastChangedAt": undefined,
-//   "_version": undefined,
-//   "email": "placeHolder@temporaryWorkAround.com",
-//   "friends": Array [],
-//   "id": "x",
-//   "name": "User Two",
-//   "phoneNumber": "+15102057904",
-//   "pushToken": "ExponentPushToken[v_oSimNdzGmTwk4-N4i-jT]",
-//   "userAvailabilityId": null,
-// }
+import { copy } from '../res/groupifyCopy';
 
 export interface Props {
   navigation: {
@@ -226,7 +215,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
                 style={{ alignSelf: 'center' }}
                 onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
               >
-                <AppText style={styles.textTeal}>Forgot password?</AppText>
+                <AppText style={styles.textTeal}>{copy.forgotPasswordQuestion}</AppText>
               </TouchableOpacity>
 
               {error && <Alert status="error" message={error} />}
@@ -234,13 +223,8 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           </TouchableWithoutFeedback>
 
           <View style={styles.createAccount}>
-            <AppText style={styles.text}>Don&apos;t have an account?</AppText>
-            <AppText
-              style={styles.textTeal}
-              onPress={async () => {
-                navigation.navigate('CreateAccount', {});
-              }}
-            >
+            <AppText style={styles.text}>{copy.dontHaveAnAccountQuestion}</AppText>
+            <AppText style={styles.textTeal} onPress={() => logIn()}>
               Create one today!
             </AppText>
             {route.params && route.params.accountCreated === 'success' && (
@@ -248,7 +232,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
             )}
           </View>
           <View>
-            <Button title="Log In" onPress={logIn} disabled={disabled} />
+            <Button title={copy.loginButtonTitle} onPress={logIn} disabled={disabled} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -282,7 +266,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   textTeal: {
-    color: TEAL,
+    color: TEAL_0,
     fontWeight: '500',
     fontSize: 20,
   },

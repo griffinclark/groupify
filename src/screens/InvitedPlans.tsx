@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { globalStyles } from './../res/styles/GlobalStyles';
-import { GREY_0, TEAL } from './../res/styles/Colors';
+import { GREY_0, TEAL_0 } from './../res/styles/Colors';
 import { convertDateStringToDate, getCurrentUser, isFuturePlan, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
@@ -11,6 +11,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Plan, Invitee, Status } from '../models';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { ScrollView } from 'react-native-gesture-handler';
+import { copy } from '../res/groupifyCopy';
 
 interface Props {
   navigation: {
@@ -107,26 +108,26 @@ export const InvitedPlans: React.FC<Props> = ({ navigation }: Props) => {
         <View style={styles.icon}>
           <Icon name="arrow-left" type="font-awesome" size={30} onPress={() => navigation.goBack()} />
         </View>
-        <AppText style={[globalStyles.superTitle, styles.greeting]}>Your Invites</AppText>
+        <AppText style={[globalStyles.superTitle, styles.greeting]}>{copy.yourInvitees}</AppText>
         <View style={styles.icon}>
-          <Icon name="refresh" type="font-awesome" size={30} color={TEAL} onPress={() => loadPlans()} />
+          <Icon name="refresh" type="font-awesome" size={30} color={TEAL_0} onPress={() => loadPlans()} />
         </View>
       </View>
       <View style={styles.feedContainer}>
         {upcomingPlans.concat(pendingInvites).length > 0 ? (
           <ScrollView>
-            <AppText style={styles.label}>This Week</AppText>
+            <AppText style={styles.label}>{copy.thisWeek}</AppText>
             <MediumDataDisplay data={upcomingPlans} navigation={navigation} />
             <View style={globalStyles.miniSpacer}></View>
-            <AppText style={styles.label}>Pending Invites</AppText>
+            <AppText style={styles.label}>{copy.pendingInvites}</AppText>
             <MediumDataDisplay data={pendingInvites} navigation={navigation} />
             <View style={globalStyles.miniSpacer}></View>
-            <AppText style={styles.label}>Past Plans</AppText>
+            <AppText style={styles.label}>{copy.pastPlans}</AppText>
             <MediumDataDisplay data={pastPlans} navigation={navigation} />
           </ScrollView>
         ) : (
           <View style={styles.title}>
-            <AppText style={globalStyles.superTitle}>When you get invited to a plan, it will show up here</AppText>
+            <AppText style={globalStyles.superTitle}>{copy.whenInvitedToPlanTitle}</AppText>
           </View>
         )}
       </View>
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   greeting: {
-    color: TEAL,
+    color: TEAL_0,
     marginTop: 10,
   },
   icon: {
@@ -176,6 +177,6 @@ const styles = StyleSheet.create({
   selector: {
     marginLeft: 15,
     textDecorationLine: 'underline',
-    color: TEAL,
+    color: TEAL_0,
   },
 });

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { LIGHT, TEAL } from './Colors';
+import { LIGHT, TEAL_0 } from './Colors';
+import Constants from 'expo-constants';
 
 export const globalStyles = StyleSheet.create({
   defaultRootContainer: {
@@ -8,6 +9,12 @@ export const globalStyles = StyleSheet.create({
     width: '100%',
     backgroundColor: LIGHT,
     flexDirection: 'column',
+  },
+  containerWithHeader: {
+    paddingTop: Constants.statusBarHeight + 25,
+  },
+  containerWithFooter: {
+    paddingBottom: 80,
   },
   navbar_container: {
     height: 80,
@@ -57,7 +64,7 @@ export const globalStyles = StyleSheet.create({
   navTitle: {
     paddingLeft: 15,
     fontSize: 30,
-    color: TEAL,
+    color: TEAL_0,
     textTransform: 'capitalize',
   },
   topBlockBack: {

@@ -6,7 +6,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Screen, Button, Title } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { globalStyles } from '../res/styles/GlobalStyles';
-import { GOLD, TEAL, GREY_0 } from '../res/styles/Colors';
+import { GOLD_0, TEAL_0, GREY_0 } from '../res/styles/Colors';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { formatTime } from '../res/utilFunctions';
 
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     top: 5,
   },
   time: {
-    color: TEAL,
+    color: TEAL_0,
     fontWeight: 'bold',
     fontSize: 15,
   },
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     borderWidth: 2,
-    borderColor: GOLD,
+    borderColor: GOLD_0,
     borderRadius: 25,
     padding: 25,
     marginHorizontal: '4%',

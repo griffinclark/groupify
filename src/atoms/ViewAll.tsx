@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 import { AppText } from './AppText';
 
 interface Props {
@@ -29,6 +29,6 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: '700',
     fontSize: 16,
-    color: TEAL,
+    color: TEAL_0,
   },
 });

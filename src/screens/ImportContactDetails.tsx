@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { WHITE, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL_0 } from '../res/styles/Colors';
 import { Button, Screen, AppText } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { getCurrentUser } from '../res/utilFunctions';
 import { User } from '../models';
 import { Image } from 'react-native-elements/dist/image/Image';
+import { copy } from './../res/groupifyCopy';
 
 interface Props {
   navigation: {
@@ -36,7 +37,7 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
   return (
     <Screen style={{ backgroundColor: WHITE }}>
       <View style={{ flex: 1, paddingHorizontal: 20 }}>
-        <AppText style={{ fontWeight: '330', fontSize: 30, color: TEAL }}>Import Contacts</AppText>
+        <AppText style={{ fontWeight: '330', fontSize: 30, color: TEAL_0 }}>Import Contacts</AppText>
 
         <View style={styles.flatListContainer}>
           <AppText style={{ fontSize: 20, paddingBottom: 20 }}>{createGreeting()}</AppText>
@@ -45,11 +46,9 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
             style={{ height: 186, width: '100%' }}
             resizeMode="contain"
           />
-          <AppText style={{ fontSize: 20, marginBottom: 40, paddingTop: 20 }}>
-            From your contact list, please select all people you’d like to import into Groupify.*
-          </AppText>
+          <AppText style={{ fontSize: 20, marginBottom: 40, paddingTop: 20 }}>{copy.askForContactsPrompt}</AppText>
 
-          <AppText style={{ alignSelf: 'center' }}>*You can always edit your contact list later. </AppText>
+          <AppText style={{ alignSelf: 'center' }}>{copy.editContactsLaterPrompt}</AppText>
         </View>
         <View style={styles.planResponse}>
           <Button

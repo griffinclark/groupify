@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 
 interface Props {
   onPress: () => void;
@@ -22,18 +22,18 @@ export const WhiteButton: React.FC<Props> = ({ onPress, text, style, textStyles 
 
 const styles = StyleSheet.create({
   button: {
-    width: 120,
-    height: 40,
-    borderWidth: 1,
-    borderColor: TEAL,
+    width: 182,
+    height: 49,
+    borderWidth: 2,
+    borderColor: TEAL_0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 8,
-    // marginTop: 10,
+    borderRadius: 40,
+    marginTop: 10,
   },
   text: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: TEAL,
+    fontSize: 20,
+    fontWeight: '400',
+    color: TEAL_0,
   },
 });

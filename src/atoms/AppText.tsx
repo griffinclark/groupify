@@ -5,18 +5,11 @@ import { useFonts } from 'expo-font';
 interface Props {
   children: string | ReactNode;
   maxFontSizeMultiplier?: number;
-  numberOfLines?: number;
   onPress?: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;
   style?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
-export const AppText: React.FC<Props> = ({
-  children,
-  maxFontSizeMultiplier = 1.5,
-  numberOfLines,
-  onPress,
-  style,
-}: Props) => {
+export const AppText: React.FC<Props> = ({ children, maxFontSizeMultiplier = 1.5, onPress, style }: Props) => {
   const [fontsLoaded] = useFonts({
     'Brandon-Grotesque': require('../../assets/fonts/Brandon_reg.otf'),
   });
@@ -25,7 +18,7 @@ export const AppText: React.FC<Props> = ({
   return (
     <Text
       maxFontSizeMultiplier={maxFontSizeMultiplier}
-      numberOfLines={numberOfLines}
+      ellipsizeMode="tail"
       onPress={onPress}
       style={[{ fontFamily: 'Brandon-Grotesque' }, style]}
     >

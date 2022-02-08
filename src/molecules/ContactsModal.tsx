@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { AppText } from '../atoms/AppText';
 
-import { TEAL, WHITE } from '../res/styles/Colors';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
 
 interface Props {
   enabled: boolean;
@@ -47,7 +47,7 @@ export const ContactsModal: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   backButton: {
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
   },
   backButtonText: {
     color: WHITE,
@@ -93,10 +93,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   yesButton: {
-    borderColor: TEAL,
+    borderColor: TEAL_0,
     borderWidth: 1,
   },
   yesButtonText: {
-    color: TEAL,
+    color: TEAL_0,
   },
 });

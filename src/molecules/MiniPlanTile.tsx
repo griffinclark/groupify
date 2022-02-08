@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
-import { GREY_1, WHITE, POST_SPACING, TEAL } from '../res/styles/Colors';
+import { GREY_1, WHITE, POST_SPACING, TEAL_0, BLACK } from '../res/styles/Colors';
 import { Plan } from '../models';
 import { loadPhoto, formatDayOfWeekDate } from '../res/utilFunctions';
 import { Image } from 'react-native-elements';
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     marginTop: POST_SPACING,
     padding: 15,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: BLACK,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.25,
     shadowRadius: 2,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     maxWidth: '90%',
   },
   today: {
-    backgroundColor: TEAL,
+    backgroundColor: TEAL_0,
     padding: 3,
     borderRadius: 25,
   },

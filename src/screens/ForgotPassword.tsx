@@ -5,10 +5,11 @@ import { Keyboard, KeyboardAvoidingView, Platform, View, StyleSheet } from 'reac
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { WHITE, TEAL } from '../res/styles/Colors';
+import { WHITE, TEAL_0 } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
 import { AppText } from '../atoms/AppText';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
+import { copy } from '../res/groupifyCopy';
 
 interface Props {
   navigation: {
@@ -45,6 +46,7 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
         setError(undefined);
         navigation.push('ForgotPassword', { step: 'password', phone: formatPhone });
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.code === 'UserNotFoundException') {
         setError('User not found');
@@ -89,14 +91,14 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
         <ScrollView>
           <View style={{ flexDirection: 'row', paddingBottom: 20, marginHorizontal: 20 }}>
             <BackChevronIcon onPress={() => navigation.navigate('Login', {})} />
-            <AppText style={styles.title}>Forgot Password</AppText>
+            <AppText style={styles.title}>{copy.forgotPasswordTitle}</AppText>
           </View>
           {route.params.step === 'phone' && (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-              <AppText style={styles.details}>Please enter your phone number.</AppText>
+              <AppText style={styles.details}>{copy.phoneNumberPrompt}</AppText>
               <FormInput
                 returnKeyNext={true}
-                label="Phone Number"
+                label={copy.phoneNumberFieldTitle}
                 value={phone}
                 onChangeText={(number) => setPhone(formatPhoneNumber(number))}
               />
@@ -106,7 +108,7 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
           {route.params.step === 'password' && (
             <View>
               <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-                <AppText style={styles.title2}>Verification/New Password</AppText>
+                <AppText style={styles.title2}>{copy.createNewPassword}</AppText>
                 <FormInput
                   returnKeyNext={true}
                   label="Verification Code"
@@ -115,13 +117,14 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
                 />
                 <FormInput
                   returnKeyNext={true}
-                  label="New Password"
+                  label={copy.passwordFieldTitle}
                   onChangeText={setNewPassword}
                   secureTextEntry={true}
                 />
+                {/* FIXME strong password not being suggested for secondary field */}
                 <FormInput
-                  returnKeyNext={false}
-                  label="Confirm New Password"
+                  returnKeyNext={true}
+                  label={copy.confirmPasswordFieldTitle}
                   onChangeText={setConfirmNewPassword}
                   secureTextEntry={true}
                 />
@@ -130,7 +133,10 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
             </View>
           )}
         </ScrollView>
-        <Button title="Next" onPress={route.params.step === 'phone' ? confirmUserPhone : confirmResetPassword} />
+        <Button
+          title={copy.nextButtonTitle}
+          onPress={route.params.step === 'phone' ? confirmUserPhone : confirmResetPassword}
+        />
       </Screen>
     </KeyboardAvoidingView>
   );
@@ -139,7 +145,7 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
 const styles = StyleSheet.create({
   title: {
     marginLeft: 15,
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 30,
     fontWeight: '400',
     paddingBottom: 20,

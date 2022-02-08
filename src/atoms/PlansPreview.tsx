@@ -3,8 +3,9 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-nati
 import { Plan, User } from '../models';
 import { PlanCard } from './planCard';
 import { NoPlansCard } from './NoPlansCard';
-import { TEAL, GRAY_DARK, WHITE } from '../res/styles/Colors';
+import { TEAL_0, GRAY_DARK, WHITE } from '../res/styles/Colors';
 import { AllPlans } from '../res/root-navigation';
+import { UserLocation } from '../res/dataModels';
 
 export interface Props {
   all: AllPlans;
@@ -13,6 +14,7 @@ export interface Props {
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
   };
+  userLocation: UserLocation;
   reload: boolean;
 }
 
@@ -24,13 +26,14 @@ enum SelectedOption {
   past = 'PAST',
 }
 
-export const PlansPreview: React.FC<Props> = ({ all, navigation, user, reload }: Props) => {
+export const PlansPreview: React.FC<Props> = ({ all, navigation, user, userLocation, reload }: Props) => {
   const [selectedTab, setSelectedTab] = useState<SelectedOption>(SelectedOption.all);
   const [selectedPlans, setSelectedPlans] = useState<Plan[]>(all.all); //initial state is all plans
-  const [plansCard, setPlansCard] = useState<Plan[]>([]);
+  const [plansCard, setPlansCard] = useState<JSX.Element[]>([]);
 
   useEffect(() => {
-    const plansTab: any = [];
+    const plansTab: JSX.Element[] = [];
+
     for (const planType in SelectedOption) {
       const planTypeEnum: SelectedOption = SelectedOption[planType as keyof typeof SelectedOption];
       const plans = all[planType as keyof AllPlans];
@@ -41,9 +44,9 @@ export const PlansPreview: React.FC<Props> = ({ all, navigation, user, reload }:
             setSelectedPlans(plans);
           }}
           key={planTypeEnum}
-          style={[styles.selectedItem, { borderBottomColor: selectedTab === planTypeEnum ? TEAL : 'transparent' }]}
+          style={[styles.selectedItem, { borderBottomColor: selectedTab === planTypeEnum ? TEAL_0 : 'transparent' }]}
         >
-          <Text style={[styles.buttonText, { color: selectedTab === planTypeEnum ? TEAL : GRAY_DARK }]}>
+          <Text style={[styles.buttonText, { color: selectedTab === planTypeEnum ? TEAL_0 : GRAY_DARK }]}>
             {planTypeEnum} ({plans.length})
           </Text>
         </TouchableOpacity>,
@@ -77,7 +80,7 @@ export const PlansPreview: React.FC<Props> = ({ all, navigation, user, reload }:
           />
         ))
       ) : (
-        <NoPlansCard user={user} navigation={navigation} />
+        <NoPlansCard user={user} navigation={navigation} userLocation={userLocation} />
       )}
     </View>
   );

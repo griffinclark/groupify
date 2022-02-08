@@ -1,322 +1,289 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import MapView, { LatLng, Marker, Point, PROVIDER_GOOGLE } from 'react-native-maps';
+import React, { useEffect, useState, useRef } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
-import { GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { v4 as uuidv4 } from 'uuid';
-import { PlaceCard } from '../molecules/MoleculesExports';
-import { RoutePropParams } from '../res/root-navigation';
 import Constants from 'expo-constants';
+import { RoutePropParams } from '../res/root-navigation';
+import { GOLD_0, GREY_8, GREY_6, WHITE } from '../res/styles/Colors';
+import { GoogleLocation, UserLocation } from '../res/dataModels';
+import { Screen } from '../atoms/Screen';
+import { TopNavBar } from '../molecules/TopNavBar';
+import { HomeNavBar } from '../molecules/HomeNavBar';
+import MapView from 'react-native-map-clustering';
+import { Marker } from 'react-native-maps';
+import { MapIcon } from './../../assets/Icons/MapIcon';
+import { MagnifyingGlassIcon } from './../../assets/Icons/MagnifyingGlass';
+import { SearchbarDisplayMode, SearchbarWithoutFeedback } from '../molecules/SearchbarWithoutFeedback';
+import { ProgressBar } from '../atoms/ProgressBar';
+import { ActivitySelectorSlideUpCard } from '../organisms/ActivitySelectorSlideUpCard';
 
-import { AppText } from '../atoms/AtomsExports';
-import { BackChevronIcon } from '../../assets/Icons/BackChevron';
-import { TEAL, WHITE } from '../res/styles/Colors';
-
-interface Props {
+export interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
+    goBack: () => void;
+    push: (ev: string, {}) => void;
   };
   route: RoutePropParams;
+  placesUserWantsToGoResults: GoogleLocation[];
+  tempUserLocationQuery: string;
+  placesUserWantsToGoQuery: string;
+  userLocation: UserLocation;
 }
 
-const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
-
-interface GooglePlaceDetailExtended extends GooglePlaceDetail {
-  rating: number;
-  user_ratings_total: number;
-  reviews: Record<string, unknown>[];
-  price_level: number;
-  opening_hours: {
-    open_now: boolean;
-    weekday_text: string[];
-  };
-  photos: {
-    photo_reference: string;
-  }[];
-}
-
-interface POI {
-  coordinate: LatLng;
-  position: Point;
-  placeId: string;
-  name: string;
-}
-
-export const PlanMap: React.FC<Props> = ({ navigation, route }: Props) => {
+export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQuery }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,
-  }); // defaults to Los Angeles if user location is not provided
+  }); // defaults to Los Angeles if user location is not provided and no place param
   const [region, setRegion] = useState({
     latitude: 41.878,
     longitude: -93.0977,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
+    latitudeDelta: 0.001,
+    longitudeDelta: 0.001,
+    default: true,
   });
-  const [mapMarker, setMapMarker] = useState<JSX.Element>();
-  const markerRef = useRef<Marker>(null);
-  const [placeCard, setPlaceCard] = useState<JSX.Element>();
-  const [sessionToken, setSessionToken] = useState(uuidv4());
+  // const [mapIcon, setMapIcon] = useState('');
+  // const [selectedMapIcon, setSelectedMapIcon] = useState('');
+  const [selectedMarker, setSelectedMarker] = useState('');
+  const [radius, setRadius] = useState(1);
+  const [placesUserWantsToGo, setPlacesUserWantsToGo] = useState<GoogleLocation[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<GoogleLocation>();
+
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const mapMarker = require('../../assets/locationPins/Location_Base.png');
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const mapSelectedMarker = require('../../assets/locationPins/Location_Selected.png');
+
+  const mapRef = useRef();
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-      } else {
-        try {
-          let location = await Location.getLastKnownPositionAsync();
-          if (location === null) {
-            location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Low });
-          }
-          setUserLocation({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          });
-          setRegion({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: region.latitudeDelta,
-            longitudeDelta: region.longitudeDelta,
-          });
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    })();
+    if (placesUserWantsToGo.length === 1) {
+      setSelectedLocation(placesUserWantsToGo[0]);
+    }
+
+    if (placesUserWantsToGo.length != 1 && region.default) {
+      getStartRegion();
+    }
+  }, [userLocation, route.params.activity, placesUserWantsToGo]); //FIXME the fuck are the second two?
+
+  useEffect(() => {
+    setPlacesUserWantsToGo(route.params.data.activitySearchData.placesUserWantsToGoResults);
   }, []);
 
-  const onResultPress = async (detail: GooglePlaceDetail | null) => {
-    console.log(detail.name);
-    const moreDetails = detail as GooglePlaceDetailExtended;
-    setSessionToken(uuidv4());
-    if (detail) {
-      setRegion({
-        latitude: detail.geometry.location.lat,
-        longitude: detail.geometry.location.lng,
-        latitudeDelta: region.latitudeDelta,
-        longitudeDelta: region.longitudeDelta,
-      });
-      setMapMarker(
-        <Marker
-          ref={markerRef}
-          coordinate={{
-            latitude: detail.geometry.location.lat,
-            longitude: detail.geometry.location.lng,
-          }}
-          icon={require('../../assets/MapMarker.png')}
-        />,
-      );
-
-      if (markerRef && markerRef.current) {
-        markerRef.current.showCallout();
-      }
-      setPlaceCard(
-        <PlaceCard
-          name={detail.name}
-          address={detail.formatted_address}
-          rating={moreDetails.rating ? moreDetails.rating : undefined}
-          userRatings={moreDetails.user_ratings_total ? moreDetails.user_ratings_total : undefined}
-          priceLevel={moreDetails.price_level ? moreDetails.price_level : undefined}
-          openHours={moreDetails.opening_hours ? moreDetails.opening_hours.weekday_text : undefined}
-          photos={moreDetails.photos ? moreDetails.photos.map((obj) => obj.photo_reference) : undefined}
-          onButtonPress={() =>
-            onButtonPress(
-              detail.formatted_address,
-              detail.place_id,
-              moreDetails.photos ? moreDetails.photos[0].photo_reference : '',
-            )
-          }
-          onCloseButtonPress={clearMarkers}
-        />,
-      );
+  useEffect(() => {
+    if (route.params.place != undefined) {
+      setRegion(route.params.place);
     }
-  };
+  }, [route.params.place]); //FIXME the fuck is place?
 
-  const onButtonPress = (address: string, placeId: string, photo: string) => {
-    if (route.params.option === 'edit') {
-      navigation.navigate('EditPlan', { data: { planData: { placeId: placeId, location: address } } });
+  const getStartRegion = async () => {
+    const { status } = await Location.requestPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
     } else {
-      navigation.navigate('PlanCreate', {
-        currentUser: route.params.currentUser,
-        data: {
-          planData: {
-            location: address,
-            imageURL: photo,
-            placeId: placeId,
-          },
-        },
-      });
+      try {
+        let location = await Location.getLastKnownPositionAsync();
+        if (location === null) {
+          location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
+        }
+
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+
+        setRegion({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05,
+          default: false,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
-  const onPoiPress = async (poi: POI) => {
-    const search = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${poi.placeId}&key=${GOOGLE_PLACES_API_KEY}`;
-    const response = await fetch(search);
-    const detail = await response.json();
-    onResultPress(detail.result);
+  const setSelectedLocationFn = (location: GoogleLocation) => {
+    setSelectedMarker(location.place_id);
+    setSelectedLocation(location);
+
+    const region = {
+      latitude: location.geometry.location.lat,
+      longitude: location.geometry.location.lng,
+      latitudeDelta: 0.009,
+      longitudeDelta: 0.009,
+      default: false,
+    };
+
+    setRegion(region);
+
+    mapRef.current?.animateToRegion(region, 2000);
   };
 
-  const clearMarkers = () => {
-    setPlaceCard(undefined);
-    setMapMarker(undefined);
-  };
   return (
-    // <Screen>
-    <View style={styles.container}>
-      {/* TODO: Show categories */}
-      {/* TODO: Show multiple markers */}
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        showsUserLocation={true}
-        region={region}
-        onPoiClick={(event) => onPoiPress(event.nativeEvent)}
-        style={styles.map}
-        // customMapStyle={mapStyles}
-        onPress={clearMarkers}
-      >
-        {mapMarker ? mapMarker : null}
-      </MapView>
+    <Screen style={styles.container}>
+      {region.default == true ? (
+        <>
+          <ProgressBar />
+          {/* TODO AppText not truncating properly */}
+        </>
+      ) : (
+        <>
+          <TopNavBar
+            targetScreen="SelectorMenu"
+            route={route}
+            title="DO SOMETHING"
+            displayGroupify={false}
+            navigation={navigation}
+          />
+          <View style={styles.mapContainer}>
+            <View style={styles.searchBarContainer}>
+              <SearchbarWithoutFeedback
+                route={route}
+                icon={<MagnifyingGlassIcon />}
+                placeholderText={route.params.data.activitySearchData.tempUserLocationQuery}
+                navigation={navigation}
+                tempUserLocationQuery={route.params.data.activitySearchData.tempUserLocationQuery}
+                userLocation={userLocation}
+                tempUserLocation={route.params.data.activitySearchData.tempUserLocation}
+                placesUserWantsToGoQuery={route.params.data.activitySearchData.placesUserWantsToGoQuery}
+                mode={SearchbarDisplayMode.Result}
+              />
+            </View>
+            {/* TODO MapView has to be built dynamically based on number of locations and distance between locations */}
+            <MapView
+              ref={mapRef}
+              initialRegion={region}
+              style={styles.map}
+              showsUserLocation={true}
+              animationEnabled={false}
+              showsBuildings={true}
+              showsCompass={false}
+              onRegionChange={async (region) => {
+                // console.log(Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)));
+                if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 12) {
+                  setRadius(100);
+                } else if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 14) {
+                  setRadius(80);
+                } else {
+                  setRadius(30);
+                }
+              }}
+              showsTraffic={false}
+              userInterfaceStyle="dark"
+              clusterColor={GOLD_0}
+              spiderLineColor={GOLD_0}
+              edgePadding={{ top: 100, left: 75, right: 75, bottom: 350 }}
+              // clusteringEnabled={false}
+              radius={radius}
+              showsPointsOfInterest={false}
+            >
+              {placesUserWantsToGo.map((loc) => (
+                <Marker
+                  coordinate={{
+                    latitude: loc.geometry.location.lat,
+                    longitude: loc.geometry.location.lng,
+                  }}
+                  onPress={() => {
+                    setSelectedLocation(loc);
+                  }}
+                  key={loc.place_id}
+                  style={styles.marker}
+                >
+                  {/* TODO change icon on press */}
+                  {loc.place_id == selectedMarker ? (
+                    <MapIcon image={mapSelectedMarker} />
+                  ) : (
+                    <MapIcon image={mapMarker} />
+                  )}
+                  <Text style={styles.mapText}>{loc.name}</Text>
+                </Marker>
+              ))}
+            </MapView>
+          </View>
+          <ActivitySelectorSlideUpCard
+            route={route}
+            selectedLocation={selectedLocation}
+            userLocation={userLocation}
+            navigation={navigation}
+            locations={placesUserWantsToGo}
+            tempUserLocationQuery={tempUserLocationQuery}
+            onSelectLocation={setSelectedLocationFn}
+          />
+        </>
+      )}
 
-      <View style={styles.navbar}>
-        <View style={styles.navbarBackground} />
-
-        <View style={styles.navbarIcon}>
-          {route.params.option === 'edit' ? (
-            <BackChevronIcon onPress={() => navigation.navigate('EditPlan', {})} />
-          ) : (
-            <BackChevronIcon onPress={() => navigation.navigate('PlanCreate', route.params)} />
-          )}
-        </View>
-
-        <GooglePlacesAutocomplete
-          placeholder="Search"
-          query={{
-            key: GOOGLE_PLACES_API_KEY,
-            sessiontoken: sessionToken,
-            location: `${userLocation.latitude}, ${userLocation.longitude}`,
-            radius: 1000, // meters
-          }}
-          fetchDetails={true}
-          onPress={(data, detail) => onResultPress(detail)}
-          onFail={(error) => console.log(error)}
-          enablePoweredByContainer={false}
-          styles={{
-            textInput: {
-              borderColor: '#C5C5C5',
-              borderRadius: 5,
-              borderWidth: 1,
-              marginRight: 20,
-              marginTop: Constants.statusBarHeight - 15,
-            },
-            row: {
-              padding: 8,
-              alignContent: 'center',
-              justifyContent: 'center',
-            },
-            seperator: {
-              height: 0.5,
-            },
-            listView: {
-              position: 'absolute',
-              top: 44 + Constants.statusBarHeight - 15,
-              right: 20,
-              left: 0,
-            },
-          }}
-          renderRow={(rowData) => {
-            const title = rowData.structured_formatting.main_text;
-            const address = rowData.structured_formatting.secondary_text;
-            return (
-              <View style={{ alignItems: 'center' }}>
-                <AppText style={{ fontSize: 14, fontWeight: '700' }}>{title}</AppText>
-                <AppText style={{ fontSize: 14 }}>{address}</AppText>
-              </View>
-            );
-          }}
-        />
-      </View>
-      {placeCard ? placeCard : null}
-    </View>
-    /* </Screen> */
+      <HomeNavBar
+        locations={[]}
+        user={route.params.currentUser}
+        navigation={navigation}
+        userPlans={[]}
+        userLocation={userLocation}
+        invitedPlans={[]}
+      />
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  searchBarContainer: {
-    position: 'absolute',
-    marginTop: 85,
-    marginLeft: '10%',
-    marginRight: '10%',
-    alignItems: 'center',
-    width: '80%',
+  container: {
+    flex: 1,
+    height: '100%',
   },
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
+    // position: 'absolute',
+    // left: 0,
+    // top: 0,
+    // zIndex: 3
+    // height: '100%',
   },
-  navbar: {
-    flexDirection: 'row',
+  marker: {
     position: 'absolute',
-    top: 0,
-    width: '100%',
-
-    paddingTop: 15,
-  },
-  navbarBackground: {
-    backgroundColor: WHITE,
-    // height: 83,
-    // height: 98,
-    height: Constants.statusBarHeight + 60,
-    position: 'absolute',
-    width: '100%',
-  },
-  navbarIcon: {
-    marginLeft: 27,
-    marginRight: 35,
-    marginTop: Constants.statusBarHeight - 10,
-  },
-  container: {
-    flex: 1,
-    // paddingTop: Constants.statusBarHeight,
-  },
-  skip: {
-    position: 'absolute',
-    bottom: 25,
-    right: 25,
-    backgroundColor: TEAL,
-    width: 75,
-    height: 35,
     alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 25,
+    width: 100,
   },
-  skipText: {
-    color: 'white',
+  mapText: {
     fontWeight: '800',
-  },
-  popup: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'transparent',
-    position: 'absolute',
-  },
-  mapPopup: {
-    top: 110,
-    backgroundColor: 'white',
-    width: '95%',
-    alignSelf: 'center',
-    height: 250,
-    justifyContent: 'space-evenly',
-    borderRadius: 20,
-  },
-  mapPopupText: {
-    fontWeight: '400',
-    fontSize: 24,
-    color: TEAL,
-    width: '80%',
-    alignSelf: 'center',
     textAlign: 'center',
+    color: WHITE,
+    fontSize: 11,
+    maxHeight: 30,
+    // maxWidth: 100,
+    overflow: 'hidden',
+    //TODO truncate text properly
   },
+  magnifyingGlassIcon: {
+    padding: 15,
+  },
+  searchBarContainer: {
+    width: 334,
+    zIndex: 1,
+    height: 45,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderColor: GREY_6,
+    borderWidth: 1,
+    borderRadius: 5,
+    position: 'absolute',
+    marginTop: Constants.statusBarHeight + 40,
+    backgroundColor: WHITE,
+  },
+  searchBarText: {
+    color: GREY_8,
+  },
+  slideUpMenu: {
+    backgroundColor: WHITE,
+    height: 1000,
+    zIndex: 2,
+    // position: 'absolute',
+    width: '100%',
+    marginBottom: 175,
+  },
+  mapContainer: {},
 });

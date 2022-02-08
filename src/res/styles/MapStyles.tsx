@@ -1,9 +1,24 @@
+import {
+  GOLD_5,
+  GREY_7,
+  YELLOW_5,
+  YELLOW_2,
+  GOLD_2,
+  GOLD_4,
+  TEAL_0,
+  SUCCESS,
+  GOLD_0,
+  ALERT,
+  TEAL_4,
+  GREY_4,
+} from './Colors';
+
 export const mapStyles = [
   {
     elementType: 'geometry',
     stylers: [
       {
-        color: '#ebe3cd',
+        color: GREY_7,
       },
     ],
   },
@@ -11,7 +26,7 @@ export const mapStyles = [
     elementType: 'labels.text.fill',
     stylers: [
       {
-        color: '#523735',
+        color: GOLD_5,
       },
     ],
   },
@@ -19,7 +34,7 @@ export const mapStyles = [
     elementType: 'labels.text.stroke',
     stylers: [
       {
-        color: '#f5f1e6',
+        color: GREY_7,
       },
     ],
   },
@@ -28,7 +43,7 @@ export const mapStyles = [
     elementType: 'geometry.stroke',
     stylers: [
       {
-        color: '#c9b2a6',
+        color: YELLOW_5,
       },
     ],
   },
@@ -37,7 +52,7 @@ export const mapStyles = [
     elementType: 'geometry.stroke',
     stylers: [
       {
-        color: '#dcd2be',
+        color: YELLOW_5,
       },
     ],
   },
@@ -46,7 +61,7 @@ export const mapStyles = [
     elementType: 'labels.text.fill',
     stylers: [
       {
-        color: '#ae9e90',
+        color: YELLOW_2,
       },
     ],
   },
@@ -55,7 +70,7 @@ export const mapStyles = [
     elementType: 'geometry',
     stylers: [
       {
-        color: '#dfd2ae',
+        color: GOLD_2,
       },
     ],
   },
@@ -64,7 +79,7 @@ export const mapStyles = [
     elementType: 'geometry',
     stylers: [
       {
-        color: '#dfd2ae',
+        color: GOLD_2,
       },
     ],
   },
@@ -73,7 +88,7 @@ export const mapStyles = [
     elementType: 'labels.text.fill',
     stylers: [
       {
-        color: '#93817c',
+        color: GOLD_4,
       },
     ],
   },
@@ -82,7 +97,7 @@ export const mapStyles = [
     elementType: 'geometry.fill',
     stylers: [
       {
-        color: '#a5b076',
+        color: TEAL_0,
       },
     ],
   },
@@ -91,7 +106,7 @@ export const mapStyles = [
     elementType: 'labels.text.fill',
     stylers: [
       {
-        color: '#447530',
+        color: SUCCESS,
       },
     ],
   },
@@ -100,7 +115,7 @@ export const mapStyles = [
     elementType: 'geometry',
     stylers: [
       {
-        color: '#f5f1e6',
+        color: GREY_7,
       },
     ],
   },
@@ -109,7 +124,7 @@ export const mapStyles = [
     elementType: 'geometry',
     stylers: [
       {
-        color: '#fdfcf8',
+        color: GREY_7,
       },
     ],
   },
@@ -127,7 +142,7 @@ export const mapStyles = [
     elementType: 'geometry',
     stylers: [
       {
-        color: '#f8c967',
+        color: GOLD_0,
       },
     ],
   },
@@ -136,7 +151,7 @@ export const mapStyles = [
     elementType: 'geometry.stroke',
     stylers: [
       {
-        color: '#e9bc62',
+        color: GOLD_0,
       },
     ],
   },
@@ -154,7 +169,7 @@ export const mapStyles = [
     elementType: 'geometry',
     stylers: [
       {
-        color: '#e98d58',
+        color: ALERT,
       },
     ],
   },
@@ -163,7 +178,7 @@ export const mapStyles = [
     elementType: 'geometry.stroke',
     stylers: [
       {
-        color: '#db8555',
+        color: ALERT,
       },
     ],
   },
@@ -180,7 +195,7 @@ export const mapStyles = [
     elementType: 'labels.text.fill',
     stylers: [
       {
-        color: '#806b63',
+        color: GOLD_4,
       },
     ],
   },
@@ -189,7 +204,7 @@ export const mapStyles = [
     elementType: 'geometry',
     stylers: [
       {
-        color: '#dfd2ae',
+        color: GOLD_4,
       },
     ],
   },
@@ -198,7 +213,7 @@ export const mapStyles = [
     elementType: 'labels.text.fill',
     stylers: [
       {
-        color: '#8f7d77',
+        color: YELLOW_2,
       },
     ],
   },
@@ -207,7 +222,7 @@ export const mapStyles = [
     elementType: 'labels.text.stroke',
     stylers: [
       {
-        color: '#ebe3cd',
+        color: GOLD_2,
       },
     ],
   },
@@ -216,7 +231,7 @@ export const mapStyles = [
     elementType: 'geometry',
     stylers: [
       {
-        color: '#dfd2ae',
+        color: GOLD_2,
       },
     ],
   },
@@ -225,7 +240,7 @@ export const mapStyles = [
     elementType: 'geometry.fill',
     stylers: [
       {
-        color: '#b9d3c2',
+        color: TEAL_4,
       },
     ],
   },
@@ -234,7 +249,7 @@ export const mapStyles = [
     elementType: 'labels.text.fill',
     stylers: [
       {
-        color: '#92998d',
+        color: GREY_4,
       },
     ],
   },

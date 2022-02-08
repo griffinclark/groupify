@@ -40,10 +40,11 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
     console.log(time);
   };
 
+  console.log(route.params.currentUser);
+
   useEffect(() => {
     if (route.params.data) {
       const { data } = route.params;
-      console.log(data);
 
       if (data.planData.locationName) {
         setLocationName(data.planData.locationName);
@@ -94,7 +95,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
             </View>
 
             <View style={globalStyles.topBlockBack}>
-              <BackChevronIcon height={'20'} onPress={() => navigation.goBack()} />
+              <BackChevronIcon height={'20'} onPress={navigation.goBack} />
               <LocationBlock locationName={locationName} locationAddress={locationAddress} />
             </View>
 

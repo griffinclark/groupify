@@ -4,10 +4,12 @@ import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { BackChevronIcon, MapLinkIcon } from '../../assets/Icons/IconExports';
 import Constants from 'expo-constants';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
 import { Plan } from '../models';
+import { copy } from './../res/groupifyCopy';
+
 import {
   formatDatabaseDate,
   formatDatabaseTime,
@@ -89,35 +91,35 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
     func: React.Dispatch<React.SetStateAction<string>>;
   }[] = [
     {
-      title: 'Plan Name *',
+      title: copy.planNameRequired,
       placeholder: '',
       settings: 'default',
       value: name,
       func: setName,
     },
     {
-      title: 'Date *',
+      title: copy.dateRequired,
       placeholder: 'MM/DD/YYYY',
       settings: 'date',
       value: date,
       func: setDate,
     },
     {
-      title: 'Time *',
+      title: copy.timeRequired,
       placeholder: 'H:MM PM',
       settings: 'time',
       value: time,
       func: setTime,
     },
     {
-      title: 'Description',
+      title: copy.createPlanDescription,
       placeholder: '',
       settings: 'default',
       value: description,
       func: setDescription,
     },
     {
-      title: 'Address',
+      title: copy.createPlanAddress,
       placeholder: '',
       settings: 'default',
       value: location,
@@ -160,7 +162,7 @@ export const EditPlan: React.FC<Props> = ({ navigation, route }: Props) => {
                   onPress={() => navigation.navigate('PlanMap', { option: 'edit' })}
                 >
                   <MapLinkIcon />
-                  <AppText style={styles.mapText}>Find address using the map</AppText>
+                  <AppText style={styles.mapText}>{copy.findAddressOnMap}</AppText>
                 </TouchableOpacity>
               </MeepForm>
               {error && <Alert status="error" message={error} />}
@@ -182,13 +184,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   mapText: {
-    color: TEAL,
+    color: TEAL_0,
     fontSize: 16,
     marginLeft: 10,
   },
   title: {
     paddingLeft: 15,
     fontSize: 30,
-    color: TEAL,
+    color: TEAL_0,
   },
 });

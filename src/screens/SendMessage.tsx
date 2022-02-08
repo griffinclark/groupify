@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, View, StyleSheet, FlatList, ImageBackground } from 'react-native';
 import { RoutePropParams } from '../res/root-navigation';
 import { Event, Contact } from '../res/dataModels';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_0 } from '../res/styles/Colors';
 import { API, Auth, DataStore } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { Screen, Button, TwoButtonAlert, MultiLineTextInput } from '../atoms/AtomsExports';
@@ -289,7 +289,7 @@ ${plan.description} \
       )}
       <View style={styles.footer}>
         {isLoading ? (
-          <ActivityIndicator size="large" color={TEAL} />
+          <ActivityIndicator size="large" color={TEAL_0} />
         ) : (
           <Button title="Create Plan" onPress={createConfirmAlert} />
         )}
