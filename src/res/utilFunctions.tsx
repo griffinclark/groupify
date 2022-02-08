@@ -740,7 +740,7 @@ export const addPastPlans = (plans: Plan[]): Plan[] => {
   });
 };
 
-export const getHost = async (id: string) : Promise<string | undefined> => {
+export const getHost = async (id: string): Promise<string | undefined> => {
   //TODO why is this type any? This should have a type, especially if you're calling variable.value on it. This appears multiple places in your code
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   const userQuery: any = await API.graphql({

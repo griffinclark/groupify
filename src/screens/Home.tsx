@@ -15,7 +15,6 @@ import { Banner } from '../atoms/Banner';
 import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
 import { LocationAccuracy } from 'expo-location';
-import { GoogleLocation } from '../res/dataModels';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { WHITE } from '../res/styles/Colors';
 
@@ -89,7 +88,6 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
         };
-
       } catch (e) {
         console.log(e);
       }

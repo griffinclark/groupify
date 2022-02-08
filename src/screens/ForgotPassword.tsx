@@ -46,7 +46,7 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
         setError(undefined);
         navigation.push('ForgotPassword', { step: 'password', phone: formatPhone });
       });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.code === 'UserNotFoundException') {
         setError('User not found');
