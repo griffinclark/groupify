@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Contact } from '../res/dataModels';
 import { AppText } from '../atoms/AppText';
-import { GRAY_MEDIUM, GRAY_DARK } from '../res/styles/Colors';
-import { WhiteButton } from '../atoms/AtomsExports';
+import { GRAY_MEDIUM } from '../res/styles/Colors';
+import { Checkbox } from 'react-native-paper';
 
 interface Props {
   isSelected?: boolean;
@@ -38,40 +37,38 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
   return (
     <View style={styles.container}>
       <View style={styles.nameContainer}>
+        <View style={{ marginRight: 5 }}>
+          <Checkbox.Android
+            status={selected ? 'checked' : 'unchecked'}
+            onPress={handlePress}
+            color="#3F8A8D"
+            uncheckedColor="#3F8A8D"
+          />
+        </View>
         <View>
           <AppText style={styles.name}>{friend.name}</AppText>
         </View>
       </View>
-      <TouchableOpacity onPress={handlePress} testID="ContactTile">
-        <WhiteButton
-          onPress={handlePress}
-          text={selected ? 'Invited' : 'Invite'}
-          style={selected ? { borderColor: GRAY_DARK } : {}}
-          textStyles={selected ? { color: GRAY_DARK } : {}}
-        />
-      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    // height: 80,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 15,
+    paddingVertical: 18,
     borderBottomWidth: 1,
     borderBottomColor: GRAY_MEDIUM,
   },
   name: {
-    fontSize: 16,
+    fontSize: 18,
     flexWrap: 'wrap',
   },
   nameContainer: {
-    // flexDirection: 'row',
-    // alignItems: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

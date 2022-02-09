@@ -8,15 +8,13 @@ import { DataStore } from '@aws-amplify/datastore';
 import { User, Plan, Invitee } from '../models';
 import { AllPlans } from '../res/root-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
-import { TopNavBar } from '../molecules/TopNavBar';
 import { PlansPreview } from '../atoms/PlansPreview';
 import { ImportContactTile } from '../atoms/ImportContactTile';
 import { Banner } from '../atoms/Banner';
 import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
 import { LocationAccuracy } from 'expo-location';
-import { globalStyles } from '../res/styles/GlobalStyles';
-import { WHITE } from '../res/styles/Colors';
+import { Header } from '../atoms/Header';
 
 export interface Props {
   navigation: {
@@ -157,16 +155,9 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       ) : (
         <>
-          <TopNavBar
-            title=""
-            navigation={navigation}
-            displayGroupify={true}
-            displayBackButton={false}
-            route={route}
-            targetScreen={'Home'}
-          />
+          <Header navigation={navigation} home={true} />
           <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
-            <View style={[globalStyles.containerWithHeader, globalStyles.containerWithFooter]}>
+            <View>
               {acceptedPlans.length > 0 || createdPlans.length > 0 ? (
                 <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />
               ) : null}
@@ -177,9 +168,8 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
                 user={currentUser!}
                 userLocation={userLocation}
               />
-              <ImportContactTile navigation={navigation} />
+              <View style={{ height: 43 }} />
             </View>
-            <View style={{ height: 70, backgroundColor: WHITE }}></View>
           </ScrollView>
         </>
       )}

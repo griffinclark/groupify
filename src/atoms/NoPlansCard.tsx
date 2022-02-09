@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { RoutePropParams } from '../res/root-navigation';
 import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { User } from '../models';
-import { WHITE, TEAL_0, BLACK } from '../res/styles/Colors';
+import { WHITE, TEAL_0 } from '../res/styles/Colors';
+import { PartyIcon } from '../../assets/Icons/PartyIcon';
 
 interface Props {
   user: User;
@@ -20,7 +20,7 @@ export const NoPlansCard: React.FC<Props> = ({ user, navigation, locations, user
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'center', marginTop: 40 }}>
-        <MaterialIcons name="celebration" size={50} color={BLACK} />
+        <PartyIcon />
         <Text style={styles.text}>No Plans to see here, yet!</Text>
       </View>
 
