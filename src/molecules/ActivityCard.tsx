@@ -10,6 +10,7 @@ import { navigateToPlanMap } from './../res/utilFunctions';
 import { RoutePropParams } from '../res/root-navigation';
 import { LocationRating } from '../molecules/LocationRating';
 import { LocationAddress } from '../molecules/LocationAddress';
+import { JOST } from '../res/styles/Fonts';
 
 interface Props {
   location: GoogleLocation;
@@ -73,7 +74,7 @@ export const ActivityCard: React.FC<Props> = ({
         <View style={styles.firstRow}>
           <LocationRating rating={location.rating} ratingTotal={location.user_ratings_total} />
           <View style={styles.viewMapBtn} onStartShouldSetResponder={onButtonPress}>
-            <Button buttonStyle={styles.button} containerStyle={{ width: 'auto' }} title={'Groupify It'} />
+            <Button buttonStyle={styles.button} textStyle={{fontFamily: JOST[600]}} containerStyle={{ width: 'auto' }} title={'Groupify It'} />
           </View>
         </View>
 
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: WHITE,
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: JOST[600]
   },
   locationButtonText: {
     color: TEAL_0,

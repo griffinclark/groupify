@@ -31,7 +31,7 @@ export interface Props {
 }
 
 export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQuery }: Props) => {
-  const [userLocation, setUserLocation] = useState({
+  const [userLocation, setUserLocation] = useState<UserLocation>({
     latitude: 41.878,
     longitude: -93.0977,
   }); // defaults to Los Angeles if user location is not provided and no place param
@@ -215,14 +215,14 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
         </>
       )}
 
-      <HomeNavBar
+      {/* <HomeNavBar
         locations={[]}
+        route={route}
         user={route.params.currentUser}
         navigation={navigation}
         userPlans={[]}
-        userLocation={userLocation}
         invitedPlans={[]}
-      />
+      /> */}
     </Screen>
   );
 };

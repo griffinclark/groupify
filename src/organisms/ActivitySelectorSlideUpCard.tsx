@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { RoutePropParams } from '../res/root-navigation';
 import { NavigationProps, GoogleLocation, UserLocation } from './../res/dataModels';
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import { StyleSheet, View, ScrollView, Dimensions } from 'react-native';
-import { GREY_6, WHITE } from '../res/styles/Colors';
+import { StyleSheet, View, ScrollView, Dimensions, Pressable } from 'react-native';
+import { GREY_6, TEAL_0, WHITE } from '../res/styles/Colors';
 import { LocationResults } from '../molecules/LocationResults';
 import { LocationDetails } from '../molecules/LocationDetails';
+import { AppText } from '../atoms/AppText';
 
 interface Props {
   navigation: NavigationProps;
@@ -86,7 +87,28 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
             />
           )}
         </ScrollView>
+        {currentSelectedLocation && showPlanDetails && (
+          <Pressable onPress={
+            () => {
+              navigation.navigate('PlanCreate', {
+                currentUser: route.params.currentUser,
+                navigation: navigation,
+                data: {
+                  planData: {
+                    location: currentSelectedLocation.formatted_address,
+                    locationName: currentSelectedLocation.name,
+                    placeId: currentSelectedLocation.place_id,
+                  },
+                },
+              });
+            }
+          }>
+            <View style={styles.createPlanButton}><AppText style={{color: WHITE, fontSize: 13, fontWeight: '500', lineHeight: 19, paddingVertical: 12.5}}>Groupify It</AppText></View>
+          </Pressable>
+        )}
       </View>
+      
+
     </SlidingUpPanel>
   );
 };
@@ -113,4 +135,12 @@ const styles = StyleSheet.create({
     paddingTop: 32,
     position: 'relative',
   },
+  createPlanButton: {
+    bottom: 0,
+    right: 0,
+    width: Dimensions.get('screen').width,
+    alignItems: 'center',
+    backgroundColor: TEAL_0,
+    display: 'flex'
+  }
 });

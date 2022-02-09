@@ -64,7 +64,6 @@ export const buttonStyles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontWeight: 'bold',
     borderWidth: 0,
   },
   enabledButton: {

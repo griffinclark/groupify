@@ -10,7 +10,7 @@ import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import * as Notifications from 'expo-notifications';
 import { facebookInit } from './src/res/facebookTracking';
-
+import { useFonts, Jost_400Regular, Jost_500Medium, Jost_600SemiBold } from '@expo-google-fonts/jost';
 Amplify.configure(awsconfig);
 
 Notifications.setNotificationHandler({
@@ -24,6 +24,14 @@ Notifications.setNotificationHandler({
 export const App: React.FC = () => {
   const [initalScreen, setInitialScreen] = useState('');
   const [userID, setUserID] = useState('');
+  const [fontsLoaded] = useFonts({
+    Jost_400Regular,
+    Jost_500Medium,
+    Jost_600SemiBold
+  });
+
+  if (!fontsLoaded) return null;
+
   LogBox.ignoreLogs([
     // eslint-disable-next-line quotes
     `'requestPermissionsAsync()' is now deprecated.`,
