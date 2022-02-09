@@ -14,6 +14,7 @@ import { globalStyles } from '../res/styles/GlobalStyles';
 import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { sendPushNotification } from '../res/notifications';
+import { copy } from './../res/groupifyCopy';
 
 export interface Props {
   navigation: {
@@ -233,7 +234,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     <Screen>
       <View testID="PlanInviteScreen" style={{ flex: 1 }}>
         <ScrollView style={globalStyles.container}>
-          <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
+          <View style={{ alignItems: 'center' }}>
             <AppText style={styles.title}>Build a Plan</AppText>
           </View>
 
@@ -246,6 +247,9 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
               date={route.params.data.planData.date}
               time={route.params.data.planData.time}
             />
+          </View>
+          <View style={{ marginTop: 20 }}>
+            <AppText>{copy.createAPlanFriendsMessage}</AppText>
           </View>
 
           <View style={{ paddingVertical: 30 }}>
