@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { ActivityImage } from '../molecules/ActivityImage';
 import { LocationRating } from '../molecules/LocationRating';
@@ -35,7 +35,6 @@ export const LocationDetails: React.FC<Props> = ({ location, userLocation, close
       );
     })();
   }, [userLocation]);
-
 
   const imageGallery: JSX.Element[] = [];
   if (placeDetails && placeDetails.photos) {

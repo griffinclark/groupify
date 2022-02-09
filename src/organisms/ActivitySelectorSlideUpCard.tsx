@@ -88,8 +88,8 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
           )}
         </ScrollView>
         {currentSelectedLocation && showPlanDetails && (
-          <Pressable onPress={
-            () => {
+          <Pressable
+            onPress={() => {
               navigation.navigate('PlanCreate', {
                 currentUser: route.params.currentUser,
                 navigation: navigation,
@@ -101,14 +101,16 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
                   },
                 },
               });
-            }
-          }>
-            <View style={styles.createPlanButton}><AppText style={{color: WHITE, fontSize: 13, fontWeight: '500', lineHeight: 19, paddingVertical: 12.5}}>Groupify It</AppText></View>
+            }}
+          >
+            <View style={styles.createPlanButton}>
+              <AppText style={{ color: WHITE, fontSize: 13, fontWeight: '500', lineHeight: 19, paddingVertical: 12.5 }}>
+                Groupify It
+              </AppText>
+            </View>
           </Pressable>
         )}
       </View>
-      
-
     </SlidingUpPanel>
   );
 };
@@ -141,6 +143,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width,
     alignItems: 'center',
     backgroundColor: TEAL_0,
-    display: 'flex'
-  }
+    display: 'flex',
+  },
 });

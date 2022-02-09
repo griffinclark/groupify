@@ -74,7 +74,12 @@ export const ActivityCard: React.FC<Props> = ({
         <View style={styles.firstRow}>
           <LocationRating rating={location.rating} ratingTotal={location.user_ratings_total} />
           <View style={styles.viewMapBtn} onStartShouldSetResponder={onButtonPress}>
-            <Button buttonStyle={styles.button} textStyle={{fontFamily: JOST[600]}} containerStyle={{ width: 'auto' }} title={'Groupify It'} />
+            <Button 
+              buttonStyle={styles.button} 
+              textStyle={{fontFamily: JOST[600]}} 
+              containerStyle={{ width: 'auto' }} 
+              title={'Groupify It'} 
+            />
           </View>
         </View>
 
@@ -148,7 +153,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: WHITE,
     fontSize: 14,
-    fontFamily: JOST[600]
+    fontFamily: JOST[600],
   },
   locationButtonText: {
     color: TEAL_0,

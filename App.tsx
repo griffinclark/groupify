@@ -27,7 +27,7 @@ export const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
     Jost_400Regular,
     Jost_500Medium,
-    Jost_600SemiBold
+    Jost_600SemiBold,
   });
 
   if (!fontsLoaded) return null;

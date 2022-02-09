@@ -8,7 +8,7 @@ import { GOLD_0, GREY_8, GREY_6, WHITE } from '../res/styles/Colors';
 import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { Screen } from '../atoms/Screen';
 import { TopNavBar } from '../molecules/TopNavBar';
-import { HomeNavBar } from '../molecules/HomeNavBar';
+// import { HomeNavBar } from '../molecules/HomeNavBar';
 import MapView from 'react-native-map-clustering';
 import { Marker } from 'react-native-maps';
 import { MapIcon } from './../../assets/Icons/MapIcon';
