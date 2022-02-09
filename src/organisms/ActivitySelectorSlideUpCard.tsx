@@ -112,5 +112,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 32,
     position: 'relative',
+    paddingBottom: 100,
   },
 });
