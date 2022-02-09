@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { LIGHT, TEAL_0 } from './Colors';
+import { GREY_6, LIGHT, TEAL_0, GREY_5, GREY_4, GREY_2, GREY_1 } from './Colors';
 import Constants from 'expo-constants';
 
 export const globalStyles = StyleSheet.create({
@@ -62,16 +62,20 @@ export const globalStyles = StyleSheet.create({
     flexGrow: 1,
   },
   navTitle: {
-    paddingLeft: 15,
-    fontSize: 30,
-    color: TEAL_0,
-    textTransform: 'capitalize',
+    // paddingLeft: 15,
+    fontSize: 16,
+    color: GREY_1,
+    paddingTop: 10,
+    paddingBottom: 10,
+    // textTransform: 'capitalize',
   },
   topBlockBack: {
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     width: '100%',
+    borderBottomColor: GREY_6,
+    borderBottomWidth: 1,
   },
   sectionTitle: {
     fontSize: 16,

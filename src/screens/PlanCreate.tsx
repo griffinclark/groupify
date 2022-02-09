@@ -11,6 +11,8 @@ import { AppTextInput } from '../atoms/AppTextInput';
 import { ScrollView } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 import { globalStyles } from '../res/styles/GlobalStyles';
+import { TopNavBar } from './../molecules/TopNavBar';
+import { copy } from './../res/groupifyCopy';
 
 interface Props {
   navigation: {
@@ -90,14 +92,14 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
           keyboardVerticalOffset={Constants.statusBarHeight}
         >
           <View style={globalStyles.container}>
-            <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
-              <AppText style={globalStyles.navTitle}>Build a Plan</AppText>
+            <View style={{ alignItems: 'center' }}>
+              <AppText style={globalStyles.navTitle}>{copy.buildPlanNavbarTitle}</AppText>
             </View>
 
             <View style={globalStyles.topBlockBack}>
               <BackChevronIcon height={'20'} onPress={navigation.goBack} />
-              <LocationBlock locationName={locationName} locationAddress={locationAddress} />
             </View>
+            <LocationBlock locationName={locationName} locationAddress={locationAddress} />
 
             <ScrollView
               contentContainerStyle={{

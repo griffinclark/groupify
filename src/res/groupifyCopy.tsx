@@ -101,5 +101,6 @@ export const copy = new LocalizedStrings({
     submitBugReportButtonTitle: 'Submit Bug Report',
     signUpButtonTitle: 'Sign Up',
     distanceMeasure: 'mi',
+    buildPlanNavbarTitle: 'BUILD A PLAN',
   },
 });
