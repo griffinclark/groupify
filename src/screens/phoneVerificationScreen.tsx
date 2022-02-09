@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -27,9 +28,9 @@ export interface Props {
   route: RoutePropParams;
 }
 
-export const phoneVerificationScreen = ({ navigation, route }: Props) => {
+export const phoneVerificationScreen = ({ navigation }: Props) => {
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [formattedValue, setFormattedValue] = useState('');
+  const [, setFormattedValue] = useState('');
   const [error, setError] = useState('');
 
   const phoneInputRef = useRef<PhoneInput>(null);

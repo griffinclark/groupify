@@ -40,7 +40,6 @@ export const createAccountForm = ({ navigation, route }: Props) => {
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [formatPhone, setFormatPhone] = useState<string>('');
-  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     setName(firstName + ' ' + lastName);

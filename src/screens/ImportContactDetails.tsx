@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator, Linking, Platform, Keyboard, Text } from 'react-native';
 import * as Contacts from 'expo-contacts';
@@ -29,11 +30,10 @@ enum State {
   Done,
 }
 
-export const ImportContactDetails: React.FC<Props> = ({ navigation, route }: Props) => {
+export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [addedContacts, setAddedContacts] = useState<Contact[]>([]);
-  const [currentSessionChanges, setCurrentSessionChanges] = useState(false);
   const [state, setState] = useState<State>(State.Empty);
   const [openModal, setOpenModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<User>();
@@ -56,13 +56,11 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation, route }: Pro
     await storeImportedContact(newContact);
     loadImportedContacts();
     await Analytics.logEvent('import_contacts', {});
-    setCurrentSessionChanges(true);
   };
 
   const removeSelectedContact = async (newContact: Contact) => {
     await deleteImportedContactFromID(newContact.id);
     loadImportedContacts();
-    setCurrentSessionChanges(true);
   };
 
   const loadContacts = async () => {

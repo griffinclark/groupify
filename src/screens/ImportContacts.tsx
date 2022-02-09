@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator, Linking, Platform, Keyboard } from 'react-native';
 import * as Contacts from 'expo-contacts';
@@ -27,7 +28,7 @@ enum State {
   Done,
 }
 
-export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) => {
+export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [addedContacts, setAddedContacts] = useState<Contact[]>([]);

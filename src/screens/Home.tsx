@@ -9,7 +9,6 @@ import { User, Plan, Invitee } from '../models';
 import { AllPlans } from '../res/root-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 import { PlansPreview } from '../atoms/PlansPreview';
-import { ImportContactTile } from '../atoms/ImportContactTile';
 import { Banner } from '../atoms/Banner';
 import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
