@@ -90,7 +90,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
           keyboardVerticalOffset={Constants.statusBarHeight}
         >
           <View style={globalStyles.container}>
-            <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
+            <View style={{ flexDirection: 'row', marginHorizontal: 20, alignItems: 'center' }}>
               <AppText style={globalStyles.navTitle}>Build a Plan</AppText>
             </View>
 

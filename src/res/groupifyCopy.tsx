@@ -101,5 +101,7 @@ export const copy = new LocalizedStrings({
     submitBugReportButtonTitle: 'Submit Bug Report',
     signUpButtonTitle: 'Sign Up',
     distanceMeasure: 'mi',
+    createAPlanFriendsMessage:
+      'Let’s get together before the semester is over! Bring food and a beverage of your choice. See you there!',
   },
 });
