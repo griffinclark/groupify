@@ -127,13 +127,13 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation, route }: Pro
   return (
     <Screen style={{ backgroundColor: WHITE }}>
       <Header navigation={navigation} />
-      <View style={{ flex: 1, paddingHorizontal: 20, justifyContent: 'space-between' }}>
-        <View style={{ flex: 1, width: '100%' }}>
-          <View style={{ marginBottom: 10, marginTop: 8 }}>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <View style={styles.headerTextContainer}>
             <Text style={{ fontSize: 22, fontWeight: '400' }}>
               Welcome to Groupify, {currentUser?.name.split(' ')[0]}!
             </Text>
-            <Text style={{ fontSize: 16, marginVertical: 10, fontWeight: '400', lineHeight: 23.12 }}>
+            <Text style={styles.headerText}>
               The more plans you add to groupify, the easier it is to make plans. Add friends from your contacts now.
             </Text>
           </View>
@@ -232,5 +232,24 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 22,
     marginLeft: 10,
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+  },
+  headerContainer: {
+    flex: 1,
+    width: '100%',
+  },
+  headerTextContainer: {
+    marginBottom: 10,
+    marginTop: 8,
+  },
+  headerText: {
+    fontSize: 16,
+    marginVertical: 10,
+    fontWeight: '400',
+    lineHeight: 23.12,
   },
 });

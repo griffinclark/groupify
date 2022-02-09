@@ -13,7 +13,7 @@ export interface Props {
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
   };
-  reload: boolean;
+  reload: any;
 }
 
 enum SelectedOption {
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   scrollList: {
     backgroundColor: WHITE,
     borderBottomColor: '#ccc',
-    borderBottomWidth: 1.5,
+    borderBottomWidth: 0.5,
   },
   header: {
     padding: 4,

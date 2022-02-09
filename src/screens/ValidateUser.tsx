@@ -8,6 +8,7 @@ import {
   Keyboard,
   TouchableOpacity,
   SafeAreaView,
+  StyleSheet,
 } from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
 import { RoutePropParams } from '../res/root-navigation';
@@ -49,13 +50,11 @@ export const ValidateUser = ({ navigation, route }: Props) => {
     }, 3000);
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <ScrollView style={{}}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
           <View style={{ alignItems: 'center' }}>
-            <Text style={{ fontSize: 22, marginVertical: 18, fontWeight: '500' }}>
-              Please enter the verification code you received.
-            </Text>
+            <Text style={styles.header}>Please enter the verification code you received.</Text>
             <CodeInput
               ref={confirmRef}
               className={'border-b'}
@@ -69,25 +68,28 @@ export const ValidateUser = ({ navigation, route }: Props) => {
               keyboardType="numeric"
               codeLength={6}
             />
-            <TouchableOpacity>
-              <Text style={{ fontSize: 20, color: '#3F8A8D', marginTop: 45, fontWeight: '500' }}>
-                Send New Verification Code
-              </Text>
-            </TouchableOpacity>
-
+            {error ? <Text style={styles.error}>{error}</Text> : null}
+            {success ? <Text style={styles.success}>{success}</Text> : null}
             <TouchableOpacity
-              onPress={validateUser}
-              activeOpacity={0.7}
-              style={{
-                marginTop: 28,
-                backgroundColor: '#3F8A8D',
-                alignItems: 'center',
-                paddingVertical: 12,
-                marginHorizontal: 22,
-                borderRadius: 5,
+              onPress={() => {
+                try {
+                  console.log(route.params.phone);
+                  Auth.resendSignUp(route.params.phone);
+                  setSuccess('Sent new verification code');
+                  setError(undefined);
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                } catch (err: any) {
+                  console.log(err);
+                  setError(err.message);
+                  clearError();
+                }
               }}
             >
-              <Text style={{ color: WHITE, fontSize: 20, fontWeight: '500' }}> Next </Text>
+              <Text style={styles.verification}>Send New Verification Code</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={validateUser} activeOpacity={0.7} style={styles.button}>
+              <Text style={styles.buttonText}> Next </Text>
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
@@ -95,3 +97,52 @@ export const ValidateUser = ({ navigation, route }: Props) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    fontSize: 22,
+    marginVertical: 18,
+    fontWeight: '500',
+  },
+  verification: {
+    fontSize: 20,
+    color: '#3F8A8D',
+    marginTop: 45,
+    fontWeight: '500',
+  },
+  button: {
+    marginTop: 28,
+    backgroundColor: '#3F8A8D',
+    alignItems: 'center',
+    paddingVertical: 12,
+    marginHorizontal: 22,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: WHITE,
+    fontSize: 20,
+    fontWeight: '500',
+  },
+  error: {
+    marginTop: 15,
+    backgroundColor: 'red',
+    textAlign: 'center',
+    marginHorizontal: 30,
+    color: 'white',
+    fontSize: 18,
+    borderRadius: 10,
+  },
+  success: {
+    marginTop: 15,
+    backgroundColor: 'green',
+    textAlign: 'center',
+    marginHorizontal: 30,
+    color: 'white',
+    fontSize: 18,
+    borderRadius: 10,
+  },
+});

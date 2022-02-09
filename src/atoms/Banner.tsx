@@ -13,7 +13,7 @@ interface Props {
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
   };
-  reload: boolean;
+  reload: any;
 }
 
 export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => {

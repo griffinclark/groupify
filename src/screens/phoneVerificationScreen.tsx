@@ -9,12 +9,14 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
 } from 'react-native';
 import { Header } from '../atoms/Header';
 import { WHITE } from '../res/styles/Colors';
 import PhoneInput from 'react-native-phone-number-input';
 import { RoutePropParams } from '../res/root-navigation';
 import { formatPhoneNumber } from '../res/utilFunctions';
+import * as SecureStore from 'expo-secure-store';
 
 export interface Props {
   navigation: {
@@ -36,9 +38,9 @@ export const phoneVerificationScreen = ({ navigation, route }: Props) => {
     console.log('phoneNumber', phoneNumber);
   }, [phoneNumber]);
 
-  //   const setSecureStoreItem = async (key: string, value: string): Promise<void> => {
-  //     return SecureStore.setItemAsync(key, value);
-  //   };
+  const setSecureStoreItem = async (key: string, value: string): Promise<void> => {
+    return SecureStore.setItemAsync(key, value);
+  };
 
   const clearError = () => {
     setTimeout(() => {
@@ -52,20 +54,17 @@ export const phoneVerificationScreen = ({ navigation, route }: Props) => {
       return;
     }
     const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
-    // setFormattedValue(formattedPhoneNumber);
-    // setSecureStoreItem('phone', formattedPhoneNumber);
+    setFormattedValue(formattedPhoneNumber);
+    setSecureStoreItem('phone', formattedPhoneNumber);
     navigation.push('createAccountForm', { phone: formattedPhoneNumber, step: 'create' });
   };
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: WHITE }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <SafeAreaView style={{ backgroundColor: WHITE, flex: 1, position: 'relative' }}>
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <SafeAreaView style={styles.innerContainer}>
         <Header navigation={navigation} title="Groupify" />
-        <Text style={{ fontSize: 20, padding: 15 }}>What&apos;s your phone number? </Text>
+        <Text style={styles.header}>What&apos;s your phone number? </Text>
 
-        <View style={{ justifyContent: 'center', alignSelf: 'center', paddingVertical: 10 }}>
+        <View style={styles.input}>
           <PhoneInput
             ref={phoneInputRef}
             defaultValue={phoneNumber}
@@ -85,24 +84,10 @@ export const phoneVerificationScreen = ({ navigation, route }: Props) => {
             }}
           />
         </View>
-        {error ? (
-          <Text
-            style={{
-              marginTop: 15,
-              backgroundColor: 'red',
-              textAlign: 'center',
-              marginHorizontal: 30,
-              color: 'white',
-              fontSize: 18,
-              borderRadius: 10,
-            }}
-          >
-            {error}
-          </Text>
-        ) : null}
+        {error ? <Text style={styles.error}>{error}</Text> : null}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
           <View style={{ position: 'absolute', bottom: 80 }}>
-            <Text style={{ fontSize: 17, marginHorizontal: 8, color: '#767676', marginBottom: 20 }}>
+            <Text style={styles.text}>
               Let&apos;s start with your phone number. You&apos;ll use it to login to Groupify, but first, we&apos;ll
               send you a code to help us verify your identity.
             </Text>
@@ -110,16 +95,9 @@ export const phoneVerificationScreen = ({ navigation, route }: Props) => {
               disabled={!phoneNumber}
               onPress={handleSubmit}
               activeOpacity={0.7}
-              style={{
-                marginTop: 18,
-                backgroundColor: phoneNumber ? '#3F8A8D' : '#BDBDBD',
-                alignItems: 'center',
-                paddingVertical: 12,
-                marginHorizontal: 15,
-                borderRadius: 5,
-              }}
+              style={[styles.button, { backgroundColor: phoneNumber ? '#3F8A8D' : '#BDBDBD' }]}
             >
-              <Text style={{ color: WHITE, fontSize: 20, fontWeight: '500' }}> Next </Text>
+              <Text style={styles.buttonText}> Next </Text>
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
@@ -127,3 +105,51 @@ export const phoneVerificationScreen = ({ navigation, route }: Props) => {
     </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: WHITE,
+  },
+  innerContainer: {
+    backgroundColor: WHITE,
+    flex: 1,
+    position: 'relative',
+  },
+  header: {
+    fontSize: 20,
+    padding: 15,
+  },
+  input: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    paddingVertical: 10,
+  },
+  error: {
+    marginTop: 15,
+    backgroundColor: 'red',
+    textAlign: 'center',
+    marginHorizontal: 30,
+    color: 'white',
+    fontSize: 18,
+    borderRadius: 10,
+  },
+  text: {
+    fontSize: 17,
+    marginHorizontal: 8,
+    color: '#767676',
+    marginBottom: 20,
+  },
+  button: {
+    marginTop: 18,
+    alignItems: 'center',
+    paddingVertical: 12,
+    marginHorizontal: 15,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: WHITE,
+    fontSize: 20,
+    fontWeight: '500',
+  },
+});

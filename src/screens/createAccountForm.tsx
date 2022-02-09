@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,12 +11,12 @@ import {
   Keyboard,
   Platform,
   ScrollView,
+  StyleSheet,
 } from 'react-native';
 import { Header } from '../atoms/Header';
 import { WHITE } from '../res/styles/Colors';
 import { FormInput } from '../atoms/FormInput';
 import { RoutePropParams } from '../res/root-navigation';
-import CodeInput from 'react-native-confirmation-code-input';
 import * as SecureStore from 'expo-secure-store';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Auth } from 'aws-amplify';
@@ -39,22 +39,8 @@ export const createAccountForm = ({ navigation, route }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
-  const [disabled, setDisabled] = useState(true);
-  const [validationCode, setValidationCode] = useState('');
   const [formatPhone, setFormatPhone] = useState<string>('');
-  const [success, setSuccess] = useState<string | undefined>();
-
-  const confirmRef = useRef<CodeInput>(null);
-
-  useEffect(() => {
-    if (route.params.step == 'create' && password && name && firstName && lastName && phone && confirmPassword) {
-      setDisabled(false);
-    } else if (route.params.step == 'validate' && validationCode) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  }, [password, firstName, lastName, name, phone, formatPhone, validationCode, confirmPassword]);
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     setName(firstName + ' ' + lastName);
@@ -145,19 +131,6 @@ export const createAccountForm = ({ navigation, route }: Props) => {
     }
   };
 
-  //   const validateUser = async () => {
-  //     try {
-  //       await Auth.confirmSignUp(route.params.phone, validationCode);
-  //       navigation.navigate('Login', { accountCreated: 'success' });
-  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     } catch (err: any) {
-  //       console.log('Error: ', err);
-  //       setError(err.message);
-  //       clearError();
-  //       setSuccess(undefined);
-  //     }
-  //   };
-
   const setSecureStoreItem = async (key: string, value: string): Promise<void> => {
     return SecureStore.setItemAsync(key, value);
   };
@@ -169,19 +142,14 @@ export const createAccountForm = ({ navigation, route }: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: WHITE }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <SafeAreaView style={{ backgroundColor: WHITE, flex: 1 }}>
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <SafeAreaView style={styles.container}>
         <Header navigation={navigation} title="Groupify" />
         {route.params.step === 'create' && (
           <ScrollView>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
               <View style={{ marginTop: 10 }}>
-                <Text style={{ fontSize: 22, paddingVertical: 20, paddingHorizontal: 10 }}>
-                  Great! Let&apos;s set your account up.
-                </Text>
+                <Text style={styles.header}>Great! Let&apos;s set your account up.</Text>
                 <FormInput
                   autoFocus={true}
                   returnKeyNext={true}
@@ -208,63 +176,68 @@ export const createAccountForm = ({ navigation, route }: Props) => {
                   secureTextEntry={true}
                 />
                 <FormInput
-                  // submit={}
                   returnKeyNext={false}
                   label="Confirm Password"
                   placeholder="Enter password"
-                  onChangeText={setConfirmPassword}
+                  onChangeText={() => {
+                    setConfirmPassword;
+                    setDisabled(false);
+                  }}
                   secureTextEntry={true}
                 />
-                <TouchableOpacity
-                  onPress={signUp}
-                  activeOpacity={0.7}
-                  disabled={disabled}
-                  style={{
-                    marginTop: 28,
-                    backgroundColor: '#3F8A8D',
-                    alignItems: 'center',
-                    paddingVertical: 12,
-                    marginHorizontal: 22,
-                    borderRadius: 5,
-                  }}
-                >
-                  <Text style={{ color: WHITE, fontSize: 20, fontWeight: '500' }}> Next </Text>
+                {error ? <Text style={styles.error}>{error}</Text> : null}
+                <TouchableOpacity onPress={signUp} activeOpacity={0.7} disabled={disabled} style={styles.button}>
+                  <Text style={styles.buttonText}> Next </Text>
                 </TouchableOpacity>
               </View>
             </TouchableWithoutFeedback>
             <View style={{ height: 70 }} />
           </ScrollView>
         )}
-        {/* {route.params.step === 'validate' && (
-          <ScrollView style={{ flex: 1 }}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-              <View style={{ alignItems: 'center' }}>
-                <Text style={{ fontSize: 22, marginVertical: 18, fontWeight: '500' }}>
-                  Please enter the verification code you received.
-                </Text>
-                <CodeInput
-                  ref={confirmRef}
-                  className={'border-b'}
-                  space={10}
-                  size={48}
-                  inputPosition="left"
-                  onFulfill={(code: any) => setValidationCode(code)}
-                  containerStyle={{ marginTop: 5 }}
-                  codeInputStyle={{ borderBottomWidth: 1.5, borderBottomColor: 'black', fontSize: 23 }}
-                  activeColor="black"
-                  keyboardType="numeric"
-                  codeLength={6}
-                />
-                <TouchableOpacity>
-                  <Text style={{ fontSize: 20, color: '#3F8A8D', marginTop: 45, fontWeight: '500' }}>
-                    Send New Verification Code
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableWithoutFeedback>
-          </ScrollView>
-        )} */}
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: WHITE,
+  },
+  header: {
+    fontSize: 22,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+  },
+  button: {
+    marginTop: 28,
+    backgroundColor: '#3F8A8D',
+    alignItems: 'center',
+    paddingVertical: 12,
+    marginHorizontal: 22,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: WHITE,
+    fontSize: 20,
+    fontWeight: '500',
+  },
+  error: {
+    marginTop: 15,
+    backgroundColor: 'red',
+    textAlign: 'center',
+    marginHorizontal: 30,
+    color: 'white',
+    fontSize: 18,
+    borderRadius: 10,
+  },
+  success: {
+    marginTop: 15,
+    backgroundColor: 'green',
+    textAlign: 'center',
+    marginHorizontal: 30,
+    color: 'white',
+    fontSize: 18,
+    borderRadius: 10,
+  },
+});

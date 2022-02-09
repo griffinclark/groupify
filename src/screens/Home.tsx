@@ -10,7 +10,6 @@ import { AllPlans } from '../res/root-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Header } from '../atoms/Header';
 import { PlansPreview } from '../atoms/PlansPreview';
-import { ImportContactTile } from '../atoms/ImportContactTile';
 import { Banner } from '../atoms/Banner';
 import { WHITE } from '../res/styles/Colors';
 
@@ -40,11 +39,11 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
   useEffect(() => {
     const awaitUser = async () => {
       const user = await getCurrentUser();
-      await loadPlans(user);
       setCurrentUser(user);
+      await loadPlans(user);
       setTrigger2(!trigger2);
-      setRefreshing(false);
       setState(LoadingState.Loaded);
+      setRefreshing(false);
     };
     awaitUser();
   }, [trigger1]);
@@ -116,10 +115,9 @@ export const Home: React.FC<Props> = ({ navigation }: Props) => {
           <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
             <View>
               {acceptedPlans.length > 0 || createdPlans.length > 0 ? (
-                <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />
+                <Banner reload={trigger1} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />
               ) : null}
-              <PlansPreview all={allPlans!} reload={trigger2} navigation={navigation} user={currentUser!} />
-              <ImportContactTile navigation={navigation} />
+              <PlansPreview all={allPlans!} reload={trigger1} navigation={navigation} user={currentUser!} />
             </View>
             <View style={{ height: 70, backgroundColor: WHITE }}></View>
           </ScrollView>
