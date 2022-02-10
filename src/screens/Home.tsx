@@ -13,7 +13,7 @@ import { Banner } from '../atoms/Banner';
 import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
 import { LocationAccuracy } from 'expo-location';
-import { Header } from '../atoms/Header';
+import { TopNavBar } from '../molecules/TopNavBar';
 
 export interface Props {
   navigation: {
@@ -154,7 +154,16 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       ) : (
         <>
-          <Header navigation={navigation} home={true} />
+          <TopNavBar
+            stickyHeader={false}
+            navigation={navigation}
+            displayGroupify={true}
+            displayBackButton={false}
+            displaySettings={true}
+            route={route}
+            targetScreen={'Home'}
+          />
+
           <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
             <View>
               {acceptedPlans.length > 0 || createdPlans.length > 0 ? (

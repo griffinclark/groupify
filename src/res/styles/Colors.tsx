@@ -13,7 +13,7 @@ export const BLACK = '#000000';
 export const GREY_0 = '#212121';
 export const GREY_1 = '#333333';
 export const GREY_2 = '#4F4F4F';
-export const GREY_3 = '#8B8B8B';
+export const GREY_3 = '#767676';
 export const GREY_4 = '#C4C4C4';
 export const GREY_5 = '#E0E0E0';
 export const GREY_6 = '#EEEEEE';
@@ -41,6 +41,8 @@ export const TEAL_2 = '#22706C';
 export const TEAL_4 = '#7FCFD8';
 export const TEAL_5 = '#A5DDED';
 export const TEAL_6 = '#96CFDD';
+export const TEAL_7 = '#ECF3F4';
+export const TEAL_8 = '#3F8A8D';
 
 //YELLOW SCALE
 export const YELLOW_1 = '#4D3F18';

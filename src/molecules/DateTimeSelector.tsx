@@ -18,12 +18,11 @@ export const DateTimeSelector: React.FC<Props> = ({ onDateChange, testID }: Prop
     return;
   };
   return (
-    <View>
-      <View style={styles.dateTimeBlock}>
+    <View style={{paddingVertical: 32}}>
+      {/* <View style={styles.dateTimeBlock}>
         <AppText>{formatTime(currentDate)}</AppText>
         <AppText style={styles.dateLine}>{formatDayOfWeekDate(currentDate.toLocaleDateString())}</AppText>
-      </View>
-
+      </View> */}
       <DateTimePicker
         testID={testID ? testID : 'datetimepicker'}
         mode={'datetime'}
@@ -31,24 +30,24 @@ export const DateTimeSelector: React.FC<Props> = ({ onDateChange, testID }: Prop
         minimumDate={new Date()}
         value={currentDate}
         /* eslint-disable */
-                // @ts-expect-error
-                onChange={(event: Event, date: Date) => onChange(event, date, onDateChange)}
-                themeVariant={"dark"}
-                format={'h:mm a'}
-                minuteInterval={5}
-                locale="en-US"
-                textColor="black"
-            />
-        </View>
-    )
-}
+        // @ts-expect-error
+        onChange={(event: Event, date: Date) => onChange(event, date, onDateChange)}
+        themeVariant={'dark'}
+        format={'h:mm a'}
+        minuteInterval={5}
+        locale="en-US"
+        textColor="black"
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    dateTimeBlock: {
-        alignItems: 'center',
-        marginTop: 40
-    },
-    dateLine: {
-        fontSize: 20
-    }
+  dateTimeBlock: {
+    alignItems: 'center',
+    marginTop: 40,
+  },
+  dateLine: {
+    fontSize: 20,
+  },
 });

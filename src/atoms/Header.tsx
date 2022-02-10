@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { GroupifyLogo } from '../../assets/Icons/GroupifyLogo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import { AppText } from './AppText';
 export interface Props {
   title?: string | undefined;
   home?: boolean;
@@ -14,7 +14,7 @@ export interface Props {
     goBack: () => void;
   };
 }
-export const Header = ({ home, navigation }: Props) => {
+export const Header = ({ title, home, navigation }: Props) => {
   return (
     <View>
       {home ? (
@@ -41,7 +41,7 @@ export const Header = ({ home, navigation }: Props) => {
             color="black"
           />
           <View style={[styles.titleContainer, { marginRight: 135 }]}>
-            <GroupifyLogo />
+            {title ? <AppText>{title}</AppText> : <GroupifyLogo />}
           </View>
           {/* <Ionicons name="md-settings-outline" size={30} color="black" /> */}
         </View>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
 import { AppText, BottomButton, Screen } from '../atoms/AtomsExports';
-import { Platform, View, KeyboardAvoidingView } from 'react-native';
+import { Platform, View, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { RoutePropParams } from '../res/root-navigation';
@@ -11,6 +11,10 @@ import { AppTextInput } from '../atoms/AppTextInput';
 import { ScrollView } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 import { globalStyles } from '../res/styles/GlobalStyles';
+import { BLACK, TEAL_7, WHITE } from '../res/styles/Colors';
+import { JOST } from '../res/styles/Fonts';
+import { TopNavBar } from '../molecules/TopNavBar';
+import { copy } from '../res/groupifyCopy';
 
 interface Props {
   navigation: {
@@ -23,11 +27,13 @@ interface Props {
 
 export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   const [name, setName] = useState<string>('');
+  const [desc, setDesc] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [time, setTime] = useState<string>('');
 
   const [locationName, setLocationName] = useState<string>('');
   const [locationAddress, setLocationAddress] = useState<string>('');
+  const [keyboardOffset, setKeyboardOffset] = useState<number>(0);
 
   const currentDate = roundDate(new Date());
 
@@ -37,10 +43,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
     const formatedTime =
       Platform.OS === 'ios' ? formatIosTimeInput(date.toLocaleTimeString()) : formatTime(date.toLocaleTimeString());
     setTime(formatedTime);
-    console.log(time);
   };
-
-  console.log(route.params.currentUser);
 
   useEffect(() => {
     if (route.params.data) {
@@ -75,59 +78,85 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
           locationName: locationName,
           location: locationAddress,
           placeId: route.params.data ? route.params.data.planData.placeId : '',
+          description: desc.trim()
         },
       },
     });
 
     await Analytics.logEvent('submit_create_event_to_friends', { userId: id });
   };
+
   return (
     <Screen>
       <View style={{ flex: 1 }}>
-        <KeyboardAvoidingView
-          style={{ flex: 1, backgroundColor: 'white' }}
-          behavior={'position'}
-          keyboardVerticalOffset={Constants.statusBarHeight}
+        <TopNavBar
+          stickyHeader={false}
+          title={copy.createAPlanTitle}
+          navigation={navigation}
+          displayGroupify={false}
+          displayBackButton={false}
+          displaySettings={true}
+          route={route}
+          targetScreen={'PlanCreate'}
+        />
+        <ScrollView
+          contentContainerStyle={[
+            {
+              backgroundColor: TEAL_7,
+              marginTop: keyboardOffset,
+              paddingBottom: 20,
+            },
+            globalStyles.container,
+          ]}
         >
-          <View style={globalStyles.container}>
-            <View style={{ flexDirection: 'row', marginHorizontal: 20, alignItems: 'center' }}>
-              <AppText style={globalStyles.navTitle}>Build a Plan</AppText>
-            </View>
-
-            <View style={globalStyles.topBlockBack}>
-              <BackChevronIcon height={'20'} onPress={navigation.goBack} />
-              <LocationBlock locationName={locationName} locationAddress={locationAddress} />
-            </View>
-
-            <ScrollView
-              contentContainerStyle={{
-                flexGrow: 1,
-                justifyContent: 'space-between',
-                flexDirection: 'column',
-                paddingTop: Constants.statusBarHeight - 340,
-              }}
-            >
-              <View>
-                <AppTextInput
-                  editable={true}
-                  label={'Name Your plan - Optional'}
-                  onChangeText={(e: string) => setName(e)}
-                  placeholder={'Name Your Plan'}
-                  value={name === locationName ? '' : name}
-                  textStyle={[globalStyles.sectionTitle, { fontWeight: 'bold', fontSize: 16 }]}
-                />
-              </View>
-
-              <View>
-                <AppText style={globalStyles.sectionTitle}>When are we meeting?</AppText>
-                <DateTimeSelector onDateChange={onDateChange} />
-              </View>
-            </ScrollView>
+          <View style={[globalStyles.topBlockBack, { marginVertical: 20}]}>
+            <BackChevronIcon height={'20'} onPress={navigation.goBack} />
+            <LocationBlock locationName={locationName} locationAddress={locationAddress} />
           </View>
-        </KeyboardAvoidingView>
 
+          <View style={globalStyles.fieldContainer}>
+            <AppTextInput
+              editable={true}
+              label={'Name Your plan - Optional'}
+              onChangeText={(e: string) => setName(e)}
+              placeholder={'Name Your Plan'}
+              value={name === locationName ? '' : name}
+              textStyle={globalStyles.sectionTitle}
+            />
+          </View>
+
+          <View style={[globalStyles.fieldContainer, styles.fieldContainerAfterFirst]}>
+            <AppText style={globalStyles.sectionTitle}>{copy.createAPlanChooseTime}</AppText>
+            <DateTimeSelector onDateChange={onDateChange} />
+          </View>
+
+          <View style={[globalStyles.fieldContainer, styles.fieldContainerAfterFirst]}>
+            <AppTextInput
+              editable={true}
+              label={'Describe Your Plan - Optional'}
+              onChangeText={(e: string) => setDesc(e)}
+              placeholder={'Describe your Groupify plan'}
+              value={desc}
+              textStyle={globalStyles.sectionTitle}
+              multiline={true}
+              inputStyle={{ height: 118 }}
+              onBlur={() => {
+                setKeyboardOffset(0);
+              }}
+              onFocus={() => {
+                setKeyboardOffset(-200);
+              }}
+            />
+          </View>
+        </ScrollView>
         <BottomButton disabled={false} title="Invite Friends" onPress={onFormSubmit} />
       </View>
     </Screen>
   );
 };
+
+const styles = StyleSheet.create({
+  fieldContainerAfterFirst: {
+    marginTop: 5,
+  },
+});

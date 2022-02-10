@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { LIGHT, TEAL_0 } from './Colors';
+import { LIGHT, TEAL_0, WHITE, BLACK } from './Colors';
+import { JOST } from './Fonts';
 import Constants from 'expo-constants';
 
 export const globalStyles = StyleSheet.create({
@@ -15,6 +16,19 @@ export const globalStyles = StyleSheet.create({
   },
   containerWithFooter: {
     paddingBottom: 80,
+  },
+  fieldContainer: {
+    backgroundColor: WHITE,
+    borderRadius: 4,
+    padding: 10,
+    shadowColor: BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8.3,
+    elevation: 13,
   },
   navbar_container: {
     height: 80,
@@ -76,6 +90,8 @@ export const globalStyles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     textTransform: 'capitalize',
-    marginTop: 30,
+    marginTop: 0,
+    fontFamily: JOST[600],
+    lineHeight: 23,
   },
 });
