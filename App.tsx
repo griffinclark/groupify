@@ -40,12 +40,11 @@ export const App: React.FC = () => {
     `[Unhandled promise rejection: TypeError: undefined is not an object (evaluating 'userInfo.attributes.phone_number')]`,
   ]);
 
-
   useEffect(() => {
     Hub.listen('auth', (event) => {
       console.log('auth event', event);
     });
-    
+
     facebookInit();
 
     const checkAuth = async () => {
@@ -87,7 +86,9 @@ export const App: React.FC = () => {
   return (
     <View style={globalStyles.defaultRootContainer}>
       {initalScreen == '' && !fontReady && <Text>Loading...</Text>}
-      {initalScreen != '' && fontReady  && <RootNavigation initialRoute={initalScreen} initialParams={{ userID: userID }} />}
+      {initalScreen != '' && fontReady && (
+        <RootNavigation initialRoute={initalScreen} initialParams={{ userID: userID }} />
+      )}
     </View>
   );
 };
