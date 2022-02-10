@@ -647,14 +647,14 @@ export const googlePlacesQuery: (
       const placeIdArr: string[] = [];
 
       unfilteredLocations.forEach((location: GoogleLocation) => {
-        location.types.length &&
+        if (
+          location.types.length &&
           whitelist.some((tag) => location.types.includes(tag)) == true &&
-          !placeIdArr.includes(location.place_id);
-        {
-          if (getDistance(userLocation, location.geometry.location) < 30000) {
-            placeIdArr.push(location.place_id);
-            searchResults.push(location);
-          }
+          !placeIdArr.includes(location.place_id) &&
+          getDistance(userLocation, location.geometry.location) < 30000
+        ) {
+          placeIdArr.push(location.place_id);
+          searchResults.push(location);
         }
       });
       break;
