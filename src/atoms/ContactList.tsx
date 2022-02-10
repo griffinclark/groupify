@@ -108,7 +108,7 @@ export const ContactList = ({ navigation }: Props) => {
     <Screen>
       <Header navigation={navigation} title="Friends" />
       <View style={{ marginHorizontal: 8, padding: 20 }}>
-        <SearchBar onInputChange={searchContacts} />
+        <SearchBar onChangeText={searchContacts} testID={''} />
       </View>
       <View style={{ marginLeft: 10 }}>
         <Text style={{ fontSize: 18, fontWeight: '600', marginVertical: 5 }}>Your Friends</Text>

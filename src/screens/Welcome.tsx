@@ -39,7 +39,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
             }}
             textStyle={{ color: TEAL_0, backgroundColor: 'white', fontSize: 20 }}
             title={copy.signUpButtonTitle}
-            onPress={() => navigation.navigate('CreateAccount', {})}
+            onPress={() => navigation.navigate('VerifyPhone', {})}
             testID="WelcomeCreateButton"
           />
         </View>

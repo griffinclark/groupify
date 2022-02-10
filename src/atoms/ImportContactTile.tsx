@@ -69,7 +69,7 @@ export const ImportContactTile = ({ navigation }: Props) => {
               <Text style={styles.buttonText}>Add Contacts</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('ContactList', {})}>
+            <TouchableOpacity onPress={() => navigation.navigate('ImportContactDetails', {})}>
               <Text style={styles.buttonText}>See All Contacts</Text>
             </TouchableOpacity>
           </View>

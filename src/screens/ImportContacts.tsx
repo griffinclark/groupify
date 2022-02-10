@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator, Linking, Platform, Keyboard } from 'react-native';
 import * as Contacts from 'expo-contacts';
 import { Contact } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
-import { WHITE, TEAL } from '../res/styles/Colors';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
 import { deleteImportedContactFromID, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
 import { Button, Screen, SearchBar, AlertModal } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
@@ -27,7 +28,7 @@ enum State {
   Done,
 }
 
-export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) => {
+export const ImportContacts: React.FC<Props> = ({ navigation }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [addedContacts, setAddedContacts] = useState<Contact[]>([]);
@@ -122,9 +123,11 @@ export const ImportContacts: React.FC<Props> = ({ navigation, route }: Props) =>
         <View style={{ flex: 1 }}>
           <View style={styles.navbar}>
             <BackChevronIcon onPress={() => navigation.goBack()} />
-            <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL, marginLeft: 15 }}>Select Contacts</AppText>
+            <AppText style={{ fontWeight: '300', fontSize: 30, color: TEAL_0, marginLeft: 15 }}>
+              Select Contacts
+            </AppText>
           </View>
-          <SearchBar onInputChange={searchContacts} />
+          <SearchBar onChangeText={searchContacts} testID={''} />
           <View style={styles.flatListContainer}>
             <FlatList
               onScrollBeginDrag={Keyboard.dismiss}
@@ -208,7 +211,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   skipStyle: {
-    color: TEAL,
+    color: TEAL_0,
     fontWeight: '900',
     fontSize: 20,
   },

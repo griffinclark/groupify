@@ -8,7 +8,7 @@ interface Props {
   placeholder?: string;
   onPressIn?: () => void;
   onPressOut?: () => void;
-  leftIcon: JSX.Element;
+  leftIcon?: JSX.Element;
   onSubmitEditing?: () => void;
   defaultValue?: string;
   autoFocus?: boolean;
