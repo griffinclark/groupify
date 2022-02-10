@@ -95,11 +95,12 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
             <View style={{ alignItems: 'center' }}>
               <AppText style={globalStyles.navTitle}>{copy.buildPlanNavbarTitle}</AppText>
             </View>
-
-            <View style={globalStyles.topBlockBack}>
-              <BackChevronIcon height={'20'} onPress={navigation.goBack} />
+            <View style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#ccf', paddingTop: 37.5 }}>
+              <View>
+                <BackChevronIcon height={'20'} onPress={navigation.goBack} />
+              </View>
+              <LocationBlock locationName={locationName} locationAddress={locationAddress} />
             </View>
-            <LocationBlock locationName={locationName} locationAddress={locationAddress} />
 
             <ScrollView
               contentContainerStyle={{
