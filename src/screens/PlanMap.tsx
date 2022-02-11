@@ -16,8 +16,6 @@ import { MagnifyingGlassIcon } from './../../assets/Icons/MagnifyingGlass';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from '../molecules/SearchbarWithoutFeedback';
 import { ProgressBar } from '../atoms/ProgressBar';
 import { ActivitySelectorSlideUpCard } from '../organisms/ActivitySelectorSlideUpCard';
-import { User } from '../models';
-import { HomeNavBar } from './../molecules/HomeNavBar';
 
 export interface Props {
   navigation: {
@@ -30,11 +28,10 @@ export interface Props {
   tempUserLocationQuery: string;
   placesUserWantsToGoQuery: string;
   userLocation: UserLocation;
-  currentUser: User;
 }
 
 export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQuery }: Props) => {
-  const [userLocation, setUserLocation] = useState({
+  const [userLocation, setUserLocation] = useState<UserLocation>({
     latitude: 41.878,
     longitude: -93.0977,
   }); // defaults to Los Angeles if user location is not provided and no place param
@@ -71,7 +68,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
 
   useEffect(() => {
     setPlacesUserWantsToGo(route.params.data.activitySearchData.placesUserWantsToGoResults);
-    console.log('user on planmap', route.params.currentUser);
   }, []);
 
   useEffect(() => {
@@ -219,7 +215,14 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
         </>
       )}
 
-      <HomeNavBar user={route.params.currentUser} route={route} navigation={navigation} userLocation={userLocation} />
+      {/* <HomeNavBar
+        locations={[]}
+        route={route}
+        user={route.params.currentUser}
+        navigation={navigation}
+        userPlans={[]}
+        invitedPlans={[]}
+      /> */}
     </Screen>
   );
 };

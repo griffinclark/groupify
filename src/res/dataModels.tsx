@@ -94,15 +94,3 @@ export enum ActivityEnum {
   Indoor = 'Indoor Fun',
   AllDay = 'All-Day Fun',
 }
-
-export enum NavButtonEnum {
-  GroupifyIt = 'Groupify It',
-  Plans = 'Plans',
-  Friends = 'Friends',
-  Notifications = 'Notifications',
-}
-
-export enum LoadingState {
-  Loading,
-  Loaded,
-}
