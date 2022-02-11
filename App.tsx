@@ -30,24 +30,19 @@ export const App: React.FC = () => {
     // eslint-disable-next-line quotes
     `AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage`,
     'FirebaseAnalytics.setCurrentScreen` is deprecated.',
+
     'Non-serializable values were found in the navigation state',
     'source.uri should not be an empty string',
     'Setting a timer',
     // eslint-disable-next-line quotes
     `[Unhandled promise rejection: TypeError: undefined is not an object (evaluating 'userInfo.attributes.phone_number')]`,
   ]);
-
   useEffect(() => {
     Hub.listen('auth', (event) => {
       console.log('auth event', event);
     });
-  }, []);
-
-  useEffect(() => {
     facebookInit();
-  }, []);
 
-  useEffect(() => {
     const checkAuth = async () => {
       try {
         await Auth.currentAuthenticatedUser();
@@ -62,7 +57,7 @@ export const App: React.FC = () => {
         if (contacts.length === 0) {
           setInitialScreen('ImportContactDetails');
         } else {
-          setInitialScreen('Home');
+          setInitialScreen('SelectorMenu');
         }
       } catch (err) {
         console.log('user not signed in');
@@ -71,6 +66,7 @@ export const App: React.FC = () => {
       }
     };
     checkAuth();
+
   }, []);
 
   return (

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
-import { getCurrentUser, loadInviteeStatus, removePastPlans, addPastPlans } from './../res/utilFunctions';
+import { loadInviteeStatus, removePastPlans, addPastPlans } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { DataStore } from '@aws-amplify/datastore';
@@ -14,87 +14,41 @@ import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
 import { LocationAccuracy } from 'expo-location';
 import { Header } from '../atoms/Header';
+import { LoadingState, NavigationProps } from './../res/dataModels';
+import { UserLocation } from './../res/dataModels';
+import { Button } from './../atoms/Button';
 
 export interface Props {
-  navigation: {
-    CreateAccount: {
-      step: string;
-      email: string;
-    };
-    params: {
-      Login: string;
-    };
-    navigate: (ev: string, {}) => void;
-    push: (ev: string, {}) => void;
-    goBack: () => void;
-  };
+  navigation: NavigationProps;
   route: RoutePropParams;
+  userLocation: UserLocation;
 }
-enum LoadingState {
-  Loading,
-  Loaded,
-}
-export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
+export const Home: React.FC<Props> = ({ navigation, route, userLocation }: Props) => {
   const [createdPlans, setCreatedPlans] = useState<Plan[]>([]);
   const [acceptedPlans, setAcceptedPlans] = useState<Plan[]>([]);
-  const [currentUser, setCurrentUser] = useState<User>();
   const [trigger1, setTrigger1] = useState(false);
   const [trigger2, setTrigger2] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [allPlans, setAllPlans] = useState<AllPlans>();
-  const [pastPlans, setPastPlans] = useState<Plan[]>([]);
-  const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
-  const [state, setState] = useState(LoadingState.Loading);
-  const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 }); // defaults to Los Angeles if user location is not provided and no place param
 
   useEffect(() => {
-    getUserLocation();
-  }, []);
-
-  useEffect(() => {
-    const awaitUser = async () => {
-      const user = await getCurrentUser();
-      setCurrentUser(user);
-      await loadPlans(user);
+    const awaitPlans = async () => {
+      console.log(route.params.currentUser);
+      await loadPlans(route.params.currentUser);
       setTrigger2(!trigger2);
       setRefreshing(false);
       setState(LoadingState.Loaded);
     };
-    awaitUser();
+    awaitPlans();
   }, [trigger1]);
-
-  const getUserLocation = async () => {
-    const { status } = await Location.requestPermissionsAsync();
-
-    if (status !== 'granted') {
-      console.log('Permission to access location was denied');
-    } else {
-      try {
-        let location = await Location.getLastKnownPositionAsync();
-
-        if (location === null) {
-          location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
-        }
-
-        setUserLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        });
-
-        route.params.userLocation = {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        };
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  };
 
   const onHomeRefresh = () => {
     setRefreshing(true);
     setTrigger1(!trigger1);
   };
+  const [allPlans, setAllPlans] = useState<AllPlans>();
+  const [pastPlans, setPastPlans] = useState<Plan[]>([]);
+  const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
+  const [state, setState] = useState(LoadingState.Loading);
 
   const loadPlans = async (user: User) => {
     const createdPlanOnDb = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
@@ -164,7 +118,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
                 all={allPlans!}
                 reload={trigger2}
                 navigation={navigation}
-                user={currentUser!}
+                user={route.params.currentUser}
                 userLocation={userLocation}
               />
               <View style={{ height: 43 }} />
@@ -174,11 +128,10 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       )}
 
       <HomeNavBar
-        user={currentUser}
+        user={route.params.currentUser}
         navigation={navigation}
-        userPlans={createdPlans}
-        invitedPlans={[...acceptedPlans, ...pendingPlans]}
         route={route}
+        userLocation={route.params.userLocation}
       />
     </Screen>
   );
