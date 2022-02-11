@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import { View, Text, ImageBackground, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { Plan, Invitee } from '../models';
 import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
 import { DataStore } from '@aws-amplify/datastore';
-import { TEAL_0, WHITE, GREY_3, BLACK } from '../res/styles/Colors';
+import { TEAL_0, WHITE, GREY_3, BLACK, GOLD_6 } from '../res/styles/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
@@ -23,7 +24,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
 
   useEffect(() => {
     const loadCard = async () => {
-      getHost(plan.creatorID).then((name) => setHostName(name));
+      getHost(plan.creatorID).then((name: any) => setHostName(name));
       if (plan.placeID) {
         setPhotoURI(await loadPhoto(plan.placeID));
       }
@@ -47,18 +48,9 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
           activeOpacity={0.8}
           style={styles.card}
         >
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginHorizontal: 12,
-            }}
-          >
+          <View style={styles.cardContainer}>
             <View>
-              <Text style={{ fontSize: 18, color: '#C3982C', fontWeight: '400', lineHeight: 23.12 }}>
-                {plan.date && formatDayOfWeekDate(plan.date)}
-              </Text>
+              <Text style={styles.date}>{plan.date && formatDayOfWeekDate(plan.date)}</Text>
               <Text style={styles.title}>
                 {plan.title.length > 16 ? plan.title.substring(0, 15) + '...' : plan.title}
               </Text>
@@ -74,8 +66,15 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
             </View>
           </View>
           <View style={styles.invitedContainer}>
-            <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL_0} />
-            <Text style={styles.invitedText}>{invitees?.length} Invited</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL_0} />
+              <Text style={styles.invitedText}>{invitees?.length} Invited</Text>
+            </View>
+            <View>
+              <Text numberOfLines={1} style={styles.invitedText}>
+                {plan.location.length > 15 ? plan.location?.substring(0, 14) + '...' : plan.location}
+              </Text>
+            </View>
           </View>
         </TouchableOpacity>
       </ImageBackground>
@@ -85,16 +84,16 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
 
 const styles = StyleSheet.create({
   containerText: {
-    marginHorizontal: 8,
-    fontSize: 22,
-    fontWeight: '600',
+    marginLeft: 16,
+    fontSize: 18,
+    fontWeight: '500',
     color: BLACK,
     marginTop: 6,
     marginBottom: 8,
   },
   image: {
-    width: 120,
-    height: 100,
+    width: 115,
+    height: 95,
     borderRadius: 5,
     marginTop: 5,
   },
@@ -114,12 +113,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 10,
+    justifyContent: 'space-between',
   },
   invitedText: {
-    fontSize: 18,
-    fontWeight: '400',
+    fontSize: 16,
     color: GREY_3,
-    lineHeight: 23.12,
+    marginLeft: 4,
+    fontWeight: '400',
   },
   card: {
     backgroundColor: WHITE,
@@ -137,5 +137,17 @@ const styles = StyleSheet.create({
   imgBackground: {
     height: 200,
     width: '100%',
+  },
+  cardContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: 12,
+  },
+  date: {
+    fontSize: 18,
+    color: GOLD_6,
+    fontWeight: '400',
+    lineHeight: 23.12,
   },
 });
