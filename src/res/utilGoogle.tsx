@@ -1,4 +1,4 @@
-export const GOOGLE_PLACES_API_KEY = 'AIzaSyBmEuQOANTG6Bfvy8Rf1NdBWgwleV7X0TY';
+export const GOOGLE_PLACES_API_KEY = 'AIzaSyCRgK83OfNgCVHZOaBN7YCXwpFaJJ_6rOg';
 
 export const durationCalculation = async (
   origin: { lat: number; lng: number },
