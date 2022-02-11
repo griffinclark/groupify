@@ -19,6 +19,7 @@ export const GREY_5 = '#E0E0E0';
 export const GREY_6 = '#EEEEEE';
 export const GREY_7 = '#FAFAFA';
 export const GREY_8 = '#767676';
+export const GREY_9 = '#cccccc';
 export const RED = '#E71717';
 export const GREEN = '#cdffcd';
 
@@ -33,6 +34,7 @@ export const GOLD_2 = '#D1AA5E';
 export const GOLD_0 = '#BE8C2C';
 export const GOLD_4 = '#7B5B24';
 export const GOLD_5 = '#483517';
+export const GOLD_6 = '#C3982C';
 
 //TEAL SCALE
 export const TEAL_0 = '#31A59F';
@@ -41,6 +43,7 @@ export const TEAL_2 = '#22706C';
 export const TEAL_4 = '#7FCFD8';
 export const TEAL_5 = '#A5DDED';
 export const TEAL_6 = '#96CFDD';
+export const TEAL_7 = '#D0EAE9';
 
 //YELLOW SCALE
 export const YELLOW_1 = '#4D3F18';

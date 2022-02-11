@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-nati
 import { Plan, User } from '../models';
 import { PlanCard } from './planCard';
 import { NoPlansCard } from './NoPlansCard';
-import { TEAL_0, GRAY_DARK, WHITE } from '../res/styles/Colors';
+import { TEAL_0, GRAY_DARK, WHITE, GREY_6 } from '../res/styles/Colors';
 import { AllPlans } from '../res/root-navigation';
 import { UserLocation } from '../res/dataModels';
 
@@ -98,9 +98,9 @@ const styles = StyleSheet.create({
   scrollList: {
     backgroundColor: WHITE,
     borderTopWidth: 2,
-    borderTopColor: '#EEEEEE',
+    borderTopColor: GREY_6,
     borderBottomWidth: 2,
-    borderBottomColor: '#EEEEEE',
+    borderBottomColor: GREY_6,
   },
   header: {
     padding: 4,

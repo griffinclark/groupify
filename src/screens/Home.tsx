@@ -105,7 +105,7 @@ export const Home: React.FC<Props> = ({ navigation, route, userLocation }: Props
         </View>
       ) : (
         <>
-          <Header navigation={navigation} home={true} />
+          <Header navigation={navigation} />
           <ScrollView
             showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}
@@ -139,6 +139,6 @@ export const Home: React.FC<Props> = ({ navigation, route, userLocation }: Props
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ececec',
+    backgroundColor: '#fff',
   },
 });
