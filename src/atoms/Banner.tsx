@@ -56,11 +56,11 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
             }}
           >
             <View>
-              <Text style={{ fontSize: 19, color: '#C3982C', fontWeight: '500' }}>
+              <Text style={{ fontSize: 18, color: '#C3982C', fontWeight: '400', lineHeight: 23.12 }}>
                 {plan.date && formatDayOfWeekDate(plan.date)}
               </Text>
               <Text style={styles.title}>
-                {plan.title.length > 20 ? plan.title.substring(0, 19) + '...' : plan.title}
+                {plan.title.length > 16 ? plan.title.substring(0, 15) + '...' : plan.title}
               </Text>
               <Text style={styles.hostName}>{hostName}</Text>
             </View>
@@ -86,26 +86,29 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
 const styles = StyleSheet.create({
   containerText: {
     marginHorizontal: 8,
-    marginTop: 18,
     fontSize: 22,
     fontWeight: '600',
     color: BLACK,
+    marginTop: 6,
+    marginBottom: 8,
   },
   image: {
     width: 120,
-    height: 110,
-    borderRadius: 7,
+    height: 100,
+    borderRadius: 5,
     marginTop: 5,
   },
   title: {
-    fontWeight: '600',
-    fontSize: 24,
-    marginVertical: 8,
+    fontWeight: '400',
+    fontSize: 22,
+    marginVertical: 6,
+    lineHeight: 28,
   },
   hostName: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '400',
     color: GREY_3,
+    lineHeight: 23.12,
   },
   invitedContainer: {
     flexDirection: 'row',
@@ -114,15 +117,15 @@ const styles = StyleSheet.create({
   },
   invitedText: {
     fontSize: 18,
-    fontWeight: '500',
+    fontWeight: '400',
     color: GREY_3,
+    lineHeight: 23.12,
   },
   card: {
     backgroundColor: WHITE,
-    marginHorizontal: 6,
-    paddingVertical: 8,
-    borderRadius: 15,
-    marginTop: 8,
+    marginHorizontal: 15,
+    paddingVertical: 4,
+    borderRadius: 5,
   },
   gradientStyle: {
     position: 'absolute',
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
     height: 240,
   },
   imgBackground: {
-    height: 240,
+    height: 200,
     width: '100%',
   },
 });
