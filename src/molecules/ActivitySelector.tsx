@@ -1,26 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RoutePropParams } from '../res/root-navigation';
-import { GoogleLocation, NavigationProps, ActivityEnum, UserLocation } from './../res/dataModels';
+import { GoogleLocation, NavigationProps, ActivityEnum } from './../res/dataModels';
 import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import { AppText } from '../atoms/AppText';
 import { GREY_6, WHITE } from '../res/styles/Colors';
 import { navigateToPlanMap } from '../res/utilFunctions';
 import { copy } from './../res/groupifyCopy';
-import { User } from '../models';
 
 interface Props {
   navigation: NavigationProps;
   route: RoutePropParams;
-  userLocation: UserLocation;
-  currentUser: User;
   setPlacesUserWantsToGo?: () => GoogleLocation[];
 }
 
 // Stored as 2d array to make it really easy to edit where options show up in the activity selector
-export const ActivitySelector: React.FC<Props> = ({ navigation, route, userLocation, currentUser }: Props) => {
-  useEffect(() => {
-    console.log('activity selector user', currentUser);
-  });
+export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) => {
   const activities = [
     {
       id: ActivityEnum.Happening,
@@ -86,7 +80,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route, userLocat
       {activities.map((activity: { id: ActivityEnum; name: string }) => (
         <TouchableOpacity
           onPress={async () => {
-            navigateToPlanMap(activity.id, navigation, route, userLocation, 'Current Location', currentUser);
+            navigateToPlanMap(activity.id, navigation, route, route.params.userLocation, 'Current Location', true);
           }}
           testID={activity.id}
           key={activity.id}

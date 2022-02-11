@@ -3,17 +3,15 @@ import { StyleSheet, View, Image, ScrollView, NativeSyntheticEvent, NativeScroll
 import { Screen } from '../atoms/Screen';
 import { BLACK, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
 import { HomeNavBar } from '../molecules/HomeNavBar';
-import { GoogleLocation, ActivityEnum, UserLocation, LoadingState } from '../res/dataModels';
+import { GoogleLocation, ActivityEnum } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 import { TopNavBar } from '../molecules/TopNavBar';
-import { getCurrentUser, googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
+import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from './../molecules/SearchbarWithoutFeedback';
 import { ProgressBar } from '../atoms/ProgressBar';
 import { ActivitySelector } from '../molecules/ActivitySelector';
 import { LocationResults } from '../molecules/LocationResults';
-import { getUserLocation } from './../res/utilFunctions';
-import { User } from '../models';
 
 interface Props {
   navigation: {
@@ -29,9 +27,6 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   //const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState('');
   //const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
   const [scrollTop, setScrollTop] = useState(true);
-  const [userLocation, setUserLocation] = useState<UserLocation>({ latitude: 0, longitude: 0 }); // defaults to Los Angeles if user location is not provided and no place param
-  const [currentUser, setCurrentUser] = useState<User>();
-  const [state, setState] = useState(LoadingState.Loading);
 
   const randomEnumKey = (enumeration: typeof ActivityEnum) => {
     const keys = Object.keys(enumeration).filter((k) => !(Math.abs(Number.parseInt(k)) + 1));
@@ -40,43 +35,26 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   useEffect(() => {
-    const awaitUser = async () => {
-      setCurrentUser(await getCurrentUser());
-    };
-    awaitUser();
-  }, []);
+    // TODO @JONI do we want to be resetting one or both of these?
+    //setTempUserLocationQuery('');
+    //setPlacesUserWantsToGoQuery('');
 
-  useEffect(() => {
-    const setupUserLocation = async () => {
-      setUserLocation(await getUserLocation());
-    };
-    setupUserLocation();
-  }, [currentUser]);
+    const randomKey = randomEnumKey(ActivityEnum);
 
-  useEffect(() => {
     const buildFeatureLocations = async () => {
-      const randomKey = randomEnumKey(ActivityEnum);
       setFeaturedLocations(
-        await googlePlacesQuery(ActivityEnum[randomKey], userLocation, GooglePlacesQueryOptions.Activity),
+        await googlePlacesQuery(
+          ActivityEnum[randomKey],
+          route.params.data.activitySearchData.tempUserLocation,
+          GooglePlacesQueryOptions.Activity,
+        ),
       );
     };
-    if (userLocation && currentUser) {
-      buildFeatureLocations().then(() => setState(LoadingState.Loaded));
-    } else {
-      console.log('current user: ', currentUser + '\nuser location: ', userLocation);
-    }
-  }, [userLocation]);
+    buildFeatureLocations();
+  }, []);
 
   const handleScrollView = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollTop(e.nativeEvent.contentOffset.y > 300);
-  };
-
-  const getTempUserLocation = (): UserLocation => {
-    try {
-      return route.params.data.activitySearchData.tempUserLocation;
-    } catch {
-      return userLocation;
-    }
   };
 
   const bgImage = [
@@ -115,33 +93,40 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           <SearchbarWithoutFeedback
             navigation={navigation}
             route={route}
-            userLocation={userLocation}
+            userLocation={route.params.userLocation}
             icon={<MagnifyingGlassIcon />}
             placeholderText="Search for food, parks, coffee, etc"
-            tempUserLocation={getTempUserLocation()}
+            tempUserLocation={route.params.data?.activitySearchData.tempUserLocation}
             placesUserWantsToGoQuery={''}
             tempUserLocationQuery={''}
             mode={SearchbarDisplayMode.Query}
           />
         </View>
-        <ActivitySelector route={route} navigation={navigation} userLocation={userLocation} currentUser={currentUser} />
+        <ActivitySelector route={route} navigation={navigation} />
 
         <View style={styles.locationSuggestions}>
-          {state === LoadingState.Loading ? (
-            <ProgressBar />
-          ) : (
+          {featuredLocations.length > 0 ? (
             <LocationResults
               navigation={navigation}
               route={route}
               locations={featuredLocations}
               tempUserLocationQuery={''}
-              userLocation={userLocation}
+              userLocation={route.params.userLocation}
             />
+          ) : (
+            <ProgressBar />
           )}
         </View>
       </ScrollView>
 
-      <HomeNavBar user={currentUser} userLocation={userLocation} navigation={navigation} route={route} />
+      <HomeNavBar
+        locations={[]}
+        user={route.params.currentUser}
+        navigation={navigation}
+        userPlans={[]}
+        invitedPlans={[]}
+        route={route}
+      />
     </Screen>
   );
 };

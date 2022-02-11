@@ -104,9 +104,5 @@ export const copy = new LocalizedStrings({
     distanceMeasure: 'mi',
     createAPlanFriendsMessage:
       'Let’s get together before the semester is over! Bring food and a beverage of your choice. See you there!',
-    groupifyItButton: 'Groupify It',
-    plansButton: 'Plans',
-    friendsButton: 'Friends',
-    notificationsButton: 'Notifications',
   },
 });
