@@ -89,25 +89,30 @@ export const PlansPreview: React.FC<Props> = ({ all, navigation, user, userLocat
 const styles = StyleSheet.create({
   selectedItem: {
     borderBottomWidth: 3,
-    paddingHorizontal: 8,
-    marginHorizontal: 8,
+    paddingHorizontal: 12,
+    marginHorizontal: 2,
   },
   // container: {
   //   marginTop: 5,
   // },
   scrollList: {
     backgroundColor: WHITE,
+    borderTopWidth: 2,
+    borderTopColor: '#EEEEEE',
+    borderBottomWidth: 2,
+    borderBottomColor: '#EEEEEE',
   },
   header: {
     padding: 4,
-    fontWeight: '600',
-    fontSize: 20,
-    marginLeft: 10,
+    fontWeight: '500',
+    fontSize: 18,
+    marginLeft: 20,
     marginVertical: 6,
+    lineHeight: 23.12,
   },
   buttonText: {
-    fontSize: 17,
+    fontSize: 14,
     fontWeight: '600',
-    paddingBottom: 5,
+    paddingBottom: 8,
   },
 });

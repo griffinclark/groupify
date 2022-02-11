@@ -152,8 +152,11 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       ) : (
         <>
-          <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
-            <Header navigation={navigation} />
+          <Header navigation={navigation} home={true} />
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}
+          >
             <View>
               {acceptedPlans.length > 0 || createdPlans.length > 0 ? (
                 <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />

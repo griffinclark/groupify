@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   homeContainer: {
     backgroundColor: '#fff',
-    padding: 5,
+    // padding: 5,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
