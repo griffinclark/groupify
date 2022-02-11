@@ -10,7 +10,8 @@ import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import * as Notifications from 'expo-notifications';
 import { facebookInit } from './src/res/facebookTracking';
-
+import * as Font from 'expo-font';
+import { Jost_400Regular, Jost_500Medium, Jost_600SemiBold } from '@expo-google-fonts/jost';
 Amplify.configure(awsconfig);
 
 Notifications.setNotificationHandler({
@@ -24,6 +25,8 @@ Notifications.setNotificationHandler({
 export const App: React.FC = () => {
   const [initalScreen, setInitialScreen] = useState('');
   const [userID, setUserID] = useState('');
+  const [fontReady, setFontReady] = useState(false);
+
   LogBox.ignoreLogs([
     // eslint-disable-next-line quotes
     `'requestPermissionsAsync()' is now deprecated.`,
@@ -65,14 +68,26 @@ export const App: React.FC = () => {
         setInitialScreen('Welcome');
       }
     };
+
     checkAuth();
 
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        Jost_400Regular,
+        Jost_500Medium,
+        Jost_600SemiBold,
+      });
+      setFontReady(true);
+    };
+    loadFonts();
   }, []);
 
   return (
     <View style={globalStyles.defaultRootContainer}>
-      {initalScreen == '' && <Text>Loading...</Text>}
-      {initalScreen != '' && <RootNavigation initialRoute={initalScreen} initialParams={{ userID: userID }} />}
+      {initalScreen == '' && !fontReady && <Text>Loading...</Text>}
+      {initalScreen != '' && fontReady && (
+        <RootNavigation initialRoute={initalScreen} initialParams={{ userID: userID }} />
+      )}
     </View>
   );
 };
