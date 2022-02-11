@@ -17,6 +17,7 @@ import { SearchbarDisplayMode, SearchbarWithoutFeedback } from '../molecules/Sea
 import { ProgressBar } from '../atoms/ProgressBar';
 import { ActivitySelectorSlideUpCard } from '../organisms/ActivitySelectorSlideUpCard';
 import { User } from '../models';
+import { HomeNavBar } from './../molecules/HomeNavBar';
 
 export interface Props {
   navigation: {
