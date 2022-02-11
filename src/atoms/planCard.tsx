@@ -5,7 +5,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Invitee, Plan } from '../models';
 import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
 import { Entypo, AntDesign } from '@expo/vector-icons';
-import { WHITE, GREY_3, TEAL } from '../res/styles/Colors';
+import { WHITE, GREY_3, GREY_9, TEAL_0, GOLD_6, TEAL_7 } from '../res/styles/Colors';
 
 export interface Props {
   title: string;
@@ -53,7 +53,7 @@ export const PlanCard = ({
   }, []);
 
   return (
-    <View style={{ backgroundColor: WHITE, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+    <View style={styles.viewContainer}>
       <TouchableOpacity onPress={() => navigation.push('PlanDetails', { plan: plan })} style={styles.container}>
         <View style={styles.textContainer}>
           <View>
@@ -82,9 +82,9 @@ export const PlanCard = ({
           </View>
         </View>
         <View style={styles.invited}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={styles.invitedContainer}>
             {invited
-              ? <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL} /> ||
+              ? <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL_0} /> ||
                 (!creator && <AntDesign name="question" size={24} color="red" />)
               : null}
             <Text style={styles.invitedText}>{invitees.length} Invited</Text>
@@ -101,6 +101,11 @@ export const PlanCard = ({
 };
 
 const styles = StyleSheet.create({
+  viewContainer: {
+    backgroundColor: WHITE,
+    borderBottomWidth: 1,
+    borderBottomColor: GREY_9,
+  },
   container: {
     backgroundColor: WHITE,
     marginTop: 2,
@@ -116,7 +121,7 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 18,
     fontWeight: '400',
-    color: '#C3982C',
+    color: GOLD_6,
     lineHeight: 24,
   },
   hostName: {
@@ -145,7 +150,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   creatorContainer: {
-    backgroundColor: '#D0EAE9',
+    backgroundColor: TEAL_7,
     padding: 4,
     marginTop: 4,
     borderRadius: 3,
@@ -162,5 +167,9 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginVertical: 5,
     lineHeight: 30,
+  },
+  invitedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
