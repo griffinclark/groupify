@@ -10,13 +10,10 @@ import { AllPlans } from '../res/root-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 import { PlansPreview } from '../atoms/PlansPreview';
 import { Banner } from '../atoms/Banner';
-import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
-import { LocationAccuracy } from 'expo-location';
 import { Header } from '../atoms/Header';
 import { LoadingState, NavigationProps } from './../res/dataModels';
 import { UserLocation } from './../res/dataModels';
-import { Button } from './../atoms/Button';
 
 export interface Props {
   navigation: NavigationProps;

@@ -32,7 +32,7 @@ export interface Props {
   currentUser: User;
 }
 
-export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQuery, currentUser }: Props) => {
+export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQuery }: Props) => {
   const [userLocation, setUserLocation] = useState({
     latitude: 41.878,
     longitude: -93.0977,

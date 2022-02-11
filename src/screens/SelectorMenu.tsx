@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  ScrollView,
-  RefreshControl,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-} from 'react-native';
+import { StyleSheet, View, Image, ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { Screen } from '../atoms/Screen';
 import { BLACK, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
 import { HomeNavBar } from '../molecules/HomeNavBar';
