@@ -38,10 +38,10 @@ export const ContactContainer: React.FC<Props> = ({ contacts, containerStyles, a
     for (let i = 0; i < contacts.length; i++) {
       const item = contacts[i];
       contactList.push(
-        <ContactTile 
-          key={item.id} 
-          friend={item} 
-          addUser={addSelectedContacts} 
+        <ContactTile
+          key={item.id}
+          friend={item}
+          addUser={addSelectedContacts}
           removeUser={removeSelectedContact}
           lastInList={i === contacts.length - 1}
         />,

@@ -3,19 +3,6 @@ import { StyleSheet, TextInput, View, TextInputProps } from 'react-native';
 import { BLACK, GREY_6 } from '../res/styles/Colors';
 import { CloseIcon } from '../../assets/Icons/Close';
 
-interface Props {
-  onChangeText: (input: string) => void;
-  placeholder?: string;
-  onPressIn?: () => void;
-  onPressOut?: () => void;
-  onSubmitEditing?: () => void;
-  defaultValue?: string;
-  autoFocus?: boolean;
-  selectTextOnFoucs?: boolean;
-  selectTextOnFocus?: boolean;
-  testID: string;
-}
-
 type SearchFieldProps = TextInputProps & {
   leftIcon?: JSX.Element;
   hideClose?: boolean;

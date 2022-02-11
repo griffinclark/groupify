@@ -7,7 +7,7 @@ import { User, Plan, Status, Invitee } from '../models';
 import { ContactContainer } from '../organisms/OrganismsExports';
 import { LocationBlock } from '../molecules/MoleculesExports';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { AppText, BottomButton, SearchBar, Screen } from '../atoms/AtomsExports';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { formatDatabaseDate, formatDatabaseTime, formatDayOfWeekDate } from '../res/utilFunctions';
