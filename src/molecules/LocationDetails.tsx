@@ -21,12 +21,6 @@ export const LocationDetails: React.FC<Props> = ({ location, userLocation, close
 
   useEffect(() => {
     (async () => {
-      setDuration(
-        await durationCalculation(
-          { lat: userLocation.latitude, lng: userLocation.longitude },
-          location.geometry.location,
-        ),
-      );
       setPlaceDetails(await loadPlaceDetails(location.place_id));
     })();
   }, []);
@@ -59,9 +53,9 @@ export const LocationDetails: React.FC<Props> = ({ location, userLocation, close
 
   const reviewsRow: JSX.Element[] = [];
   if (placeDetails && placeDetails.reviews) {
-    placeDetails.reviews.slice(0, Math.min(5, placeDetails.reviews.length)).map((review) => {
+    placeDetails.reviews.slice(0, Math.min(5, placeDetails.reviews.length)).map((review, index) => {
       reviewsRow.push(
-        <View style={styles.reviewSingle}>
+        <View style={styles.reviewSingle} key={index}>
           <LocationRating containerStyle={styles.paddingBottomTen} rating={review.rating} />
 
           <AppText style={styles.reviewText}>{review.text}</AppText>
