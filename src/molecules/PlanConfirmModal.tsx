@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
 import { Button, AppText } from '../atoms/AtomsExports';
 import { CloseIcon } from '../../assets/Icons/Close';
-import { RoutePropParams } from '../res/root-navigation';
-import { formatDayOfWeekDate } from '../res/utilFunctions';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { Contact } from '../res/dataModels';
 import { WHITE, MESSAGE_BLUE } from '../res/styles/Colors';

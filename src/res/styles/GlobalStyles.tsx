@@ -95,7 +95,7 @@ export const globalStyles = StyleSheet.create({
     lineHeight: 23,
   },
   modalView: {
-    width: Dimensions.get("screen").width * 0.85, 
+    width: Dimensions.get('screen').width * 0.85,
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 10,
@@ -139,5 +139,5 @@ export const globalStyles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 20,
-  }
+  },
 });

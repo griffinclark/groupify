@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
 import { AppText, BottomButton, Screen } from '../atoms/AtomsExports';
-import { Platform, View, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
+import { Platform, View, StyleSheet } from 'react-native';
 import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { RoutePropParams } from '../res/root-navigation';
@@ -9,10 +9,8 @@ import * as Analytics from 'expo-firebase-analytics';
 import { LocationBlock, DateTimeSelector } from '../molecules/MoleculesExports';
 import { AppTextInput } from '../atoms/AppTextInput';
 import { ScrollView } from 'react-native-gesture-handler';
-import Constants from 'expo-constants';
 import { globalStyles } from '../res/styles/GlobalStyles';
-import { BLACK, TEAL_7, WHITE } from '../res/styles/Colors';
-import { JOST } from '../res/styles/Fonts';
+import { TEAL_7 } from '../res/styles/Colors';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { copy } from '../res/groupifyCopy';
 
@@ -79,7 +77,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
           location: locationAddress,
           placeId: route.params.data ? route.params.data.planData.placeId : '',
           description: desc.trim(),
-          imageURL: route.params.data.planData.imageURL
+          imageURL: route.params.data.planData.imageURL,
         },
       },
     });
@@ -110,7 +108,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
             globalStyles.container,
           ]}
         >
-          <View style={[globalStyles.topBlockBack, { marginVertical: 20}]}>
+          <View style={[globalStyles.topBlockBack, { marginVertical: 20 }]}>
             <BackChevronIcon height={'20'} onPress={navigation.goBack} />
             <LocationBlock locationName={locationName} locationAddress={locationAddress} />
           </View>

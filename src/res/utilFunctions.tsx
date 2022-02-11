@@ -768,7 +768,7 @@ export const navigateToPlanMap = async (
     );
 
     navigation.navigate('PlanMap', {
-      navigation: navigation ,
+      navigation: navigation,
       route: route,
       data: {
         activitySearchData: {

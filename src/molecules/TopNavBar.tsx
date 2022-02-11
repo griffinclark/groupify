@@ -47,7 +47,6 @@ export const TopNavBar: React.FC<Props> = ({
             <BackChevronIcon />
           </TouchableOpacity>
         </View>
-        
       )}
 
       {displayGroupify ? (
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
     width: '100%',
     zIndex: 99,
     position: 'relative',
-    padding: 10
+    padding: 10,
   },
   topNavBarSticky: {
     marginTop: Constants.statusBarHeight,
@@ -94,13 +93,13 @@ const styles = StyleSheet.create({
   },
   sideIcon: {
     position: 'absolute',
-    top: 10
+    top: 10,
   },
   leftIcon: {
-    left: 10
+    left: 10,
   },
   rightIcon: {
     right: 10,
-    top: 5
-  }
+    top: 5,
+  },
 });

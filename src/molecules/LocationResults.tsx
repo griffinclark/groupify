@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleLocation, NavigationProps, UserLocation, User } from '../res/dataModels';
+import { GoogleLocation, NavigationProps, UserLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { ActivityCard } from './ActivityCard';
 
@@ -18,8 +18,8 @@ export const LocationResults: React.FC<Props> = ({
   tempUserLocationQuery,
   userLocation,
   onSelectLocation,
-}: Props) => { 
-  console.log('activity card ' + route.params.currentUser) 
+}: Props) => {
+  console.log('activity card ' + route.params.currentUser);
   return (
     <>
       {locations.map((location: GoogleLocation) => {

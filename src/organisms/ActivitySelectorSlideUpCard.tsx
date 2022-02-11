@@ -98,7 +98,9 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
                     location: currentSelectedLocation.formatted_address,
                     locationName: currentSelectedLocation.name,
                     placeId: currentSelectedLocation.place_id,
-                    imageURL: currentSelectedLocation.photos[0] ? currentSelectedLocation.photos[0].photo_reference : null
+                    imageURL: currentSelectedLocation.photos[0]
+                      ? currentSelectedLocation.photos[0].photo_reference
+                      : null,
                   },
                 },
               });

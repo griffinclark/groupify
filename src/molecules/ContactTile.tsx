@@ -13,7 +13,13 @@ interface Props {
   removeUser: (friend: Contact) => void;
 }
 
-export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSelected = false, lastInList = false }: Props) => {
+export const ContactTile: React.FC<Props> = ({
+  friend,
+  addUser,
+  removeUser,
+  isSelected = false,
+  lastInList = false,
+}: Props) => {
   const [selected, setSelected] = useState(false);
 
   const handlePress = () => {

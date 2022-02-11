@@ -11,7 +11,7 @@ import { ImportContactDetails } from '../screens/ImportContactDetails';
 import { SendMessage } from '../screens/SendMessage';
 import { SetAvailability } from '../screens/SetAvailability';
 import { EditFriends } from '../screens/EditFriends';
-import { Contact, GoogleLocation, UserLocation } from './dataModels';
+import { GoogleLocation, UserLocation } from './dataModels';
 import { PlanDetails } from '../screens/PlanDetails';
 import { PlanCreate } from '../screens/PlanCreate';
 import { PlanInvite } from '../screens/PlanInvite';

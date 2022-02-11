@@ -54,7 +54,7 @@ export const PlanSuccess: React.FC<Props> = ({ navigation, route }: Props) => {
             <CloseIcon onPress={goHome} />
             <View style={{ alignSelf: 'center', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
               <AppText style={[globalStyles.bodyMedium, { marginVertical: 16, alignSelf: 'flex-start' }]}>
-                You're all set! Enjoy your plan!
+                You&apos;re all set! Enjoy your plan!
               </AppText>
               {route.params.data.planData.imageURL && (
                 <ActivityImage
@@ -88,12 +88,13 @@ export const PlanSuccess: React.FC<Props> = ({ navigation, route }: Props) => {
                 <AppText style={globalStyles.bodySmall}>{friendNames()}</AppText>
               </View>
 
-              <Button 
-                title={'Awesome Sauce'} 
-                onPress={goHome} 
+              <Button
+                title={'Awesome Sauce'}
+                onPress={goHome}
                 containerStyle={{ width: '100%' }}
                 buttonStyle={{ minWidth: '100%', borderRadius: 5, marginTop: 15, marginBottom: 0 }}
-                textStyle={{ fontSize: 13 }}              />
+                textStyle={{ fontSize: 13 }}
+              />
             </View>
           </View>
         </View>

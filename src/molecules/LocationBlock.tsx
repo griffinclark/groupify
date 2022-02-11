@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginTop: 3,
-    color: GREY_3
+    color: GREY_3,
   },
   locationName: {
     color: TEAL_8,
     fontSize: 20,
-    textAlign: 'center'
+    textAlign: 'center',
   },
 });

@@ -112,4 +112,3 @@ export enum ActivityEnum {
   Indoor = 'Indoor Fun',
   AllDay = 'All-Day Fun',
 }
-

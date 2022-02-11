@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { roundDate } from '../res/utilFunctions';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -17,7 +17,7 @@ export const DateTimeSelector: React.FC<Props> = ({ onDateChange, testID }: Prop
     return;
   };
   return (
-    <View style={{paddingVertical: 32}}>
+    <View style={{ paddingVertical: 32 }}>
       {/* <View style={styles.dateTimeBlock}>
         <AppText>{formatTime(currentDate)}</AppText>
         <AppText style={styles.dateLine}>{formatDayOfWeekDate(currentDate.toLocaleDateString())}</AppText>

@@ -286,22 +286,3 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {},
-  topBlock: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    width: '100%',
-  },
-  title: {
-    paddingLeft: 15,
-    fontSize: 30,
-    textTransform: 'capitalize',
-  },
-  friendBubbleContainer: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-});

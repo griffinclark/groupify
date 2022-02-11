@@ -12,7 +12,13 @@ interface Props {
   containerStyle?: Record<string, unknown>;
 }
 
-export const ActivityImage: React.FC<Props> = ({ referenceId, width, height, borderRadius = 10, containerStyle }: Props) => {
+export const ActivityImage: React.FC<Props> = ({
+  referenceId,
+  width,
+  height,
+  borderRadius = 10,
+  containerStyle,
+}: Props) => {
   const loadPhotoUri = (photoReference: string) => {
     const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
     const photoRequetsParams = {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createRef } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, TextInputProps } from 'react-native';
 import { BLACK, GREY_6 } from '../res/styles/Colors';
 import { CloseIcon } from '../../assets/Icons/Close';
@@ -21,17 +21,13 @@ type SearchFieldProps = TextInputProps & {
   hideClose?: boolean;
 };
 
-export const SearchBar: React.FC<SearchFieldProps> = ({
-  leftIcon,
-  hideClose = false,
-  ...props
-}: SearchFieldProps) => {
+export const SearchBar: React.FC<SearchFieldProps> = ({ leftIcon, hideClose = false, ...props }: SearchFieldProps) => {
   const [input, setInput] = useState<string>('');
 
   const localOnChangeText = (t: string) => {
     setInput(t);
     props.onChangeText && props.onChangeText(t);
-  }
+  };
 
   return (
     <View>
@@ -40,7 +36,7 @@ export const SearchBar: React.FC<SearchFieldProps> = ({
         <TextInput
           {...props}
           style={styles.input}
-          onChangeText={(t:string) => localOnChangeText(t)}
+          onChangeText={(t: string) => localOnChangeText(t)}
           underlineColorAndroid="transparent"
           value={input}
         />
