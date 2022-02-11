@@ -8,11 +8,12 @@ import { Checkbox } from 'react-native-paper';
 interface Props {
   isSelected?: boolean;
   friend: Contact;
+  lastInList?: boolean;
   addUser: (friend: Contact) => void;
   removeUser: (friend: Contact) => void;
 }
 
-export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSelected = false }: Props) => {
+export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSelected = false, lastInList = false }: Props) => {
   const [selected, setSelected] = useState(false);
 
   const handlePress = () => {
@@ -35,7 +36,7 @@ export const ContactTile: React.FC<Props> = ({ friend, addUser, removeUser, isSe
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, lastInList ? styles.lastItem : null]}>
       <View style={styles.nameContainer}>
         <View style={{ marginRight: 5 }}>
           <Checkbox.Android
@@ -62,6 +63,9 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     borderBottomWidth: 1,
     borderBottomColor: GRAY_MEDIUM,
+  },
+  lastItem: {
+    borderBottomWidth: 0,
   },
   name: {
     fontSize: 18,

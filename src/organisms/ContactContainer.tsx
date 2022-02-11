@@ -7,9 +7,10 @@ import { Contact } from '../res/dataModels';
 interface Props {
   contacts: Contact[];
   adjustSelectedContacts: (friends: Contact[]) => void;
+  containerStyles?: Record<string, unknown>;
 }
 
-export const ContactContainer: React.FC<Props> = ({ contacts, adjustSelectedContacts }: Props) => {
+export const ContactContainer: React.FC<Props> = ({ contacts, containerStyles, adjustSelectedContacts }: Props) => {
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
 
   useEffect(() => {
@@ -37,22 +38,26 @@ export const ContactContainer: React.FC<Props> = ({ contacts, adjustSelectedCont
     for (let i = 0; i < contacts.length; i++) {
       const item = contacts[i];
       contactList.push(
-        <ContactTile key={item.id} friend={item} addUser={addSelectedContacts} removeUser={removeSelectedContact} />,
+        <ContactTile 
+          key={item.id} 
+          friend={item} 
+          addUser={addSelectedContacts} 
+          removeUser={removeSelectedContact}
+          lastInList={i === contacts.length - 1}
+        />,
       );
     }
     return <View style={styles.friendsList}>{contactList}</View>;
   };
-  return <ScrollView style={styles.container}>{renderFriend()}</ScrollView>;
+  return <ScrollView style={[styles.container, containerStyles]}>{renderFriend()}</ScrollView>;
 };
 
 const styles = StyleSheet.create({
   friendsList: {
     display: 'flex',
     flex: 1,
-    marginTop: 20,
   },
   container: {
-    // overflow: 'scroll',
     marginBottom: 45,
   },
 });

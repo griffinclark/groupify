@@ -78,7 +78,8 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
           locationName: locationName,
           location: locationAddress,
           placeId: route.params.data ? route.params.data.planData.placeId : '',
-          description: desc.trim()
+          description: desc.trim(),
+          imageURL: route.params.data.planData.imageURL
         },
       },
     });
@@ -144,7 +145,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
                 setKeyboardOffset(0);
               }}
               onFocus={() => {
-                setKeyboardOffset(-200);
+                setKeyboardOffset(-250);
               }}
             />
           </View>

@@ -15,7 +15,7 @@ import { Contact, GoogleLocation, UserLocation } from './dataModels';
 import { PlanDetails } from '../screens/PlanDetails';
 import { PlanCreate } from '../screens/PlanCreate';
 import { PlanInvite } from '../screens/PlanInvite';
-import { PlanConfirm } from '../screens/PlanConfirm';
+import { PlanSuccess } from '../screens/PlanSuccess';
 import { InvitedPlans } from '../screens/InvitedPlans';
 import { InviteeList } from '../screens/inviteList';
 import { User, Plan } from '../models';
@@ -33,6 +33,7 @@ import { phoneVerificationScreen } from '../screens/phoneVerificationScreen';
 import { createAccountForm } from '../screens/createAccountForm';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { ValidateUser } from '../screens/ValidateUser';
+import { PlanData } from '../res/dataModels';
 
 export type RoutePropParams = {
   params: {
@@ -51,22 +52,7 @@ export type RoutePropParams = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     place: any;
     data: {
-      planData: {
-        friends: User[];
-        contacts: Contact[];
-        uuid: string;
-        title: string;
-        imageURL: string;
-        description: string;
-        tags: string[];
-        date: string;
-        time: string;
-        location: string;
-        locationName: string;
-        showImage: string;
-        placeId: string;
-        message: string;
-      };
+      planData: PlanData;
       activitySearchData: {
         tempUserLocationQuery: string;
         tempUserLocation: UserLocation;
@@ -145,7 +131,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="SelectorMenu" component={SelectorMenu} options={{ headerShown: false }} />
         <Stack.Screen name="TakeoverSearch" component={TakeoverSearch} options={{ headerShown: false }} />
         <Stack.Screen name="ContactList" component={ContactList} options={{ headerShown: false }} />
-        <Stack.Screen name="PlanConfirm" component={PlanConfirm} options={{ headerShown: false }} />
+        <Stack.Screen name="PlanSuccess" component={PlanSuccess} options={{ headerShown: false }} />
         <Stack.Screen name="VerifyPhone" component={phoneVerificationScreen} options={{ headerShown: false }} />
         <Stack.Screen name="createAccountForm" component={createAccountForm} options={{ headerShown: false }} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} />

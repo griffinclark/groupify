@@ -766,8 +766,9 @@ export const navigateToPlanMap = async (
       route.params.data.activitySearchData.tempUserLocation,
       GooglePlacesQueryOptions.Activity,
     );
+
     navigation.navigate('PlanMap', {
-      navigation: { navigation },
+      navigation: navigation ,
       route: route,
       data: {
         activitySearchData: {
@@ -777,6 +778,7 @@ export const navigateToPlanMap = async (
           placesUserWantsToGoQuery: query,
         },
       },
+      currentUser: route.params.currentUser,
       userLocation: route.params.userLocation,
     });
   } catch (e) {

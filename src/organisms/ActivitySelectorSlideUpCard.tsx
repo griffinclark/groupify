@@ -98,6 +98,7 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
                     location: currentSelectedLocation.formatted_address,
                     locationName: currentSelectedLocation.name,
                     placeId: currentSelectedLocation.place_id,
+                    imageURL: currentSelectedLocation.photos[0] ? currentSelectedLocation.photos[0].photo_reference : null
                   },
                 },
               });
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     height: 5,
     backgroundColor: WHITE,
     borderRadius: 3,
-    paddingBottom: 200,
+    paddingBottom: 100,
   },
   slideUpPanelIcon: {
     height: 5,
@@ -136,7 +137,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 32,
     position: 'relative',
-    paddingBottom: 100,
   },
   createPlanButton: {
     bottom: 0,

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { formatTime, roundDate, formatDayOfWeekDate } from '../res/utilFunctions';
-import { AppText } from '../atoms/AppText';
+import { roundDate } from '../res/utilFunctions';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface Props {
@@ -41,13 +40,3 @@ export const DateTimeSelector: React.FC<Props> = ({ onDateChange, testID }: Prop
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  dateTimeBlock: {
-    alignItems: 'center',
-    marginTop: 40,
-  },
-  dateLine: {
-    fontSize: 20,
-  },
-});

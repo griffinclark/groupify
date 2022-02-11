@@ -21,6 +21,7 @@ export const GREY_7 = '#FAFAFA';
 export const GREY_8 = '#767676';
 export const RED = '#E71717';
 export const GREEN = '#cdffcd';
+export const MESSAGE_BLUE = '#007EF2';
 
 //NEW COLOR SCALE
 
@@ -35,7 +36,7 @@ export const GOLD_4 = '#7B5B24';
 export const GOLD_5 = '#483517';
 
 //TEAL SCALE
-export const TEAL_0 = '#31A59F';
+export const TEAL_0 = '#3F8A8D';
 export const TEAL_1 = '#123B39';
 export const TEAL_2 = '#22706C';
 export const TEAL_4 = '#7FCFD8';

@@ -8,6 +8,7 @@ import { durationCalculation } from '../res/utilGoogle';
 import { AppText } from '../atoms/AppText';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { loadPlaceDetails } from '../res/utilFunctions';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
   location: GoogleLocation;

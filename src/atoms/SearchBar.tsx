@@ -45,7 +45,7 @@ export const SearchBar: React.FC<SearchFieldProps> = ({
           value={input}
         />
 
-        {!hideClose && <CloseIcon onPress={() => setInput('')} height={15} width={15} />}
+        {!hideClose && <CloseIcon onPress={() => localOnChangeText('')} height={15} width={15} />}
       </View>
     </View>
   );

@@ -122,6 +122,8 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
     mapRef.current?.animateToRegion(region, 2000);
   };
 
+  console.log('plan map ' + route.params.currentUser);
+
   return (
     <Screen style={styles.container}>
       {region.default == true ? (
@@ -204,25 +206,16 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
             </MapView>
           </View>
           <ActivitySelectorSlideUpCard
+            navigation={navigation}
             route={route}
             selectedLocation={selectedLocation}
             userLocation={userLocation}
-            navigation={navigation}
             locations={placesUserWantsToGo}
             tempUserLocationQuery={tempUserLocationQuery}
             onSelectLocation={setSelectedLocationFn}
           />
         </>
       )}
-
-      {/* <HomeNavBar
-        locations={[]}
-        route={route}
-        user={route.params.currentUser}
-        navigation={navigation}
-        userPlans={[]}
-        invitedPlans={[]}
-      /> */}
     </Screen>
   );
 };

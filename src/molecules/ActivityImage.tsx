@@ -8,10 +8,11 @@ interface Props {
   referenceId: string;
   width: number;
   height: number;
+  borderRadius?: number;
   containerStyle?: Record<string, unknown>;
 }
 
-export const ActivityImage: React.FC<Props> = ({ referenceId, width, height, containerStyle }: Props) => {
+export const ActivityImage: React.FC<Props> = ({ referenceId, width, height, borderRadius = 10, containerStyle }: Props) => {
   const loadPhotoUri = (photoReference: string) => {
     const photoRequestURL = 'https://maps.googleapis.com/maps/api/place/photo?';
     const photoRequetsParams = {
@@ -27,7 +28,7 @@ export const ActivityImage: React.FC<Props> = ({ referenceId, width, height, con
     <View style={containerStyle}>
       <Image
         source={{ uri: loadPhotoUri(referenceId) }}
-        style={{ width: width, height: height, borderRadius: 10 }}
+        style={{ width: width, height: height, borderRadius: borderRadius }}
         resizeMode="cover"
       />
     </View>
