@@ -8,6 +8,8 @@ import * as queries from '../graphql/queries';
 import { GoogleLocation, NavigationProps, UserLocation, ActivityEnum } from './dataModels';
 import { getDistance } from 'geolib';
 import { RoutePropParams } from './root-navigation';
+import * as Location from 'expo-location';
+import { LocationAccuracy } from 'expo-location';
 import { GOOGLE_PLACES_API_KEY } from './utilGoogle';
 
 //formats time to be presentable to users
@@ -217,7 +219,11 @@ export const getCurrentUser = async (): Promise<User> => {
     const user = userQuery.map((user) => user);
     if (user) {
       return user[0];
+    } else {
+      console.log('no user');
     }
+  } else {
+    console.log('error getting user info');
   }
   return userInfo;
 };
@@ -752,12 +758,38 @@ export const getHost = async (id: string): Promise<string | undefined> => {
     return user.name;
   }
 };
+
+export const getUserLocation = async (): Promise<UserLocation | undefined> => {
+  const { status } = await Location.requestPermissionsAsync();
+
+  if (status !== 'granted') {
+    console.log('Permission to access location was denied');
+  } else {
+    try {
+      let location = await Location.getLastKnownPositionAsync();
+
+      if (location === null) {
+        location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
+      }
+
+      return {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+    } catch (e) {
+      // TODO what error should be displayed here?
+      console.log(e);
+      return null;
+    }
+  }
+};
 export const navigateToPlanMap = async (
   query: string,
   navigation: NavigationProps,
   route: RoutePropParams,
   tempUserLocation: UserLocation,
   tempUserLocationQuery: string,
+  currentUser: User,
 ): Promise<void> => {
   // rerun the query with the name of the selected venue so all venues with the same name show up on the map
   try {
@@ -766,7 +798,6 @@ export const navigateToPlanMap = async (
       route.params.data.activitySearchData.tempUserLocation,
       GooglePlacesQueryOptions.Activity,
     );
-
     navigation.navigate('PlanMap', {
       navigation: navigation,
       route: route,
