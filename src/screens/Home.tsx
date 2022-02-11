@@ -14,6 +14,7 @@ import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
 import { LocationAccuracy } from 'expo-location';
 import { Header } from '../atoms/Header';
+import { ImportContactTile } from '../atoms/ImportContactTile';
 
 export interface Props {
   navigation: {
@@ -155,7 +156,10 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       ) : (
         <>
           <Header navigation={navigation} home={true} />
-          <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}
+          >
             <View>
               {acceptedPlans.length > 0 || createdPlans.length > 0 ? (
                 <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />
