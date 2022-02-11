@@ -14,7 +14,6 @@ import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
 import { LocationAccuracy } from 'expo-location';
 import { Header } from '../atoms/Header';
-import { ImportContactTile } from '../atoms/ImportContactTile';
 
 export interface Props {
   navigation: {
