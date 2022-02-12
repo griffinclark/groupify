@@ -1,26 +1,26 @@
 import { DataStore, API } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { RoutePropParams } from '../res/root-navigation';
-import { Contact } from '../res/dataModels';
+import { Contact, NavigationProps } from '../res/dataModels';
 import { getAllImportedContacts } from '../res/storageFunctions';
 import { User, Plan, Status, Invitee } from '../models';
 import { ContactContainer } from '../organisms/OrganismsExports';
 import { LocationBlock } from '../molecules/MoleculesExports';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { AppText, BottomButton, SearchBar, Screen } from '../atoms/AtomsExports';
-// import { GRAY_LIGHT, TEAL } from '../res/styles/Colors';
 import { globalStyles } from '../res/styles/GlobalStyles';
-import { formatDatabaseDate, formatDatabaseTime } from '../res/utilFunctions';
+import { formatDatabaseDate, formatDatabaseTime, formatDayOfWeekDate } from '../res/utilFunctions';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { sendPushNotification } from '../res/notifications';
 import { copy } from './../res/groupifyCopy';
+import { TopNavBar } from '../molecules/TopNavBar';
+import { TEAL_7, BLACK } from '../res/styles/Colors';
+import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
+import { PlanConfirmModal } from '../molecules/PlanConfirmModal';
 
 export interface Props {
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    goBack: () => void;
-  };
+  navigation: NavigationProps;
   route: RoutePropParams;
 }
 
@@ -29,6 +29,8 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
+  const [keyboardOffset, setKeyboardOffset] = useState<number>(0);
+  const [openConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
 
   const [planObject, setPlanObject] = useState({
     date: '',
@@ -38,48 +40,19 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     title: '',
     uuid: '',
     placeId: '',
+    description: '',
+    imageURL: '',
   });
-
-  // const [friends, setFriends] = useState<User[]>([]);
-  // const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
 
   useEffect(() => {
     loadContacts();
     setPlanObject(route.params.data.planData);
-    getFriends();
-    //createInitialMessage();
   }, []);
 
   const loadContacts = async () => {
     const importedContacts = await getAllImportedContacts();
     setContacts(importedContacts);
     setFilteredContacts(importedContacts);
-  };
-
-  const getFriends = async () => {
-    const userQuery = await DataStore.query(User, route.params.currentUser.id);
-
-    const friends: User[] = [];
-
-    if (userQuery) {
-      const friendIds = userQuery.friends?.split(',');
-
-      if (friendIds) {
-        for (const friendId of friendIds) {
-          if (friendId) {
-            const friend = await DataStore.query(User, friendId);
-
-            if (friend) {
-              friends.push(friend);
-            }
-          }
-        }
-      }
-    }
-
-    if (friends.length) {
-      setFriends(friends);
-    }
   };
 
   const searchFriends = (text: string) => {
@@ -131,6 +104,14 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     const newNumber = util.format(num, PhoneNumberFormat.E164);
     return newNumber;
   };
+
+  const inviteMessage = `Hi, ${currentUser?.name.split(' ')[0]} is inviting you to ${
+    planObject.title ? planObject.title : 'their event'
+  } at ${planObject.locationName}, on ${formatDayOfWeekDate(planObject.date)} at ${planObject.time}. ${
+    planObject.location
+  }\n${
+    planObject.description.length > 0 ? '\n' + planObject.description + '\n' : ''
+  }Plan created using the Groupify App https://apps.apple.com/us/app/groupify-make-a-plan/id1566937955.`;
 
   const storeInvitess = async () => {
     const newPlan = await DataStore.save(
@@ -186,14 +167,6 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     const name = currentUser.name;
     const nonUsers = [];
     const pushTokenRegex = /ExponentPushToken\[.{22}]/;
-    const message =
-      `Hey, ${name} is inviting you ` +
-      `to '${planObject.title}'` +
-      `${planObject.time ? ' at ' + planObject.time : ''}` +
-      `${planObject.date ? ' on ' + planObject.date : ''}` +
-      `${planObject.location ? ' at ' + planObject.location : ''}` +
-      '. Hope to see you there!';
-
     for (const invitee of inviteeList) {
       const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', invitee.phoneNumber));
       const user = userQuery.map((user) => user);
@@ -207,20 +180,21 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
       }
     }
 
-    pushEvent(nonUsers, message);
+    pushEvent(nonUsers, inviteMessage);
   };
 
-  const handleSubmit = async (): Promise<void> => {
+  const handleCreatePlan = async (): Promise<void> => {
     try {
       await storeInvitess();
 
-      navigation.navigate('PlanConfirm', {
+      setOpenConfirmModal(false);
+
+      navigation.navigate('PlanSuccess', {
         currentUser: route.params.currentUser,
         data: {
           planData: {
-            title: planObject.title,
-            date: planObject.date,
-            time: planObject.time,
+            ...planObject,
+            selectedContacts: selectedContacts,
           },
         },
       });
@@ -233,82 +207,82 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
   return (
     <Screen>
       <View testID="PlanInviteScreen" style={{ flex: 1 }}>
-        <ScrollView style={globalStyles.container}>
-          <View style={{ alignItems: 'center' }}>
-            <AppText style={styles.title}>Build a Plan</AppText>
-          </View>
-
-          <View style={globalStyles.topBlockBack}>
+        <TopNavBar
+          stickyHeader={false}
+          title={copy.createAPlanTitle}
+          navigation={navigation}
+          displayGroupify={false}
+          displayBackButton={false}
+          displaySettings={true}
+          route={route}
+          targetScreen={'PlanCreate'}
+        />
+        <ScrollView
+          contentContainerStyle={[
+            globalStyles.container,
+            {
+              backgroundColor: TEAL_7,
+              paddingBottom: 20,
+              marginTop: keyboardOffset,
+            },
+          ]}
+        >
+          <View style={[globalStyles.topBlockBack, { marginVertical: 20 }]}>
             <BackChevronIcon height={'20'} onPress={() => navigation.goBack()} />
             <LocationBlock
-              planName={route.params.data.planData.title}
-              locationName={route.params.data.planData.locationName}
-              locationAddress={route.params.data.planData.location}
-              date={route.params.data.planData.date}
-              time={route.params.data.planData.time}
+              planName={planObject.title}
+              locationName={planObject.locationName}
+              locationAddress={planObject.location}
+              date={planObject.date}
+              time={planObject.time}
             />
           </View>
-          <View style={{ marginTop: 20 }}>
-            <AppText>{copy.createAPlanFriendsMessage}</AppText>
-          </View>
 
-          <View style={{ paddingVertical: 30 }}>
-            <SearchBar onChangeText={searchFriends} placeholder="Search for friends" />
-          </View>
-
-          {/* <View>
-                        <AppText style={globalStyles.sectionTitle}>Add Groupies</AppText>
-                        <AppText style={{ fontSize: 18 }}>Send a friend request to these Groupify users.</AppText>
-                        {friends.length > 0 ? (
-                            <View style={styles.friendBubbleContainer}>
-                                <FriendContainer friends={friends} adjustSelectedFriends={setSelectedFriends} />
-                            </View>
-                        ) : null}
-                    </View> */}
-
-          <View>
-            <AppText style={globalStyles.sectionTitle}>Send Invite</AppText>
-            <AppText style={{ fontSize: 16 }}>Add a friend who isn&apos;t on groupify yet.</AppText>
-            {/* <ScrollView> */}
-            <View style={styles.contactsContainer}>
-              <ContactContainer contacts={filteredContacts} adjustSelectedContacts={setSelectedContacts} />
+          {planObject.description.length > 0 && (
+            <View style={{ marginBottom: 20 }}>
+              <AppText style={{ fontSize: 16, color: BLACK }}>{planObject.description}</AppText>
             </View>
-            {/* </ScrollView> */}
+          )}
+
+          <View style={globalStyles.fieldContainer}>
+            <View>
+              <SearchBar
+                testID={'FriendSearchBar'}
+                onChangeText={searchFriends}
+                placeholder="Search for friends"
+                leftIcon={<MagnifyingGlassIcon />}
+                onFocus={() => setKeyboardOffset(-150)}
+                onBlur={() => setKeyboardOffset(0)}
+              />
+            </View>
+
+            <View>
+              <AppText style={[globalStyles.sectionTitle, { marginTop: 10 }]}>Send Invite</AppText>
+
+              <AppText style={{ fontSize: 16 }}>Who do you want to hang out with?</AppText>
+
+              <ContactContainer
+                contacts={filteredContacts}
+                adjustSelectedContacts={setSelectedContacts}
+                containerStyles={{ marginBottom: 5 }}
+              />
+            </View>
           </View>
         </ScrollView>
+
         <BottomButton
           disabled={selectedContacts.length == 0 ? true : false}
           title="Send Invite"
-          onPress={handleSubmit}
+          onPress={() => setOpenConfirmModal(true)}
+        />
+        <PlanConfirmModal
+          message={inviteMessage}
+          selectedContacts={selectedContacts}
+          isOpen={openConfirmModal}
+          onClose={() => setOpenConfirmModal(false)}
+          onSubmit={() => handleCreatePlan()}
         />
       </View>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {},
-  topBlock: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    width: '100%',
-  },
-  title: {
-    paddingLeft: 15,
-    fontSize: 30,
-    textTransform: 'capitalize',
-  },
-  friendBubbleContainer: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  contactsContainer: {
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  contactsScrollContainer: {
-    // height: Dimensions.get('window').height - Constants.statusBarHeight - 340,
-  },
-});

@@ -19,6 +19,7 @@ export const LocationResults: React.FC<Props> = ({
   userLocation,
   onSelectLocation,
 }: Props) => {
+  console.log('activity card ' + route.params.currentUser);
   return (
     <>
       {locations.map((location: GoogleLocation) => {

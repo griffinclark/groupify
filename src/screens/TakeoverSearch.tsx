@@ -204,6 +204,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
               navigation={navigation}
               route={route}
               locations={getDataSet()}
+              userLocation={userLocation}
               tempUserLocationQuery={tempUserLocationQuery}
             />
           </View>

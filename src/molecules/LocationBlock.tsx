@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { AppText } from '../atoms/AppText';
-import { TEAL } from '../res/styles/Colors';
+import { TEAL_8, GREY_3 } from '../res/styles/Colors';
 import { formatDayOfWeekDate } from '../res/utilFunctions';
 
 interface Props {
@@ -19,7 +19,7 @@ export const LocationBlock: React.FC<Props> = ({ locationName, locationAddress, 
       {locationName ? <AppText style={[styles.text, styles.locationName]}>{locationName}</AppText> : null}
       {planName && planName !== locationName ? <AppText style={styles.text}>{planName}</AppText> : null}
       <AppText style={styles.text}>
-        {locationAddressArr[0]} , {locationAddressArr[1]}
+        {locationAddressArr[0]}, {locationAddressArr[1]}
       </AppText>
       {date && time ? (
         <AppText style={styles.text}>
@@ -38,9 +38,12 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    marginBottom: 3,
+    marginTop: 3,
+    color: GREY_3,
   },
   locationName: {
-    color: TEAL,
+    color: TEAL_8,
+    fontSize: 20,
+    textAlign: 'center',
   },
 });

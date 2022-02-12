@@ -84,6 +84,24 @@ export interface Review {
   time: number;
 }
 
+export interface PlanData {
+  friends: User[];
+  contacts: Contact[];
+  selectedContacts: Contact[];
+  uuid: string;
+  title: string;
+  imageURL: string;
+  description: string;
+  tags: string[];
+  date: string;
+  time: string;
+  location: string;
+  locationName: string;
+  showImage: string;
+  placeId: string;
+  message: string;
+}
+
 export enum ActivityEnum {
   Food = 'Food',
   Chill = 'Chill Drink',

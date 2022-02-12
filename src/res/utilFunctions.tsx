@@ -74,7 +74,7 @@ export const formatDate = (date: Date | string): string => {
 };
 
 //converts a raw time string into a full time type
-export const convertTimeStringToDate = (time: string): Date => {
+export const convertTimeStringToDate = (time: any): Date => {
   const hours = parseInt(time.slice(0, 2));
   const minutes = parseInt(time.slice(3, 5));
   const newTime = new Date();
@@ -84,7 +84,7 @@ export const convertTimeStringToDate = (time: string): Date => {
 };
 
 //converts a raw date string into a full date type
-export const convertDateStringToDate = (date: string): Date => {
+export const convertDateStringToDate = (date: any): Date => {
   const year = parseInt(date.slice(0, 4));
   const month = parseInt(date.slice(5, 7));
   const day = parseInt(date.slice(8, 10));
@@ -767,7 +767,7 @@ export const navigateToPlanMap = async (
       GooglePlacesQueryOptions.Activity,
     );
     navigation.navigate('PlanMap', {
-      navigation: { navigation },
+      navigation: navigation,
       route: route,
       data: {
         activitySearchData: {

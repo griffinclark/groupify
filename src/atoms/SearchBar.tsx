@@ -1,62 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, TextInput, View, TextInputProps } from 'react-native';
 import { BLACK, GREY_6 } from '../res/styles/Colors';
 import { CloseIcon } from '../../assets/Icons/Close';
 
-interface Props {
-  onChangeText: (input: string) => void;
-  placeholder?: string;
-  onPressIn?: () => void;
-  onPressOut?: () => void;
+type SearchFieldProps = TextInputProps & {
   leftIcon?: JSX.Element;
-  onSubmitEditing?: () => void;
-  defaultValue?: string;
-  autoFocus?: boolean;
-  selectTextOnFoucs?: boolean;
-  selectTextOnFocus?: boolean;
-  testID: string;
   hideClose?: boolean;
-}
+};
 
-export const SearchBar: React.FC<Props> = ({
-  placeholder,
-  onPressIn,
-  onPressOut,
-  onChangeText,
-  leftIcon,
-  onSubmitEditing,
-  autoFocus,
-  defaultValue,
-  selectTextOnFocus,
-  testID,
-  hideClose = false,
-}: Props) => {
-  const [input, setInput] = useState('');
+export const SearchBar: React.FC<SearchFieldProps> = ({ leftIcon, hideClose = false, ...props }: SearchFieldProps) => {
+  const [input, setInput] = useState<string>('');
 
-  useEffect(() => {
-    onChangeText(input);
-  }, [input]);
+  const localOnChangeText = (t: string) => {
+    setInput(t);
+    props.onChangeText && props.onChangeText(t);
+  };
 
   return (
     <View>
       <View style={styles.searchSection}>
         {leftIcon}
         <TextInput
+          {...props}
           style={styles.input}
-          placeholder={placeholder}
-          onChangeText={(e) => setInput(e)}
+          onChangeText={(t: string) => localOnChangeText(t)}
           underlineColorAndroid="transparent"
-          testID={testID}
-          onPressIn={onPressIn}
-          onSubmitEditing={onSubmitEditing}
-          autoFocus={autoFocus}
-          selectTextOnFocus={selectTextOnFocus}
-          // TODO selectTextOnFocus not working
-          onPressOut={onPressOut}
-          defaultValue={defaultValue}
+          value={input}
         />
 
-        {!hideClose && <CloseIcon onPress={() => setInput('')} height={15} width={15} />}
+        {!hideClose && <CloseIcon onPress={() => localOnChangeText('')} height={15} width={15} />}
       </View>
     </View>
   );
