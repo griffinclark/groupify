@@ -43,13 +43,13 @@ export const formatIosTimeInput = (time: Date | string): string => {
   return newTime;
 };
 
-export const formatDatePlanView = (date : string): string => {
-  return new Date(date).toLocaleDateString('en-US', { weekday: "short", month: "long", day: "numeric" });
-}
+export const formatDatePlanView = (date: string): string => {
+  return new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' });
+};
 
 //Formats date into format: DayOfWeek, Month DayOfMonth
 export const formatDayOfWeekDate = (date: string, shorten?: boolean, withYear?: boolean): string => {
-  if(!date) return '';
+  if (!date) return '';
   const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
   const newDate = convertDateStringToDate(date);
@@ -68,7 +68,6 @@ export const formatDayOfWeekDate = (date: string, shorten?: boolean, withYear?: 
     return result + ', ' + newDate.getFullYear();
   }
   return result;
-  
 };
 
 //formats date to be presentable to users
@@ -141,17 +140,15 @@ export const formatDatabaseDate = (date: string): string => {
 
 export const formatDataDate = (date: string): string => {
   var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
 
-  if (month.length < 2) 
-      month = '0' + month;
-  if (day.length < 2) 
-      day = '0' + day;
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
 
   return [year, month, day].join('-');
-}
+};
 
 //formats time to be accepted by the database
 export const formatDatabaseTime = (time: string): string => {
@@ -241,12 +238,11 @@ export const getCurrentUser = async (): Promise<User> => {
     const user = userQuery.map((user) => user);
     if (user) {
       return user[0];
-    }
-    else {
+    } else {
       console.log('no user');
     }
   } else {
-    console.log('error getting user info')
+    console.log('error getting user info');
   }
   return userInfo;
 };

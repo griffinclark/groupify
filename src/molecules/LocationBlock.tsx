@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { AppText } from '../atoms/AppText';
 import { TEAL_8, GREY_3 } from '../res/styles/Colors';
@@ -13,7 +13,7 @@ interface Props {
 
 export const LocationBlock: React.FC<Props> = ({ locationName, locationAddress, planName, date, time }: Props) => {
   const locationAddressArr = locationAddress.split(',');
-  
+
   return (
     <View style={styles.locationBlock}>
       {locationName ? <AppText style={[styles.text, styles.locationName]}>{locationName}</AppText> : null}
@@ -24,8 +24,8 @@ export const LocationBlock: React.FC<Props> = ({ locationName, locationAddress, 
       {date && time ? (
         <AppText style={styles.text}>
           {date} at {time}
-        </AppText>): null}
-
+        </AppText>
+      ) : null}
     </View>
   );
 };

@@ -42,11 +42,9 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
 
     const randomKey = randomEnumKey(ActivityEnum);
 
-    const fetchUserLocation = async() => {
-      setUserLocation(
-        await getUserLocation()
-      );
-    }
+    const fetchUserLocation = async () => {
+      setUserLocation(await getUserLocation());
+    };
 
     const buildFeatureLocations = async () => {
       setFeaturedLocations(
@@ -104,7 +102,11 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
             userLocation={userLocation}
             icon={<MagnifyingGlassIcon />}
             placeholderText="Search for food, parks, coffee, etc"
-            tempUserLocation={route.params?.data?.activitySearchData?.tempUserLocation ? route.params.data.activitySearchData.tempUserLocation : userLocation}
+            tempUserLocation={
+              route.params?.data?.activitySearchData?.tempUserLocation
+                ? route.params.data.activitySearchData.tempUserLocation
+                : userLocation
+            }
             placesUserWantsToGoQuery={''}
             tempUserLocationQuery={''}
             mode={SearchbarDisplayMode.Query}

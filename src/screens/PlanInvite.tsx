@@ -10,7 +10,7 @@ import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { ScrollView, View } from 'react-native';
 import { AppText, BottomButton, SearchBar, Screen } from '../atoms/AtomsExports';
 import { globalStyles } from '../res/styles/GlobalStyles';
-import { formatDataDate, formatDatabaseTime,formatDatePlanView } from '../res/utilFunctions';
+import { formatDataDate, formatDatabaseTime, formatDatePlanView } from '../res/utilFunctions';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { sendPushNotification } from '../res/notifications';
 import { copy } from './../res/groupifyCopy';
@@ -200,7 +200,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           },
         },
       });
-      
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log(err);

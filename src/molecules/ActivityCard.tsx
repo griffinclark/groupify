@@ -20,7 +20,7 @@ interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image?: any;
   tempUserLocationQuery: string;
-  userLocation: UserLocation;
+  userLocation?: UserLocation;
   onSelectLocation?: (location: GoogleLocation) => void;
 }
 
@@ -45,9 +45,7 @@ export const ActivityCard: React.FC<Props> = ({
           location: location.formatted_address,
           locationName: location.name,
           placeId: location.place_id,
-          imageURL: location.photos
-          ? location.photos[0].photo_reference
-          : null,
+          imageURL: location.photos ? location.photos[0].photo_reference : null,
         },
       },
     });
@@ -58,7 +56,7 @@ export const ActivityCard: React.FC<Props> = ({
     if (onSelectLocation) {
       onSelectLocation(location);
     } else {
-      navigateToPlanMap(location.name, navigation, route, userLocation, tempUserLocationQuery);
+      navigateToPlanMap(location.name, navigation, route, tempUserLocationQuery, userLocation);
     }
   };
 
