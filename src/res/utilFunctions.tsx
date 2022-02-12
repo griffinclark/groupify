@@ -9,6 +9,8 @@ import { GoogleLocation, NavigationProps, UserLocation, ActivityEnum } from './d
 import { getDistance } from 'geolib';
 import { RoutePropParams } from './root-navigation';
 import { GOOGLE_PLACES_API_KEY } from './utilGoogle';
+import * as Location from 'expo-location';
+import { LocationAccuracy } from 'expo-location';
 
 //formats time to be presentable to users
 export const formatTime = (time: Date | string): string => {
@@ -41,20 +43,27 @@ export const formatIosTimeInput = (time: Date | string): string => {
   return newTime;
 };
 
+export const formatDatePlanView = (date: string): string => {
+  return new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' });
+};
+
 //Formats date into format: DayOfWeek, Month DayOfMonth
 export const formatDayOfWeekDate = (date: string, shorten?: boolean, withYear?: boolean): string => {
+  if (!date) return '';
   const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-  const newDate = convertTimeStringToDate(date);
+  const newDate = convertDateStringToDate(date);
   const month = parseInt(date.substring(date.indexOf('-') + 1, date.lastIndexOf('-')));
   const dayOfMonth = parseInt(date.substring(date.lastIndexOf('-') + 1));
   newDate.setDate(dayOfMonth);
   newDate.setMonth(month - 1);
+
   if (shorten) {
     return months[month - 1] + ' ' + dayOfMonth;
   }
 
   const result = daysOfWeek[newDate.getDay()] + ',' + ' ' + months[month - 1] + ' ' + dayOfMonth;
+
   if (withYear) {
     return result + ', ' + newDate.getFullYear();
   }
@@ -74,7 +83,7 @@ export const formatDate = (date: Date | string): string => {
 };
 
 //converts a raw time string into a full time type
-export const convertTimeStringToDate = (time: any): Date => {
+export const convertTimeStringToDate = (time: string): Date => {
   const hours = parseInt(time.slice(0, 2));
   const minutes = parseInt(time.slice(3, 5));
   const newTime = new Date();
@@ -84,7 +93,7 @@ export const convertTimeStringToDate = (time: any): Date => {
 };
 
 //converts a raw date string into a full date type
-export const convertDateStringToDate = (date: any): Date => {
+export const convertDateStringToDate = (date: string): Date => {
   const year = parseInt(date.slice(0, 4));
   const month = parseInt(date.slice(5, 7));
   const day = parseInt(date.slice(8, 10));
@@ -127,6 +136,19 @@ export const formatDatabaseDate = (date: string): string => {
     return date;
   }
   return date;
+};
+
+export const formatDataDate = (date: string): string => {
+  const d = new Date(date),
+    year = d.getFullYear();
+
+  let month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
 };
 
 //formats time to be accepted by the database
@@ -217,7 +239,11 @@ export const getCurrentUser = async (): Promise<User> => {
     const user = userQuery.map((user) => user);
     if (user) {
       return user[0];
+    } else {
+      console.log('no user');
     }
+  } else {
+    console.log('error getting user info');
   }
   return userInfo;
 };
@@ -752,12 +778,36 @@ export const getHost = async (id: string): Promise<string | undefined> => {
     return user.name;
   }
 };
+export const getUserLocation = async (): Promise<UserLocation | undefined> => {
+  const { status } = await Location.requestPermissionsAsync();
+
+  if (status !== 'granted') {
+    console.log('Permission to access location was denied');
+  } else {
+    try {
+      let location = await Location.getLastKnownPositionAsync();
+
+      if (location === null) {
+        location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
+      }
+
+      return {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+    } catch (e) {
+      // TODO what error should be displayed here?
+      console.log(e);
+      return null;
+    }
+  }
+};
 export const navigateToPlanMap = async (
   query: string,
   navigation: NavigationProps,
   route: RoutePropParams,
-  tempUserLocation: UserLocation,
   tempUserLocationQuery: string,
+  tempUserLocation?: UserLocation,
 ): Promise<void> => {
   // rerun the query with the name of the selected venue so all venues with the same name show up on the map
   try {
@@ -777,6 +827,7 @@ export const navigateToPlanMap = async (
           placesUserWantsToGoQuery: query,
         },
       },
+      currentUser: route.params.currentUser,
       userLocation: route.params.userLocation,
     });
   } catch (e) {
