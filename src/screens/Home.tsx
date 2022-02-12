@@ -154,7 +154,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       ) : (
         <>
-          <TopNavBar
+          {/* <TopNavBar
             stickyHeader={false}
             navigation={navigation}
             displayGroupify={true}
@@ -162,9 +162,10 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
             displaySettings={true}
             route={route}
             targetScreen={'Home'}
-          />
+          /> */}
 
           <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
+            <Header navigation={navigation} />
             <View>
               {acceptedPlans.length > 0 || createdPlans.length > 0 ? (
                 <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />

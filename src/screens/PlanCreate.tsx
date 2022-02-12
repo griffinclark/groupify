@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import uuid from 'uuid';
 import { AppText, BottomButton, Screen } from '../atoms/AtomsExports';
 import { Platform, View, StyleSheet } from 'react-native';
-import { formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
+import { formatDate, formatIosTimeInput, formatTime, roundDate } from '../res/utilFunctions';
 import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
@@ -36,7 +36,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   const currentDate = roundDate(new Date());
 
   const onDateChange = (date: Date) => {
-    setDate(date.toLocaleDateString());
+    setDate(formatDate(date));
 
     const formatedTime =
       Platform.OS === 'ios' ? formatIosTimeInput(date.toLocaleTimeString()) : formatTime(date.toLocaleTimeString());

@@ -105,7 +105,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     return newNumber;
   };
 
-  const inviteMessage = `Hi {friend's first name}! ${currentUser.name} is inviting you to ${
+  const inviteMessage = `Hi, ${currentUser?.name.split(' ')[0]} is inviting you to ${
     planObject.title ? planObject.title : 'their event'
   } at ${planObject.locationName}, on ${formatDayOfWeekDate(planObject.date)} at ${planObject.time}. ${
     planObject.location
