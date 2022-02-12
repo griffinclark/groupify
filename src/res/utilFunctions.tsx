@@ -50,11 +50,9 @@ export const formatDatePlanView = (date : string): string => {
 //Formats date into format: DayOfWeek, Month DayOfMonth
 export const formatDayOfWeekDate = (date: string, shorten?: boolean, withYear?: boolean): string => {
   if(!date) return '';
-  console.log(date);
   const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
   const newDate = convertDateStringToDate(date);
-  console.log(newDate);
   const month = parseInt(date.substring(date.indexOf('-') + 1, date.lastIndexOf('-')));
   const dayOfMonth = parseInt(date.substring(date.lastIndexOf('-') + 1));
   newDate.setDate(dayOfMonth);
@@ -65,10 +63,6 @@ export const formatDayOfWeekDate = (date: string, shorten?: boolean, withYear?: 
   }
 
   const result = daysOfWeek[newDate.getDay()] + ',' + ' ' + months[month - 1] + ' ' + dayOfMonth;
-  console.log('day ' + newDate.getDay());
-  console.log('month ' + (month - 1));
-
-  console.log('in format ' + result);
 
   if (withYear) {
     return result + ', ' + newDate.getFullYear();
@@ -109,7 +103,6 @@ export const convertDateStringToDate = (date: any): Date => {
   newDate.setFullYear(year);
   newDate.setMonth(month - 1);
   newDate.setDate(day);
-  console.log(newDate);
   return newDate;
 };
 

@@ -200,6 +200,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
           },
         },
       });
+      
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log(err);

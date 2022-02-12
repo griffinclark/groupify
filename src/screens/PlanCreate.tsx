@@ -60,8 +60,6 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const onFormSubmit = async () => {
     const id = uuid.v4();
-    console.log(date);
-
     navigation.navigate('PlanInvite', {
       currentUser: route.params.currentUser,
       data: {

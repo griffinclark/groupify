@@ -23,8 +23,6 @@ interface Props {
 }
 
 export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
-  console.log(route.params);
-
   const [featuredLocations, setFeaturedLocations] = useState<GoogleLocation[]>([]);
   //const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState('');
   //const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
@@ -129,14 +127,14 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       </ScrollView>
 
-      {/* <HomeNavBar
+      <HomeNavBar
         locations={[]}
         user={route.params.currentUser}
         navigation={navigation}
         userPlans={[]}
         invitedPlans={[]}
         route={route}
-      /> */}
+      />
     </Screen>
   );
 };
