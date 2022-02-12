@@ -26,7 +26,7 @@ interface Props {
 export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   const [name, setName] = useState<string>('');
   const [desc, setDesc] = useState<string>('');
-  const [date, setDate] = useState<string>('');
+  const [date, setDate] = useState<Date>();
   const [time, setTime] = useState<string>('');
 
   const [locationName, setLocationName] = useState<string>('');
@@ -36,7 +36,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
   const currentDate = roundDate(new Date());
 
   const onDateChange = (date: Date) => {
-    setDate(formatDate(date));
+    setDate(date);    
 
     const formatedTime =
       Platform.OS === 'ios' ? formatIosTimeInput(date.toLocaleTimeString()) : formatTime(date.toLocaleTimeString());
@@ -60,6 +60,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const onFormSubmit = async () => {
     const id = uuid.v4();
+    console.log(date);
 
     navigation.navigate('PlanInvite', {
       currentUser: route.params.currentUser,
@@ -67,7 +68,7 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
         planData: {
           uuid: id,
           title: name,
-          date: date ? date : currentDate.toLocaleDateString(),
+          date: date ? date.toString() : currentDate.toString(),
           time: time
             ? time
             : Platform.OS === 'android'

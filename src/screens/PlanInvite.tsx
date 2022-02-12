@@ -10,7 +10,7 @@ import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { ScrollView, View } from 'react-native';
 import { AppText, BottomButton, SearchBar, Screen } from '../atoms/AtomsExports';
 import { globalStyles } from '../res/styles/GlobalStyles';
-import { formatDatabaseDate, formatDatabaseTime, formatDayOfWeekDate } from '../res/utilFunctions';
+import { formatDataDate, formatDatabaseTime,formatDatePlanView } from '../res/utilFunctions';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { sendPushNotification } from '../res/notifications';
 import { copy } from './../res/groupifyCopy';
@@ -46,7 +46,9 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     loadContacts();
-    setPlanObject(route.params.data.planData);
+    setPlanObject({
+      ...route.params.data.planData,
+    });
   }, []);
 
   const loadContacts = async () => {
@@ -107,7 +109,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const inviteMessage = `Hi, ${currentUser?.name.split(' ')[0]} is inviting you to ${
     planObject.title ? planObject.title : 'their event'
-  } at ${planObject.locationName}, on ${formatDayOfWeekDate(planObject.date)} at ${planObject.time}. ${
+  } at ${planObject.locationName}, on ${formatDatePlanView(planObject.date)} at ${planObject.time}. ${
     planObject.location
   }\n${
     planObject.description.length > 0 ? '\n' + planObject.description + '\n' : ''
@@ -119,7 +121,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
         title: planObject.title,
         location: planObject.location,
         placeID: planObject.placeId,
-        date: formatDatabaseDate(planObject.date),
+        date: formatDataDate(planObject.date.toString()),
         time: formatDatabaseTime(planObject.time),
         creatorID: currentUser.id,
       }),
@@ -233,7 +235,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
               planName={planObject.title}
               locationName={planObject.locationName}
               locationAddress={planObject.location}
-              date={planObject.date}
+              date={formatDatePlanView(planObject.date)}
               time={planObject.time}
             />
           </View>

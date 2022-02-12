@@ -130,8 +130,6 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       }
     }
 
-    console.log(createdPlans);
-    // const allPlans = [...createdPlans, ...pending, ...accepted];
     setPendingPlans(pending);
     setAcceptedPlans(accepted);
     setCreatedPlans(createdPlans);
@@ -154,16 +152,6 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       ) : (
         <>
-          {/* <TopNavBar
-            stickyHeader={false}
-            navigation={navigation}
-            displayGroupify={true}
-            displayBackButton={false}
-            displaySettings={true}
-            route={route}
-            targetScreen={'Home'}
-          /> */}
-
           <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}>
             <Header navigation={navigation} />
             <View>

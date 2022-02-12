@@ -45,6 +45,9 @@ export const ActivityCard: React.FC<Props> = ({
           location: location.formatted_address,
           locationName: location.name,
           placeId: location.place_id,
+          imageURL: location.photos
+          ? location.photos[0].photo_reference
+          : null,
         },
       },
     });

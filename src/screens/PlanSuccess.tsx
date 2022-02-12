@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Dimensions, Modal, StyleSheet, View } from 'react-native';
+import { Dimensions, Modal, StyleSheet, View, Image } from 'react-native';
 import { Button, AppText } from '../atoms/AtomsExports';
 import { CloseIcon } from '../../assets/Icons/Close';
 import { ConfettiAnimation } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { formatDayOfWeekDate } from '../res/utilFunctions';
+import { formatDatePlanView } from '../res/utilFunctions';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { ActivityImage } from '../molecules/ActivityImage';
 import { WHITE, TEAL_0 } from '../res/styles/Colors';
@@ -56,12 +56,18 @@ export const PlanSuccess: React.FC<Props> = ({ navigation, route }: Props) => {
               <AppText style={[globalStyles.bodyMedium, { marginVertical: 16, alignSelf: 'flex-start' }]}>
                 You&apos;re all set! Enjoy your plan!
               </AppText>
-              {route.params.data.planData.imageURL && (
+              {route.params.data.planData.imageURL ? (
                 <ActivityImage
                   referenceId={route.params.data.planData.imageURL}
                   width={Dimensions.get('screen').width * 0.85 - 32}
                   height={208}
                   borderRadius={5}
+                />
+              ) : (
+                <Image
+                  source={require('../../assets/activity-selector-bg/image-activity-4.png')}
+                  style={{ width: Dimensions.get('screen').width * 0.85 - 32, height: 208, borderRadius: 10 }}
+                  resizeMode="cover"
                 />
               )}
 
@@ -73,13 +79,13 @@ export const PlanSuccess: React.FC<Props> = ({ navigation, route }: Props) => {
                 </AppText>
 
                 <AppText style={[globalStyles.bodyMedium, { marginBottom: 16 }]}>
-                  {formatDayOfWeekDate(route.params.data.planData.date, false, true)} {'\n'}
+                  {formatDatePlanView(route.params.data.planData.date)} {'\n'}
                   {route.params.data.planData.time}
                 </AppText>
 
-                {route.params.data.planData.description && (
+                {route.params.data.planData.description.length > 0 ? (
                   <AppText style={globalStyles.bodyMedium}>{route.params.data.planData.description}</AppText>
-                )}
+                ) : null}
 
                 <AppText
                   style={[globalStyles.bodySmall, { fontFamily: JOST['600'], marginTop: 16, marginBottom: 8 }]}

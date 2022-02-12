@@ -9,6 +9,8 @@ import { GoogleLocation, NavigationProps, UserLocation, ActivityEnum } from './d
 import { getDistance } from 'geolib';
 import { RoutePropParams } from './root-navigation';
 import { GOOGLE_PLACES_API_KEY } from './utilGoogle';
+import * as Location from 'expo-location';
+import { LocationAccuracy } from 'expo-location';
 
 //formats time to be presentable to users
 export const formatTime = (time: Date | string): string => {
@@ -41,24 +43,38 @@ export const formatIosTimeInput = (time: Date | string): string => {
   return newTime;
 };
 
+export const formatDatePlanView = (date : string): string => {
+  return new Date(date).toLocaleDateString('en-US', { weekday: "short", month: "long", day: "numeric" });
+}
+
 //Formats date into format: DayOfWeek, Month DayOfMonth
 export const formatDayOfWeekDate = (date: string, shorten?: boolean, withYear?: boolean): string => {
+  if(!date) return '';
+  console.log(date);
   const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-  const newDate = convertTimeStringToDate(date);
+  const newDate = convertDateStringToDate(date);
+  console.log(newDate);
   const month = parseInt(date.substring(date.indexOf('-') + 1, date.lastIndexOf('-')));
   const dayOfMonth = parseInt(date.substring(date.lastIndexOf('-') + 1));
   newDate.setDate(dayOfMonth);
   newDate.setMonth(month - 1);
+
   if (shorten) {
     return months[month - 1] + ' ' + dayOfMonth;
   }
 
   const result = daysOfWeek[newDate.getDay()] + ',' + ' ' + months[month - 1] + ' ' + dayOfMonth;
+  console.log('day ' + newDate.getDay());
+  console.log('month ' + (month - 1));
+
+  console.log('in format ' + result);
+
   if (withYear) {
     return result + ', ' + newDate.getFullYear();
   }
   return result;
+  
 };
 
 //formats date to be presentable to users
@@ -93,6 +109,7 @@ export const convertDateStringToDate = (date: any): Date => {
   newDate.setFullYear(year);
   newDate.setMonth(month - 1);
   newDate.setDate(day);
+  console.log(newDate);
   return newDate;
 };
 
@@ -128,6 +145,20 @@ export const formatDatabaseDate = (date: string): string => {
   }
   return date;
 };
+
+export const formatDataDate = (date: string): string => {
+  var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+  if (month.length < 2) 
+      month = '0' + month;
+  if (day.length < 2) 
+      day = '0' + day;
+
+  return [year, month, day].join('-');
+}
 
 //formats time to be accepted by the database
 export const formatDatabaseTime = (time: string): string => {
@@ -218,6 +249,11 @@ export const getCurrentUser = async (): Promise<User> => {
     if (user) {
       return user[0];
     }
+    else {
+      console.log('no user');
+    }
+  } else {
+    console.log('error getting user info')
   }
   return userInfo;
 };
@@ -752,12 +788,36 @@ export const getHost = async (id: string): Promise<string | undefined> => {
     return user.name;
   }
 };
+export const getUserLocation = async (): Promise<UserLocation | undefined> => {
+  const { status } = await Location.requestPermissionsAsync();
+
+  if (status !== 'granted') {
+    console.log('Permission to access location was denied');
+  } else {
+    try {
+      let location = await Location.getLastKnownPositionAsync();
+
+      if (location === null) {
+        location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
+      }
+
+      return {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+    } catch (e) {
+      // TODO what error should be displayed here?
+      console.log(e);
+      return null;
+    }
+  }
+};
 export const navigateToPlanMap = async (
   query: string,
   navigation: NavigationProps,
   route: RoutePropParams,
-  tempUserLocation: UserLocation,
   tempUserLocationQuery: string,
+  tempUserLocation?: UserLocation,
 ): Promise<void> => {
   // rerun the query with the name of the selected venue so all venues with the same name show up on the map
   try {
@@ -777,6 +837,7 @@ export const navigateToPlanMap = async (
           placesUserWantsToGoQuery: query,
         },
       },
+      currentUser: route.params.currentUser,
       userLocation: route.params.userLocation,
     });
   } catch (e) {

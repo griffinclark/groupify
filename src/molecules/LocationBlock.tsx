@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { AppText } from '../atoms/AppText';
 import { TEAL_8, GREY_3 } from '../res/styles/Colors';
-import { formatDayOfWeekDate } from '../res/utilFunctions';
 
 interface Props {
   locationName: string;
   locationAddress: string;
   planName?: string;
-  date?: string;
+  date?: Date;
   time?: string;
 }
 
 export const LocationBlock: React.FC<Props> = ({ locationName, locationAddress, planName, date, time }: Props) => {
   const locationAddressArr = locationAddress.split(',');
+  
   return (
     <View style={styles.locationBlock}>
       {locationName ? <AppText style={[styles.text, styles.locationName]}>{locationName}</AppText> : null}
@@ -23,9 +23,9 @@ export const LocationBlock: React.FC<Props> = ({ locationName, locationAddress, 
       </AppText>
       {date && time ? (
         <AppText style={styles.text}>
-          {formatDayOfWeekDate(date)} at {time}
-        </AppText>
-      ) : null}
+          {date} at {time}
+        </AppText>): null}
+
     </View>
   );
 };

@@ -3,11 +3,11 @@ import { StyleSheet, View, Image, ScrollView, NativeSyntheticEvent, NativeScroll
 import { Screen } from '../atoms/Screen';
 import { BLACK, GREY_4, GREY_6, WHITE } from '../res/styles/Colors';
 import { HomeNavBar } from '../molecules/HomeNavBar';
-import { GoogleLocation, ActivityEnum } from '../res/dataModels';
+import { GoogleLocation, ActivityEnum, UserLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { MagnifyingGlassIcon } from '../../assets/Icons/MagnifyingGlass';
 import { TopNavBar } from '../molecules/TopNavBar';
-import { googlePlacesQuery, GooglePlacesQueryOptions } from '../res/utilFunctions';
+import { googlePlacesQuery, GooglePlacesQueryOptions, getUserLocation } from '../res/utilFunctions';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from './../molecules/SearchbarWithoutFeedback';
 import { ProgressBar } from '../atoms/ProgressBar';
 import { ActivitySelector } from '../molecules/ActivitySelector';
@@ -23,10 +23,13 @@ interface Props {
 }
 
 export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
+  console.log(route.params);
+
   const [featuredLocations, setFeaturedLocations] = useState<GoogleLocation[]>([]);
   //const [placesUserWantsToGoQuery, setPlacesUserWantsToGoQuery] = useState('');
   //const [tempUserLocationQuery, setTempUserLocationQuery] = useState('');
   const [scrollTop, setScrollTop] = useState(true);
+  const [userLocation, setUserLocation] = useState<UserLocation>();
 
   const randomEnumKey = (enumeration: typeof ActivityEnum) => {
     const keys = Object.keys(enumeration).filter((k) => !(Math.abs(Number.parseInt(k)) + 1));
@@ -41,6 +44,12 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
 
     const randomKey = randomEnumKey(ActivityEnum);
 
+    const fetchUserLocation = async() => {
+      setUserLocation(
+        await getUserLocation()
+      );
+    }
+
     const buildFeatureLocations = async () => {
       setFeaturedLocations(
         await googlePlacesQuery(
@@ -50,6 +59,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         ),
       );
     };
+    fetchUserLocation();
     buildFeatureLocations();
   }, []);
 
@@ -93,10 +103,10 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           <SearchbarWithoutFeedback
             navigation={navigation}
             route={route}
-            userLocation={route.params.userLocation}
+            userLocation={userLocation}
             icon={<MagnifyingGlassIcon />}
             placeholderText="Search for food, parks, coffee, etc"
-            tempUserLocation={route.params.data?.activitySearchData.tempUserLocation}
+            tempUserLocation={route.params?.data?.activitySearchData?.tempUserLocation ? route.params.data.activitySearchData.tempUserLocation : userLocation}
             placesUserWantsToGoQuery={''}
             tempUserLocationQuery={''}
             mode={SearchbarDisplayMode.Query}
@@ -111,7 +121,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
               route={route}
               locations={featuredLocations}
               tempUserLocationQuery={''}
-              userLocation={route.params.userLocation}
+              userLocation={userLocation}
             />
           ) : (
             <ProgressBar />
@@ -119,14 +129,14 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       </ScrollView>
 
-      <HomeNavBar
+      {/* <HomeNavBar
         locations={[]}
         user={route.params.currentUser}
         navigation={navigation}
         userPlans={[]}
         invitedPlans={[]}
         route={route}
-      />
+      /> */}
     </Screen>
   );
 };

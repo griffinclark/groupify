@@ -8,7 +8,7 @@ interface Props {
   route: RoutePropParams;
   locations: GoogleLocation[];
   tempUserLocationQuery: string;
-  userLocation: UserLocation;
+  userLocation?: UserLocation;
   onSelectLocation?: (location: GoogleLocation) => void;
 }
 export const LocationResults: React.FC<Props> = ({
@@ -19,7 +19,6 @@ export const LocationResults: React.FC<Props> = ({
   userLocation,
   onSelectLocation,
 }: Props) => {
-  console.log('activity card ' + route.params.currentUser);
   return (
     <>
       {locations.map((location: GoogleLocation) => {

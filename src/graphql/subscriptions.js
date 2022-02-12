@@ -12,6 +12,7 @@ export const onCreatePlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -39,6 +40,14 @@ export const onCreatePlan = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
       }
       arbitrations {
         items {
@@ -95,6 +104,7 @@ export const onUpdatePlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -122,6 +132,14 @@ export const onUpdatePlan = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
       }
       arbitrations {
         items {
@@ -178,6 +196,7 @@ export const onDeletePlan = /* GraphQL */ `
       date
       time
       creatorID
+      planCreatorId
       creator {
         id
         phoneNumber
@@ -205,6 +224,14 @@ export const onDeletePlan = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
       }
       arbitrations {
         items {
@@ -277,6 +304,7 @@ export const onCreatePlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -298,6 +326,7 @@ export const onCreatePlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -360,6 +389,7 @@ export const onUpdatePlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -381,6 +411,7 @@ export const onUpdatePlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -443,6 +474,7 @@ export const onDeletePlanArbitration = /* GraphQL */ `
           date
           time
           creatorID
+          planCreatorId
           _version
           _deleted
           _lastChangedAt
@@ -464,6 +496,7 @@ export const onDeletePlanArbitration = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -518,6 +551,7 @@ export const onCreateInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -572,6 +606,7 @@ export const onUpdateInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -626,6 +661,7 @@ export const onDeleteInvitee = /* GraphQL */ `
         date
         time
         creatorID
+        planCreatorId
         creator {
           id
           phoneNumber
@@ -747,6 +783,38 @@ export const onCreateUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      notificationsSent {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      notificationsRecieved {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -779,6 +847,38 @@ export const onUpdateUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      notificationsSent {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      notificationsRecieved {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -811,6 +911,458 @@ export const onDeleteUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      notificationsSent {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      notificationsRecieved {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const onCreateNotificationFromTo = /* GraphQL */ `
+  subscription OnCreateNotificationFromTo {
+    onCreateNotificationFromTo {
+      id
+      senderType
+      notificationID
+      senderID
+      recipientID
+      sender {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      recipient {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      notification {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const onUpdateNotificationFromTo = /* GraphQL */ `
+  subscription OnUpdateNotificationFromTo {
+    onUpdateNotificationFromTo {
+      id
+      senderType
+      notificationID
+      senderID
+      recipientID
+      sender {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      recipient {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      notification {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const onDeleteNotificationFromTo = /* GraphQL */ `
+  subscription OnDeleteNotificationFromTo {
+    onDeleteNotificationFromTo {
+      id
+      senderType
+      notificationID
+      senderID
+      recipientID
+      sender {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      recipient {
+        id
+        phoneNumber
+        name
+        pushToken
+        friends
+        email
+        availability {
+          id
+          Sunday
+          Monday
+          Tuesday
+          Wednesday
+          Thursday
+          Friday
+          Saturday
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsRecieved {
+          nextToken
+          startedAt
+        }
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      notification {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const onCreateNotification = /* GraphQL */ `
+  subscription OnCreateNotification {
+    onCreateNotification {
+      id
+      body
+      data
+      ttl
+      messageSubtitle
+      sound
+      channel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      recipients {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const onUpdateNotification = /* GraphQL */ `
+  subscription OnUpdateNotification {
+    onUpdateNotification {
+      id
+      body
+      data
+      ttl
+      messageSubtitle
+      sound
+      channel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      recipients {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const onDeleteNotification = /* GraphQL */ `
+  subscription OnDeleteNotification {
+    onDeleteNotification {
+      id
+      body
+      data
+      ttl
+      messageSubtitle
+      sound
+      channel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      recipients {
+        items {
+          id
+          senderType
+          notificationID
+          senderID
+          recipientID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
