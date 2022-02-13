@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GREY_3, GREY_4, WHITE, TEAL_0 } from '../res/styles/Colors';
-import { AppText } from './AppText';
 
 interface Props {
   onPress?: () => void;
@@ -34,7 +33,7 @@ export const Button: React.FC<Props> = ({
         onPress={onPress}
         disabled={disabled}
       >
-        <AppText
+        <Text
           style={[
             buttonStyles.enabledButton,
             textStyle ? textStyle : { fontSize: 16 },
@@ -43,7 +42,7 @@ export const Button: React.FC<Props> = ({
           ]}
         >
           {title}
-        </AppText>
+        </Text>
       </TouchableOpacity>
     </View>
   );

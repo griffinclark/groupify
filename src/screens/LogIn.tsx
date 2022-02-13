@@ -19,6 +19,7 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
+  Text,
 } from 'react-native';
 import { WHITE, TEAL_0 } from '../res/styles/Colors';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
@@ -193,11 +194,14 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-            <View style={{ alignSelf: 'center', flex: 1, marginTop: -50 }} testID="LogInScreen">
-              <ImageBackground style={styles.logoBackground} source={require('../../assets/Login_Background.png')} />
+            <View style={{ flex: 1 }} testID="LogInScreen">
+              {/* <ImageBackground style={styles.logoBackground} source={require('../../assets/SplashImage.png')} /> */}
               <ImageBackground style={styles.logo} source={require('../../assets/Splash_Logo.png')} />
+              {/* <Text style={{ marginVertical: 29, marginLeft: 20, fontWeight: '400', fontSize: 20, lineHeight: 28.9 }}>
+                Login To Your Account
+              </Text> */}
             </View>
-            <View>
+            <View style={{ marginTop: -50 }}>
               <FormInput
                 returnKeyNext={true}
                 label="Phone Number"
@@ -223,16 +227,22 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           </TouchableWithoutFeedback>
 
           <View style={styles.createAccount}>
-            <AppText style={styles.text}>{copy.dontHaveAnAccountQuestion}</AppText>
-            <AppText style={styles.textTeal} onPress={() => logIn()}>
+            <Text style={styles.text}>{copy.dontHaveAnAccountQuestion}</Text>
+            <Text style={styles.textTeal} onPress={() => logIn()}>
               Create one today!
-            </AppText>
+            </Text>
             {route.params && route.params.accountCreated === 'success' && (
               <Alert status={'success'} message={'Account successfully created!'} />
             )}
           </View>
           <View>
-            <Button title={copy.loginButtonTitle} onPress={logIn} disabled={disabled} />
+            <Button
+              buttonStyle={{ width: 335, height: 43, borderRadius: 5 }}
+              textStyle={{ fontSize: 20, fontWeight: '500' }}
+              title={copy.loginButtonTitle}
+              onPress={logIn}
+              disabled={disabled}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -250,11 +260,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 334,
     height: 107,
+    marginBottom: 90,
+    marginTop: 20,
   },
   logoBackground: {
     width: 376,
     height: 158,
-    alignSelf: 'center',
+    // alignSelf: 'center',
+    flex: 1,
   },
   createAccount: {
     flex: 1,
@@ -262,12 +275,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   text: {
-    fontWeight: '500',
+    fontWeight: '400',
     fontSize: 20,
+    marginBottom: 10,
   },
   textTeal: {
     color: TEAL_0,
-    fontWeight: '500',
+    fontWeight: '400',
     fontSize: 20,
+    marginBottom: 60,
   },
 });

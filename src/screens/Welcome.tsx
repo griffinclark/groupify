@@ -1,9 +1,8 @@
 import React from 'react';
-import { ImageBackground, View } from 'react-native';
-import { AppText } from '../atoms/AppText';
+import { ImageBackground, View, Text } from 'react-native';
 import { Button } from '../atoms/Button';
 import { copy } from '../res/groupifyCopy';
-import { TEAL_0 } from '../res/styles/Colors';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
 
 export interface Props {
   navigation: {
@@ -14,30 +13,54 @@ export interface Props {
 export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
   return (
     <ImageBackground
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', height: '100%', position: 'relative' }}
       resizeMode={'cover'}
-      source={require('../../assets/SplashScreen.png')}
+      source={require('../../assets/SplashImage.png')}
       testID="WelcomeScreen"
     >
-      <View style={{ flexDirection: 'column', justifyContent: 'center', flex: 1, marginBottom: '15%' }}>
+      <View style={{ flex: 1, position: 'absolute', bottom: 50, justifyContent: 'center', alignSelf: 'center' }}>
         <Button
-          textStyle={{ fontSize: 20 }}
-          buttonStyle={{ width: 335, borderRadius: 25 }}
+          textStyle={{
+            fontSize: 22,
+            lineHeight: 28.9,
+            fontWeight: '500',
+            backgroundColor: 'transparent',
+            color: TEAL_0,
+          }}
+          buttonStyle={{ width: 335, borderRadius: 5, backgroundColor: WHITE, height: 50 }}
           title={copy.loginButtonTitle}
           onPress={() => navigation.navigate('Login', {})}
           testID="WelcomeLoginButton"
         />
         <View style={{ marginTop: 20 }}>
-          <AppText style={{ textAlign: 'center', fontSize: 20, lineHeight: 28.6 }}>Don&apos;t have an account?</AppText>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 18,
+              lineHeight: 23.6,
+              color: WHITE,
+              marginBottom: 5,
+              fontWeight: '400',
+            }}
+          >
+            Don&apos;t have an account yet ?
+          </Text>
           <Button
             buttonStyle={{
               width: 335,
-              backgroundColor: 'white',
               borderWidth: 2,
               borderColor: TEAL_0,
-              borderRadius: 25,
+              borderRadius: 5,
+              marginHorizontal: 20,
+              height: 50,
             }}
-            textStyle={{ color: TEAL_0, backgroundColor: 'white', fontSize: 20 }}
+            textStyle={{
+              color: WHITE,
+              backgroundColor: TEAL_0,
+              fontSize: 22,
+              lineHeight: 28.9,
+              fontWeight: '500',
+            }}
             title={copy.signUpButtonTitle}
             onPress={() => navigation.navigate('VerifyPhone', {})}
             testID="WelcomeCreateButton"
