@@ -171,12 +171,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </>
       )}
 
-      <HomeNavBar
-        user={currentUser}
-        navigation={navigation}
-        route={route}
-        userLocation={userLocation}
-      />
+      <HomeNavBar user={currentUser} navigation={navigation} route={route} userLocation={userLocation} />
     </Screen>
   );
 };

@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { GREY_1, WHITE } from '../res/styles/Colors';
-import { User, Plan } from '../models';
+import { User } from '../models';
 import { AppText } from '../atoms/AppText';
 import { CreatePlanIcon, CalendarIcon } from '../../assets/Icons/IconExports';
 import { copy } from '../res/groupifyCopy';
-import { GoogleLocation, NavButtonEnum, UserLocation, NavigationProps } from '../res/dataModels';
+import { NavButtonEnum, UserLocation, NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { JOST } from '../res/styles/Fonts';
 
@@ -17,13 +17,7 @@ interface Props {
   userLocation: UserLocation;
 }
 
-export const HomeNavBar: React.FC<Props> = ({
-  route,
-  user,
-  style,
-  navigation,
-  userLocation,
-}: Props) => {
+export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, userLocation }: Props) => {
   const buttons = [
     {
       id: NavButtonEnum.GroupifyIt,
