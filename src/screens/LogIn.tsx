@@ -132,14 +132,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       } else {
         if (user.id) {
           console.log('userr:', user.id);
-          navigation.push('SelectorMenu', {
-            currentUser: route.params.currentUser,
-            // locations: locations, // TODO is this needed?
-            userLocation: route.params.userLocation,
-            data: {
-              activitySearchData: { tempUserLocation: route.params.userLocation },
-            },
-          });
+          navigation.push('Home', { userID: user.id });
         }
       }
       await Analytics.logEvent('login', { userId: user.id });

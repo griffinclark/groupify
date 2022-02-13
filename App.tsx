@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { LogBox, Text, View } from 'react-native';
 import { globalStyles } from './src/res/styles/GlobalStyles';
-import { RootNavigation, RoutePropParams } from './src/res/root-navigation';
+import { RootNavigation } from './src/res/root-navigation';
 import { User } from './src/models';
 import awsconfig from './src/aws-exports';
 import { DataStore } from '@aws-amplify/datastore';
@@ -13,7 +13,6 @@ import * as Notifications from 'expo-notifications';
 import { facebookInit } from './src/res/facebookTracking';
 import * as Font from 'expo-font';
 import { Jost_400Regular, Jost_500Medium, Jost_600SemiBold } from '@expo-google-fonts/jost';
-import { getCurrentUser } from './src/res/utilFunctions';
 Amplify.configure(awsconfig);
 
 Notifications.setNotificationHandler({
@@ -24,20 +23,10 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export interface Props {
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    push: (ev: string, {}) => void;
-    goBack: () => void;
-  };
-  route: RoutePropParams;
-}
-
-export const App = ({ navigation, route }: Props) => {
+export const App = () => {
   const [initalScreen, setInitialScreen] = useState('');
   const [userID, setUserID] = useState('');
   const [fontReady, setFontReady] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
 
   LogBox.ignoreLogs([
     // eslint-disable-next-line quotes
@@ -54,10 +43,6 @@ export const App = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     facebookInit();
-    const awaitUser = async () => {
-      const user = await getCurrentUser();
-      setCurrentUser(user);
-    };
     const checkAuth = async () => {
       try {
         await Auth.currentAuthenticatedUser();
@@ -72,14 +57,7 @@ export const App = ({ navigation, route }: Props) => {
         if (contacts.length === 0) {
           setInitialScreen('ImportContactDetails');
         } else {
-          navigation.navigate('SelectorMenu', {
-            currentUser: currentUser,
-            locations: location, // TODO is this needed?
-            userLocation: route.params.userLocation,
-            data: {
-              activitySearchData: { tempUserLocation: route.params.userLocation },
-            },
-          });
+          setInitialScreen('Home');
         }
       } catch (err) {
         console.log('user not signed in');
@@ -87,7 +65,6 @@ export const App = ({ navigation, route }: Props) => {
         setInitialScreen('Welcome');
       }
     };
-    awaitUser();
     checkAuth();
 
     const loadFonts = async () => {

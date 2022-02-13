@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
@@ -73,12 +74,16 @@ export const PlanCard = ({
           </View>
 
           <View>
-            <Image
-              source={{
-                uri: photoURI ? photoURI : 'https://cdn.pixabay.com/photo/2021/01/29/08/10/musician-5960112__340.jpg',
-              }}
-              style={styles.image}
-            />
+            {photoURI ? (
+              <Image
+                source={{
+                  uri: photoURI,
+                }}
+                style={styles.image}
+              />
+            ) : (
+              <Image source={require('../../assets/Vector.png')} style={styles.image} />
+            )}
           </View>
         </View>
         <View style={styles.invited}>
@@ -91,7 +96,7 @@ export const PlanCard = ({
           </View>
           <View>
             <Text numberOfLines={1} style={styles.invitedText}>
-              {location.length > 15 ? location?.substring(0, 14) + '...' : location}
+              {location!.length > 18 ? location?.substring(0, 17) + '...' : location}
             </Text>
           </View>
         </View>
@@ -165,7 +170,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '400',
-    marginVertical: 5,
+    marginVertical: 2,
     lineHeight: 30,
   },
   invitedContainer: {

@@ -35,7 +35,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
   }, [reload]);
 
   return (
-    <View>
+    <View style={{ borderBottomWidth: 4, borderBottomColor: '#ccc' }}>
       <ImageBackground
         source={{ uri: photoURI ? photoURI : 'https://cdn.pixabay.com/photo/2021/12/07/21/17/sheep-6854087__340.jpg' }}
         resizeMode="cover"
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     color: BLACK,
-    marginTop: 6,
-    marginBottom: 8,
+    marginTop: 10,
+    marginBottom: 12,
   },
   image: {
     width: 115,

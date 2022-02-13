@@ -132,7 +132,8 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
               Welcome to Groupify, {currentUser?.name.split(' ')[0]}!
             </Text>
             <Text style={styles.headerText}>
-              The more plans you add to groupify, the easier it is to make plans. Add friends from your contacts now.
+              The more friends you add to groupify, the more easier it is to make plans. Add friends from your contacts
+              now.
             </Text>
           </View>
           <SearchBar onChangeText={searchContacts} placeholder="Search for contacts" testID={''} />
