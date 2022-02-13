@@ -14,7 +14,8 @@ import {
 import CodeInput from 'react-native-confirmation-code-input';
 import { RoutePropParams } from '../res/root-navigation';
 import { Auth } from 'aws-amplify';
-import { WHITE } from '../res/styles/Colors';
+import { TEAL_8, WHITE } from '../res/styles/Colors';
+import { JOST } from '../res/styles/Fonts';
 
 export interface Props {
   navigation: {
@@ -60,11 +61,11 @@ export const ValidateUser = ({ navigation, route }: Props) => {
               ref={confirmRef}
               className={'border-b'}
               space={10}
-              size={48}
+              size={42}
               inputPosition="left"
               onFulfill={(code: any) => setValidationCode(code)}
-              containerStyle={{ marginTop: 5 }}
-              codeInputStyle={{ borderBottomWidth: 1.5, borderBottomColor: 'black', fontSize: 23 }}
+              containerStyle={{ marginTop: 60 }}
+              codeInputStyle={{ borderBottomWidth: 1.5, borderBottomColor: 'black', fontSize: 20 }}
               activeColor="black"
               keyboardType="numeric"
               codeLength={6}
@@ -105,23 +106,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    fontSize: 22,
-    marginVertical: 18,
-    fontWeight: '500',
+    fontSize: 20,
+    marginTop: 30,
+    fontFamily: JOST['400'],
+    paddingHorizontal: 20,
   },
   verification: {
     fontSize: 20,
     color: '#3F8A8D',
-    marginTop: 45,
-    fontWeight: '500',
+    marginTop: 30,
+    fontFamily: JOST['400'],
   },
   button: {
-    marginTop: 28,
-    backgroundColor: '#3F8A8D',
+    marginTop: 60,
+    backgroundColor: TEAL_8,
     alignItems: 'center',
-    paddingVertical: 12,
-    marginHorizontal: 22,
+    justifyContent: 'center',
     borderRadius: 5,
+    width: 335,
+    marginHorizontal: 20,
+    height: 39,
   },
   buttonText: {
     color: WHITE,
