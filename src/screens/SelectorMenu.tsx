@@ -47,12 +47,11 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     const randomKey = randomEnumKey(ActivityEnum);
 
     const buildFeatureLocations = async () => {
-      if(userLocation) {
+      if (userLocation) {
         setFeaturedLocations(
           await googlePlacesQuery(ActivityEnum[randomKey], userLocation, GooglePlacesQueryOptions.Activity),
         );
       }
-      
     };
 
     buildFeatureLocations();
