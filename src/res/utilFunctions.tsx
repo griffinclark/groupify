@@ -807,15 +807,11 @@ export const navigateToPlanMap = async (
   navigation: NavigationProps,
   route: RoutePropParams,
   tempUserLocationQuery: string,
-  tempUserLocation?: UserLocation,
+  tempUserLocation: UserLocation,
 ): Promise<void> => {
   // rerun the query with the name of the selected venue so all venues with the same name show up on the map
   try {
-    const results = await googlePlacesQuery(
-      query,
-      route.params.data.activitySearchData.tempUserLocation,
-      GooglePlacesQueryOptions.Activity,
-    );
+    const results = await googlePlacesQuery(query, tempUserLocation, GooglePlacesQueryOptions.Activity);
     navigation.navigate('PlanMap', {
       navigation: navigation,
       route: route,

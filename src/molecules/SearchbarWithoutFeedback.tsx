@@ -4,6 +4,7 @@ import { AppText } from '../atoms/AppText';
 import { NavigationProps, UserLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { GREY_6, GREY_8, WHITE } from '../res/styles/Colors';
+import { User } from '../models';
 
 interface Props {
   route: RoutePropParams;
@@ -15,6 +16,7 @@ interface Props {
   navigation: NavigationProps;
   userLocation: UserLocation;
   mode: SearchbarDisplayMode;
+  currentUser: User;
 }
 
 export enum SearchbarDisplayMode {
@@ -32,6 +34,7 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
   placesUserWantsToGoQuery,
   tempUserLocation,
   mode,
+  currentUser,
 }: Props) => {
   return (
     <TouchableWithoutFeedback
@@ -47,7 +50,7 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
             },
           },
           userLocation: userLocation,
-
+          currentUser: currentUser,
           //TODO @joni do we want to clear user search on navigate back to SelectorMenu?
         });
       }}

@@ -51,12 +51,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [info, setInfo] = useState<string | undefined>();
 
-  // useEffect(() => {
-  //   const userInfo = Auth.currentUserInfo();
-
-  //   console.log('userInfo', info);
-  // }, []);
-
   useEffect(() => {
     clearUserData();
   }, []);
@@ -131,7 +125,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       } else {
         if (user.id) {
           console.log('userr:', user.id);
-          navigation.push('Home', { userID: user.id });
+          navigation.push('SelectorMenu', { userID: user.id, currentUser: user });
         }
       }
       await Analytics.logEvent('login', { userId: user.id });

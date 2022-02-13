@@ -36,28 +36,24 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   useEffect(() => {
-    // TODO @JONI do we want to be resetting one or both of these?
-    //setTempUserLocationQuery('');
-    //setPlacesUserWantsToGoQuery('');
-
-    const randomKey = randomEnumKey(ActivityEnum);
-
     const fetchUserLocation = async () => {
       setUserLocation(await getUserLocation());
     };
 
+    fetchUserLocation();
+  }, []);
+
+  useEffect(() => {
+    const randomKey = randomEnumKey(ActivityEnum);
+
     const buildFeatureLocations = async () => {
       setFeaturedLocations(
-        await googlePlacesQuery(
-          ActivityEnum[randomKey],
-          route.params.data.activitySearchData.tempUserLocation,
-          GooglePlacesQueryOptions.Activity,
-        ),
+        await googlePlacesQuery(ActivityEnum[randomKey], userLocation, GooglePlacesQueryOptions.Activity),
       );
     };
-    fetchUserLocation();
-    buildFeatureLocations();
-  }, []);
+
+    if (userLocation) buildFeatureLocations();
+  }, [userLocation]);
 
   const handleScrollView = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollTop(e.nativeEvent.contentOffset.y > 300);
@@ -94,24 +90,27 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         <View>
           <Image style={{ width: 'auto', height: 260 }} source={bgImage[bgImageIndex]} />
         </View>
+        {userLocation && (
+          <View style={[styles.searchBar, scrollTop ? { backgroundColor: WHITE } : {}]}>
+            <SearchbarWithoutFeedback
+              navigation={navigation}
+              route={route}
+              userLocation={userLocation}
+              icon={<MagnifyingGlassIcon />}
+              placeholderText="Search for food, parks, coffee, etc"
+              tempUserLocation={
+                route.params?.data?.activitySearchData?.tempUserLocation
+                  ? route.params.data.activitySearchData.tempUserLocation
+                  : userLocation
+              }
+              placesUserWantsToGoQuery={''}
+              tempUserLocationQuery={''}
+              mode={SearchbarDisplayMode.Query}
+              currentUser={route.params.currentUser}
+            />
+          </View>
+        )}
 
-        <View style={[styles.searchBar, scrollTop ? { backgroundColor: WHITE } : {}]}>
-          <SearchbarWithoutFeedback
-            navigation={navigation}
-            route={route}
-            userLocation={userLocation}
-            icon={<MagnifyingGlassIcon />}
-            placeholderText="Search for food, parks, coffee, etc"
-            tempUserLocation={
-              route.params?.data?.activitySearchData?.tempUserLocation
-                ? route.params.data.activitySearchData.tempUserLocation
-                : userLocation
-            }
-            placesUserWantsToGoQuery={''}
-            tempUserLocationQuery={''}
-            mode={SearchbarDisplayMode.Query}
-          />
-        </View>
         <ActivitySelector route={route} navigation={navigation} />
 
         <View style={styles.locationSuggestions}>

@@ -7,6 +7,8 @@ import { GREY_6, TEAL_0, WHITE } from '../res/styles/Colors';
 import { LocationResults } from '../molecules/LocationResults';
 import { LocationDetails } from '../molecules/LocationDetails';
 import { AppText } from '../atoms/AppText';
+import { JOST } from '../res/styles/Fonts';
+import { User } from '../models';
 
 interface Props {
   navigation: NavigationProps;
@@ -15,6 +17,7 @@ interface Props {
   tempUserLocationQuery: string;
   userLocation: UserLocation;
   selectedLocation: GoogleLocation | undefined;
+  currentUser: User;
   onSelectLocation?: (location: GoogleLocation) => void;
 }
 
@@ -25,10 +28,11 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
   tempUserLocationQuery,
   userLocation,
   selectedLocation,
+  currentUser,
   onSelectLocation,
 }: Props) => {
-  const slideUpMenuHeight = 650;
-  const slideUpMenuBottom = 250;
+  const slideUpMenuHeight = Dimensions.get('screen').height - 180;
+  const slideUpMenuBottom = 216;
 
   const [allowDragging, setAllowDragging] = useState(true);
 
@@ -86,21 +90,26 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
               onSelectLocation={selectLocation}
             />
           )}
+
+          {!currentSelectedLocation && !locations.length && (
+            <View style={{ marginTop: 20, alignItems: 'center', justifyContent: 'center' }}>
+              <AppText style={{ fontFamily: JOST['500'], fontSize: 16 }}>No result matches your search.</AppText>
+              <AppText style={{ fontFamily: JOST['500'], fontSize: 16 }}>Please try with a different search.</AppText>
+            </View>
+          )}
         </ScrollView>
         {currentSelectedLocation && showPlanDetails && (
           <Pressable
             onPress={() => {
               navigation.navigate('PlanCreate', {
-                currentUser: route.params.currentUser,
+                currentUser: currentUser,
                 navigation: navigation,
                 data: {
                   planData: {
                     location: currentSelectedLocation.formatted_address,
                     locationName: currentSelectedLocation.name,
                     placeId: currentSelectedLocation.place_id,
-                    imageURL: currentSelectedLocation.photos[0]
-                      ? currentSelectedLocation.photos[0].photo_reference
-                      : null,
+                    imageURL: currentSelectedLocation.photos ? currentSelectedLocation.photos[0].photo_reference : null,
                   },
                 },
               });

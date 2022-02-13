@@ -11,7 +11,9 @@ import { Contact } from './src/res/dataModels';
 import * as Notifications from 'expo-notifications';
 import { facebookInit } from './src/res/facebookTracking';
 import * as Font from 'expo-font';
-import { Jost_400Regular, Jost_500Medium, Jost_600SemiBold } from '@expo-google-fonts/jost';
+import { Jost_400Regular, Jost_500Medium, Jost_600SemiBold, Jost_700Bold } from '@expo-google-fonts/jost';
+import { getCurrentUser } from './src/res/utilFunctions';
+
 Amplify.configure(awsconfig);
 
 Notifications.setNotificationHandler({
@@ -26,6 +28,7 @@ export const App: React.FC = () => {
   const [initalScreen, setInitialScreen] = useState('');
   const [userID, setUserID] = useState('');
   const [fontReady, setFontReady] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User>();
 
   LogBox.ignoreLogs([
     // eslint-disable-next-line quotes
@@ -61,7 +64,7 @@ export const App: React.FC = () => {
         if (contacts.length === 0) {
           setInitialScreen('ImportContactDetails');
         } else {
-          setInitialScreen('Home');
+          setInitialScreen('SelectorMenu');
         }
       } catch (err) {
         console.log('user not signed in');
@@ -70,13 +73,14 @@ export const App: React.FC = () => {
       }
     };
 
-    checkAuth();
+    checkAuth().then(async () => setCurrentUser(await getCurrentUser()));
 
     const loadFonts = async () => {
       await Font.loadAsync({
         Jost_400Regular,
         Jost_500Medium,
         Jost_600SemiBold,
+        Jost_700Bold,
       });
       setFontReady(true);
     };
@@ -86,8 +90,8 @@ export const App: React.FC = () => {
   return (
     <View style={globalStyles.defaultRootContainer}>
       {initalScreen == '' && !fontReady && <Text>Loading...</Text>}
-      {initalScreen != '' && fontReady && (
-        <RootNavigation initialRoute={initalScreen} initialParams={{ userID: userID }} />
+      {initalScreen != '' && fontReady && currentUser && (
+        <RootNavigation initialRoute={initalScreen} initialParams={{ userID: userID, currentUser: currentUser }} />
       )}
     </View>
   );
