@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { GREY_1, WHITE } from '../res/styles/Colors';
 import { User, Plan } from '../models';
-import { ContactIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
-import { Feather } from '@expo/vector-icons';
+import { AppText } from '../atoms/AppText';
+import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
 import { copy } from '../res/groupifyCopy';
 import { GoogleLocation } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
@@ -36,6 +36,18 @@ export const HomeNavBar: React.FC<Props> = ({
         <TouchableOpacity
           style={{ width: '33%' }}
           onPress={() => {
+            navigation.navigate('ViewPlans', {});
+          }}
+        >
+          <AnnounceIcon />
+          <AppText style={styles.text}>{copy.leftNavButton}</AppText>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ width: '33%' }}
+          // onPress={() => {
+          //   navigation.push('ActivitySelector', { currentUser: user });
+          // }}
+          onPress={() => {
             navigation.navigate('SelectorMenu', {
               currentUser: user,
               locations: locations, // TODO is this needed?
@@ -47,29 +59,19 @@ export const HomeNavBar: React.FC<Props> = ({
           }}
         >
           <CreatePlanIcon />
-          <Text style={styles.text}>{copy.centerNavButton}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{ width: '33%' }}
-          onPress={() => {
-            navigation.navigate('Home', {});
-          }}
-        >
-          <Feather style={{ marginHorizontal: 48 }} name="calendar" size={29} color={WHITE} />
-          <Text style={styles.text}>{copy.leftNavButton}</Text>
+          <AppText style={styles.text}>{copy.centerNavButton}</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '33%' }}
           onPress={() => {
-            navigation.navigate('ContactList', {
+            navigation.navigate('Profile', {
               currentUser: user,
               currentUserPlan: userPlans[0] ? userPlans[0] : invitedPlans[0],
             });
           }}
         >
-          <ContactIcon />
-          <Text style={styles.text}>{copy.rightNavButton}</Text>
+          <SettingsIcon />
+          <AppText style={styles.text}>{copy.rightNavButton}</AppText>
         </TouchableOpacity>
       </View>
     </View>
@@ -86,9 +88,9 @@ const styles = StyleSheet.create({
     backgroundColor: GREY_1,
   },
   text: {
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: '700',
-    marginTop: 10,
+    marginTop: 5,
     marginBottom: 10,
     color: WHITE,
     textAlign: 'center',
