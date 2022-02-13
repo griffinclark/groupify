@@ -8,7 +8,7 @@
     "facebookAppId": "693164164986653",
     "facebookDisplayName": "Munchkin Labs",
     "splash": {
-      "image": "./assets/SplashScreen.png",
+      "image": "./assets/SplashImage.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
