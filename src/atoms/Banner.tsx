@@ -7,7 +7,7 @@ import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
 import { DataStore } from '@aws-amplify/datastore';
 import { TEAL_0, WHITE, GREY_3, BLACK, GOLD_6, GREY_6 } from '../res/styles/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
-import {JOST} from '../res/styles/Fonts';
+import { JOST } from '../res/styles/Fonts';
 
 interface Props {
   plan: Plan;
