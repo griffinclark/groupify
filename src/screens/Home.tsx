@@ -64,7 +64,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [trigger1]);
 
   const getUserLocation = async () => {
-    const { status } = await Location.requestPermissionsAsync();
+    const { status } = await Location.requestBackgroundPermissionsAsync();
 
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
@@ -152,7 +152,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       ) : (
         <>
-          <Header navigation={navigation} />
+          <Header navigation={navigation} home={true} />
           <ScrollView
             showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}

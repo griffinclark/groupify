@@ -5,8 +5,9 @@ import { Entypo } from '@expo/vector-icons';
 import { Plan, Invitee } from '../models';
 import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
 import { DataStore } from '@aws-amplify/datastore';
-import { TEAL_0, WHITE, GREY_3, BLACK, GOLD_6 } from '../res/styles/Colors';
+import { TEAL_0, WHITE, GREY_3, BLACK, GOLD_6, GREY_6 } from '../res/styles/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import {JOST} from '../res/styles/Fonts';
 
 interface Props {
   plan: Plan;
@@ -35,7 +36,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
   }, [reload]);
 
   return (
-    <View style={{ borderBottomWidth: 4, borderBottomColor: '#ccc' }}>
+    <View style={{ borderBottomWidth: 4, borderBottomColor: GREY_6 }}>
       <ImageBackground
         source={{ uri: photoURI ? photoURI : 'https://cdn.pixabay.com/photo/2021/12/07/21/17/sheep-6854087__340.jpg' }}
         resizeMode="cover"
@@ -85,10 +86,10 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
 const styles = StyleSheet.create({
   containerText: {
     marginLeft: 16,
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: JOST['500'],
     color: BLACK,
-    marginTop: 10,
+    marginTop: 18,
     marginBottom: 12,
   },
   image: {
@@ -98,14 +99,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   title: {
-    fontWeight: '400',
-    fontSize: 22,
+    fontFamily: JOST['400'],
+    fontSize: 20,
     marginVertical: 6,
     lineHeight: 28,
   },
   hostName: {
-    fontSize: 18,
-    fontWeight: '400',
+    fontSize: 16,
+    fontFamily: JOST['400'],
     color: GREY_3,
     lineHeight: 23.12,
   },
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: GREY_3,
     marginLeft: 4,
-    fontWeight: '400',
+    fontFamily: JOST['400'],
   },
   card: {
     backgroundColor: WHITE,
@@ -145,9 +146,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
   },
   date: {
-    fontSize: 18,
+    fontSize: 16,
     color: GOLD_6,
-    fontWeight: '400',
+    fontFamily: JOST['400'],
     lineHeight: 23.12,
   },
 });

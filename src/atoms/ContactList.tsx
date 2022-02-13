@@ -11,6 +11,7 @@ import * as Analytics from 'expo-firebase-analytics';
 import { Header } from '../atoms/Header';
 import { AddContactTile } from './AddContactTile';
 import { HomeNavBar } from '../molecules/HomeNavBar';
+import { JOST } from '../res/styles/Fonts';
 
 interface Props {
   navigation: {
@@ -110,8 +111,8 @@ export const ContactList = ({ navigation, route }: Props) => {
     <Screen>
       <Header navigation={navigation} />
       <View style={{ marginLeft: 10, marginVertical: 25 }}>
-        <Text style={{ fontSize: 18, fontWeight: '500', marginVertical: 5 }}>Your Friends</Text>
-        <Text style={{ fontSize: 18, color: 'gray', fontWeight: '400', lineHeight: 23.12 }}>
+        <Text style={{ fontSize: 16, fontFamily: JOST['500'], marginVertical: 5 }}>Your Friends</Text>
+        <Text style={{ fontSize: 16, color: 'gray', fontFamily: JOST['400'], lineHeight: 23.12 }}>
           You have {contacts.length} friends you can add to Groupify
         </Text>
       </View>

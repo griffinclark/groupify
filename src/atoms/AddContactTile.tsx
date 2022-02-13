@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Contact } from '../res/dataModels';
 import { WHITE } from '../res/styles/Colors';
-
+import { JOST } from '../res/styles/Fonts';
 interface Props {
   isSelected: boolean;
   friend: Contact;
@@ -71,11 +71,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   buttonText: {
-    fontSize: 15,
-    fontWeight: '500',
+    fontSize: 13,
+    fontFamily: JOST['500'],
   },
   text: {
-    fontSize: 17,
-    fontWeight: '400',
+    fontSize: 16,
+    fontFamily: JOST['400'],
   },
 });

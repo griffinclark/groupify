@@ -7,6 +7,7 @@ import { Invitee, Plan } from '../models';
 import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
 import { Entypo, AntDesign } from '@expo/vector-icons';
 import { WHITE, GREY_3, GREY_9, TEAL_0, GOLD_6, TEAL_7 } from '../res/styles/Colors';
+import { JOST } from '../res/styles/Fonts';
 
 export interface Props {
   title: string;
@@ -124,8 +125,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
   },
   date: {
-    fontSize: 18,
-    fontWeight: '400',
+    fontSize: 16,
+    fontFamily: JOST['400'],
     color: GOLD_6,
     lineHeight: 24,
   },
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: GREY_3,
     marginLeft: 4,
-    fontWeight: '400',
+    fontFamily: JOST['400'],
   },
   creatorContainer: {
     backgroundColor: TEAL_7,
@@ -161,15 +162,15 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   creatorText: {
-    fontWeight: '400',
+    fontFamily: JOST['400'],
     fontSize: 16,
     lineHeight: 24,
     paddingHorizontal: 10,
     paddingVertical: 1,
   },
   title: {
-    fontSize: 22,
-    fontWeight: '400',
+    fontSize: 20,
+    fontFamily: JOST['400'],
     marginVertical: 2,
     lineHeight: 30,
   },

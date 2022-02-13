@@ -6,6 +6,7 @@ import { NoPlansCard } from './NoPlansCard';
 import { TEAL_0, GRAY_DARK, WHITE, GREY_6 } from '../res/styles/Colors';
 import { AllPlans } from '../res/root-navigation';
 import { UserLocation } from '../res/dataModels';
+import { JOST } from '../res/styles/Fonts';
 
 export interface Props {
   all: AllPlans;
@@ -104,15 +105,15 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 4,
-    fontWeight: '500',
-    fontSize: 18,
+    fontFamily: JOST['500'],
+    fontSize: 16,
     marginLeft: 20,
     marginVertical: 6,
     lineHeight: 23.12,
   },
   buttonText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 12,
+    fontFamily: JOST['500'],
     paddingBottom: 8,
   },
 });
