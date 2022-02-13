@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import Constants from 'expo-constants';
@@ -127,10 +127,9 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
   return (
     <Screen style={styles.container}>
       {region.default == true ? (
-        <>
-          <ProgressBar />
-          {/* TODO AppText not truncating properly */}
-        </>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator size={'large'} />
+        </View>
       ) : (
         <>
           <TopNavBar
@@ -163,22 +162,22 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
               animationEnabled={false}
               showsBuildings={true}
               showsCompass={false}
-              onRegionChange={async (region) => {
-                // console.log(Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)));
-                if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 12) {
-                  setRadius(100);
-                } else if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 14) {
-                  setRadius(80);
-                } else {
-                  setRadius(30);
-                }
-              }}
+              // onRegionChange={async (region) => {
+              //   // console.log(Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)));
+              //   if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 12) {
+              //     setRadius(100);
+              //   } else if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 14) {
+              //     setRadius(80);
+              //   } else {
+              //     setRadius(30);
+              //   }
+              // }}
               showsTraffic={false}
               userInterfaceStyle="dark"
               clusterColor={GOLD_0}
               spiderLineColor={GOLD_0}
               edgePadding={{ top: 100, left: 75, right: 75, bottom: 350 }}
-              // clusteringEnabled={false}
+              clusteringEnabled={false}
               radius={radius}
               showsPointsOfInterest={false}
             >
