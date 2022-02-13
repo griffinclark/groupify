@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { Animated, StyleSheet, View, Dimensions } from 'react-native';
-import { GOLD_0, TEAL_0 } from '../res/styles/Colors';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
 
 export const ProgressBar: FunctionComponent = () => {
   const startWidth = React.useRef(new Animated.Value(0)).current;
@@ -16,13 +16,14 @@ export const ProgressBar: FunctionComponent = () => {
   return (
     <View style={styles.barContainer}>
       <Animated.View style={[styles.progressBar, { width: startWidth }]}></Animated.View>
+      {/* <AppText>Buidling</AppText> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   barContainer: {
-    backgroundColor: GOLD_0,
+    backgroundColor: WHITE,
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',

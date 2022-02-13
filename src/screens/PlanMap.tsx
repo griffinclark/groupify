@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import Constants from 'expo-constants';
@@ -14,7 +14,6 @@ import { Marker } from 'react-native-maps';
 import { MapIcon } from './../../assets/Icons/MapIcon';
 import { MagnifyingGlassIcon } from './../../assets/Icons/MagnifyingGlass';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from '../molecules/SearchbarWithoutFeedback';
-import { ProgressBar } from '../atoms/ProgressBar';
 import { ActivitySelectorSlideUpCard } from '../organisms/ActivitySelectorSlideUpCard';
 
 export interface Props {
@@ -127,10 +126,9 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
   return (
     <Screen style={styles.container}>
       {region.default == true ? (
-        <>
-          <ProgressBar />
-          {/* TODO AppText not truncating properly */}
-        </>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator size={'large'} />
+        </View>
       ) : (
         <>
           <TopNavBar
@@ -178,7 +176,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
               clusterColor={GOLD_0}
               spiderLineColor={GOLD_0}
               edgePadding={{ top: 100, left: 75, right: 75, bottom: 350 }}
-              // clusteringEnabled={false}
+              clusteringEnabled={false}
               radius={radius}
               showsPointsOfInterest={false}
             >
