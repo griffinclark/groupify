@@ -14,7 +14,6 @@ import { Marker } from 'react-native-maps';
 import { MapIcon } from './../../assets/Icons/MapIcon';
 import { MagnifyingGlassIcon } from './../../assets/Icons/MagnifyingGlass';
 import { SearchbarDisplayMode, SearchbarWithoutFeedback } from '../molecules/SearchbarWithoutFeedback';
-import { ProgressBar } from '../atoms/ProgressBar';
 import { ActivitySelectorSlideUpCard } from '../organisms/ActivitySelectorSlideUpCard';
 
 export interface Props {
@@ -162,16 +161,16 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
               animationEnabled={false}
               showsBuildings={true}
               showsCompass={false}
-              // onRegionChange={async (region) => {
-              //   // console.log(Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)));
-              //   if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 12) {
-              //     setRadius(100);
-              //   } else if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 14) {
-              //     setRadius(80);
-              //   } else {
-              //     setRadius(30);
-              //   }
-              // }}
+              onRegionChange={async (region) => {
+                // console.log(Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)));
+                if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 12) {
+                  setRadius(100);
+                } else if (Math.log2(360 * (Dimensions.get('window').width / 256 / region.longitudeDelta)) < 14) {
+                  setRadius(80);
+                } else {
+                  setRadius(30);
+                }
+              }}
               showsTraffic={false}
               userInterfaceStyle="dark"
               clusterColor={GOLD_0}

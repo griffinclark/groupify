@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { Animated, StyleSheet, View, Dimensions } from 'react-native';
-import { GOLD_0, TEAL_0, WHITE } from '../res/styles/Colors';
-import { AppText } from './AppText';
+import { TEAL_0, WHITE } from '../res/styles/Colors';
+
 
 export const ProgressBar: FunctionComponent = () => {
   const startWidth = React.useRef(new Animated.Value(0)).current;
