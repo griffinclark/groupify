@@ -2,9 +2,9 @@ import LocalizedStrings from 'react-localization';
 
 export const copy = new LocalizedStrings({
   en: {
-    leftNavButton: 'Notifications',
-    centerNavButton: 'Do Something',
-    rightNavButton: 'Profile',
+    leftNavButton: 'Plans',
+    centerNavButton: 'Groupify It',
+    rightNavButton: 'Contacts',
     acticitySelectorOrText: 'or',
     altrenateActivityText: 'Do something else',
     activitySelectorHelpButton: '?',

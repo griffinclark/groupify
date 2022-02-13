@@ -34,7 +34,6 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     const enumKey = keys[Math.floor(Math.random() * keys.length)];
     return enumKey;
   };
-
   useEffect(() => {
     // TODO @JONI do we want to be resetting one or both of these?
     //setTempUserLocationQuery('');

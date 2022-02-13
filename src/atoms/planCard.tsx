@@ -36,7 +36,7 @@ export const PlanCard = ({
 }: Props) => {
   const [invitees, setInvitees] = useState<Invitee[]>([]);
   const [photoURI, setPhotoURI] = useState('');
-  const [hostName, setHostName] = useState('');
+  const [hostName, setHostName] = useState<string | undefined>('');
 
   useEffect(() => {
     const loadCard = async () => {

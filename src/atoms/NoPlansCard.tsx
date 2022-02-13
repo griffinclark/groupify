@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { RoutePropParams } from '../res/root-navigation';
+// import { RoutePropParams } from '../res/root-navigation';
 import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { User } from '../models';
 import { WHITE, TEAL_0 } from '../res/styles/Colors';
@@ -13,7 +13,7 @@ interface Props {
   };
   locations?: GoogleLocation[];
   userLocation: UserLocation;
-  route: RoutePropParams;
+  // route: RoutePropParams;
 }
 
 export const NoPlansCard: React.FC<Props> = ({ user, navigation, locations, userLocation }: Props) => {

@@ -10,16 +10,18 @@ import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
 import { Header } from '../atoms/Header';
 import { AddContactTile } from './AddContactTile';
+import { HomeNavBar } from '../molecules/HomeNavBar';
 
 interface Props {
   navigation: {
     navigate: (ev: string) => void;
+    push: (ev: string) => void;
     goBack: () => void;
   };
   route: RoutePropParams;
 }
 
-export const ContactList = ({ navigation }: Props) => {
+export const ContactList = ({ navigation, route }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [addedContacts, setAddedContacts] = useState<Contact[]>([]);
@@ -106,15 +108,15 @@ export const ContactList = ({ navigation }: Props) => {
 
   return (
     <Screen>
-      <Header navigation={navigation} title="Friends" />
-      <View style={{ marginHorizontal: 8, padding: 20 }}>
-        <SearchBar onChangeText={searchContacts} testID={''} />
-      </View>
-      <View style={{ marginLeft: 10 }}>
-        <Text style={{ fontSize: 18, fontWeight: '600', marginVertical: 5 }}>Your Friends</Text>
-        <Text style={{ fontSize: 18, color: 'gray', fontWeight: '500' }}>
+      <Header navigation={navigation} />
+      <View style={{ marginLeft: 10, marginVertical: 25 }}>
+        <Text style={{ fontSize: 18, fontWeight: '500', marginVertical: 5 }}>Your Friends</Text>
+        <Text style={{ fontSize: 18, color: 'gray', fontWeight: '400', lineHeight: 23.12 }}>
           You have {contacts.length} friends you can add to Groupify
         </Text>
+      </View>
+      <View style={{ marginHorizontal: 8 }}>
+        <SearchBar style={{}} placeholder="Search For Friends On Groupify" onChangeText={searchContacts} testID={''} />
       </View>
       <View>
         <FlatList
@@ -123,6 +125,15 @@ export const ContactList = ({ navigation }: Props) => {
           renderItem={renderContact}
         />
       </View>
+
+      <HomeNavBar
+        locations={[]}
+        user={route.params.currentUser}
+        navigation={navigation}
+        userPlans={[]}
+        invitedPlans={[]}
+        route={route}
+      />
     </Screen>
   );
 };

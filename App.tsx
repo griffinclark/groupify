@@ -1,17 +1,19 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useEffect, useState } from 'react';
 import { LogBox, Text, View } from 'react-native';
 import { globalStyles } from './src/res/styles/GlobalStyles';
-import { RootNavigation } from './src/res/root-navigation';
+import { RootNavigation, RoutePropParams } from './src/res/root-navigation';
 import { User } from './src/models';
 import awsconfig from './src/aws-exports';
 import { DataStore } from '@aws-amplify/datastore';
-import Amplify, { Auth, Hub } from 'aws-amplify';
+import Amplify, { Auth } from 'aws-amplify';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import * as Notifications from 'expo-notifications';
 import { facebookInit } from './src/res/facebookTracking';
 import * as Font from 'expo-font';
 import { Jost_400Regular, Jost_500Medium, Jost_600SemiBold } from '@expo-google-fonts/jost';
+import { getCurrentUser } from './src/res/utilFunctions';
 Amplify.configure(awsconfig);
 
 Notifications.setNotificationHandler({
@@ -22,10 +24,20 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export const App: React.FC = () => {
+export interface Props {
+  navigation: {
+    navigate: (ev: string, {}) => void;
+    push: (ev: string, {}) => void;
+    goBack: () => void;
+  };
+  route: RoutePropParams;
+}
+
+export const App = ({ navigation, route }: Props) => {
   const [initalScreen, setInitialScreen] = useState('');
   const [userID, setUserID] = useState('');
   const [fontReady, setFontReady] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
 
   LogBox.ignoreLogs([
     // eslint-disable-next-line quotes
@@ -41,12 +53,11 @@ export const App: React.FC = () => {
   ]);
 
   useEffect(() => {
-    Hub.listen('auth', (event) => {
-      console.log('auth event', event);
-    });
-
     facebookInit();
-
+    const awaitUser = async () => {
+      const user = await getCurrentUser();
+      setCurrentUser(user);
+    };
     const checkAuth = async () => {
       try {
         await Auth.currentAuthenticatedUser();
@@ -61,7 +72,14 @@ export const App: React.FC = () => {
         if (contacts.length === 0) {
           setInitialScreen('ImportContactDetails');
         } else {
-          setInitialScreen('Home');
+          navigation.navigate('SelectorMenu', {
+            currentUser: currentUser,
+            locations: location, // TODO is this needed?
+            userLocation: route.params.userLocation,
+            data: {
+              activitySearchData: { tempUserLocation: route.params.userLocation },
+            },
+          });
         }
       } catch (err) {
         console.log('user not signed in');
@@ -69,7 +87,7 @@ export const App: React.FC = () => {
         setInitialScreen('Welcome');
       }
     };
-
+    awaitUser();
     checkAuth();
 
     const loadFonts = async () => {
