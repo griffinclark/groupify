@@ -49,13 +49,15 @@ export const App = () => {
     const checkAuth = async () => {
       try {
         await Auth.currentAuthenticatedUser();
-        console.log('user is signed in');
         // const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
 
         const userQuery = await DataStore.query(User);
-        const userd = userQuery.map((user) => user.id);
+        const userd = userQuery.map((user) => user);
 
-        setUserID(userd[0]);
+        setUserID(userd[0].id);
+
+        setCurrentUser(userd[0]);
+
         const contacts: Contact[] = await getAllImportedContacts();
         if (contacts.length === 0) {
           setInitialScreen('ImportContactDetails');
@@ -69,7 +71,7 @@ export const App = () => {
       }
     };
 
-    checkAuth().then(async () => setCurrentUser(await getCurrentUser()));
+    checkAuth();
 
     const loadFonts = async () => {
       await Font.loadAsync({
@@ -86,8 +88,8 @@ export const App = () => {
   return (
     <View style={globalStyles.defaultRootContainer}>
       {initalScreen == '' && !fontReady && <Text>Loading...</Text>}
-      {initalScreen != '' && fontReady && currentUser && (
-        <RootNavigation initialRoute={initalScreen} initialParams={{ userID: userID, currentUser: currentUser }} />
+      {initalScreen != '' && fontReady && (currentUser || initalScreen == 'Welcome') && (
+        <RootNavigation initialRoute={initalScreen} initialParams={{ userID: userID }} />
       )}
     </View>
   );

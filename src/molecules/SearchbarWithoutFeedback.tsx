@@ -36,6 +36,7 @@ export const SearchbarWithoutFeedback: React.FC<Props> = ({
   mode,
   currentUser,
 }: Props) => {
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {

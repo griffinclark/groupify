@@ -78,7 +78,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
       {activities.map((activity: { id: ActivityEnum; name: string }) => (
         <TouchableOpacity
           onPress={async () => {
-            navigateToPlanMap(activity.id, navigation, route, route.params.userLocation, 'Current Location', true);
+            navigateToPlanMap(activity.id, navigation, route, route.params.userLocation, 'Current Location');
           }}
           testID={activity.id}
           key={activity.id}

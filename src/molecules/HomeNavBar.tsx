@@ -13,24 +13,16 @@ interface Props {
   route: RoutePropParams;
   user?: User;
   style?: Record<string, unknown>;
-  invitedPlans: Plan[];
-  locations?: GoogleLocation[];
-  userPlans: Plan[];
   navigation: NavigationProps;
   userLocation: UserLocation;
-  currentUser: User;
 }
 
 export const HomeNavBar: React.FC<Props> = ({
   route,
   user,
   style,
-  userPlans,
-  invitedPlans,
   navigation,
-  locations,
   userLocation,
-  currentUser,
 }: Props) => {
   const buttons = [
     {
@@ -72,7 +64,7 @@ export const HomeNavBar: React.FC<Props> = ({
         navigation: navigation,
         route: route,
         currentUser: user,
-        UserLocation: userLocation,
+        userLocation: userLocation,
       });
     } catch (e) {
       console.log(e);

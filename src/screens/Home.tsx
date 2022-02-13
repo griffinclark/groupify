@@ -177,9 +177,8 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       <HomeNavBar
         user={currentUser}
         navigation={navigation}
-        userPlans={createdPlans}
-        invitedPlans={[...acceptedPlans, ...pendingPlans]}
         route={route}
+        userLocation={userLocation}
       />
     </Screen>
   );
