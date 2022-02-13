@@ -121,8 +121,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
     mapRef.current?.animateToRegion(region, 2000);
   };
 
-  console.log('plan map ' + route.params.currentUser);
-
   return (
     <Screen style={styles.container}>
       {region.default == true ? (
@@ -132,6 +130,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
       ) : (
         <>
           <TopNavBar
+            stickyHeader={false}
             targetScreen="SelectorMenu"
             route={route}
             title="DO SOMETHING"
@@ -150,6 +149,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
                 tempUserLocation={route.params.data.activitySearchData.tempUserLocation}
                 placesUserWantsToGoQuery={route.params.data.activitySearchData.placesUserWantsToGoQuery}
                 mode={SearchbarDisplayMode.Result}
+                currentUser={route.params.currentUser}
               />
             </View>
             {/* TODO MapView has to be built dynamically based on number of locations and distance between locations */}
@@ -211,6 +211,7 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
             locations={placesUserWantsToGo}
             tempUserLocationQuery={tempUserLocationQuery}
             onSelectLocation={setSelectedLocationFn}
+            currentUser={route.params.currentUser}
           />
         </>
       )}
@@ -271,7 +272,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     position: 'absolute',
-    marginTop: Constants.statusBarHeight + 40,
+    marginTop: Constants.statusBarHeight,
     backgroundColor: WHITE,
   },
   searchBarText: {

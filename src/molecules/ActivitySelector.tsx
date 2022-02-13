@@ -73,8 +73,6 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
     }
   };
 
-  console.log('activity selector ' + route.params.currentUser);
-
   return (
     <View style={styles.activitySelector}>
       {activities.map((activity: { id: ActivityEnum; name: string }) => (

@@ -124,6 +124,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
     <Screen>
       <ScrollView style={styles.scrollContainer} stickyHeaderIndices={[1]}>
         <TopNavBar
+          stickyHeader={false}
           displayGroupify={false}
           targetScreen={'SelectorMenu'}
           title={'GROUPIFY IT'}
@@ -141,7 +142,7 @@ export const TakeoverSearch: React.FC<Props> = ({ navigation, route }: Props) =>
               }}
               testID={'searchForLocationSearchbar'}
               onSubmitEditing={() => {
-                navigateToPlanMap(placesUserWantsToGoQuery, navigation, route, tempUserLocation, tempUserLocationQuery);
+                navigateToPlanMap(placesUserWantsToGoQuery, navigation, route, tempUserLocationQuery, tempUserLocation);
               }}
               onPressIn={async () => {
                 setDataset(Dataset.SelectLocation);
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
   searchBar: {
     width: '100%',
     height: 45,
-    marginTop: 16,
+    marginTop: 8,
     paddingHorizontal: 20,
   },
   input: {
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
   },
   stickySearchContainer: {
     backgroundColor: WHITE,
-    paddingTop: Constants.statusBarHeight + 40,
+    paddingTop: Constants.statusBarHeight,
     // marginBottom: 60,
   },
   selectLocationSearchResults: {

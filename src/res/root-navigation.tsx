@@ -84,7 +84,6 @@ interface RootProps {
 
 const Stack = createStackNavigator();
 export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParams }: RootProps) => {
-  // console.log('Initial route: ' + initialRoute);
 
   return (
     <NavigationContainer
@@ -128,7 +127,12 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="ViewPlans" component={PlanIndex} options={{ headerShown: false }} />
         <Stack.Screen name="EditPlan" component={EditPlan} options={{ headerShown: false }} />
         <Stack.Screen name="ActivitySelector" component={OldActivitySelector} options={{ headerShown: false }} />
-        <Stack.Screen name="SelectorMenu" component={SelectorMenu} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="SelectorMenu"
+          component={SelectorMenu}
+          initialParams={initialParams}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="TakeoverSearch" component={TakeoverSearch} options={{ headerShown: false }} />
         <Stack.Screen name="ContactList" component={ContactList} options={{ headerShown: false }} />
         <Stack.Screen name="PlanSuccess" component={PlanSuccess} options={{ headerShown: false }} />

@@ -13,6 +13,7 @@ import { MapIcon } from './MapIcon';
 import { HandIcon } from './Hand';
 import { ContactIcon } from './ContactIcon';
 import { NavPlans } from './NavPlans';
+import { CalendarIcon } from './CalendarIcon';
 
 export {
   AnnounceIcon,
@@ -28,6 +29,5 @@ export {
   FavoriteIcon,
   MapIcon,
   HandIcon,
-  ContactIcon,
-  NavPlans,
+  CalendarIcon
 };
