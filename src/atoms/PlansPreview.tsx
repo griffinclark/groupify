@@ -3,9 +3,10 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-nati
 import { Plan, User } from '../models';
 import { PlanCard } from './planCard';
 import { NoPlansCard } from './NoPlansCard';
-import { TEAL_0, GRAY_DARK, WHITE } from '../res/styles/Colors';
+import { TEAL_0, GRAY_DARK, WHITE, GREY_6 } from '../res/styles/Colors';
 import { AllPlans } from '../res/root-navigation';
 import { UserLocation } from '../res/dataModels';
+import { JOST } from '../res/styles/Fonts';
 
 export interface Props {
   all: AllPlans;
@@ -89,25 +90,30 @@ export const PlansPreview: React.FC<Props> = ({ all, navigation, user, userLocat
 const styles = StyleSheet.create({
   selectedItem: {
     borderBottomWidth: 3,
-    paddingHorizontal: 8,
-    marginHorizontal: 8,
+    paddingHorizontal: 12,
+    marginHorizontal: 2,
   },
   // container: {
   //   marginTop: 5,
   // },
   scrollList: {
     backgroundColor: WHITE,
+    borderTopWidth: 2,
+    borderTopColor: GREY_6,
+    borderBottomWidth: 2,
+    borderBottomColor: GREY_6,
   },
   header: {
     padding: 4,
-    fontWeight: '600',
-    fontSize: 20,
-    marginLeft: 10,
+    fontFamily: JOST['500'],
+    fontSize: 16,
+    marginLeft: 20,
     marginVertical: 6,
+    lineHeight: 23.12,
   },
   buttonText: {
-    fontSize: 17,
-    fontWeight: '600',
-    paddingBottom: 5,
+    fontSize: 12,
+    fontFamily: JOST['500'],
+    paddingBottom: 8,
   },
 });

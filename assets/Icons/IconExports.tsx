@@ -11,6 +11,8 @@ import { SettingsCogIcon } from './SettingsCog';
 import { FavoriteIcon } from './Favorite';
 import { MapIcon } from './MapIcon';
 import { HandIcon } from './Hand';
+import { ContactIcon } from './ContactIcon';
+import { NavPlans } from './NavPlans';
 
 export {
   AnnounceIcon,
@@ -26,4 +28,6 @@ export {
   FavoriteIcon,
   MapIcon,
   HandIcon,
+  ContactIcon,
+  NavPlans,
 };

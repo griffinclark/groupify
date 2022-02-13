@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import { View, Text, ImageBackground, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { Plan, Invitee } from '../models';
 import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
 import { DataStore } from '@aws-amplify/datastore';
-import { TEAL_0, WHITE, GREY_3, BLACK } from '../res/styles/Colors';
+import { TEAL_0, WHITE, GREY_3, BLACK, GOLD_6, GREY_6 } from '../res/styles/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import { JOST } from '../res/styles/Fonts';
 
 interface Props {
   plan: Plan;
@@ -23,7 +25,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
 
   useEffect(() => {
     const loadCard = async () => {
-      getHost(plan.creatorID).then((name) => setHostName(name));
+      getHost(plan.creatorID).then((name: any) => setHostName(name));
       if (plan.placeID) {
         setPhotoURI(await loadPhoto(plan.placeID));
       }
@@ -34,7 +36,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
   }, [reload]);
 
   return (
-    <View>
+    <View style={{ borderBottomWidth: 4, borderBottomColor: GREY_6 }}>
       <ImageBackground
         source={{ uri: photoURI ? photoURI : 'https://cdn.pixabay.com/photo/2021/12/07/21/17/sheep-6854087__340.jpg' }}
         resizeMode="cover"
@@ -47,20 +49,11 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
           activeOpacity={0.8}
           style={styles.card}
         >
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginHorizontal: 12,
-            }}
-          >
+          <View style={styles.cardContainer}>
             <View>
-              <Text style={{ fontSize: 19, color: '#C3982C', fontWeight: '500' }}>
-                {plan.date && formatDayOfWeekDate(plan.date)}
-              </Text>
+              <Text style={styles.date}>{plan.date && formatDayOfWeekDate(plan.date)}</Text>
               <Text style={styles.title}>
-                {plan.title.length > 20 ? plan.title.substring(0, 19) + '...' : plan.title}
+                {plan.title.length > 16 ? plan.title.substring(0, 15) + '...' : plan.title}
               </Text>
               <Text style={styles.hostName}>{hostName}</Text>
             </View>
@@ -74,8 +67,15 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
             </View>
           </View>
           <View style={styles.invitedContainer}>
-            <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL_0} />
-            <Text style={styles.invitedText}>{invitees?.length} Invited</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL_0} />
+              <Text style={styles.invitedText}>{invitees?.length} Invited</Text>
+            </View>
+            <View>
+              <Text numberOfLines={1} style={styles.invitedText}>
+                {plan.location.length > 15 ? plan.location?.substring(0, 14) + '...' : plan.location}
+              </Text>
+            </View>
           </View>
         </TouchableOpacity>
       </ImageBackground>
@@ -85,44 +85,48 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation }: Props) => 
 
 const styles = StyleSheet.create({
   containerText: {
-    marginHorizontal: 8,
-    marginTop: 18,
-    fontSize: 22,
-    fontWeight: '600',
+    marginLeft: 16,
+    fontSize: 16,
+    fontFamily: JOST['500'],
     color: BLACK,
+    marginTop: 18,
+    marginBottom: 12,
   },
   image: {
-    width: 120,
-    height: 110,
-    borderRadius: 7,
+    width: 115,
+    height: 95,
+    borderRadius: 5,
     marginTop: 5,
   },
   title: {
-    fontWeight: '600',
-    fontSize: 24,
-    marginVertical: 8,
+    fontFamily: JOST['400'],
+    fontSize: 20,
+    marginVertical: 6,
+    lineHeight: 28,
   },
   hostName: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 16,
+    fontFamily: JOST['400'],
     color: GREY_3,
+    lineHeight: 23.12,
   },
   invitedContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 10,
+    justifyContent: 'space-between',
   },
   invitedText: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: 16,
     color: GREY_3,
+    marginLeft: 4,
+    fontFamily: JOST['400'],
   },
   card: {
     backgroundColor: WHITE,
-    marginHorizontal: 6,
-    paddingVertical: 8,
-    borderRadius: 15,
-    marginTop: 8,
+    marginHorizontal: 15,
+    paddingVertical: 4,
+    borderRadius: 5,
   },
   gradientStyle: {
     position: 'absolute',
@@ -132,7 +136,19 @@ const styles = StyleSheet.create({
     height: 240,
   },
   imgBackground: {
-    height: 240,
+    height: 200,
     width: '100%',
+  },
+  cardContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: 12,
+  },
+  date: {
+    fontSize: 16,
+    color: GOLD_6,
+    fontFamily: JOST['400'],
+    lineHeight: 23.12,
   },
 });

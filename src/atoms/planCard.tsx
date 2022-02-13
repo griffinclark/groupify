@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
@@ -5,7 +6,8 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Invitee, Plan } from '../models';
 import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
 import { Entypo, AntDesign } from '@expo/vector-icons';
-import { WHITE, GOLD, GREY_3, GREEN, TEAL } from '../res/styles/Colors';
+import { WHITE, GREY_3, GREY_9, TEAL_0, GOLD_6, TEAL_7 } from '../res/styles/Colors';
+import { JOST } from '../res/styles/Fonts';
 
 export interface Props {
   title: string;
@@ -36,7 +38,7 @@ export const PlanCard = ({
 }: Props) => {
   const [invitees, setInvitees] = useState<Invitee[]>([]);
   const [photoURI, setPhotoURI] = useState('');
-  const [hostName, setHostName] = useState('');
+  const [hostName, setHostName] = useState<string | undefined>('');
 
   useEffect(() => {
     const loadCard = async () => {
@@ -53,56 +55,68 @@ export const PlanCard = ({
   }, []);
 
   return (
-    <TouchableOpacity onPress={() => navigation.push('PlanDetails', { plan: plan })} style={styles.container}>
-      <View style={styles.textContainer}>
-        <View>
-          <Text style={styles.date}>{date && formatDayOfWeekDate(date)}</Text>
-          <Text numberOfLines={1} style={styles.title}>
-            {title.length > 20 ? title.substring(0, 19) + '...' : title}
-          </Text>
-          {creator ? (
-            <View style={styles.creatorContainer}>
-              <Text style={styles.creatorText}>You are hosting this plan</Text>
-            </View>
-          ) : (
-            <View>
-              <Text style={styles.hostName}>{hostName}</Text>
-            </View>
-          )}
-        </View>
+    <View style={styles.viewContainer}>
+      <TouchableOpacity onPress={() => navigation.push('PlanDetails', { plan: plan })} style={styles.container}>
+        <View style={styles.textContainer}>
+          <View>
+            <Text style={styles.date}>{date && formatDayOfWeekDate(date)}</Text>
+            <Text numberOfLines={1} style={styles.title}>
+              {title.length > 16 ? title.substring(0, 15) + '...' : title}
+            </Text>
+            {creator ? (
+              <View style={styles.creatorContainer}>
+                <Text style={styles.creatorText}>You are hosting this plan</Text>
+              </View>
+            ) : (
+              <View>
+                <Text style={styles.hostName}>{hostName}</Text>
+              </View>
+            )}
+          </View>
 
-        <View>
-          <Image
-            source={{
-              uri: photoURI ? photoURI : 'https://cdn.pixabay.com/photo/2021/01/29/08/10/musician-5960112__340.jpg',
-            }}
-            style={styles.image}
-          />
+          <View>
+            {photoURI ? (
+              <Image
+                source={{
+                  uri: photoURI,
+                }}
+                style={styles.image}
+              />
+            ) : (
+              <Image source={require('../../assets/Vector.png')} style={styles.image} />
+            )}
+          </View>
         </View>
-      </View>
-      <View style={styles.invited}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {invited
-            ? <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL} /> ||
-              (!creator && <AntDesign name="question" size={24} color="red" />)
-            : null}
-          <Text style={styles.invitedText}>{invitees.length} Invited</Text>
+        <View style={styles.invited}>
+          <View style={styles.invitedContainer}>
+            {invited
+              ? <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL_0} /> ||
+                (!creator && <AntDesign name="question" size={24} color="red" />)
+              : null}
+            <Text style={styles.invitedText}>{invitees.length} Invited</Text>
+          </View>
+          <View>
+            <Text numberOfLines={1} style={styles.invitedText}>
+              {location!.length > 18 ? location?.substring(0, 17) + '...' : location}
+            </Text>
+          </View>
         </View>
-        <View>
-          <Text numberOfLines={1} style={styles.invitedText}>
-            {location.length > 20 ? location?.substring(0, 19) + '...' : location}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  viewContainer: {
+    backgroundColor: WHITE,
+    borderBottomWidth: 1,
+    borderBottomColor: GREY_9,
+  },
   container: {
     backgroundColor: WHITE,
     marginTop: 2,
     paddingBottom: 9,
+    marginHorizontal: 7,
   },
   textContainer: {
     flexDirection: 'row',
@@ -111,21 +125,21 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
   },
   date: {
-    fontSize: 19,
-    fontWeight: '600',
-    color: GOLD,
-    marginBottom: 5,
+    fontSize: 16,
+    fontFamily: JOST['400'],
+    color: GOLD_6,
+    lineHeight: 24,
   },
   hostName: {
-    fontSize: 20,
-    fontWeight: '500',
+    fontSize: 18,
+    fontWeight: '400',
     color: GREY_3,
     paddingTop: 5,
   },
   image: {
-    width: 125,
-    height: 105,
-    borderRadius: 10,
+    width: 120,
+    height: 110,
+    borderRadius: 5,
     marginTop: 5,
   },
   invited: {
@@ -136,23 +150,32 @@ const styles = StyleSheet.create({
   },
 
   invitedText: {
-    fontSize: 18,
+    fontSize: 16,
     color: GREY_3,
     marginLeft: 4,
-    fontWeight: '500',
+    fontFamily: JOST['400'],
   },
   creatorContainer: {
-    backgroundColor: GREEN,
+    backgroundColor: TEAL_7,
     padding: 4,
     marginTop: 4,
-    borderRadius: 5,
+    borderRadius: 3,
   },
   creatorText: {
-    fontWeight: '500',
+    fontFamily: JOST['400'],
+    fontSize: 16,
+    lineHeight: 24,
+    paddingHorizontal: 10,
+    paddingVertical: 1,
   },
   title: {
-    fontSize: 24,
-    fontWeight: '400',
-    marginVertical: 5,
+    fontSize: 20,
+    fontFamily: JOST['400'],
+    marginVertical: 2,
+    lineHeight: 30,
+  },
+  invitedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

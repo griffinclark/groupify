@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { RoutePropParams } from '../res/root-navigation';
+// import { RoutePropParams } from '../res/root-navigation';
 import { GoogleLocation, UserLocation } from '../res/dataModels';
 import { User } from '../models';
 import { WHITE, TEAL_0 } from '../res/styles/Colors';
@@ -13,7 +13,7 @@ interface Props {
   };
   locations?: GoogleLocation[];
   userLocation: UserLocation;
-  route: RoutePropParams;
+  // route: RoutePropParams;
 }
 
 export const NoPlansCard: React.FC<Props> = ({ user, navigation, locations, userLocation }: Props) => {
@@ -49,24 +49,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: WHITE,
-    marginTop: 2,
     paddingBottom: 8,
   },
   text: {
-    fontSize: 24,
+    fontSize: 19,
     textAlign: 'center',
-    marginVertical: 22,
+    marginVertical: 16,
     fontWeight: '400',
+    lineHeight: 24,
   },
   button: {
     backgroundColor: TEAL_0,
-    paddingVertical: 10,
-    paddingHorizontal: 100,
-    borderRadius: 10,
+    width: 315,
+    height: 35,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
-    color: '#fff',
+    color: WHITE,
     fontWeight: '600',
-    fontSize: 22,
+    fontSize: 17,
+    lineHeight: 18,
   },
 });

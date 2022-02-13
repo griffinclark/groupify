@@ -19,6 +19,7 @@ export const GREY_5 = '#E0E0E0';
 export const GREY_6 = '#EEEEEE';
 export const GREY_7 = '#FAFAFA';
 export const GREY_8 = '#767676';
+export const GREY_9 = '#cccccc';
 export const RED = '#E71717';
 export const GREEN = '#cdffcd';
 export const MESSAGE_BLUE = '#007EF2';
@@ -34,6 +35,7 @@ export const GOLD_2 = '#D1AA5E';
 export const GOLD_0 = '#BE8C2C';
 export const GOLD_4 = '#7B5B24';
 export const GOLD_5 = '#483517';
+export const GOLD_6 = '#C3982C';
 
 //TEAL SCALE
 export const TEAL_0 = '#3F8A8D';

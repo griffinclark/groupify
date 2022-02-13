@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Contact } from '../res/dataModels';
-
+import { WHITE } from '../res/styles/Colors';
+import { JOST } from '../res/styles/Fonts';
 interface Props {
   isSelected: boolean;
   friend: Contact;
@@ -42,10 +43,13 @@ export const AddContactTile = ({ isSelected, friend, addUser, removeUser }: Prop
       <TouchableOpacity
         onPress={handleChange}
         activeOpacity={0.7}
-        style={[styles.button, { borderColor: !Selected ? '#31A59F' : '#767676' }]}
+        style={[
+          styles.button,
+          { borderColor: !Selected ? '#31A59F' : 'transparent', backgroundColor: !Selected ? '#fff' : '#31A59F' },
+        ]}
       >
-        <Text style={[styles.buttonText, { color: !Selected ? '#31A59F' : '#767676' }]}>
-          {Selected ? 'Added' : 'Add'}
+        <Text style={[styles.buttonText, { color: !Selected ? '#31A59F' : WHITE }]}>
+          {Selected ? 'Unfollow' : 'Follow'}
         </Text>
       </TouchableOpacity>
     </View>
@@ -64,14 +68,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingVertical: 8,
-    paddingHorizontal: 28,
+    paddingHorizontal: 15,
   },
   buttonText: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 13,
+    fontFamily: JOST['500'],
   },
   text: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: JOST['400'],
   },
 });

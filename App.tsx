@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useEffect, useState } from 'react';
 import { LogBox, Text, View } from 'react-native';
 import { globalStyles } from './src/res/styles/GlobalStyles';
@@ -5,7 +6,7 @@ import { RootNavigation } from './src/res/root-navigation';
 import { User } from './src/models';
 import awsconfig from './src/aws-exports';
 import { DataStore } from '@aws-amplify/datastore';
-import Amplify, { Auth, Hub } from 'aws-amplify';
+import Amplify, { Auth } from 'aws-amplify';
 import { getAllImportedContacts } from './src/res/storageFunctions';
 import { Contact } from './src/res/dataModels';
 import * as Notifications from 'expo-notifications';
@@ -22,7 +23,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export const App: React.FC = () => {
+export const App = () => {
   const [initalScreen, setInitialScreen] = useState('');
   const [userID, setUserID] = useState('');
   const [fontReady, setFontReady] = useState(false);
@@ -41,12 +42,7 @@ export const App: React.FC = () => {
   ]);
 
   useEffect(() => {
-    Hub.listen('auth', (event) => {
-      console.log('auth event', event);
-    });
-
     facebookInit();
-
     const checkAuth = async () => {
       try {
         await Auth.currentAuthenticatedUser();
@@ -69,7 +65,6 @@ export const App: React.FC = () => {
         setInitialScreen('Welcome');
       }
     };
-
     checkAuth();
 
     const loadFonts = async () => {

@@ -2,9 +2,9 @@ import LocalizedStrings from 'react-localization';
 
 export const copy = new LocalizedStrings({
   en: {
-    leftNavButton: 'Notifications',
-    centerNavButton: 'Do Something',
-    rightNavButton: 'Profile',
+    leftNavButton: 'Plans',
+    centerNavButton: 'Groupify It',
+    rightNavButton: 'Contacts',
     acticitySelectorOrText: 'or',
     altrenateActivityText: 'Do something else',
     activitySelectorHelpButton: '?',
@@ -100,7 +100,7 @@ export const copy = new LocalizedStrings({
     previewPlan: 'Preview plan',
     addFriendsButtonTitle: 'Add Friends',
     submitBugReportButtonTitle: 'Submit Bug Report',
-    signUpButtonTitle: 'Sign Up',
+    signUpButtonTitle: 'Create Account',
     distanceMeasure: 'mi',
     createAPlanFriendsMessage:
       'Let’s get together before the semester is over! Bring food and a beverage of your choice. See you there!',
