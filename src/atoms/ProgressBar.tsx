@@ -2,7 +2,6 @@ import React, { FunctionComponent, useEffect } from 'react';
 import { Animated, StyleSheet, View, Dimensions } from 'react-native';
 import { TEAL_0, WHITE } from '../res/styles/Colors';
 
-
 export const ProgressBar: FunctionComponent = () => {
   const startWidth = React.useRef(new Animated.Value(0)).current;
   const { width } = Dimensions.get('screen');
