@@ -29,5 +29,7 @@ export {
   FavoriteIcon,
   MapIcon,
   HandIcon,
+  ContactIcon,
+  NavPlans,
   CalendarIcon,
 };

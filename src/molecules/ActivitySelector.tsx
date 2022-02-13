@@ -1,6 +1,6 @@
 import React from 'react';
 import { RoutePropParams } from '../res/root-navigation';
-import { GoogleLocation, NavigationProps, ActivityEnum } from './../res/dataModels';
+import { GoogleLocation, NavigationProps, ActivityEnum, UserLocation } from './../res/dataModels';
 import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import { AppText } from '../atoms/AppText';
 import { GREY_6, WHITE } from '../res/styles/Colors';
@@ -10,11 +10,12 @@ import { copy } from './../res/groupifyCopy';
 interface Props {
   navigation: NavigationProps;
   route: RoutePropParams;
+  userLocation: UserLocation;
   setPlacesUserWantsToGo?: () => GoogleLocation[];
 }
 
 // Stored as 2d array to make it really easy to edit where options show up in the activity selector
-export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) => {
+export const ActivitySelector: React.FC<Props> = ({ navigation, route, userLocation }: Props) => {
   const activities = [
     {
       id: ActivityEnum.Happening,
@@ -78,7 +79,7 @@ export const ActivitySelector: React.FC<Props> = ({ navigation, route }: Props) 
       {activities.map((activity: { id: ActivityEnum; name: string }) => (
         <TouchableOpacity
           onPress={async () => {
-            navigateToPlanMap(activity.id, navigation, route, route.params.userLocation, 'Current Location');
+            navigateToPlanMap(activity.id, navigation, route, 'Current Location', userLocation);
           }}
           testID={activity.id}
           key={activity.id}

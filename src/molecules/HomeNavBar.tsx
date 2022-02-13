@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { GREY_1, WHITE } from '../res/styles/Colors';
 import { User } from '../models';
 import { AppText } from '../atoms/AppText';
-import { CreatePlanIcon, CalendarIcon } from '../../assets/Icons/IconExports';
+import { CreatePlanIcon, CalendarIcon, ContactIcon } from '../../assets/Icons/IconExports';
 import { copy } from '../res/groupifyCopy';
 import { NavButtonEnum, UserLocation, NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
@@ -27,6 +27,10 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
       id: NavButtonEnum.Plans,
       name: copy.plansButton,
     },
+    {
+      id: NavButtonEnum.Contacts,
+      name: copy.contactButton,
+    },
     // {
     //   id: NavButtonEnum.Friends,
     //   name: copy.friendsButton,
@@ -46,6 +50,9 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
           break;
         case copy.plansButton:
           screen = 'Home';
+          break;
+        case copy.contactButton:
+          screen = 'ContactList';
           break;
         // case copy.friendsButton:
         //   screen = 'ImportContacts';
@@ -69,6 +76,8 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
     switch (id) {
       case copy.groupifyItButton:
         return <CreatePlanIcon width={21} height={21} />;
+      case copy.contactButton:
+        return <ContactIcon />;
       default:
         return <CalendarIcon width={21} height={21} />;
     }
@@ -87,6 +96,7 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
             style={{ alignItems: 'center' }}
           >
             {getIcon(button.id)}
+
             <AppText
               style={{
                 color: WHITE,
@@ -112,9 +122,10 @@ const styles = StyleSheet.create({
     // height: 80,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     backgroundColor: GREY_1,
     paddingVertical: 10,
+    paddingHorizontal: 40,
   },
   text: {
     fontSize: 13,

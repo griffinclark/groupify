@@ -13,6 +13,7 @@ import * as Notifications from 'expo-notifications';
 import { facebookInit } from './src/res/facebookTracking';
 import * as Font from 'expo-font';
 import { Jost_400Regular, Jost_500Medium, Jost_600SemiBold, Jost_700Bold } from '@expo-google-fonts/jost';
+import { getCurrentUser } from './src/res/utilFunctions';
 
 Amplify.configure(awsconfig);
 
@@ -48,15 +49,13 @@ export const App = () => {
     const checkAuth = async () => {
       try {
         await Auth.currentAuthenticatedUser();
+        console.log('user is signed in');
         // const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
 
         const userQuery = await DataStore.query(User);
-        const userd = userQuery.map((user) => user);
+        const userd = userQuery.map((user) => user.id);
 
-        setUserID(userd[0].id);
-
-        setCurrentUser(userd[0]);
-
+        setUserID(userd[0]);
         const contacts: Contact[] = await getAllImportedContacts();
         if (contacts.length === 0) {
           setInitialScreen('ImportContactDetails');
@@ -70,7 +69,7 @@ export const App = () => {
       }
     };
 
-    checkAuth();
+    checkAuth().then(async () => setCurrentUser(await getCurrentUser()));
 
     const loadFonts = async () => {
       await Font.loadAsync({
@@ -87,8 +86,8 @@ export const App = () => {
   return (
     <View style={globalStyles.defaultRootContainer}>
       {initalScreen == '' && !fontReady && <Text>Loading...</Text>}
-      {initalScreen != '' && fontReady && (currentUser || initalScreen == 'Welcome') && (
-        <RootNavigation initialRoute={initalScreen} initialParams={{ userID: userID }} />
+      {initalScreen != '' && fontReady && currentUser && (
+        <RootNavigation initialRoute={initalScreen} initialParams={{ userID: userID, currentUser: currentUser }} />
       )}
     </View>
   );

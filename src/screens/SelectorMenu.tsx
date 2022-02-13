@@ -113,7 +113,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           </View>
         )}
 
-        <ActivitySelector route={route} navigation={navigation} />
+        <ActivitySelector route={route} navigation={navigation} userLocation={userLocation} />
 
         <View style={styles.locationSuggestions}>
           {featuredLocations.length > 0 ? (

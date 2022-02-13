@@ -117,6 +117,7 @@ export enum NavButtonEnum {
   Plans = 'Plans',
   Friends = 'Friends',
   Notifications = 'Notifications',
+  Contacts = 'Contacts',
 }
 
 export enum LoadingState {
