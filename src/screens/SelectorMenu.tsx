@@ -47,12 +47,15 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     const randomKey = randomEnumKey(ActivityEnum);
 
     const buildFeatureLocations = async () => {
-      setFeaturedLocations(
-        await googlePlacesQuery(ActivityEnum[randomKey], userLocation, GooglePlacesQueryOptions.Activity),
-      );
+      if(userLocation) {
+        setFeaturedLocations(
+          await googlePlacesQuery(ActivityEnum[randomKey], userLocation, GooglePlacesQueryOptions.Activity),
+        );
+      }
+      
     };
 
-    if (userLocation) buildFeatureLocations();
+    buildFeatureLocations();
   }, [userLocation]);
 
   const handleScrollView = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -127,15 +130,9 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           )}
         </View>
       </ScrollView>
-
-      <HomeNavBar
-        locations={[]}
-        user={route.params.currentUser}
-        navigation={navigation}
-        userPlans={[]}
-        invitedPlans={[]}
-        route={route}
-      />
+      {userLocation && (
+        <HomeNavBar user={route.params.currentUser} navigation={navigation} route={route} userLocation={userLocation} />
+      )}
     </Screen>
   );
 };

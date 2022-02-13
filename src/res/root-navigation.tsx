@@ -84,7 +84,6 @@ interface RootProps {
 
 const Stack = createStackNavigator();
 export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParams }: RootProps) => {
-
   return (
     <NavigationContainer
       onReady={async () => {

@@ -27,5 +27,5 @@ export {
   FavoriteIcon,
   MapIcon,
   HandIcon,
-  CalendarIcon
+  CalendarIcon,
 };
