@@ -1,78 +1,116 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { GREY_1, WHITE } from '../res/styles/Colors';
-import { User, Plan } from '../models';
+import { User } from '../models';
 import { AppText } from '../atoms/AppText';
-import { AnnounceIcon, SettingsIcon, CreatePlanIcon } from '../../assets/Icons/IconExports';
+import { CreatePlanIcon, CalendarIcon, ContactIcon } from '../../assets/Icons/IconExports';
 import { copy } from '../res/groupifyCopy';
-import { GoogleLocation } from '../res/dataModels';
+import { NavButtonEnum, UserLocation, NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
+import { JOST } from '../res/styles/Fonts';
 
 interface Props {
   route: RoutePropParams;
   user?: User;
   style?: Record<string, unknown>;
-  invitedPlans: Plan[];
-  locations?: GoogleLocation[];
-  userPlans: Plan[];
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    push: (ev: string, {}) => void;
-  };
+  navigation: NavigationProps;
+  userLocation: UserLocation;
 }
 
-export const HomeNavBar: React.FC<Props> = ({
-  route,
-  user,
-  style,
-  userPlans,
-  invitedPlans,
-  navigation,
-  locations,
-}: Props) => {
+export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, userLocation }: Props) => {
+  const buttons = [
+    {
+      id: NavButtonEnum.GroupifyIt,
+      name: copy.groupifyItButton,
+    },
+    {
+      id: NavButtonEnum.Plans,
+      name: copy.plansButton,
+    },
+    {
+      id: NavButtonEnum.Contacts,
+      name: copy.contactButton,
+    },
+    // {
+    //   id: NavButtonEnum.Friends,
+    //   name: copy.friendsButton,
+    // },
+    // {
+    //   id: NavButtonEnum.Notifications,
+    //   name: copy.notificationsButton,
+    // },
+  ];
+
+  const navigateToScreen = async (target: string): Promise<void> => {
+    try {
+      let screen = '';
+      switch (target) {
+        case copy.groupifyItButton:
+          screen = 'SelectorMenu';
+          break;
+        case copy.plansButton:
+          screen = 'Home';
+          break;
+        case copy.contactButton:
+          screen = 'ContactList';
+          break;
+        // case copy.friendsButton:
+        //   screen = 'ImportContacts';
+        //   break;
+        // case copy.notificationsButton:
+        //   screen = 'Profile';
+        //   break;
+      }
+      navigation.navigate(screen, {
+        navigation: navigation,
+        route: route,
+        currentUser: user,
+        userLocation: userLocation,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getIcon = (id: NavButtonEnum) => {
+    switch (id) {
+      case copy.groupifyItButton:
+        return <CreatePlanIcon width={21} height={21} />;
+      case copy.contactButton:
+        return <ContactIcon />;
+      default:
+        return <CalendarIcon width={21} height={21} />;
+    }
+  };
+
   return (
     <View style={styles.navbar}>
       <View style={[styles.nav, style]}>
-        <TouchableOpacity
-          style={{ width: '33%' }}
-          onPress={() => {
-            navigation.navigate('ViewPlans', {});
-          }}
-        >
-          <AnnounceIcon />
-          <AppText style={styles.text}>{copy.leftNavButton}</AppText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '33%' }}
-          // onPress={() => {
-          //   navigation.push('ActivitySelector', { currentUser: user });
-          // }}
-          onPress={() => {
-            navigation.navigate('SelectorMenu', {
-              currentUser: user,
-              locations: locations, // TODO is this needed?
-              userLocation: route.params.userLocation,
-              data: {
-                activitySearchData: { tempUserLocation: route.params.userLocation },
-              },
-            });
-          }}
-        >
-          <CreatePlanIcon />
-          <AppText style={styles.text}>{copy.centerNavButton}</AppText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '33%' }}
-          onPress={() => {
-            navigation.navigate('Profile', {
-              currentUser: user,
-              currentUserPlan: userPlans[0] ? userPlans[0] : invitedPlans[0],
-            });
-          }}
-        >
-          <SettingsIcon />
-          <AppText style={styles.text}>{copy.rightNavButton}</AppText>
-        </TouchableOpacity>
+        {buttons.map((button: { id: NavButtonEnum; name: string }) => (
+          <TouchableOpacity
+            onPress={async () => {
+              navigateToScreen(button.id);
+            }}
+            testID={button.id}
+            key={button.id}
+            style={{ alignItems: 'center' }}
+          >
+            {getIcon(button.id)}
+
+            <AppText
+              style={{
+                color: WHITE,
+                fontFamily: JOST['700'],
+                fontSize: 11,
+                lineHeight: 16,
+                marginTop: 5,
+                textAlign: 'center',
+              }}
+            >
+              {button.name}
+            </AppText>
+          </TouchableOpacity>
+        ))}
       </View>
     </View>
   );
@@ -81,11 +119,13 @@ export const HomeNavBar: React.FC<Props> = ({
 const styles = StyleSheet.create({
   nav: {
     width: '100%',
-    height: 80,
+    // height: 80,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     backgroundColor: GREY_1,
+    paddingVertical: 10,
+    paddingHorizontal: 40,
   },
   text: {
     fontSize: 13,

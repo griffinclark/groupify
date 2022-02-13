@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator, Linking, Platform, Keyboard, Text } from 'react-native';
 import * as Contacts from 'expo-contacts';
-import { Contact } from '../res/dataModels';
+import { Contact, NavigationProps } from '../res/dataModels';
 import { FlatList } from 'react-native-gesture-handler';
 import { WHITE } from '../res/styles/Colors';
 import { deleteImportedContactFromID, getAllImportedContacts, storeImportedContact } from '../res/storageFunctions';
@@ -12,15 +12,12 @@ import { ContactTile } from '../molecules/MoleculesExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Analytics from 'expo-firebase-analytics';
-import { Header } from '../atoms/Header';
 import { User } from '../models';
 import { getCurrentUser } from '../res/utilFunctions';
+import { TopNavBar } from '../molecules/TopNavBar';
 
 interface Props {
-  navigation: {
-    navigate: (ev: string) => void;
-    goBack: () => void;
-  };
+  navigation: NavigationProps;
   route: RoutePropParams;
 }
 
@@ -30,7 +27,7 @@ enum State {
   Done,
 }
 
-export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => {
+export const ImportContactDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [addedContacts, setAddedContacts] = useState<Contact[]>([]);
@@ -124,7 +121,15 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation }: Props) => 
 
   return (
     <Screen style={{ backgroundColor: WHITE }}>
-      <Header navigation={navigation} />
+      <TopNavBar
+        stickyHeader={false}
+        navigation={navigation}
+        displayGroupify={true}
+        displayBackButton={true}
+        displaySettings={false}
+        route={route}
+        targetScreen={'SelectorMenu'}
+      />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <View style={styles.headerTextContainer}>

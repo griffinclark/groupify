@@ -3,13 +3,15 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
+  width?: number;
+  height?: number;
   onPress?: () => void;
 }
 
-export const CreatePlanIcon: React.FC<Props> = ({ onPress }: Props) => {
+export const CreatePlanIcon: React.FC<Props> = ({ onPress, width = 30, height = 30 }: Props) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Svg style={{ alignSelf: 'center' }} width="30" height="30" viewBox="0 0 32 32" fill="none">
+      <Svg style={{ alignSelf: 'center' }} width={width} height={height} viewBox="0 0 32 32" fill="none">
         <Path
           d="M16 25V7"
           stroke="white"

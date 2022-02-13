@@ -108,5 +108,6 @@ export const copy = new LocalizedStrings({
     plansButton: 'Plans',
     friendsButton: 'Friends',
     notificationsButton: 'Notifications',
+    contactButton: 'Contacts',
   },
 });

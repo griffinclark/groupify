@@ -36,28 +36,26 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   useEffect(() => {
-    // TODO @JONI do we want to be resetting one or both of these?
-    //setTempUserLocationQuery('');
-    //setPlacesUserWantsToGoQuery('');
-
-    const randomKey = randomEnumKey(ActivityEnum);
-
     const fetchUserLocation = async () => {
       setUserLocation(await getUserLocation());
     };
 
-    const buildFeatureLocations = async () => {
-      setFeaturedLocations(
-        await googlePlacesQuery(
-          ActivityEnum[randomKey],
-          route.params.data.activitySearchData.tempUserLocation,
-          GooglePlacesQueryOptions.Activity,
-        ),
-      );
-    };
     fetchUserLocation();
-    buildFeatureLocations();
   }, []);
+
+  useEffect(() => {
+    const randomKey = randomEnumKey(ActivityEnum);
+
+    const buildFeatureLocations = async () => {
+      if (userLocation) {
+        setFeaturedLocations(
+          await googlePlacesQuery(ActivityEnum[randomKey], userLocation, GooglePlacesQueryOptions.Activity),
+        );
+      }
+    };
+
+    buildFeatureLocations();
+  }, [userLocation]);
 
   const handleScrollView = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setScrollTop(e.nativeEvent.contentOffset.y > 300);
@@ -94,25 +92,28 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
         <View>
           <Image style={{ width: 'auto', height: 260 }} source={bgImage[bgImageIndex]} />
         </View>
+        {userLocation && (
+          <View style={[styles.searchBar, scrollTop ? { backgroundColor: WHITE } : {}]}>
+            <SearchbarWithoutFeedback
+              navigation={navigation}
+              route={route}
+              userLocation={userLocation}
+              icon={<MagnifyingGlassIcon />}
+              placeholderText="Search for food, parks, coffee, etc"
+              tempUserLocation={
+                route.params?.data?.activitySearchData?.tempUserLocation
+                  ? route.params.data.activitySearchData.tempUserLocation
+                  : userLocation
+              }
+              placesUserWantsToGoQuery={''}
+              tempUserLocationQuery={''}
+              mode={SearchbarDisplayMode.Query}
+              currentUser={route.params.currentUser}
+            />
+          </View>
+        )}
 
-        <View style={[styles.searchBar, scrollTop ? { backgroundColor: WHITE } : {}]}>
-          <SearchbarWithoutFeedback
-            navigation={navigation}
-            route={route}
-            userLocation={userLocation}
-            icon={<MagnifyingGlassIcon />}
-            placeholderText="Search for food, parks, coffee, etc"
-            tempUserLocation={
-              route.params?.data?.activitySearchData?.tempUserLocation
-                ? route.params.data.activitySearchData.tempUserLocation
-                : userLocation
-            }
-            placesUserWantsToGoQuery={''}
-            tempUserLocationQuery={''}
-            mode={SearchbarDisplayMode.Query}
-          />
-        </View>
-        <ActivitySelector route={route} navigation={navigation} />
+        <ActivitySelector route={route} navigation={navigation} userLocation={userLocation} />
 
         <View style={styles.locationSuggestions}>
           {featuredLocations.length > 0 ? (
@@ -128,15 +129,9 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
           )}
         </View>
       </ScrollView>
-
-      <HomeNavBar
-        locations={[]}
-        user={route.params.currentUser}
-        navigation={navigation}
-        userPlans={[]}
-        invitedPlans={[]}
-        route={route}
-      />
+      {userLocation && (
+        <HomeNavBar user={route.params.currentUser} navigation={navigation} route={route} userLocation={userLocation} />
+      )}
     </Screen>
   );
 };

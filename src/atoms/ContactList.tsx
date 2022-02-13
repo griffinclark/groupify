@@ -8,7 +8,7 @@ import { deleteImportedContactFromID, getAllImportedContacts, storeImportedConta
 import { Screen, SearchBar } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
-import { Header } from '../atoms/Header';
+import { TopNavBar } from '../molecules/TopNavBar';
 import { AddContactTile } from './AddContactTile';
 import { HomeNavBar } from '../molecules/HomeNavBar';
 import { JOST } from '../res/styles/Fonts';
@@ -109,7 +109,15 @@ export const ContactList = ({ navigation, route }: Props) => {
 
   return (
     <Screen>
-      <Header navigation={navigation} />
+      <TopNavBar
+        stickyHeader={false}
+        navigation={navigation}
+        displayGroupify={true}
+        displayBackButton={true}
+        displaySettings={true}
+        route={route}
+        targetScreen={'SelectorMenu'}
+      />
       <View style={{ marginLeft: 10, marginVertical: 25 }}>
         <Text style={{ fontSize: 16, fontFamily: JOST['500'], marginVertical: 5 }}>Your Friends</Text>
         <Text style={{ fontSize: 16, color: 'gray', fontFamily: JOST['400'], lineHeight: 23.12 }}>
@@ -128,12 +136,10 @@ export const ContactList = ({ navigation, route }: Props) => {
       </View>
 
       <HomeNavBar
-        locations={[]}
+        route={route}
         user={route.params.currentUser}
         navigation={navigation}
-        userPlans={[]}
-        invitedPlans={[]}
-        route={route}
+        userLocation={route.params.userLocation}
       />
     </Screen>
   );

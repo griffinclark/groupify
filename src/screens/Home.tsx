@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
-import { getCurrentUser, loadInviteeStatus, removePastPlans, addPastPlans } from './../res/utilFunctions';
+import { loadInviteeStatus, removePastPlans, addPastPlans } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { DataStore } from '@aws-amplify/datastore';
@@ -10,10 +10,8 @@ import { AllPlans } from '../res/root-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 import { PlansPreview } from '../atoms/PlansPreview';
 import { Banner } from '../atoms/Banner';
-import * as Location from 'expo-location';
 import { RoutePropParams } from '../res/root-navigation';
-import { LocationAccuracy } from 'expo-location';
-import { Header } from '../atoms/Header';
+import { TopNavBar } from '../molecules/TopNavBar';
 
 export interface Props {
   navigation: {
@@ -37,7 +35,7 @@ enum LoadingState {
 export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [createdPlans, setCreatedPlans] = useState<Plan[]>([]);
   const [acceptedPlans, setAcceptedPlans] = useState<Plan[]>([]);
-  const [currentUser, setCurrentUser] = useState<User>();
+  // const [currentUser, setCurrentUser] = useState<User>();
   const [trigger1, setTrigger1] = useState(false);
   const [trigger2, setTrigger2] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -45,17 +43,17 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [pastPlans, setPastPlans] = useState<Plan[]>([]);
   const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
   const [state, setState] = useState(LoadingState.Loading);
-  const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 }); // defaults to Los Angeles if user location is not provided and no place param
+  // const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 }); // defaults to Los Angeles if user location is not provided and no place param
 
-  useEffect(() => {
-    getUserLocation();
-  }, []);
+  // useEffect(() => {
+  //   getUserLocation();
+  // }, []);
 
   useEffect(() => {
     const awaitUser = async () => {
-      const user = await getCurrentUser();
-      setCurrentUser(user);
-      await loadPlans(user);
+      // const user = await getCurrentUser();
+      // setCurrentUser(user);
+      await loadPlans(route.params.currentUser);
       setTrigger2(!trigger2);
       setRefreshing(false);
       setState(LoadingState.Loaded);
@@ -63,33 +61,33 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     awaitUser();
   }, [trigger1]);
 
-  const getUserLocation = async () => {
-    const { status } = await Location.requestBackgroundPermissionsAsync();
+  // const getUserLocation = async () => {
+  //   const { status } = await Location.requestBackgroundPermissionsAsync();
 
-    if (status !== 'granted') {
-      console.log('Permission to access location was denied');
-    } else {
-      try {
-        let location = await Location.getLastKnownPositionAsync();
+  //   if (status !== 'granted') {
+  //     console.log('Permission to access location was denied');
+  //   } else {
+  //     try {
+  //       let location = await Location.getLastKnownPositionAsync();
 
-        if (location === null) {
-          location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
-        }
+  //       if (location === null) {
+  //         location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
+  //       }
 
-        setUserLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        });
+  //       setUserLocation({
+  //         latitude: location.coords.latitude,
+  //         longitude: location.coords.longitude,
+  //       });
 
-        route.params.userLocation = {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        };
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  };
+  //       route.params.userLocation = {
+  //         latitude: location.coords.latitude,
+  //         longitude: location.coords.longitude,
+  //       };
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   }
+  // };
 
   const onHomeRefresh = () => {
     setRefreshing(true);
@@ -152,7 +150,15 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       ) : (
         <>
-          <Header navigation={navigation} home={true} />
+          <TopNavBar
+            stickyHeader={false}
+            navigation={navigation}
+            displayGroupify={true}
+            displayBackButton={true}
+            displaySettings={true}
+            route={route}
+            targetScreen={'SelectorMenu'}
+          />
           <ScrollView
             showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}
@@ -165,8 +171,8 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
                 all={allPlans!}
                 reload={trigger2}
                 navigation={navigation}
-                user={currentUser!}
-                userLocation={userLocation}
+                user={route.params.currentUser!}
+                userLocation={route.params.userLocation}
               />
               <View style={{ height: 43 }} />
             </View>
@@ -175,11 +181,10 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       )}
 
       <HomeNavBar
-        user={currentUser}
+        user={route.params.currentUser}
         navigation={navigation}
-        userPlans={createdPlans}
-        invitedPlans={[...acceptedPlans, ...pendingPlans]}
         route={route}
+        userLocation={route.params.userLocation}
       />
     </Screen>
   );

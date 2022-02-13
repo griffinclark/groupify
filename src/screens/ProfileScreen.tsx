@@ -3,21 +3,28 @@
 import React from 'react';
 import { Auth, DataStore } from 'aws-amplify';
 import { View, Text, SafeAreaView, TouchableOpacity, Linking, StyleSheet } from 'react-native';
-import { Header } from '../atoms/Header';
 import { FontAwesome5, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { NavigationProps } from '../res/dataModels';
+import { RoutePropParams } from '../res/root-navigation';
+import { TopNavBar } from '../molecules/TopNavBar';
 
 interface Props {
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    push: (ev: any, {}) => void;
-    goBack: () => void;
-  };
+  navigation: NavigationProps;
+  route: RoutePropParams;
 }
 
-export const ProfileScreen = ({ navigation }: Props) => {
+export const ProfileScreen = ({ navigation, route }: Props) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <Header navigation={navigation} />
+      <TopNavBar
+        stickyHeader={false}
+        navigation={navigation}
+        displayGroupify={true}
+        displayBackButton={true}
+        displaySettings={false}
+        route={route}
+        targetScreen={'Home'}
+      />
       <Text style={{ fontSize: 20, fontWeight: '500', padding: 15 }}>Settings</Text>
       <View style={styles.notification}>
         <Text style={styles.text1}>Notifications</Text>
