@@ -39,7 +39,6 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
   const [currentSelectedLocation, setCurrentSelectedLocation] = useState<GoogleLocation | undefined>(selectedLocation);
 
   const [showPlanDetails, setShowPlanDetails] = useState(false);
-  const [fullHeight, setFullHeight] = useState(true);
 
   useEffect(() => {
     selectLocation(selectedLocation);
@@ -66,12 +65,6 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
       draggableRange={{ top: slideUpMenuHeight, bottom: slideUpMenuBottom }}
       backdropOpacity={0}
       allowDragging={allowDragging}
-      onBottomReached={() => {
-        setFullHeight(true);
-      }}
-      onDragEnd={() => {
-        setFullHeight(false);
-      }}
     >
       <View style={styles.slideUpMenuRootContainer}>
         <View style={styles.slideUpPanelIcon}></View>
@@ -80,7 +73,6 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
           onTouchStart={() => setAllowDragging(false)}
           onTouchEnd={() => setAllowDragging(true)}
           onTouchCancel={() => setAllowDragging(true)}
-          scrollEnabled={fullHeight ? false : true}
         >
           {currentSelectedLocation && showPlanDetails ? (
             <LocationDetails
