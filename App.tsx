@@ -13,6 +13,7 @@ import * as Notifications from 'expo-notifications';
 import { facebookInit } from './src/res/facebookTracking';
 import * as Font from 'expo-font';
 import { Jost_400Regular, Jost_500Medium, Jost_600SemiBold, Jost_700Bold } from '@expo-google-fonts/jost';
+// import { getCurrentUser } from './src/res/utilFunctions';
 
 Amplify.configure(awsconfig);
 
@@ -49,15 +50,20 @@ export const App = () => {
       try {
         await Auth.currentAuthenticatedUser();
         console.log('user is signed in');
-        // const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
+        const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
+
+        // const user = await getCurrentUser();
 
         const userQuery = await DataStore.query(User);
 
-        const userd = userQuery.map((user) => user);
+        // const userd = userQuery.map((user) => user.id);
+        const user = userQuery.filter((user) => user.phoneNumber === phoneNumber);
 
-        setUserID(userd[0].id);
+        // console.log(user[0]);
+        // console.log(user);
 
-        setCurrentUser(userd[0]);
+        setUserID(user[0].id);
+        setCurrentUser(user[0]);
 
         const contacts: Contact[] = await getAllImportedContacts();
         if (contacts.length === 0) {
