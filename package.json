@@ -100,6 +100,7 @@
     "react-localization": "^1.0.17",
     "react-native": "0.64.3",
     "react-native-check-box": "^2.1.7",
+    "react-native-confirmation-code-field": "^7.3.0",
     "react-native-confirmation-code-input": "^1.0.4",
     "react-native-contacts": "^6.0.5",
     "react-native-date-picker": "^3.3.2",

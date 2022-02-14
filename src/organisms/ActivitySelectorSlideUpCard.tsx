@@ -136,8 +136,8 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   slideUpPanelIcon: {
-    height: 5,
-    width: 64,
+    height: 8,
+    width: 66,
     backgroundColor: GREY_6,
     position: 'absolute',
     top: 16,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { GOLD_0, GREY_5 } from '../res/styles/Colors';
+import { GREY_5, GREY_9 } from '../res/styles/Colors';
 import { AppText } from './AppText';
 
 interface Props {
@@ -43,7 +43,7 @@ export const FormInput: React.FC<Props> = ({
             submit(label);
           }
         }}
-        style={[styles.input, { borderColor: focus ? GOLD_0 : GREY_5 }]}
+        style={[styles.input, { borderColor: focus ? GREY_5 : GREY_9 }]}
         placeholder={placeholder}
         onChangeText={onChangeText}
         onBlur={() => setFocus(false)}
