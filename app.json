@@ -1,9 +1,9 @@
 {
   "expo": {
     "name": "Groupify",
-    "icon": "./assets/groupify_icon_official.png",
+    "icon": "./assets/appstore.png",
     "slug": "groupify",
-    "version": "1.5.6",
+    "version": "1.6",
     "orientation": "portrait",
     "facebookAppId": "693164164986653",
     "facebookDisplayName": "Munchkin Labs",
@@ -26,7 +26,7 @@
         "NSLocationWhenInUseUsageDescription": "Accessing your location will allow you to view places near you.",
         "NSUserTrackingUsageDescription": "Tracking your app activity helps us understand how you use Groupify so we can develop new features, improve our messaging, and create a better user experience. Allow access to help us make getting together with your friends as easy as possible."
       },
-      "buildNumber": "1.5.5",
+      "buildNumber": "1.6",
       "config": {
         "googleMapsApiKey": "AIzaSyChCbEsnEsDQ3qJklY72r9PSTNMuRnY7Rw"
       },
