@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, View, Text } from 'react-native';
+import { ImageBackground, View, Text, StyleSheet, Image } from 'react-native';
 import { Button } from '../atoms/Button';
 import { copy } from '../res/groupifyCopy';
 import { TEAL_0, WHITE } from '../res/styles/Colors';
@@ -18,6 +18,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
       source={require('../../assets/SplashImage.png')}
       testID="WelcomeScreen"
     >
+      <Image style={styles.logo} source={require('../../assets/newSplashIcon.png')} />
       <View style={{ flex: 1, position: 'absolute', bottom: 50, justifyContent: 'center', alignSelf: 'center' }}>
         <Button
           textStyle={{
@@ -70,3 +71,14 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
     </ImageBackground>
   );
 };
+
+const styles = StyleSheet.create({
+  logo: {
+    alignSelf: 'center',
+    width: '80%',
+    height: 95,
+    marginTop: 45,
+    marginHorizontal: 38,
+    resizeMode: 'contain',
+  },
+});

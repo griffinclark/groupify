@@ -154,7 +154,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
             stickyHeader={false}
             navigation={navigation}
             displayGroupify={true}
-            displayBackButton={true}
+            displayBackButton={false}
             displaySettings={true}
             route={route}
             targetScreen={'SelectorMenu'}

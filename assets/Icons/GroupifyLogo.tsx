@@ -7,7 +7,7 @@ import Svg, { ClipPath, Defs, G, Path } from 'react-native-svg';
 
 export const GroupifyLogo: React.FC = () => {
   return (
-    <Svg width="120" height="30" fill="none" viewBox="0 0 107 24">
+    <Svg width="120" height="30" fill="none" viewBox="0 0 109 24">
       <G clipPath="url(#clip0_1049_8114)">
         <Path
           fill="#3F8A8D"

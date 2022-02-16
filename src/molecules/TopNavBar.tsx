@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { AppText } from '../atoms/AppText';
@@ -9,6 +9,7 @@ import { GREY_4, WHITE } from '../res/styles/Colors';
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
 import { JOST } from '../res/styles/Fonts';
+import { GroupifyLogo } from '../../assets/Icons/GroupifyLogo';
 
 interface Props {
   title?: string;
@@ -50,7 +51,9 @@ export const TopNavBar: React.FC<Props> = ({
       )}
 
       {displayGroupify ? (
-        <Image source={require('../../assets/Splash_Logo.png')} style={styles.navbarLogo} />
+        <View style={{ marginTop: -10 }}>
+          <GroupifyLogo />
+        </View>
       ) : (
         <AppText style={styles.title}>{title}</AppText>
       )}
