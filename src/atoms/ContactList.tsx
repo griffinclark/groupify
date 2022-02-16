@@ -112,8 +112,9 @@ export const ContactList = ({ navigation, route }: Props) => {
       <TopNavBar
         stickyHeader={false}
         navigation={navigation}
-        displayGroupify={true}
-        displayBackButton={true}
+        displayGroupify={false}
+        title={'Friends'}
+        displayBackButton={false}
         displaySettings={true}
         route={route}
         targetScreen={'SelectorMenu'}
