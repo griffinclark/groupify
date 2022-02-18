@@ -49,7 +49,7 @@ export const AddContactTile = ({ isSelected, friend, addUser, removeUser }: Prop
         ]}
       >
         <Text style={[styles.buttonText, { color: !Selected ? '#31A59F' : WHITE }]}>
-          {Selected ? 'Unfollow' : 'Follow'}
+          {Selected ? 'Invited' : 'Invite'}
         </Text>
       </TouchableOpacity>
     </View>

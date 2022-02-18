@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
-import { loadInviteeStatus, removePastPlans, addPastPlans } from './../res/utilFunctions';
+import { loadInviteeStatus, removePastPlans, addPastPlans, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { DataStore } from '@aws-amplify/datastore';
@@ -134,11 +134,11 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     setPastPlans(pastPlan);
 
     setAllPlans({
-      all: [...createdPlans, ...pending, ...accepted],
-      created: createdPlans,
-      pending: pendingPlans,
-      accepted: acceptedPlans,
-      past: pastPlans,
+      all: sortPlansByDate([...createdPlans, ...pending, ...accepted]),
+      created: sortPlansByDate(createdPlans),
+      pending: sortPlansByDate(pendingPlans),
+      accepted: sortPlansByDate(acceptedPlans),
+      past: sortPlansByDate(pastPlans),
     });
   };
 
@@ -165,7 +165,12 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
           >
             <View>
               {acceptedPlans.length > 0 || createdPlans.length > 0 ? (
-                <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />
+                <Banner
+                  route={route}
+                  reload={trigger2}
+                  navigation={navigation}
+                  plan={acceptedPlans[0] || createdPlans[0]}
+                />
               ) : null}
               <PlansPreview
                 all={allPlans!}
@@ -173,6 +178,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
                 navigation={navigation}
                 user={route.params.currentUser!}
                 userLocation={route.params.userLocation}
+                route={route}
               />
               <View style={{ height: 43 }} />
             </View>
