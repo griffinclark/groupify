@@ -10,6 +10,7 @@ import { TEAL_0, WHITE, GREY_3, BLACK, GOLD_6, GREY_6, TEAL_7 } from '../res/sty
 import { LinearGradient } from 'expo-linear-gradient';
 import { JOST } from '../res/styles/Fonts';
 import { RoutePropParams } from '../res/root-navigation';
+import { copy } from '../res/groupifyCopy';
 
 interface Props {
   plan: Plan;
@@ -71,7 +72,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation, route }: Pro
         style={styles.imgBackground}
       >
         <LinearGradient colors={['rgba(180, 180, 180, 0.9)', 'rgba(22,22,22,0.5)']} style={styles.gradientStyle} />
-        <Text style={styles.containerText}>Your Next Event</Text>
+        <Text style={styles.containerText}>{copy.nextEvent}</Text>
         <TouchableOpacity
           onPress={() => navigation.push('PlanDetails', { plan: plan })}
           activeOpacity={0.8}
@@ -85,7 +86,7 @@ export const Banner: React.FC<Props> = ({ plan, reload, navigation, route }: Pro
               </Text>
               {userIsInvited ? (
                 <View style={styles.creatorContainer}>
-                  <Text style={styles.creatorText}>You are hosting this plan</Text>
+                  <Text style={styles.creatorText}>{copy.planHost}</Text>
                 </View>
               ) : (
                 <View>

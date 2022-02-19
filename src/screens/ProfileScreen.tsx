@@ -9,6 +9,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { JOST } from '../res/styles/Fonts';
 import { GREY_8, GREY_9, TEAL_8, WHITE } from '../res/styles/Colors';
+import { copy } from '../res/groupifyCopy';
 
 interface Props {
   navigation: NavigationProps;
@@ -27,10 +28,10 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
         route={route}
         targetScreen={'Home'}
       />
-      <Text style={styles.settings}>Settings</Text>
+      <Text style={styles.settings}>{copy.settings}</Text>
       <View style={styles.notification}>
-        <Text style={styles.text1}>Notifications</Text>
-        <Text style={styles.notificationBtn}>coming soon!</Text>
+        <Text style={styles.text1}>{copy.notifications}</Text>
+        <Text style={styles.notificationBtn}>{copy.comingSoon}</Text>
       </View>
       <View style={styles.section}>
         <TouchableOpacity
@@ -38,11 +39,11 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
           style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 24 }}
         >
           <FontAwesome5 style={{ marginRight: 10 }} name="user" size={16} color={GREY_8} />
-          <Text style={styles.text1}>Edit Friends List</Text>
+          <Text style={styles.text1}>{copy.friendsList}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => Linking.openURL('https://forms.gle/ysqh1hg5NhisEAcM7')} style={styles.button}>
           <MaterialIcons style={{ marginRight: 5 }} name="bug-report" size={22} color={GREY_8} />
-          <Text style={styles.text1}>Submit Bug Report</Text>
+          <Text style={styles.text1}>{copy.bugReport}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.section}>
@@ -51,7 +52,7 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
           style={styles.button}
         >
           <MaterialIcons style={{ marginRight: 10 }} name="lock-open" size={20} color={GREY_8} />
-          <Text style={styles.text1}>Reset Password</Text>
+          <Text style={styles.text1}>{copy.resetPassword}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={async () => {
@@ -70,7 +71,7 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
           style={styles.button}
         >
           <SimpleLineIcons style={{ marginRight: 10 }} name="logout" size={18} color={GREY_8} />
-          <Text style={styles.text1}>Logout</Text>
+          <Text style={styles.text1}>{copy.logout}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

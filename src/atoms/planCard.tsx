@@ -48,13 +48,13 @@ export const PlanCard = ({
   useEffect(() => {
     const loadCard = async () => {
       getHost(creatorId).then((host) => {
-        if (host === route.params.currentUser.name) {
-          setUserIsInvited(true);
-        }
         setHostName(host);
       });
       if (placeId) {
         setPhotoURI(await loadPhoto(placeId));
+      }
+      if (creatorId === route.params.currentUser.id) {
+        setUserIsInvited(true);
       }
       const allInvitees = await DataStore.query(Invitee);
       const invitees = allInvitees.filter((invitee) => invitee.plan?.id === planId);
