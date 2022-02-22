@@ -12,7 +12,7 @@ import { PlansPreview } from '../atoms/PlansPreview';
 import { Banner } from '../atoms/Banner';
 import { RoutePropParams } from '../res/root-navigation';
 import { TopNavBar } from '../molecules/TopNavBar';
-
+import { AppText } from '../atoms/AppText';
 export interface Props {
   navigation: {
     CreateAccount: {
@@ -175,6 +175,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
                 userLocation={route.params.userLocation}
               />
               <View style={{ height: 43 }} />
+              <AppText>{route.params.currentUser.id}</AppText>
             </View>
           </ScrollView>
         </>

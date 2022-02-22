@@ -125,6 +125,11 @@ export const globalStyles = StyleSheet.create({
     fontFamily: JOST['400'],
     lineHeight: 24,
   },
+  bodyLarge: {
+    fontSize: 20,
+    fontFamily: JOST['400'],
+    lineHeight: 29,
+  },
   textH3: {
     fontSize: 16,
     fontFamily: JOST['500'],
