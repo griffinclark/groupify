@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { GREY_5, GREY_9 } from '../res/styles/Colors';
+import { GREY_3, GREY_5, GREY_9 } from '../res/styles/Colors';
 import { AppText } from './AppText';
 import { JOST } from '../res/styles/Fonts';
 
@@ -51,6 +51,7 @@ export const FormInput: React.FC<Props> = ({
         secureTextEntry={secureTextEntry}
         onFocus={() => setFocus(true)}
         maxFontSizeMultiplier={maxFontSizeMultiplier}
+        placeholderTextColor={GREY_3}
       />
     </View>
   );
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 5,
     borderWidth: 1,
-    fontFamily: JOST['500'],
+    fontFamily: JOST['400'],
     fontSize: 20,
   },
 });

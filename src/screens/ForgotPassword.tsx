@@ -1,21 +1,21 @@
 import { Auth } from 'aws-amplify';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import React, { useEffect, useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, View, StyleSheet } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, View, StyleSheet, Dimensions } from 'react-native';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { WHITE, TEAL_0 } from '../res/styles/Colors';
+import { WHITE, TEAL_0, GREY_3 } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
 import { AppText } from '../atoms/AppText';
-import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { copy } from '../res/groupifyCopy';
+import { TopNavBar } from '../molecules/TopNavBar';
+import { NavigationProps } from '../res/dataModels';
+import { globalStyles } from '../res/styles/GlobalStyles';
+import { JOST } from '../res/styles/Fonts';
 
 interface Props {
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    push: (ev: string, {}) => void;
-  };
+  navigation: NavigationProps;
   route: RoutePropParams;
 }
 
@@ -86,40 +86,48 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} enabled={false}>
       <Screen style={{ backgroundColor: WHITE }}>
-        <ScrollView>
-          <View style={{ flexDirection: 'row', paddingBottom: 20, marginHorizontal: 20 }}>
-            <BackChevronIcon onPress={() => navigation.navigate('Login', {})} />
-            <AppText style={styles.title}>{copy.forgotPasswordTitle}</AppText>
-          </View>
-          {route.params.step === 'phone' && (
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-              <AppText style={styles.details}>{copy.phoneNumberPrompt}</AppText>
-              <FormInput
-                returnKeyNext={true}
-                label={copy.phoneNumberFieldTitle}
-                value={phone}
-                onChangeText={(number) => setPhone(formatPhoneNumber(number))}
-              />
-              {error && <Alert status="error" message={error} />}
-            </TouchableWithoutFeedback>
-          )}
-          {route.params.step === 'password' && (
-            <View>
+        <TopNavBar
+          stickyHeader={false}
+          navigation={navigation}
+          displayGroupify={true}
+          displayBackButton={true}
+          displaySettings={false}
+          route={route}
+          targetScreen={'Welcome'}
+        />
+        <View style={{paddingVertical: 29, paddingHorizontal: 20, flex: 1}}>
+          <View style={{flex: 1}}>
+            {route.params.step === 'phone' && (
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true} style={{height: '100%'}}>
+                <AppText style={[globalStyles.bodyLarge, {marginBottom: 20}]}>{copy.phoneNumberPrompt}</AppText>
+                <FormInput
+                  returnKeyNext={true}
+                  label={copy.phoneNumberFieldTitle}
+                  value={phone}
+                  onChangeText={(number) => setPhone(formatPhoneNumber(number))}
+                />
+                <AppText style={[globalStyles.bodyMedium, {color: GREY_3, marginTop: 30}]}>{copy.phoneNumberInstruction}</AppText>
+                {error && <Alert status="error" message={error} />}
+              </TouchableWithoutFeedback>
+            )}
+            {route.params.step === 'password' && (
               <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-                <AppText style={styles.title2}>{copy.createNewPassword}</AppText>
+                <AppText style={[globalStyles.bodyLarge, {marginBottom: 20}]}>{copy.createNewPassword}</AppText>
                 <FormInput
                   returnKeyNext={true}
                   label="Verification Code"
                   onChangeText={setVerificationCode}
                   secureTextEntry={false}
+                  placeholder="Enter Code"
                 />
                 <FormInput
                   returnKeyNext={true}
                   label={copy.passwordFieldTitle}
                   onChangeText={setNewPassword}
                   secureTextEntry={true}
+                  placeholder="Enter Password"
                 />
                 {/* FIXME strong password not being suggested for secondary field */}
                 <FormInput
@@ -127,16 +135,22 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
                   label={copy.confirmPasswordFieldTitle}
                   onChangeText={setConfirmNewPassword}
                   secureTextEntry={true}
+                  placeholder="Confirm Password"
                 />
                 {error && <Alert status="error" message={error} />}
               </TouchableWithoutFeedback>
-            </View>
-          )}
-        </ScrollView>
-        <Button
-          title={copy.nextButtonTitle}
-          onPress={route.params.step === 'phone' ? confirmUserPhone : confirmResetPassword}
-        />
+            )}
+          </View>
+          
+          <Button
+            containerStyle={{alignSelf: 'flex-end'}}
+            buttonStyle={{ borderRadius: 5, width: Dimensions.get('screen').width - 40, marginTop: 60}}
+            title={copy.nextButtonTitle}
+            textStyle={{ fontSize: 20, fontFamily: JOST['500'] }}
+            disabled={phone.trim().length === 0 && !(verificationCode && confirmNewPassword && newPassword)}
+            onPress={route.params.step === 'phone' ? confirmUserPhone : confirmResetPassword}
+          />
+        </View>
       </Screen>
     </KeyboardAvoidingView>
   );

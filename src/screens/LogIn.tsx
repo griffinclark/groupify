@@ -244,19 +244,19 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
             />
 
             <View>
-              <Pressable 
-                onPress={() => navigation.navigate('ForgotPassword', { step: 'phone'})}
+              <TouchableOpacity 
+                onPress={() => {console.log('click'); navigation.navigate('ForgotPassword', { step: 'phone'})}}
               >
                 <AppText style={[globalStyles.bodyLarge, styles.linkButton]}>{copy.forgotPasswordQuestion}</AppText>
-              </Pressable>
+              </TouchableOpacity>
 
               <AppText style={[globalStyles.bodyLarge, {textAlign: 'center', marginTop: 50}]}>Don't have an account?</AppText>
 
-              <Pressable 
+              <TouchableOpacity 
                 onPress={() => navigation.navigate('Welcome', {})}
               >
                 <AppText style={[globalStyles.bodyLarge, styles.linkButton]}>Create one today!</AppText>
-              </Pressable>
+              </TouchableOpacity>
             </View>
 
             <Button
