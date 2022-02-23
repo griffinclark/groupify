@@ -4,19 +4,14 @@ import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts, getUserPushToken, setUserPushToken } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
 import { Contact, NavigationProps } from '../res/dataModels';
-import { Alert, FormInput, Button, AppText } from '../atoms/AtomsExports';
+import { FormInput, Button, AppText, Screen } from '../atoms/AtomsExports';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {
-  ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   StyleSheet,
   View,
-  SafeAreaView,
-  Text,
-  Pressable,
   Dimensions,
 } from 'react-native';
 import { WHITE, TEAL_0 } from '../res/styles/Colors';
@@ -215,8 +210,8 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   };
 
   return (
-    <SafeAreaView>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Screen style={{ backgroundColor: WHITE }}>
         <TopNavBar
           stickyHeader={false}
           navigation={navigation}
@@ -242,7 +237,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
               secureTextEntry={true}
               value={password}
             />
-
             <View>
               <TouchableOpacity 
                 onPress={() => {console.log('click'); navigation.navigate('ForgotPassword', { step: 'phone'})}}
@@ -268,8 +262,8 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
             />
           </View>
         </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      </Screen>
+    </KeyboardAvoidingView>
   );
 }
 
