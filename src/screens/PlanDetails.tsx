@@ -4,24 +4,17 @@ import { StyleSheet, View, TouchableOpacity, FlatList, ScrollView, RefreshContro
 import { Screen, AppText, PlanImageTile } from '../atoms/AtomsExports';
 import { TEAL_0, GRAY_LIGHT } from '../res/styles/Colors';
 import { Plan, Invitee, Status } from '../models';
-import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { PlanDetailsTile, Details } from '../molecules/MoleculesExports';
 import { WhiteButton } from '../atoms/WhiteButton';
 import { getCurrentUser, respondToPlan } from '../res/utilFunctions';
 import { copy } from '../res/groupifyCopy';
+import { TopNavBar } from '../molecules/TopNavBar';
+import { NavigationProps } from '../res/dataModels';
+import { RoutePropParams } from '../res/root-navigation';
 
 interface Props {
-  navigation: {
-    goBack: () => void;
-    navigate: (ev: string, {}) => void;
-    push: (ev: string, {}) => void;
-  };
-  route: {
-    params: {
-      plan: Plan;
-      step: string;
-    };
-  };
+  navigation: NavigationProps;
+  route: RoutePropParams;
 }
 
 export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
@@ -88,14 +81,15 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <Screen>
-      <View style={styles.titleContainer}>
-        <BackChevronIcon
-          onPress={() => {
-            navigation.push(route.params.step ? route.params.step : 'Home', {});
-          }}
-        />
-        <AppText style={styles.title}>{copy.planDetailsTitle}</AppText>
-      </View>
+      <TopNavBar
+        stickyHeader={false}
+        navigation={navigation}
+        displayGroupify={true}
+        displayBackButton={true}
+        displaySettings={true}
+        route={route}
+        targetScreen={'Home'}
+      />
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onPlanDetailsRefresh} />}>
         <View style={styles.bodyContainer}>
           <PlanImageTile plan={plan} />
