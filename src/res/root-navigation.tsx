@@ -100,7 +100,10 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
       }}
     >
       <StatusBar barStyle={'dark-content'} />
-      <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ animationEnabled: true, gestureResponseDistance: {horizontal: 20} }}>
+      <Stack.Navigator
+        initialRouteName={initialRoute}
+        screenOptions={{ animationEnabled: true, gestureResponseDistance: { horizontal: 20 } }}
+      >
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccount}
