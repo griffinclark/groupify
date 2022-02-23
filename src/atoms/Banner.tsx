@@ -22,7 +22,7 @@ interface Props {
   route: RoutePropParams;
 }
 
-export const Banner: React.FC<Props> = ({ plan, reload, navigation, route }: Props) => {
+export const Banner: React.FC<Props> = ({ plan, navigation, route }: Props) => {
   const [photoURI, setPhotoURI] = useState('');
   const [hostName, setHostName] = useState<string | undefined>('');
   const [invitees, setInvitees] = useState<Invitee[]>([]);

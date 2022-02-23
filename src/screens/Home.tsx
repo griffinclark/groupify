@@ -37,10 +37,10 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const [trigger2, setTrigger2] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [dbPlans, setDbPlans] = useState<Plan[]>([]);
- 
+
   const [state, setState] = useState(LoadingState.Loading);
   const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
- 
+
   useEffect(() => {
     const awaitUser = async () => {
       await loadPlans(route.params.currentUser);
@@ -59,7 +59,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const loadPlans = async (user: User) => {
     const getPlans = await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id));
     setDbPlans(sortPlansByDate(getPlans));
-    
+
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
 
     const allInvitedPlans = invitees.map((invitee) => invitee.plan).filter((item): item is Plan => item !== undefined);
@@ -88,29 +88,26 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
   const upcomingPlans = useMemo(() => {
     const upcomingInvited = removePastPlans(invitedPlans);
 
-    return upcomingInvited.filter((item): item is Plan => item.creatorID !== route.params.currentUser.id)
-  }, [invitedPlans])
+    return upcomingInvited.filter((item): item is Plan => item.creatorID !== route.params.currentUser.id);
+  }, [invitedPlans]);
 
   const acceptedAndPendingPlans = useMemo(() => {
-
     const accepted: Plan[] = [];
     const pending: Plan[] = [];
 
     async () => {
       for (const plan of upcomingPlans) {
         const status = await loadInviteeStatus(plan);
-  
+
         if (status === 'PENDING') {
           accepted.push(plan);
-        }
-        else if(status === 'ACCEPTED') {
+        } else if (status === 'ACCEPTED') {
           pending.push(plan);
         }
       }
-    }
+    };
 
-    return {accepted: accepted, pending: pending};
-
+    return { accepted: accepted, pending: pending };
   }, [upcomingPlans]);
 
   const allPlans = useMemo(() => {
@@ -119,9 +116,9 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
       created: createdPlans,
       pending: acceptedAndPendingPlans.pending,
       accepted: acceptedAndPendingPlans.accepted,
-      past: pastPlans
+      past: pastPlans,
     };
-  }, [createdPlans, acceptedAndPendingPlans, pastPlans ]);
+  }, [createdPlans, acceptedAndPendingPlans, pastPlans]);
 
   return (
     <Screen style={styles.container}>
