@@ -100,7 +100,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
       }}
     >
       <StatusBar barStyle={'dark-content'} />
-      <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ animationEnabled: false }}>
+      <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ animationEnabled: true, gestureResponseDistance: {horizontal: 20} }}>
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccount}
@@ -116,7 +116,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="SendMessage" component={SendMessage} options={{ headerShown: false }} />
         <Stack.Screen name="SetAvailability" component={SetAvailability} options={{ headerShown: false }} />
         <Stack.Screen name="EditFriends" component={EditFriends} options={{ headerShown: false }} />
-        <Stack.Screen name="PlanMap" component={PlanMap} options={{ headerShown: false }} />
+        <Stack.Screen name="PlanMap" component={PlanMap} options={{ headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name="PlanDetails" component={PlanDetails} options={{ headerShown: false }} />
         <Stack.Screen name="InvitedPlans" component={InvitedPlans} options={{ headerShown: false }} />
