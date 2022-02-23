@@ -110,7 +110,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     return { accepted: accepted, pending: pending };
   }, [upcomingPlans]);
 
-  const allPlans = useMemo(() => {
+  const allPlans: AllPlans = useMemo(() => {
     return {
       all: sortPlansByDate([...createdPlans, ...acceptedAndPendingPlans.accepted, ...acceptedAndPendingPlans.pending]),
       created: createdPlans,
