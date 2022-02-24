@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { DataStore } from '@aws-amplify/datastore';
 import { Invitee, Plan } from '../models';
-import { loadPhoto, formatDayOfWeekDate, getHost } from '../res/utilFunctions';
+import { loadPhoto, formatDayOfWeekDate, getHost, getCurrentUser } from '../res/utilFunctions';
 import { Entypo, AntDesign } from '@expo/vector-icons';
 import { WHITE, GREY_3, GREY_9, TEAL_0, GOLD_6, TEAL_7 } from '../res/styles/Colors';
 import { JOST } from '../res/styles/Fonts';
+import { RoutePropParams } from '../res/root-navigation';
 
 export interface Props {
   title: string;
@@ -23,6 +24,7 @@ export interface Props {
     navigate: (ev: string, {}) => void;
     push: (ev: string, {}) => void;
   };
+  route: RoutePropParams;
 }
 export const PlanCard = ({
   title,
@@ -30,15 +32,18 @@ export const PlanCard = ({
   location,
   planId,
   placeId,
-  creator,
-  invited,
+  // creator,
+  // invited,
   creatorId,
   navigation,
+  route,
   plan,
 }: Props) => {
   const [invitees, setInvitees] = useState<Invitee[]>([]);
   const [photoURI, setPhotoURI] = useState('');
   const [hostName, setHostName] = useState<string | undefined>('');
+  const [userIsInvited, setUserIsInvited] = useState<boolean>(false);
+  const [acceptedInvite, setAcceptedInvite] = useState<boolean>(false);
 
   useEffect(() => {
     const loadCard = async () => {
@@ -48,10 +53,31 @@ export const PlanCard = ({
       if (placeId) {
         setPhotoURI(await loadPhoto(placeId));
       }
-      const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === planId);
+      if (creatorId === route.params.currentUser.id) {
+        setUserIsInvited(true);
+      }
+      const allInvitees = await DataStore.query(Invitee);
+      const invitees = allInvitees.filter((invitee) => invitee.plan?.id === planId);
       setInvitees(invitees);
     };
+    const checkStatus = async () => {
+      const invitees = (await DataStore.query(Invitee)).filter((invitee) => invitee.plan?.id === plan.id);
+      const currentUserStatus = await getCurrentUser().then((currentUser) => {
+        if (currentUser && currentUser.id) {
+        }
+        const currentUserInvitee = invitees.find((invitee) => invitee.phoneNumber === currentUser.phoneNumber);
+        return currentUserInvitee?.status;
+      });
+
+      if (currentUserStatus) {
+        const inviteStatus = currentUserStatus.toString();
+        if (inviteStatus == 'ACCEPTED') {
+          setAcceptedInvite(true);
+        }
+      }
+    };
     loadCard();
+    checkStatus();
   }, []);
 
   return (
@@ -63,7 +89,7 @@ export const PlanCard = ({
             <Text numberOfLines={1} style={styles.title}>
               {title.length > 16 ? title.substring(0, 15) + '...' : title}
             </Text>
-            {creator ? (
+            {userIsInvited ? (
               <View style={styles.creatorContainer}>
                 <Text style={styles.creatorText}>You are hosting this plan</Text>
               </View>
@@ -76,12 +102,7 @@ export const PlanCard = ({
 
           <View>
             {photoURI ? (
-              <Image
-                source={{
-                  uri: photoURI,
-                }}
-                style={styles.image}
-              />
+              <Image source={{ uri: photoURI }} style={styles.image} />
             ) : (
               <Image source={require('../../assets/Vector.png')} style={styles.image} />
             )}
@@ -89,10 +110,12 @@ export const PlanCard = ({
         </View>
         <View style={styles.invited}>
           <View style={styles.invitedContainer}>
-            {invited
-              ? <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL_0} /> ||
-                (!creator && <AntDesign name="question" size={24} color="red" />)
-              : null}
+            {userIsInvited === false &&
+              (acceptedInvite ? (
+                <Entypo style={{ marginRight: 6 }} name="check" size={24} color={TEAL_0} />
+              ) : (
+                <AntDesign name="question" size={24} color={'red'} />
+              ))}
             <Text style={styles.invitedText}>{invitees.length} Invited</Text>
           </View>
           <View>

@@ -4,7 +4,7 @@ import { Plan, User } from '../models';
 import { PlanCard } from './planCard';
 import { NoPlansCard } from './NoPlansCard';
 import { TEAL_0, GRAY_DARK, WHITE, GREY_6 } from '../res/styles/Colors';
-import { AllPlans } from '../res/root-navigation';
+import { AllPlans, RoutePropParams } from '../res/root-navigation';
 import { UserLocation } from '../res/dataModels';
 import { JOST } from '../res/styles/Fonts';
 
@@ -17,6 +17,7 @@ export interface Props {
   };
   userLocation: UserLocation;
   reload: boolean;
+  route: RoutePropParams;
 }
 
 enum SelectedOption {
@@ -27,7 +28,7 @@ enum SelectedOption {
   past = 'PAST',
 }
 
-export const PlansPreview: React.FC<Props> = ({ all, navigation, user, userLocation, reload }: Props) => {
+export const PlansPreview: React.FC<Props> = ({ all, navigation, user, userLocation, reload, route }: Props) => {
   const [selectedTab, setSelectedTab] = useState<SelectedOption>(SelectedOption.all);
   const [selectedPlans, setSelectedPlans] = useState<Plan[]>(all.all); //initial state is all plans
   const [plansCard, setPlansCard] = useState<JSX.Element[]>([]);
@@ -78,6 +79,8 @@ export const PlansPreview: React.FC<Props> = ({ all, navigation, user, userLocat
             creatorId={plan.creatorID}
             navigation={navigation}
             plan={plan}
+            invited={true}
+            route={route}
           />
         ))
       ) : (

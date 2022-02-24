@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
-import { loadInviteeStatus, removePastPlans, addPastPlans } from './../res/utilFunctions';
+import { loadInviteeStatus, removePastPlans, addPastPlans, sortPlansByDate } from './../res/utilFunctions';
 import { Screen } from '../atoms/AtomsExports';
 import { HomeNavBar } from '../molecules/MoleculesExports';
 import { DataStore } from '@aws-amplify/datastore';
@@ -33,26 +33,16 @@ enum LoadingState {
   Loaded,
 }
 export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
-  const [createdPlans, setCreatedPlans] = useState<Plan[]>([]);
-  const [acceptedPlans, setAcceptedPlans] = useState<Plan[]>([]);
-  // const [currentUser, setCurrentUser] = useState<User>();
   const [trigger1, setTrigger1] = useState(false);
   const [trigger2, setTrigger2] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [allPlans, setAllPlans] = useState<AllPlans>();
-  const [pastPlans, setPastPlans] = useState<Plan[]>([]);
-  const [pendingPlans, setPendingPlans] = useState<Plan[]>([]);
-  const [state, setState] = useState(LoadingState.Loading);
-  // const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 }); // defaults to Los Angeles if user location is not provided and no place param
+  const [dbPlans, setDbPlans] = useState<Plan[]>([]);
 
-  // useEffect(() => {
-  //   getUserLocation();
-  // }, []);
+  const [state, setState] = useState(LoadingState.Loading);
+  const [invitedPlans, setInvitedPlans] = useState<Plan[]>([]);
 
   useEffect(() => {
     const awaitUser = async () => {
-      // const user = await getCurrentUser();
-      // setCurrentUser(user);
       await loadPlans(route.params.currentUser);
       setTrigger2(!trigger2);
       setRefreshing(false);
@@ -61,86 +51,74 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
     awaitUser();
   }, [trigger1]);
 
-  // const getUserLocation = async () => {
-  //   const { status } = await Location.requestBackgroundPermissionsAsync();
-
-  //   if (status !== 'granted') {
-  //     console.log('Permission to access location was denied');
-  //   } else {
-  //     try {
-  //       let location = await Location.getLastKnownPositionAsync();
-
-  //       if (location === null) {
-  //         location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.Highest });
-  //       }
-
-  //       setUserLocation({
-  //         latitude: location.coords.latitude,
-  //         longitude: location.coords.longitude,
-  //       });
-
-  //       route.params.userLocation = {
-  //         latitude: location.coords.latitude,
-  //         longitude: location.coords.longitude,
-  //       };
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   }
-  // };
-
   const onHomeRefresh = () => {
     setRefreshing(true);
     setTrigger1(!trigger1);
   };
 
   const loadPlans = async (user: User) => {
-    const createdPlanOnDb = removePastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
-    const createdPlans = createdPlanOnDb.map((plan) => plan);
+    const getPlans = await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id));
+    setDbPlans(sortPlansByDate(getPlans));
+
     const invitees = await DataStore.query(Invitee, (invitee) => invitee.phoneNumber('eq', user.phoneNumber));
-    const pastCreatedPlans = addPastPlans(await DataStore.query(Plan, (plan) => plan.creatorID('eq', user.id)));
 
-    const invitedPlans = removePastPlans(
-      invitees.map((invitee) => invitee.plan).filter((item): item is Plan => item !== undefined),
-    );
-    const pastInvitedPlans = addPastPlans(
-      invitees.map((invitee) => invitee.plan).filter((item): item is Plan => item !== undefined),
-    );
-    const pastPlanArr = [...pastCreatedPlans, ...pastInvitedPlans];
-    const pastPlan = pastPlanArr.filter((plan, index) => pastPlanArr.indexOf(plan) === index);
-
-    const upcoming = invitedPlans.filter((item): item is Plan => item.creatorID !== user.id);
-
-    const pending = [];
-    for (const plan of upcoming) {
-      const status = await loadInviteeStatus(plan);
-      if (status === 'PENDING') {
-        pending.push(plan);
-      }
-    }
-
-    const accepted = [];
-    for (const plan of upcoming) {
-      const status = await loadInviteeStatus(plan);
-      //TODO probably not fixable now, but status should be an enum not a string
-      if (status === 'ACCEPTED') {
-        accepted.push(plan);
-      }
-    }
-
-    setPendingPlans(pending);
-    setAcceptedPlans(accepted);
-    setCreatedPlans(createdPlans);
-    setPastPlans(pastPlan);
-
-    setAllPlans({
-      all: [...createdPlans, ...pending, ...accepted],
-      created: createdPlans,
-      pending: pendingPlans,
-      accepted: acceptedPlans,
-      past: pastPlans,
-    });
+    const allInvitedPlans = invitees.map((invitee) => invitee.plan).filter((item): item is Plan => item !== undefined);
+    setInvitedPlans(allInvitedPlans);
   };
+
+  const createdPlans = useMemo(() => {
+    const createdPlanOnDb = removePastPlans(dbPlans);
+    const createdPlans = createdPlanOnDb.map((plan) => plan);
+
+    return createdPlans;
+  }, [dbPlans]);
+
+  const pastPlans = useMemo(() => {
+    const pastCreatedPlans = addPastPlans(dbPlans);
+
+    const pastInvitedPlans = addPastPlans(invitedPlans);
+
+    const combinedArr = [...pastCreatedPlans, ...pastInvitedPlans];
+
+    const pastPlan = combinedArr.filter((plan, index) => combinedArr.indexOf(plan) === index);
+
+    return sortPlansByDate(pastPlan);
+  }, [dbPlans, invitedPlans]);
+
+  const upcomingPlans = useMemo(() => {
+    const upcomingInvited = removePastPlans(invitedPlans);
+
+    return upcomingInvited.filter((item): item is Plan => item.creatorID !== route.params.currentUser.id);
+  }, [invitedPlans]);
+
+  const acceptedAndPendingPlans = useMemo(() => {
+    const accepted: Plan[] = [];
+    const pending: Plan[] = [];
+
+    async () => {
+      for (const plan of upcomingPlans) {
+        const status = await loadInviteeStatus(plan);
+
+        if (status === 'PENDING') {
+          accepted.push(plan);
+        } else if (status === 'ACCEPTED') {
+          pending.push(plan);
+        }
+      }
+    };
+
+    return { accepted: accepted, pending: pending };
+  }, [upcomingPlans]);
+
+  const allPlans: AllPlans = useMemo(() => {
+    return {
+      all: sortPlansByDate([...createdPlans, ...acceptedAndPendingPlans.accepted, ...acceptedAndPendingPlans.pending]),
+      created: createdPlans,
+      pending: acceptedAndPendingPlans.pending,
+      accepted: acceptedAndPendingPlans.accepted,
+      past: pastPlans,
+    };
+  }, [createdPlans, acceptedAndPendingPlans, pastPlans]);
 
   return (
     <Screen style={styles.container}>
@@ -164,8 +142,13 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onHomeRefresh} />}
           >
             <View>
-              {acceptedPlans.length > 0 || createdPlans.length > 0 ? (
-                <Banner reload={trigger2} navigation={navigation} plan={acceptedPlans[0] || createdPlans[0]} />
+              {acceptedAndPendingPlans.accepted.length > 0 || createdPlans.length > 0 ? (
+                <Banner
+                  route={route}
+                  reload={trigger2}
+                  navigation={navigation}
+                  plan={acceptedAndPendingPlans.accepted[0] || createdPlans[0]}
+                />
               ) : null}
               <PlansPreview
                 all={allPlans!}
@@ -173,6 +156,7 @@ export const Home: React.FC<Props> = ({ navigation, route }: Props) => {
                 navigation={navigation}
                 user={route.params.currentUser!}
                 userLocation={route.params.userLocation}
+                route={route}
               />
               <View style={{ height: 43 }} />
             </View>
