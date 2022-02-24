@@ -23,7 +23,7 @@ export const LocationDetails: React.FC<Props> = ({ location, userLocation, close
     (async () => {
       setPlaceDetails(await loadPlaceDetails(location.place_id));
     })();
-  }, []);
+  }, [null, location]);
 
   useEffect(() => {
     (async () => {
