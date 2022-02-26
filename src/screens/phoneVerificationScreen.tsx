@@ -12,23 +12,21 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
-import { Header } from '../atoms/Header';
 import { WHITE } from '../res/styles/Colors';
 import PhoneInput from 'react-native-phone-number-input';
 import { RoutePropParams } from '../res/root-navigation';
 import { formatPhoneNumber } from '../res/utilFunctions';
 import * as SecureStore from 'expo-secure-store';
+import { TopNavBar } from '../molecules/TopNavBar';
+import { NavigationProps } from '../res/dataModels';
+import { JOST } from '../res/styles/Fonts';
 
 export interface Props {
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    push: (ev: any, e: { phone: any; step: string }) => void;
-    goBack: () => void;
-  };
+  navigation: NavigationProps;
   route: RoutePropParams;
 }
 
-export const phoneVerificationScreen = ({ navigation }: Props) => {
+export const phoneVerificationScreen = ({ navigation, route }: Props) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [, setFormattedValue] = useState('');
   const [error, setError] = useState('');
@@ -62,7 +60,15 @@ export const phoneVerificationScreen = ({ navigation }: Props) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView style={styles.innerContainer}>
-        <Header navigation={navigation} title="Groupify" />
+        <TopNavBar
+          stickyHeader={false}
+          navigation={navigation}
+          displayGroupify={true}
+          displayBackButton={true}
+          displaySettings={false}
+          route={route}
+          targetScreen={'Welcome'}
+        />
         <Text style={styles.header}>What&apos;s your phone number? </Text>
 
         <View style={styles.input}>
@@ -82,6 +88,7 @@ export const phoneVerificationScreen = ({ navigation }: Props) => {
             }}
             textContainerStyle={{
               borderBottomWidth: 1,
+              width: '100%',
             }}
           />
         </View>
@@ -119,27 +126,28 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 20,
-    padding: 15,
+    marginTop: 29,
+    marginLeft: 20,
+    fontFamily: JOST['400'],
   },
   input: {
     justifyContent: 'center',
     alignSelf: 'center',
-    paddingVertical: 10,
+    marginTop: 20,
   },
   error: {
-    marginTop: 15,
-    backgroundColor: 'red',
+    marginTop: 20,
     textAlign: 'center',
-    marginHorizontal: 30,
-    color: 'white',
-    fontSize: 18,
-    borderRadius: 10,
+    color: '#DD6161',
+    fontSize: 16,
+    fontFamily: JOST['400'],
   },
   text: {
-    fontSize: 17,
+    fontSize: 16,
     marginHorizontal: 8,
     color: '#767676',
     marginBottom: 20,
+    fontFamily: JOST['400'],
   },
   button: {
     marginTop: 18,
@@ -151,6 +159,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: WHITE,
     fontSize: 20,
-    fontWeight: '500',
+    fontFamily: JOST['500'],
   },
 });

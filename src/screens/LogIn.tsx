@@ -9,9 +9,9 @@ import { Alert, FormInput, Button } from '../atoms/AtomsExports';
 import { AppText } from '../atoms/AppText';
 import { User } from '../models';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { JOST } from '../res/styles/Fonts';
 
 import {
-  ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -27,6 +27,7 @@ import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
 import { copy } from '../res/groupifyCopy';
+import { GrypfySplash } from '../../assets/Icons/GrpfySplash';
 
 export interface Props {
   navigation: {
@@ -184,18 +185,16 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [phone, password]);
 
   return (
-    <SafeAreaView style={{ backgroundColor: WHITE, height: '100%', justifyContent: 'space-between' }}>
+    <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
             <View style={{ flex: 1 }} testID="LogInScreen">
-              {/* <ImageBackground style={styles.logoBackground} source={require('../../assets/SplashImage.png')} /> */}
-              <ImageBackground style={styles.logo} source={require('../../assets/Splash_Logo.png')} />
-              {/* <Text style={{ marginVertical: 29, marginLeft: 20, fontWeight: '400', fontSize: 20, lineHeight: 28.9 }}>
-                Login To Your Account
-              </Text> */}
+              <View style={styles.logoImg}>
+                <GrypfySplash />
+              </View>
             </View>
-            <View style={{ marginTop: -50 }}>
+            <View style={{ marginTop: 80 }}>
               <FormInput
                 returnKeyNext={true}
                 label="Phone Number"
@@ -209,35 +208,38 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
                 secureTextEntry={true}
                 value={password}
               />
-              <TouchableOpacity
-                style={{ alignSelf: 'center' }}
-                onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
-              >
-                <AppText style={styles.textTeal}>{copy.forgotPasswordQuestion}</AppText>
-              </TouchableOpacity>
+              <View style={{ marginHorizontal: 118, height: 30 }}>
+                <TouchableOpacity
+                  style={{ marginHorizontal: 0, alignSelf: 'center' }}
+                  onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
+                >
+                  <AppText style={styles.textTeal}>{copy.forgotPasswordQuestion}</AppText>
+                </TouchableOpacity>
+              </View>
 
               {error && <Alert status="error" message={error} />}
             </View>
-          </TouchableWithoutFeedback>
 
-          <View style={styles.createAccount}>
-            <Text style={styles.text}>{copy.dontHaveAnAccountQuestion}</Text>
-            <Text style={styles.textTeal} onPress={() => navigation.navigate('Welcome', {})}>
-              Create one today!
-            </Text>
-            {route.params && route.params.accountCreated === 'success' && (
-              <Alert status={'success'} message={'Account successfully created!'} />
-            )}
-          </View>
-          <View>
-            <Button
-              buttonStyle={{ width: 335, height: 43, borderRadius: 5 }}
-              textStyle={{ fontSize: 20, fontWeight: '500' }}
-              title={copy.loginButtonTitle}
-              onPress={logIn}
-              disabled={disabled}
-            />
-          </View>
+            <View style={styles.createAccount}>
+              <Text style={styles.text}>{copy.dontHaveAnAccountQuestion}</Text>
+              <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('VerifyPhone', {})}>
+                <Text style={styles.textTeal}>{copy.createAccount}</Text>
+              </TouchableOpacity>
+              {route.params && route.params.accountCreated === 'success' && (
+                <Alert status={'success'} message={'Account successfully created!'} />
+              )}
+            </View>
+            <View>
+              <Button
+                buttonStyle={{ width: 335, height: 47, borderRadius: 5 }}
+                textStyle={{ fontSize: 20, fontFamily: JOST['500'] }}
+                title={copy.loginButtonTitle}
+                onPress={logIn}
+                disabled={disabled}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+          <View style={{ height: 70 }} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -245,38 +247,29 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    margin: 20,
-    fontSize: 30,
-    fontWeight: '500',
-  },
-  logo: {
-    alignSelf: 'center',
-    width: 334,
-    height: 107,
-    marginBottom: 90,
-    marginTop: 20,
-  },
-  logoBackground: {
-    width: 376,
-    height: 158,
-    // alignSelf: 'center',
-    flex: 1,
-  },
   createAccount: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 50,
+    marginBottom: 60,
   },
   text: {
-    fontWeight: '400',
+    fontFamily: JOST['400'],
     fontSize: 20,
     marginBottom: 10,
   },
   textTeal: {
     color: TEAL_0,
-    fontWeight: '400',
+    fontFamily: JOST['400'],
     fontSize: 20,
-    marginBottom: 60,
+  },
+  logoImg: {
+    alignSelf: 'center',
+    marginVertical: 40,
+  },
+  safeArea: {
+    backgroundColor: WHITE,
+    height: '100%',
+    justifyContent: 'space-between',
   },
 });

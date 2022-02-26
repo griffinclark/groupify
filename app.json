@@ -9,6 +9,7 @@
     "facebookDisplayName": "Munchkin Labs",
     "splash": {
       "image": "./assets/SplashImage.png",
+      "icon" : "./assets/Icons/GrypfySplash",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },

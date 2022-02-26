@@ -88,11 +88,13 @@ const styles = StyleSheet.create({
   },
   topNavBarSticky: {
     marginTop: Constants.statusBarHeight,
+    alignItems: 'center',
   },
   title: {
     fontFamily: JOST[500],
     textTransform: 'uppercase',
     fontSize: 16,
+    top: -5,
   },
   sideIcon: {
     position: 'absolute',
@@ -103,6 +105,6 @@ const styles = StyleSheet.create({
   },
   rightIcon: {
     right: 10,
-    top: 5,
+    top: 1,
   },
 });

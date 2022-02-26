@@ -81,12 +81,12 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
       >
         <TopNavBar
           stickyHeader={false}
-          title=""
           navigation={navigation}
           displayGroupify={true}
           displayBackButton={false}
+          displaySettings={true}
           route={route}
-          targetScreen={'Home'}
+          targetScreen={'SelectorMenu'}
         />
 
         <View>
