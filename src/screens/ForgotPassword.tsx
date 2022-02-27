@@ -5,17 +5,16 @@ import { Keyboard, KeyboardAvoidingView, Platform, View, StyleSheet } from 'reac
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Alert, Button, FormInput, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
-import { WHITE, TEAL_0 } from '../res/styles/Colors';
+import { WHITE, GREY_3 } from '../res/styles/Colors';
 import { formatPhoneNumber } from '../res/utilFunctions';
 import { AppText } from '../atoms/AppText';
-import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { copy } from '../res/groupifyCopy';
+import { TopNavBar } from '../molecules/TopNavBar';
+import { NavigationProps } from '../res/dataModels';
+import { JOST } from '../res/styles/Fonts';
 
 interface Props {
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    push: (ev: string, {}) => void;
-  };
+  navigation: NavigationProps;
   route: RoutePropParams;
 }
 
@@ -89,10 +88,15 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Screen style={{ backgroundColor: WHITE }}>
         <ScrollView>
-          <View style={{ flexDirection: 'row', paddingBottom: 20, marginHorizontal: 20 }}>
-            <BackChevronIcon onPress={() => navigation.navigate('Login', {})} />
-            <AppText style={styles.title}>{copy.forgotPasswordTitle}</AppText>
-          </View>
+          <TopNavBar
+            stickyHeader={false}
+            navigation={navigation}
+            displayGroupify={true}
+            displayBackButton={true}
+            displaySettings={false}
+            route={route}
+            targetScreen={'Login'}
+          />
           {route.params.step === 'phone' && (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
               <AppText style={styles.details}>{copy.phoneNumberPrompt}</AppText>
@@ -103,6 +107,12 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
                 onChangeText={(number) => setPhone(formatPhoneNumber(number))}
               />
               {error && <Alert status="error" message={error} />}
+              <View style={styles.msgContainer}>
+                <AppText style={styles.msg}>
+                  Please enter your phone number. we&apos;ll send you a verification code you can use to reset your
+                  password.
+                </AppText>
+              </View>
             </TouchableWithoutFeedback>
           )}
           {route.params.step === 'password' && (
@@ -133,8 +143,11 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
             </View>
           )}
         </ScrollView>
+
         <Button
-          title={copy.nextButtonTitle}
+          buttonStyle={{ width: 335, height: 47, borderRadius: 5 }}
+          textStyle={{ fontSize: 20, fontFamily: JOST['500'] }}
+          title={route.params.step === 'phone' ? 'Next' : 'Update Password'}
           onPress={route.params.step === 'phone' ? confirmUserPhone : confirmResetPassword}
         />
       </Screen>
@@ -143,26 +156,26 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
 };
 
 const styles = StyleSheet.create({
-  title: {
-    marginLeft: 15,
-    color: TEAL_0,
-    fontSize: 30,
-    fontWeight: '400',
-    paddingBottom: 20,
-  },
   title2: {
     marginLeft: 20,
     fontSize: 30,
-    fontWeight: '400',
+    fontFamily: JOST['400'],
     paddingBottom: 20,
   },
   details: {
-    fontSize: 30,
+    marginTop: 29,
+    fontSize: 20,
     marginLeft: 20,
     paddingBottom: 20,
+    fontFamily: JOST['400'],
   },
-  logo: {
-    width: 318,
-    height: 98,
+  msg: {
+    fontSize: 16,
+    fontFamily: JOST['400'],
+    color: GREY_3,
+  },
+  msgContainer: {
+    marginTop: 30,
+    marginHorizontal: 20,
   },
 });

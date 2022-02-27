@@ -13,7 +13,6 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import { Header } from '../atoms/Header';
 import { WHITE } from '../res/styles/Colors';
 import { FormInput } from '../atoms/FormInput';
 import { RoutePropParams } from '../res/root-navigation';
@@ -21,13 +20,12 @@ import * as SecureStore from 'expo-secure-store';
 import { amplifyPhoneFormat, formatPhoneNumber } from '../res/utilFunctions';
 import { Auth } from 'aws-amplify';
 import * as Analytics from 'expo-firebase-analytics';
+import { TopNavBar } from '../molecules/TopNavBar';
+import { NavigationProps } from '../res/dataModels';
+import { JOST } from '../res/styles/Fonts';
 
 export interface Props {
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    goBack: () => void;
-    push: (ev: any, e: { phone: any; step: string }) => void;
-  };
+  navigation: NavigationProps;
   route: RoutePropParams;
 }
 
@@ -143,7 +141,15 @@ export const createAccountForm = ({ navigation, route }: Props) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView style={styles.container}>
-        <Header navigation={navigation} title="Groupify" />
+        <TopNavBar
+          stickyHeader={false}
+          navigation={navigation}
+          displayGroupify={true}
+          displayBackButton={true}
+          displaySettings={false}
+          route={route}
+          targetScreen={'VerifyPhone'}
+        />
         {route.params.step === 'create' && (
           <ScrollView>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
@@ -201,9 +207,10 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
   },
   header: {
-    fontSize: 22,
+    fontSize: 20,
     paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingLeft: 20,
+    fontFamily: JOST['400'],
   },
   button: {
     marginTop: 28,
@@ -216,17 +223,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: WHITE,
     fontSize: 20,
-    fontWeight: '500',
+    fontFamily: JOST['500'],
   },
   error: {
-    marginTop: 15,
-    backgroundColor: 'red',
+    marginTop: 20,
     textAlign: 'center',
-    marginHorizontal: 30,
-    color: 'white',
-    fontSize: 18,
-    borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    color: '#DD6161',
+    fontSize: 16,
+    fontFamily: JOST['400'],
   },
 });

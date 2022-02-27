@@ -14,6 +14,7 @@ import { HandIcon } from './Hand';
 import { ContactIcon } from './ContactIcon';
 import { NavPlans } from './NavPlans';
 import { CalendarIcon } from './CalendarIcon';
+import { GrypfySplash } from './GrpfySplash';
 
 export {
   AnnounceIcon,
@@ -32,4 +33,5 @@ export {
   ContactIcon,
   NavPlans,
   CalendarIcon,
+  GrypfySplash,
 };

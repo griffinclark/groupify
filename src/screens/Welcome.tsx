@@ -1,8 +1,10 @@
 import React from 'react';
-import { ImageBackground, View, Text, StyleSheet, Image } from 'react-native';
+import { ImageBackground, View, Text, StyleSheet } from 'react-native';
 import { Button } from '../atoms/Button';
 import { copy } from '../res/groupifyCopy';
 import { TEAL_0, WHITE } from '../res/styles/Colors';
+import { JOST } from '../res/styles/Fonts';
+import { GrypfySplash } from '../../assets/Icons/GrpfySplash';
 
 export interface Props {
   navigation: {
@@ -13,18 +15,21 @@ export interface Props {
 export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
   return (
     <ImageBackground
-      style={{ width: '100%', height: '100%', position: 'relative' }}
+      style={styles.imgBackground}
       resizeMode={'cover'}
       source={require('../../assets/SplashImage.png')}
       testID="WelcomeScreen"
     >
-      <Image style={styles.logo} source={require('../../assets/newSplashIcon.png')} />
-      <View style={{ flex: 1, position: 'absolute', bottom: 50, justifyContent: 'center', alignSelf: 'center' }}>
+      <View style={styles.logo}>
+        <GrypfySplash />
+      </View>
+
+      <View style={styles.buttonContainer}>
         <Button
           textStyle={{
-            fontSize: 22,
+            fontSize: 20,
             lineHeight: 28.9,
-            fontWeight: '500',
+            fontFamily: JOST['500'],
             backgroundColor: 'transparent',
             color: TEAL_0,
           }}
@@ -34,18 +39,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
           testID="WelcomeLoginButton"
         />
         <View style={{ marginTop: 20 }}>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 18,
-              lineHeight: 23.6,
-              color: WHITE,
-              marginBottom: 5,
-              fontWeight: '400',
-            }}
-          >
-            Don&apos;t have an account yet ?
-          </Text>
+          <Text style={styles.textStyle}>Don&apos;t have an account yet ?</Text>
           <Button
             buttonStyle={{
               width: 335,
@@ -58,9 +52,9 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
             textStyle={{
               color: WHITE,
               backgroundColor: TEAL_0,
-              fontSize: 22,
+              fontSize: 20,
               lineHeight: 28.9,
-              fontWeight: '500',
+              fontFamily: JOST['500'],
             }}
             title={copy.signUpButtonTitle}
             onPress={() => navigation.navigate('VerifyPhone', {})}
@@ -75,10 +69,27 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   logo: {
     alignSelf: 'center',
-    width: '80%',
-    height: 95,
-    marginTop: 45,
+    marginTop: 50,
     marginHorizontal: 38,
-    resizeMode: 'contain',
+  },
+  imgBackground: {
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+  },
+  buttonContainer: {
+    flex: 1,
+    position: 'absolute',
+    bottom: 50,
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  textStyle: {
+    textAlign: 'center',
+    fontSize: 20,
+    lineHeight: 23.6,
+    color: WHITE,
+    marginBottom: 5,
+    fontFamily: JOST['500'],
   },
 });

@@ -4,7 +4,6 @@ import * as Analytics from 'expo-firebase-analytics';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import { Home } from '../screens/Home';
-import { CreateAccount } from '../screens/CreateAccount';
 import { LogIn } from '../screens/LogIn';
 import { ImportContacts } from '../screens/ImportContacts';
 import { ImportContactDetails } from '../screens/ImportContactDetails';
@@ -105,12 +104,6 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         initialRouteName={initialRoute}
         screenOptions={{ animationEnabled: true, gestureResponseDistance: { horizontal: 20 } }}
       >
-        <Stack.Screen
-          name="CreateAccount"
-          component={CreateAccount}
-          initialParams={{ step: 'create' }}
-          options={{ headerShown: false }}
-        />
         <Stack.Screen name="Login" component={LogIn} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} initialParams={initialParams} options={{ headerShown: false }} />
         <Stack.Screen name="PlanInvite" component={PlanInvite} options={{ headerShown: false }} />

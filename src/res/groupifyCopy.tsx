@@ -118,5 +118,6 @@ export const copy = new LocalizedStrings({
     bugReport: 'Submit Bug Report',
     resetPassword: 'Reset Password',
     logout: 'Logout',
+    createAccount: 'Create one today!',
   },
 });
