@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { GREY_5, GREY_9 } from '../res/styles/Colors';
+import { GREY_3, GREY_5, GREY_9 } from '../res/styles/Colors';
 import { AppText } from './AppText';
+import { JOST } from '../res/styles/Fonts';
 
 interface Props {
   onChangeText: React.Dispatch<string>;
@@ -45,6 +46,7 @@ export const FormInput: React.FC<Props> = ({
         }}
         style={[styles.input, { borderColor: focus ? GREY_5 : GREY_9 }]}
         placeholder={placeholder}
+        placeholderTextColor={GREY_3}
         onChangeText={onChangeText}
         onBlur={() => setFocus(false)}
         secureTextEntry={secureTextEntry}
@@ -61,8 +63,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   title: {
-    fontWeight: '400',
-    fontSize: 14,
+    fontFamily: JOST['500'],
+    fontSize: 16,
   },
   input: {
     // backgroundColor: background,
@@ -71,5 +73,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 5,
     borderWidth: 1,
+    fontSize: 20,
   },
 });

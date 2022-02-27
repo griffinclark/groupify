@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    marginHorizontal: 8,
+    marginHorizontal: 20,
     color: '#767676',
     marginBottom: 20,
     fontFamily: JOST['400'],

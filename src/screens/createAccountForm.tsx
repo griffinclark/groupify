@@ -148,7 +148,7 @@ export const createAccountForm = ({ navigation, route }: Props) => {
           displayBackButton={true}
           displaySettings={false}
           route={route}
-          targetScreen={'ValidateUser'}
+          targetScreen={'VerifyPhone'}
         />
         {route.params.step === 'create' && (
           <ScrollView>

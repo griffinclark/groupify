@@ -64,7 +64,7 @@ export const ValidateUser = ({ navigation, route }: Props) => {
         displayBackButton={true}
         displaySettings={false}
         route={route}
-        targetScreen={'VerifyPhone'}
+        targetScreen={'createAccountForm'}
       />
       <ScrollView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
