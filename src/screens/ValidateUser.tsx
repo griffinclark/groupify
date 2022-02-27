@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -16,13 +16,11 @@ import { RoutePropParams } from '../res/root-navigation';
 import { Auth } from 'aws-amplify';
 import { TEAL_8, WHITE } from '../res/styles/Colors';
 import { JOST } from '../res/styles/Fonts';
+import { TopNavBar } from '../molecules/TopNavBar';
+import { NavigationProps } from '../res/dataModels';
 
 export interface Props {
-  navigation: {
-    navigate: (ev: string, {}) => void;
-    goBack: () => void;
-    push: (ev: any, e: { phone: any; step: string }) => void;
-  };
+  navigation: NavigationProps;
   route: RoutePropParams;
 }
 
@@ -33,9 +31,15 @@ export const ValidateUser = ({ navigation, route }: Props) => {
 
   const confirmRef = useRef<CodeInput>(null);
 
+  useEffect(() => {
+    console.log('phoneeeeeeNumber', route.params.phone);
+  }, []);
+
   const validateUser = async () => {
     try {
+      console.log('newhhh', route.params.phone);
       await Auth.confirmSignUp(route.params.phone, validationCode);
+      console.log('newhhh', route.params.phone);
       navigation.navigate('Login', { accountCreated: 'success' });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -53,6 +57,15 @@ export const ValidateUser = ({ navigation, route }: Props) => {
   };
   return (
     <SafeAreaView style={styles.container}>
+      <TopNavBar
+        stickyHeader={false}
+        navigation={navigation}
+        displayGroupify={true}
+        displayBackButton={true}
+        displaySettings={false}
+        route={route}
+        targetScreen={'VerifyPhone'}
+      />
       <ScrollView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
           <View style={{ alignItems: 'center' }}>
@@ -133,25 +146,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   error: {
-    marginTop: 15,
-    backgroundColor: 'red',
+    marginTop: 20,
     textAlign: 'center',
-    marginHorizontal: 30,
-    color: 'white',
-    fontSize: 18,
-    borderRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
+    color: '#DD6161',
+    fontSize: 16,
+    fontFamily: JOST['400'],
   },
   success: {
-    marginTop: 15,
-    backgroundColor: 'green',
+    marginTop: 20,
     textAlign: 'center',
-    marginHorizontal: 30,
-    color: 'white',
-    fontSize: 18,
-    borderRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
+    color: 'green',
+    fontSize: 16,
+    fontFamily: JOST['400'],
   },
 });

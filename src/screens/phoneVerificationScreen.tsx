@@ -84,7 +84,8 @@ export const phoneVerificationScreen = ({ navigation, route }: Props) => {
             countryPickerButtonStyle={{
               borderRadius: 0,
               borderBottomWidth: 1,
-              marginRight: 8,
+              marginRight: 12,
+              width: '30%',
             }}
             textContainerStyle={{
               borderBottomWidth: 1,
