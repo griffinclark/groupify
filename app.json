@@ -3,7 +3,7 @@
     "name": "Groupify",
     "icon": "./assets/appstore.png",
     "slug": "groupify",
-    "version": "1.6.1",
+    "version": "1.6.3",
     "orientation": "portrait",
     "facebookAppId": "693164164986653",
     "facebookDisplayName": "Munchkin Labs",
