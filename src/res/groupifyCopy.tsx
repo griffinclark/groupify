@@ -81,7 +81,7 @@ export const copy = new LocalizedStrings({
     dontHaveAnAccountQuestion: 'Don’t have an account?',
     loginButtonTitle: 'Log In',
     createAPlanTitle: 'Build a plan',
-    createAPlanChooseTime: 'When should people show up?',
+    createAPlanChooseTime: 'What Time Should People Show Up?',
     inviteFriendsButton: 'Invite Friends',
     planDetailsTitle: 'Plan Details',
     whosGoing: 'Who’s Going?',

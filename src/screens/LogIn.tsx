@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { Auth, Hub } from 'aws-amplify';
+import { Auth, Hub, Predicates } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts, getUserPushToken, setUserPushToken } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
@@ -51,28 +51,93 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState<string | undefined>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [info, setInfo] = useState<string | undefined>();
+  const [info, setInfo] = useState();
+  const [users, setUsers] = useState([] as User[]);
+  const [currentUser, setCurrentUser] = useState<User>();
 
   useEffect(() => {
+    Hub.listen('auth', (event) => {
+      console.log('auth event', event);
+    });
+    getSecureStoreItems();
     clearUserData();
   }, []);
 
+  useEffect(() => {
+    let subscription: any = undefined;
+
+    const removeListener = Hub.listen('datastore', async (capsule) => {
+      const {
+        payload: { event, data },
+      } = capsule;
+
+      console.log('DataStore Event', event, data);
+
+      if (event === 'ready') {
+        if (subscription) {
+          removeListener();
+        }
+      }
+    });
+
+    const loadDataStore = async () => {
+      const users = await DataStore.query(User, (user) => user.phoneNumber('eq', formatPhone), { limit: 1 });
+
+      console.log(users);
+
+      if (users.length === 1) {
+        setUsers(users);
+        setCurrentUser(users[0]);
+        console.log(users);
+        return;
+      }
+
+      subscription = DataStore.observe(User).subscribe(({ element, ...x }) => {
+        users.push(element);
+
+        if (users.length === 1) {
+          subscription.unsubscribe();
+
+          setUsers(users);
+          setCurrentUser(users[0]);
+          console.log(users);
+        }
+      });
+    };
+
+    if (info) {
+      loadDataStore();
+    }
+
+    return () => {
+      removeListener();
+
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    };
+  }, [info]);
+
   const clearUserData = async () => {
     await DataStore.clear();
-    await DataStore.stop();
-    await DataStore.start();
   };
 
   useEffect(() => {
     setFormatPhone(amplifyPhoneFormat(phone));
   }, [phone]);
 
-  const registerUser = async (): Promise<User> => {
+  useEffect(() => {
+    if (currentUser?.id) {
+      loginExisting();
+      importContacts();
+    }
+  }, [currentUser]);
+
+  /*const registerUser = async (): Promise<User> => {
     await registerForPushNotifications();
     const token = await getUserPushToken();
     const userInfo = await Auth.currentUserInfo();
     const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
-    console.log(typeof userQuery);
     const users = userQuery.map((user) => user);
     if (users.length > 0) {
       const user = users[0];
@@ -106,36 +171,86 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       console.log('newUser', newUser);
       return newUser;
     }
+  };*/
+
+  const loginExisting = async () => {
+    if (currentUser) {
+      await registerForPushNotifications();
+      const token = await getUserPushToken();
+      const pushTokenRegex = /ExponentPushToken\[.{22}]/;
+      if (
+        token &&
+        (!pushTokenRegex.test(token) || !pushTokenRegex.test(currentUser.pushToken) || currentUser.pushToken !== token)
+      ) {
+        console.log('Existing User: Updating users pushToken');
+        const newToken = await getExpoPushToken();
+        await setUserPushToken(newToken);
+        await DataStore.save(
+          User.copyOf(currentUser, (updated) => {
+            updated.pushToken = newToken;
+          }),
+        );
+      }
+      await Analytics.logEvent('login', { userId: currentUser.id });
+      navigation.push('SelectorMenu', { userID: currentUser.id, currentUser: currentUser });
+    }
+  };
+
+  const importContacts = async () => {
+    if (currentUser) {
+      const contacts: Contact[] = await getAllImportedContacts();
+
+      if (contacts.length === 0) {
+        navigation.navigate('ImportContactDetails', {});
+      } else {
+        navigation.push('SelectorMenu', { userID: currentUser.id, currentUser: currentUser });
+      }
+    }
   };
 
   const logIn = async (): Promise<void> => {
     setError(undefined);
     try {
       await Auth.signIn(formatPhone, password);
-      console.log('check', formatPhone);
-      console.log('check', password);
+
       setSecureStoreItem('phone', phone);
       setSecureStoreItem('password', password);
-      console.log('successfully signed in');
-      const kk = await registerForPushNotifications();
-      console.log('kk', kk);
-      const user = await registerUser();
-      console.log('dfgh', user);
-      const contacts: Contact[] = await getAllImportedContacts();
-      if (contacts.length === 0) {
-        navigation.navigate('ImportContactDetails', {});
-      } else {
-        if (user.id) {
-          console.log('userr:', user.id);
-          navigation.push('SelectorMenu', { userID: user.id, currentUser: user });
-        }
-      }
-      await Analytics.logEvent('login', { userId: user.id });
+
+      const newPushToken = await registerForPushNotifications();
+
+      console.log('kk', newPushToken);
+
+      const currentUser = await Auth.currentUserInfo();
+      setInfo(currentUser);
+      //const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', currentUser.attributes.phone_number));
+
+      //console.log(userQuery);
+
+      // if(userQuery.length) {
+      //   const user = userQuery[0];
+
+      //   console.log(user);
+
+      //   //navigation.push('SelectorMenu', { userID: user.id, currentUser: user });
+      // }
+
+      //const user = await registerUser();
+
+      // const contacts: Contact[] = await getAllImportedContacts();
+      // if (contacts.length === 0) {
+      //   navigation.navigate('ImportContactDetails', {});
+      // } else {
+      //   if (user.id) {
+      //     console.log('userr:', user.id);
+      //     navigation.push('SelectorMenu', { userID: user.id, currentUser: user });
+      //   }
+      // }
+      // await Analytics.logEvent('login', { userId: user.id });
       // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {
-        navigation.navigate('CreateAccount', { step: 'validate', phone: formatPhone });
+        navigation.navigate('createAccountForm', { step: 'create', phone: formatPhone });
       } else if (err.code == 'InvalidParameterException' && err.message.includes('Incorrect·username·or·password.')) {
         setError('Incorrect username or password.');
       } else if (
@@ -165,16 +280,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   const setSecureStoreItem = async (key: string, value: string): Promise<void> => {
     return SecureStore.setItemAsync(key, value);
   };
-
-  useEffect(() => {
-    Hub.listen('auth', (event) => {
-      console.log('auth event', event);
-    });
-  }, []);
-
-  useEffect(() => {
-    getSecureStoreItems();
-  }, []);
 
   useEffect(() => {
     if (phone.trim() && password.trim()) {
