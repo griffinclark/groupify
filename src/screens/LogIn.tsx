@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { Auth, Hub, Predicates } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
 import { getAllImportedContacts, getUserPushToken, setUserPushToken } from '../res/storageFunctions';
 import { registerForPushNotifications, getExpoPushToken } from '../res/notifications';
@@ -52,7 +52,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   const [error, setError] = useState<string | undefined>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [info, setInfo] = useState();
-  const [users, setUsers] = useState([] as User[]);
   const [currentUser, setCurrentUser] = useState<User>();
 
   useEffect(() => {
@@ -83,24 +82,17 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     const loadDataStore = async () => {
       const users = await DataStore.query(User, (user) => user.phoneNumber('eq', formatPhone), { limit: 1 });
 
-      console.log(users);
-
       if (users.length === 1) {
-        setUsers(users);
         setCurrentUser(users[0]);
-        console.log(users);
         return;
       }
-
+      //eslint-disable-next-line  @typescript-eslint/no-unused-vars
       subscription = DataStore.observe(User).subscribe(({ element, ...x }) => {
         users.push(element);
 
         if (users.length === 1) {
           subscription.unsubscribe();
-
-          setUsers(users);
           setCurrentUser(users[0]);
-          console.log(users);
         }
       });
     };
