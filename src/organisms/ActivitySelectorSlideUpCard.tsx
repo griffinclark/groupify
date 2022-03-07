@@ -69,6 +69,7 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
       <View style={styles.slideUpMenuRootContainer}>
         <View style={styles.slideUpPanelIcon}></View>
         <ScrollView
+          // scrollEnabled={false}
           style={styles.slideBar}
           onTouchStart={() => setAllowDragging(false)}
           onTouchEnd={() => setAllowDragging(true)}
