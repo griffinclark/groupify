@@ -146,8 +146,8 @@ export const PlanCreate: React.FC<Props> = ({ navigation, route }: Props) => {
               }}
             />
           </View>
+          <BottomButton disabled={false} title="Invite Friends" onPress={onFormSubmit} />
         </ScrollView>
-        <BottomButton disabled={false} title="Invite Friends" onPress={onFormSubmit} />
       </View>
     </Screen>
   );

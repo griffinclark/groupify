@@ -40,6 +40,7 @@ export const Button: React.FC<Props> = ({
             buttonStyles.text,
             disabled ? buttonStyles.disabledButton : {},
           ]}
+          numberOfLines={1}
         >
           {title}
         </Text>

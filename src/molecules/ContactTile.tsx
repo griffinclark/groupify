@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Contact } from '../res/dataModels';
 import { AppText } from '../atoms/AppText';
 import { GRAY_MEDIUM } from '../res/styles/Colors';
@@ -42,7 +42,7 @@ export const ContactTile: React.FC<Props> = ({
   }, []);
 
   return (
-    <View style={[styles.container, lastInList ? styles.lastItem : null]}>
+    <TouchableOpacity style={[styles.container, lastInList ? styles.lastItem : null]} onPress={handlePress}>
       <View style={styles.nameContainer}>
         <View style={{ marginRight: 5 }}>
           <Checkbox.Android
@@ -56,7 +56,7 @@ export const ContactTile: React.FC<Props> = ({
           <AppText style={styles.name}>{friend.name}</AppText>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

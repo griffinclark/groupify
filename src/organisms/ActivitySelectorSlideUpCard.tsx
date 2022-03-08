@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { RoutePropParams } from '../res/root-navigation';
 import { NavigationProps, GoogleLocation, UserLocation } from './../res/dataModels';
 import SlidingUpPanel from 'rn-sliding-up-panel';
@@ -40,11 +40,17 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
 
   const [showPlanDetails, setShowPlanDetails] = useState(false);
 
+  const [isAtBottom, setIsAtBottom] = useState(false);
+
+  const ref = useRef<SlidingUpPanel>(null);
+
   useEffect(() => {
     selectLocation(selectedLocation);
   }, [selectedLocation]);
 
   const selectLocation = (location: GoogleLocation | undefined) => {
+    ref?.current?.hide();
+
     if (location) {
       onSelectLocation && onSelectLocation(location);
       setCurrentSelectedLocation(location);
@@ -65,6 +71,8 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
       draggableRange={{ top: slideUpMenuHeight, bottom: slideUpMenuBottom }}
       backdropOpacity={0}
       allowDragging={allowDragging}
+      onMomentumDragEnd={(value) => setIsAtBottom(value == slideUpMenuBottom)}
+      ref={ref}
     >
       <View style={styles.slideUpMenuRootContainer}>
         <View style={styles.slideUpPanelIcon}></View>
@@ -74,6 +82,7 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
           onTouchStart={() => setAllowDragging(false)}
           onTouchEnd={() => setAllowDragging(true)}
           onTouchCancel={() => setAllowDragging(true)}
+          scrollEnabled={!isAtBottom}
         >
           {currentSelectedLocation && showPlanDetails ? (
             <LocationDetails
