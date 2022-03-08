@@ -41,7 +41,7 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
           <FontAwesome5 style={{ marginRight: 10 }} name="user" size={16} color={GREY_8} />
           <Text style={styles.text1}>{copy.friendsList}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => Linking.openURL('https://forms.gle/ysqh1hg5NhisEAcM7')} style={styles.button}>
+        <TouchableOpacity onPress={() => Linking.openURL('https://docs.google.com/forms/d/e/1FAIpQLSeeOH9eXsD4yPZO33_5B-_fd8k6T9Tm7KTU2gWxN5ynxGHXSA/viewform?usp=sf_link')} style={styles.button}>
           <MaterialIcons style={{ marginRight: 5 }} name="bug-report" size={22} color={GREY_8} />
           <Text style={styles.text1}>{copy.bugReport}</Text>
         </TouchableOpacity>
