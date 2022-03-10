@@ -33,6 +33,7 @@ import { createAccountForm } from '../screens/createAccountForm';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { ValidateUser } from '../screens/ValidateUser';
 import { PlanData } from '../res/dataModels';
+import { Acknowledgements } from '../screens/Acknowledgements';
 
 export type RoutePropParams = {
   params: {
@@ -136,6 +137,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="createAccountForm" component={createAccountForm} options={{ headerShown: false }} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ValidateUser" component={ValidateUser} options={{ headerShown: false }} />
+        <Stack.Screen name="Acknowledgement" component={Acknowledgements} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

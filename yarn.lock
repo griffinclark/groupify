@@ -14689,6 +14689,11 @@ react-native-contacts@^6.0.5:
   resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-6.0.5.tgz#26503c862a197eef790aee243053c0ceb23d7a0f"
   integrity sha512-2BPW1bODJPnKbi/Wr2+m43hlrxcYrzMkWVAre3nMwqekSrsapMu/iSpQbxcB3Ia8cvBNH6Cu2tSqGpqY4Lc/lg==
 
+react-native-country-flag@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/react-native-country-flag/-/react-native-country-flag-1.1.6.tgz#ca2aae3752f6e8621fab461e50a60aa7a9a4528f"
+  integrity sha512-0PJ8W6o0+fQzDAnT5obzdPh+PsaYWRwRrIvOFwgqhU7Y/nu+Tkp26CSA69CktBJUB+8/JrAQAKqjDqXT/fJ2oQ==
+
 react-native-country-picker-modal@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-native-country-picker-modal/-/react-native-country-picker-modal-2.0.0.tgz#005421303349a81fedf5975e465405bb4b7312d5"

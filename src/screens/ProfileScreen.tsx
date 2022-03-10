@@ -28,11 +28,14 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
         route={route}
         targetScreen={'Home'}
       />
+
       <Text style={styles.settings}>{copy.settings}</Text>
+
       <View style={styles.notification}>
         <Text style={styles.text1}>{copy.notifications}</Text>
         <Text style={styles.notificationBtn}>{copy.comingSoon}</Text>
       </View>
+
       <View style={styles.section}>
         <TouchableOpacity
           onPress={() => navigation.push('ImportContacts', {})}
@@ -41,11 +44,28 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
           <FontAwesome5 style={{ marginRight: 10 }} name="user" size={16} color={GREY_8} />
           <Text style={styles.text1}>{copy.friendsList}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => Linking.openURL('https://docs.google.com/forms/d/e/1FAIpQLSeeOH9eXsD4yPZO33_5B-_fd8k6T9Tm7KTU2gWxN5ynxGHXSA/viewform?usp=sf_link')} style={styles.button}>
+
+        <TouchableOpacity
+          onPress={() => navigation.push('Acknowledgement', {})}
+          style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 24 }}
+        >
+          <MaterialIcons style={{ marginRight: 10 }} name="face" size={16} color={GREY_8} />
+          <Text style={styles.text1}>Acknowledgements</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL(
+              'https://docs.google.com/forms/d/e/1FAIpQLSeeOH9eXsD4yPZO33_5B-_fd8k6T9Tm7KTU2gWxN5ynxGHXSA/viewform?usp=sf_link',
+            )
+          }
+          style={styles.button}
+        >
           <MaterialIcons style={{ marginRight: 5 }} name="bug-report" size={22} color={GREY_8} />
           <Text style={styles.text1}>{copy.bugReport}</Text>
         </TouchableOpacity>
       </View>
+
       <View style={styles.section}>
         <TouchableOpacity
           onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
@@ -54,6 +74,7 @@ export const ProfileScreen = ({ navigation, route }: Props) => {
           <MaterialIcons style={{ marginRight: 10 }} name="lock-open" size={20} color={GREY_8} />
           <Text style={styles.text1}>{copy.resetPassword}</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={async () => {
             try {

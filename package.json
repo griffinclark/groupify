@@ -103,6 +103,7 @@
     "react-native-confirmation-code-field": "^7.3.0",
     "react-native-confirmation-code-input": "^1.0.4",
     "react-native-contacts": "^6.0.5",
+    "react-native-country-flag": "^1.1.6",
     "react-native-date-picker": "^3.3.2",
     "react-native-elements": "^3.4.1",
     "react-native-expo-viewport-units": "^0.0.8",
