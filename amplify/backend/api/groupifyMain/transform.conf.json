@@ -3,11 +3,8 @@
     "ElasticsearchWarning": true,
     "ResolverConfig": {
         "project": {
-            "ConflictHandler": "LAMBDA",
-            "ConflictDetection": "VERSION",
-            "LambdaConflictHandler": {
-                "name": "broadcastsApi"
-            }
+            "ConflictHandler": "AUTOMERGE",
+            "ConflictDetection": "VERSION"
         }
     }
 }
