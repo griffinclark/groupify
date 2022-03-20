@@ -214,15 +214,6 @@ export const PlanMap: React.FC<Props> = ({ navigation, route, tempUserLocationQu
           />
         </>
       )}
-
-      {/* <HomeNavBar
-        locations={[]}
-        route={route}
-        user={route.params.currentUser}
-        navigation={navigation}
-        userPlans={[]}
-        invitedPlans={[]}
-      /> */}
     </Screen>
   );
 };
@@ -235,11 +226,6 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
-    // position: 'absolute',
-    // left: 0,
-    // top: 0,
-    // zIndex: 3
-    // height: '100%',
   },
   marker: {
     position: 'absolute',
