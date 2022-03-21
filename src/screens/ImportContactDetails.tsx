@@ -125,10 +125,10 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation, route }: Pro
         stickyHeader={false}
         navigation={navigation}
         displayGroupify={true}
-        displayBackButton={true}
+        displayBackButton={false}
         displaySettings={false}
         route={route}
-        targetScreen={'SelectorMenu'}
+        targetScreen={''}
       />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
@@ -177,7 +177,7 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation, route }: Pro
           </TouchableOpacity>
           <TouchableOpacity
             onPress={async () => {
-              navigation.navigate('Home');
+              navigation.navigate('Onboarding', {});
             }}
             disabled={addedContacts.length === 0 ? true : false}
             style={{
@@ -199,7 +199,7 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation, route }: Pro
           button2Text="Add Friends Later"
           message2="OK. You don't have to add your friends now, but the only way to Groupify your plans is to invite the people you want to hang out with to join the app."
           onButton1Press={() => setOpenModal(false)}
-          onButton2Press={() => navigation.navigate('Home')}
+          onButton2Press={() => navigation.navigate('Onboarding', {})}
           message="Are you sure you don't want to add friends now? "
         />
       )}

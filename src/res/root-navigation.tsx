@@ -33,6 +33,10 @@ import { createAccountForm } from '../screens/createAccountForm';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { ValidateUser } from '../screens/ValidateUser';
 import { PlanData } from '../res/dataModels';
+import { OnboardingScreens } from '../screens/OnboardingScreens';
+import { GenderScreen } from '../atoms/GenderScreen';
+import { AvailablityScreen } from '../atoms/AvailabilityScreen';
+import { HobbyScreen } from '../atoms/HobbyScreen';
 
 export type RoutePropParams = {
   params: {
@@ -136,6 +140,10 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="createAccountForm" component={createAccountForm} options={{ headerShown: false }} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ValidateUser" component={ValidateUser} options={{ headerShown: false }} />
+        <Stack.Screen name="Onboarding" component={OnboardingScreens} options={{ headerShown: false }} />
+        <Stack.Screen name="Gender" component={GenderScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Availability" component={AvailablityScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Hobby" component={HobbyScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

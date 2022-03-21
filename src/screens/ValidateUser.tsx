@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -31,19 +31,12 @@ export const ValidateUser = ({ navigation, route }: Props) => {
 
   const confirmRef = useRef<CodeInput>(null);
 
-  useEffect(() => {
-    console.log('phoneeeeeeNumber', route.params.phone);
-  }, []);
-
   const validateUser = async () => {
     try {
-      console.log('newhhh', route.params.phone);
       await Auth.confirmSignUp(route.params.phone, validationCode);
-      console.log('newhhh', route.params.phone);
       navigation.navigate('Login', { accountCreated: 'success' });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.log('Error: ', err);
       setError(err.message);
       clearError();
       setSuccess(undefined);
