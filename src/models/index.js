@@ -8,16 +8,17 @@ const NotificationType = {
   "INVITED": "INVITED"
 };
 
+
+const Sender = {
+  "USER": "USER",
+  "NOTIFICATIONPANEL": "NOTIFICATIONPANEL"
+};
+
 const Gender = {
   "MALE": "MALE",
   "FEMALE": "FEMALE",
   "NONBINARY": "NONBINARY",
   "PREFER_NOT_TO_SAY": "PREFER_NOT_TO_SAY"
-};
-
-const Sender = {
-  "USER": "USER",
-  "NOTIFICATIONPANEL": "NOTIFICATIONPANEL"
 };
 
 const Status = {

@@ -51,16 +51,17 @@ export const App = () => {
         await Auth.currentAuthenticatedUser();
         console.log('user is signed in');
         const phoneNumber = (await Auth.currentUserInfo()).attributes.phone_number;
+        console.log('phone number is: ', phoneNumber);
 
         // const user = await getCurrentUser();
 
-        const userQuery = await DataStore.query(User);
+        const user = await DataStore.query(User, (user) => user.phoneNumber('eq', phoneNumber), { limit: 1 });
 
         // const userd = userQuery.map((user) => user.id);
-        const user = userQuery.filter((user) => user.phoneNumber === phoneNumber);
+        // const user = userQuery.filter((user) => user.phoneNumber === phoneNumber);
 
         // console.log(user[0]);
-        // console.log(user);
+        console.log('second', user[0]);
 
         setUserID(user[0].id);
         setCurrentUser(user[0]);

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, SafeAreaView, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { JOST } from '../res/styles/Fonts';
 import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
@@ -7,6 +7,8 @@ import { TopNavBar } from '../molecules/TopNavBar';
 import { WHITE } from '../res/styles/Colors';
 import { tags } from '../res/staticData';
 import { InterestBox } from './InterestBox';
+import Dots from 'react-native-dots-pagination';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
   navigation: NavigationProps;
@@ -14,6 +16,7 @@ interface Props {
 }
 
 export const HobbyScreen: React.FC<Props> = ({ navigation, route }: Props) => {
+  const [activeState, setActiveState] = useState(3);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: WHITE }}>
       <TopNavBar
@@ -25,16 +28,20 @@ export const HobbyScreen: React.FC<Props> = ({ navigation, route }: Props) => {
         route={route}
         targetScreen={'Availability'}
       />
-      <View style={{ backgroundColor: '#E5E5E5' }}>
+      <View style={{ backgroundColor: WHITE }}>
         <Text style={{ marginTop: 34, marginLeft: 20, fontSize: 20, fontFamily: JOST['400'] }}>
           What are your interests?
         </Text>
+        <LinearGradient colors={['#fff', '#ccc']} style={styles.gradientStyle} />
         <View style={{ backgroundColor: WHITE, borderRadius: 12, marginTop: 34 }}>
-          <View style={{ marginTop: 19, marginHorizontal: 20 }}>
+          <View style={{ marginTop: 19, marginHorizontal: 20, height: 530 }}>
             <FlatList
               data={tags}
-              numColumns={6}
-              snapToEnd={true}
+              numColumns={7}
+              // horizontal={false}
+              // snapToEnd={true}
+              scrollEventThrottle={1900}
+              showsVerticalScrollIndicator={false}
               columnWrapperStyle={{
                 flexWrap: 'wrap',
               }}
@@ -45,12 +52,15 @@ export const HobbyScreen: React.FC<Props> = ({ navigation, route }: Props) => {
         </View>
       </View>
 
+      <View style={{ position: 'absolute', bottom: 70, alignSelf: 'center' }}>
+        <Dots activeColor="#3F8A8D" length={4} active={activeState} />
+      </View>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
           position: 'absolute',
-          bottom: 40,
+          bottom: 30,
           alignSelf: 'center',
         }}
       >
@@ -75,3 +85,13 @@ export const HobbyScreen: React.FC<Props> = ({ navigation, route }: Props) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  gradientStyle: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 80,
+    height: 80,
+  },
+});

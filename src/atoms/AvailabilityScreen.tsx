@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Checkbox } from 'react-native-paper';
 import { TopNavBar } from '../molecules/TopNavBar';
@@ -7,8 +7,11 @@ import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { WHITE } from '../res/styles/Colors';
 import { JOST } from '../res/styles/Fonts';
+import { getCurrentUser } from '../res/utilFunctions';
 import { AvailabilityDayTile } from './AvailabilityDayTile';
 import { AvailabilityItem } from './AvailabilityItem';
+import Dots from 'react-native-dots-pagination';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
   navigation: NavigationProps;
@@ -16,27 +19,68 @@ interface Props {
   // selected: boolean;
 }
 enum Day {
-  Mon = 'Monday',
-  Tues = 'Tuesday',
-  Wed = 'Wednesday',
-  Thur = 'Thursday',
-  Fri = 'Friday',
-  Sat = 'Saturday',
-  Sun = 'Sunday',
+  Mon = 'Mon',
+  Tues = 'Tues',
+  Wed = 'Wed',
+  Thur = 'Thur',
+  Fri = 'Fri',
+  Sat = 'Sat',
+  Sun = 'Sun',
 }
-const dayOfWeek = ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+
 export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   const [selected, setSelected] = React.useState(false);
   const [selectedDay, setSelectedDay] = React.useState(Day.Mon);
+  const [dayCard, setDayCard] = useState<JSX.Element[]>([]);
+  const [activeState, setActiveState] = useState(2);
 
-  const handlePress = () => {
-    if (!selected) {
-      setSelected(true);
+  // useEffect(() => {
+  //   const loadUser = async () => {
+  //     const sessionUser = await getCurrentUser();
+  //     // setCurrentUser(sessionUser);
+  //     console.log('gender currentuser', sessionUser);
+  //   };
+
+  //   loadUser();
+  // }, []);
+
+  useEffect(() => {
+    const dayTab: JSX.Element[] = [];
+
+    for (const dayType in Day) {
+      const dayTypeEnum: Day = Day[dayType as keyof typeof Day];
+      dayTab.push(
+        <TouchableOpacity
+          onPress={() => {
+            setSelectedDay(dayTypeEnum);
+          }}
+          key={dayTypeEnum}
+          style={{
+            borderRadius: 4,
+            width: 48,
+            height: 47,
+            alignItems: 'center',
+            backgroundColor: selectedDay === dayTypeEnum ? '#3F8A8D' : '#FFFFFF',
+            // marginRight: 10,
+          }}
+        >
+          <Text
+            style={{
+              lineHeight: 23.12,
+              fontSize: 16,
+              fontFamily: JOST['400'],
+              marginHorizontal: 8,
+              marginVertical: 12,
+              color: selectedDay === dayTypeEnum ? WHITE : '#006862',
+            }}
+          >
+            {dayTypeEnum}
+          </Text>
+        </TouchableOpacity>,
+      );
+      setDayCard(dayTab);
     }
-    if (selected) {
-      setSelected(false);
-    }
-  };
+  }, [selectedDay]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: WHITE }}>
@@ -49,7 +93,8 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
         route={route}
         targetScreen={'Gender'}
       />
-      <View style={{ backgroundColor: '#E5E5E5' }}>
+      <View style={{ backgroundColor: WHITE }}>
+        <LinearGradient colors={['#fff', '#ccc']} style={styles.gradientStyle} />
         <Text style={{ marginTop: 34, marginLeft: 20, fontSize: 20, fontFamily: JOST['400'] }}>
           When are you usually free to hang out?
         </Text>
@@ -64,16 +109,14 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
               backgroundColor: WHITE,
             }}
           >
-            {dayOfWeek.map((item, index) => (
-              <AvailabilityDayTile selectedDay={selectedDay} setSelectedDay={setSelectedDay} item={item} key={index} />
-            ))}
+            {dayCard}
           </View>
         </View>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 15, marginTop: 20 }}>
         <Checkbox.Android
           status={selected ? 'checked' : 'unchecked'}
-          onPress={handlePress}
+          // onPress={handlePress}
           color="#3F8A8D"
           uncheckedColor="#3F8A8D"
         />
@@ -85,12 +128,15 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
       <View>
         <AvailabilityItem />
       </View>
+      <View style={{ position: 'absolute', bottom: 68, alignSelf: 'center' }}>
+        <Dots activeColor="#3F8A8D" length={4} active={activeState} />
+      </View>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
           position: 'absolute',
-          bottom: 40,
+          bottom: 30,
           alignSelf: 'center',
         }}
       >
@@ -115,3 +161,13 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  gradientStyle: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 80,
+    height: 80,
+  },
+});

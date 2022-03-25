@@ -227,12 +227,17 @@ export const schema = {
                         "targetName": "notificationFromToSenderId"
                     }
                 },
-                "recipient": {
-                    "name": "recipient",
+                "userID": {
+                    "name": "userID",
                     "isArray": false,
-                    "type": {
-                        "model": "User"
-                    },
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "interest": {
+                    "name": "interest",
+                    "isArray": true,
+                    "type": "String",
                     "isRequired": true,
                     "attributes": [],
                     "association": {
@@ -272,7 +277,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "NotificationFromTos",
+            "pluralName": "Interests",
             "attributes": [
                 {
                     "type": "model",
@@ -281,27 +286,9 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byNotification",
+                        "name": "byUser",
                         "fields": [
-                            "notificationID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "bySender",
-                        "fields": [
-                            "senderID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byRecipient",
-                        "fields": [
-                            "recipientID"
+                            "userID"
                         ]
                     }
                 },
@@ -562,6 +549,36 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetName": "userInterestId"
+                    }
+                },
+                "age": {
+                    "name": "age",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "gender": {
+                    "name": "gender",
+                    "isArray": false,
+                    "type": {
+                        "enum": "Gender"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "interests": {
+                    "name": "interests",
+                    "isArray": true,
+                    "type": {
+                        "model": "Interest"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "userID"
                     }
                 },
                 "createdAt": {
@@ -1056,6 +1073,15 @@ export const schema = {
             "values": [
                 "USER",
                 "NOTIFICATIONPANEL"
+            ]
+        },
+        "Gender": {
+            "name": "Gender",
+            "values": [
+                "MALE",
+                "FEMALE",
+                "NONBINARY",
+                "PREFER_NOT_TO_SAY"
             ]
         },
         "Status": {

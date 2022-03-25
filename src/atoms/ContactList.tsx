@@ -128,13 +128,12 @@ export const ContactList = ({ navigation, route }: Props) => {
       <View style={{ marginHorizontal: 8 }}>
         <SearchBar style={{}} placeholder="Search For Friends On Groupify" onChangeText={searchContacts} testID={''} />
       </View>
-      <View>
-        <FlatList
-          onScrollBeginDrag={Keyboard.dismiss}
-          data={filteredContacts.length > 0 ? filteredContacts : contacts}
-          renderItem={renderContact}
-        />
-      </View>
+      <FlatList
+        onScrollBeginDrag={Keyboard.dismiss}
+        data={filteredContacts.length > 0 ? filteredContacts : contacts}
+        renderItem={renderContact}
+      />
+      <View style={{ height: 70 }} />
 
       <HomeNavBar
         route={route}
