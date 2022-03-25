@@ -238,7 +238,7 @@ export const getCurrentUser = async (): Promise<User> => {
     const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number));
     const user = userQuery.map((user) => user);
     if (user) {
-      return user[0];
+      return user[1];
     } else {
       console.log('no user');
     }

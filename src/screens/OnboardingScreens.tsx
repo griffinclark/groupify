@@ -8,6 +8,9 @@ import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { WHITE } from '../res/styles/Colors';
 import { JOST } from '../res/styles/Fonts';
+import { getCurrentUser } from '../res/utilFunctions';
+import Dots from 'react-native-dots-pagination';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
   navigation: NavigationProps;
@@ -20,8 +23,9 @@ interface AgeProps {
 }
 
 const AgeCard: React.FC<AgeProps> = ({ age, setAge }: AgeProps) => (
-  <View style={{ backgroundColor: '#E8E8E8' }}>
+  <View style={{ backgroundColor: WHITE }}>
     <Text style={styles.text1}>Hey Joni, Let&apos;s get your account set up.</Text>
+    <LinearGradient colors={['#fff', '#ccc']} style={styles.gradientStyle} />
     <View
       style={{
         marginTop: 30,
@@ -50,32 +54,34 @@ export const OnboardingScreens: React.FC<Props> = ({ navigation, route }: Props)
   const [currentUser, setCurrentUser] = useState<User>();
   const [age, setAge] = useState('');
   const [user, SetUser] = useState<User>();
+  const [activeState, setActiveState] = useState(0);
 
   useEffect(() => {
-    const loadUser = async (): Promise<void> => {
-      const sessionUser = await Auth.currentUserInfo();
+    const loadUser = async () => {
+      const sessionUser = await getCurrentUser();
       setCurrentUser(sessionUser);
+      console.log('session', sessionUser);
     };
-    const loadDatastore = async () => {
-      const users = await DataStore.query(User, (user) => user.phoneNumber('eq', currentUser.phoneNumber), {
-        limit: 1,
-      });
-      if (users.length === 1) {
-        SetUser(users[0]);
-      }
-    };
+    // const loadDatastore = async () => {
+    //   const users = await DataStore.query(User, (user) => user.phoneNumber('eq', currentUser?.phoneNumber), {
+    //     limit: 1,
+    //   });
+    //   if (users.length === 1) {
+    //     SetUser(users[0]);
+    //   }
+    // };
     loadUser();
     if (currentUser) {
-      loadDatastore();
+      // loadDatastore();
     }
-  }, [currentUser]);
+  }, []);
 
   const handleSubmit = async () => {
-    await DataStore.save(
-      User.copyOf(currentUser, (updated) => {
-        updated.age = age;
-      }),
-    );
+    // await DataStore.save(
+    //   User.copyOf(currentUser, (updated) => {
+    //     updated.age = age;
+    //   }),
+    // );
     navigation.navigate('Gender', {});
   };
   return (
@@ -89,8 +95,11 @@ export const OnboardingScreens: React.FC<Props> = ({ navigation, route }: Props)
         route={route}
         targetScreen={'SelectorMenu'}
       />
-      <View style={{}}>
+      <View>
         <AgeCard age={age} setAge={setAge} />
+      </View>
+      <View style={{ position: 'absolute', bottom: 100, alignSelf: 'center' }}>
+        <Dots activeColor="#3F8A8D" length={4} active={activeState} />
       </View>
       <View
         style={{
@@ -143,12 +152,19 @@ const styles = StyleSheet.create({
     fontFamily: JOST['400'],
     marginLeft: 20,
     lineHeight: 23.12,
+    marginBottom: 20,
   },
   input: {
     marginTop: 35,
     borderBottomWidth: 1,
-    // marginHorizontal: 20,
     fontFamily: JOST['400'],
     fontSize: 20,
+  },
+  gradientStyle: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 80,
+    height: 30,
   },
 });

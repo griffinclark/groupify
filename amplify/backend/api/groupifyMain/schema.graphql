@@ -1,14 +1,23 @@
+type Interest @model @auth(rules: [{allow: private}]) @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  user: User @connection
+  userID: ID!
+  interest: [String!]
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NONBINARY
+  PREFER_NOT_TO_SAY
+}
+
 enum Sender {
   USER
   NOTIFICATIONPANEL
 }
 
-type NotificationFromTo
-  @model
-  @auth(rules: [{ allow: private }])
-  @key(name: "byNotification", fields: ["notificationID"])
-  @key(name: "bySender", fields: ["senderID"])
-  @key(name: "byRecipient", fields: ["recipientID"]) {
+type NotificationFromTo @model @auth(rules: [{allow: private}]) @key(name: "byNotification", fields: ["notificationID"]) @key(name: "bySender", fields: ["senderID"]) @key(name: "byRecipient", fields: ["recipientID"]) {
   id: ID!
   senderType: Sender
   notificationID: ID!
@@ -19,7 +28,7 @@ type NotificationFromTo
   recipient: User! @connection(fields: ["recipientID"])
 }
 
-type Notification @model @auth(rules: [{ allow: private }]) {
+type Notification @model @auth(rules: [{allow: private}]) {
   id: ID!
   body: String!
   data: String
@@ -30,7 +39,7 @@ type Notification @model @auth(rules: [{ allow: private }]) {
   recipients: [NotificationFromTo] @connection(keyName: "byNotification", fields: ["id"])
 }
 
-type Plan @model {
+type Plan @model @auth(rules: [{allow: private}]) {
   id: ID!
   title: String!
   description: String
@@ -45,7 +54,7 @@ type Plan @model {
   invitees: [Invitee] @connection
 }
 
-type PlanArbitration @model {
+type PlanArbitration @model @auth(rules: [{allow: private}]) {
   id: ID!
   stat: Status
   original_description: String
@@ -63,10 +72,7 @@ enum Status {
   DECLINED
 }
 
-type Invitee
-  @model
-  @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "inviteeByPhoneNUmber")
-  @key(name: "byPlan", fields: ["planID"], queryField: "inviteesByPlan") {
+type Invitee @model @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "inviteeByPhoneNUmber") @key(name: "byPlan", fields: ["planID"], queryField: "inviteesByPlan") @auth(rules: [{allow: private}]) {
   id: ID!
   name: String!
   phoneNumber: AWSPhone!
@@ -77,7 +83,7 @@ type Invitee
   plan: Plan @connection
 }
 
-type Availability @model {
+type Availability @model @auth(rules: [{allow: private}]) {
   id: ID!
   Sunday: [AWSTime]
   Monday: [AWSTime]
@@ -88,10 +94,7 @@ type Availability @model {
   Saturday: [AWSTime]
 }
 
-type User
-  @model
-  @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber")
-  @key(name: "byName", fields: ["name"], queryField: "usersByName") {
+type User @model @key(name: "byPhoneNumber", fields: ["phoneNumber"], queryField: "usersByPhoneNumber") @key(name: "byName", fields: ["name"], queryField: "usersByName") @auth(rules: [{allow: private}]) {
   id: ID!
   phoneNumber: AWSPhone!
   name: String!
@@ -101,4 +104,8 @@ type User
   availability: Availability @connection
   notificationsSent: [NotificationFromTo] @connection(keyName: "bySender", fields: ["id"])
   notificationsRecieved: [NotificationFromTo] @connection(keyName: "byRecipient", fields: ["id"])
+  age: String
+  gender: Gender
+  interests: [Interest] @connection(keyName: "byUser", fields: ["id"])
 }
+ 

@@ -1,5 +1,380 @@
 export const schema = {
     "models": {
+        "Interest": {
+            "name": "Interest",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "user": {
+                    "name": "user",
+                    "isArray": false,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "interestUserId"
+                    }
+                },
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "interest": {
+                    "name": "interest",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Interests",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "User": {
+            "name": "User",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "phoneNumber": {
+                    "name": "phoneNumber",
+                    "isArray": false,
+                    "type": "AWSPhone",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "pushToken": {
+                    "name": "pushToken",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "friends": {
+                    "name": "friends",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "availability": {
+                    "name": "availability",
+                    "isArray": false,
+                    "type": {
+                        "model": "Availability"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "userAvailabilityId"
+                    }
+                },
+                "notificationsSent": {
+                    "name": "notificationsSent",
+                    "isArray": true,
+                    "type": {
+                        "model": "NotificationFromTo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "sender"
+                    }
+                },
+                "notificationsRecieved": {
+                    "name": "notificationsRecieved",
+                    "isArray": true,
+                    "type": {
+                        "model": "NotificationFromTo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "recipient"
+                    }
+                },
+                "age": {
+                    "name": "age",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "gender": {
+                    "name": "gender",
+                    "isArray": false,
+                    "type": {
+                        "enum": "Gender"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "interests": {
+                    "name": "interests",
+                    "isArray": true,
+                    "type": {
+                        "model": "Interest"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "userID"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Users",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byPhoneNumber",
+                        "fields": [
+                            "phoneNumber"
+                        ],
+                        "queryField": "usersByPhoneNumber"
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byName",
+                        "fields": [
+                            "name"
+                        ],
+                        "queryField": "usersByName"
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Availability": {
+            "name": "Availability",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Sunday": {
+                    "name": "Sunday",
+                    "isArray": true,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "Monday": {
+                    "name": "Monday",
+                    "isArray": true,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "Tuesday": {
+                    "name": "Tuesday",
+                    "isArray": true,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "Wednesday": {
+                    "name": "Wednesday",
+                    "isArray": true,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "Thursday": {
+                    "name": "Thursday",
+                    "isArray": true,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "Friday": {
+                    "name": "Friday",
+                    "isArray": true,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "Saturday": {
+                    "name": "Saturday",
+                    "isArray": true,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Availabilities",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "NotificationFromTo": {
             "name": "NotificationFromTo",
             "fields": {
@@ -235,230 +610,6 @@ export const schema = {
                 }
             ]
         },
-        "User": {
-            "name": "User",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "phoneNumber": {
-                    "name": "phoneNumber",
-                    "isArray": false,
-                    "type": "AWSPhone",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "pushToken": {
-                    "name": "pushToken",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "friends": {
-                    "name": "friends",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "email": {
-                    "name": "email",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "availability": {
-                    "name": "availability",
-                    "isArray": false,
-                    "type": {
-                        "model": "Availability"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "userAvailabilityId"
-                    }
-                },
-                "notificationsSent": {
-                    "name": "notificationsSent",
-                    "isArray": true,
-                    "type": {
-                        "model": "NotificationFromTo"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "sender"
-                    }
-                },
-                "notificationsRecieved": {
-                    "name": "notificationsRecieved",
-                    "isArray": true,
-                    "type": {
-                        "model": "NotificationFromTo"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "recipient"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Users",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byPhoneNumber",
-                        "fields": [
-                            "phoneNumber"
-                        ],
-                        "queryField": "usersByPhoneNumber"
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byName",
-                        "fields": [
-                            "name"
-                        ],
-                        "queryField": "usersByName"
-                    }
-                }
-            ]
-        },
-        "Availability": {
-            "name": "Availability",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Sunday": {
-                    "name": "Sunday",
-                    "isArray": true,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "Monday": {
-                    "name": "Monday",
-                    "isArray": true,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "Tuesday": {
-                    "name": "Tuesday",
-                    "isArray": true,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "Wednesday": {
-                    "name": "Wednesday",
-                    "isArray": true,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "Thursday": {
-                    "name": "Thursday",
-                    "isArray": true,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "Friday": {
-                    "name": "Friday",
-                    "isArray": true,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "Saturday": {
-                    "name": "Saturday",
-                    "isArray": true,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Availabilities",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                }
-            ]
-        },
         "Plan": {
             "name": "Plan",
             "fields": {
@@ -582,6 +733,22 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -688,6 +855,22 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -801,6 +984,22 @@ export const schema = {
                         ],
                         "queryField": "inviteesByPlan"
                     }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         }
@@ -813,6 +1012,15 @@ export const schema = {
                 "NOTIFICATIONPANEL"
             ]
         },
+        "Gender": {
+            "name": "Gender",
+            "values": [
+                "MALE",
+                "FEMALE",
+                "NONBINARY",
+                "PREFER_NOT_TO_SAY"
+            ]
+        },
         "Status": {
             "name": "Status",
             "values": [
@@ -823,5 +1031,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "7693cef111c4b406aee057da402f6680"
+    "version": "700bddd2f9b42e5d7c808e7b2a814087"
 };

@@ -7,22 +7,31 @@ const Sender = {
   "NOTIFICATIONPANEL": "NOTIFICATIONPANEL"
 };
 
+const Gender = {
+  "MALE": "MALE",
+  "FEMALE": "FEMALE",
+  "NONBINARY": "NONBINARY",
+  "PREFER_NOT_TO_SAY": "PREFER_NOT_TO_SAY"
+};
+
 const Status = {
   "PENDING": "PENDING",
   "ACCEPTED": "ACCEPTED",
   "DECLINED": "DECLINED"
 };
 
-const { NotificationFromTo, Notification, User, Availability, Plan, PlanArbitration, Invitee } = initSchema(schema);
+const { Interest, User, Availability, NotificationFromTo, Notification, Plan, PlanArbitration, Invitee } = initSchema(schema);
 
 export {
-  NotificationFromTo,
-  Notification,
+  Interest,
   User,
   Availability,
+  NotificationFromTo,
+  Notification,
   Plan,
   PlanArbitration,
   Invitee,
   Sender,
+  Gender,
   Status
 };
