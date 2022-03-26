@@ -30,8 +30,8 @@ export interface NavigationProps {
 }
 
 export interface NotificationMessage {
-  title: string,
-  body: string
+  title: string;
+  body: string;
 }
 
 export interface Contact {

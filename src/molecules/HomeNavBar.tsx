@@ -17,24 +17,22 @@ interface Props {
   userLocation: UserLocation;
 }
 
-
-export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, userLocation }: Props) => {  
-  console.log(route.name);
+export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, userLocation }: Props) => {
   const buttons = [
     {
       id: NavButtonEnum.GroupifyIt,
       name: copy.groupifyItButton,
-      screen: 'SelectorMenu'
+      screen: 'SelectorMenu',
     },
     {
       id: NavButtonEnum.Plans,
       name: copy.plansButton,
-      screen: 'Home'
+      screen: 'Home',
     },
     {
       id: NavButtonEnum.Contacts,
       name: copy.friendsButton,
-      screen: 'ContactList'
+      screen: 'ContactList',
     },
     // {
     //   id: NavButtonEnum.Friends,
@@ -43,40 +41,9 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
     {
       id: NavButtonEnum.Notifications,
       name: copy.notificationsButton,
-      screen: 'Notifications'
+      screen: 'Notifications',
     },
   ];
-
-  const navigateToScreen = async (target: string): Promise<void> => {
-    try {
-      let screen = '';
-      switch (target) {
-        case copy.groupifyItButton:
-          screen = 'SelectorMenu';
-          break;
-        case copy.plansButton:
-          screen = 'Home';
-          break;
-        case copy.contactButton:
-          screen = 'ContactList';
-          break;
-        // case copy.friendsButton:
-        //   screen = 'ImportContacts';
-        //   break;
-        case copy.notificationsButton:
-          screen = 'Notifications';
-          break;
-      }
-      navigation.navigate(screen, {
-        navigation: navigation,
-        route: route,
-        currentUser: user,
-        userLocation: userLocation,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const getIcon = (id: NavButtonEnum) => {
     switch (id) {
@@ -84,7 +51,7 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
         return <CreatePlanIcon width={21} height={21} />;
       case copy.contactButton:
         return <ContactIcon />;
-      case copy.notificationsButton: 
+      case copy.notificationsButton:
         return <AnnounceIcon width={21} height={21} />;
       default:
         return <CalendarIcon width={21} height={21} />;
@@ -98,7 +65,7 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
       currentUser: user,
       userLocation: userLocation,
     });
-  }
+  };
 
   return (
     <View style={styles.navbar}>
@@ -108,7 +75,7 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
             onPress={() => handleClick(button.screen)}
             testID={button.id}
             key={button.id}
-            style={[{ alignItems: 'center' }, route.name == button.screen ? {opacity: 1} : { opacity: 0.6}]}
+            style={[{ alignItems: 'center' }, route.name == button.screen ? { opacity: 1 } : { opacity: 0.6 }]}
           >
             {getIcon(button.id)}
 

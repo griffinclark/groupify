@@ -172,8 +172,8 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
 
     const notificationText = {
       title: `You Have Been Invited by ${name}!!!`,
-      body: 'Tap to open the app'
-    }
+      body: 'Tap to open the app',
+    };
 
     const notification = await createNotificationAWS(notificationText);
 
@@ -184,7 +184,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
       if (user.length) {
         if (pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken) {
           sendPushNotification(user[0].pushToken, notificationText.title, notificationText.body, {});
-          await createNotificationFromToAWS(notification.id, user[0].id, 'USER')
+          await createNotificationFromToAWS(notification.id, user[0].id, 'USER');
         }
       } else {
         nonUsers.push(invitee);
