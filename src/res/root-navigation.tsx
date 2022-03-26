@@ -37,7 +37,7 @@ import { Acknowledgements } from '../screens/Acknowledgements';
 import { Notifications } from '../screens/Notifications';
 
 export type RoutePropParams = {
-  name: string,
+  name: string;
   params: {
     userID: string;
     currentUser: User;

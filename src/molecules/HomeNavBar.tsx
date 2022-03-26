@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { GREY_1, WHITE } from '../res/styles/Colors';
 import { User } from '../models';

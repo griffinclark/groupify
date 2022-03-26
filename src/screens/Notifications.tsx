@@ -24,7 +24,7 @@ export const Notifications: React.FC<Props> = ({ navigation, route }: Props) => 
 
   useEffect(() => {
     const loadNotifications = async () => {
-      let allNotifs = await DataStore.query(NotificationFromTo, Predicates.ALL, {
+      const allNotifs = await DataStore.query(NotificationFromTo, Predicates.ALL, {
         sort: (s) => s.createdAt(SortDirection.DESCENDING),
       });
 
@@ -82,7 +82,7 @@ export const Notifications: React.FC<Props> = ({ navigation, route }: Props) => 
         <ScrollView testID="NotificationsScreen" style={{ flex: 1 }}>
           {notifications.length > 0 ? (
             notifications.map((notification: any) => (
-              <View style={styles.notificationItem}>
+              <View style={styles.notificationItem} key={`notification-${notification.notificationId}`}>
                 <AppText style={styles.notificationText}>{notification.notification.body}</AppText>
                 <AppText style={styles.notificationTime}>
                   {returnCreatedTime(notification.notification.createdAt)}
