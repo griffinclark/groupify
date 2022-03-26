@@ -12,7 +12,7 @@ import { AppText, BottomButton, SearchBar, Screen } from '../atoms/AtomsExports'
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { formatDataDate, formatDatabaseTime, formatDatePlanView } from '../res/utilFunctions';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
-import { sendPushNotification } from '../res/notifications';
+import { sendPushNotification, createNotificationAWS, createNotificationFromToAWS } from '../res/notifications';
 import { copy } from './../res/groupifyCopy';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { TEAL_7, BLACK } from '../res/styles/Colors';
@@ -169,13 +169,22 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     const name = currentUser.name;
     const nonUsers = [];
     const pushTokenRegex = /ExponentPushToken\[.{22}]/;
+
+    const notificationText = {
+      title: `You Have Been Invited by ${name}!!!`,
+      body: 'Tap to open the app'
+    }
+
+    const notification = await createNotificationAWS(notificationText);
+
     for (const invitee of inviteeList) {
       const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', invitee.phoneNumber));
       const user = userQuery.map((user) => user);
 
       if (user.length) {
         if (pushTokenRegex.test(user[0].pushToken) && user[0].pushToken !== currentUser.pushToken) {
-          sendPushNotification(user[0].pushToken, `You Have Been Invited by ${name}!!!`, 'Tap to open the app', {});
+          sendPushNotification(user[0].pushToken, notificationText.title, notificationText.body, {});
+          await createNotificationFromToAWS(notification.id, user[0].id, 'USER')
         }
       } else {
         nonUsers.push(invitee);

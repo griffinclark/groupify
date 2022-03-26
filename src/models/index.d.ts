@@ -5,6 +5,13 @@ export enum Sender {
   NOTIFICATIONPANEL = "NOTIFICATIONPANEL"
 }
 
+export enum Gender {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  NONBINARY = "NONBINARY",
+  PREFER_NOT_TO_SAY = "PREFER_NOT_TO_SAY"
+}
+
 export enum Status {
   PENDING = "PENDING",
   ACCEPTED = "ACCEPTED",
@@ -13,11 +20,7 @@ export enum Status {
 
 
 
-type NotificationFromToMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-type NotificationMetaData = {
+type InterestMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -26,6 +29,14 @@ type UserMetaData = {
 }
 
 type AvailabilityMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type NotificationFromToMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type NotificationMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -39,6 +50,51 @@ type PlanArbitrationMetaData = {
 
 type InviteeMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+export declare class Interest {
+  readonly id: string;
+  readonly user?: User;
+  readonly userID: string;
+  readonly interest?: string[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Interest, InterestMetaData>);
+  static copyOf(source: Interest, mutator: (draft: MutableModel<Interest, InterestMetaData>) => MutableModel<Interest, InterestMetaData> | void): Interest;
+}
+
+export declare class User {
+  readonly id: string;
+  readonly phoneNumber: string;
+  readonly name: string;
+  readonly pushToken: string;
+  readonly friends?: string;
+  readonly email?: string;
+  readonly availability?: Availability;
+  readonly notificationsSent?: (NotificationFromTo | null)[];
+  readonly notificationsRecieved?: (NotificationFromTo | null)[];
+  readonly age?: string;
+  readonly gender?: Gender | keyof typeof Gender;
+  readonly interests?: (Interest | null)[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<User, UserMetaData>);
+  static copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
+}
+
+export declare class Availability {
+  readonly id: string;
+  readonly Sunday?: (string | null)[];
+  readonly Monday?: (string | null)[];
+  readonly Tuesday?: (string | null)[];
+  readonly Wednesday?: (string | null)[];
+  readonly Thursday?: (string | null)[];
+  readonly Friday?: (string | null)[];
+  readonly Saturday?: (string | null)[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Availability, AvailabilityMetaData>);
+  static copyOf(source: Availability, mutator: (draft: MutableModel<Availability, AvailabilityMetaData>) => MutableModel<Availability, AvailabilityMetaData> | void): Availability;
 }
 
 export declare class NotificationFromTo {
@@ -66,37 +122,6 @@ export declare class Notification {
   readonly updatedAt?: string;
   constructor(init: ModelInit<Notification, NotificationMetaData>);
   static copyOf(source: Notification, mutator: (draft: MutableModel<Notification, NotificationMetaData>) => MutableModel<Notification, NotificationMetaData> | void): Notification;
-}
-
-export declare class User {
-  readonly id: string;
-  readonly phoneNumber: string;
-  readonly name: string;
-  readonly pushToken: string;
-  readonly friends?: string;
-  readonly email?: string;
-  readonly availability?: Availability;
-  readonly notificationsSent?: (NotificationFromTo | null)[];
-  readonly notificationsRecieved?: (NotificationFromTo | null)[];
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<User, UserMetaData>);
-  static copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
-}
-
-export declare class Availability {
-  readonly id: string;
-  readonly Sunday?: (string | null)[];
-  readonly Monday?: (string | null)[];
-  readonly Tuesday?: (string | null)[];
-  readonly Wednesday?: (string | null)[];
-  readonly Thursday?: (string | null)[];
-  readonly Friday?: (string | null)[];
-  readonly Saturday?: (string | null)[];
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<Availability, AvailabilityMetaData>);
-  static copyOf(source: Availability, mutator: (draft: MutableModel<Availability, AvailabilityMetaData>) => MutableModel<Availability, AvailabilityMetaData> | void): Availability;
 }
 
 export declare class Plan {

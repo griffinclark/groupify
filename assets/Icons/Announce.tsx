@@ -4,12 +4,14 @@ import Svg, { ClipPath, Defs, G, Path, Rect } from 'react-native-svg';
 
 interface Props {
   onPress?: () => void;
+  width?: number;
+  height?: number;
 }
 
-export const AnnounceIcon: React.FC<Props> = ({ onPress }: Props) => {
+export const AnnounceIcon: React.FC<Props> = ({ onPress, width = 30, height = 30 }: Props) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Svg style={{ alignSelf: 'center' }} width="30" height="30" viewBox="0 0 30 30" fill="none">
+      <Svg style={{ alignSelf: 'center' }} width={width} height={height} viewBox="0 0 30 30" fill="none">
         <G clipPath="url(#clip0)">
           <Path
             d="M13.8537 19.4526L18.2756 25.4964C18.629 25.981 18.7849 26.5872 18.7091 27.1818C18.6332 27.7764 18.3318 28.3108 17.8711 28.6677V28.6677C17.4096 29.0238 16.8269 29.173 16.2508 29.0827C15.6746 28.9924 15.152 28.6699 14.7977 28.186L8.06851 19.04"
