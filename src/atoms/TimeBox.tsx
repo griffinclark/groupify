@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 
 interface Props {
-  // onPress: () => void;
+  onPress: (item: string, removed: boolean) => void;
   item: string;
   day: string;
 }
@@ -32,12 +32,9 @@ const Time: React.FC<TimeProps> = ({ handlePress, selected, item }: TimeProps) =
     <Text style={{ fontSize: 16, fontFamily: JOST['400'], color: selected ? WHITE : '#636363' }}>{item} AM</Text>
   </TouchableOpacity>
 );
-export const TimeBox: React.FC<Props> = ({ item }: Props) => {
+export const TimeBox: React.FC<Props> = ({ item, onPress }: Props) => {
   const [selected, setSelected] = useState(false);
-  const [availableTime, setAvailableTime] = useState<any>({
-    Mon: [],
-  });
-  const [selectedTime, setSelectedTime] = useState<string[]>([]);
+  const [selectedTime, setSelectedTime] = useState<string>();
 
   // const handlePress = () => {
   //   if (!selected) {
@@ -56,19 +53,19 @@ export const TimeBox: React.FC<Props> = ({ item }: Props) => {
     if (!selected) {
       const random = [];
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      setSelectedTime([item]);
+      setSelectedTime(item);
       random.push(item);
-      availableTime.Mon = random;
-      setAvailableTime((curr: any) => ({ ...curr, availableTime }));
+      onPress(item, false);
       setSelected(true);
     }
     if (selected) {
       setSelected(false);
+      onPress(item, true);
     }
   };
 
   useEffect(() => {
-    console.log('availableTime', availableTime);
+    //console.log('availableTime', availableTime);
     // console.log('availableTime', selectedTime);
   }, [selected]);
 
