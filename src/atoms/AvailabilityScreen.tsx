@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
+import { Auth } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
 import { Divider } from 'react-native-elements';
 import { Checkbox } from 'react-native-paper';
 import { TopNavBar } from '../molecules/TopNavBar';
@@ -7,11 +9,11 @@ import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { WHITE } from '../res/styles/Colors';
 import { JOST } from '../res/styles/Fonts';
-import { getCurrentUser } from '../res/utilFunctions';
-import { AvailabilityDayTile } from './AvailabilityDayTile';
+// import { getCurrentUser } from '../res/utilFunctions';
 import { AvailabilityItem } from './AvailabilityItem';
 import Dots from 'react-native-dots-pagination';
 import { LinearGradient } from 'expo-linear-gradient';
+import { User } from '../models';
 
 interface Props {
   navigation: NavigationProps;
@@ -33,15 +35,18 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
   const [selectedDay, setSelectedDay] = React.useState(Day.Mon);
   const [dayCard, setDayCard] = useState<JSX.Element[]>([]);
   const [activeState, setActiveState] = useState(2);
-
   // useEffect(() => {
-  //   const loadUser = async () => {
-  //     const sessionUser = await getCurrentUser();
-  //     // setCurrentUser(sessionUser);
-  //     console.log('gender currentuser', sessionUser);
+  //   const loadDatastore = async () => {
+  //     const userInfo = await Auth.currentUserInfo();
+  //     const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number), {
+  //       limit: 1,
+  //     });
+  //     console.log('users availb', users);
+  //     // if (users.length === 1) {
+  //     //   SetUser(users[0]);
+  //     // }
   //   };
-
-  //   loadUser();
+  //   loadDatastore();
   // }, []);
 
   useEffect(() => {
@@ -126,7 +131,7 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
       </View>
       <Divider color="#8B8B8B" style={{ width: 360, alignSelf: 'center', marginTop: 15 }} orientation="horizontal" />
       <View>
-        <AvailabilityItem />
+        <AvailabilityItem day={selectedDay} />
       </View>
       <View style={{ position: 'absolute', bottom: 68, alignSelf: 'center' }}>
         <Dots activeColor="#3F8A8D" length={4} active={activeState} />

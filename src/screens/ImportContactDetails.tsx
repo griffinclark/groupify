@@ -13,7 +13,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Analytics from 'expo-firebase-analytics';
 import { User } from '../models';
-import { getCurrentUser } from '../res/utilFunctions';
+// import { getCurrentUser } from '../res/utilFunctions';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { Auth } from 'aws-amplify';
 

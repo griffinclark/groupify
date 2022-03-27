@@ -51,37 +51,30 @@ const AgeCard: React.FC<AgeProps> = ({ age, setAge }: AgeProps) => (
 );
 
 export const OnboardingScreens: React.FC<Props> = ({ navigation, route }: Props) => {
-  const [currentUser, setCurrentUser] = useState<User>();
   const [age, setAge] = useState('');
   const [user, SetUser] = useState<User>();
   const [activeState, setActiveState] = useState(0);
 
   useEffect(() => {
-    const loadUser = async () => {
-      const sessionUser = await getCurrentUser();
-      setCurrentUser(sessionUser);
-      console.log('session', sessionUser);
+    const loadDatastore = async () => {
+      const userInfo = await Auth.currentUserInfo();
+      const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number), {
+        limit: 1,
+      });
+      console.log('users', users);
+      if (users.length === 1) {
+        SetUser(users[0]);
+      }
     };
-    // const loadDatastore = async () => {
-    //   const users = await DataStore.query(User, (user) => user.phoneNumber('eq', currentUser?.phoneNumber), {
-    //     limit: 1,
-    //   });
-    //   if (users.length === 1) {
-    //     SetUser(users[0]);
-    //   }
-    // };
-    loadUser();
-    if (currentUser) {
-      // loadDatastore();
-    }
+    loadDatastore();
   }, []);
 
   const handleSubmit = async () => {
-    // await DataStore.save(
-    //   User.copyOf(currentUser, (updated) => {
-    //     updated.age = age;
-    //   }),
-    // );
+    await DataStore.save(
+      User.copyOf(user, (updated) => {
+        updated.age = age;
+      }),
+    );
     navigation.navigate('Gender', {});
   };
   return (

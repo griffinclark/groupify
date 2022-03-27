@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { JOST } from '../res/styles/Fonts';
 import { WHITE } from '../res/styles/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 
 interface Props {
   // onPress: () => void;
   item: string;
-  handlePress: (time: any) => void;
-  selected: boolean;
+  day: string;
 }
 
-const Time: React.FC<Props> = ({ handlePress, selected, item }: Props) => (
+interface TimeProps {
+  handlePress: (time: any) => void;
+  selected: boolean;
+  item: string;
+}
+
+const Time: React.FC<TimeProps> = ({ handlePress, selected, item }: TimeProps) => (
   <TouchableOpacity
     onPress={handlePress}
     style={{
@@ -28,15 +34,43 @@ const Time: React.FC<Props> = ({ handlePress, selected, item }: Props) => (
 );
 export const TimeBox: React.FC<Props> = ({ item }: Props) => {
   const [selected, setSelected] = useState(false);
+  const [availableTime, setAvailableTime] = useState<any>({
+    Mon: [],
+  });
+  const [selectedTime, setSelectedTime] = useState<string[]>([]);
+
+  // const handlePress = () => {
+  //   if (!selected) {
+  //     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  //     setSelectedTime([item]);
+  //     availableTime.Mon = [item];
+  //     setAvailableTime({ ...availableTime });
+  //     setSelected(true);
+  //   }
+  //   if (selected) {
+  //     setSelected(false);
+  //   }
+  // };
 
   const handlePress = () => {
     if (!selected) {
+      const random = [];
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      setSelectedTime([item]);
+      random.push(item);
+      availableTime.Mon = random;
+      setAvailableTime((curr: any) => ({ ...curr, availableTime }));
       setSelected(true);
     }
     if (selected) {
       setSelected(false);
     }
   };
+
+  useEffect(() => {
+    console.log('availableTime', availableTime);
+    // console.log('availableTime', selectedTime);
+  }, [selected]);
 
   return (
     <View style={{ marginTop: 10 }}>
