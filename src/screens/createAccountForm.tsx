@@ -23,6 +23,9 @@ import * as Analytics from 'expo-firebase-analytics';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { NavigationProps } from '../res/dataModels';
 import { JOST } from '../res/styles/Fonts';
+// import { getUserPushToken } from '../res/storageFunctions';
+// import { getExpoPushToken, registerForPushNotifications } from '../res/notifications';
+// import { User } from '../models';
 
 export interface Props {
   navigation: NavigationProps;
@@ -94,10 +97,11 @@ export const createAccountForm = ({ navigation, route }: Props) => {
       });
       setSecureStoreItem('phone', phone);
       setSecureStoreItem('password', password);
+      // const userInfo = await Auth.currentUserInfo();
       console.log('user successfully created');
       setError(undefined);
       clearError();
-      navigation.navigate('ValidateUser', { step: 'validate', phone: formatPhone });
+      navigation.navigate('ValidateUser', { step: 'validate', phone: formatPhone, name: name });
       await Analytics.logEvent('sign_up', {});
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

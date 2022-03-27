@@ -6,12 +6,12 @@ import { RoutePropParams } from '../res/root-navigation';
 import { DataStore } from '@aws-amplify/datastore';
 import { WHITE } from '../res/styles/Colors';
 import { JOST } from '../res/styles/Fonts';
-import { getCurrentUser } from '../res/utilFunctions';
-import { Checkbox } from 'react-native-paper';
 import { Divider } from 'react-native-elements';
 import { Gender, User } from '../models';
+import { RadioButton } from 'react-native-paper';
 import Dots from 'react-native-dots-pagination';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Auth } from 'aws-amplify';
 
 interface Props {
   navigation: NavigationProps;
@@ -26,68 +26,77 @@ enum SelectedOptions {
 }
 export const GenderScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   const [state, setState] = useState<any>(SelectedOptions.female);
-  const [currentUser, setCurrentUser] = useState<User>();
+  const [user, setUser] = useState<User>();
   const [genderSelected, setGenderSelected] = useState('');
   const [activeState, setActiveState] = useState(1);
 
-  // useEffect(() => {
-  //   const loadUser = async () => {
-  //     const sessionUser = await getCurrentUser();
-  //     setCurrentUser(sessionUser);
-  //     // console.log('gender currentuser', sessionUser);
-  //   };
-  //   switch (state) {
-  //     case SelectedOptions.female === state:
-  //       setGenderSelected('Female');
-  //       break;
-  //     case SelectedOptions.male === state:
-  //       setGenderSelected('MALE');
-  //       break;
-  //     case SelectedOptions.nonBinary === state:
-  //       setGenderSelected('NONBINARY');
-  //       break;
-  //     case SelectedOptions.preferNotToSay === state:
-  //       setGenderSelected('PREFER_NOT_TO_SAY');
-  //       break;
-  //   }
-  //   loadUser();
-  //   // console.log(state);
-  //   console.log(genderSelected);
-  // }, [state]);
+  useEffect(() => {
+    const loadDatastore = async () => {
+      const userInfo = await Auth.currentUserInfo();
+      const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number), {
+        limit: 1,
+      });
+      console.log('users', users);
+      if (users.length === 1) {
+        setUser(users[0]);
+      }
+    };
+    //   switch (state) {
+    //     case SelectedOptions.female === state:
+    //       setGenderSelected('Female');
+    //       break;
+    //     case SelectedOptions.male === state:
+    //       setGenderSelected('MALE');
+    //       break;
+    //     case SelectedOptions.nonBinary === state:
+    //       setGenderSelected('NONBINARY');
+    //       break;
+    //     case SelectedOptions.preferNotToSay === state:
+    //       setGenderSelected('PREFER_NOT_TO_SAY');
+    //       break;
+    //   }
+    loadDatastore();
+    // console.log(state);
+    console.log(genderSelected);
+  }, [state]);
 
-  // const handleNext = async () => {
-  //   const gender = genderSelected;
-  //   if (gender == 'FEMALE') {
-  //     await DataStore.save(
-  //       User.copyOf(currentUser, (updated) => {
-  //         updated.gender = Gender.FEMALE;
-  //       }),
-  //     );
-  //   }
-  //   if (gender == 'MALE') {
-  //     await DataStore.save(
-  //       User.copyOf(currentUser, (updated) => {
-  //         updated.gender = Gender.MALE;
-  //       }),
-  //     );
-  //   }
-  //   if (gender == 'NONBINARY') {
-  //     await DataStore.save(
-  //       User.copyOf(currentUser, (updated) => {
-  //         updated.gender = Gender.NONBINARY;
-  //       }),
-  //     );
-  //   }
-  //   if (gender == 'PREFER_NOT_TO_SAY') {
-  //     await DataStore.save(
-  //       User.copyOf(currentUser, (updated) => {
-  //         updated.gender = Gender.PREFER_NOT_TO_SAY;
-  //       }),
-  //     );
-  //   }
+  useEffect(() => {
+    console.log('state', state);
+  }, []);
 
-  //   navigation.navigate('Availability', {});
-  // };
+  const handleNext = async () => {
+    const gender = genderSelected;
+    if (state === 'Female') {
+      await DataStore.save(
+        User.copyOf(user, (updated) => {
+          updated.gender = Gender.FEMALE;
+        }),
+      );
+    }
+    if (state === 'Male') {
+      await DataStore.save(
+        User.copyOf(user, (updated) => {
+          updated.gender = Gender.MALE;
+        }),
+      );
+    }
+    if (state == 'Nonbinary') {
+      await DataStore.save(
+        User.copyOf(user, (updated) => {
+          updated.gender = Gender.NONBINARY;
+        }),
+      );
+    }
+    if (state == 'Prefer Not to Say') {
+      await DataStore.save(
+        User.copyOf(user, (updated) => {
+          updated.gender = Gender.PREFER_NOT_TO_SAY;
+        }),
+      );
+    }
+
+    navigation.navigate('Availability', {});
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: WHITE }}>
@@ -111,10 +120,16 @@ export const GenderScreen: React.FC<Props> = ({ navigation, route }: Props) => {
               onPress={() => setState(SelectedOptions.female)}
               style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}
             >
-              <Checkbox.Android
+              {/* <Checkbox.Android
                 status={state == SelectedOptions.female ? 'checked' : 'unchecked'}
                 color="#3F8A8D"
                 uncheckedColor="#3F8A8D"
+              /> */}
+              <RadioButton
+                color="#3F8A8D"
+                uncheckedColor="#3F8A8D"
+                value={SelectedOptions.female}
+                status={state == SelectedOptions.female ? 'checked' : 'unchecked'}
               />
               <Text style={{ fontFamily: JOST['400'], fontSize: 16 }}>Female</Text>
             </TouchableOpacity>
@@ -125,10 +140,16 @@ export const GenderScreen: React.FC<Props> = ({ navigation, route }: Props) => {
               onPress={() => setState(SelectedOptions.male)}
               style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}
             >
-              <Checkbox.Android
+              {/* <Checkbox.Android
                 status={state == SelectedOptions.male ? 'checked' : 'unchecked'}
                 color="#3F8A8D"
                 uncheckedColor="#3F8A8D"
+              /> */}
+              <RadioButton
+                color="#3F8A8D"
+                uncheckedColor="#3F8A8D"
+                value={SelectedOptions.male}
+                status={state == SelectedOptions.male ? 'checked' : 'unchecked'}
               />
               <Text style={{ fontFamily: JOST['400'], fontSize: 16 }}>Male</Text>
             </TouchableOpacity>
@@ -139,10 +160,16 @@ export const GenderScreen: React.FC<Props> = ({ navigation, route }: Props) => {
               onPress={() => setState(SelectedOptions.nonBinary)}
               style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}
             >
-              <Checkbox.Android
+              {/* <Checkbox.Android
                 status={state == SelectedOptions.nonBinary ? 'checked' : 'unchecked'}
                 color="#3F8A8D"
                 uncheckedColor="#3F8A8D"
+              /> */}
+              <RadioButton
+                color="#3F8A8D"
+                uncheckedColor="#3F8A8D"
+                value={SelectedOptions.nonBinary}
+                status={state == SelectedOptions.nonBinary ? 'checked' : 'unchecked'}
               />
               <Text style={{ fontFamily: JOST['400'], fontSize: 16 }}>Nonbinary</Text>
             </TouchableOpacity>
@@ -153,10 +180,16 @@ export const GenderScreen: React.FC<Props> = ({ navigation, route }: Props) => {
               onPress={() => setState(SelectedOptions.preferNotToSay)}
               style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}
             >
-              <Checkbox.Android
+              {/* <Checkbox.Android
                 status={state == SelectedOptions.preferNotToSay ? 'checked' : 'unchecked'}
                 color="#3F8A8D"
                 uncheckedColor="#3F8A8D"
+              /> */}
+              <RadioButton
+                color="#3F8A8D"
+                uncheckedColor="#3F8A8D"
+                value={SelectedOptions.preferNotToSay}
+                status={state == SelectedOptions.preferNotToSay ? 'checked' : 'unchecked'}
               />
               <Text style={{ fontFamily: JOST['400'], fontSize: 16 }}>Prefer Not to Say</Text>
             </TouchableOpacity>
@@ -180,7 +213,7 @@ export const GenderScreen: React.FC<Props> = ({ navigation, route }: Props) => {
           <Text style={{ fontFamily: JOST['500'], fontSize: 20, lineHeight: 28.9, color: '#3F8A8D' }}>Skip</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Availability', {})}
+          onPress={handleNext}
           style={{
             backgroundColor: '#3F8A8D',
             width: 222,

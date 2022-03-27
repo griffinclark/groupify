@@ -56,6 +56,7 @@ export type RoutePropParams = {
     last: string;
     activity: string;
     plan: Plan;
+    name: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     place: any;
     data: {
