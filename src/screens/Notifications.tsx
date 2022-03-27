@@ -1,6 +1,6 @@
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import { AppText, Screen } from '../atoms/AtomsExports';
 import { RoutePropParams } from '../res/root-navigation';
 import { NavigationProps } from '../res/dataModels';
@@ -21,20 +21,23 @@ export interface Props {
 export const Notifications: React.FC<Props> = ({ navigation, route }: Props) => {
   const currentUser: User = route.params.currentUser;
   const [notifications, setNotifications] = useState<NotificationFromTo[]>();
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
-    const loadNotifications = async () => {
-      const allNotifs = await DataStore.query(NotificationFromTo, Predicates.ALL, {
-        sort: (s) => s.createdAt(SortDirection.DESCENDING),
-      });
-
-      const userNotifs = allNotifs.filter((notif) => notif.recipient.id === currentUser.id);
-
-      setNotifications(userNotifs);
-    };
-
     loadNotifications();
   }, []);
+
+  const loadNotifications = async () => {
+    setRefreshing(true);
+    const allNotifs = await DataStore.query(NotificationFromTo, Predicates.ALL, {
+      sort: (s) => s.createdAt(SortDirection.DESCENDING),
+    });
+
+    const userNotifs = allNotifs.filter((notif) => notif.recipient.id === currentUser.id);
+
+    setNotifications(userNotifs);
+    setRefreshing(false);
+  };
 
   const returnCreatedTime = (time: string) => {
     let diffInMilliSeconds = Math.abs(new Date().valueOf() - new Date(time).valueOf()) / 1000;
@@ -79,14 +82,20 @@ export const Notifications: React.FC<Props> = ({ navigation, route }: Props) => 
           <ActivityIndicator size={'large'} />
         </View>
       ) : (
-        <ScrollView testID="NotificationsScreen" style={{ flex: 1 }}>
+        <ScrollView
+          testID="NotificationsScreen"
+          style={{ flex: 1 }}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={loadNotifications} />}
+        >
           {notifications.length > 0 ? (
             notifications.map((notification: any) => (
-              <View style={styles.notificationItem} key={`notification-${notification.notificationId}`}>
+              <View style={styles.notificationItem} key={`notification-${notification.id}`}>
                 <AppText style={styles.notificationText}>{notification.notification.body}</AppText>
                 <AppText style={styles.notificationTime}>
                   {returnCreatedTime(notification.notification.createdAt)}
                 </AppText>
+
+                <AppText>{notification.notificationId}</AppText>
               </View>
             ))
           ) : (
