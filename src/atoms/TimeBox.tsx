@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { JOST } from '../res/styles/Fonts';
 import { WHITE } from '../res/styles/Colors';
@@ -63,12 +63,6 @@ export const TimeBox: React.FC<Props> = ({ item, onPress }: Props) => {
       onPress(item, true);
     }
   };
-
-  useEffect(() => {
-    //console.log('availableTime', availableTime);
-    // console.log('availableTime', selectedTime);
-  }, [selected]);
-
   return (
     <View style={{ marginTop: 10 }}>
       {selected ? (
