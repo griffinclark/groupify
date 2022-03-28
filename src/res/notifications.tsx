@@ -2,6 +2,9 @@ import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { ALERT } from './styles/Colors';
+import { createNotification, createNotificationFromTo } from '../graphql/mutations.js';
+import { API, graphqlOperation } from 'aws-amplify';
+import { NotificationMessage } from './dataModels';
 
 export const registerForPushNotifications = async (): Promise<void> => {
   if (Constants.isDevice) {
@@ -58,4 +61,36 @@ export const sendPushNotification = async (
     },
     body: JSON.stringify(message),
   });
+};
+
+export const createNotificationAWS = async (msg: NotificationMessage) => {
+  if (!msg.body) return;
+
+  try {
+    const notificationResponse: any = await API.graphql(
+      graphqlOperation(createNotification, { input: { body: msg.body, meassageSubtitle: msg.title } }),
+    );
+
+    return notificationResponse.data?.createNotifcation;
+  } catch (err) {
+    console.log('error:', err);
+  }
+};
+
+export const createNotificationFromToAWS = async (
+  notificationId: string,
+  recipientId: string,
+  senderType: 'USER' | 'NOTIFICATIONPANEL',
+) => {
+  try {
+    const notificationFromToRespose: any = await API.graphql(
+      graphqlOperation(createNotificationFromTo, {
+        input: { notificationID: notificationId, recipientID: recipientId, senderType: senderType },
+      }),
+    );
+
+    return notificationFromToRespose.data.createNotificationFromTo;
+  } catch (err) {
+    console.log('error:', err);
+  }
 };

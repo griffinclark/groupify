@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "serviceName": "AppSync",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authgroupifyMainet"
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "AWS_IAM"
+      }
+    ],
+    "conflictResolution": {
+      "defaultResolutionStrategy": {
+        "type": "AUTOMERGE"
+      }
+    },
+    "apiName": "groupifyMain",
+    "gqlSchemaPath": "/tmp/amplify-056cf9fd-9ebd-467c-9d6d-06a07e59a36b/amplify/backend/api/groupifyMain/schema.graphql"
+  }
+}

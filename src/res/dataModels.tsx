@@ -29,6 +29,11 @@ export interface NavigationProps {
   push: (ev: string, {}) => void;
 }
 
+export interface NotificationMessage {
+  title: string;
+  body: string;
+}
+
 export interface Contact {
   id: string;
   name: string;

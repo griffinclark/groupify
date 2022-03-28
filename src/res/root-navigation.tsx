@@ -34,8 +34,10 @@ import { ProfileScreen } from '../screens/ProfileScreen';
 import { ValidateUser } from '../screens/ValidateUser';
 import { PlanData } from '../res/dataModels';
 import { Acknowledgements } from '../screens/Acknowledgements';
+import { Notifications } from '../screens/Notifications';
 
 export type RoutePropParams = {
+  name: string;
   params: {
     userID: string;
     currentUser: User;
@@ -138,6 +140,7 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ValidateUser" component={ValidateUser} options={{ headerShown: false }} />
         <Stack.Screen name="Acknowledgement" component={Acknowledgements} options={{ headerShown: false }} />
+        <Stack.Screen name="Notifications" component={Notifications} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

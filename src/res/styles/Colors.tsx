@@ -20,6 +20,7 @@ export const GREY_6 = '#EEEEEE';
 export const GREY_7 = '#FAFAFA';
 export const GREY_8 = '#767676';
 export const GREY_9 = '#cccccc';
+export const GREY_10 = '#8B8B8B';
 export const RED = '#E71717';
 export const GREEN = '#cdffcd';
 export const MESSAGE_BLUE = '#007EF2';
