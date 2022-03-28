@@ -87,6 +87,10 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
     }
   }, [selectedDay]);
 
+  const handlePress = () => {
+    setSelected(!selected);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: WHITE }}>
       <TopNavBar
@@ -121,7 +125,7 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
       <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 15, marginTop: 20 }}>
         <Checkbox.Android
           status={selected ? 'checked' : 'unchecked'}
-          // onPress={handlePress}
+          onPress={handlePress}
           color="#3F8A8D"
           uncheckedColor="#3F8A8D"
         />
@@ -131,7 +135,7 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
       </View>
       <Divider color="#8B8B8B" style={{ width: 360, alignSelf: 'center', marginTop: 15 }} orientation="horizontal" />
       <View>
-        <AvailabilityItem day={selectedDay} />
+        <AvailabilityItem allSelected={selected} day={selectedDay} />
       </View>
       <View style={{ position: 'absolute', bottom: 68, alignSelf: 'center' }}>
         <Dots activeColor="#3F8A8D" length={4} active={activeState} />
