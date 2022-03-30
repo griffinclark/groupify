@@ -8,7 +8,6 @@ import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { WHITE } from '../res/styles/Colors';
 import { JOST } from '../res/styles/Fonts';
-import { getCurrentUser } from '../res/utilFunctions';
 import Dots from 'react-native-dots-pagination';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -19,12 +18,13 @@ interface Props {
 
 interface AgeProps {
   age: string;
+  user: User;
   setAge: (age: string) => void;
 }
 
-const AgeCard: React.FC<AgeProps> = ({ age, setAge }: AgeProps) => (
+const AgeCard: React.FC<AgeProps> = ({ age, setAge, user }: AgeProps) => (
   <View style={{ backgroundColor: WHITE }}>
-    <Text style={styles.text1}>Hey Joni, Let&apos;s get your account set up.</Text>
+    <Text style={styles.text1}>Hey {user.name.split(' ')[0]}, Let&apos;s get your account set up.</Text>
     <LinearGradient colors={['#fff', '#ccc']} style={styles.gradientStyle} />
     <View
       style={{
@@ -89,7 +89,7 @@ export const OnboardingScreens: React.FC<Props> = ({ navigation, route }: Props)
         targetScreen={'SelectorMenu'}
       />
       <View>
-        <AgeCard age={age} setAge={setAge} />
+        <AgeCard user={user} age={age} setAge={setAge} />
       </View>
       <View style={{ position: 'absolute', bottom: 100, alignSelf: 'center' }}>
         <Dots activeColor="#3F8A8D" length={4} active={activeState} />

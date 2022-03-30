@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { DataStore } from '@aws-amplify/datastore';
+import { Interests } from '../models';
+import { User } from '../models';
 import { JOST } from '../res/styles/Fonts';
 import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
@@ -9,6 +12,7 @@ import { tags } from '../res/staticData';
 import { InterestBox } from './InterestBox';
 import Dots from 'react-native-dots-pagination';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Auth } from 'aws-amplify';
 
 interface Props {
   navigation: NavigationProps;
@@ -17,6 +21,55 @@ interface Props {
 
 export const HobbyScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   const [activeState, setActiveState] = useState(3);
+  const [user, SetUser] = useState<User>();
+  const [interestItems, setInterestItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    const loadDatastore = async () => {
+      const userInfo = await Auth.currentUserInfo();
+      const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number), {
+        limit: 1,
+      });
+      console.log('users', users);
+      if (users.length === 1) {
+        SetUser(users[0]);
+      }
+    };
+    loadDatastore();
+    console.log('interest Items', [...interestItems]);
+  }, [interestItems]);
+
+  const handlePress = (item: string, removed: boolean) => {
+    const newInterestItems: string[] = [];
+    if (removed) {
+      for (let i = 0; i < newInterestItems.length; i++) {
+        if (newInterestItems[i] === item) {
+          newInterestItems.splice(i, 1);
+        }
+      }
+    } else {
+      newInterestItems.push(item);
+    }
+    setInterestItems((int) => [...int, ...newInterestItems]);
+  };
+
+  const handleNext = async () => {
+    try {
+      const addInterest = await DataStore.save(
+        new Interests({
+          interest: [...interestItems],
+        }),
+      );
+      await DataStore.save(
+        User.copyOf(user, (updated) => {
+          updated.Interest = addInterest;
+        }),
+      );
+    } catch (error) {
+      console.log('error', error);
+    }
+    navigation.navigate('SelectorMenu', {});
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: WHITE }}>
       <TopNavBar
@@ -45,7 +98,7 @@ export const HobbyScreen: React.FC<Props> = ({ navigation, route }: Props) => {
               columnWrapperStyle={{
                 flexWrap: 'wrap',
               }}
-              renderItem={({ item }) => <InterestBox item={item.name} />}
+              renderItem={({ item }) => <InterestBox handlePress={handlePress} item={item.name} />}
               keyExtractor={(item) => item.id + ''}
             />
           </View>
@@ -68,7 +121,7 @@ export const HobbyScreen: React.FC<Props> = ({ navigation, route }: Props) => {
           <Text style={{ fontFamily: JOST['500'], fontSize: 20, lineHeight: 28.9, color: '#3F8A8D' }}>Skip</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Login', {})}
+          onPress={handleNext}
           style={{
             backgroundColor: '#3F8A8D',
             width: 222,

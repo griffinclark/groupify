@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
-import { Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
+import { User } from '../models';
 import { Divider } from 'react-native-elements';
 import { Checkbox } from 'react-native-paper';
 import { TopNavBar } from '../molecules/TopNavBar';
@@ -9,11 +9,11 @@ import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
 import { WHITE } from '../res/styles/Colors';
 import { JOST } from '../res/styles/Fonts';
-// import { getCurrentUser } from '../res/utilFunctions';
 import { AvailabilityItem } from './AvailabilityItem';
 import Dots from 'react-native-dots-pagination';
 import { LinearGradient } from 'expo-linear-gradient';
-import { User } from '../models';
+import { Auth } from 'aws-amplify';
+import { AvailabilityTime } from '../models';
 
 interface Props {
   navigation: NavigationProps;
@@ -35,21 +35,29 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
   const [selectedDay, setSelectedDay] = React.useState(Day.Mon);
   const [dayCard, setDayCard] = useState<JSX.Element[]>([]);
   const [activeState, setActiveState] = useState(2);
-  // useEffect(() => {
-  //   const loadDatastore = async () => {
-  //     const userInfo = await Auth.currentUserInfo();
-  //     const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number), {
-  //       limit: 1,
-  //     });
-  //     console.log('users availb', users);
-  //     // if (users.length === 1) {
-  //     //   SetUser(users[0]);
-  //     // }
-  //   };
-  //   loadDatastore();
-  // }, []);
+  const [user, SetUser] = useState<User>();
+  const [availableTime, setAvailableTime] = useState<any>({
+    Mon: [],
+    Tues: [],
+    Wed: [],
+    Thur: [],
+    Fri: [],
+    Sat: [],
+    Sun: [],
+  });
 
   useEffect(() => {
+    const loadDatastore = async () => {
+      const userInfo = await Auth.currentUserInfo();
+      const users = await DataStore.query(User, (user) => user.phoneNumber('eq', userInfo.attributes.phone_number), {
+        limit: 1,
+      });
+      console.log('users', users);
+      if (users.length === 1) {
+        SetUser(users[0]);
+      }
+    };
+    loadDatastore();
     const dayTab: JSX.Element[] = [];
 
     for (const dayType in Day) {
@@ -66,7 +74,6 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
             height: 47,
             alignItems: 'center',
             backgroundColor: selectedDay === dayTypeEnum ? '#3F8A8D' : '#FFFFFF',
-            // marginRight: 10,
           }}
         >
           <Text
@@ -91,6 +98,26 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
     setSelected(!selected);
   };
 
+  const handleNext = async () => {
+    // setActiveState(activeState + 1);
+    const availability = await DataStore.save(
+      new AvailabilityTime({
+        Sun: availableTime.Sun,
+        Mon: availableTime.Mon,
+        Tues: availableTime.Tues,
+        Wed: availableTime.Wed,
+        Thur: availableTime.Thur,
+        Fri: availableTime.Fri,
+        Sat: availableTime.Sat,
+      }),
+    );
+    await DataStore.save(
+      User.copyOf(user, (updated) => {
+        updated.availability = availability;
+      }),
+    );
+    navigation.navigate('Hobby', {});
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: WHITE }}>
       <TopNavBar
@@ -135,7 +162,12 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
       </View>
       <Divider color="#8B8B8B" style={{ width: 360, alignSelf: 'center', marginTop: 15 }} orientation="horizontal" />
       <View>
-        <AvailabilityItem allSelected={selected} day={selectedDay} />
+        <AvailabilityItem
+          availableTime={availableTime}
+          setAvailableTime={setAvailableTime}
+          allSelected={selected}
+          day={selectedDay}
+        />
       </View>
       <View style={{ position: 'absolute', bottom: 68, alignSelf: 'center' }}>
         <Dots activeColor="#3F8A8D" length={4} active={activeState} />
@@ -153,7 +185,7 @@ export const AvailablityScreen: React.FC<Props> = ({ navigation, route }: Props)
           <Text style={{ fontFamily: JOST['500'], fontSize: 20, lineHeight: 28.9, color: '#3F8A8D' }}>Skip</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Hobby', {})}
+          onPress={handleNext}
           style={{
             backgroundColor: '#3F8A8D',
             width: 222,

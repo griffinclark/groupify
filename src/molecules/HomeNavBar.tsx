@@ -52,7 +52,7 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
           screen = 'Home';
           break;
         case copy.contactButton:
-          screen = 'Onboarding';
+          screen = 'ContactList';
           break;
         // case copy.friendsButton:
         //   screen = 'ImportContacts';
