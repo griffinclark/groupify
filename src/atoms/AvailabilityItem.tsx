@@ -19,15 +19,6 @@ const data2 = ['12:00', '12:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30',
 
 export const AvailabilityItem: React.FC<Props> = ({ day, allSelected, setAvailableTime, availableTime }: Props) => {
   const [user, SetUser] = useState<User>();
-  // const [availableTime, setAvailableTime] = useState<any>({
-  //   Mon: [],
-  //   Tues: [],
-  //   Wed: [],
-  //   Thur: [],
-  //   Fri: [],
-  //   Sat: [],
-  //   Sun: [],
-  // });
 
   const handlePress = async (item: string, removed: boolean) => {
     if (removed) {

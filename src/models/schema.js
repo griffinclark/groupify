@@ -227,17 +227,12 @@ export const schema = {
                         "targetName": "notificationFromToSenderId"
                     }
                 },
-                "userID": {
-                    "name": "userID",
+                "recipient": {
+                    "name": "recipient",
                     "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "interest": {
-                    "name": "interest",
-                    "isArray": true,
-                    "type": "String",
+                    "type": {
+                        "model": "User"
+                    },
                     "isRequired": true,
                     "attributes": [],
                     "association": {
@@ -277,7 +272,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Interests",
+            "pluralName": "NotificationFromTos",
             "attributes": [
                 {
                     "type": "model",
@@ -286,27 +281,27 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byUser",
+                        "name": "byNotification",
                         "fields": [
-                            "userID"
+                            "notificationID"
                         ]
                     }
                 },
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byUser",
+                        "name": "bySender",
                         "fields": [
-                            "userID"
+                            "senderID"
                         ]
                     }
                 },
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byUser",
+                        "name": "byRecipient",
                         "fields": [
-                            "userID"
+                            "recipientID"
                         ]
                     }
                 },
