@@ -721,8 +721,240 @@ export const listPlans = /* GraphQL */ `
     }
   }
 `;
-
-
+export const syncPlans = /* GraphQL */ `
+  query SyncPlans(
+    $filter: ModelPlanFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPlans(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        planCreatorId
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notification {
+          id
+          body
+          data
+          ttl
+          messageSubtitle
+          sound
+          channel
+          notificationType
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        arbitrations {
+          nextToken
+          startedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          age
+          gender
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getPlanArbitration = /* GraphQL */ `
+  query GetPlanArbitration($id: ID!) {
+    getPlanArbitration(id: $id) {
+      id
+      stat
+      original_description
+      proposed_description
+      value_count
+      planID
+      planArbitrationsId
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      plan {
+        id
+        title
+        description
+        location
+        placeID
+        date
+        time
+        creatorID
+        planCreatorId
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        notification {
+          id
+          body
+          data
+          ttl
+          messageSubtitle
+          sound
+          channel
+          notificationType
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        arbitrations {
+          nextToken
+          startedAt
+        }
+        invitees {
+          nextToken
+          startedAt
+        }
+        creator {
+          id
+          phoneNumber
+          name
+          pushToken
+          friends
+          email
+          age
+          gender
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      createdBy {
+        id
+        name
+        phoneNumber
+        status
+        pushToken
+        planID
+        planInviteesId
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          planCreatorId
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+export const listPlanArbitrations = /* GraphQL */ `
+  query ListPlanArbitrations(
+    $filter: ModelPlanArbitrationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPlanArbitrations(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        stat
+        original_description
+        proposed_description
+        value_count
+        planID
+        planArbitrationsId
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        plan {
+          id
+          title
+          description
+          location
+          placeID
+          date
+          time
+          creatorID
+          planCreatorId
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        createdBy {
+          id
+          name
+          phoneNumber
+          status
+          pushToken
+          planID
+          planInviteesId
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const syncPlanArbitrations = /* GraphQL */ `
   query SyncPlanArbitrations(
     $filter: ModelPlanArbitrationFilterInput
@@ -894,200 +1126,10 @@ export const listInvitees = /* GraphQL */ `
           updatedAt
         }
       }
-      nextToken
-      startedAt
     }
   }
 `;
-export const syncPlans = /* GraphQL */ `
-  query SyncPlans(
-    $filter: ModelPlanFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncPlans(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        creatorID
-        planCreatorId
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        arbitrations {
-          nextToken
-          startedAt
-        }
-        invitees {
-          nextToken
-          startedAt
-        }
-        creator {
-          id
-          phoneNumber
-          name
-          pushToken
-          friends
-          email
-          age
-          gender
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getPlanArbitration = /* GraphQL */ `
-  query GetPlanArbitration($id: ID!) {
-    getPlanArbitration(id: $id) {
-      id
-      stat
-      original_description
-      proposed_description
-      value_count
-      planID
-      planArbitrationsId
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      plan {
-        id
-        title
-        description
-        location
-        placeID
-        date
-        time
-        creatorID
-        planCreatorId
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        arbitrations {
-          nextToken
-          startedAt
-        }
-        invitees {
-          nextToken
-          startedAt
-        }
-        creator {
-          id
-          phoneNumber
-          name
-          pushToken
-          friends
-          email
-          age
-          gender
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-      createdBy {
-        id
-        name
-        phoneNumber
-        status
-        pushToken
-        planID
-        planInviteesId
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        plan {
-          id
-          title
-          description
-          location
-          placeID
-          date
-          time
-          creatorID
-          planCreatorId
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-    }
-  }
-`;
-export const listPlanArbitrations = /* GraphQL */ `
-  query ListPlanArbitrations(
-    $filter: ModelPlanArbitrationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPlanArbitrations(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        stat
-        original_description
-        proposed_description
-        value_count
-        planID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        plan {
-          id
-          title
-          description
-          location
-          placeID
-          date
-          time
-          creatorID
-          planCreatorId
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
+
 export const syncInvitees = /* GraphQL */ `
   query SyncInvitees(
     $filter: ModelInviteeFilterInput
@@ -1136,6 +1178,7 @@ export const syncInvitees = /* GraphQL */ `
     }
   }
 `;
+
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
