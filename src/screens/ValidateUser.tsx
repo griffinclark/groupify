@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -14,15 +14,14 @@ import {
 import CodeInput from 'react-native-confirmation-code-input';
 import { RoutePropParams } from '../res/root-navigation';
 import { Auth } from 'aws-amplify';
-import { DataStore } from '@aws-amplify/datastore';
+// import { DataStore } from '@aws-amplify/datastore';
 import { TEAL_8, WHITE } from '../res/styles/Colors';
 import { JOST } from '../res/styles/Fonts';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { NavigationProps } from '../res/dataModels';
-import { getExpoPushToken, registerForPushNotifications } from '../res/notifications';
-import { User } from '../models';
-import { setUserPushToken } from '../res/storageFunctions';
-import { getCurrentUser } from '../res/utilFunctions';
+// import { getExpoPushToken, registerForPushNotifications } from '../res/notifications';
+// import { User } from '../models';
+// import { setUserPushToken } from '../res/storageFunctions';
 
 export interface Props {
   navigation: NavigationProps;
@@ -36,27 +35,33 @@ export const ValidateUser = ({ navigation, route }: Props) => {
 
   const confirmRef = useRef<CodeInput>(null);
 
-  useEffect(() => {
-    console.log(route.params.phone);
-  }, []);
+  // useEffect( () => {
+  //   const loadDatastore = async () => {
+  //   const userInfo = await Auth.currentUserInfo();
+  //   console.log(route.params.phone);
+  //   console.log('userrrrr', userInfo);
+  //   };
+  //   loadDatastore();
+  // }, []);
 
   const validateUser = async () => {
     try {
-      await registerForPushNotifications();
+      // await registerForPushNotifications();
       await Auth.confirmSignUp(route.params.phone, validationCode);
-      console.log('New User: Adding user to database');
-      const newToken = await getExpoPushToken();
-      await setUserPushToken(newToken);
-      console.log('newToken', newToken);
-      await DataStore.save(
-        new User({
-          phoneNumber: route.params.phone,
-          name: route.params.name,
-          pushToken: newToken,
-        }),
-      );
-      console.log('Created new user:');
-      console.log('User created', newToken);
+      // console.log('New User: Adding user to database');
+      // const newToken = await getExpoPushToken();
+      // console.log('New User: New Token', newToken);
+      // await setUserPushToken(newToken);
+      // console.log('newToken', newToken);
+      // await DataStore.save(
+      //   new User({
+      //     phoneNumber: route.params.phone,
+      //     name: route.params.name,
+      //     pushToken: newToken,
+      //   }),
+      // );
+      // console.log('Created new user:');
+      // console.log('User created', newToken);
       // console.log('userInfo', userInfo);
       navigation.navigate('Login', { accountCreated: 'success' });
     } catch (err: any) {

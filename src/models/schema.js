@@ -302,6 +302,15 @@ export const schema = {
                     }
                 },
                 {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID"
+                        ]
+                    }
+                },
+                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -549,36 +558,6 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetName": "userInterestId"
-                    }
-                },
-                "age": {
-                    "name": "age",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "gender": {
-                    "name": "gender",
-                    "isArray": false,
-                    "type": {
-                        "enum": "Gender"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "interests": {
-                    "name": "interests",
-                    "isArray": true,
-                    "type": {
-                        "model": "Interest"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "userID"
                     }
                 },
                 "createdAt": {
@@ -1073,15 +1052,6 @@ export const schema = {
             "values": [
                 "USER",
                 "NOTIFICATIONPANEL"
-            ]
-        },
-        "Gender": {
-            "name": "Gender",
-            "values": [
-                "MALE",
-                "FEMALE",
-                "NONBINARY",
-                "PREFER_NOT_TO_SAY"
             ]
         },
         "Status": {

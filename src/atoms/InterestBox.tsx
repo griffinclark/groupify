@@ -2,30 +2,36 @@ import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { JOST } from '../res/styles/Fonts';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 
 interface Props {
   item: string;
+  handlePress: (interest: string, removed: boolean) => void;
 }
 
-export const InterestBox: React.FC<Props> = ({ item }: Props) => {
+export const InterestBox: React.FC<Props> = ({ item, handlePress }: Props) => {
   const [selected, setSelected] = React.useState(false);
-  const handlePress = () => {
+
+  const onPress = () => {
     if (!selected) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      handlePress(item, false);
       setSelected(true);
     }
     if (selected) {
       setSelected(false);
+      handlePress(item, true);
     }
   };
   return (
     <>
       {selected ? (
         <TouchableOpacity
-          onPress={handlePress}
+          onPress={onPress}
           style={{
             borderWidth: 2,
             borderRadius: 15,
-            marginHorizontal: 8,
+            marginHorizontal: 2,
             marginVertical: 10,
             borderColor: '#DBDBDB',
           }}
@@ -52,12 +58,12 @@ export const InterestBox: React.FC<Props> = ({ item }: Props) => {
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
-          onPress={handlePress}
+          onPress={onPress}
           style={{
             backgroundColor: selected ? '#31A59F' : '#fff',
             borderWidth: 2,
             borderRadius: 15,
-            marginHorizontal: 8,
+            marginHorizontal: 4,
             marginVertical: 10,
             borderColor: '#DBDBDB',
           }}

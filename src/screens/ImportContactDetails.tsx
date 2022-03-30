@@ -136,7 +136,7 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation, route }: Pro
         <View style={styles.headerContainer}>
           <View style={styles.headerTextContainer}>
             <Text style={{ fontSize: 22, fontWeight: '400' }}>
-              {/* Welcome to Groupify, {currentUser?.name.split(' ')[0]}! */}
+              Welcome to Groupify, {currentUser?.name.split(' ')[0]}!
             </Text>
             <Text style={styles.headerText}>
               The more friends you add to groupify, the more easier it is to make plans. Add friends from your contacts

@@ -34,27 +34,10 @@ const Time: React.FC<TimeProps> = ({ handlePress, selected, item }: TimeProps) =
 );
 export const TimeBox: React.FC<Props> = ({ item, onPress }: Props) => {
   const [selected, setSelected] = useState(false);
-  const [selectedTime, setSelectedTime] = useState<string>();
-
-  // const handlePress = () => {
-  //   if (!selected) {
-  //     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  //     setSelectedTime([item]);
-  //     availableTime.Mon = [item];
-  //     setAvailableTime({ ...availableTime });
-  //     setSelected(true);
-  //   }
-  //   if (selected) {
-  //     setSelected(false);
-  //   }
-  // };
 
   const handlePress = () => {
     if (!selected) {
-      const random = [];
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      setSelectedTime(item);
-      random.push(item);
       onPress(item, false);
       setSelected(true);
     }
