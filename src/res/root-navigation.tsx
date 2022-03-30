@@ -35,6 +35,10 @@ import { ValidateUser } from '../screens/ValidateUser';
 import { PlanData } from '../res/dataModels';
 import { Acknowledgements } from '../screens/Acknowledgements';
 import { Notifications } from '../screens/Notifications';
+import { OnboardingScreens } from '../screens/OnboardingScreens';
+import { GenderScreen } from '../atoms/GenderScreen';
+import { AvailablityScreen } from '../atoms/AvailabilityScreen';
+import { HobbyScreen } from '../atoms/HobbyScreen';
 
 export type RoutePropParams = {
   name: string;
@@ -52,6 +56,7 @@ export type RoutePropParams = {
     last: string;
     activity: string;
     plan: Plan;
+    name: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     place: any;
     data: {
@@ -141,6 +146,10 @@ export const RootNavigation: React.FC<RootProps> = ({ initialRoute, initialParam
         <Stack.Screen name="ValidateUser" component={ValidateUser} options={{ headerShown: false }} />
         <Stack.Screen name="Acknowledgement" component={Acknowledgements} options={{ headerShown: false }} />
         <Stack.Screen name="Notifications" component={Notifications} options={{ headerShown: false }} />
+        <Stack.Screen name="Onboarding" component={OnboardingScreens} options={{ headerShown: false }} />
+        <Stack.Screen name="Gender" component={GenderScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Availability" component={AvailablityScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Hobby" component={HobbyScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

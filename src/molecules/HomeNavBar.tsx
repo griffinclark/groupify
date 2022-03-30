@@ -45,6 +45,37 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
     },
   ];
 
+  const navigateToScreen = async (target: string): Promise<void> => {
+    try {
+      let screen = '';
+      switch (target) {
+        case copy.groupifyItButton:
+          screen = 'SelectorMenu';
+          break;
+        case copy.plansButton:
+          screen = 'Home';
+          break;
+        case copy.contactButton:
+          screen = 'ContactList';
+          break;
+        // case copy.friendsButton:
+        //   screen = 'ImportContacts';
+        //   break;
+        // case copy.notificationsButton:
+        //   screen = 'Profile';
+        //   break;
+      }
+      navigation.navigate(screen, {
+        navigation: navigation,
+        route: route,
+        currentUser: user,
+        userLocation: userLocation,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const getIcon = (id: NavButtonEnum) => {
     switch (id) {
       case copy.groupifyItButton:

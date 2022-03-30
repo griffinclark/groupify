@@ -56,7 +56,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     Hub.listen('auth', (event) => {
-      console.log('auth event', event);
+      // console.log('auth event', event);
     });
     getSecureStoreItems();
     clearUserData();
@@ -70,7 +70,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
         payload: { event, data },
       } = capsule;
 
-      console.log('DataStore Event', event, data);
+      // console.log('DataStore Event', event, data);
 
       if (event === 'ready') {
         if (subscription) {
@@ -116,12 +116,15 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     setFormatPhone(amplifyPhoneFormat(phone));
+    console.log('formatPhone', info);
   }, [phone]);
 
   useEffect(() => {
     if (currentUser?.id) {
       loginExisting();
       importContacts();
+    } else {
+      createNewUser();
     }
   }, [currentUser]);
 
@@ -165,6 +168,21 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
     }
   };*/
 
+  const createNewUser = async () => {
+    const currentInfo = await Auth.currentUserInfo();
+    const newToken = await getExpoPushToken();
+    await setUserPushToken(newToken);
+    const newUser = await DataStore.save(
+      new User({
+        phoneNumber: currentInfo.attributes.phone_number,
+        name: currentInfo.attributes.name,
+        pushToken: newToken,
+      }),
+    );
+    console.log('Created new user:');
+    console.log('newUser', newUser);
+    return newUser;
+  };
   const loginExisting = async () => {
     if (currentUser) {
       await registerForPushNotifications();
@@ -182,9 +200,9 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
             updated.pushToken = newToken;
           }),
         );
+        navigation.push('SelectorMenu', { userID: currentUser.id, currentUser: currentUser });
       }
       await Analytics.logEvent('login', { userId: currentUser.id });
-      navigation.push('SelectorMenu', { userID: currentUser.id, currentUser: currentUser });
     }
   };
 
@@ -347,7 +365,7 @@ const styles = StyleSheet.create({
   createAccount: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 20,
     marginBottom: 60,
   },
   text: {

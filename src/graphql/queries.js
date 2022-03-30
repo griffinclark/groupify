@@ -1,93 +1,34 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getInterest = /* GraphQL */ `
-  query GetInterest($id: ID!) {
-    getInterest(id: $id) {
+export const getInterests = /* GraphQL */ `
+  query GetInterests($id: ID!) {
+    getInterests(id: $id) {
       id
-      userID
       interest
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-      user {
-        id
-        phoneNumber
-        name
-        pushToken
-        friends
-        email
-        age
-        gender
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        interests {
-          nextToken
-          startedAt
-        }
-        notificationsSent {
-          nextToken
-          startedAt
-        }
-        notificationsRecieved {
-          nextToken
-          startedAt
-        }
-        availability {
-          id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
     }
   }
 `;
-export const listInterests = /* GraphQL */ `
-  query ListInterests(
-    $filter: ModelInterestFilterInput
+export const listInterestss = /* GraphQL */ `
+  query ListInterestss(
+    $filter: ModelInterestsFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listInterests(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listInterestss(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        userID
         interest
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
-        user {
-          id
-          phoneNumber
-          name
-          pushToken
-          friends
-          email
-          age
-          gender
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
       }
       nextToken
       startedAt
@@ -96,7 +37,7 @@ export const listInterests = /* GraphQL */ `
 `;
 export const syncInterests = /* GraphQL */ `
   query SyncInterests(
-    $filter: ModelInterestFilterInput
+    $filter: ModelInterestsFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
@@ -109,28 +50,95 @@ export const syncInterests = /* GraphQL */ `
     ) {
       items {
         id
-        userID
         interest
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
-        user {
-          id
-          phoneNumber
-          name
-          pushToken
-          friends
-          email
-          age
-          gender
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getAvailabilityTime = /* GraphQL */ `
+  query GetAvailabilityTime($id: ID!) {
+    getAvailabilityTime(id: $id) {
+      id
+      Mon
+      Tues
+      Wed
+      Thur
+      Fri
+      Sat
+      Sun
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listAvailabilityTimes = /* GraphQL */ `
+  query ListAvailabilityTimes(
+    $filter: ModelAvailabilityTimeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAvailabilityTimes(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        Mon
+        Tues
+        Wed
+        Thur
+        Fri
+        Sat
+        Sun
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncAvailabilityTimes = /* GraphQL */ `
+  query SyncAvailabilityTimes(
+    $filter: ModelAvailabilityTimeFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAvailabilityTimes(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        Mon
+        Tues
+        Wed
+        Thur
+        Fri
+        Sat
+        Sun
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
@@ -145,6 +153,8 @@ export const getNotificationFromTo = /* GraphQL */ `
       notificationID
       senderID
       recipientID
+      read
+      userID
       _version
       _deleted
       _lastChangedAt
@@ -158,6 +168,7 @@ export const getNotificationFromTo = /* GraphQL */ `
         messageSubtitle
         sound
         channel
+        notificationType
         _version
         _deleted
         _lastChangedAt
@@ -182,32 +193,37 @@ export const getNotificationFromTo = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        interests {
-          nextToken
-          startedAt
-        }
-        notificationsSent {
-          nextToken
-          startedAt
-        }
-        notificationsRecieved {
-          nextToken
-          startedAt
-        }
-        availability {
+        Interest {
           id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
+          interest
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
+        }
+        availability {
+          id
+          Mon
+          Tues
+          Wed
+          Thur
+          Fri
+          Sat
+          Sun
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsReceived {
+          nextToken
+          startedAt
         }
       }
       recipient {
@@ -224,32 +240,37 @@ export const getNotificationFromTo = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        interests {
-          nextToken
-          startedAt
-        }
-        notificationsSent {
-          nextToken
-          startedAt
-        }
-        notificationsRecieved {
-          nextToken
-          startedAt
-        }
-        availability {
+        Interest {
           id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
+          interest
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
+        }
+        availability {
+          id
+          Mon
+          Tues
+          Wed
+          Thur
+          Fri
+          Sat
+          Sun
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsReceived {
+          nextToken
+          startedAt
         }
       }
     }
@@ -272,6 +293,8 @@ export const listNotificationFromTos = /* GraphQL */ `
         notificationID
         senderID
         recipientID
+        read
+        userID
         _version
         _deleted
         _lastChangedAt
@@ -285,6 +308,7 @@ export const listNotificationFromTos = /* GraphQL */ `
           messageSubtitle
           sound
           channel
+          notificationType
           _version
           _deleted
           _lastChangedAt
@@ -346,6 +370,8 @@ export const syncNotificationFromTos = /* GraphQL */ `
         notificationID
         senderID
         recipientID
+        read
+        userID
         _version
         _deleted
         _lastChangedAt
@@ -359,6 +385,7 @@ export const syncNotificationFromTos = /* GraphQL */ `
           messageSubtitle
           sound
           channel
+          notificationType
           _version
           _deleted
           _lastChangedAt
@@ -411,6 +438,7 @@ export const getNotification = /* GraphQL */ `
       messageSubtitle
       sound
       channel
+      notificationType
       _version
       _deleted
       _lastChangedAt
@@ -423,6 +451,8 @@ export const getNotification = /* GraphQL */ `
           notificationID
           senderID
           recipientID
+          read
+          userID
           _version
           _deleted
           _lastChangedAt
@@ -450,6 +480,7 @@ export const listNotifications = /* GraphQL */ `
         messageSubtitle
         sound
         channel
+        notificationType
         _version
         _deleted
         _lastChangedAt
@@ -486,6 +517,7 @@ export const syncNotifications = /* GraphQL */ `
         messageSubtitle
         sound
         channel
+        notificationType
         _version
         _deleted
         _lastChangedAt
@@ -518,6 +550,25 @@ export const getPlan = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      notification {
+        id
+        body
+        data
+        ttl
+        messageSubtitle
+        sound
+        channel
+        notificationType
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        recipients {
+          nextToken
+          startedAt
+        }
+      }
       arbitrations {
         items {
           id
@@ -568,32 +619,37 @@ export const getPlan = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        interests {
-          nextToken
-          startedAt
-        }
-        notificationsSent {
-          nextToken
-          startedAt
-        }
-        notificationsRecieved {
-          nextToken
-          startedAt
-        }
-        availability {
+        Interest {
           id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
+          interest
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
+        }
+        availability {
+          id
+          Mon
+          Tues
+          Wed
+          Thur
+          Fri
+          Sat
+          Sun
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsReceived {
+          nextToken
+          startedAt
         }
       }
     }
@@ -621,6 +677,21 @@ export const listPlans = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notification {
+          id
+          body
+          data
+          ttl
+          messageSubtitle
+          sound
+          channel
+          notificationType
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
         arbitrations {
           nextToken
           startedAt
@@ -678,6 +749,21 @@ export const syncPlans = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notification {
+          id
+          body
+          data
+          ttl
+          messageSubtitle
+          sound
+          channel
+          notificationType
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
         arbitrations {
           nextToken
           startedAt
@@ -737,6 +823,21 @@ export const getPlanArbitration = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notification {
+          id
+          body
+          data
+          ttl
+          messageSubtitle
+          sound
+          channel
+          notificationType
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
         arbitrations {
           nextToken
           startedAt
@@ -946,6 +1047,21 @@ export const getInvitee = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        notification {
+          id
+          body
+          data
+          ttl
+          messageSubtitle
+          sound
+          channel
+          notificationType
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
         arbitrations {
           nextToken
           startedAt
@@ -1010,111 +1126,10 @@ export const listInvitees = /* GraphQL */ `
           updatedAt
         }
       }
-      nextToken
-      startedAt
     }
   }
 `;
-export const inviteeByPhoneNUmber = /* GraphQL */ `
-  query InviteeByPhoneNUmber(
-    $phoneNumber: AWSPhone
-    $sortDirection: ModelSortDirection
-    $filter: ModelInviteeFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    inviteeByPhoneNUmber(
-      phoneNumber: $phoneNumber
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        phoneNumber
-        status
-        pushToken
-        planID
-        planInviteesId
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        plan {
-          id
-          title
-          description
-          location
-          placeID
-          date
-          time
-          creatorID
-          planCreatorId
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const inviteesByPlan = /* GraphQL */ `
-  query InviteesByPlan(
-    $planID: ID
-    $sortDirection: ModelSortDirection
-    $filter: ModelInviteeFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    inviteesByPlan(
-      planID: $planID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        phoneNumber
-        status
-        pushToken
-        planID
-        planInviteesId
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        plan {
-          id
-          title
-          description
-          location
-          placeID
-          date
-          time
-          creatorID
-          planCreatorId
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
+
 export const syncInvitees = /* GraphQL */ `
   query SyncInvitees(
     $filter: ModelInviteeFilterInput
@@ -1163,85 +1178,7 @@ export const syncInvitees = /* GraphQL */ `
     }
   }
 `;
-export const getAvailability = /* GraphQL */ `
-  query GetAvailability($id: ID!) {
-    getAvailability(id: $id) {
-      id
-      Sunday
-      Monday
-      Tuesday
-      Wednesday
-      Thursday
-      Friday
-      Saturday
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listAvailabilitys = /* GraphQL */ `
-  query ListAvailabilitys(
-    $filter: ModelAvailabilityFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listAvailabilitys(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        Sunday
-        Monday
-        Tuesday
-        Wednesday
-        Thursday
-        Friday
-        Saturday
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncAvailabilities = /* GraphQL */ `
-  query SyncAvailabilities(
-    $filter: ModelAvailabilityFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncAvailabilities(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        Sunday
-        Monday
-        Tuesday
-        Wednesday
-        Thursday
-        Friday
-        Saturday
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
+
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -1258,19 +1195,29 @@ export const getUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
-      interests {
-        items {
-          id
-          userID
-          interest
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
+      Interest {
+        id
+        interest
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      availability {
+        id
+        Mon
+        Tues
+        Wed
+        Thur
+        Fri
+        Sat
+        Sun
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       notificationsSent {
         items {
@@ -1279,6 +1226,8 @@ export const getUser = /* GraphQL */ `
           notificationID
           senderID
           recipientID
+          read
+          userID
           _version
           _deleted
           _lastChangedAt
@@ -1288,13 +1237,15 @@ export const getUser = /* GraphQL */ `
         nextToken
         startedAt
       }
-      notificationsRecieved {
+      notificationsReceived {
         items {
           id
           senderType
           notificationID
           senderID
           recipientID
+          read
+          userID
           _version
           _deleted
           _lastChangedAt
@@ -1303,21 +1254,6 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
         startedAt
-      }
-      availability {
-        id
-        Sunday
-        Monday
-        Tuesday
-        Wednesday
-        Thursday
-        Friday
-        Saturday
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
     }
   }
@@ -1331,8 +1267,8 @@ export const listUsers = /* GraphQL */ `
     listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        phoneNumber
         name
+        phoneNumber
         pushToken
         friends
         email
@@ -1343,32 +1279,37 @@ export const listUsers = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        interests {
-          nextToken
-          startedAt
-        }
-        notificationsSent {
-          nextToken
-          startedAt
-        }
-        notificationsRecieved {
-          nextToken
-          startedAt
-        }
-        availability {
+        Interest {
           id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
+          interest
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
+        }
+        availability {
+          id
+          Mon
+          Tues
+          Wed
+          Thur
+          Fri
+          Sat
+          Sun
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsReceived {
+          nextToken
+          startedAt
         }
       }
       nextToken
@@ -1405,32 +1346,37 @@ export const usersByPhoneNumber = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        interests {
-          nextToken
-          startedAt
-        }
-        notificationsSent {
-          nextToken
-          startedAt
-        }
-        notificationsRecieved {
-          nextToken
-          startedAt
-        }
-        availability {
+        Interest {
           id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
+          interest
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
+        }
+        availability {
+          id
+          Mon
+          Tues
+          Wed
+          Thur
+          Fri
+          Sat
+          Sun
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsReceived {
+          nextToken
+          startedAt
         }
       }
       nextToken
@@ -1467,32 +1413,37 @@ export const usersByName = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        interests {
-          nextToken
-          startedAt
-        }
-        notificationsSent {
-          nextToken
-          startedAt
-        }
-        notificationsRecieved {
-          nextToken
-          startedAt
-        }
-        availability {
+        Interest {
           id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
+          interest
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
+        }
+        availability {
+          id
+          Mon
+          Tues
+          Wed
+          Thur
+          Fri
+          Sat
+          Sun
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsReceived {
+          nextToken
+          startedAt
         }
       }
       nextToken
@@ -1527,32 +1478,37 @@ export const syncUsers = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
-        interests {
-          nextToken
-          startedAt
-        }
-        notificationsSent {
-          nextToken
-          startedAt
-        }
-        notificationsRecieved {
-          nextToken
-          startedAt
-        }
-        availability {
+        Interest {
           id
-          Sunday
-          Monday
-          Tuesday
-          Wednesday
-          Thursday
-          Friday
-          Saturday
+          interest
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
+        }
+        availability {
+          id
+          Mon
+          Tues
+          Wed
+          Thur
+          Fri
+          Sat
+          Sun
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        notificationsSent {
+          nextToken
+          startedAt
+        }
+        notificationsReceived {
+          nextToken
+          startedAt
         }
       }
       nextToken

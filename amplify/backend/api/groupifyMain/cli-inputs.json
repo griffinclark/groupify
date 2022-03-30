@@ -17,6 +17,6 @@
       }
     },
     "apiName": "groupifyMain",
-    "gqlSchemaPath": "/tmp/amplify-056cf9fd-9ebd-467c-9d6d-06a07e59a36b/amplify/backend/api/groupifyMain/schema.graphql"
+    "gqlSchemaPath": "/tmp/amplify-adb2c2c6-a964-4572-864d-71df15629cbd/amplify/backend/api/groupifyMain/schema.graphql"
   }
 }
