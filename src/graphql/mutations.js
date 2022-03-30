@@ -1222,6 +1222,7 @@ export const deletePlanArbitration = /* GraphQL */ `
   mutation DeletePlanArbitration(
     $input: DeletePlanArbitrationInput!
     $condition: ModelPlanArbitrationConditionInput
+    
   ) {
     deletePlanArbitration(input: $input, condition: $condition) {
       id
