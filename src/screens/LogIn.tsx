@@ -88,8 +88,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       }
       //eslint-disable-next-line  @typescript-eslint/no-unused-vars
       subscription = DataStore.observe(User).subscribe(({ element, ...x }) => {
-
-        if(element.phoneNumber == 'formatPhone') {
+        if (element.phoneNumber == 'formatPhone') {
           users.push(element);
         }
 
@@ -97,7 +96,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           subscription.unsubscribe();
           setCurrentUser(users[0]);
         }
-
       });
     };
 
