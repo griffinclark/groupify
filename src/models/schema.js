@@ -1,30 +1,10 @@
 export const schema = {
     "models": {
-        "Interest": {
-            "name": "Interest",
+        "Interests": {
+            "name": "Interests",
             "fields": {
                 "id": {
                     "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "user": {
-                    "name": "user",
-                    "isArray": false,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "interestUserId"
-                    }
-                },
-                "userID": {
-                    "name": "userID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -34,7 +14,7 @@ export const schema = {
                     "name": "interest",
                     "isArray": true,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
                 },
@@ -63,15 +43,6 @@ export const schema = {
                     "properties": {}
                 },
                 {
-                    "type": "key",
-                    "properties": {
-                        "name": "byUser",
-                        "fields": [
-                            "userID"
-                        ]
-                    }
-                },
-                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -89,8 +60,8 @@ export const schema = {
                 }
             ]
         },
-        "User": {
-            "name": "User",
+        "AvailabilityTime": {
+            "name": "AvailabilityTime",
             "fields": {
                 "id": {
                     "name": "id",
@@ -99,236 +70,58 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "phoneNumber": {
-                    "name": "phoneNumber",
-                    "isArray": false,
-                    "type": "AWSPhone",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "pushToken": {
-                    "name": "pushToken",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "friends": {
-                    "name": "friends",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "email": {
-                    "name": "email",
-                    "isArray": false,
+                "Mon": {
+                    "name": "Mon",
+                    "isArray": true,
                     "type": "String",
                     "isRequired": false,
-                    "attributes": []
-                },
-                "availability": {
-                    "name": "availability",
-                    "isArray": false,
-                    "type": {
-                        "model": "Availability"
-                    },
-                    "isRequired": false,
                     "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "userAvailabilityId"
-                    }
+                    "isArrayNullable": true
                 },
-                "notificationsSent": {
-                    "name": "notificationsSent",
+                "Tues": {
+                    "name": "Tues",
                     "isArray": true,
-                    "type": {
-                        "model": "NotificationFromTo"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "sender"
-                    }
-                },
-                "notificationsRecieved": {
-                    "name": "notificationsRecieved",
-                    "isArray": true,
-                    "type": {
-                        "model": "NotificationFromTo"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "recipient"
-                    }
-                },
-                "age": {
-                    "name": "age",
-                    "isArray": false,
                     "type": "String",
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
-                "gender": {
-                    "name": "gender",
-                    "isArray": false,
-                    "type": {
-                        "enum": "Gender"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "interests": {
-                    "name": "interests",
+                "Wed": {
+                    "name": "Wed",
                     "isArray": true,
-                    "type": {
-                        "model": "Interest"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "userID"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Users",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byPhoneNumber",
-                        "fields": [
-                            "phoneNumber"
-                        ],
-                        "queryField": "usersByPhoneNumber"
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byName",
-                        "fields": [
-                            "name"
-                        ],
-                        "queryField": "usersByName"
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "private",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Availability": {
-            "name": "Availability",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Sunday": {
-                    "name": "Sunday",
-                    "isArray": true,
-                    "type": "AWSTime",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "Monday": {
-                    "name": "Monday",
+                "Thur": {
+                    "name": "Thur",
                     "isArray": true,
-                    "type": "AWSTime",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "Tuesday": {
-                    "name": "Tuesday",
+                "Fri": {
+                    "name": "Fri",
                     "isArray": true,
-                    "type": "AWSTime",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "Wednesday": {
-                    "name": "Wednesday",
+                "Sat": {
+                    "name": "Sat",
                     "isArray": true,
-                    "type": "AWSTime",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "Thursday": {
-                    "name": "Thursday",
+                "Sun": {
+                    "name": "Sun",
                     "isArray": true,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "Friday": {
-                    "name": "Friday",
-                    "isArray": true,
-                    "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "Saturday": {
-                    "name": "Saturday",
-                    "isArray": true,
-                    "type": "AWSTime",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
@@ -351,7 +144,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Availabilities",
+            "pluralName": "AvailabilityTimes",
             "attributes": [
                 {
                     "type": "model",
@@ -394,6 +187,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "senderID": {
+                    "name": "senderID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "recipientID": {
+                    "name": "recipientID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "notification": {
                     "name": "notification",
                     "isArray": false,
@@ -417,7 +224,7 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "senderID"
+                        "targetName": "notificationFromToSenderId"
                     }
                 },
                 "recipient": {
@@ -430,8 +237,22 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "recipientID"
+                        "targetName": "notificationFromToRecipientId"
                     }
+                },
+                "read": {
+                    "name": "read",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -481,6 +302,15 @@ export const schema = {
                         "name": "byRecipient",
                         "fields": [
                             "recipientID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID"
                         ]
                     }
                 },
@@ -568,6 +398,15 @@ export const schema = {
                         "associatedWith": "notification"
                     }
                 },
+                "notificationType": {
+                    "name": "notificationType",
+                    "isArray": false,
+                    "type": {
+                        "enum": "NotificationType"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -591,6 +430,183 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "User": {
+            "name": "User",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "phoneNumber": {
+                    "name": "phoneNumber",
+                    "isArray": false,
+                    "type": "AWSPhone",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "pushToken": {
+                    "name": "pushToken",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "friends": {
+                    "name": "friends",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "availability": {
+                    "name": "availability",
+                    "isArray": false,
+                    "type": {
+                        "model": "AvailabilityTime"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "userAvailabilityId"
+                    }
+                },
+                "notificationsSent": {
+                    "name": "notificationsSent",
+                    "isArray": true,
+                    "type": {
+                        "model": "NotificationFromTo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "userID"
+                    }
+                },
+                "age": {
+                    "name": "age",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "gender": {
+                    "name": "gender",
+                    "isArray": false,
+                    "type": {
+                        "enum": "Gender"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "notificationsReceived": {
+                    "name": "notificationsReceived",
+                    "isArray": true,
+                    "type": {
+                        "model": "NotificationFromTo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "userID"
+                    }
+                },
+                "Interest": {
+                    "name": "Interest",
+                    "isArray": false,
+                    "type": {
+                        "model": "Interests"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "userInterestId"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Users",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byPhoneNumber",
+                        "fields": [
+                            "phoneNumber"
+                        ],
+                        "queryField": "usersByPhoneNumber"
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byName",
+                        "fields": [
+                            "name"
+                        ],
+                        "queryField": "usersByName"
+                    }
                 },
                 {
                     "type": "auth",
@@ -708,6 +724,19 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "planInviteesId"
+                    }
+                },
+                "notification": {
+                    "name": "notification",
+                    "isArray": false,
+                    "type": {
+                        "model": "Notification"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "planNotificationId"
                     }
                 },
                 "createdAt": {
@@ -1005,11 +1034,12 @@ export const schema = {
         }
     },
     "enums": {
-        "Sender": {
-            "name": "Sender",
+        "NotificationType": {
+            "name": "NotificationType",
             "values": [
-                "USER",
-                "NOTIFICATIONPANEL"
+                "ACCEPTED",
+                "DECLINED",
+                "INVITED"
             ]
         },
         "Gender": {
@@ -1019,6 +1049,13 @@ export const schema = {
                 "FEMALE",
                 "NONBINARY",
                 "PREFER_NOT_TO_SAY"
+            ]
+        },
+        "Sender": {
+            "name": "Sender",
+            "values": [
+                "USER",
+                "NOTIFICATIONPANEL"
             ]
         },
         "Status": {
@@ -1031,5 +1068,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "700bddd2f9b42e5d7c808e7b2a814087"
+    "version": "5d0109a2320662ea355c72cb44143a85"
 };

@@ -2,9 +2,10 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
-const Sender = {
-  "USER": "USER",
-  "NOTIFICATIONPANEL": "NOTIFICATIONPANEL"
+const NotificationType = {
+  "ACCEPTED": "ACCEPTED",
+  "DECLINED": "DECLINED",
+  "INVITED": "INVITED"
 };
 
 const Gender = {
@@ -14,24 +15,30 @@ const Gender = {
   "PREFER_NOT_TO_SAY": "PREFER_NOT_TO_SAY"
 };
 
+const Sender = {
+  "USER": "USER",
+  "NOTIFICATIONPANEL": "NOTIFICATIONPANEL"
+};
+
 const Status = {
   "PENDING": "PENDING",
   "ACCEPTED": "ACCEPTED",
   "DECLINED": "DECLINED"
 };
 
-const { Interest, User, Availability, NotificationFromTo, Notification, Plan, PlanArbitration, Invitee } = initSchema(schema);
+const { Interests, AvailabilityTime, NotificationFromTo, Notification, User, Plan, PlanArbitration, Invitee } = initSchema(schema);
 
 export {
-  Interest,
-  User,
-  Availability,
+  Interests,
+  AvailabilityTime,
   NotificationFromTo,
   Notification,
+  User,
   Plan,
   PlanArbitration,
   Invitee,
-  Sender,
+  NotificationType,
   Gender,
+  Sender,
   Status
 };
