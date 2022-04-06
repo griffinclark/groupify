@@ -70,7 +70,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
         payload: { event, data },
       } = capsule;
 
-      console.log('DataStore Event', event, data);
+      // console.log('DataStore Event', event, data);
 
       if (event === 'ready') {
         if (subscription) {
@@ -88,7 +88,9 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       }
       //eslint-disable-next-line  @typescript-eslint/no-unused-vars
       subscription = DataStore.observe(User).subscribe(({ element, ...x }) => {
-        users.push(element);
+        if (element.phoneNumber == 'formatPhone') {
+          users.push(element);
+        }
 
         if (users.length === 1) {
           subscription.unsubscribe();
@@ -208,9 +210,9 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       setSecureStoreItem('phone', phone);
       setSecureStoreItem('password', password);
 
-      const newPushToken = await registerForPushNotifications();
+      //const newPushToken = await registerForPushNotifications();
 
-      console.log('kk', newPushToken);
+      //console.log('kk', newPushToken);
 
       const currentUser = await Auth.currentUserInfo();
       setInfo(currentUser);
