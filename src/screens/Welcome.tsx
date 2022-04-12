@@ -17,7 +17,7 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
     <ImageBackground
       style={styles.imgBackground}
       resizeMode={'cover'}
-      source={require('../../assets/SplashImage.png')}
+      source={require('../../assets/SplashImage2.png')}
       testID="WelcomeScreen"
     >
       <View style={styles.logo}>
