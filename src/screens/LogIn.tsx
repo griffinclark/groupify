@@ -300,6 +300,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
                 value={phone}
                 onChangeText={(number) => setPhone(formatPhoneNumber(number))}
               />
+
               <FormInput
                 returnKeyNext={false}
                 label="Password"
