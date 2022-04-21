@@ -199,7 +199,7 @@ export const ImportContactDetails: React.FC<Props> = ({ navigation, route }: Pro
           button2Text="Add Friends Later"
           message2="OK. You don't have to add your friends now, but the only way to Groupify your plans is to invite the people you want to hang out with to join the app."
           onButton1Press={() => setOpenModal(false)}
-          onButton2Press={() => navigation.navigate('Home')}
+          onButton2Press={() => navigation.navigate('SelectorMenu', {})}
           message="Are you sure you don't want to add friends now? "
         />
       )}

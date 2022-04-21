@@ -27,7 +27,7 @@ import * as SecureStore from 'expo-secure-store';
 import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
 import { copy } from '../res/groupifyCopy';
-import { GrypfySplash } from '../../assets/Icons/GrpfySplash';
+import { TopNavBar } from '../molecules/TopNavBar';
 
 export interface Props {
   navigation: {
@@ -40,6 +40,7 @@ export interface Props {
     };
     navigate: (ev: any, {}) => void;
     push: (ev: any, {}) => void;
+    goBack: () => void;
   };
   route: RoutePropParams;
 }
@@ -225,7 +226,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
       //   console.log(user);
 
-      //   //navigation.push('SelectorMenu', { userID: user.id, currentUser: user });
+      // navigation.push('ImportContactDetails', {});
       // }
 
       //const user = await registerUser();
@@ -285,14 +286,21 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <TopNavBar
+        stickyHeader={false}
+        navigation={navigation}
+        displayGroupify={true}
+        displayBackButton={true}
+        displaySettings={false}
+        route={route}
+        targetScreen={'Welcome'}
+      />
+      <View testID="LogInScreen">
+        <Text style={styles.loginText}>Login to Your Account</Text>
+      </View>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-            <View style={{ flex: 1 }} testID="LogInScreen">
-              <View style={styles.logoImg}>
-                <GrypfySplash />
-              </View>
-            </View>
             <View style={{ marginTop: 80 }}>
               <FormInput
                 returnKeyNext={true}
@@ -312,7 +320,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
                   style={{ marginHorizontal: 0, alignSelf: 'center' }}
                   onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
                 >
-                  <AppText style={styles.textTeal}>{copy.forgotPasswordQuestion}</AppText>
+                  <AppText style={styles.textTeal}>{copy.forgotPasswordTitle}</AppText>
                 </TouchableOpacity>
               </View>
 
@@ -368,7 +376,13 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     backgroundColor: WHITE,
-    height: '100%',
-    justifyContent: 'space-between',
+    flex: 1,
+    // justifyContent: 'space-between',
+  },
+  loginText: {
+    marginTop: 29,
+    marginLeft: 20,
+    fontSize: 20,
+    fontFamily: JOST['400'],
   },
 });

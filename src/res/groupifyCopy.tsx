@@ -49,7 +49,7 @@ export const copy = new LocalizedStrings({
     nextButtonTitle: 'Next',
     findAddressOnMap: 'Find address using the map',
     askForVerificationCode: 'Please enter the verification code you received.',
-    forgotPasswordTitle: 'Forgot Password',
+    forgotPasswordTitle: 'Forgot Password?',
     phoneNumberPrompt: 'Please enter your phone number',
     createNewPassword: 'Create a new password',
     upcomingPlansTitle: 'COMING UP NEXT',
