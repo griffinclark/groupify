@@ -147,7 +147,7 @@ export const ForgotPassword: React.FC<Props> = ({ navigation, route }: Props) =>
         <Button
           buttonStyle={{ width: 335, height: 47, borderRadius: 5 }}
           textStyle={{ fontSize: 20, fontFamily: JOST['500'] }}
-          title={route.params.step === 'phone' ? 'Next' : 'Update Password'}
+          title={'Update Password'}
           onPress={route.params.step === 'phone' ? confirmUserPhone : confirmResetPassword}
         />
       </Screen>

@@ -4,7 +4,6 @@ import { Button } from '../atoms/Button';
 import { copy } from '../res/groupifyCopy';
 import { TEAL_0, WHITE } from '../res/styles/Colors';
 import { JOST } from '../res/styles/Fonts';
-import { GrypfySplash } from '../../assets/Icons/GrpfySplash';
 
 export interface Props {
   navigation: {
@@ -17,13 +16,9 @@ export const Welcome: React.FC<Props> = ({ navigation }: Props) => {
     <ImageBackground
       style={styles.imgBackground}
       resizeMode={'cover'}
-      source={require('../../assets/SplashImage.png')}
+      source={require('../../assets/SplashScreen3.png')}
       testID="WelcomeScreen"
     >
-      <View style={styles.logo}>
-        <GrypfySplash />
-      </View>
-
       <View style={styles.buttonContainer}>
         <Button
           textStyle={{
