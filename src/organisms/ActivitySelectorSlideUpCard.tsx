@@ -89,6 +89,24 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
               location={currentSelectedLocation}
               userLocation={userLocation}
               closeLocationDetail={closeDetail}
+              onButtonPress={() => {
+                {
+                  navigation.navigate('PlanCreate', {
+                    currentUser: currentUser,
+                    navigation: navigation,
+                    data: {
+                      planData: {
+                        location: currentSelectedLocation.formatted_address,
+                        locationName: currentSelectedLocation.name,
+                        placeId: currentSelectedLocation.place_id,
+                        imageURL: currentSelectedLocation.photos
+                          ? currentSelectedLocation.photos[0].photo_reference
+                          : null,
+                      },
+                    },
+                  });
+                }
+              }}
             />
           ) : (
             <LocationResults
@@ -108,30 +126,30 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
             </View>
           )}
         </ScrollView>
-        {currentSelectedLocation && showPlanDetails && (
-          <Pressable
-            onPress={() => {
-              navigation.navigate('PlanCreate', {
-                currentUser: currentUser,
-                navigation: navigation,
-                data: {
-                  planData: {
-                    location: currentSelectedLocation.formatted_address,
-                    locationName: currentSelectedLocation.name,
-                    placeId: currentSelectedLocation.place_id,
-                    imageURL: currentSelectedLocation.photos ? currentSelectedLocation.photos[0].photo_reference : null,
-                  },
-                },
-              });
-            }}
-          >
-            <View style={styles.createPlanButton}>
-              <AppText style={{ color: WHITE, fontSize: 13, fontWeight: '500', lineHeight: 19, paddingVertical: 12.5 }}>
-                Groupify It
-              </AppText>
-            </View>
-          </Pressable>
-        )}
+        {/* {currentSelectedLocation && showPlanDetails && (
+          // <Pressable
+          //   onPress={() => {
+          //     navigation.navigate('PlanCreate', {
+          //       currentUser: currentUser,
+          //       navigation: navigation,
+          //       data: {
+          //         planData: {
+          //           location: currentSelectedLocation.formatted_address,
+          //           locationName: currentSelectedLocation.name,
+          //           placeId: currentSelectedLocation.place_id,
+          //           imageURL: currentSelectedLocation.photos ? currentSelectedLocation.photos[0].photo_reference : null,
+          //         },
+          //       },
+          //     });
+          //   }}
+          // >
+          //   <View style={styles.createPlanButton}>
+          //     <AppText style={{ color: WHITE, fontSize: 13, fontWeight: '500', lineHeight: 19, paddingVertical: 12.5 }}>
+          //       Groupify It
+          //     </AppText>
+          //   </View>
+          // </Pressable>
+        )} */}
       </View>
     </SlidingUpPanel>
   );
