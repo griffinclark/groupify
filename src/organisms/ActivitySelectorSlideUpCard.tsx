@@ -32,7 +32,7 @@ export const ActivitySelectorSlideUpCard: React.FC<Props> = ({
   onSelectLocation,
 }: Props) => {
   const slideUpMenuHeight = Dimensions.get('screen').height - 180;
-  const slideUpMenuBottom = 216;
+  const slideUpMenuBottom = 350;
 
   const [allowDragging, setAllowDragging] = useState(true);
 
