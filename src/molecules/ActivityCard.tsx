@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, GestureResponderEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, GestureResponderEvent, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { ActivityImage } from '../molecules/ActivityImage';
 import { AppText, Button } from '../atoms/AtomsExports';
 import { TEAL_0, WHITE, GREY_6 } from '../res/styles/Colors';
@@ -71,7 +71,14 @@ export const ActivityCard: React.FC<Props> = ({
               height={Dimensions.get('screen').width * 0.23}
             />
           ) : (
-            <MagnifyingGlassIcon />
+            <Image
+              source={require('../../assets/appstore.png')}
+              style={{
+                width: Dimensions.get('screen').width * 0.23,
+                height: Dimensions.get('screen').width * 0.23,
+                borderRadius: 10,
+              }}
+            />
           )}
         </View>
       </View>
