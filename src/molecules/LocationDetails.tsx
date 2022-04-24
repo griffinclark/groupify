@@ -8,14 +8,16 @@ import { durationCalculation } from '../res/utilGoogle';
 import { AppText } from '../atoms/AppText';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { loadPlaceDetails } from '../res/utilFunctions';
+import { GroupifyItButton } from '../atoms/GroupifyItButton';
 
 interface Props {
   location: GoogleLocation;
   userLocation: UserLocation;
   closeLocationDetail?: () => void;
+  onButtonPress: () => void;
 }
 
-export const LocationDetails: React.FC<Props> = ({ location, userLocation, closeLocationDetail }: Props) => {
+export const LocationDetails: React.FC<Props> = ({ location, userLocation, onButtonPress, closeLocationDetail }: Props) => {
   const [placeDetails, setPlaceDetails] = useState<GoogleLocation>();
   const [duration, setDuration] = useState('No Data');
 
@@ -69,6 +71,7 @@ export const LocationDetails: React.FC<Props> = ({ location, userLocation, close
       <View style={styles.header}>
         <BackChevronIcon onPress={closeLocationDetail} />
         <AppText style={styles.name}>{location.name}</AppText>
+        <GroupifyItButton onButtonPress={onButtonPress} />
       </View>
 
       {location.photos && (
