@@ -32,7 +32,7 @@ export const HomeNavBar: React.FC<Props> = ({ route, user, style, navigation, us
     {
       id: NavButtonEnum.Contacts,
       name: copy.friendsButton,
-      screen: 'ContactList',
+      screen: 'ImportContacts',
     },
     // {
     //   id: NavButtonEnum.Friends,
