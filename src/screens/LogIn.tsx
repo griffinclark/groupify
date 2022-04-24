@@ -28,6 +28,7 @@ import { RoutePropParams } from '../res/root-navigation';
 import * as Analytics from 'expo-firebase-analytics';
 import { copy } from '../res/groupifyCopy';
 import { TopNavBar } from '../molecules/TopNavBar';
+import { ActivityIndicator } from 'react-native-paper';
 
 export interface Props {
   navigation: {
@@ -54,6 +55,8 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [info, setInfo] = useState();
   const [currentUser, setCurrentUser] = useState<User>();
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [users, setUsers] = useState<User[]>([]); 
 
   useEffect(() => {
     Hub.listen('auth', (event) => {
@@ -84,18 +87,20 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       const users = await DataStore.query(User, (user) => user.phoneNumber('eq', formatPhone), { limit: 1 });
 
       if (users.length === 1) {
-        setCurrentUser(users[0]);
+        setUsers(users);
         return;
       }
+
       //eslint-disable-next-line  @typescript-eslint/no-unused-vars
       subscription = DataStore.observe(User).subscribe(({ element, ...x }) => {
-        if (element.phoneNumber == 'formatPhone') {
+        if (element.phoneNumber == formatPhone) {
           users.push(element);
         }
 
-        if (users.length === 1) {
+        if (users.length) {
           subscription.unsubscribe();
-          setCurrentUser(users[0]);
+          setUsers(users);
+          return;
         }
       });
     };
@@ -127,6 +132,12 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       importContacts();
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    if(users.length) {
+      setCurrentUser(users[0]);
+    }
+  }, [users]);
 
   /*const registerUser = async (): Promise<User> => {
     await registerForPushNotifications();
@@ -186,6 +197,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
           }),
         );
       }
+      setIsLoading(false);
       await Analytics.logEvent('login', { userId: currentUser.id });
       navigation.push('SelectorMenu', { userID: currentUser.id, currentUser: currentUser });
     }
@@ -205,6 +217,8 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const logIn = async (): Promise<void> => {
     setError(undefined);
+    setIsLoading(true);
+
     try {
       await Auth.signIn(formatPhone, password);
 
@@ -243,6 +257,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
       // await Analytics.logEvent('login', { userId: user.id });
       // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     } catch (err: any) {
+      setIsLoading(false);
       console.log('error signing in...', err);
       if (err.code == 'UserNotConfirmedException') {
         navigation.navigate('createAccountForm', { step: 'create', phone: formatPhone });
@@ -337,13 +352,20 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
               )}
             </View>
             <View>
-              <Button
-                buttonStyle={{ width: 335, height: 47, borderRadius: 5 }}
-                textStyle={{ fontSize: 20, fontFamily: JOST['500'] }}
-                title={copy.loginButtonTitle}
-                onPress={logIn}
-                disabled={disabled}
-              />
+              {isLoading ? 
+                <View>
+                  <ActivityIndicator color="black" size={'large'} />
+                </View>
+                :
+                <Button
+                  buttonStyle={{ width: 335, height: 47, borderRadius: 5 }}
+                  textStyle={{ fontSize: 20, fontFamily: JOST['500'] }}
+                  title={copy.loginButtonTitle}
+                  onPress={logIn}
+                  disabled={disabled}
+                />
+              }
+              
             </View>
           </TouchableWithoutFeedback>
           <View style={{ height: 70 }} />
