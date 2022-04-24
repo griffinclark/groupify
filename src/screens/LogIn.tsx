@@ -56,7 +56,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   const [info, setInfo] = useState();
   const [currentUser, setCurrentUser] = useState<User>();
   const [isLoading, setIsLoading] = useState<Boolean>(false);
-  const [users, setUsers] = useState<User[]>([]); 
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     Hub.listen('auth', (event) => {
@@ -134,7 +134,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [currentUser]);
 
   useEffect(() => {
-    if(users.length) {
+    if (users.length) {
       setCurrentUser(users[0]);
     }
   }, [users]);
@@ -352,11 +352,11 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
               )}
             </View>
             <View>
-              {isLoading ? 
+              {isLoading ? (
                 <View>
                   <ActivityIndicator color="black" size={'large'} />
                 </View>
-                :
+              ) : (
                 <Button
                   buttonStyle={{ width: 335, height: 47, borderRadius: 5 }}
                   textStyle={{ fontSize: 20, fontFamily: JOST['500'] }}
@@ -364,8 +364,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
                   onPress={logIn}
                   disabled={disabled}
                 />
-              }
-              
+              )}
             </View>
           </TouchableWithoutFeedback>
           <View style={{ height: 70 }} />
