@@ -105,6 +105,7 @@ export interface PlanData {
   showImage: string;
   placeId: string;
   message: string;
+  hostName: string;
 }
 
 export enum ActivityEnum {
