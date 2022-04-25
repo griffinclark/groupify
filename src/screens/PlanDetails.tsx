@@ -1,5 +1,6 @@
-import { DataStore, Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
+import { DataStore } from '@aws-amplify/datastore';
 import { StyleSheet, View, TouchableOpacity, FlatList, ScrollView, RefreshControl } from 'react-native';
 import { Screen, AppText, PlanImageTile } from '../atoms/AtomsExports';
 import { TEAL_0, GRAY_LIGHT } from '../res/styles/Colors';
@@ -11,6 +12,7 @@ import { copy } from '../res/groupifyCopy';
 import { TopNavBar } from '../molecules/TopNavBar';
 import { NavigationProps } from '../res/dataModels';
 import { RoutePropParams } from '../res/root-navigation';
+import { User } from '../models';
 
 interface Props {
   navigation: NavigationProps;
@@ -23,13 +25,22 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
   const [userInvitee, setUserInvitee] = useState<Invitee>();
   const [refreshAttendeeList, setRefreshAttendeeList] = useState(false);
   const [selectorOption, setSelectorOption] = useState('ACCEPTED');
+  const [hostName, setHostName] = useState<string>('');
   const [planCreator, setPlanCreator] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
+    getPlanHost(plan.creatorID);
     loadInvitees();
     isCreator();
   }, [refreshAttendeeList]);
+
+  const getPlanHost = async (id: string) => {
+    const users = await DataStore.query(User, (user) => user.id('eq', id), { limit: 1 });
+    if (users.length > 0) {
+      setHostName(users[0].name);
+    }
+  };
 
   const onPlanDetailsRefresh = () => {
     setRefreshing(true);
@@ -94,7 +105,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
         <View style={styles.bodyContainer}>
           <PlanImageTile plan={plan} />
           <Details plan={plan} />
-          <PlanDetailsTile navigation={navigation} creator={planCreator} plan={plan} />
+          <PlanDetailsTile navigation={navigation} hostName={hostName} creator={planCreator} plan={plan} />
           <AppText style={{ fontSize: 16, fontWeight: '700' }}>{copy.whosGoing}</AppText>
         </View>
         <View style={styles.inviteeListContainer}>
@@ -136,7 +147,7 @@ export const PlanDetails: React.FC<Props> = ({ navigation, route }: Props) => {
                   navigation.push('Home', {});
                   DataStore.delete(Plan, (currentPlan) => currentPlan.id('eq', plan.id));
                 }}
-                text={'Cancel Plan'}
+                text={'Delete Plan'}
               />
             ) : (
               <WhiteButton

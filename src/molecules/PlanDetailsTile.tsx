@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Plan } from '../models';
 import { AppText } from '../atoms/AppText';
 import { convertDateStringToDate, formatTime } from '../res/utilFunctions';
 import { TEAL_0 } from '../res/styles/Colors';
 import { Edit } from '../../assets/Icons/IconExports';
-import { API } from 'aws-amplify';
-import * as queries from '../graphql/queries';
 import Clipboard from 'expo-clipboard';
 import { GREY_6 } from './../res/styles/Colors';
 
@@ -16,27 +14,23 @@ interface Props {
   navigation: {
     navigate: (ev: string, {}) => void;
   };
+  hostName: string;
 }
 
-export const PlanDetailsTile: React.FC<Props> = ({ plan, creator, navigation }: Props) => {
-  const [hostName, setHostName] = useState<string>('Loading');
+export const PlanDetailsTile: React.FC<Props> = ({ plan, creator, navigation, hostName }: Props) => {
+  // const [hostName, setHostName] = useState<string>('');
   const [displayCopy, setDisplayCopy] = useState<boolean>(false);
 
-  useEffect(() => {
-    getPlanHost(plan.creatorID);
-  }, []);
+  // useEffect(() => {
+  //   getPlanHost(plan.creatorID);
+  // }, []);
 
-  const getPlanHost = async (id: string) => {
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    const userQuery: any = await API.graphql({
-      query: queries.getUser,
-      variables: { id: id },
-    });
-    const user = userQuery.data.getUser;
-    if (user) {
-      setHostName(user.name);
-    }
-  };
+  // const getPlanHost = async (id: string) => {
+  //   const users = await DataStore.query(User, (user) => user.id('eq', id), { limit: 1 });
+  //   if (users.length > 0) {
+  //     setHostName(users[0].name);
+  //   }
+  // };
 
   const copyToClipboard = () => {
     if (plan.location) Clipboard.setString(plan.location);

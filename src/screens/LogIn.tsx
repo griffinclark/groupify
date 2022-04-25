@@ -315,16 +315,15 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
                 secureTextEntry={true}
                 value={password}
               />
-              <View style={{ marginHorizontal: 118, height: 30 }}>
+              <View style={{ marginHorizontal: 118 }}>
                 <TouchableOpacity
                   style={{ marginHorizontal: 0, alignSelf: 'center' }}
                   onPress={() => navigation.navigate('ForgotPassword', { step: 'phone' })}
                 >
                   <AppText style={styles.textTeal}>{copy.forgotPasswordTitle}</AppText>
                 </TouchableOpacity>
+                {error && <Alert status="error" message={error} />}
               </View>
-
-              {error && <Alert status="error" message={error} />}
             </View>
 
             <View style={styles.createAccount}>
