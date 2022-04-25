@@ -209,8 +209,6 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
 
       if (contacts.length === 0) {
         navigation.navigate('ImportContactDetails', {});
-      } else {
-        navigation.push('SelectorMenu', { userID: currentUser.id, currentUser: currentUser });
       }
     }
   };
@@ -314,7 +312,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
         <Text style={styles.loginText}>Login to Your Account</Text>
       </View>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView>
+        <View>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
             <View style={{ marginTop: 80 }}>
               <FormInput
@@ -367,7 +365,7 @@ export const LogIn: React.FC<Props> = ({ navigation, route }: Props) => {
             </View>
           </TouchableWithoutFeedback>
           <View style={{ height: 70 }} />
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
