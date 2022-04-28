@@ -71,7 +71,7 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
 
   // const bgImageIndex = Math.floor(Math.random() * 4);
   const bgImageIndex = 3;
-
+  
   return (
     <Screen style={styles.screen}>
       <ScrollView

@@ -68,10 +68,10 @@ export const createNotificationAWS = async (msg: NotificationMessage) => {
 
   try {
     const notificationResponse: any = await API.graphql(
-      graphqlOperation(createNotification, { input: { body: msg.body, meassageSubtitle: msg.title } }),
+      graphqlOperation(createNotification, { input: { body: msg.body, messageSubtitle: msg.title } }),
     );
 
-    return notificationResponse.data?.createNotifcation;
+    return notificationResponse.data?.createNotification;
   } catch (err) {
     console.log('error:', err);
   }
