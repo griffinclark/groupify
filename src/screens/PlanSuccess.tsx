@@ -23,7 +23,9 @@ export const PlanSuccess: React.FC<Props> = ({ navigation, route }: Props) => {
 
   const goHome = () => {
     setIsVisible(false);
-    navigation.navigate('Home', {});
+    navigation.navigate('Home', {
+      currentUser: route.params.currentUser
+    });
   };
 
   const friendNames = () => {
