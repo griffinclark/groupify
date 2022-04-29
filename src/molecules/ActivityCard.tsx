@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily: JOST[400],
   },
   viewMapBtn: {
     marginLeft: 'auto',

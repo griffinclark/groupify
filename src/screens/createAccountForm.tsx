@@ -158,6 +158,9 @@ export const createAccountForm = ({ navigation, route }: Props) => {
                 <FormInput
                   autoFocus={true}
                   returnKeyNext={true}
+                  textProps={{
+                    autoCompleteType: 'name',
+                  }}
                   label="First Name"
                   placeholder="Enter first name"
                   onChangeText={(value) => {
@@ -167,6 +170,9 @@ export const createAccountForm = ({ navigation, route }: Props) => {
                 <FormInput
                   autoFocus={false}
                   returnKeyNext={true}
+                  textProps={{
+                    autoCompleteType: 'name',
+                  }}
                   placeholder="Enter last name"
                   label="Last Name"
                   onChangeText={(value) => {
@@ -176,12 +182,18 @@ export const createAccountForm = ({ navigation, route }: Props) => {
                 <FormInput
                   returnKeyNext={true}
                   label="Password"
+                  textProps={{
+                    autoCompleteType: 'password',
+                  }}
                   placeholder="Enter password"
                   onChangeText={setPassword}
                   secureTextEntry={true}
                 />
                 <FormInput
                   returnKeyNext={false}
+                  textProps={{
+                    autoCompleteType: 'password',
+                  }}
                   label="Confirm Password"
                   placeholder="Enter password"
                   onChangeText={setConfirmPassword}
