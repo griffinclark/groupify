@@ -69,8 +69,9 @@ export const SelectorMenu: React.FC<Props> = ({ navigation, route }: Props) => {
     require('../../assets/activity-selector-bg/image-activity-5.png'),
   ];
 
-  const bgImageIndex = Math.floor(Math.random() * 4);
-
+  // const bgImageIndex = Math.floor(Math.random() * 4);
+  const bgImageIndex = 3;
+  
   return (
     <Screen style={styles.screen}>
       <ScrollView

@@ -94,11 +94,11 @@ const styles = StyleSheet.create({
     fontFamily: JOST[500],
     textTransform: 'uppercase',
     fontSize: 16,
-    top: -5,
+    // top: -5,
   },
   sideIcon: {
     position: 'absolute',
-    top: 10,
+    // top: 10,
   },
   leftIcon: {
     left: 10,
