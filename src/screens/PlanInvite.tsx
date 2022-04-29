@@ -263,8 +263,8 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
                 onChangeText={searchFriends}
                 placeholder="Search for friends"
                 leftIcon={<MagnifyingGlassIcon />}
-                onFocus={() => setKeyboardOffset(-150)}
-                onBlur={() => setKeyboardOffset(0)}
+                // onFocus={() => setKeyboardOffset(-150)}
+                // onBlur={() => setKeyboardOffset(0)}
               />
             </View>
 

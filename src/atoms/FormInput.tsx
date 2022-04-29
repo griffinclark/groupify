@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View, StyleSheet, TextInput, TextInputProps } from 'react-native';
 import { GREY_3, GREY_5, GREY_9 } from '../res/styles/Colors';
 import { AppText } from './AppText';
 import { JOST } from '../res/styles/Fonts';
@@ -15,6 +14,7 @@ interface Props {
   autoFocus?: boolean;
   submit?: (ev: string) => void;
   maxFontSizeMultiplier?: number;
+  textProps?: TextInputProps;
 }
 export const FormInput: React.FC<Props> = ({
   onChangeText,
@@ -25,6 +25,7 @@ export const FormInput: React.FC<Props> = ({
   returnKeyNext,
   autoFocus,
   submit,
+  textProps,
   maxFontSizeMultiplier = 1.5,
 }: Props) => {
   const [focus, setFocus] = useState(false);
@@ -52,6 +53,7 @@ export const FormInput: React.FC<Props> = ({
         secureTextEntry={secureTextEntry}
         onFocus={() => setFocus(true)}
         maxFontSizeMultiplier={maxFontSizeMultiplier}
+        {...textProps}
       />
     </View>
   );

@@ -8,6 +8,7 @@ import { durationCalculation } from '../res/utilGoogle';
 import { AppText } from '../atoms/AppText';
 import { BackChevronIcon } from '../../assets/Icons/BackChevron';
 import { loadPlaceDetails } from '../res/utilFunctions';
+import { JOST } from '../res/styles/Fonts';
 import { GroupifyItButton } from '../atoms/GroupifyItButton';
 
 interface Props {
@@ -70,8 +71,13 @@ export const LocationDetails: React.FC<Props> = ({ location, userLocation, onBut
     <View style={styles.locationDetailsContainer}>
       <View style={styles.header}>
         <BackChevronIcon onPress={closeLocationDetail} />
+
+        <AppText style={styles.name}>
+          {location.name.length > 30 ? `${location.name.substring(0, 20)}...` : location.name}
+        </AppText>
         <AppText style={styles.name}>{location.name}</AppText>
         <GroupifyItButton onButtonPress={onButtonPress} />
+
       </View>
 
       {location.photos && (
@@ -121,6 +127,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     paddingLeft: 15,
+    fontFamily: JOST[500],
   },
   paddingBottomTen: {
     paddingBottom: 10,
