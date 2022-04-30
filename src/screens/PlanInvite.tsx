@@ -10,7 +10,7 @@ import { BackChevronIcon } from '../../assets/Icons/IconExports';
 import { ScrollView, View } from 'react-native';
 import { AppText, BottomButton, SearchBar, Screen } from '../atoms/AtomsExports';
 import { globalStyles } from '../res/styles/GlobalStyles';
-import { formatDataDate, formatDatabaseTime, formatDatePlanView } from '../res/utilFunctions';
+import { formatDataDate, formatDatabaseTime, formatDatePlanView, formatInviteePhoneNumber, formatContacts } from '../res/utilFunctions';
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import { sendPushNotification, createNotificationAWS, createNotificationFromToAWS } from '../res/notifications';
 import { copy } from './../res/groupifyCopy';
@@ -85,27 +85,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
     console.log(await API.post('broadcastsApi', '/broadcasts', { body: obj }));
   };
 
-  const formatContacts = (arr: Contact[]) => {
-    const formattedArr: Contact[] = [];
-    let i = 1;
-    arr.forEach((contact) => {
-      if (contact.name) {
-        formattedArr.push(contact);
-      } else {
-        contact.name = `Guest ${i}`;
-        i++;
-        formattedArr.push(contact);
-      }
-    });
-    return formattedArr;
-  };
-
-  const formatPhoneNumber = (friend: Contact) => {
-    const util = PhoneNumberUtil.getInstance();
-    const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
-    const newNumber = util.format(num, PhoneNumberFormat.E164);
-    return newNumber;
-  };
+  
 
   const inviteMessage = `Hi, ${currentUser?.name.split(' ')[0]} is inviting you to ${
     planObject.title ? planObject.title : 'their event'
@@ -135,7 +115,7 @@ export const PlanInvite: React.FC<Props> = ({ navigation, route }: Props) => {
         const invitee = await DataStore.save(
           new Invitee({
             name: contact.name,
-            phoneNumber: formatPhoneNumber(contact),
+            phoneNumber: formatInviteePhoneNumber(contact),
             status: Status.PENDING,
             pushToken: '',
             plan: newPlan,
