@@ -11,7 +11,7 @@ import { RoutePropParams } from './root-navigation';
 import { GOOGLE_PLACES_API_KEY } from './utilGoogle';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
-
+import { Contact } from './dataModels';
 //formats time to be presentable to users
 export const formatTime = (time: Date | string): string => {
   let newTime = new Date();
@@ -41,6 +41,28 @@ export const formatIosTimeInput = (time: Date | string): string => {
   const meridian = timeString.includes('PM') ? 'PM' : 'AM';
   const newTime = hour + ':' + minutes + ' ' + meridian;
   return newTime;
+};
+
+export const formatContacts = (arr: Contact[]) => {
+  const formattedArr: Contact[] = [];
+  let i = 1;
+  arr.forEach((contact) => {
+    if (contact.name) {
+      formattedArr.push(contact);
+    } else {
+      contact.name = `Guest ${i}`;
+      i++;
+      formattedArr.push(contact);
+    }
+  });
+  return formattedArr;
+};
+
+export const formatInviteePhoneNumber = (friend: Contact) => {
+  const util = PhoneNumberUtil.getInstance();
+  const num = util.parseAndKeepRawInput(friend.phoneNumber, 'US');
+  const newNumber = util.format(num, PhoneNumberFormat.E164);
+  return newNumber;
 };
 
 export const formatDatePlanView = (date: string): string => {
@@ -182,6 +204,13 @@ export const formatDatabaseTime = (time: string): string => {
     }
   }
   return time;
+};
+
+// Check if is Groupify Member
+export const isGroupify = async (contact: Contact): Promise<Boolean> => {
+  const userQuery = await DataStore.query(User, (user) => user.phoneNumber('eq', formatInviteePhoneNumber(contact)));
+
+  return userQuery.length > 0;
 };
 
 // Sorts a list of plans by their date. Set 'reverse' to true to reverse the order.

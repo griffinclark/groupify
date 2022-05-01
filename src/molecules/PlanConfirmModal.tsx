@@ -5,7 +5,9 @@ import { CloseIcon } from '../../assets/Icons/Close';
 import { globalStyles } from '../res/styles/GlobalStyles';
 import { Contact } from '../res/dataModels';
 import { WHITE, MESSAGE_BLUE } from '../res/styles/Colors';
-
+import { DataStore } from '@aws-amplify/datastore';
+import { User } from '../models';
+import { formatInviteePhoneNumber, isGroupify } from '../res/utilFunctions';
 export interface Props {
   message: string;
   selectedContacts: Contact[];
@@ -22,9 +24,11 @@ export const PlanConfirmModal: React.FC<Props> = ({
   onSubmit,
 }: Props) => {
   const [isVisible, setIsVisible] = useState(isOpen);
+  const [contactString, setContractString] = useState('');
 
   useEffect(() => {
     setIsVisible(isOpen);
+    getFriendString();
   }, [isOpen]);
 
   const close = () => {
@@ -32,22 +36,32 @@ export const PlanConfirmModal: React.FC<Props> = ({
     setIsVisible(false);
   };
 
-  const getFriendString = () => {
+  const getFriendString = async () => {
+    setContractString('');
     let contactString = '';
 
-    selectedContacts.map((contact, index) => {
-      if (selectedContacts.length > 1) {
-        if (index < selectedContacts.length - 1) {
-          contactString += ' ' + contact.name + ',';
+    const notGroupify: String[] = [];
+
+    for (const selectedContact of selectedContacts) {
+      const isGroupifyCheck = await isGroupify(selectedContact);
+      if (!isGroupifyCheck) {
+        notGroupify.push(selectedContact.name);
+      }
+    }
+
+    notGroupify.map((contactName, index) => {
+      if (notGroupify.length > 1) {
+        if (index < notGroupify.length - 1) {
+          contactString += ' ' + contactName + ',';
         } else {
-          contactString += ' and ' + contact.name + '.';
+          contactString += ' and ' + contactName + '.';
         }
       } else {
-        contactString += contact.name + '.';
+        contactString += contactName + '.';
       }
     });
 
-    return contactString;
+    setContractString(contactString);
   };
 
   return (
@@ -60,9 +74,12 @@ export const PlanConfirmModal: React.FC<Props> = ({
               <AppText style={[globalStyles.textH3, styles.modalText]}>
                 We will be sending a text message to {'\n'} Non-Groupify Users for this event.
               </AppText>
-              <AppText style={[globalStyles.bodySmall, styles.modalText]}>
-                Invitees not on Groupify: {getFriendString()}
-              </AppText>
+
+              {contactString.length > 0 && (
+                <AppText style={[globalStyles.bodySmall, styles.modalText]}>
+                  Invitees not on Groupify: {contactString}
+                </AppText>
+              )}
 
               <View style={styles.messageBox}>
                 <AppText style={[globalStyles.bodyMedium, { color: WHITE }]}>{message}</AppText>
