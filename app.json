@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Groupify",
-    "icon": "./assets/appstore.png",
+    "icon": "./assets/Contacts-Graphic.png",
     "slug": "groupify",
     "version": "1.6.12",
     "orientation": "portrait",
